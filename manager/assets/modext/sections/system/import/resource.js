@@ -1,6 +1,6 @@
-Ext.namespace('MODx','MODx.Import');
+Ext.namespace('MODx.Import');
 Ext.onReady(function() {
-    new MODx.Import.Resource();
+    MODx.load({ xtype: 'import-resource' });
 });
 
 MODx.Import.Resource = function(config) {
@@ -56,21 +56,27 @@ MODx.Import.Resource = function(config) {
         ,components: [{
             xtype: 'tree-document-simple'
             ,title: _('documents')
-            ,id: 'import_doctree'
+            ,id: 'import_tree'
             ,el: 'import_doctree'
-            ,connector: MODx.config.connectors_url+'resource/document.php'
+            ,url: MODx.config.connectors_url+'resource/document.php'
             ,enableDrop: false
             ,rootVisible: false
         }]
     });
     MODx.Import.Resource.superclass.constructor.call(this,config);
-    Ext.Ajax.timeout = 0;
+    this.setup();
+};
+Ext.extend(MODx.Import.Resource,MODx.Component,{
+    setup: function() {
+        Ext.Ajax.timeout = 0;
+        var t = Ext.getCmp('import_tree');
+        t.getSelectionModel().on('selectionchange',this.handleClick,t);
+    }
     
-    var sm = Ext.getCmp('import_doctree').getSelectionModel();
-    sm.on('selectionchange',function() {
+    ,handleClick: function() {
         var iPar = 0;
         var iCxt = 'web';
-        var s = sm.getSelectedNode();
+        var s = this.getSelectionModel().getSelectedNode();
         if (s) {
             var spl = s.attributes.id.split('_');
             if (spl) {
@@ -80,7 +86,6 @@ MODx.Import.Resource = function(config) {
         }
         Ext.getCmp('import_parent').setValue(iPar);
         Ext.getCmp('import_context').setValue(iCxt);
-    });
-};
-Ext.extend(MODx.Import.Resource,MODx.Component);
+    }
+});
 Ext.reg('import-resource',MODx.Import.Resource);
