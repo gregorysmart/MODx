@@ -1,0 +1,2683 @@
+<?php
+/*
+ * MODx Revolution
+ * 
+ * Copyright 2006, 2007, 2008 by the MODx Team.
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2 of the License, or (at your option) any later
+ * version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+ * 
+ * Originally based on Etomite by Alex Butter.
+ */
+
+/**
+ * This is the main file to include in your scripts to use MODx.
+ *
+ * For detailed information on using this class, see {@tutorial modx/modx.pkg}.
+ *
+ * @package modx
+ */
+if (!defined('MODX_CORE_PATH')) {
+    define('MODX_CORE_PATH', dirname(dirname(dirname(__FILE__))) . DIRECTORY_SEPARATOR);
+}
+if (!defined('MODX_CONFIG_KEY')) {
+    define('MODX_CONFIG_KEY', 'config');
+}
+require_once (MODX_CORE_PATH . 'xpdo/xpdo.class.php');
+
+/**
+ * This is the MODx gateway class.
+ *
+ * It can be used to interact with the MODx framework and serves as a front
+ * controller for handling requests to the virtual resources managed by the MODx
+ * Content Management Framework.
+ *
+ * @package modx
+ */
+class modX extends xPDO {
+    /**
+     * @var modContext The Context represents a unique section of the site which
+     * this modX instance is controlling.
+     */
+    var $context= null;
+    /**
+     * @var modRequest Represents a web request and provides helper methods for
+     * dealing with request parameters and other attributes of a request.
+     */
+    var $request= null;
+    /**
+     * @var modResponse Represents a web response, providing helper methods for
+     * managing response header attributes and the body containing the content of
+     * the response.
+     */
+    var $response= null;
+    /**
+     * @var modParser The modParser registered for this modX instance,
+     * responsible for content tag parsing, and loaded only on demand.
+     */
+    var $parser= null;
+    /**
+     * @var array An array of supplemental service classes for this modX instance.
+     */
+    var $services= array ();
+    /**
+     * @var array A listing of site Resources and Context-specific meta data.
+     */
+    var $resourceListing= null;
+    /**
+     * @var array A hierarchy map of Resources.
+     */
+    var $resourceMap= null;
+    /**
+     * @var array A lookup listing of Resource alias values and associated
+     * Resource Ids
+     */
+    var $aliasMap= null;
+    /**
+     * @var modEvent The current event being handled by modX.
+     */
+    var $event= null;
+    /**
+     * @var array A map of elements registered to specific events.
+     */
+    var $eventMap= null;
+    /**
+     * @var array A map of actions registered to the manager interface.
+     */
+    var $actionMap= null;
+    /**
+     * @var array A map of already processed Elements.
+     */
+    var $elementCache= array ();
+    /**
+     * @var array An array of key=> value pairs that can be used by any Resource
+     * or Element.
+     */
+    var $placeholders= array ();
+    /**
+     * @var modResource An instance of the current modResource controlling the
+     * request.
+     */
+    var $resource= null;
+    /**
+     * @var string The preferred Culture key for the current request.
+     */
+    var $cultureKey= 'en';
+    /**
+     * @var array Represents a localized dictionary of common words and phrases.
+     */
+    var $lexicon= null;
+    /**
+     * @var modUser The current user object, if one is authenticated for the
+     * current request and context.
+     */
+    var $user= null;
+    /**
+     * @var array Represents the modContentType instances that can be delivered
+     * by this modX deployment.
+     */
+    var $contentTypes= null;
+    /**
+     * @var mixed The resource id or alias being requested.
+     */
+    var $resourceIdentifier= null;
+    /**
+     * @var string The method to use to locate the Resource, 'id' or 'alias'.
+     */
+    var $resourceMethod= null;
+    /**
+     * @var boolean Indicates if the resource was generated during this request.
+     */
+    var $resourceGenerated= true;
+    /**
+     * @var array Version information for this MODx deployment.
+     */
+    var $version= null;
+    /**
+     * @var boolean Indicates if modX has been successfully initialized for a
+     * modContext.
+     */
+    var $_initialized= false;
+    /**
+     * @var array An array of javascript content to be inserted into the HEAD
+     * of an HTML resource.
+     */
+    var $sjscripts= array ();
+    /**
+     * @var array An array of javascript content to be inserted into the BODY
+     * of an HTML resource.
+     */
+    var $jscripts= array ();
+    var $loadedjscripts= array ();
+    /**
+     * @var string Stores the virtual path for a request to MODx if the
+     * friendly_alias_paths option is enabled.
+     */
+    var $virtualDir;
+    /**
+     * @var object An error_handler for the modX instance.
+     */
+    var $errorHandler= null;
+    /**
+     * @var array An array of regex patterns regulary cleansed from content.
+     */
+    var $sanitizePatterns = array(
+        'scripts'   => '@<script[^>]*?>.*?</script>@si',
+        'entities'  => '@&#(\d+);@e',
+        'tags'      => '@\[\[(.*?)\]\]@si',
+    );
+
+    /**
+     * @var DBAPI An instance of the DBAPI helper class.
+     * @deprecated Aug 28, 2006 For legacy component support only; use xPDO
+     * methods inherited by modX class instead.
+     */
+    var $db= null;
+
+    var $pluginCache= array ();
+
+    /**#@+
+     * @deprecated 2006-09-15 To be removed in 1.0
+     */
+    var $Event= null;
+    var $documentMap= null;
+    var $documentListing= null;
+    var $documentIdentifier= null;
+    var $documentMethod= null;
+    var $documentContent= null;
+    var $documentOutput= null;
+    var $documentObject= null;
+    var $documentGenerated= false;
+    var $stopOnNotice= false;
+    var $dumpSQL= false;
+    /**#@-*/
+
+    /**
+     * Harden the environment against common security flaws.
+     */
+    function protect() {
+        // NULL is evil
+        if (isset ($_SERVER['QUERY_STRING']) && strpos(urldecode($_SERVER['QUERY_STRING']), chr(0)) !== false) die();
+        // unregister globals from request
+        if (@ ini_get('register_globals') && isset ($_REQUEST)) {
+            while (list($key, $value)= each($_REQUEST)) {
+                $GLOBALS[$key] = null; // This is NOT paranoid because
+                unset ($GLOBALS[$key]); // unset may not work.
+            }
+        }
+        // clean $_SERVER variables
+        $targets= array ('PHP_SELF', 'HTTP_USER_AGENT', 'HTTP_REFERER', 'QUERY_STRING');
+        foreach ($targets as $target) {
+            $_SERVER[$target] = isset ($_SERVER[$target]) ? htmlspecialchars($_SERVER[$target], ENT_QUOTES) : null;
+        }
+    }
+
+    /**
+     * Sanitize values of an array using regular expression patterns.
+     *
+     * @param array $target The target array to sanitize.
+     * @param array|string $patterns A regular expression pattern, or array of
+     * regular expression patterns to apply to all values of the target.
+     * @param integer $depth The maximum recursive depth to sanitize if the
+     * target contains values that are arrays.
+     * @return array The sanitized array.
+     */
+    function sanitize(& $target, $patterns= array(), $depth= 3) {
+        while (list($key, $value)= each($target)) {
+            if (is_array($value) && $depth > 0) {
+                modX :: sanitize($value, $patterns, $depth--);
+            } elseif (is_string($value)) {
+                if (!empty($patterns))
+                    $value= preg_replace($patterns, '', $value);
+                if (get_magic_quotes_gpc()) {
+                    $target[$key]= stripslashes($value);
+                } else {
+                    $target[$key]= $value;
+                }
+            }
+        }
+        return $target;
+    }
+
+    function modX($configPath= '') {
+        $this->__construct($configPath);
+    }
+    function __construct($configPath= '') {
+        global $database_type, $database_server, $dbase, $database_user,
+               $database_password, $database_connection_charset, $table_prefix;
+        modX :: protect();
+        if (empty ($configPath)) {
+            $configPath= MODX_CORE_PATH . 'config/';
+        }
+        if (@ include ($configPath . MODX_CONFIG_KEY . '.inc.php')) {
+            $cachePath= MODX_CORE_PATH . 'cache/';
+            if (MODX_CONFIG_KEY !== 'config') $cachePath .= MODX_CONFIG_KEY . '/';
+            parent :: __construct(
+                $database_type . ':host=' . $database_server . ';dbname=' . trim($dbase,'`') . ';charset=' . $database_connection_charset,
+                $database_user,
+                $database_password,
+                array (
+                    XPDO_OPT_CACHE_PATH => $cachePath,
+                    XPDO_OPT_TABLE_PREFIX => $table_prefix,
+                    XPDO_OPT_HYDRATE_FIELDS => true,
+                    XPDO_OPT_HYDRATE_RELATED_OBJECTS => true,
+                    XPDO_OPT_HYDRATE_ADHOC_FIELDS => true,
+                    XPDO_OPT_LOADER_CLASSES => array('modAccessibleObject'),
+                    XPDO_OPT_VALIDATOR_CLASS => 'validation.modValidator',
+                    XPDO_OPT_VALIDATE_ON_SAVE => true,
+                ),
+                array (
+                    PDO_ATTR_ERRMODE => PDO_ERRMODE_SILENT,
+                    PDO_ATTR_PERSISTENT => false,
+                    PDO_MYSQL_ATTR_USE_BUFFERED_QUERY => true
+                )
+            );
+            $this->setPackage('modx', MODX_CORE_PATH . 'model/');
+            $this->setLogTarget('HTML');
+            $this->documentIdentifier= & $this->resourceIdentifier;
+            $this->documentMethod= & $this->resourceMethod;
+        } else {
+            include (MODX_CORE_PATH . 'error/unavailable.include.php');
+            die('Could not find the configuration file!');
+        }
+    }
+
+    /**
+     * Initializes the modX engine.
+     *
+     * This includes preparing the session, pre-loading some common
+     * classes and objects, the user currently logged in, the current site
+     * and context settings, etc.
+     *
+     * @param string Indicates the context to initialize.
+     * @return void
+     */
+    function initialize($contextKey= 'web') {
+        if (!$this->_initialized) {
+            if (!$this->startTime) {
+                $mtime= microtime();
+                $mtime= explode(" ", $mtime);
+                $mtime= $mtime[1] + $mtime[0];
+                $this->startTime= $this->getMicroTime();
+            }
+
+            //preload a few important classes which other classes inherit
+            $this->loadClass('modAccess');
+            $this->loadClass('modAccessibleObject');
+            $this->loadClass('modAccessibleSimpleObject');
+            $this->loadClass('modResource');
+            $this->loadClass('modElement');
+            $this->loadClass('modScript');
+            $this->loadClass('modPrincipal');
+            $this->loadClass('modUser');
+
+            $this->getConfig();
+            $this->_initContext($contextKey);
+            $this->_initSession();
+            $this->_initErrorHandler();
+            $this->_initCulture();
+
+            $this->getService('registry', 'registry.modRegistry');
+
+            if ($this->loadClass('DBAPI', '', false, true)) {
+                $this->db= new DBAPI();
+            }
+
+            // set configuration variable placeholders
+            if (is_array ($this->config)) {
+                $this->setPlaceholders($this->config, '+');
+            }
+
+            $this->_initialized= true;
+        }
+    }
+
+    /**
+     * Sets the debugging features of the modX instance.
+     *
+     * @param boolean|int $debug Boolean or bitwise integer describing the
+     * debug state and/or PHP error reporting level.
+     * @param boolean $stopOnNotice Indicates if processing should stop when
+     * encountering PHP errors of type E_NOTICE.
+     * @return boolean|int The previous value.
+     */
+    function setDebug($debug= true, $stopOnNotice= false) {
+        $oldValue= $this->getDebug();
+        if ($debug === true) {
+            error_reporting(E_ALL);
+            parent :: setDebug(true);
+        } elseif ($debug === false) {
+            error_reporting(0);
+            parent :: setDebug(false);
+        } else {
+            error_reporting(intval($debug));
+            parent :: setDebug(intval($debug));
+        }
+        $this->stopOnNotice= $stopOnNotice;
+        return $oldValue;
+    }
+
+    /**
+     * Get an extended xPDOCacheManager instance responsible for MODx caching.
+     *
+     * @return object A modCacheManager registered for this modX instance.
+     */
+    function getCacheManager() {
+        if (isset ($this->config['cache_disabled']) && $this->config['cache_disabled']) {
+            $this->_cacheEnabled= false;
+            return null;
+        } elseif (MODX_CACHE_DISABLED) {
+            $this->_cacheEnabled= false;
+            return null;
+        }
+        if ($this->cacheManager === null) {
+            if ($this->loadClass('cache.xPDOCacheManager', XPDO_CORE_PATH, true, true)) {
+                $cacheManagerClass= isset ($this->config['modCacheManager.class']) ? $this->config['modCacheManager.class'] : 'modCacheManager';
+                if ($className= $this->loadClass($cacheManagerClass, '', false, true)) {
+                    if ($this->cacheManager= new $className ($this)) {
+                        $this->_cacheEnabled= true;
+                    }
+                }
+            }
+        }
+        return $this->cacheManager;
+    }
+
+    /**
+     * Load and return a named service class instance.
+     *
+     * @param string $name The variable name of the instance.
+     * @param string $class The service class name.
+     * @param string $path An optional root path to search for the class.
+     * @param array $params An array of optional params to pass to the service
+     * class constructor.
+     * @return object The service class instance or null if it could not be loaded.
+     */
+    function getService($name, $class= '', $path= '', $params= array ()) {
+        $service= null;
+        if (!isset ($this->services[$name]) || !is_object($this->services[$name])) {
+            if (empty ($class) && isset ($this->config[$name . '.class'])) {
+                $class= $this->config[$name . '.class'];
+            } elseif (empty ($class)) {
+                $class= $name;
+            }
+            if ($className= $this->loadClass($class, $path, false, true)) {
+                if ($service= & new $className ($this, $params)) {
+                    $this->services[$name]= $service;
+                    $this->$name= & $this->services[$name];
+                }
+            }
+        }
+        if (isset ($this->services[$name])) {
+            $service= & $this->services[$name];
+        } else {
+            $this->_log(MODX_LOG_LEVEL_ERROR, "Problem getting service {$name}, instance of class {$class}, from path {$path}, with params " . print_r($params, true));
+        }
+        return $service;
+    }
+
+    /**
+     * Gets the MODx parser.
+     *
+     * Returns an instance of modParser responsible for parsing tags in element
+     * content, performing actions, returning content and/or sending other responses
+     * in the process.
+     *
+     * @return object The modParser for this modX instance.
+     */
+    function getParser() {
+        return $this->getService('parser', 'modParser');
+    }
+
+    /**
+     * Gets all of the parent resource ids for a given resource.
+     *
+     * @param integer $id The resource id for the starting node.
+     * @param integer $height How many levels max to search for parents (default 10).
+     * @return array An array of all the parent resource ids for the specified resource.
+     */
+    function getParentIds($id= null, $height= 10) {
+        $parentId= 0;
+        $parents= array ();
+        if ($id && $height >= 0) {
+            foreach ($this->resourceMap as $parentId => $mapNode) {
+                if (array_search($id, $mapNode) !== false) {
+                    $parents[]= $parentId;
+                    break;
+                }
+            }
+            if ($parentId && !empty($parents)) {
+                $parents= array_merge($parents, $this->getParentIds($parentId, $height--));
+            }
+        }
+        return $parents;
+    }
+
+    /**
+     * Gets all of the child resource ids for a given resource.
+     *
+     * @param integer $id The resource id for the starting node.
+     * @param integer $depth How many levels max to search for children (default 10).
+     * @return array An array of all the child resource ids for the specified resource.
+     */
+    function getChildIds($id= null, $depth= 10) {
+        $children= array ();
+        if ($id !== null && intval($depth) >= 0) {
+            $id= intval($id);
+            if (isset ($this->resourceMap["{$id}"])) {
+                if ($children= $this->resourceMap["{$id}"]) {
+                    foreach ($children as $child) {
+                        if ($c= $this->getChildIds($child, $depth--)) {
+                            $children= array_merge($children, $c);
+                        }
+                    }
+                }
+            }
+        }
+        return $children;
+    }
+
+    /**
+     * Get a site tree from a single or multiple modResource instances.
+     *
+     * @param int|array $id A single or multiple modResource ids to build the
+     * tree from.
+     * @param int $depth The maximum depth to build the tree (default 10).
+     * @return array An array containing the tree structure.
+     */
+    function getTree($id= null, $depth= 10) {
+        $tree= array ();
+        if ($id !== null) {
+            if (is_array ($id)) {
+                foreach ($id as $k => $v) {
+                    $tree[$v]= $this->getTree($v, $depth);
+                }
+            }
+            elseif ($branch= $this->getChildIds($id, 1)) {
+                foreach ($branch as $key => $child) {
+                    if ($depth > 0 && $leaf= $this->getTree($child, $depth--)) {
+                        $tree[$child]= $leaf;
+                    } else {
+                        $tree[$child]= $child;
+                    }
+                }
+            }
+        }
+        return $tree;
+    }
+
+    /**
+     * Sets a placeholder value.
+     *
+     * @param string $key The unique string key which identifies the
+     * placeholder.
+     * @param mixed $value The value to set the placeholder to.
+     */
+    function setPlaceholder($key, $value) {
+        if (is_string($key)) {
+            $this->placeholders["{$key}"]= $value;
+        }
+    }
+
+    /**
+     * Sets a collection of placeholders stored in an array or as object vars.
+     *
+     * An optional namespace parameter can be prepended to each placeholder key in the collection,
+     * to isolate the collection of placeholders.
+     *
+     * Note that unlike toPlaceholders(), this function does not add separators between the
+     * namespace and the placeholder key. Use toPlaceholders() when working with multi-dimensional
+     * arrays or objects with variables other than scalars so each level gets delimited by a
+     * separator.
+     *
+     * @param array|object $placeholders An array of values or object to set as placeholders.
+     * @param string $namespace A namespace prefix to prepend to each placeholder key.
+     */
+    function setPlaceholders($placeholders, $namespace= '') {
+        $this->toPlaceholders($placeholders, $namespace, '');
+    }
+
+    /**
+     * Sets placeholders from values stored in arrays and objects.
+     *
+     * Each recursive level adds to the prefix, building an access path using an optional separator.
+     *
+     * @param array|object $subject An array or object to process.
+     * @param string $prefix An optional prefix to be prepended to the placeholder keys. Recursive
+     * calls prepend the parent keys.
+     * @param string $separator A separator to place in between the prefixes and keys. Default is a
+     * dot or period: '.'.
+     */
+    function toPlaceholders($subject, $prefix= '', $separator= '.') {
+        if (is_object($subject)) {
+            if (is_a($subject, 'xPDOObject')) {
+                $subject= $subject->toArray();
+            } else {
+                $subject= get_object_vars($subject);
+            }
+        }
+        if (is_array($subject)) {
+            foreach ($subject as $key => $value) {
+                $this->toPlaceholder($key, $value, $prefix, $separator);
+            }
+        }
+    }
+
+    /**
+     * Recursively validates and sets placeholders appropriate to the value type passed.
+     *
+     * @param string $key The key identifying the value.
+     * @param mixed $value The value to set.
+     * @param string $prefix A string prefix to prepend to the key. Recursive calls prepend the
+     * parent keys as well.
+     * @param string $separator A separator placed in between the prefix and the key. Default is a
+     * dot or period: '.'.
+     */
+    function toPlaceholder($key, $value, $prefix= '', $separator= '.') {
+        if (!empty($prefix) && !empty($separator)) {
+            $prefix .= $separator;
+        }
+        if (is_array($value) || is_object($value)) {
+            $this->toPlaceholders($value, "{$prefix}{$key}");
+        } elseif (is_scalar($value)) {
+            $this->setPlaceholder("{$prefix}{$key}", $value);
+        }
+    }
+
+    /**
+     * Get a placeholder value by key.
+     *
+     * @param string $key The key of the placeholder to a return a value from.
+     * @return mixed The value of the requested placeholder, or an empty string if not located.
+     */
+    function getPlaceholder($key) {
+        $placeholder= null;
+        if (is_string($key) && array_key_exists($key, $this->placeholders)) {
+            $placeholder= & $this->placeholders["{$key}"];
+        }
+        return $placeholder;
+    }
+
+    /**
+     * Generates a URL representing a specified resource.
+     *
+     * @param integer $id The id of a resource.
+     * @param string $alias [Ignored] For backwards compatibility only.
+     * @param string $args A query string to append to the generated URL.
+     * @param mixed $scheme The scheme indicates in what format the URL is generated.<br>
+     * <pre>
+     *      -1 : (default value) URL is relative to site_url
+     *       0 : see http
+     *       1 : see https
+     *    full : URL is absolute, prepended with site_url from config
+     *     abs : URL is absolute, prepended with base_url from config
+     *    http : URL is absolute, forced to http scheme
+     *   https : URL is absolute, forced to https scheme
+     * </pre>
+     * @return string The URL for the resource.
+     */
+    function makeUrl($id, $alias= '', $args= '', $scheme= -1) {
+        $url= '';
+        if (!intval($id)) {
+            $this->_log(MODX_LOG_LEVEL_ERROR, '`' . $id . '` is not numeric and may not be passed to makeUrl()');
+        }
+        if ($args != '' && $this->config['friendly_urls'] == 1) {
+            // add ? to $args if missing
+            $c= substr($args, 0, 1);
+            if (strpos($this->config['friendly_url_prefix'], '?') === false) {
+                if ($c == '&')
+                    $args= '?' . substr($args, 1);
+                elseif ($c != '?') $args= '?' . $args;
+            } else {
+                if ($c == '?')
+                    $args= '&' . substr($args, 1);
+                elseif ($c != '&') $args= '&' . $args;
+            }
+        }
+        elseif ($args != '') {
+            // add & to $args if missing
+            $c= substr($args, 0, 1);
+            if ($c == '?')
+                $args= '&' . substr($args, 1);
+            elseif ($c != '&') $args= '&' . $args;
+        }
+
+        //TODO: remove this and alias parameter somehow -- functionality makes no sense
+        if ($this->config['friendly_urls'] == 1 && $alias != '') {
+            $url= $this->config['friendly_url_prefix'] . $alias . $this->config['friendly_url_suffix'] . $args;
+        }
+        elseif ($this->config['friendly_urls'] == 1 && $alias == '') {
+            if ($id === $this->config['site_start']) {
+                $alias= '';
+            } else {
+                $alias= array_search($id, $this->aliasMap);
+                if (!$alias) {
+                    $alias= $id;
+                    $this->_log(MODX_LOG_LEVEL_WARN, '`' . $id . '` was requested but no alias was located.');
+                }
+            }
+            $url= $alias . $args;
+        } else {
+            $url= 'index.php?id=' . $id . $args;
+        }
+
+        $host= '';
+        if ($scheme !== -1 && $scheme !== '') {
+            if ($scheme === 1 || $scheme === 0) {
+                $https_port= isset ($this->config['https_port']) ? $this->config['https_port'] : 443;
+                $isSecure= ($_SERVER['SERVER_PORT'] == $https_port || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'])=='on')) ? 1 : 0;
+                if ($scheme != $isSecure) {
+                    $scheme = $isSecure ? 'http' : 'https';
+                }
+            }
+            switch ($scheme) {
+                case 'full':
+                    $host= $this->config['site_url'];
+                    break;
+                case 'abs':
+                case 'absolute':
+                    $host= $this->config['base_url'];
+                    break;
+                case 'https':
+                case 'http':
+                    //FIXME: parse host from site_url configuration?
+                    $host= $scheme . '://' . $this->config['http_host'] . $this->config['base_url'];
+                    break;
+            }
+        }
+
+        $url= $host . $url;
+
+        if (isset ($this->config['xhtml_urls']) && $this->config['xhtml_urls'] == 1) {
+            $url= preg_replace("/&(?!amp;)/","&amp;", $url);
+        }
+
+        return $url;
+    }
+
+    /**
+     * Sends a redirect to the specified URL using the specified method.
+     *
+     * Valid $type values include:
+     *    REDIRECT_REFRESH  Uses the header refresh method
+     *    REDIRECT_META  Sends a a META HTTP-EQUIV="Refresh" tag to the output
+     *    REDIRECT_HEADER  Uses the header location method
+     *
+     * REDIRECT_HEADER is the default.
+     *
+     * @param string $url The URL to redirect the client browser to.
+     * @param integer $count_attempts The number of times to attempt redirection.
+     * @param string $type The type of redirection to attempt.
+     */
+    function sendRedirect($url, $count_attempts= 0, $type= '') {
+        if (!$this->getResponse()) {
+            $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load response class.");
+        }
+        $this->response->sendRedirect($url, $count_attempts, $type);
+    }
+
+    /**
+     * Forwards the request to another resource without changing the URL.
+     *
+     * @param integer $id The resource identifier.
+     * @param string $responseCode An optional response code to send with
+     * the response to the browser.
+     */
+    function sendForward($id, $responseCode= '') {
+        if (!$this->getRequest()) {
+            $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
+        }
+        $this->resource= $this->request->getResource('id', $id);
+        if (!$this->resource) {
+            $id= $this->config['error_page'] ? $this->config['error_page'] : $this->config['site_start'];
+            if (!$this->resource= $this->request->getResource('id', $id)) {
+                $this->resource= $this->newObject('modDocument');
+                $this->resource->set('cacheable', true);
+                $this->resource->_output= "<html><body><h1>404 Not Found</h1></body></html>";
+            }
+            $responseCode= 'HTTP/1.0 404 Not Found';
+        }
+        $this->resourceIdentifier= $id;
+        $this->resourceMethod= 'id';
+        if ($responseCode) {
+            header($responseCode);
+        }
+        $this->request->preserveRequest('referrer.forwarded');
+        $this->request->prepareResponse();
+        exit();
+    }
+
+    /**
+     * Send the user to the error page, with the referring URL stored in $_REQUEST['refurl'].
+     */
+    function sendErrorPage() {
+        $this->invokeEvent('OnPageNotFound');
+        $this->sendForward($this->config['error_page'], 'HTTP/1.0 404 Not Found');
+    }
+
+    /**
+     * Send the user to the unauthorized page, with the referring URL stored in $_REQUEST['refurl'].
+     *
+     * @return void
+     */
+    function sendUnauthorizedPage() {
+        $unauthorizedPage= isset ($this->config['unauthorized_page']) ? $this->config['unauthorized_page'] : $this->config['start_page'];
+        $this->invokeEvent('OnPageUnauthorized');
+        $this->sendForward($unauthorizedPage, 'HTTP/1.0 401 Unauthorized');
+    }
+
+    /**
+     * Get the current authenticated User and assigns it to the modX instance.
+     *
+     * @param string $contextKey An optional context to get the user from.
+     * @return modUser The user object authenticated for the request.
+     */
+    function getUser($contextKey= '') {
+        if ($contextKey == '') {
+            if ($this->context !== null) {
+                $contextKey= $this->context->get('key');
+            }
+        }
+        if ($this->user === null || !is_object($this->user)) {
+            $this->user= $this->getAuthenticatedUser($contextKey);
+        }
+        if ($this->user !== null && is_object($this->user)) {
+            $usrSettings= array ();
+            if (isset ($_SESSION["modx.{$contextKey}.user.config"])) {
+                $usrSettings= $_SESSION["modx.{$contextKey}.user.config"];
+            } else {
+                $settings= $this->user->getMany('modUserSetting');
+                if (is_array($settings) && !empty ($settings)) {
+                    foreach ($settings as $setting) {
+                        $usrSettings[$setting->get('key')]= $setting->get('value');
+                    }
+                }
+            }
+            if (is_array ($usrSettings) && !empty ($usrSettings)) {
+                $_SESSION["modx.{$contextKey}.user.config"]= $usrSettings;
+                $this->config= array_merge($this->config, $usrSettings);
+            }
+            //TODO: remove this and make it happen on demand?
+            $this->user->loadAttributes('modAccessResourceGroup', $contextKey);
+        }
+        return $this->user;
+    }
+
+    /**
+     * Gets the user authenticated in the specified context.
+     *
+     * @param string $contextKey Optional context key; uses current context
+     * by default.
+     * @return unknown
+     */
+    function getAuthenticatedUser($contextKey= '') {
+        $user= null;
+        if ($contextKey == '') {
+            if ($this->context !== null) {
+                $contextKey= $this->context->get('key');
+            }
+        }
+        if ($contextKey && isset ($_SESSION['modx.user.contextTokens'][$contextKey])) {
+            $user= $this->getObject('modUser', intval($_SESSION['modx.user.contextTokens'][$contextKey]), true);
+        }
+        return $user;
+    }
+
+    /**
+     * Checks to see if the user has a session in the specified context.
+     *
+     * @param string $sessionContext The context to test for a session key in.
+     * @return boolean True if the user is valid in the context specified.
+     */
+    function checkSession($sessionContext= 'web') {
+        return ($this->user !== null && $this->user->hasSessionContext($sessionContext));
+    }
+
+    /**
+     * Gets the modX core version data.
+     *
+     * @return array The version data loaded from the config version file.
+     */
+    function getVersionData() {
+        if ($this->version === null) {
+            $this->version= @ include_once MODX_CORE_PATH . "config/version.inc.php";
+        }
+        return $this->version;
+    }
+
+    /**
+     * Reload the config settings.
+     *
+     * @return array An associative array of configuration key/values
+     */
+    function reloadConfig() {
+        $cacheManager= $this->getCacheManager();
+        $cacheManager->clearCache();
+        
+        if (!$this->_loadConfig()) {
+            $this->_log(MODX_LOG_LEVEL_ERROR, "Could not reload core MODx configuration!");
+        }
+        return $this->config;
+    }
+
+    /**
+     * Get the configuration for the site.
+     *
+     * @return array An associate array of configuration key/values
+     */
+    function getConfig() {
+        if (!$this->_initialized || !is_array($this->config) || empty ($this->config)) {
+            if (!$this->_loadConfig()) {
+                $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load core MODx configuration!");
+                return null;
+            }
+        }
+        // ALWAYS append these inside config array, unless already specified in config
+        if (!isset ($this->config['base_url']))
+            $this->config['base_url']= MODX_BASE_URL;
+        if (!isset ($this->config['base_path']))
+            $this->config['base_path']= MODX_BASE_PATH;
+        if (!isset ($this->config['core_path']))
+            $this->config['core_path']= MODX_CORE_PATH;
+        if (!isset ($this->config['site_url']))
+            $this->config['site_url']= MODX_SITE_URL;
+        if (!isset ($this->config['manager_path']))
+            $this->config['manager_path']= MODX_MANAGER_PATH;
+        if (!isset ($this->config['manager_url']))
+            $this->config['manager_url']= MODX_MANAGER_URL;
+        if (!isset ($this->config['assets_path']))
+            $this->config['assets_path']= MODX_ASSETS_PATH;
+        if (!isset ($this->config['assets_url']))
+            $this->config['assets_url']= MODX_ASSETS_URL;
+        if (!isset ($this->config['connectors_path']))
+            $this->config['connectors_path']= MODX_CONNECTORS_PATH;
+        if (!isset ($this->config['connectors_url']))
+            $this->config['connectors_url']= MODX_CONNECTORS_URL;
+        if (!isset ($this->config['http_host']))
+            $this->config['http_host']= $_SERVER['HTTP_HOST'];
+        if (!isset ($this->config['request_param_id']))
+            $this->config['request_param_id']= 'id';
+        if (!isset ($this->config['request_param_alias']))
+            $this->config['request_param_alias']= 'q';
+        if (!isset ($this->config['https_port']))
+            $this->config['https_port']= isset($GLOBALS['https_port']) ? $GLOBALS['https_port'] : 443;
+        if (!isset ($this->config['error_handler_class']))
+            $this->config['error_handler_class']= 'error.modErrorHandler';
+        return $this->config;
+    }
+
+    /**
+     * Alias for getConfig().
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getSettings() {
+        $this->getConfig();
+        return $this->config;
+    }
+
+    /**
+     * Determines the current site_status.
+     *
+     * @return boolean True if the site is online or the user has a valid
+     * user session in the 'mgr' context; false otherwise.
+     */
+    function _checkSiteStatus() {
+        $siteStatus= $this->config['site_status'];
+        if ($siteStatus == 1)
+            return true;
+        elseif ($siteStatus == 0 && $this->checkSession('mgr')) return true;
+        return false;
+    }
+
+    /**
+     * Checks the current status of timed publishing events.
+     * @todo refactor checkPublishStatus...offload to cachemanager?
+     */
+    function checkPublishStatus() {
+        $cacheRefreshTime= 0;
+        include ($this->cachePath . "sitePublishing.idx.php");
+        $timeNow= time() + $this->config['server_offset_time'];
+        if ($cacheRefreshTime != 0 && $cacheRefreshTime <= strtotime($timeNow)) {
+            //FIXME: want to find a better way to handle this publishing check without mass updates to the database!
+            // update resources that need publishing
+            $tblResource= $this->getTableName('modResource');
+            if (!$result= $this->exec("UPDATE {$tblResource} SET published=1,publishedon={$timeNow} WHERE pub_date < {$timeNow} AND pub_date > 0")) {
+                $this->_log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->errorInfo(), true));
+            }
+            // update resources that need un-publishing
+            if (!$result= $this->exec("UPDATE $tblResource SET published=0,publishedon={$timeNow} WHERE unpub_date < {$timeNow} AND unpub_date IS NOT NULL AND unpub_date > 0")) {
+                $this->_log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->errorInfo(), true));
+            }
+            // clear the cache
+            if ($handle= opendir($this->cachePath)) {
+                $filesincache= 0;
+                $deletedfilesincache= 0;
+                while (false !== ($file= readdir($handle))) {
+                    if ($file != "." && $file != "..") {
+                        $filesincache += 1;
+                        if (preg_match("/\.pageCache/", $file)) {
+                            $deletedfilesincache += 1;
+                            while (!unlink($this->cachePath . "/" . $file));
+                        }
+                    }
+                }
+                closedir($handle);
+            }
+            // update publish time file
+            $timesArr= array ();
+            $sql= "SELECT MIN(pub_date) AS minpub FROM $tblResource WHERE pub_date>$timeNow AND pub_date IS NOT NULL";
+            if (!$result= $this->query($sql)) {
+                $this->_log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+            } else {
+                $result= $result->fetchAll(PDO_FETCH_ASSOC);
+                $minpub= $result[0]['minpub'];
+                if ($minpub != NULL) {
+                    $timesArr[]= $minpub;
+                }
+            }
+            $sql= "SELECT MIN(unpub_date) AS minunpub FROM $tblResource WHERE unpub_date>$timeNow AND unpub_date IS NOT NULL";
+            if (!$result= $this->query($sql)) {
+                $this->_log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+            } else {
+                $result= $result->fetchAll(PDO_FETCH_ASSOC);
+                $minunpub= $result[0]['minunpub'];
+                if ($minunpub != NULL) {
+                    $timesArr[]= $minunpub;
+                }
+            }
+            if (count($timesArr) > 0) {
+                $nextevent= min($timesArr);
+            } else {
+                $nextevent= 0;
+            }
+            $fp= @ fopen($this->cachePath . "sitePublishing.idx.php", "wb");
+            if ($fp) {
+                @ flock($fp, LOCK_EX);
+                @ fwrite($fp, "<?php \$cacheRefreshTime=$nextevent; ?>");
+                @ flock($fp, LOCK_UN);
+                @ fclose($fp);
+            }
+        }
+    }
+
+    /**
+     * Initialize, cleanse, and process a request made to a modX site.
+     */
+    function handleRequest() {
+        if ($this->getRequest()) {
+            $this->request->handleRequest();
+        }
+    }
+
+    /**
+     * Attempt to load the request handler class, if not already loaded.
+     *
+     * @return boolean Returns true if a valid request handler object was
+     * loaded on this or any previous call to the function, false otherwise.
+     */
+    function getRequest($class= 'modRequest', $path= '') {
+        if ($this->request === null || !is_a($this->request, 'modRequest')) {
+            $requestClass= isset ($this->config['modRequest.class']) ? $this->config['modRequest.class'] : $class;
+            if ($className= $this->loadClass($requestClass, $path, !empty($path), true))
+                $this->request= new $className ($this);
+        }
+        return is_object($this->request) && is_a($this->request, 'modRequest');
+    }
+
+    /**
+     * Attempt to load the response handler class, if not already loaded.
+     *
+     * @return boolean Returns true if a valid response handler object was
+     * loaded on this or any previous call to the function, false otherwise.
+     */
+    function getResponse($class= 'modResponse', $path= '') {
+        if ($this->response === null || !is_a($this->response, 'modResponse')) {
+            $responseClass= isset ($this->config['modResponse.class']) ? $this->config['modResponse.class'] : $class;
+            if ($className= $this->loadClass($responseClass, $path, !empty($path), true))
+                $this->response= new $className ($this);
+        }
+        return is_a($this->response, 'modResponse');
+    }
+
+    /**
+     * Register CSS to be injected inside the HEAD tag of a resource.
+     *
+     * @param string $src The CSS to be injected before the closing HEAD tag in
+     * an HTML response.
+     */
+    function regClientCSS($src) {
+        if (isset ($this->loadedjscripts[$src]) && $this->loadedjscripts[$src]) {
+            return '';
+        }
+        $this->loadedjscripts[$src]= true;
+        if (strpos(strtolower($src), "<style") !== false || strpos(strtolower($src), "<link") !== false) {
+            $this->sjscripts[count($this->sjscripts)]= $src;
+        } else {
+            $this->sjscripts[count($this->sjscripts)]= '<!-- MODx registered -->' . "\n" . '  <link rel="stylesheet" href="' . $src . '" />';
+        }
+    }
+
+    /**
+     * Register JavaScript to be injected inside the HEAD tag of a resource.
+     *
+     * @param string $src The JavaScript to be injected before the closing HEAD
+     * tag of an HTML response.
+     * @param boolean $plaintext Optional param to treat the $src as plaintext
+     * rather than assuming it is JavaScript.
+     */
+    function regClientStartupScript($src, $plaintext= false) {
+        if (!empty ($src) && !array_key_exists($src, $this->loadedjscripts)) {
+            if (isset ($this->loadedjscripts[$src]))
+                return '';
+            $this->loadedjscripts[$src]= true;
+            if ($plaintext == true)
+                $this->sjscripts[count($this->sjscripts)]= $src;
+            elseif (strpos(strtolower($src), "<script") !== false) $this->sjscripts[count($this->sjscripts)]= $src;
+            else
+                $this->sjscripts[count($this->sjscripts)]= '<!-- MODx registered -->' . "\n" . '  <script type="text/javascript" src="' . $src . '"></script>';
+        }
+    }
+
+    /**
+     * Register JavaScript to be injected before the closing BODY tag.
+     *
+     * @param string $src The JavaScript to be injected before the closing BODY
+     * tag in an HTML response.
+     * @param boolean $plaintext Optional param to treat the $src as plaintext
+     * rather than assuming it is JavaScript.
+     */
+    function regClientScript($src, $plaintext= false) {
+        if (isset ($this->loadedjscripts[$src]))
+            return '';
+        $this->loadedjscripts[$src]= true;
+        if ($plaintext == true)
+            $this->jscripts[count($this->jscripts)]= $src;
+        elseif (strpos(strtolower($src), "<script") !== false) $this->jscripts[count($this->jscripts)]= $src;
+        else
+            $this->jscripts[count($this->jscripts)]= '<!-- MODx registered -->' . "\n" . '  <script type="text/javascript" src="' . $src . '"></script>';
+    }
+
+    /**
+     * Register HTML to be injected before the closing HEAD tag.
+     *
+     * @param string $html The HTML to be injected.
+     */
+    function regClientStartupHTMLBlock($html) {
+        return $this->regClientStartupScript($html, true);
+    }
+
+    /**
+     * Register HTML to be injected before the closing BODY tag.
+     *
+     * @param string $html The HTML to be injected.
+     */
+    function regClientHTMLBlock($html) {
+        return $this->regClientScript($html, true);
+    }
+
+    /**
+     * Returns all registered JavaScript and HTML blocks.
+     */
+    function getRegisteredClientScripts() {
+        $string= '';
+        if (is_array($this->jscripts)) {
+            $string= implode("\n",$this->jscripts);
+        }
+        return $string;
+    }
+
+    /**
+     * Returns all registered startup CSS, JavaScript, or HTML blocks.
+     */
+    function getRegisteredClientStartupScripts() {
+        $string= '';
+        if (is_array ($this->sjscripts)) {
+            $string= implode("\n", $this->sjscripts);
+        }
+        return $string;
+    }
+
+    /**
+     * Legacy call to set the current documentObject being handled by MODx.
+     *
+     * @param string $method 'id' or 'alias' to indicate the lookup method.
+     * @param string|int $identifier The identifier for looking up the document.
+     * @return array An associative array containing all the document data.
+     * @deprecated 0.9.7 - Jan 18, 2007
+     */
+    function getDocumentObject($method, $identifier) {
+        if (!$this->getRequest()) {
+            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+        }
+        $this->resource= $this->request->getResource($method, $identifier);
+        $documentObject= & $this->documentObject;
+        return $documentObject;
+    }
+
+    /**
+     * Invokes a specified Event with an optional array of parameters.
+     *
+     * @param string $eventName Name of an event to invoke.
+     * @param array $params Optional params provided to the elements registered with an event.
+     * @todo refactor this completely, yuck!!
+     */
+    function invokeEvent($eventName, $params= array ()) {
+        if (!$eventName)
+            return false;
+        if ($this->eventMap === null)
+            $this->_initEventMap($this->context->get('key'));
+        if (!isset ($this->eventMap[$eventName]))
+            return false;
+        $results= array ();
+        if (count($this->eventMap[$eventName])) {
+            $this->event= new modSystemEvent();
+            foreach ($this->eventMap[$eventName] as $pluginId) {
+                $plugin= null;
+                $this->Event= & $this->event;
+                $this->event->_resetEventObject();
+                $this->event->name= $eventName;
+                if (isset ($this->pluginCache[$pluginId])) {
+                    $plugin= $this->pluginCache[$pluginId];
+                    if ($plugin->get('disabled')) {
+                        $plugin= null;
+                    }
+                } else {
+                    $plugin= $this->getObject('modPlugin', array ('id' => $pluginId, 'disabled' => '0'), true);
+                }
+                if ($plugin) {
+                    $this->event->activated= true;
+                    $this->event->activePlugin= $plugin->get('name');
+                    $properties= null;
+                    if ($module= $plugin->getOne('modModule')) {
+                        if ($moduleProps= $module->get('properties')) {
+                            $this->getParser();
+                            $properties= $this->parser->parseProperties($module->get('properties'));
+                        }
+                    }
+                    if (is_array ($properties)) {
+                        $properties= array_merge($properties, $params);
+                    } else {
+                        $properties= $params;
+                    }
+                    $msg= $plugin->process($properties);
+                    $results[]= $this->event->_output;
+                    if ($msg && is_string($msg)) {
+                        $this->_log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . ']' . $msg);
+                    } elseif ($msg === false) {
+                        $this->_log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . '] Plugin failed!');
+                    }
+                    $this->event->activePlugin= '';
+                    if ($this->event->_propagate != true) {
+                        break;
+                    }
+                }
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * Returns the current user ID, for the current or specified context.
+     *
+     * @param string $context The key of a valid modContext so you can retrieve
+     * the current user ID from a different context than the current.
+     * @return string The ID of the current user.
+     */
+    function getLoginUserID($context= '') {
+        if ($context && isset ($_SESSION[$context . 'Validated'])) {
+            return $_SESSION[$context . 'InternalKey'];
+        }
+        elseif (!$context && $this->isFrontend() && isset ($_SESSION['webValidated'])) {
+            return $_SESSION['webInternalKey'];
+        }
+        elseif (!$context && $this->isBackend() && isset ($_SESSION['mgrValidated'])) {
+            return $_SESSION['mgrInternalKey'];
+        }
+    }
+
+    /**
+     * Returns the current user name, for the current or specified context.
+     *
+     * @param string $context The key of a valid modContext so you can retrieve
+     * the username from a different context than the current.
+     * @return string The username of the current user.
+     */
+    function getLoginUserName($context= '') {
+        if ($context && isset ($_SESSION[$context . 'Validated'])) {
+            return $_SESSION[$context . 'Shortname'];
+        }
+        if ($this->isFrontend() && isset ($_SESSION['webValidated'])) {
+            return $_SESSION['webShortname'];
+        }
+        elseif ($this->isBackend() && isset ($_SESSION['mgrValidated'])) {
+            return $_SESSION['mgrShortname'];
+        }
+    }
+
+    /**
+     * Returns current login user type - web or manager.
+     *
+     * @deprecated 2007-09-17 To be removed in 1.0.
+     * @return string 'web', 'manager' or an empty string.
+     */
+    function getLoginUserType() {
+        if ($this->isFrontend() && isset ($_SESSION['webValidated'])) {
+            return 'web';
+        }
+        elseif ($this->isBackend() && isset ($_SESSION['mgrValidated'])) {
+            return 'manager';
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Determines if the current webuser is a member of the specified webgroups.
+     *
+     * @param array $groupNames An array of groups to check against.
+     * @return boolean True if the user is a member of any one of the supplied
+     * group names, false otherwise.
+     */
+    function isMemberOfWebGroup($groupNames= array ()) {
+        if (!is_array($groupNames))
+            return false;
+        // check cache
+        $grpNames= isset ($_SESSION['webUserGroupNames']) ? $_SESSION['webUserGroupNames'] : false;
+        if (!is_array($grpNames)) {
+            if ($user= $this->getUser('web')) {
+                if ($groupMemberships= $user->getMany('modWebGroupMember')) {
+                    foreach ($groupMemberships as $gm) {
+                        if ($group= $gm->getOne('modWebGroup')) {
+                            $grpNames[]= $group->get('name');
+                        }
+                    }
+                }
+            }
+            // save to session
+            if ($grpNames) $_SESSION['webUserGroupNames']= $grpNames;
+        }
+        if ($grpNames && !empty ($grpNames)) {
+            foreach ($groupNames as $k => $v) {
+                if (in_array(trim($v), $grpNames)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get persistent data from a specific document.
+     * @deprecated 2007-09-17 To be removed in 1.0.
+     */
+    function getDocument($id=0,$fields="*",$published=1, $deleted=0) {
+        if($id==0) {
+            return false;
+        } else {
+            $tmpArr[] = $id;
+            $docs = $this->getDocuments($tmpArr, $published, $deleted, $fields,"","","",1);
+            if($docs!=false) {
+                return $docs[0];
+            } else {
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Get persistent data from a collection of specified documents.
+     */
+    function getDocuments($ids=array(), $published=1, $deleted=0, $fields="*", $where='', $sort="menuindex", $dir="ASC", $limit="") {
+        $collection = array();
+        $criteria = $this->newQuery('modResource');
+        $criteria->setClassAlias('sc');
+        $criteria->select($fields);
+        $criteria->where('sc.id IN (' . implode(',', $ids) . ')', array(
+            'sc.published' => $published,
+            'sc.deleted' => $deleted
+        ));
+        if (!empty($where)) $criteria->andCondition($where);
+        if (!empty($sort)) $criteria->sortby($sort, $dir);
+        if (!empty($limit)) $criteria->limit($limit);
+        if ($objCollection = $this->getCollection('modResource', $criteria)) {
+            foreach ($objCollection as $obj) {
+                array_push($collection, $obj->toArray());
+            }
+        }
+        if (empty($collection)) $collection = false;
+        return $collection;
+    }
+
+    /**
+     * Legacy fatal error message.
+     */
+    function messageQuit($msg='unspecified error', $query='', $is_error=true, $nr='', $file='', $source='', $text='', $line='') {
+        $version= '';
+        $code_name= '';
+        if ($v= $this->getVersionData()) {
+            $version= $v['version'] . '.' . $v['small_version'] . '.' . $v['patch_level'];
+            $code_name= isset($v['code_name'])? $v['code_name']: $code_name;
+        }
+        $this->_log(MODX_LOG_LEVEL_FATAL, '<pre>msg: ' . $msg . "\n" . 'query: ' . $query . "\n" . 'nr: ' . $nr . "\n" . 'file: ' . $file . "\n" . 'source: ' . $source . "\n" . 'text: ' . $text . "\n" . 'msg: ' . $line . "</pre>\n");
+    }
+
+
+    /**
+     * Process and return the output from a PHP snippet by name.
+     *
+     * @param string $snippetName
+     * @param array $params
+     * @return string
+     */
+    function runSnippet($snippetName, $params= array ()) {
+        $output= '';
+        if ($snippet= $this->getObject('modSnippet', array ('name' => $snippetName), true)) {
+            $output= $snippet->process($params);
+        }
+        return $output;
+    }
+
+    function getChunk($chunkName, $properties= array ()) {
+        $output= '';
+        if ($chunk= $this->getObject('modChunk', array ('name' => $chunkName), true)) {
+            $output= $chunk->process($properties);
+        }
+        return $output;
+    }
+
+    /**
+     * Parse a chunk element using an associate array of replacement variables.
+     */
+    function parseChunk($chunkName, $chunkArr, $prefix='[[+', $suffix=']]') {
+        $chunk= '';
+        if ($chunk= $this->getChunk($chunkName)) {
+            if(is_array($chunkArr)) {
+                reset($chunkArr);
+                while (list($key, $value)= each($chunkArr)) {
+                    $chunk= str_replace($prefix.$key.$suffix, $value, $chunk);
+                }
+            }
+        }
+        return $chunk;
+    }
+
+    /**
+     * Strip unwanted HTML and PHP tags and supplied patterns from content.
+     */
+    function stripTags($html, $allowed= '', $patterns= array()) {
+        $stripped= strip_tags($html, $allowed);
+        if (is_array($patterns)) {
+            if (empty($patterns)) {
+                $patterns = $this->sanitizePatterns;
+            }
+            foreach ($patterns as $pattern) {
+                $stripped= preg_replace($pattern, '', $stripped);
+            }
+        }
+        return $stripped;
+    }
+
+    /**
+     * Returns an array of document groups that current user is assigned to.
+     *
+     * This function will first return the web user doc groups when running from
+     * frontend otherwise it will return manager user's docgroup.
+     * @param boolean $resolveIds Set to true to return the document group names.
+     * @return mixed An array of document group ids, names, false or empty string.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getUserDocGroups($resolveIds= false) {
+        $dgn= false;
+        if ($this->isFrontend() && isset ($_SESSION['webDocgroups']) && isset ($_SESSION['webValidated'])) {
+            $dg= $_SESSION['webDocgroups'];
+            $dgn= isset ($_SESSION['webDocgrpNames']) ? $_SESSION['webDocgrpNames'] : false;
+        } elseif ($this->isBackend() && isset ($_SESSION['mgrDocgroups']) && isset ($_SESSION['mgrValidated'])) {
+            $dg= $_SESSION['mgrDocgroups'];
+            $dgn= $_SESSION['mgrDocgrpNames'];
+        } else {
+            $dg= '';
+        }
+        if (!$resolveIds) {
+            return $dg;
+        }
+        elseif (is_array($dgn)) {
+            return $dgn;
+        }
+        elseif (is_array($dg)) {
+            // resolve ids to names
+            $dgn= array ();
+            $tbl= $this->getTableName('modResourceGroup');
+            $criteria= new xPDOCriteria($this, "SELECT * FROM {$tbl} WHERE `id` IN (" . implode(",", $dg) . ")");
+            $collResourceGroups= $this->getCollection('modResourceGroup', $criteria);
+            foreach ($collResourceGroups as $rg) {
+                $dgn[count($dgn)]= $rg->get('name');
+            }
+            // cache docgroup names to session
+            if ($this->isFrontend()) {
+                $_SESSION['webDocgrpNames']= $dgn;
+            }
+            else {
+                $_SESSION['mgrDocgrpNames']= $dgn;
+            }
+        }
+        return $dgn;
+    }
+
+    /**
+     * Returns the full table name based on db settings.
+     *
+     * @deprecated Aug 28, 2006 Use {@link getTableName($className)} instead.
+     */
+    function getFullTableName($tbl){
+        return '`' . $this->db->config['dbase']. '`.`' .$this->db->config['table_prefix'].$tbl . '`';
+    }
+
+    /**
+     * Get children of the specified document without regard to status.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getAllChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
+        $collection = array();
+        $criteria = $this->newQuery('modResource');
+        $criteria->select($fields);
+        $criteria->where(array('parent' => $id));
+        if (!empty($sort)) $criteria->sortby($sort, $dir);
+        if ($objCollection = $this->getCollection('modResource', $criteria)) {
+            foreach ($objCollection as $obj) {
+                array_push($collection, $obj->toArray());
+            }
+        }
+        if (empty($collection)) $collection = false;
+        return $collection;
+    }
+
+    /**
+     * Get all published children documents of the specified document.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getActiveChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
+        $collection = array();
+        $criteria = $this->newQuery('modResource');
+        $criteria->setClassAlias('sc');
+        $criteria->select($fields);
+        $criteria->where(array(
+            'sc.parent' => $id,
+            'sc.published' => '1',
+            'sc.deleted' => '0'
+        ));
+        if (!empty($sort)) $criteria->sortby($sort, $dir);
+        if ($objCollection = $this->getCollection('modResource', $criteria)) {
+            foreach ($objCollection as $obj) {
+                array_push($collection, $obj->toArray());
+            }
+        }
+        if (empty($collection)) $collection = false;
+        return $collection;
+    }
+
+    /**
+     * Get all children documents of the specified document.
+     * @deprecated
+     */
+    function getDocumentChildren($parentid= 0, $published= 1, $deleted= 0, $fields= "*", $where= '', $sort= "menuindex", $dir= "ASC", $limit= "") {
+        $collection = array();
+        $criteria = $this->newQuery('modResource');
+        $criteria->setClassAlias('sc');
+        $criteria->select($fields);
+        $criteria->where(array(
+            'sc.parent' => $parentid,
+            'sc.published' => $published,
+            'sc.deleted' => $deleted
+        ));
+        if (!empty($where)) $criteria->andCondition($where);
+        if (!empty($sort)) $criteria->sortby($sort, $dir);
+        if (!empty($limit)) $criteria->limit($limit);
+        if ($objCollection = $this->getCollection('modResource', $criteria)) {
+            foreach ($objCollection as $obj) {
+                array_push($collection, $obj->toArray());
+            }
+        }
+        if (empty($collection)) $collection = false;
+        return $collection;
+    }
+
+    /**
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getDocumentChildrenTVars($parentid=0, $tvidnames=array(), $published=1, $docsort="menuindex", $docsortdir="ASC", $tvfields="*", $tvsort="rank", $tvsortdir="ASC") {
+//        $fields = ($tvfields=="") ? "tv.*" : 'tv.'.implode(',tv.',preg_replace("/^\s/i","",explode(',',$tvfields)));
+//        $tvsort = ($tvsort=="") ? "":'tv.'.implode(',tv.',preg_replace("/^\s/i","",explode(',',$tvsort)));
+
+        $collection = array();
+        $all= ($tvidnames=="*");
+        $byName= (is_numeric($tvidnames[0]) == false);
+        $criteria = $this->newQuery('modResource');
+        $criteria->where(array(
+            'sc.parent' => $parentid,
+            'sc.published' => $published,
+            'sc.deleted' => '0'
+        ));
+        if (!empty($sort)) $criteria->sortby($docsort, $docsortdir);
+        if ($objCollection = $this->getCollection('modResource', $criteria)) {
+            foreach ($objCollection as $obj) {
+                $objArray= $obj->toArray();
+                $tvs= $obj->getMany('modTemplateVar');
+                foreach ($tvs as $tv) {
+                    if (!$all) {
+                        if ($byName) {
+                            if (!in_array($tv->name, $tvidnames)) continue;
+                        } else {
+                            if (!in_array($tv->id, $tvidnames)) continue;
+                        }
+                    }
+                    $objArray= array_merge($objArray, $tv->toArray());
+                }
+                array_push($collection, $objArray);
+            }
+        }
+        if (empty($collection)) $collection = false;
+        return $collection;
+    }
+
+    /**
+     * Returns a single TV record.
+     *
+     * @param string $idname can be an id or name that belongs the template
+     * that the current document is using.
+     * @param string $fields
+     * @param integer $docid
+     * @param integer $published 1 for published, 0 for unpublished.
+     * @return mixed An array of the template variable fields or false.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getTemplateVar($idname="", $fields = "*", $docid="", $published=1) {
+        if($idname=="") {
+            return false;
+        }
+        else {
+            $result = $this->getTemplateVars(array($idname),$fields,$docid,$published,"",""); //remove sorting for speed
+            return $result;
+        }
+    }
+
+    /**
+     * Returns an array of TV records.
+     *
+     * @param string|array $idnames Can be an id or name that belongs to
+     * the template assigned to the current document.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getTemplateVars($idnames=array(), $fields = "*", $docid="", $published=1, $sort="tv.rank,tvtpl.rank", $dir="ASC,ASC") {
+        if(($idnames!='*' && !is_array($idnames)) || count($idnames)==0) {
+            return false;
+        }
+        else {
+            $docid = intval($docid);
+            if ($docid < 1) {
+                if (is_object($this->resource)) {
+                    $docid = intval($this->resource->resourceIdentifier);
+                }
+            }
+            $result = array();
+
+            $fields = (empty($fields) || $fields=='*') ? "tv.*" : $this->getSelectColumns('modTemplateVar', 'tv', '', $fields);
+
+            $query = $this->newQuery('modTemplateVar');
+            $query->setClassAlias('tv');
+            $query->innerJoin('modTemplateVarTemplate', 'tvtpl', array(
+                'tvtpl.tmplvarid = tv.id',
+            ));
+            $query->innerJoin('modResource', 'sc', array(
+                'sc.id = ' . intval($docid),
+                'tvtpl.templateid = sc.template',
+            ));
+            $query->leftJoin('modTemplateVarResource', 'tvc', array(
+                'tvc.tmplvarid = tv.id',
+                array('tvc.contentid' => $docid)
+            ));
+            if ($idnames == '*') {
+                $query->where(array('tv.id:!=' => '0'));
+            } elseif (isset($idnames[0])) {
+                if (intval($idnames[0])) {
+                    $tvIdentifiers = implode(',', $idnames);
+                    $query->where('tv.id IN (' . $tvIdentifiers . ')');
+                } else {
+                    $tvIdentifiers = implode("','", $idnames);
+                    $query->where('tv.name IN ' . "('" . $tvIdentifiers . "')");
+                }
+            }
+            if (!empty($sort)) {
+                $sortby = explode(',', $sort);
+                if (!empty($dir)) {
+                    $sortdir = explode(',', $dir);
+                } else {
+                    $sortdir = array('');
+                }
+                if (is_array($sortby)) {
+                    foreach ($sortby as $idx => $col) {
+                        $sd = isset ($sortdir[$idx]) ? $sortdir[$idx] : '';
+                        $query->sortby($col, $sd);
+                    }
+                }
+            } else {
+                $query->sortby('tvtpl.rank');
+                $query->sortby('tv.rank');
+            }
+            $query->select('DISTINCT ' . $fields . ', IF(ISNULL(`tvc`.`value`),`tv`.`default_text`,`tvc`.`value`) AS `value`');
+
+            $collection = $this->getCollection('modTemplateVar', $query);
+            foreach ($collection as $pk => $tv) {
+                $result[$tv->get('name')]= array (
+                    $tv->get('name'),
+                    $tv->getValue($docid),
+                    $tv->get('display'),
+                    $tv->get('display_params'),
+                    $tv->get('type')
+                );
+            }
+            return $result;
+        }
+    }
+
+    /**
+     * Gets an array of template variable data, with processed output.
+     *
+     * @param string|array $idnames
+     * @param integer $docid
+     * @param integer $published
+     * @return mixed
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getTemplateVarOutput($idnames=array(), $docid="", $published=1) {
+        if(count($idnames)==0) {
+            return false;
+        }
+        else {
+            $output = array();
+            // get document record
+            if ($docid=="") {
+                $docid = $this->resourceIdentifier;
+            }
+
+            $query = $this->newQuery('modTemplateVar');
+            $query->setClassAlias('tv');
+            $query->innerJoin('modTemplateVarTemplate', 'tvtpl', array(
+                'tvtpl.tmplvarid = tv.id',
+            ));
+            $query->innerJoin('modResource', 'sc', array(
+                'sc.id = ' . intval($docid),
+                'tvtpl.templateid = sc.template',
+            ));
+            $query->leftJoin('modTemplateVarResource', 'tvc', array(
+                'tvc.tmplvarid = tv.id',
+                'tvc.contentid = sc.id'
+            ));
+            if ($idnames == '*') {
+                $query->where(array('tv.id:!=' => '0'));
+            } elseif (isset($idnames[0])) {
+                if (is_numeric($idnames[0])) {
+                    $tvIdentifiers = implode(',', $idnames);
+                    $query->where('tv.id IN (' . $tvIdentifiers . ')');
+                } else {
+                    $tvIdentifiers = implode("','", $idnames);
+                    $query->where('tv.name IN (\'' . $tvIdentifiers . '\')');
+                }
+            }
+            $query->sortby('tvtpl.rank');
+            $query->sortby('tv.rank');
+            $query->select('DISTINCT `tv`.*, IF(ISNULL(`tvc`.`value`),`tv`.`default_text`,`tvc`.`value`) AS `value`');
+
+            $collection = $this->getCollection('modTemplateVar', $query);
+            foreach ($collection as $pk => $tv) {
+                $output[$tv->get('name')]= $tv->renderOutput($docid);
+            }
+            return $output;
+        }
+    }
+
+    /**
+     * Gets the parent document.
+     *
+     * @param integer $pid
+     * @param integer $active
+     * @param string $fields
+     * @return mixed
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getParent($pid=-1, $active=1, $fields='id, pagetitle, description, alias, parent, class_key, context_key') {
+        if($pid==-1) {
+            $pid = $this->documentObject['parent'];
+            return ($pid==0)? false:$this->getPageInfo($pid,$active,$fields);
+        }else if($pid==0) {
+            return false;
+        } else {
+            // first get the child document
+            $child = $this->getPageInfo($pid,$active,"id,parent");
+            // now return the child's parent
+            $pid = (isset ($child['parent']) && intval($child['parent']))? intval($child['parent']):0;
+            return ($pid==0)? false:$this->getPageInfo($pid,$active,$fields);
+        }
+    }
+
+    /**
+     * Gets data from a document.
+     *
+     * @param integer $pageid
+     * @param integer $active
+     * @param string $fields
+     * @return mixed
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getPageInfo($pageid=-1, $active=1, $fields='id, pagetitle, description, alias, class_key, context_key') {
+        $data = false;
+        $criteria= $this->newQuery('modResource');
+        $criteria->select($fields);
+        $criteria->where(array(
+            'id' => $pageid,
+            'published' => 1,
+            'deleted' => '0'
+        ));
+        if ($obj= $this->getObject('modResource', $criteria)) {
+            $data= $obj->toArray();
+        }
+        if ($data == null) $data = false;
+        return $data;
+    }
+
+    /**
+     * Returns an array of manager user data.
+     *
+     * @param integer $uid
+     * @return mixed
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getUserInfo($uid) {
+        $userInfo= false;
+        if ($user= $this->getObject('modUser', $uid, true)) {
+            $userInfo= $user->get(array ('username', 'password'));
+            if ($userProfile= $user->getOne('modUserProfile')) {
+                $userInfo= array_merge($userInfo, $userProfile->toArray());
+            }
+        }
+        return $userInfo;
+    }
+
+    /**
+     * Returns an array of web user data.
+     *
+     * @param integer $uid
+     * @return mixed
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getWebUserInfo($uid) {
+        $userInfo= $this->getUserInfo($uid);
+        return $userInfo;
+    }
+
+    /**
+     * Alias of getUserDocGroups().
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function getDocGroups() {
+        $docGroups= $this->getUserDocGroups();
+        return $docGroups;
+    }
+
+    /**
+     * Alias of changePassword().
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function changeWebUserPassword($oldPwd, $newPwd) {
+        $rt= $this->changePassword($oldPwd, $newPwd);
+        return $rt;
+    }
+
+    /**
+     * Change current user's password.
+     *
+     * @param string $o The old password.
+     * @param string $n The new password.
+     * @return mixed true if successful, otherwise return error message.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function changePassword($o, $n) {
+        $rt= false;
+        if ($user= $this->getUser()) {
+            if (!empty ($newPwd) && !empty ($oldPwd) && strcmp($user->get('password'), md5($oldPwd)) ) {
+                if ($rt= $user->set('password', $newPwd)) {
+                    switch ($this->context->get('key')) {
+                        case 'web':
+                            $this->invokeEvent("OnWebChangePassword", array (
+                                "userid" => $user->get('id'),
+                                "username" => $user->get('username'),
+                                "userpassword" => $newPwd
+                            ));
+                            break;
+                        case 'mgr':
+                            $this->invokeEvent('OnManagerChangePassword', array (
+                                "userid" => $user->get('id'),
+                                "username" => $user->get('username'),
+                                "userpassword" => $newPwd
+                            ));
+                            break;
+                    }
+                    $this->invokeEvent('OnUserChangePassword', array (
+                        "userid" => $user->get('id'),
+                        "username" => $user->get('username'),
+                        "userpassword" => $newPwd
+                    ));
+                }
+            }
+        }
+        return $rt;
+    }
+
+    /**
+     * Cleans the document request parameter.
+     *
+     * @access private
+     * @param string|integer $qOrig
+     * @return string|integer
+     * @deprecated 2007-09-17 TO be removed in 1.0
+     */
+    function cleanDocumentIdentifier($qOrig) {
+        if (!$this->getRequest()) {
+            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+        }
+        $return= $this->request->_cleanResourceIdentifier($qOrig);
+        return $return;
+    }
+
+    /**
+     * Gets the identifier specifying a requested document.
+     *
+     * @param string $method 'id' or 'alias'.
+     * @return string|integer The requested document alias or id.
+     * @deprecated 2007-09-17 TO be removed in 1.0
+     */
+    function getDocumentIdentifier($method) {
+        if (!$this->getRequest()) {
+            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+        }
+        return $this->request->getResourceIdentifier($method);
+    }
+
+    /**
+     * Gets the method being used to request a document.
+     *
+     * @return string 'id', 'alias', or 'none'.
+     * @deprecated 2007-09-17 TO be removed in 1.0
+     */
+    function getDocumentMethod() {
+        if (!$this->getRequest()) {
+            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+        }
+        return $this->request->getResourceMethod();
+    }
+
+    /**
+     * Checks to see if the preview parameter is set.
+     *
+     * @return boolean
+     * @deprecated 2007-09-17 TO be removed in 1.0
+     */
+    function checkPreview() {
+        if ($this->checkSession('mgr') === true) {
+            if (isset ($_REQUEST['z']) && $_REQUEST['z'] == 'manprev') {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns true if user has the specified policy permission.
+     *
+     * @param string $pm Permission key to check.
+     * @return boolean
+     */
+    function hasPermission($pm) {
+        $state = $this->context->checkPolicy($pm);
+        return $state;
+    }
+
+    /**
+     * Add an a alert message to the system event log
+     *
+     * @param integer $evtid
+     * @param integer $type 1 = information, 2 = warning, 3 = error.
+     * @param string $msg
+     * @param string $source Default is 'Parser'.
+     * @deprecated 2007-09-17 TO be removed in 1.0
+     */
+    function logEvent($evtid,$type,$msg,$source='Parser') {
+        $eventLog= $this->newObject('modEventLog');
+        $evtid = intval($evtid);
+        if ($type<1) $type = 1; else if($type>3) $type = 3;
+        $user= $this->getLoginUserID();
+        $eventLog->set('eventid', $evtid);
+        $eventLog->set('type', $type);
+        $eventLog->set('createdon', time());
+        $eventLog->set('source', $source);
+        $eventLog->set('description', $msg);
+        $eventLog->set('user', $user);
+        $ds = $eventLog->save(false);
+        if(!$ds) {
+            echo "Error while inserting event log into database.";
+            exit;
+        }
+    }
+
+    /**
+     * Logs a manager action.
+     * @access public
+     * @param string $action The action to pull from the lexicon module.
+     * @param string $class_key The class key that the action is being performed
+     * on.
+     * @param mixed $item The primary key id or array of keys to grab the object
+     * with
+     * @return modManagerLog The newly created modManagerLog object
+     */
+    function logManagerAction($action,$class_key,$item) {
+        $ml = $this->newObject('modManagerLog');
+        $ml->set('user',$this->user->id);
+        $ml->set('occurred',date('Y-m-d H:i:s'));
+        $ml->set('action',$action);
+        $ml->set('class_key',$class_key);
+        $ml->set('item',$item);
+
+        if (!$ml->save()) {
+            $this->_log(XPDO_LOG_LEVEL_ERROR,$this->lexicon('manager_log_err_save'));
+            return null;
+        }
+        return $ml;
+    }
+
+    /**
+     * Gets the URL for the 'mgr' context.
+     *
+     * @return string The base URL of the 'mgr' context relative to the
+     * web server document root.
+     * @deprecated 2007-09-17 Use MODX_MANAGER_URL or modX :: config['manager_url']
+     */
+    function getManagerPath() {
+        return MODX_MANAGER_URL;
+    }
+
+    /**
+     * Makes a list.
+     * @deprecated 2007-09-17 Use anything else, please!
+     */
+    function makeList($array, $ulroot='root', $ulprefix='sub_', $type='', $ordered=false, $tablevel=0) {
+        // first find out whether the value passed is an array
+        if(!is_array($array)) {
+            return "<ul><li>Bad list</li></ul>";
+        }
+        if(!empty($type)) {
+            $typestr = " style='list-style-type: $type'";
+        } else {
+            $typestr = "";
+        }
+        $tabs = "";
+        for($i=0; $i<$tablevel; $i++) {
+            $tabs .= "\t";
+        }
+        $listhtml = $ordered==true ? $tabs."<ol class='$ulroot'$typestr>\n" : $tabs."<ul class='$ulroot'$typestr>\n" ;
+        foreach($array as $key=>$value) {
+            if(is_array($value)) {
+                $listhtml .= $tabs."\t<li>".$key."\n".$this->makeList($value, $ulprefix.$ulroot, $ulprefix, $type, $ordered, $tablevel+2).$tabs."\t</li>\n";
+            } else {
+                $listhtml .= $tabs."\t<li>".$value."</li>\n";
+            }
+        }
+        $listhtml .= $ordered==true ? $tabs."</ol>\n" : $tabs."</ul>\n" ;
+        return $listhtml;
+    }
+
+    /**
+     * Checks if a user is authenticated and returns array of data if so.
+     *
+     * @return mixed An array of authenticated user data or false.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function userLoggedIn() {
+        $userdetails = array();
+        if($this->isFrontend() && isset($_SESSION['webValidated'])) {
+            // web user
+            $userdetails['loggedIn']=true;
+            $userdetails['id']=$_SESSION['webInternalKey'];
+            $userdetails['username']=$_SESSION['webShortname'];
+            $userdetails['usertype']='web'; // added by Raymond
+            return $userdetails;
+        }
+        else if($this->isBackend() && isset($_SESSION['mgrValidated'])) {
+            // manager user
+            $userdetails['loggedIn']=true;
+            $userdetails['id']=$_SESSION['mgrInternalKey'];
+            $userdetails['username']=$_SESSION['mgrShortname'];
+            $userdetails['usertype']='manager'; // added by Raymond
+            return $userdetails;
+        }
+        else {
+            return false;
+        }
+    }
+
+    /**
+     * Merges META tags assigned to the document.
+     *
+     * @param string $template
+     * @return string
+     */
+    function mergeDocumentMETATags($template) {
+        if ($this->resource->has_keywords) {
+            // insert keywords
+            $keywords = implode(", ",$this->getKeywords());
+            $metas = "\t<meta name=\"keywords\" content=\"$keywords\" />\n";
+        }
+        if ($this->documentObject['hasmetatags']==1) {
+            // insert meta tags
+            $tags = $this->getMETATags();
+            foreach ($tags as $n=>$col) {
+                $tag = strtolower($col['tag']);
+                $tagvalue = $col['tagvalue'];
+                $tagstyle = $col['http_equiv'] ? 'http-equiv':'name';
+                $metas.= "\t<meta $tagstyle=\"$tag\" content=\"$tagvalue\" />\n";
+            }
+        }
+        $template = preg_replace("/(<head>)/i", "\\1\n".$metas, $template);
+        return $template;
+    }
+
+    /**
+     * Gets keyword data associated with a document.
+     *
+     * @param integer $id A document id, defaults to current document id.
+     * @return array An array of keyword data for the specified document.
+     */
+    function getKeywords($id=0) {
+        if (intval($id) == 0) {
+            $id = intval($this->resource->id);
+        }
+        $query = new xPDOCriteria("SELECT keywords.keyword FROM " . $this->getTableName('modKeyword') . " AS keywords "
+            . "INNER JOIN " . $this->getTableName('modResourceKeyword') . " AS xref "
+            . "ON keywords.id=xref.keyword_id WHERE xref.content_id = :id", array(':id' => $id));
+        $keywords = array();
+        if ($stmt = $query->prepare()) {
+            if ($stmt->execute()) {
+                $keywords= $stmt->fetchAll(PDO_FETCH_COLUMN);
+            }
+        }
+        return $keywords;
+    }
+
+    /**
+     * Gets META tag data associated with a document.
+     *
+     * @param integer $id A document id, defaults to current document id.
+     * @return array An array of META tag data for the specified document.
+     */
+    function getMETATags($id=0) {
+        if (intval($id) == 0) {
+            $id = intval($this->resource->id);
+        }
+        $query = new xPDOCriteria("SELECT smt.* ".
+               "FROM ".$this->getTableName('modMetatag')." smt ".
+               "INNER JOIN ".$this->getTableName('modResourceMetatag')." cmt ON cmt.metatag_id=smt.id ".
+               "WHERE cmt.content_id = :id", array(':id' => $id));
+        $metatags = array();
+        if ($stmt = $query->prepare()) {
+            if ($stmt->execute()) {
+                while ($row = $stmt->fetch(PDO_FETCH_ASSOC)) {
+                    $metatags[$row['name']] = array("tag"=>$row['tag'],"tagvalue"=>$row['tagvalue'],"http_equiv"=>$row['http_equiv']);
+                }
+            }
+        }
+        return $metatags;
+    }
+
+    /**
+     * Makes a friendly URL from a specified prefix, alias, and suffix.
+     * @deprecated 2007-09-17 To be removed in 1.0
+     */
+    function makeFriendlyURL($pre,$suff,$alias) {
+        $dir = dirname($alias);
+        return ($dir!='.' ? "$dir/":"").$pre.basename($alias).$suff;
+    }
+
+    /**
+     * Processes document content tags.
+     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     */
+    function mergeDocumentContent($content) {
+        $this->getParser();
+        $this->parser->processElementTags('', $content, false, false, '[[', ']]', array ('*'));
+        return $content;
+    }
+
+    /**
+     * Processes document setting tags (and placeholders).
+     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     */
+    function mergeSettingsContent($content) {
+        $this->getParser();
+        $this->parser->processElementTags('', $content, false, false, '[[', ']]', array ('+'));
+        return $content;
+    }
+
+    /**
+     * Processes chunk content tags.
+     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     */
+    function mergeChunkContent($content) {
+        $this->getParser();
+        $this->parser->processElementTags('', $content, false, false, '[[', ']]', array ('$'));
+        return $content;
+    }
+
+    /**
+     * Processes placeholder content tags.
+     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     */
+    function mergePlaceholderContent($content) {
+        $this->getParser();
+        $this->parser->processElementTags('', $content, false, false, '[[', ']]', array ('+'));
+        return $content;
+    }
+
+    /**
+     * Remove a specific event from the eventMap.
+     *
+     * @param string $event
+     * @return boolean|void false if the event parameter is not specified.
+     */
+    function removeEventListener($evtName) {
+        if (!$evtName)
+            return false;
+        unset ($this->eventMap[$evtName]);
+    }
+
+    /**
+     * Remove all registered plugins for the current request.
+     */
+    function removeAllEventListener() {
+        unset ($this->eventMap);
+        $this->eventMap= array ();
+    }
+
+    /**
+     * Indicates if modX is executing in the default mgr context.
+     *
+     * @deprecated 2007-09-15: Use the context key to identify a specific context.
+     * @return boolean true if the context is 'mgr'.
+     */
+    function isBackend() {
+        return $this->insideManager() ? true : false;
+    }
+
+    /**
+     * Indicates if modX is executing in a context other than mgr.
+     *
+     * @deprecated 2007-09-15: Use the context key to identify a specific context.
+     * @return boolean true if the context is not 'mgr'.
+     */
+    function isFrontend() {
+        return !$this->insideManager() ? true : false;
+    }
+
+    /**
+     * Indicates if the request is taking place inside the mgr context.
+     *
+     * @deprecated 2007-09-15: Use the context key to identify a specific context.
+     * @return boolean true if the request is executing in the mgr context.
+     */
+    function insideManager() {
+        return is_object($this->context) && ($this->context->get('key') === 'mgr' || $this->context->get('key') === 'connector');
+    }
+
+    /**
+     * Add a plugin to the eventMap within the current execution cycle.
+     *
+     * @param string $evtName Name of the event.
+     * @param integer $pluginId Plugin identifier to add to the event.
+     * @return integer 1 if the event is successfully added, otherwise 0.
+     */
+    function addEventListener($evtName, $pluginId) {
+        if (!$evtName || !$pluginId)
+            return false;
+        $el= $this->eventMap[$evtName];
+        if (empty ($el))
+            $el= $this->eventMap[$evtName]= array ();
+        return array_push($el, $pluginId); // return index
+    }
+
+    /**
+     * Alias of getChunk.
+     *
+     * @deprecated 9/15/2007 Use getChunk instead.
+     */
+    function putChunk($chunkName) {
+        return $this->getChunk($chunkName);
+    }
+
+    /**
+     * Displays a javascript alert in the browser.
+     *
+     * @deprecated 9/15/2007
+     * @param string $msg The alert message.
+     * @param string $url An optional URL to redirect to when the alert is cleared.
+     */
+    function webAlert($msg, $url= "") {
+        $msg= addslashes(mysql_escape_string($msg));
+        if (substr(strtolower($url), 0, 11) == "javascript:") {
+            $act= "__WebAlert();";
+            $fnc= "function __WebAlert(){" . substr($url, 11) . "};";
+        } else {
+            $act= ($url ? "window.location.href='" . addslashes($url) . "';" : "");
+        }
+        $html= "<script>$fnc window.setTimeout(\"alert('$msg');$act\",100);</script>";
+        if ($this->isFrontend($html))
+            $this->regClientScript($html);
+        else {
+            echo $html;
+        }
+    }
+
+    /**
+     * Loads a specified lexicon (i.e. a word/phrase dictionary).
+     *
+     * @param string $key The key identifying the culture of the file.
+     * @param string $path Full filesystem path to the directory containing the file.
+     */
+    function loadLexicon($key, $path= '') {
+        if (!$key) {
+            if (!$key= $this->cultureKey) {
+                $this->cultureKey= 'en';
+                $key= 'en';
+            }
+        }
+        if (!$path) {
+            $path= MODX_MANAGER_PATH . 'includes/lang/';
+        }
+        $_lang= & $this->lexicon;
+        @include_once ($path . $this->cultureKey. '.inc.php');
+    }
+
+    /**
+     * Loads the modX system configuration settings.
+     *
+     * @access protected
+     * @return boolean True if successful.
+     */
+    function _loadConfig() {
+        $cachePath= $this->getCachePath();
+        $fileName= "{$cachePath}config.cache.php";
+        if (!file_exists($fileName)) {
+            if ($cacheManager= $this->getCacheManager()) {
+                $fileName= $cacheManager->generateConfig();
+            }
+        }
+        if (!@ include ($fileName)) {
+            if (!$settings= $this->getCollection('modSystemSetting')) {
+                return false;
+            }
+            foreach ($settings as $setting) {
+                $this->config[$setting->get('key')]= $setting->get('value');
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * Switches the primary Context for the modX instance.
+     * 
+     * Be aware that switching contexts does not allow custom session handling
+     * classes to be loaded. The gateway defines the session handling that is
+     * applied to a single request. To create a context with a custom session
+     * handler you must create a unique context gateway that initializes that
+     * context directly.
+     * 
+     * @param string $contextKey The key of the context to switch to.
+     * @return boolean True if the switch was successful, otherwise false.
+     */
+    function switchContext($contextKey) {
+        $switched= false;
+        if ($this->context->key != $contextKey && $this->reloadConfig()) {
+            $switched= $this->_initContext($contextKey);
+        }
+        return $switched;
+    }
+
+    /**
+     * Loads a specified Context.
+     *
+     * Merges any context settings with the modX :: config, and performs any
+     * other context specific initialization tasks.
+     *
+     * @access protected
+     * @param string $contextKey A context identifier.
+     */
+    function _initContext($contextKey) {
+        $initialized= false;
+        $this->context= $this->newObject('modContext');
+        $this->context->_fields['key']= $contextKey;
+        if (!$this->context->prepare()) {
+            $this->_log(MODX_LOG_LEVEL_ERROR, 'Could not load context: ' . $contextKey);
+        } else {
+            $this->aliasMap= & $this->context->aliasMap;
+            $this->resourceMap= & $this->context->resourceMap;
+            $this->documentMap= & $this->context->documentMap;
+            $this->resourceListing= & $this->context->resourceListing;
+            $this->documentListing= & $this->context->documentListing;
+            $this->eventMap= & $this->context->eventMap;
+            $this->pluginCache= & $this->context->pluginCache;
+            $this->config= array_merge($this->config, $this->context->config);
+            $initialized= true;
+        }
+        return $initialized;
+    }
+
+    /**
+     * Loads the error handler for this instance.
+     * @access protected
+     */
+    function _initErrorHandler() {
+        if ($this->errorHandler == null || !is_object($this->errorHandler)) {
+            if (isset ($this->config['error_handler_class']) && strlen($this->config['error_handler_class']) > 1) {
+                if ($ehClass= $this->loadClass($this->config['error_handler_class'], '', false, true)) {
+                    if ($this->errorHandler= new $ehClass($this)) {
+                        $result= set_error_handler(array ($this->errorHandler, 'handleError'));
+                        if ($result === false) {
+                            $this->_log(XPDO_LOG_LEVEL_ERROR, 'Could not set error handler.  Make sure your class has a function called handleError(). Result: ' . print_r($result, true));
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Loads the session handler and starts the session.
+     * @access protected
+     */
+    function _initSession() {
+        $sh= false;
+        $contextKey= $this->context->get('key');
+        if (isset ($this->config['session_handler_class']) && $this->config['session_handler_class']) {
+            if ($shClass= $this->loadClass($this->config['session_handler_class'], '', false, true)) {
+                if ($sh= new $shClass($this)) {
+                    session_set_save_handler(
+                        array ($sh, 'open'),
+                        array ($sh, 'close'),
+                        array ($sh, 'read'),
+                        array ($sh, 'write'),
+                        array ($sh, 'destroy'),
+                        array ($sh, 'gc')
+                    );
+                }
+            }
+        }
+        if (!$sh) {
+            if (isset ($this->config['session_save_path']) && is_writable($this->config['session_save_path'])) {
+                session_save_path($this->config['session_save_path']);
+            }
+            if (isset ($this->config['session_gc_maxlifetime'])) {
+                @ini_set('session.gc_maxlifetime', (integer) $this->config['session_gc_maxlifetime']);
+            }
+        }
+        $cookieLifetime= 0;
+        if (isset ($this->config['session_cookie_lifetime'])) {
+            @ini_set('session.cookie_lifetime', $this->config['session_cookie_lifetime']);
+            $cookieLifetime= (integer) $this->config['session_cookie_lifetime'];
+        }
+        $cookiePath= isset ($this->config['session_cookie_path']) ? $this->config['session_cookie_path'] : $this->config['base_path'];
+        @ini_set('session.cookie_path', $cookiePath);
+        $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
+        session_name($site_sessionname);
+        session_start();
+        $this->getUser($contextKey);
+        $cookieExpiration= 0;
+        if (isset ($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']) && is_numeric($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime'])) {
+            $cookieLifetime= intval($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']);
+        }
+        if ($cookieLifetime) {
+            $cookieExpiration= time() + $cookieLifetime;
+        }
+        setcookie(session_name(), session_id(), $cookieExpiration, $cookiePath);
+    }
+
+    /**
+     * Gets a map of events and registered plugins for the specified context.
+     *
+     * @param string $contextKey Context identifier.
+     * @return array A map of events and registered plugins for each.
+     */
+    function getEventMap($contextKey) {
+        $eventElementMap= array ();
+        if ($contextKey) {
+            $service= "ev.`service` IN (1,3,4,5,6) AND (ev.`groupname` = '' OR ev.`groupname` = 'RichText Editor' OR ev.`groupname` = 'modUser') AND";
+            switch ($contextKey) {
+                case 'connector':
+                case 'mgr':
+                    $service= "ev.`service` IN (1,2,4,5,6) AND";
+                    break;
+            }
+            $eeTbl= $this->getTableName('modPluginEvent');
+            $eventTbl= $this->getTableName('modEvent');
+            $pluginTbl= $this->getTableName('modPlugin');
+            $sql= "SELECT ev.`name` AS `event`, ee.`pluginid` FROM {$eeTbl} ee INNER JOIN {$pluginTbl} pl ON pl.`id` = ee.`pluginid` AND pl.`disabled` = 0 INNER JOIN {$eventTbl} ev ON {$service} ev.`id` = ee.`evtid` ORDER BY ev.`name`, ee.`priority` ASC";
+            $stmt= $this->prepare($sql);
+            if ($stmt->execute()) {
+                foreach ($stmt->fetchAll(PDO_FETCH_ASSOC) as $ee) {
+                    $eventElementMap[$ee['event']][]= $ee['pluginid'];
+                }
+            }
+        }
+        return $eventElementMap;
+    }
+
+    /**
+     * Checks for locking on a page.
+     *
+     * @param integer $id Id of the user checking for a lock.
+     * @param string $action The action identifying what is locked.
+     * @param string $type Message indicating the kind of lock being checked.
+     */
+    function checkForLocks($id,$action,$type) {
+        $msg= false;
+        $id= intval($id);
+        if (!$id) $id= $this->getLoginUserID();
+        if ($au = $this->getObject('modActiveUser',array('action' => $action, 'internalKey:!=' => $id))) {
+            $msg = sprintf($this->lexicon('lock_msg'), $au->get('username'), $type);
+        }
+        return $msg;
+    }
+
+    /**
+     * Populates the map of events and registered plugins for each.
+     *
+     * @access protected
+     * @param string $contextKey Context identifier.
+     */
+    function _initEventMap($contextKey) {
+        if ($this->eventMap === null) {
+            $this->eventMap= $this->getEventMap($contextKey);
+        }
+    }
+
+    /**
+     * Initializes the culture settings.
+     *
+     * @access protected
+     */
+    function _initCulture() {
+        global $_lang;
+        $this->getService('lexicon','modLexicon');
+        $this->invokeEvent('OnInitCulture');
+    }
+    
+    /**
+     * Grabs a processed lexicon string.
+     * 
+     * @access public
+     * @param string $key
+     * @param array $params
+     */    
+    function lexicon($key,$params = array()) {
+        if ($this->lexicon) {
+            return $this->lexicon->process($key,$params);
+        } else {
+            $this->_log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
+        }
+    }
+
+    /**
+     * Executed before the handleRequest function.
+     *
+     * @access protected
+     */
+    function _beforeRequest() {
+        $this->documentIdentifier= & $this->resourceIdentifier;
+        $this->documentMethod= & $this->resourceMethod;
+    }
+
+    /**
+     * Executed before parser processing of an element.
+     *
+     * @access protected
+     */
+    function _beforeProcessing() {
+        $this->documentContent= & $this->resource->_content;
+        $this->documentGenerated= & $this->resourceGenerated;
+        $this->dbConfig= & $this->db->config;
+    }
+
+    /**
+     * Executed before the response is rendered.
+     *
+     * @access protected
+     */
+    function _beforeRender() {
+        $this->documentOutput= & $this->resource->_output;
+    }
+
+    /**
+     * Executed after the response is sent and execution is completed.
+     *
+     * @access protected
+     */
+    function _postProcess() {
+        // if the current resource was a generated modResource, cache it!
+        if (isset ($this->config['cache_resource']) && $this->config['cache_resource']) {
+            if ($this->cacheManager && $this->documentGenerated && is_a($this->resource, 'modResource') && $this->resource->get('cacheable')) {
+                // invoke OnBeforeSaveWebPageCache event
+                $this->invokeEvent('OnBeforeSaveWebPageCache');
+                if (!$this->cacheManager->generateResource($this->resource)) {
+                    $this->_log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
+                }
+            }
+        }
+        $this->invokeEvent('OnWebPageComplete');
+    }
+
+    /**
+     * Load a processor and give it access to $modx.
+     *
+     * @param string $file Relative path to the processor.
+     */
+    function loadProcessor($file) {
+        if ($file == '') return false;
+        $args = func_get_args();
+        $args = array_pop($args);
+        if (is_array($args) && count($args) > 0) extract($args,EXTR_PREFIX_ALL,'modx');
+
+        $modx= & $this; // allows ability to access $modx
+        require_once (MODX_PROCESSORS_PATH . $file);
+    }
+}
+
+/**
+ * Represents a modEvent when invoking events.
+ * @package modx
+ */
+class modSystemEvent {
+    /**@#+
+     * @deprecated 2007-09-18 Will be delegated in 1.0 or sooner.
+     * @var string
+     */
+    var $name = '';
+    /**
+     * @var boolean
+     */
+    var $_propagate;
+    var $_output;
+    /**
+     * @var boolean
+     */
+    var $activated;
+    var $activePlugin;
+    /**
+     * @var mixed
+     */
+    var $returnedValues;
+    /**@#-*/
+
+    /**
+     * Display a message to the user during the event.
+     *
+     * @todo Remove this; the centralized modRegistry will handle configurable
+     * logging of any kind of message or data to any repository or output
+     * context.  Use {@link modX::_log()} in the meantime.
+     * @param string $msg The message to display.
+     */
+    function alert($msg) {
+        global $SystemAlertMsgQueque;
+        if($msg=="") return;
+        if (is_array($SystemAlertMsgQueque)) {
+            if($this->name && $this->activePlugin) $title = "<div><b>".$this->activePlugin."</b> - <span style='color:maroon;'>".$this->name."</span></div>";
+            $SystemAlertMsgQueque[] = "$title<div style='margin-left:10px;margin-top:3px;'>$msg</div>";
+        }
+    }
+
+    /**
+     * Render output from the event.
+     * @param string $output The output to render.
+     */
+    function output($output) {
+        $this->_output .= $output;
+    }
+
+    /**
+     * Stop further execution of plugins for this event.
+     */
+    function stopPropagation(){
+        $this->_propagate = false;
+    }
+
+    /**
+     * Reset the event instance for reuse.
+     */
+    function _resetEventObject(){
+        $this->returnedValues = null;
+        $this->name = "";
+        $this->_output = "";
+        $this->_propagate = true;
+        $this->activated = false;
+    }
+}
+?>

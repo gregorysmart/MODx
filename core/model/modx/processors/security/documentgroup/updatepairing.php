@@ -1,0 +1,60 @@
+<?php
+/**
+ * @package modx
+ * @subpackage processors.security.documentgroup
+ */
+
+require_once MODX_PROCESSORS_PATH.'index.php';
+
+$data = urldecode($_POST['data']);
+$data = $modx->fromJSON($data);
+
+$ugs = array();
+getUGDGFormatted($ugs,$data);
+
+// remove any not in the posted map
+$ugdgs = $modx->getCollection('modAccessResourceGroup');
+foreach ($ugdgs as $uKey => $u) {
+    if (!isset($ugs[$uKey])) $u->remove();
+}
+
+// now loop through new map
+foreach ($ugs as $ugKey => $ar) {
+	if ($ar['dg_id'] == 0 || $ar['ug_id'] == 0) continue;
+
+	$ug = $modx->getObject('modUserGroup',$ar['ug_id']);
+	if ($ug == null) $error->failure($modx->lexicon('user_group_err_not_found'));
+
+	$dg = $modx->getObject('modResourceGroup',$ar['dg_id']);
+	if ($dg == null) $error->failure($modx->lexicon('document_group_err_not_found'));
+
+	$ugdg = $modx->getObject('modAccessResourceGroup',array(
+		'membergroup' => $ug->id,
+		'documentgroup' => $dg->id,
+	));
+	if ($ugdg != NULL) $error->failure($modx->lexicon('user_group_document_group_err_already_exists'));
+
+	$ugdg = $modx->newObject('modUserGroupResourceGroup');
+	$ugdg->set('membergroup',$ug->id);
+	$ugdg->set('documentgroup',$dg->id);
+	if (!$ugdg->save()) $error->failure($modx->lexicon('user_group_document_group_err_create'));
+}
+
+$error->success();
+
+
+function getUGDGFormatted(&$ar_nodes,$cur_level,$parent = 0) {
+	$order = 0;
+	foreach ($cur_level as $id => $children) {
+		$id = substr($id,2); // get rid of CSS id n_ prefix
+		if (substr($id,0,2) == 'ug') {
+			$ar_nodes[] = array(
+				'ug_id' => substr($id,3),
+				'dg_id' => substr($parent,3),
+				'order' => $order,
+			);
+			$order++;
+		}
+		getUGDGFormatted($ar_nodes,$children,$id);
+	}
+}

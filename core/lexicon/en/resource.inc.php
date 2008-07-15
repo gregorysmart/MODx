@@ -1,0 +1,5 @@
+<?php
+$_lang['access'] = 'Access';
+$_lang['resource_group_resource_err_ae'] = 'The resource is already a part of that resource group.';
+$_lang['resource_group_resource_err_nf'] = 'The resource is not a part of that resource group.';
+$_lang['resource_refresh'] = 'Refresh Resource';

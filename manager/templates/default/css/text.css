@@ -1,0 +1,38 @@
+body {
+    color: #535d6c;
+}
+
+#modx_container p {
+    margin-bottom: 1.3em;
+}
+
+h2 {
+    margin: 0 0 1em;
+    font: bold 1.6em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    color: #535d6c;
+    border-bottom: 1px solid #c1dad7;
+}
+
+h3 {
+    margin: 0 0 .8em;
+    font: bold 1.3em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+}
+
+.dashed {
+    border-bottom: 1px #90b1b9 dashed;
+}
+
+.news_article {
+    padding-bottom: 3em;
+}
+.news_article a {
+    color: #535d6c;
+    text-decoration: none;
+}
+.news_article a:hover {
+    color: #90b1b9;
+}
+.news_article .date_stamp {
+    float: right;
+    font-style: italic;
+}

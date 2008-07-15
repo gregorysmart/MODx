@@ -1,0 +1,67 @@
+<?php
+/**
+ * @package modx
+ * @subpackage processors.system.menu
+ */
+
+require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('action','menu');
+
+if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
+if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
+if (!isset($_REQUEST['id'])) $_REQUEST['id'] = 'n_0';
+
+$id = str_replace('n_','',$_REQUEST['id']);
+
+
+$c = $modx->newQuery('modMenu');
+$c->where(array('parent' => $id));
+$c->sortby('menuindex','ASC');
+//$c->limit($_REQUEST['limit'],$_REQUEST['start']);
+
+$menus = $modx->getCollection('modMenu',$c);
+
+$cc = $modx->newQuery('modMenu');
+$cc->where(array('parent' => $id));
+$count = $modx->getCount('modMenu',$cc);
+
+$as = array();
+foreach ($menus as $menu) {
+	$action = $menu->getOne('Action');
+	$controller = $action != NULL && $action->controller != '' ? $action->controller : '';
+	if (strlen($controller) > 1 && substr($controller,strlen($controller)-4,strlen($controller)) != '.php') {
+		if (!file_exists($modx->config['manager_path'].'controllers/'.$controller.'.php')) {
+			$controller .= '/index.php';
+			$controller = strtr($controller,'//','/');
+		} else {
+			$controller .= '.php';
+		}
+	}
+	$text = $modx->lexicon($menu->text);
+
+	$as[] = array(
+		'text' => $text.($controller != '' ? ' <i>('.$controller.')</i>' : ''),
+		'id' => 'n_'.$menu->id,
+		'leaf' => 0,
+		'cls' => 'folder',
+		'type' => 'menu',
+		'menu' => array(
+            array(
+                'text' => $modx->lexicon('menu_update'),
+                'handler' => 'this.update',
+            ),
+            '-',
+            array(
+                'text' => $modx->lexicon('action_place_here'),
+                'handler' => 'this.create',
+            ),
+            '-',
+            array(
+                'text' => $modx->lexicon('menu_remove'),
+                'handler' => 'this.remove',
+            ),
+        )
+	);
+}
+
+echo $modx->toJSON($as);

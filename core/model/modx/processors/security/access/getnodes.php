@@ -1,0 +1,56 @@
+<?php
+/**
+ * @package modx
+ * @subpackage processors.security.access.target
+ */
+
+require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('access');
+
+if (!isset($_REQUEST['id'])) $error->failure($modx->lexicon('access_type_err_ns'));
+
+$targetAttr = explode('_', $_REQUEST['id']);
+$targetClass = count($targetAttr) == 3 ? $targetAttr[1] : '';
+$targetId = count($targetAttr) >= 2 ? intval($targetAttr[count($targetAttr)-1]) : 0;
+
+$da = array();
+if (empty($targetClass)) {
+    $da[] = array(
+        'text' => $modx->lexicon('contexts'),
+        'id' => 'n_modContext_0',
+        'target' => '0',
+        'target_cls' => 'modContext',
+        'leaf' => 0,
+        'type' => 'modAccessContext',
+        'cls' => 'folder',
+    );
+    $da[] = array(
+        'text' => $modx->lexicon('resource_groups'),
+        'id' => 'n_modResourceGroup_0',
+        'target' => '0',
+        'target_cls' => 'modResourceGroup',
+        'leaf' => 0,
+        'type' => 'modAccessResourceGroup',
+        'cls' => 'folder',
+    );
+} else {
+    $targets = $modx->getCollection($targetClass);
+    foreach ($targets as $targetKey => $target) {
+        switch ($targetClass) {
+            case 'modContext' :
+                $nodeText = $target->get('key');
+                break;
+            default :
+                $nodeText = $target->get('name');
+                break;
+        }
+    	$da[] = array(
+    		'text' => $nodeText,
+    		'id' => 'n_'.$targetClass.'_'.$targetKey,
+    		'leaf' => 1,
+    		'type' => 'modAccess' . substr($targetClass, 3),
+    		'cls' => 'file',
+    	);
+    }
+}
+echo $modx->toJSON($da);
