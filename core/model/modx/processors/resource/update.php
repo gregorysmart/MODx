@@ -34,7 +34,7 @@ if (isset($_POST['ta'])) $_POST['content'] = $_POST['ta'];
 // default pagetitle
 if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_document');
 
-$_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 1 : 0;
+$_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 0 : 1;
 $_POST['isfolder'] = !isset($_POST['isfolder']) ? 0 : 1;
 $_POST['richtext'] = !isset($_POST['richtext']) ? 0 : 1;
 $_POST['donthit'] = !isset($_POST['donthit']) ? 0 : 1;

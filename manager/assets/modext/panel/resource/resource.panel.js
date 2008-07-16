@@ -117,7 +117,7 @@ MODx.panel.Resource = function(config) {
                     ,description: _('document_opt_show_menu_help')
                     ,name: 'hidemenu'
                     ,inputValue: 1
-                    ,checked: true
+                    ,checked: false
                     
                 }]
             },{
