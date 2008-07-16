@@ -279,7 +279,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
         if (!t) return;
         // if selection isn't the current value (originalValue), then show dialog
         if(t.getValue() != t.originalValue) {
-            Ext.Msg.confirm(_('tmplvar_change_template'), _('tmplvar_change_template_msg'), function(e) {
+            Ext.Msg.confirm(_('warning'), _('resource_change_template_confirm'), function(e) {
                 if (e == 'yes') {
                     var tvpanel = Ext.getCmp('panel-resource-tv');
                     if(tvpanel && tvpanel.body) {
