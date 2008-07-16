@@ -151,7 +151,7 @@ $collection['feed_modx_news']->fromArray(array (
 ), '', true, true);
 $collection['feed_modx_security']= $xpdo->newObject('modSystemSetting');
 $collection['feed_modx_security']->fromArray(array (
-  'key' => 'feed_modx_news',
+  'key' => 'feed_modx_security',
   'value' => 'http://feeds.feedburner.com/modxsecurity',
   'xtype' => 'textfield',
 ), '', true, true);
