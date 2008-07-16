@@ -8,6 +8,7 @@ $_lang['snippet_duplicate_confirm'] = 'Are you sure you want to duplicate this s
 $_lang['snippet_duplicate_error'] = 'An error occurred while duplicating the snippet.';
 $_lang['snippet_err_create'] = 'An error occurred while creating the snippet.';
 $_lang['snippet_err_delete'] = 'An error occured while trying to delete the snippet.';
+$_lang['snippet_err_duplicate'] = 'An error occured while trying to duplicate the snippet.';
 $_lang['snippet_err_exists_name'] = 'A snippet already exists with that name.';
 $_lang['snippet_err_locked'] = 'This snippet is locked for editing.';
 $_lang['snippet_err_not_found'] = 'Snippet not found!';

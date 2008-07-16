@@ -15,10 +15,19 @@ if ($old_snippet == null) {
     $modx->error->failure($modx->lexicon('snippet_err_not_found'));
 }
 
-$newname = isset($_POST['name']) 
+$newname = isset($_POST['name'])
     ? $_POST['name']
     : $modx->lexicon('duplicate_of').$old_snippet->name;
-    
+
+
+// check for duplicate name
+$ae = $modx->getObject('modSnippet',array(
+    'name' => $newname,
+));
+if ($ae != null) {
+    $modx->error->failure($modx->lexicon('snippet_err_exists_name'));
+}
+
 // duplicate snippet
 $snippet = $modx->newObject('modSnippet');
 $snippet->set('name',$newname);
