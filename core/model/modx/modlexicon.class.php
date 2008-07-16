@@ -126,6 +126,8 @@ class modLexicon {
             if(!isset($this->modx->config['manager_language'])) {
                 $this->modx->cultureKey= 'en';
                 // if not set, get the english language file.
+            } else {
+                $this->modx->cultureKey = $this->modx->config['manager_language'];
             }
             @include_once $this->_paths['core'].'en/default.inc.php';
             // always load the default lexicon

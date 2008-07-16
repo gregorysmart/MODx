@@ -16,7 +16,7 @@ while ($file = $dir->read()) {
 		$languagename = trim($file);
 		$languages[] = array(
 			'value' => $languagename,
-			'text' => ucwords(str_replace('_',' ',$languagename)),
+			'text' => $languagename,
 		);
 	}
 }
