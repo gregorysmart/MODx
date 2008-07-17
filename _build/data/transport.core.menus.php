@@ -15,7 +15,7 @@ $collection['2']->fromArray(array (
   'id' => '2',
   'parent' => '0',
   'action' => '0',
-  'text' => 'modules',
+  'text' => 'components',
   'icon' => 'images/icons/plugin.gif',
   'menuindex' => '1',
   'params' => '',
@@ -174,17 +174,6 @@ action: \'logout\'
     location.href = \'./\';
 }
 });',
-), '', true, true);
-$collection['16']= $xpdo->newObject('modMenu');
-$collection['16']->fromArray(array (
-  'id' => '16',
-  'parent' => '2',
-  'action' => '15',
-  'text' => 'module_management',
-  'icon' => 'images/icons/module.gif',
-  'menuindex' => '0',
-  'params' => '',
-  'handler' => '',
 ), '', true, true);
 $collection['17']= $xpdo->newObject('modMenu');
 $collection['17']->fromArray(array (
