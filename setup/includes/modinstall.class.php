@@ -76,14 +76,14 @@ class modInstall {
      */
     function loadLang() {
         $_lang= array ();
-        @ include (MODX_SETUP_PATH . "lang/english.php");
+        @ include (MODX_SETUP_PATH . "lang/en.php");
 
-        $language= 'english';
-        if (isset ($_COOKIE['modx.setup.language'])) {
-            $language= $_COOKIE['modx.setup.language'];
+        $language= 'en';
+        if (isset ($_COOKIE['modx_setup_language'])) {
+            $language= $_COOKIE['modx_setup_language'];
         }
         $language= isset ($_REQUEST['language']) ? $_REQUEST['language'] : $language;
-        if ($language && $language != 'english') {
+        if ($language && $language != 'en') {
             @ include (MODX_SETUP_PATH . "lang/{$language}.php");
         }
         $this->lexicon = $_lang;
