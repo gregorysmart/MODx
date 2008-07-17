@@ -529,7 +529,7 @@ EOD;
                     $opts[] = array(
 						'value' => htmlspecialchars($itemvalue),
 						'text' => htmlspecialchars($item),
-						'selected' => $itemvalue == $this->get('value')
+						'checked' => $itemvalue == $this->get('value')
 					);
                 }
 				$this->xpdo->smarty->assign('opts',$opts);
