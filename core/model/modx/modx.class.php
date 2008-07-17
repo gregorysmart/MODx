@@ -891,6 +891,10 @@ class modX extends xPDO {
             $this->config['base_path']= MODX_BASE_PATH;
         if (!isset ($this->config['core_path']))
             $this->config['core_path']= MODX_CORE_PATH;
+        if (!isset ($this->config['url_scheme']))
+            $this->config['url_scheme']= MODX_URL_SCHEME;
+        if (!isset ($this->config['http_host']))
+            $this->config['http_host']= MODX_HTTP_HOST;
         if (!isset ($this->config['site_url']))
             $this->config['site_url']= MODX_SITE_URL;
         if (!isset ($this->config['manager_path']))
@@ -905,8 +909,6 @@ class modX extends xPDO {
             $this->config['connectors_path']= MODX_CONNECTORS_PATH;
         if (!isset ($this->config['connectors_url']))
             $this->config['connectors_url']= MODX_CONNECTORS_URL;
-        if (!isset ($this->config['http_host']))
-            $this->config['http_host']= $_SERVER['HTTP_HOST'];
         if (!isset ($this->config['request_param_id']))
             $this->config['request_param_id']= 'id';
         if (!isset ($this->config['request_param_alias']))

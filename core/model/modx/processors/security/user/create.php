@@ -20,7 +20,7 @@ $newPassword= '';
 require_once MODX_PROCESSORS_PATH.'security/user/_validation.php';
 
 if ($_POST['passwordnotifymethod'] == 'e') {
-	sendMailMessage($_POST['email'], $_POST['username'],$newPassword,$_POST['fullname']);
+	sendMailMessage($_POST['email'], $_POST['newusername'],$newPassword,$_POST['fullname']);
 }
 
 // invoke OnBeforeUserFormSave event
@@ -92,7 +92,7 @@ function convertDate($date) {
 function sendMailMessage($email, $uid, $pwd, $ufn) {
 	global $modx;
 
-	$message = sprintf($modx->config['signupemail_message'], $uid, $pwd);
+	$message = $modx->config['signupemail_message'];
 	// replace placeholders
 	$message = str_replace("[[+uid]]", $uid, $message);
 	$message = str_replace("[[+pwd]]", $pwd, $message);
@@ -100,7 +100,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 	$message = str_replace("[[+sname]]",$modx->config['site_name'], $message);
 	$message = str_replace("[[+saddr]]", $modx->config['emailsender'], $message);
 	$message = str_replace("[[+semail]]", $modx->config['emailsender'], $message);
-	$message = str_replace("[[+surl]]", $modx->config['manager_url'], $message);
+	$message = str_replace("[[+surl]]", $modx->config['url_scheme'] . $modx->config['http_host'] . $modx->config['manager_url'], $message);
 
     $modx->getService('mail', 'mail.modPHPMailer');
     $modx->mail->set(MODX_MAIL_BODY, $message);

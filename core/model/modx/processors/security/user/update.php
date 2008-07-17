@@ -108,7 +108,7 @@ function convertDate($date) {
 function sendMailMessage($email, $uid, $pwd, $ufn) {
 	global $modx;
 
-	$message = sprintf($modx->config['signupemail_message'], $uid, $pwd);
+	$message = $modx->config['signupemail_message'];
 	// replace placeholders
 	$message = str_replace("[[+uid]]", $uid, $message);
 	$message = str_replace("[[+pwd]]", $pwd, $message);
@@ -116,7 +116,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 	$message = str_replace("[[+sname]]",$modx->config['site_name'], $message);
 	$message = str_replace("[[+saddr]]", $modx->config['emailsender'], $message);
 	$message = str_replace("[[+semail]]", $modx->config['emailsender'], $message);
-	$message = str_replace("[[+surl]]", substr(MODX_SITE_URL, 0, strlen(MODX_SITE_URL) - strlen(MODX_BASE_URL)) . MODX_MANAGER_URL, $message);
+	$message = str_replace("[[+surl]]", $modx->config['url_scheme'] . $modx->config['http_host'] . $modx->config['manager_url'], $message);
 
     $modx->getService('mail', 'mail.modPHPMailer');
     $modx->mail->set(MODX_MAIL_BODY, $message);
