@@ -19,23 +19,25 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
+require_once MODX_SETUP_PATH . 'includes/modinstallerror.class.php';
 
-class modInstallJSONError {
+class modInstallJSONError extends modInstallError {
     var $fields;
     var $message;
     var $type;
 
-    function modInstallJSONError($message= '', $type= 'error') {
+    function modInstallJSONError(& $modx, $message= '', $type= 'error') {
         $this->__construct($message, $type);
     }
-    function __construct($message= '', $type= 'error') {
+    function __construct(& $modx, $message= '', $type= 'error') {
         $this->message= $message;
         $this->fields= array ();
         $this->type= $type;
+        parent :: __construct($modx, $message);
     }
 
     function process($message= '', $status = false, $object = null) {
-        $objarray= $this->_process($message, $status, $object);
+        $objarray= parent :: process($message, $status, $object);
         @header("Content-Type: text/json; charset=UTF-8");
         if ($message != '') $this->message= $message;
 
@@ -46,39 +48,6 @@ class modInstallJSONError {
             'object' => $objarray,
             'success' => $status,
         ));
-    }
-
-    /**
-     * Process errors and return a proper output value.
-     *
-     * @param string $message The error message to output.
-     * @param boolean $status Whether or not the action is a success or failure.
-     * @param object|array $object The object to send back to output.
-     * @return string|object|array The transformed object data array.
-     */
-    function _process($message = '', $status = false, $object = null) {
-        if ($status === true) {
-            $s = $this->_validate();
-            if ($s !== '') {
-                $status = false;
-                $message = $s;
-            }
-        }
-        $this->status = (boolean) $status;
-
-        if ($message != '') {
-            $this->message = $message;
-        }
-        $objarray = array ();
-        if (is_array($object)) {
-            $obj = reset($object);
-            if (is_object($obj) && is_a($obj, 'xPDOObject')) {
-                $this->total = count($object);
-            }
-            unset ($obj);
-        }
-        $objarray = $this->toArray($object);
-        return $objarray;
     }
 
     function addField($name, $error) {

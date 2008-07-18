@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -53,7 +53,7 @@ class modInstallConnector {
      */
     function loadError() {
         require_once MODX_SETUP_PATH . 'includes/modinstalljsonerror.class.php';
-        $this->error = new modInstallJSONError();
+        $this->error = new modInstallJSONError($this->install);
     }
 
     /**
