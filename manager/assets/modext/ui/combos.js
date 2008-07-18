@@ -54,9 +54,10 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
     /**
 	 * Set a value to the combobox correctly by loading the store.
 	 * @param {Object} v The value to set.
+     * @param {boolean} b True to bypass check
 	 */
-	,setValue: function(v) {
-        if (this.isLoaded) {
+	,setValue: function(v,b) {
+        if (this.isLoaded || b == true) {
             MODx.combo.ComboBox.superclass.setValue.call(this,v);
         } else {
             this.store.load({
@@ -311,11 +312,21 @@ MODx.combo.Category = function(config) {
 		,forceSelection: false
 		,typeAhead: false
 		,allowBlank: true
+        ,enableKeyEvents: true
 		,url: MODx.config.connectors_url+'element/category.php'
+        ,listeners: {
+            'blur': {fn:this._onblur,scope:this}
+        }
 	});
 	MODx.combo.Category.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.combo.Category,MODx.combo.ComboBox);
+Ext.extend(MODx.combo.Category,MODx.combo.ComboBox,{
+    _onblur: function(t,e) { 
+        var v = this.getRawValue();
+        this.setRawValue(v);
+        this.setValue(v,true);
+    }
+});
 Ext.reg('combo-category',MODx.combo.Category);
 
 /**

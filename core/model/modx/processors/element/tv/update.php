@@ -7,10 +7,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv','category');
 
-if (!$modx->hasPermission('save_template')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $tv = $modx->getObject('modTemplateVar',$_POST['id']);
-if ($tv == null) $error->failure($modx->lexicon('tv_err_not_found'));
+if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
 // category
 $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
@@ -20,7 +20,7 @@ if ($category == null) {
 		$category->id = 0;
 	} else {
 		$category->set('category',$_POST['category']);
-		if (!$category->save()) $error->failure($modx->lexicon('category_err_save'));
+		if ($category->save() === false) $modx->error->failure($modx->lexicon('category_err_save'));
 	}
 }
 
@@ -91,7 +91,7 @@ if ($modx->hasPermission('tv_access_permissions')) {
                 'tmplvarid' => $tv->id,
                 'documentgroup' => $group['id'],
             ));
-            
+
             if ($group['access'] == true) {
 			    if ($tvdg != null) continue;
                 $tvdg = $modx->newObject('modTemplateVarResourceGroup');
