@@ -1,5 +1,5 @@
 <?php
-
+$_lang['not_installed'] = 'Not Installed';
 $_lang['package'] = 'Package';
 $_lang['package_add'] = 'Add New Package';
 $_lang['package_confirm_install'] = 'Are you sure you want to install this package?';

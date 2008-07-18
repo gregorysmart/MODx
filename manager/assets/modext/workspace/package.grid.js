@@ -19,7 +19,7 @@ MODx.grid.Package = function(config) {
             { header: _('package_signature') ,dataIndex: 'signature' }
             ,{ header: _('created') ,dataIndex: 'created' }
             ,{ header: _('updated') ,dataIndex: 'updated' }
-            ,{ header: _('installed') ,dataIndex: 'installed' }
+            ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }
             ,{ header: _('package_state') ,dataIndex: 'state' }
             ,{ 
                header: _('workspace')
@@ -47,6 +47,18 @@ MODx.grid.Package = function(config) {
 Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     update: function() {
     	Ext.Msg.alert(_('information'), 'This feature is not yet implemented.');
+    }
+    
+    ,_rins: function(d,c) {
+        switch(d) {
+            case '':
+            case null:
+                c.css = 'not-installed';
+                return _('not_installed');
+            default:
+                c.css = '';
+                return d;
+        }
     }
 });
 Ext.reg('grid-package',MODx.grid.Package);

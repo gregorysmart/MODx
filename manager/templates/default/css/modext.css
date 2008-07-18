@@ -25,3 +25,7 @@ h3 {
     font: bold 1.3em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
 }
 */
+
+.not-installed {
+    color: red;
+}
