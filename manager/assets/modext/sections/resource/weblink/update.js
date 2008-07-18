@@ -56,40 +56,12 @@ MODx.Resource.UpdateWebLink = function(config) {
             }
         }
         ,'-'
-        ,(config.published ? {
-            id: 'btn_unpublish'
-            ,text: _('unpublish')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.unpublish,scope:this}
-            }
-        } : {
-            id: 'btn_publish'
-            ,text: _('publish')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.publish,scope:this}
-            }
-        }),{
+        ,{
             process: 'duplicate'
             ,text: _('duplicate')
             ,confirm: _('confirm_duplicate_document')
             ,method: 'remote'
-        },(config.deleted ? {
-            id: 'btn_undelete'
-            ,text: _('undelete')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.unremove,scope:this}
-            }
-        } : {
-            id: 'btn_delete'
-            ,text: _('delete')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.remove,scope:this}
-            }
-        })
+        }
         ,'-'
         ,{
             process: 'preview'
@@ -105,83 +77,7 @@ MODx.Resource.UpdateWebLink = function(config) {
     MODx.Resource.UpdateWebLink.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.Resource.UpdateWebLink,MODx.Component,{
-    getButtons: function(config) {
-    	var b = [{
-            process: 'update'
-            ,text: _('save')
-            ,method: 'remote'
-            ,refresh: {
-                tree: 'modx_document_tree'
-                ,node: config.ctx+'_'+config.id
-            }
-        },'-'];
-        if (config.published) {
-            b.push({
-                process: 'unpublish'
-                ,text: _('unpublish')
-                ,method: 'remote'
-                ,reload: true
-                ,refresh: {
-                    tree: 'modx_document_tree'
-                    ,node: config.ctx+'_'+config.id
-                }
-            });
-        } else {
-            b.push({
-                process: 'publish'
-                ,text: _('publish')
-                ,method: 'remote'
-                ,reload: true
-                ,refresh: {
-                    tree: 'modx_document_tree'
-                    ,node: config.ctx+'_'+config.id
-                }
-            });
-        }
-        b.push({
-            process: 'duplicate'
-            ,text: _('duplicate')
-            ,confirm: _('confirm_duplicate_document')
-            ,method: 'remote'
-        });
-        if (config.deleted) {
-            b.push({
-                process: 'undelete'
-                ,text: _('undelete')
-                ,method: 'remote'
-                ,reload: true
-                ,refresh: {
-                    tree: 'modx_document_tree'
-                    ,node: config.ctx+'_'+config.id
-                }
-            });
-        } else {
-            b.push({
-                process: 'delete'
-                ,text: _('delete')
-                ,method: 'remote'
-                ,reload: true
-                ,confirm: _('confirm_delete_document')
-                ,refresh: {
-                	tree: 'modx_document_tree'
-                	,node: config.ctx+'_'+config.id
-                }
-            });
-        }
-        b.push('-',{
-            process: 'preview'
-            ,text: _('preview')
-            ,handler: this.preview.createDelegate(this,[config.id])
-            ,scope: this
-        },{
-            process: 'cancel'
-            ,text: _('cancel')
-            ,params: { a:MODx.action['welcome'] }
-        });
-        return b;
-    }
-    
-    ,preview: function(id) {
+    preview: function(id) {
         window.open(MODx.config.base_url+'index.php?id='+id);
         return false;
     }

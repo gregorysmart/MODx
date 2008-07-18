@@ -58,41 +58,12 @@ MODx.UpdateResource = function(config) {
                 }
             }
         }
-        ,'-'
-        ,(config.published ? {
-            id: 'btn_unpublish'
-            ,text: _('unpublish')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.unpublish,scope:this}
-            }
-        } : {
-            id: 'btn_publish'
-            ,text: _('publish')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.publish,scope:this}
-            }
-        }),{
+        ,'-',{
             process: 'duplicate'
             ,text: _('duplicate')
             ,confirm: _('confirm_duplicate_document')
             ,method: 'remote'
-        },(config.deleted ? {
-            id: 'btn_undelete'
-            ,text: _('undelete')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.unremove,scope:this}
-            }
-        } : {
-            id: 'btn_delete'
-            ,text: _('delete')
-            ,button: true
-            ,listeners: {
-                'click': {fn: this.remove,scope:this}
-            }
-        })
+        }
         ,'-'
         ,{
             process: 'preview'
@@ -108,96 +79,7 @@ MODx.UpdateResource = function(config) {
     MODx.UpdateResource.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.UpdateResource,MODx.Component,{
-    unpublish: function(btn,e) {
-        e.preventDefault();
-        Ext.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'unpublish'
-                ,id: this.config.id
-            }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    var t = parent.Ext.getCmp('modx_document_tree');
-                    t.refreshNode(this.config.ctx+'_'+this.config.id,false);
-                    btn.removeListener('click',this.unpublish,this);
-                    btn.setText(_('publish'));
-                    btn.on('click',this.publish,this);
-                } else FormHandler.errorJSON(r);
-            }
-        });
-    }
-    
-    ,publish: function(btn,e) {
-        e.preventDefault();
-        Ext.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'publish'
-                ,id: this.config.id
-            }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    var t = parent.Ext.getCmp('modx_document_tree');
-                    t.refreshNode(this.config.ctx+'_'+this.config.id,false);
-                    btn.removeListener('click',this.publish,this);
-                    btn.setText(_('unpublish'));
-                    btn.on('click',this.unpublish,this);
-                } else FormHandler.errorJSON(r);
-            }
-        });
-    }
-    
-    
-    ,unremove: function(btn,e) {
-        e.preventDefault();
-        Ext.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'undelete'
-                ,id: this.config.id
-            }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    var t = parent.Ext.getCmp('modx_document_tree');
-                    t.refreshNode(this.config.ctx+'_'+this.config.id,false);
-                    btn.removeListener('click',this.unremove,this);
-                    btn.setText(_('delete'));
-                    btn.on('click',this.remove,this);
-                } else FormHandler.errorJSON(r);
-            }
-        });
-    }
-    
-    ,remove: function(btn,e) {
-        e.preventDefault();
-        Ext.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'delete'
-                ,id: this.config.id
-            }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    var t = parent.Ext.getCmp('modx_document_tree');
-                    t.refreshNode(this.config.ctx+'_'+this.config.id,false);
-                    btn.removeListener('click',this.remove,this);
-                    btn.setText(_('undelete'));
-                    btn.on('click',this.unremove,this);
-                } else FormHandler.errorJSON(r);
-            }
-        });
-    }
-    
-    ,preview: function(id) {
+    preview: function(id) {
         window.open(MODx.config.base_url+'index.php?id='+id);
         return false;
     }
