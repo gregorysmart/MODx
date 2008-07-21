@@ -15,7 +15,7 @@ if (!isset($_POST['template'])) $_POST['template'] = array();
 $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
 if ($category == null) {
 	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '') {
+	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
 		$category->id = 0;
 	} else {
 		$category->set('category',$_POST['category']);
@@ -88,7 +88,7 @@ if ($modx->hasPermission('tv_access_permissions')) {
                 'tmplvarid' => $tv->id,
                 'documentgroup' => $group['id'],
             ));
-            
+
             if ($group['access'] == true) {
                 if ($tvdg != null) continue;
                 $tvdg = $modx->newObject('modTemplateVarResourceGroup');

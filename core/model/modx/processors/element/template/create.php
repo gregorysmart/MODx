@@ -23,7 +23,7 @@ if ($modx->error->hasError()) $modx->error->failure();
 // category
 $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
+    $category = $modx->newObject('modCategory');
 	if ($_POST['category'] == '') {
 		$category->id = 0;
 	} else {
