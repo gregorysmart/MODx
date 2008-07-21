@@ -37,6 +37,7 @@ MODx.grid.Package = function(config) {
         ]
         ,primaryKey: 'signature'
         ,paging: true
+        ,autosave: true
         ,tbar: [{
             text: _('package_add')
             ,handler: { xtype: 'window-package-installer' }
