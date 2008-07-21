@@ -18,7 +18,11 @@ if ($error->hasError()) $error->failure();
 
 
 // category
-$category = $modx->getObject('modCategory',array('id' => $_POST['category']));
+if (is_numeric($_POST['category'])) {
+    $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
+} else {
+    $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
+}
 if ($category == null) {
 	$category = $modx->newObject('modCategory');
 	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
