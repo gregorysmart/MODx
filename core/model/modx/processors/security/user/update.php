@@ -137,7 +137,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 $modx->logManagerAction('user_update','modUser',$user->id);
 
 if (isset($_POST['newpassword']) && $_POST['passwordnotifymethod'] == 's') {
-	$error->success($modx->lexicon('user_created_password_message').$autoPassword);
+	$error->success($modx->lexicon('user_created_password_message').$newPassword);
 } else {
 	$error->success();
 }
