@@ -16,4 +16,8 @@ if ($resource == null) {
     $modx->error->failure($modx->lexicon('document_not_found'));
 }
 
-$modx->error->success('',$resource);
+$ra = $resource->toArray();
+$ra['pub_date'] = $ra['pub_date'] != '0' ? strftime('%Y-%m-%d',$ra['pub_date']) : '';
+$ra['unpub_date'] = $ra['unpub_date'] != '0' ? strftime('%Y-%m-%d',$ra['unpub_date']) : '';
+
+$modx->error->success('',$ra);

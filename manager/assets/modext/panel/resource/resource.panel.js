@@ -152,7 +152,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('page_data_publishdate')
                     ,description: _('page_data_publishdate_help')
                     ,name: 'pub_date'
-                    ,format: 'd-m-Y H:i:s'
+                    ,format: 'Y-m-d'
                     ,allowBlank: true
                     ,width: 200
                     
@@ -161,7 +161,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('page_data_unpublishdate')
                     ,description: _('page_data_unpublishdate_help')
                     ,name: 'unpub_date'
-                    ,format: 'd-m-Y H:i:s'
+                    ,format: 'Y-m-d'
                     ,allowBlank: true
                     ,width: 200
                     
