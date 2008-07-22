@@ -72,6 +72,11 @@ MODx.UpdateChunk = function(config) {
             	,node: 'n_type_chunk'
                 ,self: true
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'duplicate'
             ,text: _('duplicate')

@@ -37,6 +37,11 @@ MODx.UpdatePlugin = function(config) {
                     Ext.getCmp('grid-plugin-event').getStore().commitChanges();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'duplicate'
             ,text: _('duplicate')

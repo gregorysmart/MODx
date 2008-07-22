@@ -69,6 +69,11 @@ MODx.CreateChunk = function(config) {
             	tree: 'modx_element_tree'
             	,node: 'n_type_chunk'
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]

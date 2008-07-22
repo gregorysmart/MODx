@@ -25,6 +25,11 @@ MODx.UpdateSnippet = function(config) {
                 ,node: 'n_type_snippet'
                 ,self: true
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'duplicate'
             ,text: _('duplicate')

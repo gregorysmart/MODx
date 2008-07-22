@@ -38,6 +38,11 @@ MODx.UpdateTemplate = function(config) {
                     Ext.getCmp('grid-template-tv').getStore().commitChanges();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'duplicate'
             ,text: _('duplicate')

@@ -87,10 +87,10 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 					};
 				}
 			}
-			
+            			
 			// create the button	
 			var b = new Ext.Toolbar.Button(options);
-			
+            			
 			// if javascript is specified, run it when button is click, before this.checkConfirm is run
 			if (options.javascript) {
     			b.addListener('click',function(itm,e) {
@@ -103,6 +103,21 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 			
 			// add button to toolbar
 			this.add(this,b);
+            
+            
+            if (options.keys) {
+                var map = new Ext.KeyMap(Ext.get(document));
+                var c = options.keys.length;
+                for (var i=0;i<c;i++) {
+                    var k = options.keys[i];
+                    Ext.applyIf(k,{
+                        scope: this
+                        ,stopEvent: true
+                        ,fn: function(e) { this.checkConfirm(b,e); }
+                    });
+                    map.addBinding(k);
+                }
+            }
 		}
 		return false;
 	}
@@ -186,7 +201,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 * @param {Ext.EventObject} e The event object 
 	 */
 	,handleClick: function(itm,e) {
-		var o = this.config;
+        var o = this.config;
 		// action buttons handlers, abstracted to all get-out
 		switch (itm.method) {
 			case 'remote': // if using connectors

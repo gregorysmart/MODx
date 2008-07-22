@@ -57,6 +57,11 @@ MODx.UpdateResource = function(config) {
                     t.refreshNode(config.ctx+'_'+config.id);
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         }
         ,'-',{
             process: 'duplicate'

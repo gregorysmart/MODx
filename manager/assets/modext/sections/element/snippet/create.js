@@ -23,6 +23,11 @@ MODx.CreateSnippet = function(config) {
             	,node: 'n_type_snippet'
             	,self: true
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]

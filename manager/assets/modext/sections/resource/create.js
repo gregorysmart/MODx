@@ -37,6 +37,11 @@ MODx.CreateResource = function(config) {
                     t.refresh();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'cancel'
             ,text: _('cancel')

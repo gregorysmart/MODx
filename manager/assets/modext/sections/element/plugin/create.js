@@ -34,6 +34,11 @@ MODx.CreatePlugin = function(config) {
                     Ext.getCmp('grid-plugin-event').getStore().commitChanges();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]

@@ -97,6 +97,11 @@ MODx.UpdateTV = function(config) {
                     Ext.getCmp('grid-tv-security').getStore().commitChanges();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'duplicate'
             ,text: _('duplicate')

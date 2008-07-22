@@ -95,6 +95,11 @@ MODx.CreateTV = function(config) {
                     Ext.getCmp('grid-tv-security').getStore().commitChanges();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]

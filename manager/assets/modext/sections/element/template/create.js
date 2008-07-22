@@ -37,6 +37,11 @@ MODx.CreateTemplate = function(config) {
                     Ext.getCmp('grid-template-tv').getStore().commitChanges();
                 }
             }
+            ,keys: [{
+                key: "s"
+                ,alt: true
+                ,ctrl: true
+            }]
         },{
             process: 'cancel'
             ,text: _('cancel')
