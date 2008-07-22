@@ -140,7 +140,7 @@ $collection['fck_editor_toolbar']->fromArray(array (
 $collection['fe_editor_lang']= $xpdo->newObject('modSystemSetting');
 $collection['fe_editor_lang']->fromArray(array (
   'key' => 'fe_editor_lang',
-  'value' => 'english',
+  'value' => 'en',
   'xtype' => 'combo-language',
 ), '', true, true);
 $collection['feed_modx_news']= $xpdo->newObject('modSystemSetting');
@@ -362,7 +362,7 @@ $collection['set_header']->fromArray(array (
 $collection['settings_version']= $xpdo->newObject('modSystemSetting');
 $collection['settings_version']->fromArray(array (
   'key' => 'settings_version',
-  'value' => '2.0.0-alpha-2',
+  'value' => '2.0.0-alpha-3',
   'xtype' => 'textfield',
 ), '', true, true);
 $collection['show_preview']= $xpdo->newObject('modSystemSetting');
