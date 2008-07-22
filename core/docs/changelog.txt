@@ -2,6 +2,37 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
+MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
+====================================
+- [#MODX-210] Changed no-longer-valid help text for resource panel
+- [#MODX-216] Fixed bug with pub_date/unpub_date for the Resource panel
+- [#MODX-213] manually entered passwords not being displayed after saving
+- Added editability to packages grid
+- [#MODX-205] Fixed category saving
+- [#MODX-196] Fixed snippet category error in IE7
+- Created modInstallError for base processing methods
+- Added object support to modInstallJsonError
+- [#MODX-201] Fixed bug with Category combo that prevented adding in a custom category
+- [#MODX-200] Added colored Not Installed text to not installed packages
+- [#MODX-70] Removed top buttons, as they are unnecessary and cause more problems than they are worth.
+- [#MODX-174] Language setting in setup is not loaded.
+- Note: renamed the language file to en.php to match the adopted IANA standard codes (see #MODX-187)
+- [#MODX-26] Manager User creation problems
+- Corrections to new user account email
+- Added MODX_URL_SCHEME define and url_scheme configuration setting
+- Added MODX_HTTP_HOST define and http_host configuration setting
+- Changed "Modules" top menu to "Components" top menu. Component developers are encouraged to put their 3rd party menus in there.
+- [#MODX-83] Radio Options not working in TV
+- [#MODX-103] Fixed blank template change warning message.
+- [#MODX-173] Language setting in manager pages is not loaded.
+- Removed ucwords on getlist processor for lexicons.
+- Fixed feed_modx_security/news keys in the build file.
+- [#MODX-184] Fixed show in menu checkbox, should have been labeled "Hide Menu" since the opposite is true in the database. Changed to match DB column properties.
+- [#MODX-190] Fixed bug with missing duplicate snippet error message
+- Added check for existing name in snippet duplicate processor
+- Updated build.src.url to branches/revolution
+- Fixed import html/resources
+- Fixed action pointer if version is incorrect
 
 MODx Revolution 2.0.0-alpha-2 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
