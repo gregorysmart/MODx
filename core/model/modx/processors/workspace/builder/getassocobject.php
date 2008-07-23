@@ -22,6 +22,7 @@ $count = $modx->getCount($class_key);
 $os = array();
 foreach ($objects as $object) {
     $oa = $object->toArray();
+    $pk = 'id';
     // needs to be dynamic
     switch ($class_key) {
         case 'modDocument':
@@ -55,7 +56,7 @@ foreach ($objects as $object) {
     $id = $object->get($pk);
     if ($pk != 'id') { $oa['id'] = $id; }
     if ($id != null) { $oa['name'] .= ' ('.$id.')'; }
-    
+
     $os[] = $oa;
 }
 $this->outputArray($os,$count);

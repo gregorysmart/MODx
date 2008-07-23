@@ -93,7 +93,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 					if (this.config.success) {
 						Ext.callback(this.config.success,this.config.scope || this,[frm,a]);
 					}
-                    this.fireEvent('success',frm,a);
+                    this.fireEvent('success',{f:frm,a:a});
 					this.hide();
 				}
 			});

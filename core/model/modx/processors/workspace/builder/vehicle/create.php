@@ -12,6 +12,7 @@ $class_key = isset($_POST['classKeyOther']) && $_POST['classKeyOther'] != ''
 
 
 // needs to be dynamic
+$pk = 'id';
 switch ($class_key) {
     case 'modDocument':
     case 'modResource':

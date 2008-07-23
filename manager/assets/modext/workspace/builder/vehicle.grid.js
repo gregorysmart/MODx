@@ -40,7 +40,12 @@ MODx.grid.Vehicle = function(config) {
 Ext.extend(MODx.grid.Vehicle,MODx.grid.Grid);
 Ext.reg('grid-vehicle',MODx.grid.Vehicle);
 
-
+/**
+ * @class MODx.window.CreateVehicle
+ * @extends MODx.Window
+ * @param {Object} config An object of config properties
+ * @xtype window-vehicle-create
+ */
 MODx.window.CreateVehicle = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -77,6 +82,7 @@ MODx.window.CreateVehicle = function(config) {
         }]
     });
     MODx.window.CreateVehicle.superclass.constructor.call(this,config);
+    this.on('success',this.resetForm,this);
 };
 Ext.extend(MODx.window.CreateVehicle,MODx.Window,{
     submit: function() {
@@ -98,6 +104,10 @@ Ext.extend(MODx.window.CreateVehicle,MODx.Window,{
         cbo.clearValue();
         
         cbo.reset();
+    }
+    ,resetForm: function() {
+        Ext.getCmp('grid-resolver').getStore().removeAll();
+        this.fp.getForm().reset();
     }
 });
 Ext.reg('window-vehicle-create',MODx.window.CreateVehicle);
