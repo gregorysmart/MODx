@@ -114,6 +114,11 @@ MODx.UpdateModule = function(config) {
             ,{contentEl: 'tab_usergroup', title: _('access_permissions')}
             ,{contentEl: 'tab_depend', title: _('module_dependencies')}
         ]
+        ,components: [{
+            xtype: 'grid-module-dep'
+            ,renderTo: 'grid-module-dep'
+            ,module: config.id
+        }]
 	});
 	MODx.UpdateModule.superclass.constructor.call(this,config);
 };

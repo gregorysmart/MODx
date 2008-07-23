@@ -7,34 +7,15 @@
     <h2>{$_lang.dependencies}</h2>
 
 	<p>{$_lang.module_viewdepend_msg}</p>
-	<p>
-	<a class="searchtoolbarbtn" href="#" onclick="loadDependencies();return false;">
-		<img src="templates/{$_config.manager_theme}/images/icons/save.gif" alt="{$_lang.save}" />
-		{$_lang.module_dependencies_manage}
-	</a>  
-	</p><br />   
-	<table class="classy" style="width: 100%;">
-	<thead>
-	<tr>
-		<th>{$_lang.resource}</td>
-		<th>{$_lang.type}</td>
-	</tr>
-	</thead>
-	<tbody>
-	{foreach from=$dependencies item=dep}
-	<tr>
-		<th>{$dep->get('name')}</td>
-		<td>{$dep->get('type')}</td>
-	</tr>
-	{/foreach}
-	</tbody>
-	</table>
+	
+	<div id="grid-module-dep"></div>
 </div>
 <!-- END Dependencies -->
 {/modblock}
 
 {modblock name='ab'}
-<script type="text/javascript" src="assets/modext/sections/element/module/update.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/grid/module.dep.grid.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/sections/element/module/update.js"></script>
 {literal}
 <script type="text/javascript">
 // <![CDATA[

@@ -9,12 +9,12 @@ $modx->lexicon->load('module');
 
 
 // get module
-$module = $modx->getObject('modModule',$_REQUEST['id']);
-if ($module->locked == 1 && $_SESSION['mgrRole'] != 1) $error->failure($modx->lexicon('access_denied'));
+$module = $modx->getObject('modModule',$_REQUEST['module']);
+if ($module->locked == 1) $modx->error->failure($modx->lexicon('access_denied'));
 
 // get dependencies
 $c = $modx->newQuery('modModuleDepobj');
-$c = $c->where(array('module:=' => $_REQUEST['id']));
+$c = $c->where(array('module' => $_REQUEST['module']));
 $deps = $modx->getCollection('modModuleDepobj',$c);
 $processedDeps = array();
 if (count($deps) > 0) {
@@ -22,36 +22,43 @@ if (count($deps) > 0) {
 		$d = $dep->toArray();
 		switch ($d['type']) {
 		case 10:
-			$d['type'] = 'Chunk';
+			$d['class_key'] = 'modChunk';
 			$resource = $modx->getObject('modChunk',$d['resource']);
-			$d['resource_name'] = $resource->name;
+			$d['name'] = $resource->name;
 			break;
 		case 20:
-			$d['type'] = 'Document';
+			$d['class_key'] = 'modResource';
 			$resource = $modx->getObject('modResource',$d['resource']);
-			$d['resource_name'] = $resource->pagetitle;
+			$d['name'] = $resource->pagetitle;
 			break;
 		case 30:
-			$d['type'] = 'Plugin';
+			$d['class_key'] = 'modPlugin';
 			$resource = $modx->getObject('modPlugin',$dep['resource']);
-			$d['resource_name'] = $resource->name;
+			$d['name'] = $resource->name;
 			break;
 		case 40:
-			$d['type'] = 'Snippet';
+			$d['class_key'] = 'modSnippet';
 			$resource = $modx->getObject('modSnippet',$d['resource']);
-			$d['resource_name'] = $resource->name;
+			$d['name'] = $resource->name;
 			break;
 		case 50:
-			$d['type'] = 'Template';
+			$d['class_key'] = 'modTemplate';
 			$resource = $modx->getObject('modTemplate',$d['resource']);
-			$d['resource_name'] = $resource->templatename;
+			$d['name'] = $resource->templatename;
 			break;
 		case 60:
-			$d['type'] = 'TV';
+			$d['class_key'] = 'modTemplateVar';
 			$resource = $modx->getObject('modTemplateVar',$d['resource']);
-			$d['resource_name'] = $resource->name;
+			$d['name'] = $resource->name;
 			break;
 		}
+
+        $d['menu'] = array(
+            array(
+                'text' => $modx->lexicon('module_dep_remove'),
+                'handler' => 'this.remove.createDelegate(this,["module_dep_remove_confirm"])',
+            )
+        );
 		$processedDeps[] = $d;
 	}
 }
