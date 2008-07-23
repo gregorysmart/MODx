@@ -7,22 +7,23 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
-$_DATA = $modx->fromJSON($_POST['data']);
-if ($_DATA['priority'] == '') $_DATA['priority'] = 0;
-
+if ($_POST['priority'] == '') $_POST['priority'] = 0;
+if (!isset($_POST['plugin']) || !isset($_POST['event'])) {
+    $modx->error->failure($modx->lexicon('plugin_event_err_ns'));
+}
 $pe = $modx->getObject('modPluginEvent',array(
-    'pluginid' => $_DATA['plugin'],
-    'evtid' => $_DATA['id'],
+    'pluginid' => $_POST['plugin'],
+    'evtid' => $_POST['id'],
 ));
 
-if ($_DATA['enabled']) {
+if ($_POST['enabled']) {
     // enabling system event or editing priority
     if ($pe == null) {
         $pe = $modx->newObject('modPluginEvent');
     }
-    $pe->set('pluginid',$_DATA['plugin']);
-    $pe->set('evtid',$_DATA['id']);
-    $pe->set('priority',$_DATA['priority']);
+    $pe->set('pluginid',$_POST['plugin']);
+    $pe->set('evtid',$_POST['id']);
+    $pe->set('priority',$_POST['priority']);
 
     if (!$pe->save()) $modx->error->failure($modx->lexicon('plugin_event_err_save'));
 } else {
