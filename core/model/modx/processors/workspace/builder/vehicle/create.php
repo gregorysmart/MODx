@@ -10,9 +10,8 @@ $class_key = isset($_POST['classKeyOther']) && $_POST['classKeyOther'] != ''
     ? $_POST['classKeyOther']
     : $_POST['classKey'];
 
-
 // needs to be dynamic
-$pk = 'id';
+$pk = $_POST['object'];
 switch ($class_key) {
     case 'modDocument':
     case 'modResource':
@@ -37,7 +36,6 @@ switch ($class_key) {
         $pk = $_POST['object'];
         break;
 }
-
 
 $c = $modx->getObject($class_key,$pk);
 if ($c == null) $modx->error->failure('Object not found!');
