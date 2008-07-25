@@ -48,4 +48,5 @@ Ext.onReady(function() {
 <body ondragstart="return false;" onmousedown="parent.Ext.menu.MenuMgr.hideAll();">
 
 <div id="modAB"></div>
+<div id="modx_tabs"></div>
 <div id="modx_container">

@@ -4,8 +4,9 @@ html, body, form, fieldset {
 }
 html {
     font-size: 100.01%; /* avoids obscure font-size bug */
-    line-height: 1.5; 
-    font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    line-height: 1.7em; 
+    /*font-family: "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;*/
+    font: normal 1.1em Verdana,Arial,Tahoma;
     height: 100%;
     color: #111;
 }
@@ -15,7 +16,7 @@ body {
     font-size: 68.75%; /* 11px */
     height: 100%;
     margin-bottom: 1px; /* avoid jumping scrollbars */
-    background-color: #fbfeff;
+    background-color: #ffffff;
 }
 
 img, a img {
@@ -48,6 +49,10 @@ hr {
 
 #modx_content_div {
     height:100%;
+}
+
+#modx_container, .with-logo-bg {
+     background: #ffffff url(../images/ext/modext/bg-logo.png) top right no-repeat !important;
 }
 
 .padding {

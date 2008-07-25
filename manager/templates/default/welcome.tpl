@@ -1,6 +1,6 @@
 <div id="welcome_tabs"></div>
 
-<div id="news" class="padding x-hide-display">
+<div id="news" class="padding x-hide-display with-logo-bg">
 	{foreach from=$newsfeed item=article}
 	<div class="news_article">
 		<h2>
@@ -12,7 +12,7 @@
 	{/foreach}
 </div>
 
-<div id="security" class="padding x-hide-display">
+<div id="security" class="padding x-hide-display with-logo-bg">
 	{foreach from=$securefeed item=article}
     <div class="news_article">
 		<h2>
@@ -25,28 +25,27 @@
 </div>
 
 <!-- system check -->
-<div id="config" class="padding x-hide-display">
+<div id="config" class="padding x-hide-display with-logo-bg">
 	<img src="templates/{$_config.manager_theme}/images/icons/event2.gif" />
 	{$config_check_results}
 </div>
 
 
 <!-- home tab -->
-<div id="welcome" class="padding x-hide-display">
+<div id="welcome" class="padding x-hide-display with-logo-bg">
     <h2>{$_config.site_name}</h2>
-    <img src="templates/{$_config.manager_theme}/images/misc/logo.png" alt="{$_lang.logo_slogan}" style="float: right" />
     {$_lang.welcome_title}
 </div>
 
 <!-- recent activities -->
-<div id="recent" class="padding x-hide-display">
+<div id="recent" class="padding x-hide-display with-logo-bg">
 	{$_lang.activity_message}
 	<br /><br />
 	<div id="grid-recent-resource"></div>
 </div>
 
 <!-- user info -->
-<div id="info" class="padding x-hide-display">
+<div id="info" class="padding x-hide-display with-logo-bg">
 	{$_lang.yourinfo_message}
 	<br /><br />
 	<table class="classy">
@@ -68,7 +67,7 @@
 </div>
 
 <!-- online info -->
-<div id="online" class="padding x-hide-display">
+<div id="online" class="padding x-hide-display with-logo-bg">
 	{$_lang.onlineusers_message}
 	<strong>{$cur_time}</strong>)
 	<br /><br />
