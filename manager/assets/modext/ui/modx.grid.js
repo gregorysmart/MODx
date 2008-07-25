@@ -119,6 +119,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
 						Ext.callback(this.config.save_callback,this.config.scope || this,[r]);
 					}
 					e.record.commit();
+                    this.refresh();
 				} else FormHandler.errorJSON(r);
 			}
 		});
