@@ -13,10 +13,9 @@ Ext.onReady(function() {
  */
 MODx.Layout = function(config){
     config = config || {};
-    Ext.QuickTips.init();
+    this.config = config;
     Ext.BLANK_IMAGE_URL = MODx.config.manager_url+'assets/ext2/resources/images/default/s.gif';
     
-    this.config = config;
     this.createIFrame();
     this.loadTrees();
     

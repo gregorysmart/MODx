@@ -426,7 +426,6 @@ Ext.form.Field.prototype.afterRender = Ext.form.Field.prototype.afterRender.crea
     if (this.description) {
         Ext.QuickTips.register({
             target:  this.getEl()
-            ,dismissDelay: 30000
             ,text: this.description
             ,enabled: true
         });
@@ -434,7 +433,6 @@ Ext.form.Field.prototype.afterRender = Ext.form.Field.prototype.afterRender.crea
         if(label){
             Ext.QuickTips.register({
                 target:  label
-                ,dismissDelay: 30000
                 ,text: this.description
                 ,enabled: true
             });
