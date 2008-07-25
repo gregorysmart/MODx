@@ -33,7 +33,7 @@ if (count($deps) > 0) {
 			break;
 		case 30:
 			$d['class_key'] = 'modPlugin';
-			$resource = $modx->getObject('modPlugin',$dep['resource']);
+			$resource = $modx->getObject('modPlugin',$d['resource']);
 			$d['name'] = $resource->name;
 			break;
 		case 40:
@@ -62,5 +62,4 @@ if (count($deps) > 0) {
 		$processedDeps[] = $d;
 	}
 }
-$count = count($deps);
-$this->outputArray($processedDeps,$count);
+$this->outputArray($processedDeps);
