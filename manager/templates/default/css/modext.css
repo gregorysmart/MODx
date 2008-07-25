@@ -29,3 +29,6 @@ h3 {
 .not-installed {
     color: red;
 }
+
+.red { color: red !important; }
+.green { color: green !important; }

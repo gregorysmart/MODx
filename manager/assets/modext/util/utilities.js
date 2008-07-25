@@ -476,3 +476,29 @@ MODx.StaticTextField = Ext.extend(Ext.form.TextField, {
     }
 });
 Ext.reg('statictextfield',MODx.StaticTextField);
+
+/** 
+ * Static Boolean
+ */
+MODx.StaticBoolean = Ext.extend(Ext.form.TextField, {
+    fieldClass: 'x-static-text-field',
+
+    onRender: function(tf) {
+        this.readOnly = true;
+        this.disabled = !this.initialConfig.submitValue;
+        MODx.StaticBoolean.superclass.onRender.apply(this, arguments);
+        this.on('change',this.onChange,this);
+    }
+    
+    ,setValue: function(v) {
+        if (v == 1) {
+            this.addClass('green');
+            v = _('yes');
+        } else {
+            this.addClass('red');
+            v = _('no');
+        }
+        MODx.StaticBoolean.superclass.setValue.apply(this, arguments);
+    }
+});
+Ext.reg('staticboolean',MODx.StaticBoolean);

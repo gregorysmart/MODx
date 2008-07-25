@@ -40,18 +40,16 @@ MODx.Resource.Data = function(config) {
             ,text: _('cancel')
             ,params: { a: MODx.action['welcome'] }
         }]
-        ,tabs: this.getTabs(config)
+        ,components: [{
+            xtype: 'panel-resource-data'
+            ,renderTo: 'panel-data'
+            ,resource: config.id
+            ,context: config.ctx
+            ,class_key: config.class_key
+            ,pagetitle: config.pagetitle
+        }]
 	});
 	MODx.Resource.Data.superclass.constructor.call(this,config);	
 };
-Ext.extend(MODx.Resource.Data,MODx.Component,{
-	getTabs: function(config) {
-		var it = [{contentEl: 'tab_data', title: _('page_data_title')}]
-		if (config.show_preview) {
-			it.push({contentEl: 'tab_preview', title: _('preview')});
-		}
-		it.push({contentEl: 'tab_source', title: _('page_data_source')});
-		return it;
-	}
-});
+Ext.extend(MODx.Resource.Data,MODx.Component);
 Ext.reg('resource-data',MODx.Resource.Data);

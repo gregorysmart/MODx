@@ -87,6 +87,7 @@ $_lang['change_password_new'] = 'New password';
 $_lang['check_err_fields'] = 'Please check the fields for the following errors: %s';
 $_lang['chunk'] = 'Chunk';
 $_lang['chunks'] = 'Chunks';
+$_lang['class_key'] = 'Class Key';
 $_lang['cleaningup'] = 'Cleaning up';
 $_lang['clear_filter'] = 'Clear Filter';
 $_lang['clear_log'] = 'Clear log';

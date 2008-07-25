@@ -13,8 +13,7 @@ MODx.grid.SettingsGrid = function(config) {
     config = config || {};
     var exp = new Ext.grid.RowExpander({
         tpl : new Ext.Template(
-            '<p><b>'+_('key')+':</b> {key}</p>'
-            ,'<p><b>'+_('description')+':</b><br /> {description}</p>'
+            '<p style="padding: .7em 1em .3em;"><i>{description}</i></p>'
         )
     });
     if (!config.tbar) {
