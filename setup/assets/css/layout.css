@@ -128,8 +128,11 @@ table.options tbody th {
 }
 table.options th img {
 	text-align: left;
-	margin-left: .5em;
+	margin: 0 .5em;
 	float: left;
+}
+table.options label {
+    width: auto;
 }
 
 
@@ -147,7 +150,7 @@ img { border: 0; }
 	background-color: #000;
 }
 p,td,th { font-size: 100%; }
-label { font-size: .8em; color: #444; text-align: right; margin-right: .7em; }
+label { font-size: .8em; color: #444; text-align: left; margin-left: .7em; }
 
 .right { float: right; }
 .left { float: left; }
