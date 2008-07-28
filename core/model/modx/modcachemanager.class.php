@@ -78,23 +78,14 @@ class modCacheManager extends xPDOCacheManager {
             }
 
             // generate the documentMap, aliasMap, and resourceListing
+            $tblResource= $this->modx->getTableName('modResource');
             $resourceFields= 'id,parent,alias,isfolder,content_type';
             if (isset ($contextConfig['cache_context_resourceFields']) && $contextConfig['cache_context_resourceFields']) {
                 $resourceFields= $contextConfig['cache_context_resourceFields'];
             }
             $resourceCols= $this->modx->getSelectColumns('modResource', '', '', explode(',', $resourceFields));
-            
-            $criteria = $this->modx->newQuery('modResource');
-            $criteria->select($resourceCols);
-            $criteria->where(array(
-                'context_key' => $obj->get('key'),
-                '`modResource`.`context_key` IS NULL',
-            ),XPDO_SQL_OR,null,1);
-            $criteria->andCondition(array(
-                'deleted' => 0,
-            ),null,2);
-            $criteria->sortby('`parent`,`menuindex`','ASC');
-                        
+            $bindings= array (':context_key' => array('value' => $obj->get('key'), 'type' => PDO_PARAM_STR));
+            $criteria= new xPDOCriteria($this->modx, "SELECT {$resourceCols} FROM {$tblResource} WHERE (`context_key` = :context_key OR `context_key` IS NULL) AND `deleted` = 0 ORDER BY `parent` ASC, `menuindex` ASC", $bindings, false);
             if (!$collContentTypes= $this->modx->getCollection('modContentType')) {
                 $htmlContentType= $this->modx->newObject('modContentType');
                 $htmlContentType->set('name', 'HTML');
