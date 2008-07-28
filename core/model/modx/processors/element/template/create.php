@@ -28,7 +28,7 @@ if (is_numeric($_POST['category'])) {
 }
 if ($category == null) {
     $category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '') {
+	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
 		$category->id = 0;
 	} else {
 		$category->set('category',$_POST['category']);
