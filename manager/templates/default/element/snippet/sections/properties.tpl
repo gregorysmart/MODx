@@ -8,7 +8,7 @@
         <select name="moduleguid" id="moduleguid">
         <option value=""></option>
         {foreach from=$params item=p}
-            <option value="{$p.guid}" {if $p.guid EQ $snippet->moduleguid} selected="selected"{/if}>{$p.name}</option>
+            <option value="{$p->get('guid')}" {if $p->get('guid') EQ $snippet->moduleguid} selected="selected"{/if}>{$p->get('name')}</option>
         {/foreach}
         </select>
         <span style="width:300px;" class="comment">{$_lang.snippet_import_params_msg}</span>

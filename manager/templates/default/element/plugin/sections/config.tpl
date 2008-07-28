@@ -7,7 +7,7 @@
     <td class="x-form-element">
         <select name="moduleguid" id="moduleguid">
         <option value=""></option>
-        {foreach from=$plugin->params item=param}
+        {foreach from=$params item=param}
             <option value="{$param->guid}" {if $plugin->moduleguid EQ $param->guid} selected="selected"{/if}>{$param->name}</option>
         {/foreach}
         </select>

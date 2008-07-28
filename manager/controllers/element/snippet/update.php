@@ -1,7 +1,7 @@
 <?php
 /**
- * Load update snippet page 
- * 
+ * Load update snippet page
+ *
  * @package modx
  * @subpackage manager.element.snippet
  */
@@ -44,7 +44,7 @@ $c = new xPDOCriteria($modx,'
 	WHERE smd.resource = :resource AND sm.enable_sharedparams = 1
 	ORDER BY sm.name
 ',array(
-	':resource' => $id,
+	':resource' => $snippet->id,
 ));
 $params = $modx->getCollection('modModule',$c);
 $modx->smarty->assign('params',$params);
