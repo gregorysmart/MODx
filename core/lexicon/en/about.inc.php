@@ -14,7 +14,7 @@ $_lang['credits_shouts_msg'] = '
     <li>Raymond Irving (xwisdom) - emeritus</li>
     <li>Ryan Thrash (rthrash)</li>
 </ul>
- 
+
 <h3>Foundation &amp; Architecture</h3>
 <p>
     They\'ve been there, done that, and are helping us do it again.
@@ -23,7 +23,7 @@ $_lang['credits_shouts_msg'] = '
 <ul>
     <li>Victor Brilon (vbrilon)</li>
     <li>Shaun McCormick (splittingred)</li>
-</ul> 
+</ul>
 
 <h3>Core Code</h3>
 <p>Creating all the cool stuff inside MODx.</p>
@@ -32,7 +32,7 @@ $_lang['credits_shouts_msg'] = '
     <li>Matthew Pietz (sirlancelot)</li>
     <li>Garry Nutting (garryn)</li>
 </ul>
- 
+
 <h3>Modules & Plugins</h3>
 <p>Creating all the cool stuff that work with MODx.</p>
 <ul>
@@ -50,7 +50,7 @@ $_lang['credits_shouts_msg'] = '
     <li>Brunaud Devillard (coroico)</li>
     <li>Bob Ray (BobRay)</li>
 </ul>
- 
+
 <h3>Marketing &amp; Design</h3>
 <p>Creating the look and messaging for MODx.</p>
 <ul>
@@ -59,13 +59,13 @@ $_lang['credits_shouts_msg'] = '
     <li>Debbie Munoz (Mrs Communication)</li>
     <li>Jay Gilmore (smashingred)</li>
 </ul>
- 
+
 <h3>Documentation</h3>
 <p>Helping our users understand MODx.</p>
 <ul>
     <li>Susan Ottwell (sottwell)</li>
     <li>Michael Henderson (mdhender)</li></ul>
- 
+
 <h3>QA &amp; Support</h3>
 <p>Internal testing and community support ambassadors.</p>
 <ul>
@@ -75,7 +75,7 @@ $_lang['credits_shouts_msg'] = '
     <li>Shane Sponagle (dev_cw)</li>
     <li>Dragan Nikolic (ganeshXL)</li>
     <li>David Piaser (Soda)</li></ul>
- 
+
 <h3>Emeritus</h3>
 <p>Helpful folks who\'ve since moved on... Thanks for the assistance!</p>
 <ul>
@@ -95,5 +95,5 @@ $_lang['credits_shouts_msg'] = '
     <li>Andraz Kozelj (andrazk)</li>
 </ul>';
 $_lang['credits_shouts_title'] = '<strong>Additional thanks to:</strong>';
-$_lang['help_msg'] = '<p>You can obtain free community support by <a href="http://modxcms.com/forums" target="_blank">visiting the MODx Forums</a>. There is also a growing body of <a href="http://svn.modxcms.com/docs/display/MODx097" target="_blank">MODx Revolution documentation</a>.</p><p>For bugs, please go to <a href="http://svn.modxcms.com/jira/" target="_blank">MODx\'s JIRA Issue Tracker</a>.</p>';
+$_lang['help_msg'] = '<p>You can obtain free community support by <a href="http://modxcms.com/forums" target="_blank">visiting the MODx Forums</a>. There is also a growing body of <a href="http://svn.modxcms.com/docs/display/revolution" target="_blank">MODx Revolution documentation</a>.</p><p>For bugs, please go to <a href="http://svn.modxcms.com/jira/" target="_blank">MODx\'s JIRA Issue Tracker</a>.</p>';
 $_lang['help_title'] = 'Help';
