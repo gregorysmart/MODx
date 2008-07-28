@@ -39,7 +39,7 @@ Ext.reg('modx-system-info',MODx.SystemInfo);
 
 var viewPHPInfo = function() {
 	dontShowWorker = true; // prevent worker from being displayed
-	window.location.href='index.php?a='+MODx.action['system/phpinfo'];
+	window.location.href= MODx.config.connectors_url+'system/phpinfo.php';
 };
 
 var truncate = function(name) {
