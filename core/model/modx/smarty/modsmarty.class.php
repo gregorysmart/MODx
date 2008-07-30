@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -53,7 +53,6 @@ class modSmarty extends Smarty {
         $this->config_dir   = $modx->config['core_path'] . 'model/smarty/configs';
         $this->plugins_dir  = array(
             $modx->config['core_path'] . 'model/smarty/plugins',
-            $modx->config['core_path'] . 'model/smarty/modx',
         );
         $this->caching = false;
 
@@ -71,10 +70,10 @@ class modSmarty extends Smarty {
 		$this->_blocks = array();
 		$this->_derived = null;
 	}
-    
+
     function setTemplatePath($path = '') {
         if ($path == '') return false;
-        
+
         $this->template_dir = $path;
     }
 
