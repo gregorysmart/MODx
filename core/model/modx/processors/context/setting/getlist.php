@@ -31,7 +31,7 @@ $count = $modx->getCount('modContextSetting',$cc);
 $ss = array();
 foreach ($settings as $setting) {
     $sa = $setting->toArray();
-    
+
     $k = 'setting_'.$sa['key'];
     $sa['description'] = $modx->lexicon->exists($k.'_desc')
         ? $modx->lexicon($k.'_desc')
@@ -40,6 +40,14 @@ foreach ($settings as $setting) {
         ? $modx->lexicon($k)
         : $sa['key'];
     $sa['menu'] = array(
+        array(
+            'text' => $modx->lexicon('setting_update'),
+            'handler' => array(
+                'xtype' => 'window-context-setting-update',
+                'record' => $sa,
+            ),
+        ),
+        '-',
         array(
             'text' => $modx->lexicon('setting_remove'),
             'handler' => 'this.remove.createDelegate(this,["setting_remove_confirm"])',
