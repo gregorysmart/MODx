@@ -57,6 +57,10 @@ $classes= array (
     'modUserRole',
     'modUserSetting',
     'modWorkspace',
+    'modNamespace',
+    'modLexiconEntry',
+    'modLexiconLanguage',
+    'modLexiconFocus',
 );
 
 $this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');

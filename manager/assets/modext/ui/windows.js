@@ -191,3 +191,39 @@ MODx.window.CreateCategory = function(config) {
 };
 Ext.extend(MODx.window.CreateCategory,MODx.Window);
 Ext.reg('window-category-create',MODx.window.CreateCategory);
+
+
+/**
+ * Generates the create namespace window.
+ *  
+ * @class MODx.window.CreateNamespace
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-namespace-create
+ */
+MODx.window.CreateNamespace = function(config) {
+    config = config || {};
+    var r = config.record;
+    Ext.applyIf(config,{
+        title: _('namespace_create')
+        ,width: 600
+        ,url: MODx.config.connectors_url+'workspace/namespace.php'
+        ,action: 'create'
+        ,fields: [{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,width: 250
+            ,maxLength: 100
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('path')
+            ,name: 'path'
+            ,width: 400
+        }]
+    });
+    MODx.window.CreateNamespace.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.CreateNamespace,MODx.Window);
+Ext.reg('window-namespace-create',MODx.window.CreateNamespace);

@@ -1,0 +1,200 @@
+Ext.namespace('MODx.grid','MODx.window');
+/**
+ * Loads a grid for managing lexicons.
+ * 
+ * @class MODx.grid.Lexicon
+ * @extends MODx.grid.Grid
+ * @param {Object} config An object of configuration properties
+ * @xtype grid-lexicon
+ */
+MODx.grid.Lexicon = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('lexicon')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
+        ,fields: ['id','name','value','editedon','menu']
+		,baseParams: {
+			action: 'getList'
+			,namespace: 'core'
+			,focus: 'default'
+		}
+        ,width: '97%'
+        ,paging: true
+        ,autosave: true
+        ,columns: [{
+            header: _('name')
+            ,dataIndex: 'name'
+            ,width: 200
+            ,sortable: true
+        },{
+            header: _('value')
+            ,dataIndex: 'value'
+            ,width: 500
+            ,sortable: false
+            ,editor: { xtype: 'textarea' }
+        },{
+            header: _('last_modified')
+            ,dataIndex: 'editedon'
+            ,width: 100
+            
+        }]
+        ,tbar: [{
+			xtype: 'combo-namespace'
+			,name: 'namespace'
+			,id: 'filter_namespace'
+			,value: 'core'
+			,listeners: {
+				'change': {fn:this.filter.createDelegate(this,['namespace'],true),scope:this}
+			}
+		},{
+			xtype: 'combo-lexicon-focus'
+			,name: 'focus'
+			,id: 'filter_focus'
+			,value: 'default'
+            ,listeners: {
+                'change': {fn:this.filter.createDelegate(this,['focus'],true),scope:this}
+            }
+		},{
+			xtype: 'combo-language'
+			,name: 'language'
+			,id: 'filter_language'
+			,value: 'en'
+            ,listeners: {
+                'change': {fn:this.filter.createDelegate(this,['language'],true),scope:this}
+            }
+		},'->',{
+		    text: _('search_by_key')
+		},{
+		    xtype: 'textfield'
+		    ,name: 'name'
+		    ,id: 'filter_name'
+            ,listeners: {
+                'change': {fn:this.filter.createDelegate(this,['name'],true),scope:this}
+                ,'render': {fn:function(tf) {
+                    tf.getEl().addKeyListener(Ext.EventObject.ENTER,function() {
+                        tf.fireEvent('change'); 
+                    },this);
+                }}
+            }
+		},{
+            text: _('create_new')
+			,xtype: 'button'
+			,menu: [{
+			    text: _('entry')
+				,handler: this.loadWindow2.createDelegate(this,['window-lexicon-entry-create'],true)
+				,scope: this
+			},{
+				text: _('focus')
+                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-focus-create'],true)
+                ,scope: this
+			},{
+				text: _('namespace')
+                ,handler: this.loadWindow2.createDelegate(this,['window-namespace-create'],true)
+                ,scope: this
+			}]
+        }]
+    });
+    MODx.grid.Lexicon.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
+    filter: function(cb,nv,ov,name) {
+    	if (!name) return false;
+    	this.store.baseParams[name] = nv;
+    	this.refresh();
+    }
+    ,loadWindow2: function(btn,e,xtype) {
+    	this.menu.record = {
+            namespace: Ext.getCmp('filter_namespace').getValue()
+            ,focus: Ext.getCmp('filter_focus').getValue()
+            ,language: Ext.getCmp('filter_language').getValue()
+        };
+    	this.loadWindow(btn, e, {
+            xtype: xtype
+        });
+    }
+});
+Ext.reg('grid-lexicon',MODx.grid.Lexicon);
+
+/**
+ * Generates the create lexicon entry window.
+ *  
+ * @class MODx.window.CreateLexiconEntry
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-lexicon-entry-create
+ */
+MODx.window.CreateLexiconEntry = function(config) {
+    config = config || {};
+    var r = config.record;
+    Ext.applyIf(config,{
+        title: _('entry_create')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
+        ,action: 'create'
+        ,fields: [{
+            xtype: 'textfield'
+            ,fieldLabel: _('key')
+            ,name: 'name'
+            ,width: 250
+            ,maxLength: 100
+        },{
+            xtype: 'combo-lexicon-focus'
+            ,fieldLabel: _('focus')
+            ,name: 'focus'
+            ,value: r.focus
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,value: r.namespace
+        },{
+            xtype: 'combo-language'
+            ,fieldLabel: _('language')
+            ,name: 'language'
+            ,value: r.language
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('value')
+            ,name: 'value'
+            ,width: 300
+            ,grow: true
+        }]
+    });
+    MODx.window.CreateLexiconEntry.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.CreateLexiconEntry,MODx.Window);
+Ext.reg('window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
+
+/**
+ * Generates the create lexicon focus window.
+ *  
+ * @class MODx.window.CreateLexiconFocus
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-lexicon-focus-create
+ */
+MODx.window.CreateLexiconFocus = function(config) {
+    config = config || {};
+    var r = config.record;
+    Ext.applyIf(config,{
+        title: _('focus_create')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/focus.php'
+        ,action: 'create'
+        ,fields: [{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,width: 250
+            ,maxLength: 100
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,value: r.namespace
+        }]
+    });
+    MODx.window.CreateLexiconFocus.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.CreateLexiconFocus,MODx.Window);
+Ext.reg('window-lexicon-focus-create',MODx.window.CreateLexiconFocus);

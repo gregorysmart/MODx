@@ -361,6 +361,27 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+// Lexicon stuff
+$entries = array ();
+$foci = array ();
+$languages = array ();
+$attributes = array (
+    XPDO_TRANSPORT_PRESERVE_KEYS => true,
+    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+);
+$namespace = $xpdo->newObject('modNamespace');
+$namespace->set('name','core');
+$namespace->set('path',MODX_CORE_PATH);
+$package->put($namespace,$attributes);
+include dirname(__FILE__).'/data/transport.core.lexicon.php';
+foreach ($entries as $c) {
+    $package->put($c, $attributes);
+}
+foreach ($foci as $f) { $package->put($f, $attributes); }
+foreach ($languages as $l) { $package->put($l, $attributes); }
+unset ($entries, $languages, $foci, $attributes, $c, $f, $l);
+
+
 $package->pack();
 
 $mtime = microtime();

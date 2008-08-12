@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -29,7 +29,7 @@
  */
 class modLexicon {
     /**
-     * @var array $_lexicon The actual language array.  
+     * @var array $_lexicon The actual language array.
      * @access private
      */
     var $_lexicon;
@@ -51,10 +51,10 @@ class modLexicon {
         $this->modx =& $modx;
         $this->init();
     }
-    
+
     /**
      * Returns if the key exists in the lexicon.
-     * 
+     *
      * @access public
      * @param string $index
      * @return boolean True if exists.
@@ -62,10 +62,10 @@ class modLexicon {
     function exists($index) {
         return (is_string($index) && isset($this->_lexicon[$index]));
     }
-    
+
     /**
      * Get a lexicon string by its index.
-     * 
+     *
      * @access public
      * @param string $key The key of the lexicon string.
      * @param array $params An assocative array of placeholder
@@ -81,11 +81,11 @@ class modLexicon {
             ? $this->_lexicon[$key]
             : $this->_parse($this->_lexicon[$key],$params);
     }
-    
+
     /**
      * Parses a lexicon string, replacing placeholders with
      * specified strings.
-     * 
+     *
      * @access private
      * @param string $str The string to parse
      * @param array $params An associative array of keys to replace
@@ -93,33 +93,33 @@ class modLexicon {
      */
     function _parse($str,$params) {
         if (!$str) return '';
-        if (empty($params)) return $str; 
-        
+        if (empty($params)) return $str;
+
         foreach ($params as $k => $v) {
             $str = str_replace('[[+'.$k.']]',$v,$str);
         }
         return $str;
     }
-    
+
     /**
      * Accessor method for the lexicon array.
-     * 
+     *
      * @access public
      * @return array The internal lexicon.
      */
     function fetch() {
         return $this->_lexicon;
     }
-    
+
     /**
      * Initializes the lexicon with the default strings.
-     * 
+     *
      * @access protected
      */
     function init() {
         $_lang= array ();
         $this->_paths = array(
-             'core' => $this->modx->config['core_path'] . 'lexicon/',
+             'core' => $this->modx->config['core_path'] . 'cache/lexicon/',
         );
         if ($this->modx->isBackend()) {
             // include_once the language file
@@ -129,19 +129,34 @@ class modLexicon {
             } else {
                 $this->modx->cultureKey = $this->modx->config['manager_language'];
             }
-            @include_once $this->_paths['core'].'en/default.inc.php';
-            // always load the default lexicon
-            $length_eng_lang= count($_lang);
-            if ($this->modx->cultureKey !== 'en') {
-                @include_once $this->_paths['core'].$this->modx->cultureKey.'/default.inc.php';
-            }
+            // load default core cache file of lexicon strings
+            $_lang = $this->loadCache('core','default',$this->modx->cultureKey);
         }
         $this->_lexicon = & $_lang;
     }
-    
+
+    function loadCache($namespace = 'core',$focus = 'default',$language = 'en') {
+        $fileName = $this->modx->config['core_path'].'cache/lexicon/'.$language.'/'.$namespace.'/'.$focus.'.cache.php';
+
+        $_lang = array();
+        if (file_exists($fileName)) {
+            @include_once $fileName;
+        } else { // if cache files don't exist, generate
+            $cacheManager = $this->modx->getCacheManager();
+            $cacheManager->generateLexiconCache($namespace,$focus,$language);
+
+            if (file_exists($fileName)) {
+                @include_once $fileName;
+            } else {
+                $this->modx->_log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with focus: ".$focus);
+            }
+        }
+        return $_lang;
+    }
+
     /**
      * Adds a directory to search for language files
-     * 
+     *
      * @access public
      * @param string $dir The directory to add
      * @param string $namespace A namespace for the directory
@@ -161,12 +176,12 @@ class modLexicon {
         }
         return false;
     }
-    
+
     /**
      * Loads a variable number of focus areas. They must reside as focusname.
      * inc.php files in their proper culture directory. Can load an infinite
      * number of focus areas via a dynamic number of arguments.
-     * 
+     *
      * @access public
      */
     function load() {
@@ -175,39 +190,25 @@ class modLexicon {
             if (!is_string($focus) || $focus == '') return false;
             $nspos = strpos($focus,':');
             $focus = str_replace('.','/',$focus); // allow for lexicon subdirs
-            
-            $found = false;
+
             // if no namespace, search all lexicons
             if ($nspos === false) {
                 foreach ($this->_paths as $namespace => $path) {
-                    $f = $path.$this->modx->cultureKey.'/'.$focus.'.inc.php';
-                    if (file_exists($f)) {
-                        $found = true;
-                        break;
-                    }
+                    $_lang = $this->loadCache($namespace,$focus);
+                    $this->_lexicon = array_merge($this->_lexicon,$_lang);
                 }
             } else { // if namespace, search specified lexicon
-                $ns = substr($focus,0,$nspos);
+                $namespace = substr($focus,0,$nspos);
                 $foc = substr($focus,$nspos+1);
-                if (isset($this->_paths[$ns])) {
-                    $path = $this->_paths[$ns];
-                    $f = $path.$this->modx->cultureKey.'/'.$foc.'.inc.php';
-                    if (file_exists($f)) {
-                        $found = true;
-                    }
-                }
-            }
-            if ($found) {
-                $_lang = array();
-                @include_once $f;
+                $_lang = $this->loadCache($namespace,$foc);
                 $this->_lexicon = array_merge($this->_lexicon,$_lang);
             }
         }
     }
-    
+
     /**
      * Sets a lexicon key to a value.
-     * 
+     *
      * @access public
      * @param string/array $keys Either an array of array pairs of key/values or
      * a key string.
@@ -222,5 +223,11 @@ class modLexicon {
         } else if (is_string($keys) && $keys != '') {
             $this->_lexicon[$keys] = $text;
         }
+    }
+
+    function clearCache($path = '') {
+    	$path = 'lexicon/'.$path;
+        $cacheManager = $this->modx->getCacheManager();
+        return $cacheManager->clearCache(array($path));
     }
 }

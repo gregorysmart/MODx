@@ -315,7 +315,7 @@ $collection['29']->fromArray(array (
   'action' => '68',
   'text' => 'manage_workspaces',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => '7',
+  'menuindex' => '11',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -480,7 +480,7 @@ $collection['44']->fromArray(array (
   'action' => '69',
   'text' => 'content_types',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => '10',
+  'menuindex' => '7',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -491,7 +491,29 @@ $collection['45']->fromArray(array (
   'action' => '72',
   'text' => 'package_builder',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => '11',
+  'menuindex' => '12',
+  'params' => '',
+  'handler' => '',
+), '', true, true);
+$collection['46']= $xpdo->newObject('modMenu');
+$collection['46']->fromArray(array (
+  'id' => '46',
+  'parent' => '9',
+  'action' => '73',
+  'text' => 'lexicon_management',
+  'icon' => 'images/icons/logging.gif',
+  'menuindex' => '13',
+  'params' => '',
+  'handler' => '',
+), '', true, true);
+$collection['47']= $xpdo->newObject('modMenu');
+$collection['47']->fromArray(array (
+  'id' => '47',
+  'parent' => '9',
+  'action' => '0',
+  'text' => '-',
+  'icon' => '',
+  'menuindex' => '10',
   'params' => '',
   'handler' => '',
 ), '', true, true);

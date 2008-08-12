@@ -171,6 +171,28 @@
         <field key="keyword" dbtype="varchar" precision="40" phptype="string" null="false" default="" index="unique" />
         <composite alias="modResourceKeyword" class="modResourceKeyword" key="id" local="id" foreign="keyword_id" cardinality="many" owner="local" />
     </object>
+	<object class="modLexiconEntry" table="lexicon_entries" extends="xPDOSimpleObject">
+	    <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+	    <field key="value" dbtype="text" phptype="string" null="false" default="" />
+	    <field key="focus" dbtype="varchar" precision="100" phptype="string" null="false" default="default" />
+		<field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
+	    <field key="language" dbtype="varchar" precision="20" phptype="string" null="false" default="en" />
+	    <field key="createdon" dbtype="datetime" phptype="datetime" null="false" />
+	    <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
+		<aggregate alias="modNamespace" class="modNamespace" local="namespace" foreign="name" cardinality="one" owner="foreign" />
+	    <aggregate alias="modLexiconFocus" class="modLexiconFocus" local="focus" foreign="name" cardinality="one" owner="foreign" />
+	    <aggregate alias="modLexiconLanguage" class="modLexiconLanguage" local="language" foreign="name" cardinality="one" owner="foreign" />
+	</object>
+	<object class="modLexiconFocus" table="lexicon_foci" extends="xPDOObject">
+	    <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="pk" />
+	    <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" index="pk" />
+	    <composite alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="focus" cardinality="many" owner="local" />
+	    <aggregate alias="modNamespace" class="modNamespace" local="namespace" foreign="key" cardinality="one" owner="foreign" />
+	</object>
+	<object class="modLexiconLanguage" table="lexicon_languages" extends="xPDOObject">
+	    <field key="name" dbtype="varchar" precision="20" phptype="string" null="false" default="" index="pk" />
+	    <composite alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
+	</object>
     <object class="modManagerLog" table="manager_log" extends="xPDOSimpleObject">
         <field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="occurred" dbtype="datetime" phptype="datetime" default="0000-00-00 00:00:00" />
@@ -227,6 +249,11 @@
         <field key="usergroup" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
         <aggregate alias="modModule" class="modModule" key="id" local="module" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="modUserGroup" class="modUserGroup" key="id" local="usergroup" foreign="id" cardinality="one" owner="foreign" />
+    </object>
+    <object class="modNamespace" table="namespaces" extends="xPDOObject">
+        <field key="name" dbtype="varchar" precision="40" phptype="string" null="false" default="" index="pk" />
+        <field key="path" dbtype="text" phptype="string" default="" />
+        <aggregate alias="modLexiconFocus" class="modLexiconFocus" local="name" foreign="namespace" cardinality="many" owner="local" />
     </object>
     <object class="modPlugin" table="site_plugins" extends="modScript">
         <field key="cache_type" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />

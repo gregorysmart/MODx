@@ -271,6 +271,38 @@ class modCacheManager extends xPDOCacheManager {
         return $written;
     }
 
+    function generateLexiconCache($namespace = 'core',$focus = 'default',$language = 'en') {
+    	$written= false;
+
+        $namespace = $this->modx->getObject('modNamespace',$namespace);
+        if ($namespace == null) return false;
+
+        $focus = $this->modx->getObject('modLexiconFocus',array(
+            'namespace' => $namespace->name,
+            'name' => $focus,
+        ));
+        if ($focus == null) return false;
+
+        $fileName = $this->modx->config['core_path'].'cache/lexicon/'.$language.'/'.$namespace->name.'/'.$focus->name.'.cache.php';
+
+        $content= "<?php \n";
+        $c= $this->modx->newQuery('modLexiconEntry');
+        $c= $c->where(array(
+            'focus' => $focus->name,
+            'language' => $this->modx->config['manager_language'],
+        ));
+        $c= $c->sortby('name','ASC');
+        $entries= $this->modx->getCollection('modLexiconEntry',$c);
+
+        foreach ($entries as $entry) {
+        	$v = str_replace("'","\'",$entry->value);
+            $content .= '$_lang[\''.$entry->name.'\'] = \''.$v.'\';'."\n";
+        }
+
+        $written= $this->writeFile($fileName, $content);
+        return $written;
+    }
+
 	 /**
      * Generates a cache file for the manager actions.
      *
@@ -309,7 +341,7 @@ class modCacheManager extends xPDOCacheManager {
                 $objArray['context_path'] = $this->modx->config['manager_path'];
                 $objArray['context_url'] = $this->modx->config['manager_url'];
             }
-            
+
 			$content .= '"'.$action->id.'" => '.var_export($objArray, true).",\n";
 		}
 		$content .= ");";
@@ -426,7 +458,7 @@ class modCacheManager extends xPDOCacheManager {
             // publish and unpublish resources using pub_date and unpub_date checks
             $rows_pub = $this->modx->getCollection('modResource',array(
                 'pub_date:!=' => 0,
-                'pub_date:<' => time(), 
+                'pub_date:<' => time(),
             ));
             foreach ($rows_pub as $r) {
                 $r->set('published',1);

@@ -554,3 +554,32 @@ MODx.combo.Object = function(config) {
 };
 Ext.extend(MODx.combo.Object,MODx.combo.ComboBox);
 Ext.reg('combo-object',MODx.combo.Object);
+
+/**
+ * Displays a dropdown list of available Content Types.
+ * 
+ * @class MODx.combo.ContentType
+ * @extends MODx.combo.ComboBox
+ * @constructor
+ * @xtype combo-contenttype
+ */
+MODx.combo.Namespace = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        name: 'namespace'
+        ,hiddenName: 'namespace'
+        ,forceSelection: true
+        ,typeAhead: false
+        ,editable: false
+        ,allowBlank: false
+        ,listWidth: 300
+        ,url: MODx.config.connectors_url+'workspace/namespace.php'
+        ,fields: ['name']
+        ,displayField: 'name'
+        ,valueField: 'name'
+        ,baseParams: { action: 'getList' }
+    });
+    MODx.combo.Namespace.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.Namespace,MODx.combo.ComboBox);
+Ext.reg('combo-namespace',MODx.combo.Namespace);
