@@ -42,7 +42,7 @@ MODx.grid.SettingsGrid = function(config) {
         ,baseParams: {
             action: 'getList'
         }
-        ,fields: ['key','name','value','description','xtype','menu']
+        ,fields: ['key','name','value','description','xtype','oldkey','menu']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -58,6 +58,7 @@ MODx.grid.SettingsGrid = function(config) {
             header: _('setting')
             ,dataIndex: 'name'
             ,width: 250
+            ,editor: { xtype: 'textfield' }
         },{
             header: _('value')
             ,id: 'value'
@@ -108,11 +109,14 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
      */
     ,changeEditor: function(g,ri,ci,e) {
         var cm = this.getColumnModel();
-        if (cm.getColumnId(ci) != 'value') return;
-        e.preventDefault();
-        var r = this.getStore().getAt(ri).data;
-        this.initEditor(cm,ci,ri,r);
-        this.startEditing(ri,ci);
+        if (cm.getColumnId(ci) != 'value') {
+            this.onCellDblClick(g,ri,ci,e);
+        } else {
+            e.preventDefault();
+            var r = this.getStore().getAt(ri).data;
+            this.initEditor(cm,ci,ri,r);
+            this.startEditing(ri,ci);
+        }
     }
     
     /**

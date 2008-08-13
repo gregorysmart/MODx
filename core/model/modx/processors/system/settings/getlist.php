@@ -29,14 +29,14 @@ $ss = array();
 foreach ($settings as $setting) {
     $sa = $setting->toArray();
     $k = 'setting_'.$sa['key'];
-    
+
     $sa['description'] = $modx->lexicon->exists($k.'_desc')
         ? $modx->lexicon($k.'_desc')
         : '';
     $sa['name'] = $modx->lexicon->exists($k)
         ? $modx->lexicon('setting_'.$sa['key'])
         : $sa['key'];
-        
+    $sa['oldkey'] = $sa['key'];
     $sa['menu'] = array(
         array(
             'text' => $modx->lexicon('setting_remove'),
