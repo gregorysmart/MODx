@@ -12,7 +12,7 @@ MODx.grid.Lexicon = function(config) {
     Ext.applyIf(config,{
         title: _('lexicon')
         ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
-        ,fields: ['id','name','value','editedon','menu']
+        ,fields: ['id','name','value','namespace','focus','language','editedon','menu']
 		,baseParams: {
 			action: 'getList'
 			,namespace: 'core'
@@ -164,6 +164,63 @@ MODx.window.CreateLexiconEntry = function(config) {
 };
 Ext.extend(MODx.window.CreateLexiconEntry,MODx.Window);
 Ext.reg('window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
+
+
+/**
+ * Generates the update lexicon entry window.
+ *  
+ * @class MODx.window.UpdateLexiconEntry
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-lexicon-entry-update
+ */
+MODx.window.UpdateLexiconEntry = function(config) {
+    config = config || {};
+    var r = config.record;
+    Ext.applyIf(config,{
+        title: _('entry_update')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
+        ,action: 'update'
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'id'
+            ,value: r.id
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('key')
+            ,name: 'name'
+            ,width: 250
+            ,maxLength: 100
+            ,value: r.name
+        },{
+            xtype: 'combo-lexicon-focus'
+            ,fieldLabel: _('focus')
+            ,name: 'focus'
+            ,value: r.focus
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,value: r.namespace
+        },{
+            xtype: 'combo-language'
+            ,fieldLabel: _('language')
+            ,name: 'language'
+            ,value: r.language
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('value')
+            ,name: 'value'
+            ,width: 300
+            ,grow: true
+            ,value: r.value
+        }]
+    });
+    MODx.window.UpdateLexiconEntry.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.UpdateLexiconEntry,MODx.Window);
+Ext.reg('window-lexicon-entry-update',MODx.window.UpdateLexiconEntry);
 
 /**
  * Generates the create lexicon focus window.

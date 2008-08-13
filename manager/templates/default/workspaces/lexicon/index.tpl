@@ -1,13 +1,13 @@
 
+    <div id="tabs_div"></div>
 <div class="padding">
-    <h2>{$_lang.lexicon_management}</h2>
-    
-    <p>{$_lang.lexicon_management_desc}</p>
     
     <div id="grid-lexicon"></div>
+    <div id="grid-lexicon-foci"></div>
 
 </div>
 
 <script type="text/javascript" src="assets/modext/workspace/lexicon/combos.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/lexicon/lexicon.grid.js"></script>
+<script type="text/javascript" src="assets/modext/workspace/lexicon/lexicon.foci.grid.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/lexicon/index.js"></script>
