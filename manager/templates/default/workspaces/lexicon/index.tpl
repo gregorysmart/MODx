@@ -1,11 +1,6 @@
-
-    <div id="tabs_div"></div>
-<div class="padding">
-    
-    <div id="grid-lexicon"></div>
-    <div id="grid-lexicon-foci"></div>
-
-</div>
+<div id="tabs_div"></div>
+<div id="grid-lexicon"></div>
+<div id="grid-lexicon-foci"></div>
 
 <script type="text/javascript" src="assets/modext/workspace/lexicon/combos.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/lexicon/lexicon.grid.js"></script>

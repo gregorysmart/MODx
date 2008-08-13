@@ -315,7 +315,7 @@ $collection['29']->fromArray(array (
   'action' => '68',
   'text' => 'manage_workspaces',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => '11',
+  'menuindex' => '10',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -326,7 +326,7 @@ $collection['30']->fromArray(array (
   'action' => '61',
   'text' => 'edit_settings',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => '8',
+  'menuindex' => '15',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -370,7 +370,7 @@ $collection['34']->fromArray(array (
   'action' => '4',
   'text' => 'view_sysinfo',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => '2',
+  'menuindex' => '3',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -381,7 +381,7 @@ $collection['35']->fromArray(array (
   'action' => '63',
   'text' => 'help',
   'icon' => 'images/icons/information.png',
-  'menuindex' => '2',
+  'menuindex' => '4',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -414,7 +414,7 @@ $collection['38']->fromArray(array (
   'action' => '2',
   'text' => 'edit_menu',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => '10',
+  'menuindex' => '8',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -491,7 +491,7 @@ $collection['45']->fromArray(array (
   'action' => '72',
   'text' => 'package_builder',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => '12',
+  'menuindex' => '11',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -502,7 +502,7 @@ $collection['46']->fromArray(array (
   'action' => '73',
   'text' => 'lexicon_management',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => '13',
+  'menuindex' => '12',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -513,7 +513,29 @@ $collection['47']->fromArray(array (
   'action' => '0',
   'text' => '-',
   'icon' => '',
-  'menuindex' => '10',
+  'menuindex' => '9',
+  'params' => '',
+  'handler' => '',
+), '', true, true);
+$collection['48']= $xpdo->newObject('modMenu');
+$collection['48']->fromArray(array (
+  'id' => '48',
+  'parent' => '9',
+  'action' => '74',
+  'text' => 'namespaces',
+  'icon' => '',
+  'menuindex' => '13',
+  'params' => '',
+  'handler' => '',
+), '', true, true);
+$collection['49']= $xpdo->newObject('modMenu');
+$collection['49']->fromArray(array (
+  'id' => '49',
+  'parent' => '9',
+  'action' => '0',
+  'text' => '-',
+  'icon' => '',
+  'menuindex' => '14',
   'params' => '',
   'handler' => '',
 ), '', true, true);

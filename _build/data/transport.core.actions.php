@@ -686,6 +686,16 @@ $collection['73']->fromArray(array (
   'parent' => '68',
   'controller' => 'workspaces/lexicon',
   'haslayout' => '1',
-  'lang_foci' => 'package_builder,lexicon',
+  'lang_foci' => 'package_builder,lexicon,namespace',
+  'assets' => '',
+), '', true, true);
+$collection['74']= $xpdo->newObject('modAction');
+$collection['74']->fromArray(array (
+  'id' => '74',
+  'context_key' => 'mgr',
+  'parent' => '68',
+  'controller' => 'workspaces/namespace',
+  'haslayout' => '1',
+  'lang_foci' => 'workspace,package_builder,lexicon,namespace',
   'assets' => '',
 ), '', true, true);

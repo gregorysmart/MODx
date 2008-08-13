@@ -14,6 +14,7 @@ foreach ($menus as $menu) {
     $menu['children'] = getSubMenus($menu);
     $as[] = $menu;
 }
+
 $error->success('',$as);
 
 
@@ -21,17 +22,18 @@ function getSubMenus($menu) {
     global $modx;
 
     $c = $modx->newQuery('modMenu');
-    $c->bindGraph('{"Action":{}}');
+    $c->select('modMenu.*,Action.controller AS controller');
+    $c->leftJoin('modAction','Action');
     $c->where(array(
-        'parent' => is_numeric($menu) ? 0 : $menu['id'],
+        'modMenu.parent' => is_numeric($menu) ? 0 : $menu['id'],
     ));
-    $c->sortby('menuindex','ASC');
-    $menus = $modx->getCollectionGraph('modMenu', '{"Action":{}}', $c);
+    $c->sortby('`modMenu`.`menuindex`','ASC');
+    $menus = $modx->getCollection('modMenu',$c);
     $av = array();
     foreach ($menus as $menu) {
         $ma = $menu->toArray();
-        if ($menu->Action) {
-            $ma['controller'] = $menu->Action->get('controller');
+        if ($menu->get('controller')) {
+            $ma['controller'] = $menu->get('controller');
         } else {
             $ma['controller'] = '';
         }
