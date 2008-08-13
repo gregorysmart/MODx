@@ -15,7 +15,7 @@ $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
 
 // create a new package
-$builder->create($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release']);
+$builder->create($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release'], $_PACKAGE['namespace']);
 
 // define some locations for file resources
 $sources= array (
@@ -32,7 +32,7 @@ $attributes= array(
 foreach ($_PACKAGE['vehicles'] as $vehicle) {
     $c = $modx->getObject($vehicle['class_key'],$vehicle['object']);
     if ($c == null) continue;
-    
+
     $v = $builder->createVehicle($c,$attributes);
     if (isset($vehicle['resolvers']) && !empty($vehicle['resolvers'])) {
         foreach ($vehicle['resolvers'] as $resolver) {

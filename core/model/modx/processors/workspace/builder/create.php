@@ -23,6 +23,7 @@ if (!isset($_SESSION['modx.pb'])) $_SESSION['modx.pb'] = array();
 $_SESSION['modx.pb']['name'] = strtolower($_POST['name']);
 $_SESSION['modx.pb']['version'] = strtolower($_POST['version']);
 $_SESSION['modx.pb']['release'] = strtolower($_POST['release']);
+$_SESSION['modx.pb']['namespace'] = $_POST['namespace'];
 $_SESSION['modx.pb']['vehicles'] = array();
 
 $modx->error->success();

@@ -66,6 +66,11 @@ MODx.panel.PackageInfo = function(config) {
             ,fieldLabel: _('release')
             ,name: 'release'
             ,allowBlank: false
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,allowBlank: true
         }]
         ,listeners: {
             'success': {fn:function(o) {

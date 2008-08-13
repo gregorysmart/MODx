@@ -44,7 +44,7 @@ MODx.grid.Lexicon = function(config) {
 			,id: 'filter_namespace'
 			,value: 'core'
 			,listeners: {
-				'change': {fn:this.filter.createDelegate(this,['namespace'],true),scope:this}
+				'change': {fn: this.changeNamespace,scope:this}
 			}
 		},{
 			xtype: 'combo-lexicon-focus'
@@ -106,6 +106,13 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	if (!name) return false;
     	this.store.baseParams[name] = nv;
     	this.refresh();
+    }
+    ,changeNamespace: function(cb,nv,ov) {
+    	var s = Ext.getCmp('filter_focus').store;
+    	s.baseParams.namespace = nv;
+    	s.reload();
+    	
+    	this.filter(cb,nv,ov,'namespace');
     }
     ,loadWindow2: function(btn,e,xtype) {
     	this.menu.record = {

@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -48,7 +48,6 @@ class modTransportVehicle {
     */
 	var $obj;
 
-
 	function modTransportVehicle($obj, $attr = array()) {
         $this->__construct($obj, $attr);
     }
@@ -70,6 +69,7 @@ class modTransportVehicle {
 		array_push($this->validates,$options);
 		return $options;
 	}
+
 	/**
     * Adds a post-save resolver to the vehicle.
 	*

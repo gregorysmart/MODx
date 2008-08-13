@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -45,6 +45,10 @@ class modPackageBuilder {
     * @var string The xPDOTransport package object.
     */
 	var $package;
+    /**
+     * @var string The modNamespace that the package is associated with.
+     */
+    var $namespace;
 
 	function modPackageBuilder(&$modx) {
         $this->__construct($modx);
@@ -85,12 +89,21 @@ class modPackageBuilder {
     * package.
 	* @returns xPDOTransport The xPDOTransport package object.
     */
-	function create($name, $version, $release= '') {
-		$s['name']= $name;
+	function create($name, $version, $release= '', $namespace = 'core') {
+        // grab and validate the namespace
+        $namespace = $this->modx->getObject('modNamespace', $namespace);
+        if ($namespace == null) return false;
+        $this->namespace = $namespace;
+
+        // setup the signature and filename
+        $s['name']= $name;
         $s['version']= $version;
         if (!empty($release)) $s['release']= $release;
 		$this->signature = implode('-',$s);
 		$this->filename = $this->signature . '.transport.zip';
+
+
+        // remove the package if it's already been made
 		if (file_exists($this->directory . $this->filename)) {
 			unlink($this->directory . $this->filename);
 		}
@@ -99,7 +112,15 @@ class modPackageBuilder {
 				$cacheManager->deleteTree($this->directory . $this->signature);
 			}
 		}
+
+        // create the transport package
 		$this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
+
+        // now add the namespace into the transport
+        if (!$this->registerNamespace($namespace)) {
+        	$this->_log(MODX_LOG_LEVEL_ERROR,'Could not register namespace to package.');
+        }
+
 		return $this->package;
 	}
 
@@ -111,8 +132,56 @@ class modPackageBuilder {
 	* @returns modTransportVehicle The createed modTransportVehicle instance.
     */
 	function createVehicle($obj, $attr) {
-		return new modTransportVehicle($obj, $attr);
+		$attr['namespace'] = $this->namespace; // package the namespace into the metadata
+        return new modTransportVehicle($obj, $attr);
 	}
+
+    /**
+     * Registers a namespace to the transport package.
+     *
+     * @access public
+     * @param string/modNamespace $namespace The modNamespace object or the
+     * string name of the namespace
+     * @return boolean True if successful.
+     */
+    function registerNamespace($namespace = 'core') {
+    	if (!is_a($namespace, 'modNamespace')) {
+    		$namespace = $this->modx->getObject('modNamespace',$namespace);
+            if ($namespace == null) return false;
+    	}
+
+        // define some basic attributes
+        $attributes= array(
+            XPDO_TRANSPORT_UNIQUE_KEY => 'name',
+            XPDO_TRANSPORT_PRESERVE_KEYS => true,
+            XPDO_TRANSPORT_UPDATE_OBJECT => true,
+        );
+        // create the namespace vehicle
+        $v = $this->createVehicle($namespace,$attributes);
+
+        // put it into the package
+        if (!$this->putVehicle($v)) return false;
+
+        // grab all lexicon foci related to this namespace
+        $foci = $this->modx->getCollection('modLexiconFocus',array(
+            'namespace' => $namespace->get('name'),
+        ));
+        foreach ($foci as $focus) {
+        	$v = $this->createVehicle($focus,$attributes);
+            if (!$this->putVehicle($v)) return false;
+        }
+
+        // grab all lexicon entries related to this namespace
+        $entries = $this->modx->getCollection('modLexiconEntry',array(
+            'namespace' => $namespace->get('name'),
+        ));
+        foreach ($entries as $entry) {
+        	$v = $this->createVehicle($entry,$attributes);
+            if (!$this->putVehicle($v)) return false;
+        }
+
+        return true;
+    }
 
 	/**
     * Puts the vehicle into the package.
@@ -137,13 +206,13 @@ class modPackageBuilder {
 
     /**
      * Generates the model from a schema.
-     * 
+     *
      * @access public
      * @param string $model The directory path of the model to generate to.
      * @param string $schema The schema file to generate from.
      * @return boolean true if successful
      */
-     function buildSchema($model,$schema) {     
+     function buildSchema($model,$schema) {
         $manager= $this->modx->getManager();
         $generator= $manager->getGenerator();
         $generator->parseSchema($schema,$model);
