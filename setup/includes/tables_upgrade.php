@@ -30,6 +30,10 @@ $classes = array (
     'modWorkspace',
     'transport.modTransportPackage',
     'transport.modTransportProvider',
+    'modNamespace',
+    'modLexiconEntry',
+    'modLexiconLanguage',
+    'modLexiconFocus',
 );
 
 $this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
@@ -110,7 +114,7 @@ if ($connected) {
     $description = 'Added modAction `lang_foci` field.';
     $sql = "ALTER TABLE {$table} ADD COLUMN `lang_foci` TEXT AFTER `haslayout`";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    
+
     $class = 'modSystemSetting';
     $table = $this->xpdo->getTableName($class);
     $description = 'Changed modSystemSetting `setting_name` field to `key`.';
@@ -118,19 +122,19 @@ if ($connected) {
     processResults($this->xpdo,$results,$class,$description,$sql);
     $description = 'Changed modSystemSetting `setting_value` field to `value`.';
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `setting_value` `value` TEXT NOT NULL";
-    processResults($this->xpdo,$results,$class,$description,$sql);    
+    processResults($this->xpdo,$results,$class,$description,$sql);
     $description = 'Added modSystemSetting `xtype` field.';
     $sql = "ALTER TABLE {$table} ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    
-        
+
+
     $class = 'modContextSetting';
     $table = $this->xpdo->getTableName($class);
     $description = 'Added modContextSetting `xtype` field.';
     $sql = "ALTER TABLE {$table}
         ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    
+
     $class = 'modUserSetting';
     $table = $this->xpdo->getTableName($class);
     $description = 'Changed modUserSetting `setting_name` field to `key`.';
@@ -143,15 +147,15 @@ if ($connected) {
     $sql = "ALTER TABLE {$table}
         ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    
-    
+
+
     $class = 'modManagerLog';
     $table = $this->xpdo->getTableName($class);
     $description = 'Changed modManagerLog `class_key` field to `classKey`.';
     $sql = "ALTER TABLE {$table}
         CHANGE COLUMN `class_key` `classKey` VARCHAR(100) NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    
+
     $class = 'modUserMessage';
     $table = $this->xpdo->getTableName($class);
     $description = 'Changed modUserMessage `postdate` field from an INT to a DATETIME and to name `date_sent`.';
