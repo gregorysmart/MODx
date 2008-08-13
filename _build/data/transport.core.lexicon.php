@@ -1,7 +1,7 @@
 <?php
 $invdirs = array('.','..','.svn');
 
-$d = dirname(__FILE__).'/lexicon/';
+$d = MODX_CORE_PATH.'/lexicon/';
 
 $i = 0;
 // loop through cultures
@@ -27,7 +27,7 @@ while (false !== ($culture = $dir->read())) {
         $foci[$foc]= $xpdo->newObject('modLexiconFocus');
         $foci[$foc]->fromArray(array (
           'name' => $foc,
-          'value' => 'core',
+          'namespace' => 'core',
         ), '', true, true);
 
         $f = $fdir.$entry;

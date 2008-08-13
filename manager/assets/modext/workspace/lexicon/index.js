@@ -9,7 +9,7 @@ MODx.LexiconManagement = function(config) {
         components: [{
         	xtype: 'tabpanel'
         	,renderTo: 'tabs_div'
-        	,activeTab: 1
+        	,activeTab: 0
             ,deferredRender: false
             ,border: false
             ,defaults: {

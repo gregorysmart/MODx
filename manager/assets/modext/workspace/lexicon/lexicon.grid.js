@@ -93,6 +93,11 @@ MODx.grid.Lexicon = function(config) {
                 ,scope: this
 			}]
         }]
+        ,pagingItems: [{
+            text: _('reload_from_base')
+            ,handler: this.reloadFromBase
+            ,scope: this
+        }]
     });
     MODx.grid.Lexicon.superclass.constructor.call(this,config);
 };
@@ -111,6 +116,20 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	this.loadWindow(btn, e, {
             xtype: xtype
         });
+    }
+    ,reloadFromBase: function() {
+    	Ext.Ajax.timeout = 0;
+    	Ext.Ajax.request({
+    	   url: this.config.url
+    	   ,params: { action: 'reloadFromBase' }
+    	   ,scope: this
+    	   ,success: function(r) {
+    	       r = Ext.decode(r.responseText);
+    	       if (r.success) {
+    	          this.refresh();
+    	       } else FormHandler.errorJSON(r);
+    	   }
+    	});
     }
 });
 Ext.reg('grid-lexicon',MODx.grid.Lexicon);
