@@ -14,14 +14,28 @@ if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 $c = $modx->newQuery('modSystemSetting');
 $cc = $modx->newQuery('modSystemSetting');
 if (isset($_POST['key']) && $_POST['key'] != '') {
+    $c->leftJoin('modLexiconEntry','Entry','CONCAT("setting_",modSystemSetting.key) = Entry.name');
+    $cc->leftJoin('modLexiconEntry','Entry','CONCAT("setting_",modSystemSetting.key) = Entry.name');
+
     $wa = array(
-        'key:LIKE' => '%'.$_POST['key'].'%'
+        'modSystemSetting.key:LIKE' => '%'.$_POST['key'].'%',
+    );
+    $na = array(
+        'Entry.value:LIKE' => '%'.$_POST['key'].'%',
+    );
+    $va = array(
+        'modSystemSetting.value:LIKE' => '%'.$_POST['key'].'%',
     );
     $c->where($wa);
     $cc->where($wa);
+    $c->orCondition($na);
+    $cc->orCondition($na);
+    $c->orCondition($va);
+    $cc->orCondition($va);
 }
 $c->sortby('`'.$_REQUEST['sort'].'`',$_REQUEST['dir']);
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
+
 $settings = $modx->getCollection('modSystemSetting',$c);
 $count = $modx->getCount('modSystemSetting',$cc);
 

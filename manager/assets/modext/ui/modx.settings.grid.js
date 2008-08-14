@@ -30,7 +30,7 @@ MODx.grid.SettingsGrid = function(config) {
         xtype: 'textfield'
         ,name: 'filter_key'
         ,id: 'filter_key'
-        ,emptyText: _('filter_by_key')
+        ,emptyText: _('search')+'...'
         ,listeners: {
             'change': {fn: this.filterByKey, scope: this}
             ,'render': {fn: this._addEnterKeyHandler}
