@@ -1,4 +1,4 @@
-<input id="tv{$tv->name}" name="tv{$tv->name}"
+<input id="tv{$tv->id}" name="tv{$tv->id}"
 	type="text"
 	value="{$tv->get('value')}"
 	{$style}
@@ -6,7 +6,7 @@
 />&nbsp;
 <input type="button" 
 	value="{$_lang.insert}"
-	onclick="BrowseServer('tv{$tv->name}'); return false;" 
+	onclick="BrowseServer('tv{$tv->id}'); return false;" 
 />
 
 {literal}

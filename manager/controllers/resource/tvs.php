@@ -50,11 +50,11 @@ if ($templateId && ($template = $modx->getObject('modTemplate', $templateId))) {
             if ($tv->type == 'richtext') {
                 if (is_array($replace_richtexteditor))
                     $replace_richtexteditor = array_merge($replace_richtexteditor, array (
-                        'tv' . $tv->name
+                        'tv' . $tv->id
                     ));
                 else
                     $replace_richtexteditor = array (
-                        'tv' . $tv->name
+                        'tv' . $tv->id
                     );
             }
             $fe = $tv->renderInput($resource->id);

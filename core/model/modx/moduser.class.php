@@ -34,13 +34,13 @@ class modUser extends modPrincipal {
             }
         }
         if (!isset($this->_attributes[$target])) {
+            $accessTable = $this->xpdo->getTableName($target);
+            $policyTable = $this->xpdo->getTableName('modAccessPolicy');
+            $memberTable = $this->xpdo->getTableName('modUserGroupMember');
+            $memberRoleTable = $this->xpdo->getTableName('modUserGroupRole');
             switch ($target) {
                 case 'modAccessResourceGroup' :
                     $legacyDocGroups = array();
-                    $accessTable = $this->xpdo->getTableName($target);
-                    $policyTable = $this->xpdo->getTableName('modAccessPolicy');
-                    $memberTable = $this->xpdo->getTableName('modUserGroupMember');
-                    $memberRoleTable = $this->xpdo->getTableName('modUserGroupRole');
                     $sql = "SELECT acl.target, acl.principal, mr.authority, acl.policy, p.data FROM {$accessTable} acl " .
                             "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
                             "JOIN {$memberTable} mug ON acl.principal_class = 'modUserGroup' " .
@@ -55,7 +55,6 @@ class modUser extends modPrincipal {
                         ':context' => $context
                     );
                     $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
-//                    $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Attribute query: ' . print_r($query->sql, 1));
                     if ($query->stmt && $query->stmt->execute()) {
                         foreach ($query->stmt->fetchAll(PDO_FETCH_ASSOC) as $row) {
                             $this->_attributes[$target][$row['target']][$row['principal']] = array(
@@ -67,8 +66,57 @@ class modUser extends modPrincipal {
                     }
                     $_SESSION[$context . 'Docgroups']= array_values($legacyDocGroups);
                     break;
+                case 'modAccessContext' :
+                    $sql = "SELECT acl.target, acl.principal, mr.authority, acl.policy, p.data FROM {$accessTable} acl " .
+                            "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
+                            "JOIN {$memberTable} mug ON acl.principal_class = 'modUserGroup' " .
+                            "AND mug.member = :principal " .
+                            "AND mug.user_group = acl.principal " .
+                            "JOIN {$memberRoleTable} mr ON mr.id = mug.role " .
+                            "AND mr.authority <= acl.authority " .
+                            "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
+                    $bindings = array(
+                        ':principal' => $this->get('id')
+                    );
+                    $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
+                    if ($query->stmt && $query->stmt->execute()) {
+                        foreach ($query->stmt->fetchAll(PDO_FETCH_ASSOC) as $row) {
+                            $this->_attributes[$target][$row['target']][$row['principal']] = array(
+                                'authority' => $row['authority'],
+                                'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
+                            );
+                        }
+                    }
+                    break;
+                case 'modAccessElement' :
+                    $sql = "SELECT acl.target, acl.principal, mr.authority, acl.policy, p.data FROM {$accessTable} acl " .
+                            "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
+                            "JOIN {$memberTable} mug ON acl.principal_class = 'modUserGroup' " .
+                            "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
+                            "AND mug.member = :principal " .
+                            "AND mug.user_group = acl.principal " .
+                            "JOIN {$memberRoleTable} mr ON mr.id = mug.role " .
+                            "AND mr.authority <= acl.authority " .
+                            "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
+                    $bindings = array(
+                        ':principal' => $this->get('id'),
+                        ':context' => $context
+                    );
+                    $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
+                    if ($query->stmt && $query->stmt->execute()) {
+                        foreach ($query->stmt->fetchAll(PDO_FETCH_ASSOC) as $row) {
+                            $this->_attributes[$target][$row['target']][$row['principal']] = array(
+                                'authority' => $row['authority'],
+                                'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
+                            );
+                        }
+                    }
+                    break;
                 default :
                     break;
+            }
+            if (!isset($this->_attributes[$target])) {
+                $this->_attributes[$target] = array();
             }
             $_SESSION["modx.{$context}.principal.attributes"] = $this->_attributes;
         }

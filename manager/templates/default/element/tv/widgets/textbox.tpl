@@ -1,4 +1,4 @@
-<input id="tv{$tv->name}" name="tv{$tv->name}"
+<input id="tv{$tv->id}" name="tv{$tv->id}"
 	type="text" class="textfield"
 	value="{$tv->get('value')|escape}"
 	{$style}

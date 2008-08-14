@@ -127,40 +127,40 @@ $c = new xPDOCriteria($modx,'
 ',array(
 	':template' => $_POST['template']
 ));
-$docgroups = $modx->getCollection('modTemplateVar',$c);
+$tvs = $modx->getCollection('modTemplateVar',$c);
 
-foreach ($docgroups as $dg) {
+foreach ($tvs as $tv) {
 	$tmplvar = '';
-	if ($dg->type == 'url') {
-		$tmplvar = $_POST['tv'.$tv->name];
+	if ($tv->type == 'url') {
+		$tmplvar = $_POST['tv'.$tv->id];
 		if ($_POST["tv" . $row['name'] . '_prefix'] != '--') {
 			$tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
-			$tmplvar = $_POST['tv'.$tv->name.'_prefix'].$tmplvar;
+			$tmplvar = $_POST['tv'.$tv->id.'_prefix'].$tmplvar;
 		}
     } elseif ($tv->type == 'file') {
 		/* Modified by Timon for use with resource browser */
-		$tmplvar = $_POST['tv'.$tv->name];
+		$tmplvar = $_POST['tv'.$tv->id];
 	} else {
-		if (is_array($_POST['tv'.$tv->name])) {
+		if (is_array($_POST['tv'.$tv->id])) {
 			// handles checkboxes & multiple selects elements
 			$feature_insert = array ();
-            $lst = $_POST['tv'.$tv->name];
+            $lst = $_POST['tv'.$tv->id];
 			while (list($featureValue, $feature_item) = each($lst)) {
             	$feature_insert[count($feature_insert)] = $feature_item;
 			}
 			$tmplvar = implode('||',$feature_insert);
 		} else {
-			$tmplvar = $_POST['tv'.$tv->name];
+			$tmplvar = $_POST['tv'.$tv->id];
 		}
 	}
     // save value if it was mopdified
-	if (in_array($tv->name, $_POST['variablesmodified'])) {
+	if (in_array($tv->id, $_POST['variablesmodified'])) {
 		if (strlen($tmplvar) > 0 && $tmplvar != $tv->default_text) {
-			$tmplvars[$tv->name] = array (
+			$tmplvars[$tv->id] = array (
 				$tv->id,
 				$tmplvar,
 			);
-		} else $tmplvars[$tv->name] = $tv->id;
+		} else $tmplvars[$tv->id] = $tv->id;
     }
 }
 
@@ -217,8 +217,6 @@ if (isset($_POST['resource_groups'])) {
     }
 }
 
-
-// Modified by Raymond for TV - Orig Added by Apodigm for DocVars
 foreach ($tmplvars as $field => $value) {
 	if (is_array($value)) {
 		$tvId = $value[0];
@@ -230,7 +228,6 @@ foreach ($tmplvars as $field => $value) {
 		$tvc->save();
 	}
 }
-//End Modification
 
 if ($_POST['parent'] != 0) {
 	$parent = $modx->getObject('modResource', $_POST['parent']);

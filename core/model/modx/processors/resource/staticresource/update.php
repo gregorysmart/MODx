@@ -98,7 +98,7 @@ if (empty($_POST['unpub_date'])) {
 }
 
 
-
+//FIXME: I'm broken!
 // Modified by Raymond for TV - Orig Added by Apodigm - DocVars
 // get document groups for current user
 $tmplvars = array ();
@@ -141,33 +141,33 @@ $tvs = $modx->getCollection('modTemplateVar',$c);
 foreach ($tvs as $tv) {
 	$tmplvar = '';
 	if ($tv->type == 'url') {
-		$tmplvar = $_POST['tv'.$tv->name];
-		if ($_POST['tv'.$tv->name.'_prefix'] != '--') {
+		$tmplvar = $_POST['tv'.$tv->id];
+		if ($_POST['tv'.$tv->id.'_prefix'] != '--') {
 			$tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
-			$tmplvar = $_POST['tv'.$tv->name.'_prefix'].$tmplvar;
+			$tmplvar = $_POST['tv'.$tv->id.'_prefix'].$tmplvar;
 		}
     } elseif ($tv->type == 'file') {
 		/* Modified by Timon for use with resource browser */
-		$tmplvar = $_POST['tv'.$tv->name];
+		$tmplvar = $_POST['tv'.$tv->id];
 	} else {
-		if (is_array($_POST['tv'.$tv->name])) {
+		if (is_array($_POST['tv'.$tv->id])) {
 			// handles checkboxes & multiple selects elements
 			$feature_insert = array ();
-            $lst = $_POST['tv'.$tv->name];
+            $lst = $_POST['tv'.$tv->id];
 			while (list($featureValue, $feature_item) = each($lst)) {
             	$feature_insert[count($feature_insert)] = $feature_item;
 			}
 			$tmplvar = implode('||',$feature_insert);
 		} else {
-			$tmplvar = $_POST['tv'.$tv->name];
+			$tmplvar = $_POST['tv'.$tv->id];
 		}
 	}
 	if (strlen($tmplvar) > 0 && $tmplvar != $tv->default_text) {
-		$tmplvars[$tv->name] = array (
+		$tmplvars[$tv->id] = array (
 			$tv->id,
 			$tmplvar,
 		);
-	} else $tmplvars[$tv->name] = $tv->id;
+	} else $tmplvars[$tv->id] = $tv->id;
 }
 //End Modification
 

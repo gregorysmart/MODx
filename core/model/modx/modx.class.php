@@ -809,8 +809,18 @@ class modX extends xPDO {
                 $_SESSION["modx.{$contextKey}.user.config"]= $usrSettings;
                 $this->config= array_merge($this->config, $usrSettings);
             }
-            //TODO: remove this and make it happen on demand?
-            $this->user->loadAttributes('modAccessResourceGroup', $contextKey);
+        } else {
+            $this->user = $this->newObject('modUser', array('username' => '(anonymous)'));
+            $this->user->_attributes = array(
+                'modAccessContext' => array(
+                    $contextKey => array(
+                        '0' => array(
+                            'authority' => 9999,
+                            'policy' => array('load' => true)
+                        )
+                    )
+                )
+            );
         }
         return $this->user;
     }

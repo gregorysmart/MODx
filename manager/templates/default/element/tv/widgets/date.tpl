@@ -1,4 +1,4 @@
-<input id="tv{$tv->name}" name="tv{$tv->name}"
+<input id="tv{$tv->id}" name="tv{$tv->id}"
 	type="text" class="datefield"
 	value="{$tv->get('value')}"
 	modx:format="Y-m-d H:i:s"

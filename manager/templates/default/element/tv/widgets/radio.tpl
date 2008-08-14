@@ -1,6 +1,6 @@
 {foreach from=$opts item=item}
 <label>
-	<input name="tv{$tv->name}"
+	<input id="tv{$tv->id}" name="tv{$tv->id}"
 		type="radio"
 		value="{$item.value}"
 		{if $item.checked} checked="checked"{/if}

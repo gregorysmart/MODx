@@ -1,4 +1,4 @@
-<select id="tv{$tv->name}_prefix" name="tv{$tv->name}_prefix"
+<select id="tv{$tv->id}_prefix" name="tv{$tv->id}_prefix"
 	onchange="documentDirty=true;"
 >
 {foreach from=$urls item=url}
@@ -6,7 +6,7 @@
 {/foreach}
 </select>
 
-<input id="tv{$tv->name}" name="tv{$tv->name}"
+<input id="tv{$tv->id}" name="tv{$tv->id}"
 	type="text"
 	value="{$tv->get('value')}"
 	style="width: 250px;"

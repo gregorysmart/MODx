@@ -100,75 +100,56 @@ if (empty($_POST['unpub_date'])) {
 }
 
 
-//TODO: replace with ABAC approach
-$tmplvars = array ();
-$docgrp = $_SESSION['mgrDocgroups']
-	? implode(',',$_SESSION['mgrDocgroups'])
-	: false;
-
+$tmplvars = array();
 $c = new xPDOCriteria($modx,'
-	SELECT
-		DISTINCT tv.*,
-		tv.default_text AS value
-
-	FROM '.$modx->getTableName('modTemplateVar').' AS tv
-
-		INNER JOIN '.$modx->getTableName('modTemplateVarTemplate').' AS tvtpl
-		ON tvtpl.tmplvarid = tv.id
-
-		LEFT JOIN '.$modx->getTableName('modTemplateVarResourceGroup').' AS tva
-		ON tva.tmplvarid = tv.id
-
-	WHERE
-		tvtpl.templateid = :template
-	AND (
-			1 = :mgrRole
-		 OR ISNULL(tva.documentgroup)
-		 '.((!$docgrp) ? '' : ' OR tva.documentgroup IN ('.$docgrp.')').'
-		)
-	ORDER BY tv.rank
+    SELECT
+        DISTINCT tv.*,
+        tv.default_text AS value
+    FROM '.$modx->getTableName('modTemplateVar').' AS tv
+        INNER JOIN '.$modx->getTableName('modTemplateVarTemplate').' AS tvtpl
+        ON tvtpl.tmplvarid = tv.id
+    WHERE
+        tvtpl.templateid = :template
+    ORDER BY tv.rank
 ',array(
-	':template' => $_POST['template'],
-	':mgrRole' => isset($_SESSION['mgrRole']) && $_SESSION['mgrRole'] ? 1 : 0,
+    ':template' => $_POST['template']
 ));
-$docgroups = $modx->getCollection('modTemplateVar',$c);
+$tvs = $modx->getCollection('modTemplateVar',$c);
 
-foreach ($docgroups as $dg) {
-	$tmplvar = '';
-	if ($dg->type == 'url') {
-		$tmplvar = $_POST['tv'.$tv->name];
-		if ($_POST["tv" . $row['name'] . '_prefix'] != '--') {
-			$tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
-			$tmplvar = $_POST['tv'.$tv->name.'_prefix'].$tmplvar;
-		}
+foreach ($tvs as $tv) {
+    $tmplvar = '';
+    if ($tv->type == 'url') {
+        $tmplvar = $_POST['tv'.$tv->id];
+        if ($_POST["tv" . $row['name'] . '_prefix'] != '--') {
+            $tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
+            $tmplvar = $_POST['tv'.$tv->id.'_prefix'].$tmplvar;
+        }
     } elseif ($tv->type == 'file') {
-		/* Modified by Timon for use with resource browser */
-		$tmplvar = $_POST['tv'.$tv->name];
-	} else {
-		if (is_array($_POST['tv'.$tv->name])) {
-			// handles checkboxes & multiple selects elements
-			$feature_insert = array ();
-            $lst = $_POST['tv'.$tv->name];
-			while (list($featureValue, $feature_item) = each($lst)) {
-            	$feature_insert[count($feature_insert)] = $feature_item;
-			}
-			$tmplvar = implode('||',$feature_insert);
-		} else {
-			$tmplvar = $_POST['tv'.$tv->name];
-		}
-	}
+        /* Modified by Timon for use with resource browser */
+        $tmplvar = $_POST['tv'.$tv->id];
+    } else {
+        if (is_array($_POST['tv'.$tv->id])) {
+            // handles checkboxes & multiple selects elements
+            $feature_insert = array ();
+            $lst = $_POST['tv'.$tv->id];
+            while (list($featureValue, $feature_item) = each($lst)) {
+                $feature_insert[count($feature_insert)] = $feature_item;
+            }
+            $tmplvar = implode('||',$feature_insert);
+        } else {
+            $tmplvar = $_POST['tv'.$tv->id];
+        }
+    }
     // save value if it was mopdified
-	if (in_array($tv->name, $_POST['variablesmodified'])) {
-		if (strlen($tmplvar) > 0 && $tmplvar != $tv->default_text) {
-			$tmplvars[$tv->name] = array (
-				$tv->id,
-				$tmplvar,
-			);
-		} else $tmplvars[$tv->name] = $tv->id;
+    if (in_array($tv->id, $_POST['variablesmodified'])) {
+        if (strlen($tmplvar) > 0 && $tmplvar != $tv->default_text) {
+            $tmplvars[$tv->id] = array (
+                $tv->id,
+                $tmplvar,
+            );
+        } else $tmplvars[$tv->id] = $tv->id;
     }
 }
-//End Modification
-
 
 // invoke OnBeforeDocFormSave event
 $modx->invokeEvent('OnBeforeDocFormSave',array(

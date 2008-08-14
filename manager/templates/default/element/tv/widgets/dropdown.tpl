@@ -1,4 +1,4 @@
-<select id="tv{$tv->name}" name="tv{$tv->name}"
+<select id="tv{$tv->id}" name="tv{$tv->id}"
 	class="combobox"
 	modx:allowblank="1"
 	modx:editable="0"

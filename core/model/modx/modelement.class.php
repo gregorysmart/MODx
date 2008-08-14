@@ -188,5 +188,42 @@ class modElement extends modAccessibleSimpleObject {
             $this->_filters['output']->filter($this);
         }
     }
+
+    /**
+     * Loads the access control policies applicable to this element.
+     *
+     * {@inheritdoc}
+     */
+    function findPolicy($context = '') {
+        $policy = array();
+        $context = !empty($context) ? $context : $this->xpdo->context->get('key');
+        if (empty($this->_policies) || !isset($this->_policies[$context])) {
+            $accessTable = $this->xpdo->getTableName('modAccessElement');
+            $policyTable = $this->xpdo->getTableName('modAccessPolicy');
+            $sql = "SELECT acl.target, acl.principal, acl.authority, acl.policy, p.data FROM {$accessTable} acl " .
+                    "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
+                    "ON acl.principal_class = 'modUserGroup' " .
+                    "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
+                    "AND acl.target = :element " .
+                    "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
+            $bindings = array(
+                ':element' => $this->get('id'),
+                ':context' => $context
+            );
+            $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
+            if ($query->stmt && $query->stmt->execute()) {
+                foreach ($query->stmt->fetchAll(PDO_FETCH_ASSOC) as $row) {
+                    $policy['modAccessElement'][$row['target']][$row['principal']] = array(
+                        'authority' => $row['authority'],
+                        'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
+                    );
+                }
+            }
+            $this->_policies[$context] = $policy;
+        } else {
+            $policy = $this->_policies[$context];
+        }
+        return $policy;
+    }
 }
 ?>

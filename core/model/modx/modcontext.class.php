@@ -22,7 +22,7 @@ class modContext extends modAccessibleObject {
         parent :: __construct($xpdo);
         $this->documentListing= & $this->resourceListing;
     }
-
+    
     /**
      * Prepare a context for use.
      *
@@ -58,5 +58,40 @@ class modContext extends modAccessibleObject {
     function getCacheFileName() {
         $this->_cacheFileName= str_replace('[contextKey]', $this->get('key'), $this->_cacheFileName);
         return $this->_cacheFileName;
+    }
+    
+    /**
+     * Loads the access control policies applicable to this element.
+     *
+     * {@inheritdoc}
+     */
+    function findPolicy($context = '') {
+        $policy = array();
+        $context = !empty($context) ? $context : $this->xpdo->context->get('key');
+        if (empty($this->_policies) || !isset($this->_policies[$context])) {
+            $accessTable = $this->xpdo->getTableName('modAccessContext');
+            $policyTable = $this->xpdo->getTableName('modAccessPolicy');
+            $sql = "SELECT acl.target, acl.principal, acl.authority, acl.policy, p.data FROM {$accessTable} acl " .
+                    "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
+                    "WHERE acl.principal_class = 'modUserGroup' " .
+                    "AND acl.target = :context " .
+                    "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
+            $bindings = array(
+                ':context' => $this->get('key')
+            );
+            $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
+            if ($query->stmt && $query->stmt->execute()) {
+                foreach ($query->stmt->fetchAll(PDO_FETCH_ASSOC) as $row) {
+                    $policy['modAccessContext'][$row['target']][$row['principal']] = array(
+                        'authority' => $row['authority'],
+                        'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
+                    );
+                }
+            }
+            $this->_policies[$context] = $policy;
+        } else {
+            $policy = $this->_policies[$context];
+        }
+        return $policy;
     }
 }
