@@ -225,42 +225,6 @@ class modResource extends modAccessibleSimpleObject {
         return $rt;
     }
 
-	/**
-	 * Check to see if a user has access to a modResource instance.
-     *
-	 * This assumes that the static 'Public' modResourceGroup exists and solves
-	 * the 'allow all except deny' issue, turning the system into 'deny all
-	 * except allow or administrator'.
-     *
-     * @deprecated Dec 1, 2007 See checkPolicy() and findPolicy().
-     * @param boolean $ar_docgroups
-     * @return boolean true if the user has permission to access the resource.
-     */
-	function hasAccess($ar_docgroups = false) {
-		global $e;
-
-		$this->dgds = $this->xpdo->getCollection('modResourceGroupResource',array('document' => $this->id));
-		$has_access = false;
-
-		if ($_SESSION['mgrRole'] == 1) { // if administrator, always allow in
-			$has_access = true;
-		} elseif (is_array($ar_docgroups)) { // if user is in manager
-			foreach ($this->dgds as $dgd) { // now loop through doc groups
-				$dgd->group = $dgd->getOne('modResourceGroup');
-				// if docgroup is in user's userdocgroups, then allow
-				// or if the document is in the Public docgroup, then allow
-				if (array_search($dgd->document_group,$ar_docgroups) || $dgd->group->name == 'Public')
-					$has_access = true;
-			}
-		}
-		if (!$has_access) {
-			$e->setError(3);
-			$e->dumpError();
-			return false;
-		}
-		return true;
-	}
-
     /**
      * Resolve isfolder for the resource based on if it has children.
      */

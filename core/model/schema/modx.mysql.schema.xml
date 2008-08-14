@@ -179,7 +179,7 @@
 	    <field key="focus" dbtype="varchar" precision="100" phptype="string" null="false" default="default" />
 		<field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
 	    <field key="language" dbtype="varchar" precision="20" phptype="string" null="false" default="en" />
-	    <field key="createdon" dbtype="datetime" phptype="datetime" null="false" />
+	    <field key="createdon" dbtype="datetime" phptype="datetime" />
 	    <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
 		<aggregate alias="modNamespace" class="modNamespace" local="namespace" foreign="name" cardinality="one" owner="foreign" />
 	    <aggregate alias="modLexiconFocus" class="modLexiconFocus" local="focus" foreign="name" cardinality="one" owner="foreign" />

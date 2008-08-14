@@ -583,6 +583,13 @@ class modInstall {
                     $userProfile->set('email', $this->config['cmsadminemail']);
                     $userProfile->set('role', 1);
                     $saved = $userProfile->save();
+                    if ($saved) {
+                        $userGroupMembership = $this->xpdo->newObject('modUserGroupMember');
+                        $userGroupMembership->set('user_group', 1);
+                        $userGroupMembership->set('member', $user->get('id'));
+                        $userGroupMembership->set('role', 2);
+                        $saved = $userGroupMembership->save();
+                    }
                 }
                 if (!$saved) {
                     $results[] = array (
@@ -621,6 +628,22 @@ class modInstall {
                     $currentVersion = include(MODX_CORE_PATH . 'config/version.inc.php');
                     $settings_version->set('value', $currentVersion['full_version']);
                     $settings_version->save();
+                }
+                
+                // make sure admin user (1) has proper group and role
+                $adminUser = $this->xpdo->getObject('modUser', 1);
+                if ($adminUser) {
+                    $userGroupMembership = $this->xpdo->getObject('modUserGroupMember', array('user_group' => 1, 'member' => 1));
+                    if (!$userGroupMembership) {
+                        $userGroupMembership = $this->xpdo->newObject('modUserGroupMember');
+                        $userGroupMembership->set('user_group', 1);
+                        $userGroupMembership->set('member', 1);
+                        $userGroupMembership->set('role', 2);
+                        $userGroupMembership->save();
+                    } else {
+                        $userGroupMembership->set('role', 2);
+                        $userGroupMembership->save();
+                    }
                 }
             }
         }

@@ -4,6 +4,9 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Fix to new modLexiconEntry table structure (was not installing due to NOT NULL and no default value).
+- Removed modResource::hasAccess() function to make sure and avoid confusion with security.
+- Add default admin user to the Administrator modUserGroup with a modUserGroupRole of 2 (SuperUser) on new installs and upgrades.
 - [#MODX-210] Changed no-longer-valid help text for resource panel
 - [#MODX-216] Fixed bug with pub_date/unpub_date for the Resource panel
 - [#MODX-213] manually entered passwords not being displayed after saving
@@ -33,9 +36,6 @@ MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 - Updated build.src.url to branches/revolution
 - Fixed import html/resources
 - Fixed action pointer if version is incorrect
-
-MODx Revolution 2.0.0-alpha-2 ($LastChangedRevision$, $LastChangedDate$)
-====================================
 - Adopting new product name, MODx Revolution, and changed version to 2.0.0
 - Fixed bug with content type grid
 - Replaced 'gender' with Role column in Users grid

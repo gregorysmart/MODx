@@ -173,6 +173,12 @@ if ($connected) {
     $description = 'Changed modUserMessage `messageread` field to `read`.';
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `messageread` `read` TINYINT(1) NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modLexiconEntry';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Changed modLexiconEntry `createdon` to allow NULL.';
+    $sql = "ALTER TABLE {$table} CHANGE COLUMN `createdon` `createdon` DATETIME NULL";
+    processResults($this->xpdo,$results,$class,$description,$sql);
 }
 return $results;
 
