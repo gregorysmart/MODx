@@ -179,7 +179,7 @@ MODx.window.CreateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('create_new')
-        ,width: 300
+        ,width: 400
         ,url: config.url
         ,action: 'create'
         ,fields: [{
@@ -192,12 +192,9 @@ MODx.window.CreateSetting = function(config) {
             ,name: 'key'
             ,maxLength: 100
         },{
-            xtype: 'textfield'
+            xtype: 'combo-xtype'
             ,fieldLabel: _('xtype')
             ,description: _('xtype_desc')
-            ,name: 'xtype'
-            ,maxLength: 100
-            ,value: 'textfield'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('value')
@@ -225,3 +222,33 @@ Ext.override(Ext.PagingToolbar,{
         });
     }
 });
+
+
+/**
+ * Displays a xtype combobox
+ * 
+ * @class MODx.combo.xType
+ * @extends Ext.form.ComboBox
+ * @constructor
+ * @xtype combo-xtype
+ */
+MODx.combo.xType = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        store: new Ext.data.SimpleStore({
+            fields: ['d','v']
+            ,data: [[_('textfield'),'textfield'],[_('textarea'),'textarea'],[_('yesno'),'boolean']]
+        })
+        ,displayField: 'd'
+        ,valueField: 'v'
+        ,mode: 'local'
+        ,name: 'xtype'
+        ,hiddenName: 'xtype'
+        ,triggerAction: 'all'
+        ,editable: false
+        ,selectOnFocus: false
+    });
+    MODx.combo.xType.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
+Ext.reg('combo-xtype',MODx.combo.xType);

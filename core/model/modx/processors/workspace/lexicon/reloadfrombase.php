@@ -65,7 +65,6 @@ while (false !== ($culture = $dir->read())) {
                 if ($entry == null) {
                     $entry= $modx->newObject('modLexiconEntry');
                     $entry->fromArray(array (
-                      'id' => $i,
                       'name' => $key,
                       'value' => $value,
                       'focus' => $foc,
