@@ -49,10 +49,10 @@ class modSmarty extends Smarty {
 
 		// Set up configuration variables for Smarty.
         $this->template_dir = $modx->config['manager_path'] . 'templates/';
-        $this->compile_dir  = $modx->cachePath . 'smarty';
+        $this->compile_dir  = $modx->cachePath . 'mgr/smarty/';
         $this->config_dir   = $modx->config['core_path'] . 'model/smarty/configs';
         $this->plugins_dir  = array(
-            $modx->config['core_path'] . 'model/smarty/plugins',
+            $this->modx->config['core_path'] . 'model/smarty/plugins',
         );
         $this->caching = false;
 
@@ -60,9 +60,10 @@ class modSmarty extends Smarty {
             $this->$paramKey= $paramValue;
         }
 
-        $this->compile_dir= $modx->cachePath . 'smarty';
+        $this->compile_dir= $this->modx->cachePath . 'mgr/smarty/';
         if (!is_dir($this->compile_dir)) {
-            $modx->cacheManager->writeTree($this->compile_dir);
+            $this->modx->getCacheManager();
+            $this->modx->cacheManager->writeTree($this->compile_dir);
         }
 
 		$this->assign('app_name','MODx');
@@ -70,6 +71,15 @@ class modSmarty extends Smarty {
 		$this->_blocks = array();
 		$this->_derived = null;
 	}
+
+    function setCachePath($path = '') {
+    	$path = $this->modx->cachePath.$path;
+        if (!is_dir($path)) {
+            $this->modx->getCacheManager();
+            $this->modx->cacheManager->writeTree($path);
+        }
+        $this->modx->smarty->compile_dir = $path;
+    }
 
     function setTemplatePath($path = '') {
         if ($path == '') return false;

@@ -41,8 +41,11 @@ class modManagerRequest extends modRequest {
 
         // load smarty template engine
         $this->modx->getService('smarty', 'smarty.modSmarty', '', array(
-            'template_dir' => $this->modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/'
+            'template_dir' => $this->modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/',
         ));
+        // load context-specific cache dir
+        $this->modx->smarty->setCachePath($this->modx->context->get('key').'/smarty/');
+
         $this->modx->smarty->assign('_config',$this->modx->config);
         $this->modx->smarty->assign_by_ref('modx',$this->modx);
 
@@ -80,7 +83,7 @@ class modManagerRequest extends modRequest {
                 }
             }
         }
-        
+
         // andrazk 20070416 - if session started before install and was not destroyed yet
         if (isset ($GLOBALS['lastInstallTime'])) {
             if (isset ($_SESSION['mgrValidated'])) {
@@ -147,7 +150,7 @@ class modManagerRequest extends modRequest {
      * @access public
      * @return boolean True if a request is handled without interruption.
      */
-    function handleRequest() {        
+    function handleRequest() {
         // Load error handling class
         $this->loadErrorHandler('modArrayError');
 
@@ -194,9 +197,9 @@ class modManagerRequest extends modRequest {
 		if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
 			$this->loadActionMap();
 		}
-        
+
         $_lang = $this->modx->lexicon->fetch();
-        
+
         if ($this->action === null || $this->action == '') {
             // this looks to be a top-level frameset request, so let's serve up ext
             $this->modx->smarty->assign('_lang',$_lang);
@@ -204,31 +207,31 @@ class modManagerRequest extends modRequest {
         } else {
 			if (isset($this->modx->actionMap[$this->action])) {
 				$action = $this->modx->actionMap[$this->action];
-                
+
                 $foci = explode(',',$action['lang_foci']);
                 foreach ($foci as $focus) { $this->modx->lexicon->load($focus); }
                 $this->modx->smarty->assign('_lang_foci',$action['lang_foci']);
                 $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
-                $this->modx->smarty->assign('_ctx',$action['context']);            
-                
-                
+                $this->modx->smarty->assign('_ctx',$action['context']);
+
+
                 if ($action['haslayout']) {
                     include_once $this->modx->config['manager_path'].'controllers/frame-header.php';
                 }
-                
+
                 // find context path
-                if (!isset($action['context']) || $action['context'] == 'mgr') {                    
+                if (!isset($action['context']) || $action['context'] == 'mgr') {
                     $f = $action['context_path'].'controllers/'.$action['controller'];
-                
+
                 } else { // if a custom 3rd party path
                      $this->modx->smarty->setTemplatePath($action['context_path'].'core/templates/');
                      $f = $action['context_path'].'core/controllers/'.$action['controller'];
                 }
-                
+
                 // set context url and path
                 $this->modx->config['context_url'] = $action['context_url'];
                 $this->modx->config['context_path'] = $action['context_path'];
-                
+
 				// if action is a directory, load base index.php
 				if (substr($f,strlen($f)-1,1) == '/') {
 					$f .= 'index';
