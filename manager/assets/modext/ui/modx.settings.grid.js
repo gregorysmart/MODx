@@ -42,7 +42,7 @@ MODx.grid.SettingsGrid = function(config) {
         ,baseParams: {
             action: 'getList'
         }
-        ,fields: ['key','name','value','description','xtype','oldkey','menu']
+        ,fields: ['key','name','value','description','xtype','namespace','editedon','oldkey','menu']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -68,6 +68,11 @@ MODx.grid.SettingsGrid = function(config) {
         },{
             header: _('key')
             ,dataIndex: 'key'
+            ,width: 100
+            ,sortable: true
+        },{
+            header: _('last_modified')
+            ,dataIndex: 'editedon'
             ,width: 100
             ,sortable: true
         }]

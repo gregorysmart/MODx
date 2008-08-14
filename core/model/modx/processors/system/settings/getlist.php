@@ -37,6 +37,8 @@ foreach ($settings as $setting) {
         ? $modx->lexicon('setting_'.$sa['key'])
         : $sa['key'];
     $sa['oldkey'] = $sa['key'];
+    $sa['editedon'] = $sa['editedon'] == '0000-00-00 00:00:00' || $sa['editedon'] == null ? '' : $sa['editedon'];
+
     $sa['menu'] = array(
         array(
             'text' => $modx->lexicon('setting_remove'),
