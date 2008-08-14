@@ -156,28 +156,31 @@ class modPackageBuilder {
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
         );
+        // a list of classes that have namespace columns
+        // and can therefore be auto-packaged into the transport
+        // without manual specification
+        $classes= array(
+            'modLexiconFocus',
+            'modLexiconEntry',
+            'modSystemSetting',
+            'modContextSetting',
+        );
+
         // create the namespace vehicle
         $v = $this->createVehicle($namespace,$attributes);
 
         // put it into the package
         if (!$this->putVehicle($v)) return false;
 
-        // grab all lexicon foci related to this namespace
-        $foci = $this->modx->getCollection('modLexiconFocus',array(
-            'namespace' => $namespace->get('name'),
-        ));
-        foreach ($foci as $focus) {
-        	$v = $this->createVehicle($focus,$attributes);
-            if (!$this->putVehicle($v)) return false;
-        }
-
-        // grab all lexicon entries related to this namespace
-        $entries = $this->modx->getCollection('modLexiconEntry',array(
-            'namespace' => $namespace->get('name'),
-        ));
-        foreach ($entries as $entry) {
-        	$v = $this->createVehicle($entry,$attributes);
-            if (!$this->putVehicle($v)) return false;
+        // grab all related classes that can be auto-packaged and package them in
+        foreach ($classes as $classname) {
+            $objs = $this->modx->getCollection($classname,array(
+                'namespace' => $namespace->get('name'),
+            ));
+            foreach ($objs as $obj) {
+                $v = $this->createVehicle($obj,$attributes);
+                if (!$this->putVehicle($v)) return false;
+            }
         }
 
         return true;
