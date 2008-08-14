@@ -29,7 +29,11 @@ if ($entry == null) {
     $entry->set('namespace',$namespace->name);
     $entry->set('name','setting_'.$_POST['key']);
     $entry->set('value',$_POST['name']);
+    $entry->set('focus','system_setting');
+    $entry->set('language',$modx->cultureKey);
     $entry->save();
+
+    $r = $modx->lexicon->clearCache($entry->get('language').'/'.$entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
 }
 $description = $modx->getObject('modLexiconEntry',array(
     'namespace' => $namespace->name,
@@ -40,13 +44,18 @@ if ($description == null) {
     $description->set('namespace',$namespace->name);
     $description->set('name','setting_'.$_POST['key'].'_desc');
 	$description->set('value',$_POST['description']);
+    $description->set('focus','system_setting');
+    $description->set('language',$modx->cultureKey);
     $description->save();
+
+    $r = $modx->lexicon->clearCache($description->get('language').'/'.$description->get('namespace').'/'.$description->get('focus').'.cache.php');
 }
 
 if ($setting->save() === false) {
     $modx->error->checkValidation($setting);
     $modx->error->failure($modx->lexicon('setting_err_save'));
 }
+
 
 $modx->reloadConfig();
 

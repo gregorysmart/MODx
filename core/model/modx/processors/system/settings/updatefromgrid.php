@@ -26,11 +26,13 @@ $entry = $modx->getObject('modLexiconEntry',array(
 if ($entry != null) {
     $entry->set('value',$_DATA['name']);
     $entry->save();
+    $r = $modx->lexicon->clearCache($entry->get('language').'/'.$entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
 }
 
 if ($setting->save() == false) {
     $modx->error->failure($modx->lexicon('setting_err_save'));
 }
+
 
 $modx->reloadConfig();
 

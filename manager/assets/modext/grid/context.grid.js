@@ -40,6 +40,9 @@ MODx.grid.Context = function(config) {
 Ext.extend(MODx.grid.Context,MODx.grid.Grid,{
     update: function(itm,e) {
         var r = this.menu.record;
+        
+        location.href = 'index.php?a='+MODx.action['context/update']+'&key='+r.key;
+        return false;
         if (this.windows.update) {
             this.windows.update.destroy();
         }
@@ -90,58 +93,3 @@ MODx.window.CreateContext = function(config) {
 Ext.extend(MODx.window.CreateContext,MODx.Window);
 Ext.reg('window-context-create',MODx.window.CreateContext);
 
-/**
- * Generates the update context window.
- *  
- * @class MODx.window.UpdateContext
- * @extends MODx.Window
- * @constructor
- * @param {Object} config An object of options.
- * @xtype window-context-update
- */
-MODx.window.UpdateContext = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        title: _('context_update')
-        ,url: MODx.config.connectors_url+'context/index.php'
-        ,action: 'update'
-        ,width: 550
-        ,fields: [{
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,border: false
-            ,deferredRender: false
-            ,bodyStyle: {
-                padding: '1em'
-            }
-            ,defaults: { autoHeight: true, labelAlign: 'top' }
-            ,items: [{
-                title: _('general_information')
-                ,layout: 'form'
-                ,border: false
-                ,items: [{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('context_key')
-                    ,name: 'key'
-                    ,width: 250
-                    ,maxLength: 100
-                    ,value: config.record.key
-                },{
-                    xtype: 'textarea'
-                    ,fieldLabel: _('description')
-                    ,name: 'description'
-                    ,width: 300
-                    ,grow: true
-                    ,value: config.record.description
-                }]
-            },{
-                xtype: 'grid-context-settings'
-                ,preventRender: true
-                ,context_key: config.context_key
-            }]
-        }]
-    });
-    MODx.window.UpdateContext.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.window.UpdateContext,MODx.Window);
-Ext.reg('window-context-update',MODx.window.UpdateContext);
