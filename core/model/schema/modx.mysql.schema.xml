@@ -137,6 +137,8 @@
         <field key="key" dbtype="varchar" precision="50" phptype="string" null="false" index="pk" />
         <field key="value" dbtype="mediumtext" phptype="string" />
         <field key="xtype" dbtype="varchar" precision="75" phptype="string" null="false" default="textfield" />
+        <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
         <aggregate alias="modContext" class="modContext" key="context_key" local="context_key" foreign="key" cardinality="one" owner="foreign" />
         <aggregate alias="modSystemSetting" class="modSystemSetting" key="key" local="key" foreign="key" cardinality="one" owner="foreign" />
     </object>
@@ -382,6 +384,8 @@
         <field key="key" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="pk" />
         <field key="value" dbtype="text" phptype="string" null="false" default="" />
         <field key="xtype" dbtype="varchar" precision="75" phptype="string" null="false" default="textfield" />
+        <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
     </object>
     <object class="modTemplate" table="site_templates" extends="modElement">
         <field key="templatename" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
@@ -512,6 +516,8 @@
         <field key="key" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="pk" />
         <field key="value" dbtype="text" phptype="string" />
         <field key="xtype" dbtype="varchar" precision="75" phptype="string" null="false" default="textfield" />
+        <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
         <aggregate alias="modUser" class="modUser" key="id" local="user" foreign="id" cardinality="one" owner="foreign" />
     </object>
     <object class="modWebLink" extends="modResource" />

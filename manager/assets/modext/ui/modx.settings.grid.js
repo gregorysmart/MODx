@@ -1,4 +1,4 @@
-Ext.namespace('MODx','MODx.grid');
+Ext.namespace('MODx.grid');
 /**
  * A grid created that allows for dynamic editors for each column
  * based upon the data's xtype property, as well as key filtering. 
@@ -18,7 +18,7 @@ MODx.grid.SettingsGrid = function(config) {
     });
     if (!config.tbar) {
         config.tbar = [{
-            text: _('create_new')
+            text: _('setting_create')
             ,scope: this
             ,handler: { 
                 xtype: 'window-setting-create'
@@ -178,7 +178,7 @@ Ext.reg('modx-grid-settings',MODx.grid.SettingsGrid);
 MODx.window.CreateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('create_new')
+        title: _('setting_create')
         ,width: 400
         ,url: config.url
         ,action: 'create'
@@ -192,13 +192,29 @@ MODx.window.CreateSetting = function(config) {
             ,name: 'key'
             ,maxLength: 100
         },{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,allowBlank: false
+        },{
             xtype: 'combo-xtype'
             ,fieldLabel: _('xtype')
             ,description: _('xtype_desc')
         },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,value: 'core'
+        },{
             xtype: 'textfield'
             ,fieldLabel: _('value')
             ,name: 'value'
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,allowBlank: true
+            ,width: 225
         }]
     });
     MODx.window.CreateSetting.superclass.constructor.call(this,config);
@@ -247,6 +263,7 @@ MODx.combo.xType = function(config) {
         ,triggerAction: 'all'
         ,editable: false
         ,selectOnFocus: false
+        ,value: 'textfield'
     });
     MODx.combo.xType.superclass.constructor.call(this,config);
 };

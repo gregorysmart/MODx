@@ -123,16 +123,20 @@ if ($connected) {
     $description = 'Changed modSystemSetting `setting_value` field to `value`.';
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `setting_value` `value` TEXT NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    $description = 'Added modSystemSetting `xtype` field.';
-    $sql = "ALTER TABLE {$table} ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'";
+    $description = 'Added modSystemSetting `xtype`, `namespace` and `editedon` fields.';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'
+        ADD COLUMN `namespace` VARCHAR(40) NOT NULL DEFAULT 'core'
+        ADD COLUMN `editedon` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
 
     $class = 'modContextSetting';
     $table = $this->xpdo->getTableName($class);
-    $description = 'Added modContextSetting `xtype` field.';
+    $description = 'Added modContextSetting `xtype`, `namespace` and `editedon` fields.';
     $sql = "ALTER TABLE {$table}
-        ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'";
+        ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'
+        ADD COLUMN `namespace` VARCHAR(40) NOT NULL DEFAULT 'core'
+        ADD COLUMN `editedon` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modUserSetting';
@@ -143,9 +147,11 @@ if ($connected) {
     $description = 'Changed modUserSetting `setting_value` field to `value`.';
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `setting_value` `value` TEXT NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
-    $description = 'Added modUserSetting `xtype` field.';
+    $description = 'Added modUserSetting `xtype`, `namespace` and `editedon` fields.';
     $sql = "ALTER TABLE {$table}
-        ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'";
+        ADD COLUMN `xtype` VARCHAR(75) NOT NULL DEFAULT 'textfield'
+        ADD COLUMN `namespace` VARCHAR(40) NOT NULL DEFAULT 'core'
+        ADD COLUMN `editedon` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
 

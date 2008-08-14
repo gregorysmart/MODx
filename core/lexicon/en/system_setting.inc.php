@@ -1,5 +1,5 @@
 <?php
-
+$_lang['setting_create'] = 'Create New Setting';
 $_lang['setting_err'] = 'Please check your data for the following fields: ';
 $_lang['setting_err_ae'] = 'Setting with that key already exists. Please specify another key name.';
 $_lang['setting_err_nf'] = 'Setting not found.';
@@ -9,6 +9,7 @@ $_lang['setting_err_save'] = 'An error occurred while trying to save the setting
 $_lang['setting_err_invalid_document'] = 'There is no document with ID %d. Please specify an existing document.';
 $_lang['setting_remove'] = 'Remove Setting';
 $_lang['setting_remove_confirm'] = 'Are you sure you want to remove this setting? This might break your MODx installation.';
+$_lang['setting_update'] = 'Update Setting';
 $_lang['settings_after_install'] = 'As this is a new install, you are required to control these settings, and change any that you may wish to. After you\'ve controlled the settings, press \'Save\' to update the settings database.<br /><br />';
 $_lang['settings_desc'] = 'Here you can set general preferences and configuration settings for the MODx manager interface, as well as how your MODx site runs.';
 $_lang['settings_furls'] = 'Friendly URLs';
