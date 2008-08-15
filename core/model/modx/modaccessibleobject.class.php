@@ -27,8 +27,11 @@ class modAccessibleObject extends xPDOObject {
     function load(& $xpdo, $className, $criteria, $cacheFlag= true) {
         $object = null;
         $object = xPDOObject :: load($xpdo, $className, $criteria, $cacheFlag);
-        if ($object && is_a($xpdo, 'modX') && isset($_SESSION) && !$object->checkPolicy('load')) {
+        if ($object && !$object->checkPolicy('load')) {
             $userid = $xpdo->getLoginUserID();
+            if (!$userid) {
+                $userid = '0';
+            }
             $xpdo->_log(XPDO_LOG_LEVEL_ERROR, "Principal {$userid} does not have access to requested object of class {$object->_class} with primary key " . print_r($object->getPrimaryKey(false), true));
             $object = null;
         }
@@ -74,7 +77,7 @@ class modAccessibleObject extends xPDOObject {
                         } else {
                             $cacheKey= $pkval;
                         }
-                        if (is_a($xpdo, 'modX') && isset($_SESSION) && !$obj->checkPolicy('load')) {
+                        if (!$obj->checkPolicy('load')) {
                             continue;
                         }
                         if ($xpdo->_cacheEnabled && $cacheFlag) {
@@ -86,7 +89,7 @@ class modAccessibleObject extends xPDOObject {
                         }
                         $objCollection[$pkval]= $obj;
                     } else {
-                        if (is_a($xpdo, 'modX') && isset($_SESSION) && !$obj->checkPolicy('load')) {
+                        if (!$obj->checkPolicy('load')) {
                             continue;
                         }
                         $objCollection[]= $obj;
@@ -111,10 +114,8 @@ class modAccessibleObject extends xPDOObject {
      */
     function save($cacheFlag = null) {
         $saved = false;
-        if (is_a($this->xpdo, 'modX')) {
-            if (!$this->checkPolicy('save')) {
-                $this->xpdo->error->failure($this->xpdo->lexicon('permission_denied'));
-            }
+        if (!$this->checkPolicy('save')) {
+            $this->xpdo->error->failure($this->xpdo->lexicon('permission_denied'));
         }
         $saved = parent :: save($cacheFlag);
         return $saved;
@@ -127,10 +128,8 @@ class modAccessibleObject extends xPDOObject {
      */
     function remove($ancestors= array ()) {
         $removed = false;
-        if (is_a($this->xpdo, 'modX')) {
-            if (!$this->checkPolicy('remove')) {
-                $this->xpdo->error->failure($this->xpdo->lexicon('permission_denied'));
-            }
+        if (!$this->checkPolicy('remove')) {
+            $this->xpdo->error->failure($this->xpdo->lexicon('permission_denied'));
         }
         $removed = parent :: remove($ancestors);
         return $removed;
@@ -150,7 +149,7 @@ class modAccessibleObject extends xPDOObject {
      * exists.
      */
     function checkPolicy($criteria, $targets = null) {
-        if ($criteria) {
+        if ($criteria && is_a($this->xpdo, 'modX') && $this->xpdo->getSessionState() == MODX_SESSION_STATE_INITIALIZED) {
             if (!is_array($criteria) && is_scalar($criteria)) {
                 $criteria = array("{$criteria}" => true);
             }

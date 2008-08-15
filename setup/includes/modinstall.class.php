@@ -497,6 +497,7 @@ class modInstall {
         // set the time limit infinite in case it takes a bit
         // TODO: fix this by allowing resume when it takes a long time
         @ set_time_limit(0);
+        @ ini_set('max_execution_time', 240);
 
         // get connection
         $this->getConnection($mode);
@@ -871,6 +872,9 @@ class modInstall {
             if (!is_object($modx) || !is_a($modx, 'modX')) {
                 $errors[] = '<p>Could not instantiate the MODx class.</p>';
             } else {
+                $modx->setDebug(E_ALL & ~E_STRICT);
+                $modx->setLogTarget('HTML');
+                
                 // try to initialize the mgr context
                 $modx->initialize('mgr');
                 if (!$modx->_initialized) {

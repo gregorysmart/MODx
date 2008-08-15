@@ -35,6 +35,12 @@ if (!defined('MODX_CORE_PATH')) {
 if (!defined('MODX_CONFIG_KEY')) {
     define('MODX_CONFIG_KEY', 'config');
 }
+if (!defined('MODX_SESSION_STATE_UNINITIALIZED')) {
+    define('MODX_SESSION_STATE_UNAVAILABLE',   -1);
+    define('MODX_SESSION_STATE_UNINITIALIZED',  0);
+    define('MODX_SESSION_STATE_INITIALIZED',    1);
+    define('MODX_SESSION_STATE_EXTERNAL',       2);
+}
 require_once (MODX_CORE_PATH . 'xpdo/xpdo.class.php');
 
 /**
@@ -178,6 +184,10 @@ class modX extends xPDO {
         'entities'  => '@&#(\d+);@e',
         'tags'      => '@\[\[(.*?)\]\]@si',
     );
+    /**
+     * @var integer An integer representing the session state of modX.
+     */
+    var $_sessionState= MODX_SESSION_STATE_UNINITIALIZED;
 
     /**
      * @var DBAPI An instance of the DBAPI helper class.
@@ -810,7 +820,11 @@ class modX extends xPDO {
                 $this->config= array_merge($this->config, $usrSettings);
             }
         } else {
-            $this->user = $this->newObject('modUser', array('username' => '(anonymous)'));
+            $this->user = $this->newObject('modUser', array(
+                    'id' => '0',
+                    'username' => '(anonymous)'
+                )
+            );
             $this->user->_attributes = array(
                 'modAccessContext' => array(
                     $contextKey => array(
@@ -2428,49 +2442,52 @@ class modX extends xPDO {
      * @access protected
      */
     function _initSession() {
-        $sh= false;
         $contextKey= $this->context->get('key');
-        if (isset ($this->config['session_handler_class']) && $this->config['session_handler_class']) {
-            if ($shClass= $this->loadClass($this->config['session_handler_class'], '', false, true)) {
-                if ($sh= new $shClass($this)) {
-                    session_set_save_handler(
-                        array ($sh, 'open'),
-                        array ($sh, 'close'),
-                        array ($sh, 'read'),
-                        array ($sh, 'write'),
-                        array ($sh, 'destroy'),
-                        array ($sh, 'gc')
-                    );
+        if ($this->getSessionState() == MODX_SESSION_STATE_UNINITIALIZED) {
+            $sh= false;
+            if (isset ($this->config['session_handler_class']) && $this->config['session_handler_class']) {
+                if ($shClass= $this->loadClass($this->config['session_handler_class'], '', false, true)) {
+                    if ($sh= new $shClass($this)) {
+                        session_set_save_handler(
+                            array ($sh, 'open'),
+                            array ($sh, 'close'),
+                            array ($sh, 'read'),
+                            array ($sh, 'write'),
+                            array ($sh, 'destroy'),
+                            array ($sh, 'gc')
+                        );
+                    }
                 }
             }
-        }
-        if (!$sh) {
-            if (isset ($this->config['session_save_path']) && is_writable($this->config['session_save_path'])) {
-                session_save_path($this->config['session_save_path']);
+            if (!$sh) {
+                if (isset ($this->config['session_save_path']) && is_writable($this->config['session_save_path'])) {
+                    session_save_path($this->config['session_save_path']);
+                }
+                if (isset ($this->config['session_gc_maxlifetime'])) {
+                    @ini_set('session.gc_maxlifetime', (integer) $this->config['session_gc_maxlifetime']);
+                }
             }
-            if (isset ($this->config['session_gc_maxlifetime'])) {
-                @ini_set('session.gc_maxlifetime', (integer) $this->config['session_gc_maxlifetime']);
+            $cookieLifetime= 0;
+            if (isset ($this->config['session_cookie_lifetime'])) {
+                @ini_set('session.cookie_lifetime', $this->config['session_cookie_lifetime']);
+                $cookieLifetime= (integer) $this->config['session_cookie_lifetime'];
             }
+            $cookiePath= isset ($this->config['session_cookie_path']) ? $this->config['session_cookie_path'] : $this->config['base_path'];
+            @ini_set('session.cookie_path', $cookiePath);
+            $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
+            session_name($site_sessionname);
+            session_start();
+            $this->_sessionState = MODX_SESSION_STATE_INITIALIZED;
+            $this->getUser($contextKey);
+            $cookieExpiration= 0;
+            if (isset ($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']) && is_numeric($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime'])) {
+                $cookieLifetime= intval($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']);
+            }
+            if ($cookieLifetime) {
+                $cookieExpiration= time() + $cookieLifetime;
+            }
+            setcookie(session_name(), session_id(), $cookieExpiration, $cookiePath);
         }
-        $cookieLifetime= 0;
-        if (isset ($this->config['session_cookie_lifetime'])) {
-            @ini_set('session.cookie_lifetime', $this->config['session_cookie_lifetime']);
-            $cookieLifetime= (integer) $this->config['session_cookie_lifetime'];
-        }
-        $cookiePath= isset ($this->config['session_cookie_path']) ? $this->config['session_cookie_path'] : $this->config['base_path'];
-        @ini_set('session.cookie_path', $cookiePath);
-        $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
-        session_name($site_sessionname);
-        session_start();
-        $this->getUser($contextKey);
-        $cookieExpiration= 0;
-        if (isset ($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']) && is_numeric($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime'])) {
-            $cookieLifetime= intval($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']);
-        }
-        if ($cookieLifetime) {
-            $cookieExpiration= time() + $cookieLifetime;
-        }
-        setcookie(session_name(), session_id(), $cookieExpiration, $cookiePath);
     }
 
     /**
@@ -2556,6 +2573,18 @@ class modX extends xPDO {
         } else {
             $this->_log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
         }
+    }
+    
+    function getSessionState() {
+        if ($this->_sessionState == MODX_SESSION_STATE_UNINITIALIZED) {
+            if (XPDO_CLI_MODE) {
+                $this->_sessionState = MODX_SESSION_STATE_UNAVAILABLE;
+            }
+            elseif (isset($_SESSION)) {
+                $this->_sessionState = MODX_SESSION_STATE_EXTERNAL;
+            }
+        }
+        return $this->_sessionState;
     }
 
     /**
