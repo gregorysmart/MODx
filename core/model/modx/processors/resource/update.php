@@ -118,7 +118,7 @@ $tmplvars = array ();
 $c = $modx->newQuery('modTemplateVar');
 $c->_alias = 'tv';
 $c->innerJoin('modTemplateVarTemplate', 'tvtpl', array(
-    'tvtpl.templateid = tv.id',
+    'tvtpl.tmplvarid = tv.id',
     'tvtpl.templateid' => $_POST['template']
 ));
 $c->leftJoin('modTemplateVarResource', 'tvc', array(
