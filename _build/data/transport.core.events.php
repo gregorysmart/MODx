@@ -751,6 +751,13 @@ $collection['107']->fromArray(array (
 $collection['108']= $xpdo->newObject('modEvent');
 $collection['108']->fromArray(array (
   'id' => 108,
+  'name' => 'OnUserNotFound',
+  'service' => 6,
+  'groupname' => 'modUser',
+), '', true, true);
+$collection['109']= $xpdo->newObject('modEvent');
+$collection['109']->fromArray(array (
+  'id' => 109,
   'name' => 'OnHandleRequest',
   'service' => 5,
   'groupname' => '',
