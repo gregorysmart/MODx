@@ -65,6 +65,11 @@ class modConnectorRequest extends modManagerRequest {
         // Load JSON error processing class for output to browser.
         $this->loadErrorHandler('modJSONError');
 
+        if (!isset ($_SESSION['mgrValidated']) && $action != 'login' && $location != 'security') {
+            $this->modx->error->failure($this->modx->lexicon('access_denied'));
+            exit();
+        }
+
         // Cleanup action and store.
         $this->action = strtolower($action);
         $this->_prepareResponse($location);
