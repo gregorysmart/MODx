@@ -1706,11 +1706,11 @@ class modX extends xPDO {
             $collection = $this->getCollection('modTemplateVar', $query);
             foreach ($collection as $pk => $tv) {
                 $result[$tv->get('name')]= array (
-                    $tv->get('name'),
-                    $tv->getValue($docid),
-                    $tv->get('display'),
-                    $tv->get('display_params'),
-                    $tv->get('type')
+                    'name' => $tv->get('name'),
+                    'value' => $tv->getValue($docid),
+                    'display' => $tv->get('display'),
+                    'display_params' => $tv->get('display_params'),
+                    'type' => $tv->get('type')
                 );
             }
             return $result;

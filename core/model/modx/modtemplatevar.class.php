@@ -665,19 +665,21 @@ EOD;
 
                 case 'INHERIT':
                     $output = $param; // Default to param value if no content from parents
-                    $doc = $this->xpdo->getDocument($this->xpdo->documentIdentifier,'id,parent');
-
+                    $doc = array('id' => $this->xpdo->resourceIdentifier, 'parent' => $this->xpdo->resource->get('parent'));
                     while($doc['parent'] != 0) {
                         $parent_id = $doc['parent'];
-                        if($doc = $this->xpdo->getDocument($parent_id, 'id,parent')) {
+                        if(!$doc = $this->xpdo->getDocument($parent_id, 'id,parent')) {
+                            // Get unpublished document
+                            $doc = $this->xpdo->getDocument($parent_id, 'id,parent',0);
+                        }
+                        if ($doc) {
                             $tv = $this->xpdo->getTemplateVar($this->get('name'), '*', $doc['id']);
-                            if($tv['value'] && substr($tv['value'],0,1) != '@') {
-                                $output = $tv['value'];
+                            if(isset($tv[$this->get('name')]['value']) && $tv[$this->get('name')]['value'] && substr($tv[$this->get('name')]['value'],0,1) != '@') {
+                                $output = $tv[$this->get('name')]['value'];
                                 break 2;
                             }
                         } else {
-                            // Get unpublished document
-                            $doc = $this->xpdo->getDocument($parent_id, 'id,parent',0);
+                            break;
                         }
                     }
                     break;
