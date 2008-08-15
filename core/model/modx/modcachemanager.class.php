@@ -283,7 +283,7 @@ class modCacheManager extends xPDOCacheManager {
         ));
         if ($focus == null) return false;
 
-        $fileName = $this->modx->config['core_path'].'cache/lexicon/'.$language.'/'.$namespace->name.'/'.$focus->name.'.cache.php';
+        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->name.'/'.$focus->name.'.cache.php';
 
         $content= "<?php \n";
         $c= $this->modx->newQuery('modLexiconEntry');

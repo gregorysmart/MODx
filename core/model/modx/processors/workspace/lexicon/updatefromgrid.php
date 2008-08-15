@@ -25,6 +25,6 @@ $entry->set('editedon',date('Y-m-d h:i:s'));
 
 if (!$entry->save()) $modx->error->failure($modx->lexicon('entry_err_save'));
 
-$r = $modx->lexicon->clearCache($entry->namespace.'/'.$entry->focus.'.cache.php');
+$entry->clearCache();
 
 $modx->error->success();

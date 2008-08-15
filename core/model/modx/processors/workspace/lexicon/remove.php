@@ -17,6 +17,6 @@ if ($entry->remove() === false) {
     $modx->error->failure($modx->lexicon('entry_err_save'));
 }
 
-$r = $modx->lexicon->clearCache($entry->namespace.'/'.$entry->focus.'.cache.php');
+$entry->clearCache();
 
 $modx->error->success();

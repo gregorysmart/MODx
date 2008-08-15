@@ -136,7 +136,7 @@ class modLexicon {
     }
 
     function loadCache($namespace = 'core',$focus = 'default',$language = 'en') {
-        $fileName = $this->modx->config['core_path'].'cache/lexicon/'.$language.'/'.$namespace.'/'.$focus.'.cache.php';
+        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$focus.'.cache.php';
 
         $_lang = array();
         if (file_exists($fileName)) {

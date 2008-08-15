@@ -30,6 +30,6 @@ if ($entry->save() === false) {
     $modx->error->failure($modx->lexicon('entry_err_create'));
 }
 
-$modx->lexicon->clearCache($entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
+$entry->clearCache();
 
 $modx->error->success();
