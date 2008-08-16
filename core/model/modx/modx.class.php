@@ -1634,7 +1634,7 @@ class modX extends xPDO {
         }
         else {
             $result = $this->getTemplateVars(array($idname),$fields,$docid,$published,"",""); //remove sorting for speed
-            return $result;
+            return reset($result);
         }
     }
 

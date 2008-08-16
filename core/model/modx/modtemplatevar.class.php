@@ -674,8 +674,8 @@ EOD;
                         }
                         if ($doc) {
                             $tv = $this->xpdo->getTemplateVar($this->get('name'), '*', $doc['id']);
-                            if(isset($tv[$this->get('name')]['value']) && $tv[$this->get('name')]['value'] && substr($tv[$this->get('name')]['value'],0,1) != '@') {
-                                $output = $tv[$this->get('name')]['value'];
+                            if(isset($tv['value']) && $tv['value'] && substr($tv['value'],0,1) != '@') {
+                                $output = $tv['value'];
                                 break 2;
                             }
                         } else {
