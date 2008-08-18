@@ -217,7 +217,7 @@ MODx.panel.BuildPackage = function(config) {
         }]
         ,listeners: {
             'success': {fn:function(o) {
-                MODx.msg.alert('',_('package_built'),function() {
+                MODx.msg.alert('',o.result.message,function() {
                     var c = o.options;
                     Ext.getCmp('pb-info').getForm().reset();
                     Ext.callback(c.proceed,c.scope || this,['pb-info']);
