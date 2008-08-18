@@ -45,7 +45,7 @@ foreach ($entries as $entry) {
         '-',
         array(
             'text' => $modx->lexicon('entry_remove'),
-            'handler' => 'this.remove.createDelegate(this,["entry_confirm_remove"])',
+            'handler' => 'this.remove.createDelegate(this,["entry_remove_confirm"])',
         ),
     );
     $ps[] = $pa;

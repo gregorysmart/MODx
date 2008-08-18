@@ -62,7 +62,9 @@ MODx.grid.Lexicon = function(config) {
             ,listeners: {
                 'change': {fn:this.filter.createDelegate(this,['language'],true),scope:this}
             }
-		},'->',{
+		}
+		,'->'
+		,{
 		    text: _('search_by_key')
 		},{
 		    xtype: 'textfield'
@@ -96,6 +98,13 @@ MODx.grid.Lexicon = function(config) {
         ,pagingItems: [{
             text: _('reload_from_base')
             ,handler: this.reloadFromBase
+            ,scope: this
+        }
+        ,'-'
+        ,{
+            xtype: 'button'
+            ,text: _('lexicon_import')
+            ,handler: function(btn,e) { this.loadWindow2(btn,e,'window-lexicon-import'); }
             ,scope: this
         }]
     });
@@ -281,3 +290,50 @@ MODx.window.CreateLexiconFocus = function(config) {
 };
 Ext.extend(MODx.window.CreateLexiconFocus,MODx.Window);
 Ext.reg('window-lexicon-focus-create',MODx.window.CreateLexiconFocus);
+
+
+/**
+ * Generates the import lexicon window.
+ *  
+ * @class MODx.window.ImportLexicon
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-lexicon-import
+ */
+MODx.window.ImportLexicon = function(config) {
+    config = config || {};
+    var r = config.record;
+    Ext.applyIf(config,{
+        title: _('lexicon_import')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
+        ,action: 'import'
+        ,fileUpload: true
+        ,fields: [{
+            html: _('lexicon_import_desc')
+            ,border: false
+            ,bodyStyle: 'margin: 1em;'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('lexicon')
+            ,name: 'lexicon'
+            ,width: 250
+            ,inputType: 'file'
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('focus')
+            ,name: 'focus'
+        },{
+            xtype: 'combo-language'
+            ,fieldLabel: _('language')
+            ,name: 'language'
+        }]
+    });
+    MODx.window.ImportLexicon.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.ImportLexicon,MODx.Window);
+Ext.reg('window-lexicon-import',MODx.window.ImportLexicon);

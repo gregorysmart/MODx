@@ -116,6 +116,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 			,errorReader: modJSONReader
 			,url: this.config.connector || this.config.url
 			,baseParams: this.config.baseParams || {}
+			,fileUpload: this.config.fileUpload || false
 		});
 		return new Ext.FormPanel(config);
 	}

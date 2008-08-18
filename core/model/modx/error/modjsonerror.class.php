@@ -25,7 +25,7 @@ class modJSONError extends modError {
 
     /**
      * JSON implementation of modError::checkValidation().
-     * 
+     *
      * {@inheritDoc}
      */
     function checkValidation($objs= array()) {
@@ -44,7 +44,7 @@ class modJSONError extends modError {
      */
     function process($message = '', $status = false, $object = null) {
         $objarray= parent :: process($message, $status, $object);
-        @header("Content-Type: text/json; charset=UTF-8");
+        //@header("Content-Type: text/json; charset=UTF-8");
         return $this->modx->toJSON(array (
             'success' => $this->status,
             'message' => $this->message,
