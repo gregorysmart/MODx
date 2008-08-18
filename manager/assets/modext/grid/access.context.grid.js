@@ -50,7 +50,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
 	                var o = a.result.object;
 	                this.getStore().baseParams = { 
 	                    action: 'getList'
-	                    ,type: this.options.type
+	                    ,type: this.config.type
 	                    ,target: this.combos.ctx.getValue()
 	                    ,principal: this.combos.ug.getValue()
 	                    ,principal_class: 'modUserGroup'
