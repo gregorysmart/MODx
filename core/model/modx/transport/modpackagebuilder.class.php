@@ -49,6 +49,10 @@ class modPackageBuilder {
      * @var string The modNamespace that the package is associated with.
      */
     var $namespace;
+    /**
+     * @var array An array of classnames to automatically select by namespace
+     */
+    var $autoselects;
 
 	function modPackageBuilder(&$modx) {
         $this->__construct($modx);
@@ -63,6 +67,7 @@ class modPackageBuilder {
 			exit();
 		}
 		$this->directory = $workspace->get('path') . 'packages/';
+        $this->autoselects = array();
     }
 
 	/**
@@ -89,7 +94,7 @@ class modPackageBuilder {
     * package.
 	* @returns xPDOTransport The xPDOTransport package object.
     */
-	function create($name, $version, $release= '', $namespace = 'core') {
+	function create($name, $version, $release= '', $namespace = 'core', $autoselects = array()) {
         // grab and validate the namespace
         $namespace = $this->modx->getObject('modNamespace', $namespace);
         if ($namespace == null) return false;
@@ -116,6 +121,9 @@ class modPackageBuilder {
         // create the transport package
 		$this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
 
+        // set automatically included packages
+        $this->setAutoSelects($autoselects);
+
         // now add the namespace into the transport
         if (!$this->registerNamespace($namespace)) {
         	$this->_log(MODX_LOG_LEVEL_ERROR,'Could not register namespace to package.');
@@ -123,6 +131,16 @@ class modPackageBuilder {
 
 		return $this->package;
 	}
+
+    /**
+     * Sets the classes that are to automatically be included and built into the
+     * package.
+     *
+     * @param array An array of class names to build in
+     */
+    function setAutoSelects($classes = array()) {
+    	$this->autoselects = $classes;
+    }
 
 	/**
     * Creates the modTransportVehicle for the specified object.
@@ -156,15 +174,6 @@ class modPackageBuilder {
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
         );
-        // a list of classes that have namespace columns
-        // and can therefore be auto-packaged into the transport
-        // without manual specification
-        $classes= array(
-            'modLexiconFocus',
-            'modLexiconEntry',
-            'modSystemSetting',
-            'modContextSetting',
-        );
 
         // create the namespace vehicle
         $v = $this->createVehicle($namespace,$attributes);
@@ -173,7 +182,7 @@ class modPackageBuilder {
         if (!$this->putVehicle($v)) return false;
 
         // grab all related classes that can be auto-packaged and package them in
-        foreach ($classes as $classname) {
+        foreach ($this->autoselects as $classname) {
             $objs = $this->modx->getCollection($classname,array(
                 'namespace' => $namespace->get('name'),
             ));

@@ -1,4 +1,8 @@
 <?php
+$_lang['as_system_settings'] = 'System Settings';
+$_lang['as_context_settings'] = 'Context Settings';
+$_lang['as_lexicon_entries'] = 'Lexicon Entries';
+$_lang['as_lexicon_foci'] = 'Lexicon Foci';
 $_lang['build'] = 'Build';
 $_lang['class_key'] = 'Class Key';
 $_lang['class_key_desc'] = 'The type of object you would like to map to the vehicle.';
@@ -9,6 +13,8 @@ $_lang['index'] = 'Index';
 $_lang['object'] = 'Object';
 $_lang['object_id'] = 'Object ID';
 $_lang['object_id_desc'] = 'The exact object that you want to map. Required.';
+$_lang['package_autoselects'] = 'Package Auto-Includes';
+$_lang['package_autoselects_desc'] = 'Please select the resources you would like the Package Builder to automatically include. Note: if building from the core, it is recommended not to check any of these.';
 $_lang['package_build'] = 'Build the Package';
 $_lang['package_build_desc'] = 'You are now ready to build the package. Once built, it will be placed in your core/packages directory.';
 $_lang['package_builder'] = 'Package Builder';
