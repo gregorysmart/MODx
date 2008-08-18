@@ -49,7 +49,7 @@ class modSmarty extends Smarty {
 
 		// Set up configuration variables for Smarty.
         $this->template_dir = $modx->config['manager_path'] . 'templates/';
-        $this->compile_dir  = $modx->cachePath . 'mgr/smarty/';
+        $this->compile_dir  = $modx->cachePath . 'smarty/';
         $this->config_dir   = $modx->config['core_path'] . 'model/smarty/configs';
         $this->plugins_dir  = array(
             $this->modx->config['core_path'] . 'model/smarty/plugins',
@@ -60,7 +60,7 @@ class modSmarty extends Smarty {
             $this->$paramKey= $paramValue;
         }
 
-        $this->compile_dir= $this->modx->cachePath . 'mgr/smarty/';
+        $this->compile_dir= $this->modx->cachePath . 'smarty/';
         if (!is_dir($this->compile_dir)) {
             $this->modx->getCacheManager();
             $this->modx->cacheManager->writeTree($this->compile_dir);
