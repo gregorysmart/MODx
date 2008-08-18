@@ -26,7 +26,7 @@ MODx.grid.SettingsGrid = function(config) {
             }
         }];
     }
-    config.tbar.push('-',{
+    config.tbar.push('->',{
         xtype: 'textfield'
         ,name: 'filter_key'
         ,id: 'filter_key'
@@ -34,6 +34,13 @@ MODx.grid.SettingsGrid = function(config) {
         ,listeners: {
             'change': {fn: this.filterByKey, scope: this}
             ,'render': {fn: this._addEnterKeyHandler}
+        }
+    },{
+        xtype: 'button'
+        ,id: 'filter_clear'
+        ,text: _('filter_clear')
+        ,listeners: {
+        	'click': {fn: this.clearFilter, scope: this}
         }
     });
     Ext.applyIf(config,{
@@ -299,7 +306,7 @@ MODx.combo.xType = function(config) {
     Ext.applyIf(config,{
         store: new Ext.data.SimpleStore({
             fields: ['d','v']
-            ,data: [[_('textfield'),'textfield'],[_('textarea'),'textarea'],[_('yesno'),'boolean']]
+            ,data: [[_('textfield'),'textfield'],[_('textarea'),'textarea'],[_('yesno'),'combo-boolean']]
         })
         ,displayField: 'd'
         ,valueField: 'v'
