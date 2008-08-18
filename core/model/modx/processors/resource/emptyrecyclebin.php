@@ -13,8 +13,8 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $documents = $modx->getCollection('modResource',array('deleted' => 1));
 
 foreach ($documents as $document) {
-	$document->groups = $document->getMany('modDocumentGroupDocument');
-	$document->tvds = $document->getMany('modTemplateVarDocument');
+	$document->groups = $document->getMany('modResourceGroupResource');
+	$document->tvds = $document->getMany('modTemplateVarResource');
 
 	foreach ($document->groups as $pair)
 		if (!$pair->remove()) $error->failure($modx->lexicon('document_err_delete_accessperms'));
