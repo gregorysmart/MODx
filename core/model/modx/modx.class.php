@@ -802,22 +802,27 @@ class modX extends xPDO {
         }
         if ($this->user === null || !is_object($this->user)) {
             $this->user= $this->getAuthenticatedUser($contextKey);
+            if ($contextKey !== 'mgr' && !$this->user) {
+                $this->user= $this->getAuthenticatedUser('mgr');
+            }
         }
         if ($this->user !== null && is_object($this->user)) {
-            $usrSettings= array ();
-            if (isset ($_SESSION["modx.{$contextKey}.user.config"])) {
-                $usrSettings= $_SESSION["modx.{$contextKey}.user.config"];
-            } else {
-                $settings= $this->user->getMany('modUserSetting');
-                if (is_array($settings) && !empty ($settings)) {
-                    foreach ($settings as $setting) {
-                        $usrSettings[$setting->get('key')]= $setting->get('value');
+            if ($this->user->hasSessionContext($contextKey)) {
+                $usrSettings= array ();
+                if (isset ($_SESSION["modx.{$contextKey}.user.config"])) {
+                    $usrSettings= $_SESSION["modx.{$contextKey}.user.config"];
+                } else {
+                    $settings= $this->user->getMany('modUserSetting');
+                    if (is_array($settings) && !empty ($settings)) {
+                        foreach ($settings as $setting) {
+                            $usrSettings[$setting->get('key')]= $setting->get('value');
+                        }
                     }
                 }
-            }
-            if (is_array ($usrSettings) && !empty ($usrSettings)) {
-                $_SESSION["modx.{$contextKey}.user.config"]= $usrSettings;
-                $this->config= array_merge($this->config, $usrSettings);
+                if (is_array ($usrSettings) && !empty ($usrSettings)) {
+                    $_SESSION["modx.{$contextKey}.user.config"]= $usrSettings;
+                    $this->config= array_merge($this->config, $usrSettings);
+                }
             }
         } else {
             $this->user = $this->newObject('modUser', array(
@@ -866,7 +871,11 @@ class modX extends xPDO {
      * @return boolean True if the user is valid in the context specified.
      */
     function checkSession($sessionContext= 'web') {
-        return ($this->user !== null && $this->user->hasSessionContext($sessionContext));
+        $hasSession = false;
+        if ($this->user !== null) {
+            $hasSession = $this->user->hasSessionContext($sessionContext);
+        }
+        return $hasSession;
     }
 
     /**
@@ -960,11 +969,11 @@ class modX extends xPDO {
      * user session in the 'mgr' context; false otherwise.
      */
     function _checkSiteStatus() {
-        $siteStatus= $this->config['site_status'];
-        if ($siteStatus == 1)
-            return true;
-        elseif ($siteStatus == 0 && $this->checkSession('mgr')) return true;
-        return false;
+        $status = false;
+        if ($this->config['site_status'] == '1' || $this->checkSession('mgr')) {
+            $status = true;
+        }
+        return $status;
     }
 
     /**

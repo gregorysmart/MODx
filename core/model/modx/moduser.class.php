@@ -389,7 +389,7 @@ class modUser extends modPrincipal {
      */
     function hasSessionContext($context) {
         $hasContext= false;
-        if (is_array($this->sessionContexts)) {
+        if ($this->getSessionContexts()) {
             $contextTokens= array ();
             if (is_array($context)) {
                 foreach ($context as $ctx) {

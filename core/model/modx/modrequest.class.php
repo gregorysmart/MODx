@@ -53,9 +53,11 @@ class modRequest {
         $this->sanitizeRequest();
         $this->modx->invokeEvent('OnHandleRequest');
         if (!$this->modx->_checkSiteStatus()) {
+            header('HTTP/1.1 503 Service Unavailable');
             if (!$this->modx->config['site_unavailable_page']) {
                 $this->modx->resource = $this->modx->newObject('modDocument');
-                $this->modx->resourceContent = $this->modx->config['site_unavailable_message'];
+                $this->modx->resource->template = 0;
+                $this->modx->resource->content = $this->modx->config['site_unavailable_message'];
             } else {
                 $this->modx->resourceMethod = "id";
                 $this->modx->resourceIdentifier = $this->modx->config['site_unavailable_page'];
