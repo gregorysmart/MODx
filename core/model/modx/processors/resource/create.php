@@ -22,7 +22,7 @@ if (file_exists($delegateProcessor)) {
 
 $document = $modx->newObject($resourceClass);
 
-$_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 1 : 0;
+$_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 0 : 1;
 $_POST['isfolder'] = !isset($_POST['isfolder']) ? 0 : 1;
 $_POST['richtext'] = !isset($_POST['richtext']) ? 0 : 1;
 $_POST['donthit'] = !isset($_POST['donthit']) ? 0 : 1;
