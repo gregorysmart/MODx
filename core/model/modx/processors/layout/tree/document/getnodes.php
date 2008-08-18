@@ -71,7 +71,7 @@ foreach ($collection as $item) {
             array(
                 'id' => 'edit_context',
                 'text' => $modx->lexicon('edit_context'),
-                'params' => array( 'a' => $actions['context'], 'key' => $item->get('key') ),
+                'params' => array( 'a' => $actions['context/update'], 'key' => $item->get('key') ),
             ),
             array(
                 'text' => $modx->lexicon('context_refresh'),
@@ -81,7 +81,7 @@ foreach ($collection as $item) {
             array(
                 'id' => 'create_document',
                 'text' => $modx->lexicon('create_document_here'),
-                'params' => array( 
+                'params' => array(
                     'a' => $actions['resource/create'],
                     'context_key' => $item->get('key'),
                 ),
@@ -89,7 +89,7 @@ foreach ($collection as $item) {
             array(
                 'id' => 'create_weblink',
                 'text' => $modx->lexicon('create_weblink_here'),
-                'params' => array( 
+                'params' => array(
                     'a' => $actions['resource/create'],
                     'class_key' => 'modWebLink',
                     'context_key' => $item->get('key'),
@@ -160,7 +160,7 @@ foreach ($collection as $item) {
 			array(
 				'id' => 'create_weblink',
 				'text' => $modx->lexicon('create_weblink_here'),
-				'params' => array( 
+				'params' => array(
                     'a' => $actions['resource/create'],
                     'class_key' => 'modWebLink',
                     'parent' => $item->id,
@@ -205,7 +205,7 @@ foreach ($collection as $item) {
 				'handler' => 'this.deleteDocument',
 			);
 		}
-        
+
         $menu[] = '-';
         $menu[] = array(
             'id' => 'preview_document',
