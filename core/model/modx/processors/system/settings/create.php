@@ -16,6 +16,13 @@ $ae = $modx->getObject('modSystemSetting',array(
 ));
 if ($ae != null) $modx->error->failure($modx->lexicon('setting_err_ae'));
 
+// value parsing
+if ($_POST['xtype'] == 'combo-boolean' && !is_numeric($_POST['value'])) {
+	if ($_POST['value'] == 'yes' || $_POST['value'] == 'Yes' || $_POST['value'] == $modx->lexicon('yes')) {
+		$_POST['value'] = 1;
+	} else $_POST['value'] = 0;
+}
+
 $setting= $modx->newObject('modSystemSetting');
 $setting->fromArray($_POST,'',true);
 
