@@ -8,7 +8,7 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
 $modx->lexicon->clearCache();
-$invdirs = array('.','..','.svn');
+$invdirs = array('.','..','.svn','country');
 
 $d = MODX_CORE_PATH.'/lexicon/';
 
