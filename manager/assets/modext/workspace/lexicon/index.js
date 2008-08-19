@@ -21,6 +21,8 @@ MODx.LexiconManagement = function(config) {
                 xtype: 'panel-lexicon'
             },{
                 xtype: 'panel-lexicon-foci'
+            },{
+                xtype: 'panel-language'
             }]
         }]
     });
@@ -72,3 +74,25 @@ MODx.panel.LexiconFoci = function(config) {
 };
 Ext.extend(MODx.panel.LexiconFoci,MODx.Panel);
 Ext.reg('panel-lexicon-foci',MODx.panel.LexiconFoci);
+
+
+MODx.panel.Language = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+       title: _('languages')
+       ,items: [{
+            html: '<h2>'+_('languages')+'</h2>'
+            ,border: false
+       },{
+            html: '<p>'+_('languages_desc')+'</h2>'
+            ,border: false
+       },{
+            xtype: 'grid-language'
+            ,id: 'grid-language'
+            ,renderTo: 'grid-language'
+       }]
+    });
+    MODx.panel.Language.superclass.constructor.call(this,config);    
+};
+Ext.extend(MODx.panel.Language,MODx.Panel);
+Ext.reg('panel-language',MODx.panel.Language);

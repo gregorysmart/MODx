@@ -342,9 +342,9 @@ MODx.combo.Language = function(config) {
 	Ext.applyIf(config,{
 		name: 'language'
 		,hiddenName: 'language'
-		,displayField: 'text'
-		,valueField: 'value'
-		,fields: ['value','text']
+		,displayField: 'name'
+		,valueField: 'name'
+		,fields: ['name']
 		,forceSelection: true
 		,typeAhead: false
 		,editable: false
