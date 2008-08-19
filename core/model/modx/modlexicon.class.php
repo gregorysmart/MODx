@@ -135,6 +135,16 @@ class modLexicon {
         $this->_lexicon = & $_lang;
     }
 
+    /**
+     * Loads a lexicon focus from the cache. If not found, tries to generate a
+     * cache file from the database.
+     *
+     * @access public
+     * @param string $namespace The namespace to load from. Defaults to 'core'.
+     * @param string $focus The focus to load. Defaults to 'default'
+     * @param string $language The language to load. Defaults to 'en'.
+     * @return array The loaded lexicon array.
+     */
     function loadCache($namespace = 'core',$focus = 'default',$language = 'en') {
         $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$focus.'.cache.php';
 
@@ -152,29 +162,6 @@ class modLexicon {
             }
         }
         return $_lang;
-    }
-
-    /**
-     * Adds a directory to search for language files
-     *
-     * @access public
-     * @param string $dir The directory to add
-     * @param string $namespace A namespace for the directory
-     * @return boolean True if successful
-     */
-    function addDirectory($dir,$namespace = '') {
-        if ($namespace == 'core') return false;
-        if ($namespace == '') {
-            // prevent duplicate names if no name specified
-            $namespace = count($this->_paths);
-        }
-        if (is_dir($dir)) {
-            $this->_paths[$namespace] = $dir;
-            return true;
-        } else {
-            $this->modx->_log(XPDO_LOG_LEVEL_ERROR,'Cannot add lexicon directory: '.$dir.' with namespace: '.$namespace);
-        }
-        return false;
     }
 
     /**
