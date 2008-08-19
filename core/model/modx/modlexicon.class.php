@@ -212,6 +212,12 @@ class modLexicon {
         }
     }
 
+    /**
+     * Clears the lexicon cache for the specified path.
+     *
+     * @param string $path The path to clear.
+     * @return string The results of the cache clearing.
+     */
     function clearCache($path = '') {
     	$path = 'lexicon/'.$path;
         $cacheManager = $this->modx->getCacheManager();

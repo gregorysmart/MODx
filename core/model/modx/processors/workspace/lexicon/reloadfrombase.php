@@ -73,6 +73,9 @@ while (false !== ($culture = $dir->read())) {
                     ), '', true, true);
                     $entry->save();
                     $i++;
+                } else {
+                	$entry->set('value',$value);
+                    $entry->save();
                 }
             }
         }
