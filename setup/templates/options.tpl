@@ -1,5 +1,7 @@
 {include file='header.tpl'}
-<p class="title">{$_lang.options_title}</p>
+<h2>{$_lang.options_title}</h2>
+
+<hr />
 
 <table class="options">
 <tbody>

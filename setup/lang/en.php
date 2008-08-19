@@ -128,6 +128,8 @@ $_lang['select'] = 'Select';
 $_lang['skip_to_bottom'] = 'scroll to bottom';
 $_lang['thank_installing'] = 'Thank you for installing ';
 $_lang['toggle'] = 'Toggle';
+$_lang['toggle_success'] = 'Toggle Success Messages';
+$_lang['toggle_warnings'] = 'Toggle Warnings';
 $_lang['welcome']= 'Welcome to the MODx installation program.';
 $_lang['welcome_message']= '<p>This program will guide you through the rest of the installation.</p>
 	<p>Please select the `Next` button to continue:</p>

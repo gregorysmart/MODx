@@ -24,7 +24,7 @@ $this->parser->assign('safe_mode', ($safe_mode ? 1 : 0));
 $navbar= '
 <input type="button" value="'.$install->lexicon['next'].'" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="return doAction(\'options\');" />
 <span style="float:right">&nbsp;</span>
-<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'license\');"/>
+<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'welcome\');"/>
 ';
 $this->parser->assign('navbar', $navbar);
 $this->parser->display('options.tpl');

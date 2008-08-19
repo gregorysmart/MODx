@@ -1,7 +1,7 @@
 {include file='header.tpl'}
-<p class="title">{$_lang.connection_title}</p>
+<h2>{$_lang.connection_title}</h2>
 
-<p>{$_lang.connection_connection_and_login_information}</p>
+<h3>{$_lang.connection_connection_and_login_information}</h3>
 
 <p>{$_lang.connection_connection_note}</p>
 

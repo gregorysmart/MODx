@@ -1,19 +1,37 @@
 {include file='header.tpl'}
 
-<p class="title">{$_lang.install_summary}</p>
+<h2>{$_lang.install_summary}</h2>
 {if $failed}
 <p>{$_lang.errors_occurred}</p>
 {else}
 <p>
     {$_lang.install_success}
     <br />(<a style="font-size: .9em" href="#continuebtn">{$_lang.skip_to_bottom}</a>)
+    <br /><br />
+    <a href="javascript:toggleMsg('success');">{$_lang.toggle_success}</a> | 
+    <a href="javascript:toggleMsg('warning');">{$_lang.toggle_warnings}</a>
+    
 </p>
 {/if}
-<ul class="{$itemClass}">
+<ul class="checklist">
 {foreach from=$results item=result}
-<li class="{$result.class}">{$result.msg}</li>
+<li class="{$result.class}" style="display: none;">{$result.msg}</li>
 {/foreach}
 </ul>
+
+{literal}
+<script type="text/javascript">
+var toggleMsg = function(type) {
+    var es = $$('.'+type);
+    es.each(function(el) {
+        if (el.getStyle('display') == 'none') {
+            el.setStyle('display','');
+        } else { el.setStyle('display','none'); }
+    });
+    
+};
+</script>
+{/literal}
 
 <input type="hidden" id="installmode" name="installmode" value="{$installmode}" />
 {if $config.unpacked EQ 1}

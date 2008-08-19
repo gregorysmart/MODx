@@ -1,6 +1,6 @@
 {include file='header.tpl'}
 <script type="text/javascript" src="assets/js/bsn.AutoSuggest_2.1.js"></script>
-<p class="title">{$_lang.context_installation}</p>
+<h2>{$_lang.context_installation}</h2>
 
 <input type="hidden" id="installmode" name="installmode" value="{$installmode}" />
 {if $config.unpacked EQ 1}
@@ -28,7 +28,7 @@
 <input type="hidden" id="cmspasswordconfirm" name="cmspasswordconfirm" value="{$config.cmspasswordconfirm}" />
 {/if}
 
-<p>{$_lang.context_web_options}</p>
+<h3>{$_lang.context_web_options}</h3>
 <p><small>{$_lang.context_override}</small></p>
 
 <div class="labelHolder">
@@ -44,7 +44,7 @@
 <br />
 
 
-<p>{$_lang.context_connector_options}</p>
+<h3>{$_lang.context_connector_options}</h3>
 <p><small>{$_lang.context_override}</small></p>
 
 <div class="labelHolder">
@@ -60,7 +60,7 @@
 <br />
 
 
-<p>{$_lang.context_manager_options}</p>
+<h3>{$_lang.context_manager_options}</h3>
 <p><small>{$_lang.context_override}</small></p>
 
 <div class="labelHolder">

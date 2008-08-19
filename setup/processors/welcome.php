@@ -1,2 +1,2 @@
 <?php
-$this->error->success('license');
+$this->error->success('options');

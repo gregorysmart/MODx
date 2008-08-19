@@ -1,12 +1,12 @@
 {include file='header.tpl'}
 
-<p class="title">{$_lang.install_summary}</p>
+<h2>{$_lang.install_summary}</h2>
 {if $failed}
 <p>{$_lang.preinstall_failure}</p>
 {else}
 <p>{$_lang.preinstall_success}</p>
 {/if}
-<ul class="{$testClass}">
+<ul class="checklist">
 {foreach from=$test item=result}
 <li class="{$result.class}">{$result.msg}</li>
 {/foreach}
