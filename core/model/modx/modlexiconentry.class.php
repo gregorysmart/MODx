@@ -16,7 +16,7 @@ class modLexiconEntry extends xPDOSimpleObject {
      */
     function clearCache() {
     	if ($this->xpdo && $this->xpdo->lexicon) {
-    		return $this->xpdo->lexicon->clearCache($this->get('namespace').'/'.$this->get('focus').'.cache.php');
+    		return $this->xpdo->lexicon->clearCache($this->get('language').'/'.$this->get('namespace').'/'.$this->get('focus').'.cache.php');
         }
         return false;
     }

@@ -106,6 +106,11 @@ MODx.grid.Lexicon = function(config) {
             ,text: _('lexicon_import')
             ,handler: function(btn,e) { this.loadWindow2(btn,e,'window-lexicon-import'); }
             ,scope: this
+        },{
+            xtype: 'button'
+            ,text: _('lexicon_export')
+            ,handler: function(btn,e) { this.loadWindow2(btn,e,'window-lexicon-export'); }
+            ,scope: this
         }]
     });
     MODx.grid.Lexicon.superclass.constructor.call(this,config);
@@ -337,3 +342,53 @@ MODx.window.ImportLexicon = function(config) {
 };
 Ext.extend(MODx.window.ImportLexicon,MODx.Window);
 Ext.reg('window-lexicon-import',MODx.window.ImportLexicon);
+
+
+
+/**
+ * Generates the export lexicon window.
+ *  
+ * @class MODx.window.ExportLexicon
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-lexicon-export
+ */
+MODx.window.ExportLexicon = function(config) {
+    config = config || {};
+    var r = config.record;
+    Ext.applyIf(config,{
+        title: _('lexicon_export')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
+        ,action: 'export'
+        ,fileUpload: true
+        ,fields: [{
+            html: _('lexicon_export_desc')
+            ,border: false
+            ,bodyStyle: 'margin: 1em;'
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,listeners: {
+            	'select': {fn: function(cb) {
+                    var s = Ext.getCmp('ex-cmb-focus').store;
+                    s.baseParams.namespace = cb.getValue();
+                    s.reload();
+                },scope: this}
+            }
+        },{
+            xtype: 'combo-lexicon-focus'
+            ,fieldLabel: _('focus')
+            ,name: 'focus'
+            ,id: 'ex-cmb-focus'
+        },{
+            xtype: 'combo-language'
+            ,fieldLabel: _('language')
+            ,name: 'language'
+        }]
+    });
+    MODx.window.ExportLexicon.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.ExportLexicon,MODx.Window);
+Ext.reg('window-lexicon-export',MODx.window.ExportLexicon);
