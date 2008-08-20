@@ -102,6 +102,9 @@ if ($connected) {
     $description = 'Added cachepwd field missing in early Revolution releases';
     $sql = "ALTER TABLE {$table} ADD COLUMN `cachepwd` VARCHAR(100) NOT NULL DEFAULT '' AFTER `password`";
     processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added class_key field to support modUser derivatives';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `class_key` VARCHAR(100) NOT NULL DEFAULT 'modUser' AFTER `cachepwd`";
+    processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modActiveUser';
     $table = $this->xpdo->getTableName($class);

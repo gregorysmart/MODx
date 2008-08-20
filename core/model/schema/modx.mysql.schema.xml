@@ -442,6 +442,7 @@
         <field key="username" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="unique" />
         <field key="password" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="cachepwd" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="class_key" dbtype="varchar" precision="100" phptype="string" null="false" default="modUser" index="index" />
         <aggregate alias="CreatedBy" class="modResource" key="createdby" local="id" foreign="createdby" cardinality="many" owner="local" />
         <aggregate alias="EditedBy" class="modResource" key="editedby" local="id" foreign="editedby" cardinality="many" owner="local" />
         <aggregate alias="DeletedBy" class="modResource" key="deletedby" local="id" foreign="deletedby" cardinality="many" owner="local" />
