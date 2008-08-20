@@ -14,10 +14,12 @@ MODx.panel.PackageBuilder = function(config) {
         title: _('package_builder')
         ,id: 'panel-package-builder'
         ,layout: 'card'
-        ,firstPanel: 'pb-info'
+        ,firstPanel: 'pb-start'
         ,lastPanel: 'pb-build'
         ,txtFinish: _('build')
         ,items: [{
+            xtype: 'panel-pb-start'
+        },{
             xtype: 'panel-pb-info'
         },{
             xtype: 'panel-pb-autoselects'        
@@ -25,12 +27,106 @@ MODx.panel.PackageBuilder = function(config) {
             xtype: 'panel-pb-selvehicle'
         },{
             xtype: 'panel-pb-build'
+        },{
+            xtype: 'panel-pb-xml'
         }]
     });
     MODx.panel.PackageBuilder.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.PackageBuilder,MODx.panel.Wizard);
 Ext.reg('panel-package-builder',MODx.panel.PackageBuilder);
+
+
+/**
+ * 
+ * @class MODx.panel.PackageStart
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of config properties
+ * @xtype panel-pb-start
+ */
+MODx.panel.PackageStart = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'pb-start'
+        ,url: MODx.config.connectors_url+'workspace/builder/index.php'
+        ,baseParams: {
+            action: 'start'
+        }
+        ,bodyStyle: 'padding: 3em 3em'
+        ,defaults: { labelSeparator: '', border: false }
+        ,items: [{
+            html: '<h2>'+_('package_method')+'</h2>'
+        },{
+            html: '<p>'+_('package_method_desc')+'</p>'
+        },{
+        	xtype: 'radio'
+        	,name: 'method'
+        	,boxLabel: _('use_wizard')
+        	,inputValue: 'pb-info'
+        	,checked: true
+        },{
+            xtype: 'radio'
+            ,name: 'method'
+            ,boxLabel: _('use_xml')
+            ,inputValue: 'pb-xml'
+        }]
+        ,listeners: {
+            'success': {fn:function(o) {
+                var c = o.options;
+                var d = o.form.getValues().method;
+                Ext.callback(c.proceed,c.scope || this,[d]);
+            },scope:this}
+        }
+    });
+    MODx.panel.PackageStart.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.PackageStart,MODx.FormPanel);
+Ext.reg('panel-pb-start',MODx.panel.PackageStart);
+
+
+/**
+ * 
+ * @class MODx.panel.PackageStart
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of config properties
+ * @xtype panel-pb-start
+ */
+MODx.panel.PackageXML = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'pb-xml'
+        ,back: 'pb-start'
+        ,url: MODx.config.connectors_url+'workspace/builder/index.php'
+        ,baseParams: {
+            action: 'buildFromXML'
+        }
+        ,fileUpload: true
+        ,bodyStyle: 'padding: 3em 3em'
+        ,defaults: { labelSeparator: '', border: false }
+        ,items: [{
+            html: '<h2>'+_('package_build_xml')+'</h2>'
+        },{
+            html: '<p>'+_('package_build_xml_desc')+'</p>'
+        },{
+            xtype: 'textfield'
+            ,name: 'file'
+            ,inputType: 'file'
+        }]
+        ,listeners: {
+            'success': {fn:function(o) {
+                MODx.msg.alert('',o.result.message,function() {
+                    var c = o.options;
+                    Ext.getCmp('pb-info').getForm().reset();
+                    Ext.callback(c.proceed,c.scope || this,['pb-start']);
+                },this);
+            },scope:this}
+        }
+    });
+    MODx.panel.PackageXML.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.PackageXML,MODx.FormPanel);
+Ext.reg('panel-pb-xml',MODx.panel.PackageXML);
+
 
 /**
  * 
@@ -43,6 +139,7 @@ MODx.panel.PackageInfo = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'pb-info'
+        ,back: 'pb-start'
         ,url: MODx.config.connectors_url+'workspace/builder/index.php'
         ,baseParams: {
             action: 'create'
@@ -220,7 +317,7 @@ MODx.panel.BuildPackage = function(config) {
                 MODx.msg.alert('',o.result.message,function() {
                     var c = o.options;
                     Ext.getCmp('pb-info').getForm().reset();
-                    Ext.callback(c.proceed,c.scope || this,['pb-info']);
+                    Ext.callback(c.proceed,c.scope || this,['pb-start']);
                 },this);
             },scope:this}
         }

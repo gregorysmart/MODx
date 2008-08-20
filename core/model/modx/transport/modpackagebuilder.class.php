@@ -94,10 +94,13 @@ class modPackageBuilder {
     * package.
 	* @returns xPDOTransport The xPDOTransport package object.
     */
-	function create($name, $version, $release= '', $namespace = 'core', $autoselects = array()) {
+	function create($name, $version, $release= '', $ns = 'core', $autoselects = array()) {
         // grab and validate the namespace
-        $namespace = $this->modx->getObject('modNamespace', $namespace);
-        if ($namespace == null) return false;
+        $namespace = $this->modx->getObject('modNamespace', $ns);
+        if ($namespace == null) {
+        	$this->modx->_log(XPDO_LOG_LEVEL_ERROR,'Package cannot be built because namespace '.$ns.' could not be found.');
+            return false;
+        }
         $this->namespace = $namespace;
 
         // setup the signature and filename
@@ -125,7 +128,7 @@ class modPackageBuilder {
         $this->setAutoSelects($autoselects);
 
         // now add the namespace into the transport
-        if (!$this->registerNamespace($namespace)) {
+        if ($this->registerNamespace($namespace) === false) {
         	$this->_log(MODX_LOG_LEVEL_ERROR,'Could not register namespace to package.');
         }
 
@@ -201,7 +204,7 @@ class modPackageBuilder {
 	* @param modTransportVehicle $vehicle The vehicle to insert into the package.
 	* @return boolean True if successful.
     */
-	function putVehicle($vehicle) {
+    function putVehicle($vehicle) {
 		$attr = $vehicle->compile();
 		$obj = $vehicle->fetch();
 		return $this->package->put($obj,$attr);
@@ -216,6 +219,10 @@ class modPackageBuilder {
 		return $this->package->pack();
 	}
 
+    function getSignature() {
+    	return $this->package->signature;
+    }
+
     /**
      * Generates the model from a schema.
      *
@@ -224,11 +231,11 @@ class modPackageBuilder {
      * @param string $schema The schema file to generate from.
      * @return boolean true if successful
      */
-     function buildSchema($model,$schema) {
+    function buildSchema($model,$schema) {
         $manager= $this->modx->getManager();
         $generator= $manager->getGenerator();
         $generator->parseSchema($schema,$model);
         return true;
-     }
+    }
 }
 ?>
