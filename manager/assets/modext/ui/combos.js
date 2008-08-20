@@ -57,7 +57,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
      * @param {boolean} b True to bypass check
 	 */
 	,setValue: function(v,b) {
-        if (this.isLoaded || b == true) {
+        if (this.isLoaded || b == true || this.mode == 'local') {
             MODx.combo.ComboBox.superclass.setValue.call(this,v);
         } else {
             this.store.load({
@@ -121,7 +121,7 @@ MODx.combo.Boolean = function(config) {
     });
     MODx.combo.Boolean.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.combo.Boolean,Ext.form.ComboBox);
+Ext.extend(MODx.combo.Boolean,MODx.combo.ComboBox);
 Ext.reg('combo-boolean',MODx.combo.Boolean);
 
 /**
