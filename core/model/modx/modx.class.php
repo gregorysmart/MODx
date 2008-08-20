@@ -333,8 +333,21 @@ class modX extends xPDO {
             $this->loadClass('modPrincipal');
             $this->loadClass('modUser');
 
+            // Load the system and context configurations
             $this->getConfig();
             $this->_initContext($contextKey);
+            
+            // Load any custom packages required for session, user, and error handling
+            if (isset($this->config['extension_packages']) && ($extPackages= explode(',', $this->config['extension_packages']))) {
+                foreach ($extPackages as $extPackage) {
+                    $exploded= explode(':', $extPackage);
+                    if ($exploded && count($exploded) == 2) {
+                        $this->addPackage($exploded[0], $exploded[1]);
+                    }
+                }
+            }
+            
+            // Start the session, error handler, and determine the culture
             $this->_initSession();
             $this->_initErrorHandler();
             $this->_initCulture();
@@ -912,44 +925,45 @@ class modX extends xPDO {
      */
     function getConfig() {
         if (!$this->_initialized || !is_array($this->config) || empty ($this->config)) {
+            // ALWAYS append these inside config array, unless already specified in config
+            if (!isset ($this->config['base_url']))
+                $this->config['base_url']= MODX_BASE_URL;
+            if (!isset ($this->config['base_path']))
+                $this->config['base_path']= MODX_BASE_PATH;
+            if (!isset ($this->config['core_path']))
+                $this->config['core_path']= MODX_CORE_PATH;
+            if (!isset ($this->config['url_scheme']))
+                $this->config['url_scheme']= MODX_URL_SCHEME;
+            if (!isset ($this->config['http_host']))
+                $this->config['http_host']= MODX_HTTP_HOST;
+            if (!isset ($this->config['site_url']))
+                $this->config['site_url']= MODX_SITE_URL;
+            if (!isset ($this->config['manager_path']))
+                $this->config['manager_path']= MODX_MANAGER_PATH;
+            if (!isset ($this->config['manager_url']))
+                $this->config['manager_url']= MODX_MANAGER_URL;
+            if (!isset ($this->config['assets_path']))
+                $this->config['assets_path']= MODX_ASSETS_PATH;
+            if (!isset ($this->config['assets_url']))
+                $this->config['assets_url']= MODX_ASSETS_URL;
+            if (!isset ($this->config['connectors_path']))
+                $this->config['connectors_path']= MODX_CONNECTORS_PATH;
+            if (!isset ($this->config['connectors_url']))
+                $this->config['connectors_url']= MODX_CONNECTORS_URL;
+            if (!isset ($this->config['request_param_id']))
+                $this->config['request_param_id']= 'id';
+            if (!isset ($this->config['request_param_alias']))
+                $this->config['request_param_alias']= 'q';
+            if (!isset ($this->config['https_port']))
+                $this->config['https_port']= isset($GLOBALS['https_port']) ? $GLOBALS['https_port'] : 443;
+            if (!isset ($this->config['error_handler_class']))
+                $this->config['error_handler_class']= 'error.modErrorHandler';
+
             if (!$this->_loadConfig()) {
                 $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load core MODx configuration!");
                 return null;
             }
         }
-        // ALWAYS append these inside config array, unless already specified in config
-        if (!isset ($this->config['base_url']))
-            $this->config['base_url']= MODX_BASE_URL;
-        if (!isset ($this->config['base_path']))
-            $this->config['base_path']= MODX_BASE_PATH;
-        if (!isset ($this->config['core_path']))
-            $this->config['core_path']= MODX_CORE_PATH;
-        if (!isset ($this->config['url_scheme']))
-            $this->config['url_scheme']= MODX_URL_SCHEME;
-        if (!isset ($this->config['http_host']))
-            $this->config['http_host']= MODX_HTTP_HOST;
-        if (!isset ($this->config['site_url']))
-            $this->config['site_url']= MODX_SITE_URL;
-        if (!isset ($this->config['manager_path']))
-            $this->config['manager_path']= MODX_MANAGER_PATH;
-        if (!isset ($this->config['manager_url']))
-            $this->config['manager_url']= MODX_MANAGER_URL;
-        if (!isset ($this->config['assets_path']))
-            $this->config['assets_path']= MODX_ASSETS_PATH;
-        if (!isset ($this->config['assets_url']))
-            $this->config['assets_url']= MODX_ASSETS_URL;
-        if (!isset ($this->config['connectors_path']))
-            $this->config['connectors_path']= MODX_CONNECTORS_PATH;
-        if (!isset ($this->config['connectors_url']))
-            $this->config['connectors_url']= MODX_CONNECTORS_URL;
-        if (!isset ($this->config['request_param_id']))
-            $this->config['request_param_id']= 'id';
-        if (!isset ($this->config['request_param_alias']))
-            $this->config['request_param_alias']= 'q';
-        if (!isset ($this->config['https_port']))
-            $this->config['https_port']= isset($GLOBALS['https_port']) ? $GLOBALS['https_port'] : 443;
-        if (!isset ($this->config['error_handler_class']))
-            $this->config['error_handler_class']= 'error.modErrorHandler';
         return $this->config;
     }
 

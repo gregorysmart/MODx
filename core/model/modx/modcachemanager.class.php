@@ -61,7 +61,8 @@ class modCacheManager extends xPDOCacheManager {
                 foreach ($settings as $setting) {
                     $k= $setting->get('key');
                     $v= $setting->get('value');
-                    if (preg_match_all('~\{(.*?)\}~', $v, $matches= array (), PREG_SET_ORDER)) {
+                    $matches = array();
+                    if (preg_match_all('~\{(.*?)\}~', $v, $matches, PREG_SET_ORDER)) {
                         $matchValue= '';
                         foreach ($matches as $match) {
                             if (isset ($this->modx->config["{$match[1]}"])) {
@@ -72,8 +73,8 @@ class modCacheManager extends xPDOCacheManager {
                             $v= str_replace($match[0], $matchValue, $v);
                         }
                     }
-                    $content .= "\$this->config['{$k}']= '{$v}';\n";
-                    $contextConfig["{$k}"]= "{$v}";
+                    $content .= "\$this->config['{$k}']= " . var_export($v, true) . ";\n";
+                    $contextConfig["{$k}"]= $v;
                 }
             }
 
@@ -221,8 +222,20 @@ class modCacheManager extends xPDOCacheManager {
         if ($collection= $this->modx->getCollection('modSystemSetting')) {
             foreach ($collection as $setting) {
                 $k= $setting->get('key');
-                $v= $this->escapeSingleQuotes($setting->get('value'));
-                $content .= "\$this->config['{$k}']= '{$v}';\n";
+                $v= $setting->get('value');
+                $matches= array();
+                if (preg_match_all('~\{(.*?)\}~', $v, $matches, PREG_SET_ORDER)) {
+                    $matchValue= '';
+                    foreach ($matches as $match) {
+                        if (isset ($this->modx->config["{$match[1]}"])) {
+                            $matchValue= $this->modx->config["{$match[1]}"];
+                        } else {
+                            $matchValue= '';
+                        }
+                        $v= str_replace($match[0], $matchValue, $v);
+                    }
+                }
+                $content .= "\$this->config['{$k}']= " . var_export($v, true) . ";\n";
             }
         }
         $written= $this->writeFile($fileName, $content);

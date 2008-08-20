@@ -4,6 +4,9 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added support for loading extension_packages via configuration settings before the session is initialized.
+- Fixed dynamic value replacement of {setting_key} in system and context setting generators.
+- Updated xPDO to revision 216.
 - Added class_key field to modUser class/table to support modUser derivatives.
 - Fix to new modLexiconEntry table structure (was not installing due to NOT NULL and no default value).
 - Removed modResource::hasAccess() function to make sure and avoid confusion with security.
