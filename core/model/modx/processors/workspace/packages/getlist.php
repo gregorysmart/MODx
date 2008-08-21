@@ -25,19 +25,25 @@ foreach ($packages as $package) {
             'handler' => 'this.update',
         ),
         array(
-            'text' => ($not_installed) 
+            'text' => ($not_installed)
                 ? $modx->lexicon('package_install')
-                : $modx->lexicon('package_uninstall'),
-            'handler' => ($not_installed) 
+                : $modx->lexicon('package_reinstall'),
+            'handler' => ($not_installed)
                 ? 'this.confirm.createDelegate(this,["install","package_confirm_install"])'
-                : 'this.confirm.createDelegate(this,["uninstall","package_confirm_uninstall"])',
+                : 'this.confirm.createDelegate(this,["install","package_confirm_reinstall"])',
         ),
-        '-',
-        array(
-            'text' => $modx->lexicon('package_remove'),
-            'handler' => 'this.remove.createDelegate(this,["package_confirm_remove"])',
-        ),
-    );    
+    );
+    if ($not_installed == false) {
+        $pa['menu'][] = array(
+            'text' => $modx->lexicon('package_uninstall'),
+            'handler' => 'this.confirm.createDelegate(this,["uninstall","package_confirm_uninstall"])',
+        );
+    }
+    $pa['menu'][] = '-';
+    $pa['menu'][] = array(
+        'text' => $modx->lexicon('package_remove'),
+        'handler' => 'this.remove.createDelegate(this,["package_confirm_remove"])',
+    );
     $ps[] = $pa;
 }
 
