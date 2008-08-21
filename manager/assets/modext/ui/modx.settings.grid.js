@@ -62,7 +62,7 @@ MODx.grid.SettingsGrid = function(config) {
         }
         ,plugins: exp
         ,columns: [exp,{
-            header: _('setting')
+            header: _('name')
             ,dataIndex: 'name'
             ,width: 250
             ,editor: { xtype: 'textfield' }
