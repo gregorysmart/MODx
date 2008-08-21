@@ -36,6 +36,7 @@
 
             <label>{$_lang.login_password} </label>
             <input type="password" class="text" name="password" id="password" tabindex="2" value="" />
+            <input type="hidden" name="login_context" id="login_context" value="mgr" />
 
 			{if $_config.use_captcha EQ '1'}
             <p class="caption">{$_lang.login_captcha_message}</p>

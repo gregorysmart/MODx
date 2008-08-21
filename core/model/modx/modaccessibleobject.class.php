@@ -32,7 +32,7 @@ class modAccessibleObject extends xPDOObject {
             if (!$userid) {
                 $userid = '0';
             }
-            $xpdo->_log(XPDO_LOG_LEVEL_ERROR, "Principal {$userid} does not have access to requested object of class {$object->_class} with primary key " . print_r($object->getPrimaryKey(false), true));
+            $xpdo->_log(XPDO_LOG_LEVEL_INFO, "Principal {$userid} does not have access to requested object of class {$object->_class} with primary key " . print_r($object->getPrimaryKey(false), true));
             $object = null;
         }
         return $object;

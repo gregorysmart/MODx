@@ -32,7 +32,7 @@ $modx->setLogLevel(MODX_LOG_LEVEL_ERROR);
 $modx->setLogTarget('FILE');
 
 // initialize the proper context
-$modx->initialize(isset ($_POST['login_context']) ? $_POST['login_context'] : 'connector');
+$modx->initialize('connector');
 
 // handle the request
 $modx->getRequest();
