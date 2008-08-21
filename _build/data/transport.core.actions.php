@@ -699,3 +699,13 @@ $collection['74']->fromArray(array (
   'lang_foci' => 'workspace,package_builder,lexicon,namespace',
   'assets' => '',
 ), '', true, true);
+$collection['75']= $xpdo->newObject('modAction');
+$collection['75']->fromArray(array (
+  'id' => '75',
+  'context_key' => 'mgr',
+  'parent' => '65',
+  'controller' => 'security/access/policy/update',
+  'haslayout' => '1',
+  'lang_foci' => 'access,policy,user',
+  'assets' => '',
+), '', true, true);
