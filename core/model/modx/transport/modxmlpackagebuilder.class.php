@@ -45,7 +45,8 @@ class modXMLPackageBuilder extends modPackageBuilder {
         }
 
         // create a new package
-        $this->create($this->build['name'], $this->build['version'], $this->build['release'], $this->build['namespace'],$this->build['autoincludes']);
+        $this->create($this->build['name'], $this->build['version'], $this->build['release'],$this->build['autoincludes']);
+        $this->registerNamespace($this->build['namespace']);
 
         // set up some attributes that define install behavior
         $attributes= array(

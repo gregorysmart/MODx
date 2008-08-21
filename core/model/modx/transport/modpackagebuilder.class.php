@@ -94,15 +94,7 @@ class modPackageBuilder {
     * package.
 	* @returns xPDOTransport The xPDOTransport package object.
     */
-	function create($name, $version, $release= '', $ns = 'core', $autoselects = array()) {
-        // grab and validate the namespace
-        $namespace = $this->modx->getObject('modNamespace', $ns);
-        if ($namespace == null) {
-        	$this->modx->_log(XPDO_LOG_LEVEL_ERROR,'Package cannot be built because namespace '.$ns.' could not be found.');
-            return false;
-        }
-        $this->namespace = $namespace;
-
+	function create($name, $version, $release= '', $autoselects = array()) {
         // setup the signature and filename
         $s['name']= $name;
         $s['version']= $version;
@@ -126,11 +118,6 @@ class modPackageBuilder {
 
         // set automatically included packages
         $this->setAutoSelects($autoselects);
-
-        // now add the namespace into the transport
-        if ($this->registerNamespace($namespace) === false) {
-        	$this->_log(MODX_LOG_LEVEL_ERROR,'Could not register namespace to package.');
-        }
 
 		return $this->package;
 	}
@@ -158,18 +145,25 @@ class modPackageBuilder {
 	}
 
     /**
-     * Registers a namespace to the transport package.
+     * Registers a namespace to the transport package. If no namespace is found,
+     * will create a namespace.
      *
      * @access public
      * @param string/modNamespace $namespace The modNamespace object or the
      * string name of the namespace
+     * @param boolean $autoselect If true, will automatically select relative
+     * resources to the namespace.
      * @return boolean True if successful.
      */
-    function registerNamespace($namespace = 'core') {
-    	if (!is_a($namespace, 'modNamespace')) {
-    		$namespace = $this->modx->getObject('modNamespace',$namespace);
-            if ($namespace == null) return false;
-    	}
+    function registerNamespace($ns = 'core', $autoselect = true) {
+    	if (!is_a($ns, 'modNamespace')) {
+    		$namespace = $this->modx->getObject('modNamespace',$ns);
+            if ($namespace == null) {
+            	$namespace = $this->modx->newObject('modNamespace');
+                $namespace->set('name',$ns);
+            }
+    	} else $namespace = $ns;
+        $this->namespace = $namespace;
 
         // define some basic attributes
         $attributes= array(
@@ -184,17 +178,18 @@ class modPackageBuilder {
         // put it into the package
         if (!$this->putVehicle($v)) return false;
 
-        // grab all related classes that can be auto-packaged and package them in
-        foreach ($this->autoselects as $classname) {
-            $objs = $this->modx->getCollection($classname,array(
-                'namespace' => $namespace->get('name'),
-            ));
-            foreach ($objs as $obj) {
-                $v = $this->createVehicle($obj,$attributes);
-                if (!$this->putVehicle($v)) return false;
+        if ($autoselect) {
+            // grab all related classes that can be auto-packaged and package them in
+            foreach ($this->autoselects as $classname) {
+                $objs = $this->modx->getCollection($classname,array(
+                    'namespace' => $namespace->get('name'),
+                ));
+                foreach ($objs as $obj) {
+                    $v = $this->createVehicle($obj,$attributes);
+                    if (!$this->putVehicle($v)) return false;
+                }
             }
         }
-
         return true;
     }
 
