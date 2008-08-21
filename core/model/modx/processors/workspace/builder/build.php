@@ -15,8 +15,8 @@ $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
 
 // create a new package
-$builder->create($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release'], $_PACKAGE['autoselects']);
-$builder->registerNamespace($_PACKAGE['namespace']);
+$builder->create($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release']);
+$builder->registerNamespace($_PACKAGE['namespace'],$_PACKAGE['autoselects']);
 
 // define some locations for file resources
 $sources= array (

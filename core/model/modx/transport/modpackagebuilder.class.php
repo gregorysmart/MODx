@@ -94,7 +94,7 @@ class modPackageBuilder {
     * package.
 	* @returns xPDOTransport The xPDOTransport package object.
     */
-	function create($name, $version, $release= '', $autoselects = array()) {
+	function create($name, $version, $release= '') {
         // setup the signature and filename
         $s['name']= $name;
         $s['version']= $version;
@@ -115,9 +115,6 @@ class modPackageBuilder {
 
         // create the transport package
 		$this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
-
-        // set automatically included packages
-        $this->setAutoSelects($autoselects);
 
 		return $this->package;
 	}
@@ -140,7 +137,9 @@ class modPackageBuilder {
 	* @returns modTransportVehicle The createed modTransportVehicle instance.
     */
 	function createVehicle($obj, $attr) {
-		$attr['namespace'] = $this->namespace; // package the namespace into the metadata
+		if ($this->namespace) {
+			$attr['namespace'] = $this->namespace; // package the namespace into the metadata
+        }
         return new modTransportVehicle($obj, $attr);
 	}
 
@@ -151,11 +150,13 @@ class modPackageBuilder {
      * @access public
      * @param string/modNamespace $namespace The modNamespace object or the
      * string name of the namespace
-     * @param boolean $autoselect If true, will automatically select relative
-     * resources to the namespace.
+     * @param boolean/array $autoincludes If true, will automatically select
+     * relative resources to the namespace.
+     * @param boolean $packageNamespace If false, will not package the namespace
+     * as a vehicle.
      * @return boolean True if successful.
      */
-    function registerNamespace($ns = 'core', $autoselect = true) {
+    function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true) {
     	if (!is_a($ns, 'modNamespace')) {
     		$namespace = $this->modx->getObject('modNamespace',$ns);
             if ($namespace == null) {
@@ -171,14 +172,20 @@ class modPackageBuilder {
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
         );
+        if ($packageNamespace) {
+            // create the namespace vehicle
+            $v = $this->createVehicle($namespace,$attributes);
 
-        // create the namespace vehicle
-        $v = $this->createVehicle($namespace,$attributes);
+            // put it into the package
+            if (!$this->putVehicle($v)) return false;
+        }
 
-        // put it into the package
-        if (!$this->putVehicle($v)) return false;
+        if ($autoincludes == true || (is_array($autoincludes) && !empty($autoincludes))) {
+            if (is_array($autoincludes)) {
+                // set automatically included packages
+                $this->setAutoSelects($autoincludes);
+            }
 
-        if ($autoselect) {
             // grab all related classes that can be auto-packaged and package them in
             foreach ($this->autoselects as $classname) {
                 $objs = $this->modx->getCollection($classname,array(
