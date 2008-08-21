@@ -371,7 +371,7 @@ $attributes = array (
 );
 $namespace = $xpdo->newObject('modNamespace');
 $namespace->set('name','core');
-$namespace->set('path',MODX_CORE_PATH);
+$namespace->set('path','{core_path}');
 $package->put($namespace,$attributes);
 include dirname(__FILE__).'/data/transport.core.lexicon.php';
 foreach ($entries as $c) {
