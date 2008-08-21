@@ -12,9 +12,7 @@ Ext.namespace('MODx','MODx.combo');
 MODx.combo.ComboBox = function(config,getStore) {
 	config = config || {};
     Ext.applyIf(config,{
-        name: 'name'
-        ,hiddenName: 'name'
-        ,displayField: 'name'
+        displayField: 'name'
         ,valueField: 'id'
         ,triggerAction: 'all'
         ,fields: ['id','name']
