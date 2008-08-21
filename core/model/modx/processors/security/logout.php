@@ -7,7 +7,6 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('login');
 
-if (!$modx->hasPermission('logout')) $error->failure($modx->lexicon('permission_denied'));
 if (!$user= $modx->getUser()) $error->failure($modx->lexicon('not_logged_in'));
 
 // invoke OnBeforeManagerLogout event
