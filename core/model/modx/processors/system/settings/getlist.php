@@ -55,6 +55,11 @@ foreach ($settings as $setting) {
 
     $sa['menu'] = array(
         array(
+            'text' => $modx->lexicon('setting_update'),
+            'handler' => array( 'xtype' => 'window-setting-update' ),
+        ),
+        '-',
+        array(
             'text' => $modx->lexicon('setting_remove'),
             'handler' => 'this.remove.createDelegate(this,["setting_remove_confirm"])',
         ),

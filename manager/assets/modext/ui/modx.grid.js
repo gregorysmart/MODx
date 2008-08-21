@@ -141,6 +141,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
                 scope: this
                 ,success: this.refresh
                 ,record: win.blankValues ? {} : r
+                ,grid: this
             });
             if (or) {
                 Ext.apply(win,or);

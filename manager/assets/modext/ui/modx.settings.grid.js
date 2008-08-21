@@ -322,3 +322,63 @@ MODx.combo.xType = function(config) {
 };
 Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
 Ext.reg('combo-xtype',MODx.combo.xType);
+
+
+
+/**
+ * A window for updating settings
+ * 
+ * @class MODx.window.UpdateSetting
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of config options.
+ * @xtype window-setting-update
+ */
+MODx.window.UpdateSetting = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('setting_update')
+        ,width: 400
+        ,url: config.grid.config.url
+        ,action: 'update'
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'fk'
+            ,value: config.fk || 0
+        },{
+            xtype: 'statictextfield'
+            ,fieldLabel: _('key')
+            ,name: 'key'
+            ,submitValue: true
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,allowBlank: false
+        },{
+            xtype: 'combo-xtype'
+            ,name: 'xtype'
+            ,hiddenName: 'xtype'
+            ,fieldLabel: _('xtype')
+            ,description: _('xtype_desc')
+        },{
+            xtype: 'combo-namespace'
+            ,fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,value: 'core'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('value')
+            ,name: 'value'
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,allowBlank: true
+            ,width: 225
+        }]
+    });
+    MODx.window.UpdateSetting.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.UpdateSetting,MODx.Window);
+Ext.reg('window-setting-update',MODx.window.UpdateSetting);
