@@ -4,6 +4,16 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-282] Fixed bug where grid would show non-existent page in lexicon/settings grids
+- Removed permission check on logout action; doesn't make much sense.
+- Proper formatting of editedon time in system settings grid
+- Added System Settings "Update Setting" window for more detailed editin
+- Rebuilt core data files for the transport.core.php script and made correction to core namespace path to the value {core_path} which is calculated at run-time.
+- [#MODX-263] Access policy update grid moved to separate page
+- Created panel for editing access policies
+- [#MODX-277] Changed 'setting' to 'name' at top of System Settings grid
+- [#MODX-283] Fixed combo-boolean combobox to prevent overwriting of form variables. this was a bizarre bug.
+- Allowed modPackageBuilder to now use dynamic, on-the-fly namespaces. Separated out registerNamespace() from create()
 - Added support for loading extension_packages via configuration settings before the session is initialized.
 - Fixed dynamic value replacement of {setting_key} in system and context setting generators.
 - Updated xPDO to revision 216.

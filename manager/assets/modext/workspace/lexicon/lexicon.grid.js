@@ -119,6 +119,7 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     filter: function(cb,nv,ov,name) {
     	if (!name) return false;
     	this.store.baseParams[name] = nv;
+    	this.getBottomToolbar().changePage(1);
     	this.refresh();
     }
     ,changeNamespace: function(cb,nv,ov) {

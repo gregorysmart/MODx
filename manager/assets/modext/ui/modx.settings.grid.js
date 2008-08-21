@@ -102,15 +102,12 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
      * Filters the grid by the key column.
      */
     ,filterByKey: function(tf,newValue,oldValue) {
-        this.getStore().load({
-            params: {
-                key: newValue
-                ,start: 0
-                ,limit: 20
-            }
-            ,scope: this
-            ,callback: this.refresh
-        });
+        this.getStore().baseParams = {
+        	action: 'getList'
+        	,key: newValue
+        }
+        this.refresh();
+        this.getBottomToolbar().changePage(1);
     }
     /**
      * Dynamically change the editor for the row via its xtype property.
