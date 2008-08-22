@@ -219,6 +219,7 @@ MODx.window.CreateNamespace = function(config) {
         },{
             xtype: 'textfield'
             ,fieldLabel: _('path')
+            ,description: _('namespace_path_desc')
             ,name: 'path'
             ,width: 400
         }]
