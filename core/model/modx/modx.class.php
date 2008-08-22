@@ -828,7 +828,20 @@ class modX extends xPDO {
                     $settings= $this->user->getMany('modUserSetting');
                     if (is_array($settings) && !empty ($settings)) {
                         foreach ($settings as $setting) {
-                            $usrSettings[$setting->get('key')]= $setting->get('value');
+                            $v= $setting->get('value');
+                            $matches= array();
+                            if (preg_match_all('~\{(.*?)\}~', $v, $matches, PREG_SET_ORDER)) {
+                                $matchValue= '';
+                                foreach ($matches as $match) {
+                                    if (isset ($this->config["{$match[1]}"])) {
+                                        $matchValue= $this->config["{$match[1]}"];
+                                    } else {
+                                        $matchValue= '';
+                                    }
+                                    $v= str_replace($match[0], $matchValue, $v);
+                                }
+                            }
+                            $usrSettings[$setting->get('key')]= $v;
                         }
                     }
                 }
