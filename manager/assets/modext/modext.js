@@ -5,6 +5,7 @@ MODx = function(config) {
     MODx.superclass.constructor.call(this,config);
     this.config = config;
     this.initQuickTips();
+    this.request = this.getURLParameters();
 };
 Ext.extend(MODx,Ext.Component,{
     config: {}
@@ -25,6 +26,20 @@ Ext.extend(MODx,Ext.Component,{
         Ext.apply(Ext.QuickTips.getQuickTip(), {
             dismissDelay: 2300
         });
+    }
+    
+    ,getURLParameters: function() {
+        var arg = new Object();
+        var href = document.location.href;
+        
+        if (href.indexOf( "?") != -1) {
+            var params = href.split( "?")[1];
+            var param = params.split("&");        
+            for (var i = 0; i < param.length; ++i) {
+                arg[param[i].split("=")[0]] = param[i].split("=")[1];
+            }
+        }
+        return arg;
     }
 });
 Ext.reg('modx',MODx);
