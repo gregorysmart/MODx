@@ -32,16 +32,3 @@
 
 </div>
 <script type="text/javascript" src="assets/modext/sections/context/view.js"></script>
-{literal}
-<script type="text/javascript">
-// <![CDATA[
-Ext.onReady(function() {
-     var _context = new MODx.Context({
-     {/literal}
-     	key: '{$context->key}'
-     {literal}
-     });
-});
-// ]]>
-</script>
-{/literal}

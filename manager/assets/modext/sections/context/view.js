@@ -1,6 +1,17 @@
-Ext.namespace('MODx');
+Ext.onReady(function() {
+	MODx.load({
+	   xtype: 'modx-context-view'
+	   ,key: MODx.request.key
+	});
+});
 
-MODx.Context = function(config) {
+/**
+ * @class MODx.ViewContext
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-context-view
+ */
+MODx.ViewContext = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		form: 'context_data'
@@ -12,9 +23,9 @@ MODx.Context = function(config) {
         }
         ,buttons: this.getButtons()
 	});
-	MODx.Context.superclass.constructor.call(this,config);
+	MODx.ViewContext.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Context,MODx.Component,{	
+Ext.extend(MODx.ViewContext,MODx.Component,{	
 	getButtons: function(config) {
 		var b = [];
 	    b.push({
@@ -54,3 +65,4 @@ Ext.extend(MODx.Context,MODx.Component,{
 	    return b;
 	}
 });
+Ext.reg('modx-context-view',MODx.ViewContext);

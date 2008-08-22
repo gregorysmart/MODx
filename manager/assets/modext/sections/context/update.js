@@ -1,3 +1,10 @@
+Ext.onReady(function() {
+    MODx.load({
+        xtype: 'modx-context-update'
+        ,context: MODx.request.key
+    });
+});
+
 /** 
  * @class MODx.UpdateContext
  * @extends MODx.Component
@@ -20,7 +27,7 @@ MODx.UpdateContext = function(config) {
             ,method: 'remote'
             ,refresh: {
                 tree: 'modx_resource_tree'
-                ,node: 'n_'+config.key
+                ,node: 'n_'+config.context
                 ,self: true
             }
             ,listeners: {
