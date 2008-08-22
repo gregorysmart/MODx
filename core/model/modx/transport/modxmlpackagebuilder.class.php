@@ -51,15 +51,20 @@ class modXMLPackageBuilder extends modPackageBuilder {
         // set up some attributes that define install behavior
         $attributes= array(
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
-            XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
+            XPDO_TRANSPORT_RESOLVE_FILES => true,
+            XPDO_TRANSPORT_RESOLVE_PHP => true,
+            XPDO_TRANSPORT_PRESERVE_KEYS => false,
         );
 
         foreach ($this->build['vehicles'] as $signature => $vehicle) {
             $c = $this->modx->getObject($vehicle['class_key'],$vehicle['object']);
             if ($c == null) continue;
 
-            $v = $this->createVehicle($c,$attributes);
+            if (!isset($vehicle['attributes'])) $vehicle['attributes'] = array();
+            $attr = array_merge($attributes,$vehicle['attributes']);
+
+            $v = $this->createVehicle($c,$attr);
             if (isset($vehicle['resolvers']) && !empty($vehicle['resolvers'])) {
                 foreach ($vehicle['resolvers'] as $resolver) {
                     $v->resolve($resolver['type'],$resolver);
@@ -130,6 +135,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
             case 'vehicle':
                 $vehicle = array(
                     'resolvers' => array(),
+                    'attributes' => array(),
                 );
                 while (list ($attrName, $attrValue)= each($attributes)) {
                     switch ($attrName) {
@@ -138,6 +144,9 @@ class modXMLPackageBuilder extends modPackageBuilder {
                             break;
                         case 'id':
                             $vehicle['object'] = $attrValue;
+                            break;
+                        default:
+                            $vehicle['attributes'][$attrName] = $attrValue;
                             break;
                     }
                 }

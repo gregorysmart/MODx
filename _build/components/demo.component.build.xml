@@ -5,7 +5,15 @@
 	<autoinclude class="modSystemSetting" />
 	<autoinclude class="modContextSetting" />
 	
-	<vehicle class="modTemplate" id="1">
+	<vehicle 
+	   class="modTemplate"
+	   id="1"
+       unique_key="name"
+	   update_object="1"
+	   resolve_files="1"
+	   resolve_php="1"
+	   preserve_keys="0"
+    >	
         <resolver type="file" 
 				  name="demo"
 				  source="_build/components/"

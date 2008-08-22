@@ -76,6 +76,44 @@ MODx.window.CreateVehicle = function(config) {
             ,description: _('object_id_desc')
             ,id: 'combo-object'
         },{
+            xtype: 'textfield'
+            ,fieldLabel: _('unique_key')
+            ,description: _('unique_key_desc')
+            ,name: 'unique_key'
+            ,value: 'name'
+        },{
+            xtype: 'checkbox'
+            ,boxLabel: _('update_object')
+            ,description: _('update_object_desc')
+            ,name: 'update_object'
+            ,labelSeparator: ''
+            ,inputValue: 1
+            ,checked: true
+        },{
+            xtype: 'checkbox'
+            ,boxLabel: _('resolve_files')
+            ,description: _('resolve_files_desc')
+            ,name: 'resolve_files'
+            ,labelSeparator: ''
+            ,inputValue: 1
+            ,checked: true
+        },{
+            xtype: 'checkbox'
+            ,boxLabel: _('resolve_php')
+            ,description: _('resolve_php_desc')
+            ,name: 'resolve_php'
+            ,labelSeparator: ''
+            ,inputValue: 1
+            ,checked: true
+        },{
+            xtype: 'checkbox'
+            ,boxLabel: _('preserve_keys')
+            ,description: _('preserve_keys_desc')
+            ,name: 'preserve_keys'
+            ,labelSeparator: ''
+            ,inputValue: 1
+            ,checked: false
+        },{
             xtype: 'grid-resolver'
             ,id: 'grid-resolver'
             ,preventRender: true

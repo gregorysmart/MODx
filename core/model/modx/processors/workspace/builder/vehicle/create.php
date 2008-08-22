@@ -21,12 +21,8 @@ switch ($class_key) {
     case 'modCategory':
         $name = 'category'; break;
     case 'modContext':
-    case 'modSystemSetting':
         $name = 'key';
         break;
-    case 'modContextSetting':
-        $name = 'key';
-        $pk = array( 'key' => $_POST['object'] );
     case 'modAction':
         $name = 'controller'; break;
     case 'modMenu':
@@ -53,9 +49,15 @@ $vehicle = array(
     'object' => $_POST['object'],
     'name' => $c->get($name),
     'resolvers' => $resolvers,
+    'attributes' => array(
+        'unique_key' => $_POST['unique_key'] == '' ? 'name' : $_POST['unique_key'],
+        'update_object' => isset($_POST['update_object']) && $_POST['update_object'] == true,
+        'resolve_files' => isset($_POST['resolve_files']) && $_POST['resolve_files'] == true,
+        'resolve_php' => isset($_POST['resolve_php']) && $_POST['resolve_php'] == true,
+        'preserve_keys' => isset($_POST['preserve_keys']) && $_POST['preserve_keys'] == true,
+    ),
 );
 
-//$modx->error->failure(print_r($vehicle,true));
 array_push($_SESSION['modx.pb']['vehicles'],$vehicle);
 
 $modx->error->success();

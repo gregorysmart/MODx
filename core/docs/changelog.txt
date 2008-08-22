@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Implemented UI ability to choose vehicle-specific attributes when adding vehicles to packages
 - Added dynamic value replacement of {setting_key} in user settings in modX->getUser().
 - Added function to grab the request parameters to MODx.request
 - Added missing permission check on empty_cache attribute on refresh_site controller/processor.

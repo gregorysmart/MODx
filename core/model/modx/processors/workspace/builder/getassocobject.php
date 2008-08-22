@@ -35,9 +35,7 @@ foreach ($objects as $object) {
         case 'modCategory':
             $name = 'category';
             break;
-        case 'modSystemSetting':
         case 'modContext':
-        case 'modContextSetting':
             $name = 'key';
             $pk = 'key';
             break;

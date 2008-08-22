@@ -171,6 +171,8 @@ class modPackageBuilder {
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
+            XPDO_TRANSPORT_RESOLVE_FILES => true,
+            XPDO_TRANSPORT_RESOLVE_PHP => true,
         );
         if ($packageNamespace) {
             // create the namespace vehicle
