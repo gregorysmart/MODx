@@ -1,12 +1,19 @@
-Ext.namespace('MODx','MODx.Role');
-
-MODx.Role.Update = function(config) {
-	config = config || {};
-    this.grid = new MODx.grid.RoleUser({
-        el: 'role_users_grid'
-        ,role: config.id
-        ,preventRender: true
+Ext.onReady(function() {
+    MODx.load({
+    	xtype: 'modx-role-update'
+        ,id: MODx.request.id
     });
+});
+
+/**
+ * 
+ * @class MODx.UpdateRole
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-update-role
+ */
+MODx.UpdateRole = function(config) {
+	config = config || {};
     Ext.applyIf(config,{
         form: 'mutate_role'
         ,actions: {
@@ -27,10 +34,15 @@ MODx.Role.Update = function(config) {
         ,tabs: [
             {contentEl: 'tab_information', title: _('settings_general')}
             ,{contentEl: 'tab_permissions', title: _('permissions')}
-            ,this.grid
+            ,{
+                xtype: 'grid-roleuser'
+                ,el: 'role_users_grid'
+                ,role: config.id
+                ,preventRender: true
+            }
         ]
     });
-	MODx.Role.Update.superclass.constructor.call(this,config);	
-	
+	MODx.UpdateRole.superclass.constructor.call(this,config);	
 };
-Ext.extend(MODx.Role.Update,MODx.Component);
+Ext.extend(MODx.UpdateRole,MODx.Component);
+Ext.reg('modx-role-update',MODx.UpdateRole);
