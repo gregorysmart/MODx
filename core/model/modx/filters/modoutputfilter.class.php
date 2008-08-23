@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -30,7 +30,7 @@
  * Base output filter implementation for modElement processing, based on phX.
  *
  * @todo implement error handling (try/catch) to prevent modifiers from breaking the output
- * 
+ *
  * @package modx
  * @subpackage filters
  */
@@ -42,7 +42,7 @@ class modOutputFilter {
     }
 
     function filter(& $element) {
-        
+
     	$output= & $element->_content;
         if (isset ($element->_properties['filter_commands'])) {
             $modifier_cmd = & $element->_properties['filter_commands'];
@@ -171,7 +171,7 @@ class modOutputFilter {
                         $output= strip_tags($output);
                         break;
                     case "length" : // See PHP's strlen - http://www.php.net/manual/en/function.strlen.php
-                    case "len" : 
+                    case "len" :
                         $output= strlen($output);
                         break;
                     case "reverse" : // See PHP's strrev - http://www.php.net/manual/en/function.strrev.php
@@ -205,10 +205,10 @@ class modOutputFilter {
                         $filter= str_replace('?', $output, $filter);
                         $output= eval("return " . $filter . ";");
                         break;
-                    
+
                     case "add": // Returns input incremented by option (default: +1)
-                    case "increment": 
-                    case "incr": 
+                    case "increment":
+                    case "incr":
                     	if (empty($m_val))
                             $m_val = 1;
                     	$output = intval($output) + intval($m_val);
@@ -216,28 +216,28 @@ class modOutputFilter {
 
                     case "substract":
                     case "decrement": // Returns input decremented by option (default: -1)
-                    case "decr": 
+                    case "decr":
                         if (empty($m_val))
                             $m_val = 1;
                         $output = intval($output) - intval($m_val);
                         break;
-                    
+
                     case "multiply": // Returns input multiplied by option (default: *2)
-                    case "mpy": 
+                    case "mpy":
                         if (empty($m_val))
                             $m_val = 1;
                         $output = intval($output) * intval($m_val);
                         break;
-                    
+
                     case "divide": // Returns input divided by option (default: /2)
-                    case "div": 
+                    case "div":
                         if (empty($m_val))
                             $m_val = 2;
                         $output = intval($output) / intval($m_val);
                         break;
-                        
+
                     case "modulus": // Returns the option modulus on input (default: %2, returns 0 or 1)
-                    case "mod": 
+                    case "mod":
                         if (empty($m_val))
                             $m_val = 2;
                         $output = intval($output) % intval($m_val);
@@ -274,7 +274,10 @@ class modOutputFilter {
                         //@todo Possibility to only look for snippet names prefixed with 'filter:'
                         $params = array (
                             'input' => $output,
-                            'options' => $m_val
+                            'options' => $m_val,
+                            'token' => $element->_token, // type of parent element
+                            'name' => $element->get('name'), // name of the parent element
+                            'tag' => $element->getTag() // complete parent tag
                         );
                         $this->log('This modifier is custom running as snippet.');
                         $tmp = $this->modx->runSnippet($m_cmd, $params);
