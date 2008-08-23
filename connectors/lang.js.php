@@ -6,9 +6,8 @@ ob_clean();
 if (isset($_REQUEST['action']) && isset($_REQUEST['ctx'])
     && $_REQUEST['ctx'] != 'mgr' && $_REQUEST['ctx'] != ''
     && $_REQUEST['action'] != '' && isset($modx->actionMap[$_REQUEST['action']])) {
-    
+
     $action = $modx->actionMap[$_REQUEST['action']];
-    $modx->lexicon->addDirectory($action['context_path'].'core/lexicon/',$action['context']);
 }
 
 if (isset($_REQUEST['foci']) && $_REQUEST['foci'] != '') {
