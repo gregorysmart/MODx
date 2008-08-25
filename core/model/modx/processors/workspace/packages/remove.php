@@ -10,7 +10,7 @@ $modx->lexicon->load('workspace');
 $package = $modx->getObject('transport.modTransportPackage', $_REQUEST['signature']);
 if ($package == null) $modx->error->failure(sprintf($modx->lexicon('package_err_nfs'),$_REQUEST['signature']));
 
-if (!$package->remove()) {
+if ($package->remove() == false) {
     $modx->error->failure(sprintf($modx->lexicon('package_err_remove'),$package->getPrimaryKey()));
 }
 

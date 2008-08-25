@@ -161,7 +161,11 @@ class modTransportPackage extends xPDOObject {
 	 */
 	function remove($ancestors = array()) {
 		$removed = false;
-		$uninstalled = $this->uninstall();
+        if ($this->get('installed') == null) {
+        	$uninstalled = true;
+        } else {
+            $uninstalled = $this->uninstall();
+        }
 
 		if ($uninstalled) {
 			$removed= parent::remove($ancestors);
@@ -259,8 +263,8 @@ class modTransportPackage extends xPDOObject {
         }
         return $transferred;
     }
-    
-    
+
+
     /**
      * Converts to bytes from PHP ini_get() format.
      *
