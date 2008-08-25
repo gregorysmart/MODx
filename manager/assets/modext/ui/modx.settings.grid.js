@@ -99,13 +99,24 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
     }
     
     /**
+     * Resets the filter to empty
+     */
+    ,clearFilter: function() {
+    	this.getStore().baseParams = {
+    		action: 'getList'
+    	};
+    	this.refresh();
+    	this.getBottomToolbar().changePage(1);
+    }
+    
+    /**
      * Filters the grid by the key column.
      */
     ,filterByKey: function(tf,newValue,oldValue) {
         this.getStore().baseParams = {
         	action: 'getList'
         	,key: newValue
-        }
+        };
         this.refresh();
         this.getBottomToolbar().changePage(1);
     }

@@ -285,6 +285,7 @@ $_lang['fatal_error_missing_dependancies'] = 'FATAL ERROR: Missing dependencies.
 $_lang['female'] = 'Female';
 $_lang['files'] = 'Files';
 $_lang['filter'] = 'Filter';
+$_lang['filter_clear'] = 'Clear Filter';
 $_lang['filter_by_key'] = 'Filter by Key...';
 $_lang['filter_by_name'] = 'Filter by name...';
 $_lang['filter_by_username'] = 'Filter by user name...';
