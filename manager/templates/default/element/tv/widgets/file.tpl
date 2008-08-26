@@ -6,37 +6,29 @@
 />&nbsp;
 <input type="button" 
 	value="{$_lang.insert}"
-	onclick="BrowseServer('tv{$tv->id}'); return false;" 
+	onclick="loadBrowser('tv{$tv->id}'); return false;" 
 />
+<div id="browser_tv{$tv->id}"></div>
+
+<script src="{$_config.manager_url}assets/modext/ui/modx.view.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/ui/modx.browser.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/tree/directory.tree.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/switchbutton.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/ui/modx.actionbuttons.js" type="text/javascript"></script>
 
 {literal}
 <script type="text/javascript">
-var lastFileCtrl;
-function OpenServerBrowser(url, width, height ) {
-	var iLeft = (screen.width  - width) / 2 ;
-	var iTop  = (screen.height - height) / 2 ;
-
-	var sOptions = 'toolbar=no,status=no,resizable=yes,dependent=yes' ;
-	sOptions += ',width=' + width ;
-	sOptions += ',height=' + height ;
-	sOptions += ',left=' + iLeft ;
-	sOptions += ',top=' + iTop ;
-
-	var oWindow = window.open( url, 'FCKBrowseWindow', sOptions ) ;
-}
-function BrowseServer(ctrl) {
-	lastFileCtrl = ctrl;
-	var w = screen.width * 0.7;
-	var h = screen.height * 0.7;
-	{/literal}
-	OpenServerBrowser('{$base_url}manager/media/browser/mcpuk/browser.html?Type=files&Connector={$base_url}manager/media/browser/mcpuk/connectors/php/connector.php&ServerPath={$base_url}', w, h);
-	{literal}
-}
-function SetUrl(url, width, height, alt){
-	if(!lastFileCtrl) return;
-	var c = document.mutate[lastFileCtrl];
-	if(c) c.value = url;
-	lastFileCtrl = '';
+var browser = null;
+var loadBrowser = function(tv) {
+    var el = 'browser_'+tv;
+    if (browser == null) {
+        browser = MODx.load({
+           xtype: 'modx-browser-window'
+           ,el: el
+        });
+    }
+    browser.setReturn(tv);
+    browser.show(el);
 }
 </script>
 {/literal}

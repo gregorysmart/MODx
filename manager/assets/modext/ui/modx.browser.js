@@ -99,10 +99,16 @@ MODx.browser.Window = function(config) {
     this.config = config;
 };
 Ext.extend(MODx.browser.Window,Ext.Window,{
-    filter : function(){
+    returnEl: null
+    
+    ,filter : function(){
         var filter = Ext.getCmp('filter');
         this.view.store.filter('name', filter.getValue());
         this.view.select(0);
+    }
+    
+    ,setReturn: function(el) {
+        this.returnEl = el;
     }
     
     ,load: function(dir) {
@@ -166,7 +172,7 @@ Ext.extend(MODx.browser.Window,Ext.Window,{
     
     ,onSelect: function(data) {
         var selNode = this.view.getSelectedNodes()[0];
-        var callback = this.config.onSelect;
+        var callback = this.config.onSelect || this.onSelectHandler;
         var lookup = this.view.lookup;
         var scope = this.config.scope;
         this.hide(this.config.animEl || null,function(){
@@ -179,6 +185,10 @@ Ext.extend(MODx.browser.Window,Ext.Window,{
                 }
             }
         },scope);
+    }
+    
+    ,onSelectHandler: function(data) {
+        Ext.get(this.returnEl).dom.value = unescape(data.url);
     }
 });
 Ext.reg('modx-browser-window',MODx.browser.Window);

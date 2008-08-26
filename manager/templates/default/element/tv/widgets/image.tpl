@@ -8,8 +8,7 @@
 	value="{$_lang.insert}"
 	onclick="loadBrowser('tv{$tv->id}'); return false;" 
 />
-
-<div id="browser"></div>
+<div id="browser_tv{$tv->id}"></div>
 
 <script src="{$_config.manager_url}assets/modext/ui/modx.view.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/ui/modx.browser.js" type="text/javascript"></script>
@@ -20,16 +19,16 @@
 {literal}
 <script type="text/javascript">
 var browser = null;
-var loadBrowser = function(tv) { 
+var loadBrowser = function(tv) {
+    var el = 'browser_'+tv; 
     if (browser == null) {
-	    browser = new MODx.browser.Window({
-	       el: 'browser'
-	       ,onSelect: function(data) {
-	            Ext.get(tv).dom.value = unescape(data.url);
-	       }
+	    browser = MODx.load({
+           xtype: 'modx-browser-window'
+           ,el: el
 	    });
     }
-	browser.show('browser');
+    browser.setReturn(tv);
+	browser.show(el);
 }
 </script>
 {/literal}
