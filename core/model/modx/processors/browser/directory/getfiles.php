@@ -27,7 +27,7 @@ while(false !== ($name = $odir->read())) {
 		}
 		$fileClass = $this->fileClass . $fileExtension;
 		$size = @filesize($fullname);
-		$url = $modx->config['assets_url'].$dir.'/'.$name;
+		$url = $modx->config['base_url'].$dir.'/'.$name;
 		$files[] = array(
 			'name' => $name,
 			'cls' => 'file',

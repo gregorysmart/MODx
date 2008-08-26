@@ -49,6 +49,12 @@
     </td>
 </tr>
 <tr class="odd">
+    <th><label for="display">{$_lang.tv_output_type}</label></th>
+    <td class="x-form-element">
+        <select name="display" id="display"></select>
+    </td>
+</tr>
+<tr class="odd">
     <th><label for="elements">{$_lang.tv_elements}</label></th>
     <td class="x-form-element">
         <input name="els" id="els" type="text" value="{$tv->elements|escape}" />
@@ -63,15 +69,9 @@
         <span id="default_text_error" class="error"></span>
     </td>
 </tr>
-<tr class="odd">
-    <th><label for="display">{$_lang.tv_widget}</label></th>
-    <td class="x-form-element">
-        <select name="display" id="display"></select>
-    </td>
-</tr>
 <tr id="displayparamrow" style="display: none;">
     <th>
-        {$_lang.tv_widget_prop}
+        {$_lang.tv_output_type_properties}
         <div style="padding-top:8px;">
             <a href="javascript:void(0);" onclick="resetParameters(); return false;">
                 <img src="templates/{$_config.manager_theme}/images/icons/refresh.gif" width="16" height="16" alt="{$_lang.tmplvars_reset_params}" />

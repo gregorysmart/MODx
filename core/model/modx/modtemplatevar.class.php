@@ -109,7 +109,7 @@ class modTemplateVar extends modElement {
                 'tmplvarid' => $this->get('id'),
                 'contentid' => $documentId,
             ),true);
-                        
+
             if (!$tvd) {
                 $tvd= $this->xpdo->newObject('modTemplateVarResource');
             }
@@ -157,248 +157,14 @@ class modTemplateVar extends modElement {
         $id= "tv$name";
         $format= $this->get('display');
         $tvtype= $this->get('type');
-        switch ($format) {
-            case 'image' :
-                $images= $this->parseInput($value, '||', 'array');
-                $o= '';
-                foreach ($images as $image) {
-                    if (!is_array($image)) {
-                        $image= explode('==', $image);
-                    }
-                    $src= $image[0];
-                    if ($src) {
-                        $id= ($params['id'] ? 'id="' . $params['id'] . '"' : '');
-                        $alt= htmlspecialchars($params['alttext']);
-                        $class= $params['class'];
-                        $style= $params['style'];
-                        $attributes= $params['attrib'];
-                        $o .=<<<EOD
-<img {$id} src="{$src}" alt="{$alt}" class="{$class}" style="{$style}" {$attributes} />
-EOD;
-                    }
-                }
-                break;
 
-            case "delim" : // display as delimitted list
-                $value= $this->parseInput($value, "||");
-                $p= $params['format'] ? $params['format'] : ",";
-                if ($p == "\\n")
-                    $p= "\n";
-                $o= str_replace("||", $p, $value);
-                break;
+        $outputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/output/';
+        $outputRenderFile = $outputRenderPath.$this->get('display').'.php';
 
-            case "string" :
-                $value= $this->parseInput($value);
-                $format= strtolower($params['format']);
-                if ($format == 'upper case')
-                    $o= strtoupper($value);
-                else
-                    if ($format == 'lower case')
-                        $o= strtolower($value);
-                    else
-                        if ($format == 'sentence case')
-                            $o= ucfirst($value);
-                        else
-                            if ($format == 'capitalize')
-                                $o= ucwords($value);
-                            else
-                                $o= $value;
-                break;
-
-            case "date" :
-                $value= $this->parseInput($value);
-                // Check for MySQL style date - Adam Crownoble 8/3/2005
-                $date_match= '^([0-9]{2})-([0-9]{2})-([0-9]{4})\ ([0-9]{2}):([0-9]{2}):([0-9]{2})$';
-                $matches= array ();
-                if (strpos($value, '-') !== false && ereg($date_match, $value, $matches)) {
-                    $timestamp= mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[1], $matches[3]);
-                } else { // If it's not a MySQL style date, then use strtotime to figure out the date
-                    $timestamp= strtotime($value);
-                }
-                $p= $params['format'] ? $params['format'] : "%A %d, %B %Y";
-                $o= strftime($p, $timestamp);
-                break;
-
-            case "floater" :
-                $value= $this->parseInput($value, " ");
-                $this->xpdo->regClientStartupScript("manager/media/script/bin/webelm.js");
-                $o= "<script type=\"text/javascript\">";
-                $o .= "  document.setIncludePath('manager/media/script/bin/');";
-                $o .= "  document.addEventListener('oninit',function(){document.include('dynelement');document.include('floater');});";
-                $o .= "  document.addEventListener('onload',function(){var o = new Floater('$id','" . addslashes(mysql_escape_string($value)) . "','" . $params['x'] . "','" . $params['y'] . "','" . $params['pos'] . "','" . $params['gs'] . "');});";
-                $o .= "</script>";
-                $o .= "<script type=\"text/javascript\">Floater.Render('$id','" . $params['width'] . "','" . $params['height'] . "','" . $params['class'] . "','" . $params['style'] . "');</script>";
-                break;
-
-            case "marquee" :
-                $transfx= ($params['tfx'] == 'Horizontal') ? 2 : 1;
-                $value= $this->parseInput($value, " ");
-                $this->xpdo->regClientStartupScript("manager/media/script/bin/webelm.js");
-                $o= "<script type=\"text/javascript\">";
-                $o .= "  document.setIncludePath('manager/media/script/bin/');";
-                $o .= "  document.addEventListener('oninit',function(){document.include('dynelement');document.include('marquee');});";
-                $o .= "  document.addEventListener('onload',function(){var o = new Marquee('$id','" . addslashes(mysql_escape_string($value)) . "','" . $params['speed'] . "','" . ($params['pause'] == 'Yes' ? 1 : 0) . "','" . $transfx . "'); o.start()});";
-                $o .= "</script>";
-                $o .= "<script type=\"text/javascript\">Marquee.Render('$id','" . $params['width'] . "','" . $params['height'] . "','" . $params['class'] . "','" . $params['style'] . "');</script>";
-                break;
-
-            case "ticker" :
-                $transfx= ($params['tfx'] == 'Fader') ? 2 : 1;
-                $delim= ($params['delim']) ? $params['delim'] : "||";
-                if ($delim == "\\n")
-                    $delim= "\n";
-                $value= $this->parseInput($value, $delim, "array");
-                $this->xpdo->regClientStartupScript("manager/media/script/bin/webelm.js");
-                $o= '<script type="text/javascript">';
-                $o .= "  document.setIncludePath('manager/media/script/bin/');";
-                $o .= "  document.addEventListener('oninit',function(){document.include('dynelement');document.include('ticker');});";
-                $o .= "  document.addEventListener('onload',function(){";
-                $o .= "  var o = new Ticker('$id','" . $params['delay'] . "','" . $transfx . "'); ";
-                for ($i= 0; $i < count($value); $i++) {
-                    $o .= "  o.addMessage('" . addslashes(mysql_escape_string($value[$i])) . "');";
-                }
-                $o .= "  });";
-                $o .= "</script>";
-                $o .= "<script type=\"text/javascript\">Ticker.Render('$id','" . $params['width'] . "','" . $params['height'] . "','" . $params['class'] . "','" . $params['style'] . "');</script>";
-                break;
-
-            case "hyperlink" :
-                $value= $this->parseInput($value, "||", "array");
-                for ($i= 0; $i < count($value); $i++) {
-                    list ($name, $url)= is_array($value[$i]) ? $value[$i] : explode("==", $value[$i]);
-                    if (!$url)
-                        $url= $name;
-                    if ($o)
-                        $o .= '<br />';
-                    $o .= "<a href='$url'" . " title='" . ($params["title"] ? $this->xpdo->db->escape($params["title"]) : $name) . "'" . ($params["class"] ? " class='" . $params["class"] . "'" : "") . ($params["style"] ? " style='" . $params["style"] . "'" : "") . ($params["target"] ? " target='" . $params["target"] . "'" : "") . ($params["attrib"] ? " " . $this->xpdo->db->escape($params["attrib"]) : "") . ">" . ($params["text"] ? $this->xpdo->db->escape($params["text"]) : $name) . "</a>";
-                }
-                break;
-
-            case "htmltag" :
-                $value= $this->parseInput($value, "||", "array");
-                $tagid= $params['tagid'];
-                $tagname= ($params['tagname']) ? $params['tagname'] : 'div';
-                for ($i= 0; $i < count($value); $i++) {
-                    $tagvalue= is_array($value[$i]) ? implode(" ", $value[$i]) : $value[$i];
-                    if (!$url)
-                        $url= $name;
-                    $o .= "<$tagname id='" . ($tagid ? $tagid : "tv" . $id) . "'" . ($params["class"] ? " class='" . $params["class"] . "'" : "") . ($params["style"] ? " style='" . $params["style"] . "'" : "") . ($params["attrib"] ? " " . $params["attrib"] : "") . ">" . $tagvalue . "</$tagname>";
-                }
-                break;
-
-            case "richtext" :
-                $value= $this->parseInput($value);
-                $w= $params['w'] ? $params['w'] : '100%';
-                $h= $params['h'] ? $params['h'] : '400px';
-                $richtexteditor= $params['edt'] ? $params['edt'] : "";
-                $this->xpdo->regClientStartupScript("manager/media/script/bin/webelm.js");
-                $o= '<div class="MODX_RichTextWidget"><textarea id="' . $id . '" name="' . $id . '" style="width:' . $w . '; height:' . $h . ';">';
-                $o .= htmlspecialchars($value);
-                $o .= '</textarea></div>';
-                $replace_richtext= array (
-                    $id
-                );
-                // setup editors
-                if (!empty ($replace_richtext) && !empty ($richtexteditor)) {
-                    // invoke OnRichTextEditorInit event
-                    $evtOut= $this->xpdo->invokeEvent("OnRichTextEditorInit", array (
-                        'editor' => $richtexteditor,
-                        'elements' => $replace_richtext,
-                        'forfrontend' => 1,
-                        'width' => $w,
-                        'height' => $h
-                    ));
-                    if (is_array($evtOut))
-                        $o .= implode("", $evtOut);
-                }
-                break;
-
-            case "viewport" :
-                $value= $this->parseInput($value);
-                $id= '_' . time();
-                if (!$params['vpid'])
-                    $params['vpid']= $id;
-                if ($_SESSION['browser'] == 'ns' && $_SESSION['browser_version'] < '5.0') {
-                    $sTag= "<ilayer";
-                    $eTag= "</ilayer>";
-                } else {
-                    $sTag= "<iframe";
-                    $eTag= "</iframe>";
-                }
-                $autoMode= "0";
-                $w= $params['width'];
-                $h= $params['height'];
-                if ($params['stretch'] == 'Yes') {
-                    $w= "100%";
-                    $h= "100%";
-                }
-                if ($params['asize'] == 'Yes' || ($params['awidth'] == 'Yes' && $params['aheight'] == 'Yes')) {
-                    $autoMode= "3"; //both
-                } else
-                    if ($params['awidth'] == 'Yes') {
-                        $autoMode= "1"; //width only
-                    } else
-                        if ($params['aheight'] == 'Yes') {
-                            $autoMode= "2"; //height only
-                        }
-
-                $this->xpdo->regClientStartupScript("manager/media/script/bin/viewport.js");
-                $o= $sTag . " id='" . $params['vpid'] . "' name='" . $params['vpid'] . "' ";
-                if ($params['class'])
-                    $o .= " class='" . $params['class'] . "' ";
-                if ($params['style'])
-                    $o .= " style='" . $params['style'] . "' ";
-                if ($params['attrib'])
-                    $o .= $params['attrib'] . " ";
-                $o .= "scrolling='" . ($params['sbar'] == 'No' ? "no" : ($params['sbar'] == 'Yes' ? "yes" : "auto")) . "' ";
-                $o .= "src='" . $value . "' frameborder='" . $params['borsize'] . "' ";
-                $o .= "onload=\"window.setTimeout('ResizeViewPort(\\\\'" . $params['vpid'] . "\\\\'," . $autoMode . ")',100);\" width='" . $w . "' height='" . $h . "' ";
-                $o .= ">";
-                $o .= $eTag;
-                break;
-
-            case "datagrid" :
-                include_once $this->xpdo->config['base_path'] . "manager/includes/controls/datagrid.class.php";
-                $grd= new DataGrid('', $value);
-
-                $grd->noRecordMsg= $params['nrmsg'];
-
-                $grd->columnHeaderClass= $params['chdrc'];
-                $grd->tableClass= $params['tblc'];
-                $grd->itemClass= $params['itmc'];
-                $grd->altItemClass= $params['aitmc'];
-
-                $grd->columnHeaderStyle= $params['chdrs'];
-                $grd->tableStyle= $params['tbls'];
-                $grd->itemStyle= $params['itms'];
-                $grd->altItemStyle= $params['aitms'];
-
-                $grd->columns= $params['cols'];
-                $grd->fields= $params['flds'];
-                $grd->colWidths= $params['cwidth'];
-                $grd->colAligns= $params['calign'];
-                $grd->colColors= $params['ccolor'];
-                $grd->colTypes= $params['ctype'];
-
-                $grd->cellPadding= $params['cpad'];
-                $grd->cellSpacing= $params['cspace'];
-                $grd->header= $params['head'];
-                $grd->footer= $params['foot'];
-                $grd->pageSize= $params['psize'];
-                $grd->pagerLocation= $params['ploc'];
-                $grd->pagerClass= $params['pclass'];
-                $grd->pagerStyle= $params['pstyle'];
-                $o= $grd->render();
-                break;
-
-            default :
-                $value= $this->parseInput($value);
-                if ($tvtype == 'checkbox' || $tvtype == 'listbox-multiple') {
-                    // remove delimiter from checkbox and listbox-multiple TVs
-                    $value= str_replace('||', '', $value);
-                }
-                $o= (string) $value;
-                break;
+        if (!file_exists($outputRenderFile)) {
+            $o = require_once $outputRenderPath.'default.php';
+        } else {
+        	$o = require_once $outputRenderFile;
         }
         return $o;
     }
@@ -412,6 +178,11 @@ EOD;
      * @return mixed The rendered input for the template variable.
      */
     function renderInput($resourceId= 0, $style= '') {
+        if (!isset($this->smarty)) {
+            $this->xpdo->getService('smarty', 'smarty.modSmarty', '', array(
+                'template_dir' => $this->xpdo->config['manager_path'] . 'templates/' . $this->xpdo->config['manager_theme'] . '/',
+            ));
+        }
         $field_html= '';
 		$this->xpdo->smarty->assign('style',$style);
 		$value = $this->get('value');
@@ -420,136 +191,15 @@ EOD;
 		}
 		$this->xpdo->smarty->assign('tv',$this);
 
-        switch ($this->get('type')) {
-            case 'text': // handler for regular text boxes
-            case 'email': // handles email input fields
-            case 'number': // handles the input of numbers
-				$field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/textbox.tpl');
-                break;
+        // find the correct renderer for the TV, if not one, render a textbox
+        $inputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/input/';
+        $inputRenderFile = $inputRenderPath.$this->get('type').'.php';
+        if (!file_exists($inputRenderFile)) {
+            $field_html .= require_once $inputRenderPath.'textbox.php';
+        } else {
+            $field_html .= require_once $inputRenderFile;
+        }
 
-            case 'textareamini': // handler for textarea mini boxes
-				$field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/textareamini.tpl');
-                break;
-
-            case 'textarea': // handler for textarea boxes
-            case 'htmlarea': // handler for textarea boxes (deprecated)
-            case 'richtext': // handler for textarea boxes
-				$field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/richtext.tpl');
-                break;
-
-            case 'date':
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/date.tpl');
-                break;
-
-            case 'dropdown': // handler for select boxes
-                $index_list = $this->parseInputOptions($this->processBindings($this->get('elements'),$this->get('name')));
-				$items = array();
-				while (list($item, $itemvalue) = each ($index_list)) {
-					list($item,$itemvalue) = (is_array($itemvalue)) ? $itemvalue : explode("==",$itemvalue);
-					if (strlen($itemvalue)==0) $itemvalue = $item;
-					$items[] = array(
-						'text' => htmlspecialchars($item),
-						'value' => $itemvalue
-					);
-				}
-				$this->xpdo->smarty->assign('tvitems',$items);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/dropdown.tpl');
-                break;
-
-            case 'listbox': // handler for select boxes
-                $index_list = $this->parseInputOptions($this->processBindings($this->get('elements'),$this->get('name')));
-				$opts = array();
-                while (list($item, $itemvalue) = each ($index_list))
-                {
-                    list($item,$itemvalue) = (is_array($itemvalue)) ? $itemvalue : explode("==",$itemvalue);
-                    if (strlen($itemvalue)==0) $itemvalue = $item;
-					$opts[] = array(
-						'value' => htmlspecialchars($itemvalue),
-						'text' => htmlspecialchars($item),
-						'selected' => $itemvalue == $this->get('value')
-					);
-                }
-				$this->xpdo->smarty->assign('opts',$opts);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/listbox-single.tpl');
-                break;
-
-            case 'listbox-multiple': // handler for select boxes where you can choose multiple items
-                $this->set('value',explode("||",$this->get('value')));
-                $index_list = $this->parseInputOptions($this->processBindings($this->get('elements'),$this->get('name')));
-				$opts = array();
-                while (list($item, $itemvalue) = each ($index_list)) {
-                    list($item,$itemvalue) = (is_array($itemvalue)) ? $itemvalue : explode("==",$itemvalue);
-                    if (strlen($itemvalue)==0) $itemvalue = $item;
-					$opts[] = array(
-						'value' => htmlspecialchars($itemvalue),
-						'text' => htmlspecialchars($item),
-						'selected' => in_array($itemvalue,$this->get('value')),
-					);
-                }
-				$this->xpdo->smarty->assign('opts',$opts);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/listbox-multiple.tpl');
-                break;
-
-            case 'url': // handles url input fields
-                $urls= array(''=>'--', 'http://'=>'http://', 'https://'=>'https://', 'ftp://'=>'ftp://', 'mailto:'=>'mailto:');
-				$this->xpdo->smarty->assign('urls',$urls);
-                foreach($urls as $k => $v){
-                    if(strpos($this->get('value'),$v)!==false) {
-                        $this->set('value',str_replace($v,'',$this->get('value')));
-                    }
-                }
-				$field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/url.tpl');
-                break;
-
-            case 'checkbox': // handles check boxes
-                $this->set('value',explode("||",$this->get('value')));
-                $index_list = $this->parseInputOptions($this->processBindings($this->get('elements'),$this->get('name')));
-				$opts = array();
-                while (list($item, $itemvalue) = each ($index_list))
-                {
-                    list($item,$itemvalue) =  (is_array($itemvalue)) ? $itemvalue : explode("==",$itemvalue);
-                    if (strlen($itemvalue)==0) $itemvalue = $item;
-					$opts[] = array(
-						'value' => htmlspecialchars($itemvalue),
-						'text' => htmlspecialchars($item),
-						'checked' => in_array($itemvalue,$this->get('value')),
-					);
-                }
-				$this->xpdo->smarty->assign('opts',$opts);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/checkbox.tpl');
-                break;
-
-            case 'option': // handles radio buttons
-                $index_list = $this->parseInputOptions($this->processBindings($this->get('elements'),$this->get('name')));
-				$opts = array();
-                while (list($item, $itemvalue) = each ($index_list))
-                {
-                    list($item,$itemvalue) =  (is_array($itemvalue)) ? $itemvalue : explode("==",$itemvalue);
-                    if (strlen($itemvalue)==0) $itemvalue = $item;
-                    $opts[] = array(
-						'value' => htmlspecialchars($itemvalue),
-						'text' => htmlspecialchars($item),
-						'checked' => $itemvalue == $this->get('value')
-					);
-                }
-				$this->xpdo->smarty->assign('opts',$opts);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/radio.tpl');
-                break;
-
-            case 'image':   // handles image fields using htmlarea image manager
-				$this->xpdo->smarty->assign('base_url',$this->xpdo->config['base_url']);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/image.tpl');
-                break;
-
-            case 'file': // handles the input of file uploads
-				$this->xpdo->smarty->assign('base_url',$this->xpdo->config['base_url']);
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/file.tpl');
-                break;
-
-            default: // the default handler -- for errors, mostly
-                $field_html .= $this->xpdo->smarty->fetch('element/tv/widgets/textbox.tpl');
-                break;
-        } // end switch statement
         return $field_html;
     }
 
