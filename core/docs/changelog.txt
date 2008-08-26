@@ -4,6 +4,10 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Moved makeUrl logic to modContext class and modX now determines which context to use when building the URL.
+- Introduced modX->getContext() to retrieve, prepare and store context configurations in modX->contexts array for reuse during the single request
+- Added _config, _systemConfig and _userConfig to hold on to various parts of the configuration settings before they are merged for use, allowing other functions to remerge the settings as needed.
+- Fixed modX->switchContext() to clear all contextual/user setting overrides and reload the bootstrap _config, _systemConfig, and make use of the modX->contexts array.
 - Implemented UI ability to choose vehicle-specific attributes when adding vehicles to packages
 - Added dynamic value replacement of {setting_key} in user settings in modX->getUser().
 - Added function to grab the request parameters to MODx.request

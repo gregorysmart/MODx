@@ -59,6 +59,10 @@ class modX extends xPDO {
      */
     var $context= null;
     /**
+     * @var array An array of secondary contexts loaded on demand.
+     */
+    var $contexts= array();
+    /**
      * @var modRequest Represents a web request and provides helper methods for
      * dealing with request parameters and other attributes of a request.
      */
@@ -188,6 +192,18 @@ class modX extends xPDO {
      * @var integer An integer representing the session state of modX.
      */
     var $_sessionState= MODX_SESSION_STATE_UNINITIALIZED;
+    /**
+     * @var array A config array that stores the bootstrap settings.
+     */
+    var $_config= null;
+    /**
+     * @var array A config array that stores the system-wide settings.
+     */
+    var $_systemConfig= null;
+    /**
+     * @var array A config array that stores the user settings.
+     */
+    var $_userConfig= array();
 
     /**
      * @var DBAPI An instance of the DBAPI helper class.
@@ -199,7 +215,7 @@ class modX extends xPDO {
     var $pluginCache= array ();
 
     /**#@+
-     * @deprecated 2006-09-15 To be removed in 1.0
+     * @deprecated 2006-09-15 To be removed
      */
     var $Event= null;
     var $documentMap= null;
@@ -637,7 +653,7 @@ class modX extends xPDO {
      * Generates a URL representing a specified resource.
      *
      * @param integer $id The id of a resource.
-     * @param string $alias [Ignored] For backwards compatibility only.
+     * @param string $context Specifies a context to limit URL generation to.
      * @param string $args A query string to append to the generated URL.
      * @param mixed $scheme The scheme indicates in what format the URL is generated.<br>
      * <pre>
@@ -651,82 +667,35 @@ class modX extends xPDO {
      * </pre>
      * @return string The URL for the resource.
      */
-    function makeUrl($id, $alias= '', $args= '', $scheme= -1) {
+    function makeUrl($id, $context= '', $args= '', $scheme= -1) {
         $url= '';
-        if (!intval($id)) {
+        if ($id = intval($id)) {
+            if ($context == '' || $this->context->get('key') == $context) {
+                $url= $this->context->makeUrl($id, $args, $scheme);
+            }
+            if (empty($url) && ($context !== $this->context->get('key'))) {
+                $ctx= null;
+                if ($context == '') {
+                    if ($results = $this->query("SELECT `context_key` FROM {$this->getTableName('modResource')} WHERE `id` = {$id}")) {
+                        $contexts= $results->fetchAll(PDO_FETCH_COLUMN);
+                        if ($contextKey = reset($contexts)) {
+                            $ctx = $this->getContext($contextKey);
+                        }
+                    }
+                } else {
+                    $ctx = $this->getContext($context);
+                }
+                if ($ctx) {
+                    $url= $ctx->makeUrl($id, $args, $scheme);
+                }
+            }
+            
+            if (!empty($url) && isset ($this->config['xhtml_urls']) && $this->config['xhtml_urls'] == 1) {
+                $url= preg_replace("/&(?!amp;)/","&amp;", $url);
+            }
+        } else {
             $this->_log(MODX_LOG_LEVEL_ERROR, '`' . $id . '` is not numeric and may not be passed to makeUrl()');
         }
-        if ($args != '' && $this->config['friendly_urls'] == 1) {
-            // add ? to $args if missing
-            $c= substr($args, 0, 1);
-            if (strpos($this->config['friendly_url_prefix'], '?') === false) {
-                if ($c == '&')
-                    $args= '?' . substr($args, 1);
-                elseif ($c != '?') $args= '?' . $args;
-            } else {
-                if ($c == '?')
-                    $args= '&' . substr($args, 1);
-                elseif ($c != '&') $args= '&' . $args;
-            }
-        }
-        elseif ($args != '') {
-            // add & to $args if missing
-            $c= substr($args, 0, 1);
-            if ($c == '?')
-                $args= '&' . substr($args, 1);
-            elseif ($c != '&') $args= '&' . $args;
-        }
-
-        //TODO: remove this and alias parameter somehow -- functionality makes no sense
-        if ($this->config['friendly_urls'] == 1 && $alias != '') {
-            $url= $this->config['friendly_url_prefix'] . $alias . $this->config['friendly_url_suffix'] . $args;
-        }
-        elseif ($this->config['friendly_urls'] == 1 && $alias == '') {
-            if ($id === $this->config['site_start']) {
-                $alias= '';
-            } else {
-                $alias= array_search($id, $this->aliasMap);
-                if (!$alias) {
-                    $alias= $id;
-                    $this->_log(MODX_LOG_LEVEL_WARN, '`' . $id . '` was requested but no alias was located.');
-                }
-            }
-            $url= $alias . $args;
-        } else {
-            $url= 'index.php?id=' . $id . $args;
-        }
-
-        $host= '';
-        if ($scheme !== -1 && $scheme !== '') {
-            if ($scheme === 1 || $scheme === 0) {
-                $https_port= isset ($this->config['https_port']) ? $this->config['https_port'] : 443;
-                $isSecure= ($_SERVER['SERVER_PORT'] == $https_port || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'])=='on')) ? 1 : 0;
-                if ($scheme != $isSecure) {
-                    $scheme = $isSecure ? 'http' : 'https';
-                }
-            }
-            switch ($scheme) {
-                case 'full':
-                    $host= $this->config['site_url'];
-                    break;
-                case 'abs':
-                case 'absolute':
-                    $host= $this->config['base_url'];
-                    break;
-                case 'https':
-                case 'http':
-                    //FIXME: parse host from site_url configuration?
-                    $host= $scheme . '://' . $this->config['http_host'] . $this->config['base_url'];
-                    break;
-            }
-        }
-
-        $url= $host . $url;
-
-        if (isset ($this->config['xhtml_urls']) && $this->config['xhtml_urls'] == 1) {
-            $url= preg_replace("/&(?!amp;)/","&amp;", $url);
-        }
-
         return $url;
     }
 
@@ -821,9 +790,8 @@ class modX extends xPDO {
         }
         if ($this->user !== null && is_object($this->user)) {
             if ($this->user->hasSessionContext($contextKey)) {
-                $usrSettings= array ();
                 if (isset ($_SESSION["modx.{$contextKey}.user.config"])) {
-                    $usrSettings= $_SESSION["modx.{$contextKey}.user.config"];
+                    $this->_userConfig= $_SESSION["modx.{$contextKey}.user.config"];
                 } else {
                     $settings= $this->user->getMany('modUserSetting');
                     if (is_array($settings) && !empty ($settings)) {
@@ -841,13 +809,13 @@ class modX extends xPDO {
                                     $v= str_replace($match[0], $matchValue, $v);
                                 }
                             }
-                            $usrSettings[$setting->get('key')]= $v;
+                            $this->_userConfig[$setting->get('key')]= $v;
                         }
                     }
                 }
-                if (is_array ($usrSettings) && !empty ($usrSettings)) {
-                    $_SESSION["modx.{$contextKey}.user.config"]= $usrSettings;
-                    $this->config= array_merge($this->config, $usrSettings);
+                if (is_array ($this->_userConfig) && !empty ($this->_userConfig)) {
+                    $_SESSION["modx.{$contextKey}.user.config"]= $this->_userConfig;
+                    $this->config= array_merge($this->config, $this->_userConfig);
                 }
             }
         } else {
@@ -971,7 +939,8 @@ class modX extends xPDO {
                 $this->config['https_port']= isset($GLOBALS['https_port']) ? $GLOBALS['https_port'] : 443;
             if (!isset ($this->config['error_handler_class']))
                 $this->config['error_handler_class']= 'error.modErrorHandler';
-
+            
+            $this->_config= $this->config;
             if (!$this->_loadConfig()) {
                 $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load core MODx configuration!");
                 return null;
@@ -2387,6 +2356,7 @@ class modX extends xPDO {
      * @return boolean True if successful.
      */
     function _loadConfig() {
+        $this->config= $this->_config;
         $cachePath= $this->getCachePath();
         $fileName= "{$cachePath}config.cache.php";
         if (!file_exists($fileName)) {
@@ -2402,6 +2372,7 @@ class modX extends xPDO {
                 $this->config[$setting->get('key')]= $setting->get('value');
             }
         }
+        $this->_systemConfig= $this->config;
         return true;
     }
     
@@ -2419,7 +2390,7 @@ class modX extends xPDO {
      */
     function switchContext($contextKey) {
         $switched= false;
-        if ($this->context->key != $contextKey && $this->reloadConfig()) {
+        if ($this->context->key != $contextKey) {
             $switched= $this->_initContext($contextKey);
         }
         return $switched;
@@ -2436,22 +2407,41 @@ class modX extends xPDO {
      */
     function _initContext($contextKey) {
         $initialized= false;
-        $this->context= $this->newObject('modContext');
-        $this->context->_fields['key']= $contextKey;
-        if (!$this->context->prepare()) {
-            $this->_log(MODX_LOG_LEVEL_ERROR, 'Could not load context: ' . $contextKey);
+        if (isset($this->contexts[$contextKey])) {
+            $this->context= & $this->contexts[$contextKey];
         } else {
-            $this->aliasMap= & $this->context->aliasMap;
-            $this->resourceMap= & $this->context->resourceMap;
-            $this->documentMap= & $this->context->documentMap;
-            $this->resourceListing= & $this->context->resourceListing;
-            $this->documentListing= & $this->context->documentListing;
-            $this->eventMap= & $this->context->eventMap;
-            $this->pluginCache= & $this->context->pluginCache;
-            $this->config= array_merge($this->config, $this->context->config);
-            $initialized= true;
+            $this->context= $this->newObject('modContext');
+            $this->context->_fields['key']= $contextKey;
+        }
+        if ($this->context) {
+            if (!$this->context->prepare()) {
+                $this->_log(MODX_LOG_LEVEL_ERROR, 'Could not load context: ' . $contextKey);
+            } else {
+                $this->aliasMap= & $this->context->aliasMap;
+                $this->resourceMap= & $this->context->resourceMap;
+                $this->documentMap= & $this->context->documentMap;
+                $this->resourceListing= & $this->context->resourceListing;
+                $this->documentListing= & $this->context->documentListing;
+                $this->eventMap= & $this->context->eventMap;
+                $this->pluginCache= & $this->context->pluginCache;
+                $this->config= array_merge($this->_systemConfig, $this->context->config);
+                if ($this->_initialized) {
+                    $this->getUser();
+                }
+                $initialized= true;
+            }
         }
         return $initialized;
+    }
+    
+    function getContext($contextKey) {
+        if (!isset($this->contexts[$contextKey])) {
+            $this->contexts[$contextKey]= $this->getObject('modContext', $contextKey);
+            if ($this->contexts[$contextKey]) {
+                $this->contexts[$contextKey]->prepare();
+            }
+        }
+        return $this->contexts[$contextKey];
     }
 
     /**

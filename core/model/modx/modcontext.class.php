@@ -36,12 +36,15 @@ class modContext extends modAccessibleObject {
      */
     function prepare($regenerate= false) {
         $rv= false;
-        if ($this->config === null && $cacheManager= $this->xpdo->getCacheManager()) {
+        if ($this->config === null || $regenerate) {
+            $cacheManager= $this->xpdo->getCacheManager();
             if (!$cacheFileName= $this->getCacheFileName()) {
                 return false;
             }
             if (!file_exists($this->xpdo->cachePath . $cacheFileName) || $regenerate) {
-                $cacheManager->generateContext($this->get('key'));
+                if ($cacheManager) {
+                    $cacheManager->generateContext($this->get('key'));
+                }
             }
             if (!$rv= include ($this->xpdo->cachePath . $this->getCacheFileName())) {
                 $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Could not load context configuration file: ' . $this->xpdo->cachePath . $this->_cacheFileName);
@@ -93,5 +96,116 @@ class modContext extends modAccessibleObject {
             $policy = $this->_policies[$context];
         }
         return $policy;
+    }
+    
+    /**
+     * Generates a URL representing a specified resource in this context.
+     * 
+     * Note that if this method is called from a context other than the one
+     * initialized for the modX instance, and the scheme is not specified, an
+     * empty string, or abs, the method will force the scheme to full.
+     *
+     * @param integer $id The id of a resource.
+     * @param string $args A query string to append to the generated URL.
+     * @param mixed $scheme The scheme indicates in what format the URL is generated.<br>
+     * <pre>
+     *      -1 : (default value) URL is relative to site_url
+     *       0 : see http
+     *       1 : see https
+     *    full : URL is absolute, prepended with site_url from config
+     *     abs : URL is absolute, prepended with base_url from config
+     *    http : URL is absolute, forced to http scheme
+     *   https : URL is absolute, forced to https scheme
+     * </pre>
+     * @return string The URL for the resource.
+     */
+    function makeUrl($id, $args = '', $scheme = -1) {
+        $url = '';
+        $found = false;
+        if ($id= intval($id)) {
+            if (is_object($this->xpdo->context) && $this->get('key') !== $this->xpdo->context->get('key')) {
+                $config = array_merge($this->xpdo->_systemConfig, $this->config, $this->xpdo->_userConfig);
+                if ($scheme === -1 || $scheme === '' || strpos($scheme, 'abs') !== false) {
+                    $scheme= 'full';
+                }
+            } else {
+                $config = $this->xpdo->config;
+            }
+
+            if ($config['friendly_urls'] == 1) {
+                if ($id == $config['site_start']) {
+                    $alias= '';
+                    $found= true;
+                } else {
+                    $alias= array_search($id, $this->aliasMap);
+                    if (!$alias) {
+                        $alias= '';
+                        $this->xpdo->log(MODX_LOG_LEVEL_WARN, '`' . $id . '` was requested but no alias was located.');
+                    } else {
+                        $found= true;
+                    }
+                }
+            } elseif (isset($this->resourceListing["{$id}"])) {
+                $found= true;
+            }
+
+            if ($found) {
+                if ($args != '' && $config['friendly_urls'] == 1) {
+                    // add ? to $args if missing
+                    $c= substr($args, 0, 1);
+                    if (strpos($config['friendly_url_prefix'], '?') === false) {
+                        if ($c == '&')
+                            $args= '?' . substr($args, 1);
+                        elseif ($c != '?') $args= '?' . $args;
+                    } else {
+                        if ($c == '?')
+                            $args= '&' . substr($args, 1);
+                        elseif ($c != '&') $args= '&' . $args;
+                    }
+                }
+                elseif ($args != '') {
+                    // add & to $args if missing
+                    $c= substr($args, 0, 1);
+                    if ($c == '?')
+                        $args= '&' . substr($args, 1);
+                    elseif ($c != '&') $args= '&' . $args;
+                }
+                
+                if ($config['friendly_urls'] == 1) {
+                    $url= $alias . $args;
+                } else {
+                    $url= $config['request_controller'] . '?' . $config['request_param_id'] . '=' . $id . $args;
+                }
+                
+                $host= '';
+                if ($scheme !== -1 && $scheme !== '') {
+                    if ($scheme === 1 || $scheme === 0) {
+                        $https_port= isset ($config['https_port']) ? $config['https_port'] : 443;
+                        $isSecure= ($_SERVER['SERVER_PORT'] == $https_port || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS'])=='on')) ? 1 : 0;
+                        if ($scheme != $isSecure) {
+                            $scheme = $isSecure ? 'http' : 'https';
+                        }
+                    }
+                    switch ($scheme) {
+                        case 'full':
+                            $host= $config['site_url'];
+                            break;
+                        case 'abs':
+                        case 'absolute':
+                            $host= $config['base_url'];
+                            break;
+                        case 'https':
+                        case 'http':
+                            $host= $scheme . '://' . $config['http_host'] . $config['base_url'];
+                            break;
+                    }
+                    $url= $host . $url;
+                }
+            }
+        }
+        if ($this->xpdo->getDebug() === true) {
+            $this->xpdo->log(MODX_LOG_LEVEL_DEBUG, "modContext[{$this->get('key')}]->makeUrl({$id}) = {$url}");
+        }
+        return $url;
     }
 }
