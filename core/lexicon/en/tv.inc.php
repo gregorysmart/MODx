@@ -1,6 +1,7 @@
 <?php
 $_lang['has_access'] = 'Has Access?';
 $_lang['rank'] = 'Rank';
+$_lang['rendering_options'] = 'Rendering Options';
 $_lang['tv'] = 'Template Variable';
 $_lang['tv_access_msg'] = 'Select the document groups that are allowed to modify the content or value of this variable';
 $_lang['tv_binding_msg'] = 'This field supports data source bindings using the @ commands';

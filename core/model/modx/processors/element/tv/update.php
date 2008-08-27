@@ -7,6 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv','category');
 
+
 if (!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $tv = $modx->getObject('modTemplateVar',$_POST['id']);
@@ -44,9 +45,20 @@ if (!isset($_POST['name']) || $_POST['name'] == '') $_POST['name'] = $_lang['unt
 if ($_POST['caption'] == '')
     $_POST['caption'] = $_POST['name'];
 
+
+// extract widget properties
+$display_params = '';
+foreach ($_POST as $key => $value) {
+	$res = strstr($key,'prop_');
+    if ($res !== false) {
+    	$key = str_replace('prop_','',$key);
+        $display_params .= '&'.$key.'='.$value;
+    }
+}
+
 $tv->fromArray($_POST);
 $tv->set('elements',$_POST['els']);
-$tv->set('display_params',$_POST['params']);
+$tv->set('display_params',$display_params);
 $tv->set('rank', isset($_POST['rank']) ? $_POST['rank'] : 0);
 $tv->set('locked', isset($_POST['locked']));
 $tv->set('category',$category->id);

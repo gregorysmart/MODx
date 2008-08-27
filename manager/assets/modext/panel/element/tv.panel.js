@@ -13,7 +13,7 @@ MODx.panel.TV = function(config) {
         ,baseParams: {}
         ,id: 'panel-tv'
         ,class_key: 'modTemplateVar'
-        ,template: ''
+        ,tv: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: {
@@ -24,12 +24,12 @@ MODx.panel.TV = function(config) {
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
                 ,labelWidth: 150
             }
             ,items: [{
-                title: _('tv_title')
+                title: _('general_information')
                 ,defaults: { border: false ,msgTarget: 'side' }
+                ,bodyStyle: 'padding: 1.5em;'
                 ,items: [{
                     html: '<h2>'+_('tv')+': </h2>'
                     ,id: 'tv-name'
@@ -38,10 +38,10 @@ MODx.panel.TV = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'id'
-                    ,value: config.template
+                    ,value: config.tv
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('name')
+                    ,fieldLabel: _('tv_name')
                     ,name: 'name'
                     ,width: 300
                     ,maxLength: 100
@@ -52,6 +52,11 @@ MODx.panel.TV = function(config) {
                             Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+f.getValue()+'</h2>');
                         }}
                     }
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('tv_caption')
+                    ,name: 'caption'
+                    ,width: 300
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('description')
@@ -70,20 +75,67 @@ MODx.panel.TV = function(config) {
                     ,description: _('tv_lock_msg')
                     ,name: 'locked'
                 },{
-                    html: '<br />'+_('tv_code')
-                },{
-                    xtype: 'textarea'
-                    ,hideLabel: true
-                    ,name: 'content'
-                    ,width: '95%'
-                    ,height: 400
+                    xtype: 'numberfield'
+                    ,fieldLabel: _('tv_rank')
+                    ,name: 'rank'
+                    ,width: 50
+                    ,maxLength: 4
+                    ,allowNegative: false
+                    ,allowBlank: false
+                    ,value: 0
                 }]
             },{
-               xtype: 'grid-template-tv'
-               ,id: 'grid-template-tv'
-               ,preventRender: true
-               ,template: config.template
-               ,bodyStyle: ''
+                title: _('rendering_options')
+                ,defaults: { border: false ,msgTarget: 'side' }
+                ,bodyStyle: 'padding: 1.5em;'
+                ,items: [{
+                    xtype: 'combo-tv-input-type'
+                    ,fieldLabel: _('tv_type')
+                    ,name: 'type'
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('tv_elements')
+                    ,name: 'els'
+                    ,width: 250
+                },{
+                    xtype: 'textarea'
+                    ,fieldLabel: _('tv_default')
+                    ,name: 'default_text'
+                    ,width: 300
+                    ,grow: true
+                },{
+                    xtype: 'combo-tv-widget'
+                    ,fieldLabel: _('tv_output_type')
+                    ,name: 'display'
+                    ,hiddenName: 'display'
+                    ,id: 'combo-tv-widget'
+                    ,listeners: {
+                        'select': {fn:this.showParameters,scope:this}
+                    }
+                },{
+                    autoLoad: {
+                        url: MODx.config.connectors_url+'element/tv/renders.php'
+                        ,method: 'GET'
+                        ,params: {
+                           'action': 'getProperties'
+                           ,'context': 'mgr'
+                           ,'tv': config.tv
+                           ,'type': config.type || 'default' 
+                        }
+                        ,scripts: true
+                    }
+                    ,id: 'widget-props'
+                }]
+            },{ 
+                xtype: 'grid-tv-template'
+                ,id: 'grid-tv-templates'
+                ,tv: config.tv
+                ,preventRender: true
+            },{
+                xtype: 'grid-tv-security'
+                ,id: 'grid-tv-security'
+                ,tv: config.tv
+                ,preventRender: true
             }]
         }
         ,listeners: {
@@ -108,9 +160,25 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
                     if (r.object.category == '0') r.object.category = null;
                     this.getForm().setValues(r.object);
                     Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
+                    
+                    this.showParameters(Ext.getCmp('combo-tv-widget'));
                 } else FormHandler.errorJSON(r);
             }
         })
+    }
+    
+    ,showParameters: function(cb,rc,i) {
+        Ext.get('widget-props').load({
+            url: MODx.config.connectors_url+'element/tv/renders.php'
+            ,method: 'GET'
+            ,params: {
+               'action': 'getProperties'
+               ,'context': 'mgr'
+               ,'tv': this.config.tv
+               ,'type': cb.getValue() || 'default'
+            }
+            ,scripts: true
+        });
     }
 });
 Ext.reg('panel-tv',MODx.panel.TV);
