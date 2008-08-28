@@ -397,7 +397,6 @@
         <field key="content" dbtype="mediumtext" phptype="string" null="false" default="" />
         <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
         <aggregate alias="modCategory" class="modCategory" key="id" local="category" foreign="id" cardinality="one" owner="foreign" />
-        <aggregate alias="modTemplateVar" class="modTemplateVar" local="tmplvar" foreign="id" cardinality="many" owner="foreign" />
         <composite alias="modTemplateVarTemplate" class="modTemplateVarTemplate" key="tmplvarid" local="id" foreign="tmplvarid" cardinality="many" owner="local" />
     </object>
     <object class="modTemplateVar" table="site_tmplvars" extends="modElement">

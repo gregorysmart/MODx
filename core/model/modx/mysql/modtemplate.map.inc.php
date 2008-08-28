@@ -96,14 +96,6 @@ $xpdo_meta_map['modTemplate']= array (
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),
-    'modTemplateVar' => 
-    array (
-      'class' => 'modTemplateVar',
-      'local' => 'tmplvar',
-      'foreign' => 'id',
-      'cardinality' => 'many',
-      'owner' => 'foreign',
-    ),
   ),
   'composites' => 
   array (
