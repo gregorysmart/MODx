@@ -62,14 +62,29 @@ MODx.grid.Lexicon = function(config) {
             ,listeners: {
                 'change': {fn:this.filter.createDelegate(this,['language'],true),scope:this}
             }
-		}
+		},{
+            text: _('create_new')
+            ,xtype: 'button'
+            ,menu: [{
+                text: _('entry')
+                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-entry-create'],true)
+                ,scope: this
+            },{
+                text: _('focus')
+                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-focus-create'],true)
+                ,scope: this
+            },{
+                text: _('namespace')
+                ,handler: this.loadWindow2.createDelegate(this,['window-namespace-create'],true)
+                ,scope: this
+            }]
+        }
 		,'->'
 		,{
-		    text: _('search_by_key')
-		},{
 		    xtype: 'textfield'
 		    ,name: 'name'
 		    ,id: 'filter_name'
+		    ,emptyText: _('search')+'...'
             ,listeners: {
                 'change': {fn:this.filter.createDelegate(this,['name'],true),scope:this}
                 ,'render': {fn:function(tf) {
@@ -79,21 +94,12 @@ MODx.grid.Lexicon = function(config) {
                 }}
             }
 		},{
-            text: _('create_new')
-			,xtype: 'button'
-			,menu: [{
-			    text: _('entry')
-				,handler: this.loadWindow2.createDelegate(this,['window-lexicon-entry-create'],true)
-				,scope: this
-			},{
-				text: _('focus')
-                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-focus-create'],true)
-                ,scope: this
-			},{
-				text: _('namespace')
-                ,handler: this.loadWindow2.createDelegate(this,['window-namespace-create'],true)
-                ,scope: this
-			}]
+            xtype: 'button'
+            ,id: 'filter_clear'
+            ,text: _('filter_clear')
+            ,listeners: {
+                'click': {fn: this.clearFilter, scope: this}
+            }
         }]
         ,pagingItems: [{
             text: _('reload_from_base')
@@ -120,6 +126,19 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	if (!name) return false;
     	this.store.baseParams[name] = nv;
     	this.getBottomToolbar().changePage(1);
+    	this.refresh();
+    }
+    ,clearFilter: function() {
+    	this.store.baseParams = {
+    		action: 'getList'
+            ,namespace: 'core'
+            ,focus: 'default'
+            ,language: 'en'
+    	};
+    	this.getBottomToolbar().changePage(1);
+    	Ext.getCmp('filter_namespace').setValue('core');
+    	Ext.getCmp('filter_focus').setValue('default');
+    	Ext.getCmp('filter_language').setValue('en');
     	this.refresh();
     }
     ,changeNamespace: function(cb,nv,ov) {
