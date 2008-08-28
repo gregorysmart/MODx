@@ -35,7 +35,7 @@ foreach ($entries as $entry) {
 
     $pa['editedon'] = $entry->editedon == '0000-00-00 00:00:00'
         ? ''
-        : $entry->editedon;
+        : strftime('%D %I:%M %p',strtotime($entry->editedon));
 
     $pa['menu'] = array(
         array(

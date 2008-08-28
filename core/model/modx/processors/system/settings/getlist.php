@@ -51,7 +51,9 @@ foreach ($settings as $setting) {
         ? $modx->lexicon('setting_'.$sa['key'])
         : $sa['key'];
     $sa['oldkey'] = $sa['key'];
-    $sa['editedon'] = $sa['editedon'] == '0000-00-00 00:00:00' || $sa['editedon'] == null ? '' : strftime('%D %I:%M:%S %p',$sa['editedon']);
+    $sa['editedon'] = $sa['editedon'] == '0000-00-00 00:00:00' || $sa['editedon'] == null
+        ? ''
+        : strftime('%D %I:%M %p',strtotime($setting->editedon));
 
     $sa['menu'] = array(
         array(
