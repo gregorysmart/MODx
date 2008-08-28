@@ -20,17 +20,17 @@
 <script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="assets/modext/util/switchbutton.js" type="text/javascript"></script>
 <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
-<script src="assets/modext/util/formhandler.js" type="text/javascript"></script>
+<script src="assets/modext/form/modx.form.handler.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.panel.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.component.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.msg.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.actionbuttons.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modhext.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.tabs.js" type="text/javascript"></script>
-<script src="assets/modext/ui/modx.window.js" type="text/javascript"></script>
-<script src="assets/modext/ui/modx.tree.js" type="text/javascript"></script>
-<script src="assets/modext/ui/modx.grid.js" type="text/javascript"></script>
-<script src="assets/modext/ui/windows.js" type="text/javascript"></script>
+<script src="assets/modext/ui/window/modx.window.js" type="text/javascript"></script>
+<script src="assets/modext/ui/window/windows.js" type="text/javascript"></script>
+<script src="assets/modext/ui/tree/modx.tree.js" type="text/javascript"></script>
+<script src="assets/modext/ui/grid/modx.grid.js" type="text/javascript"></script>
 <script src="assets/modext/ui/combos.js" type="text/javascript"></script>
 {/if}
 

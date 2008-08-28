@@ -6,6 +6,6 @@
 	<div id="settings_grid"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/ui/modx.settings.grid.js"></script>
+<script type="text/javascript" src="assets/modext/ui/grid/modx.grid.settings.js"></script>
 <script type="text/javascript" src="assets/modext/grid/settings.system.grid.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/settings.js"></script>

@@ -26,7 +26,7 @@ function confirmDelete(path,file) {
 			onComplete: function(response) {
 				if (response == true) {
 					window.location.href = 'index.php?a=system/files/list';
-				} else FormHandler.errorJSON('errormsg',response);
+				} else MODx.form.Handler.errorJSON('errormsg',response);
 			}
 		}).request();
 	}
@@ -42,7 +42,7 @@ function confirmDeleteFolder(path,folder) {
 			onComplete: function(response) {
 				if (response == true) {
 					window.location.reload(true);
-				} else FormHandler.errorJSON('errormsg',response);
+				} else MODx.form.Handler.errorJSON('errormsg',response);
 			}
 		}).request();
 	}
@@ -58,7 +58,7 @@ function confirmUnzip(url) {
 			onComplete: function(response) {
 				if (response == true) {
 					window.location.href = 'index.php?a=system/files/list';
-				} else FormHandler.errorJSON('errormsg',response);
+				} else MODx.form.Handler.errorJSON('errormsg',response);
 			}
 		}).request();
 	}
@@ -74,7 +74,7 @@ function newFolder() {
 		onComplete: function(response) {
 			if (response == true) {
 				window.location.reload(true);
-			} else FormHandler.errorJSON('errormsg',response);
+			} else MODx.form.Handler.errorJSON('errormsg',response);
 		}
 	}).request();
 	return false;

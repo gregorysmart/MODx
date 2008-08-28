@@ -19,12 +19,12 @@
 {else}
 <script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
-<script src="assets/modext/util/formhandler.js" type="text/javascript"></script>
+<script src="assets/modext/form/modx.form.handler.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.msg.js" type="text/javascript"></script>
 <script src="assets/modext/ui/modx.topmenu.js" type="text/javascript"></script>
-<script src="assets/modext/ui/modx.window.js" type="text/javascript"></script>
-<script src="assets/modext/ui/windows.js" type="text/javascript"></script>
-<script src="assets/modext/ui/modx.tree.js" type="text/javascript"></script>
+<script src="assets/modext/ui/window/modx.window.js" type="text/javascript"></script>
+<script src="assets/modext/ui/window/windows.js" type="text/javascript"></script>
+<script src="assets/modext/ui/tree/modx.tree.js" type="text/javascript"></script>
 {/if}
 
 <script src="assets/modext/tree/document.tree.js" type="text/javascript"></script>

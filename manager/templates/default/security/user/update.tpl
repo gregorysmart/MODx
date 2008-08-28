@@ -2,7 +2,7 @@
 
 
 {modblock name='ab'}
-<script type="text/javascript" src="assets/modext/ui/modx.settings.grid.js"></script>
+<script type="text/javascript" src="assets/modext/ui/grid/modx.grid.settings.js"></script>
 <script type="text/javascript" src="assets/modext/grid/settings.user.grid.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/user/update.js"></script>
 {literal}

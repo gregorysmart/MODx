@@ -2,7 +2,7 @@
 
 <div id="panel-context"></div>
 
-<script type="text/javascript" src="assets/modext/ui/modx.settings.grid.js"></script>
+<script type="text/javascript" src="assets/modext/ui/grid/modx.grid.settings.js"></script>
 <script type="text/javascript" src="assets/modext/grid/settings.context.grid.js"></script>
 <script type="text/javascript" src="assets/modext/panel/context.panel.js"></script>
 <script type="text/javascript" src="assets/modext/sections/context/update.js"></script>
