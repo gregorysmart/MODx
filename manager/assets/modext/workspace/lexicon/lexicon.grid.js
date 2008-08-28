@@ -198,15 +198,24 @@ MODx.window.CreateLexiconEntry = function(config) {
             ,width: 250
             ,maxLength: 100
         },{
-            xtype: 'combo-lexicon-focus'
-            ,fieldLabel: _('focus')
-            ,name: 'focus'
-            ,value: r.focus
-        },{
             xtype: 'combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,value: r.namespace
+            ,listeners: {
+            	'select': {fn: function(cb,r,i) {
+                    cle = Ext.getCmp('cle-focus');
+                    cle.store.baseParams.namespace = cb.getValue();
+                    cle.store.reload();
+                    cle.setValue('default');
+            	},scope:this}
+            }
+        },{
+            xtype: 'combo-lexicon-focus'
+            ,fieldLabel: _('focus')
+            ,name: 'focus'
+            ,id: 'cle-focus'
+            ,value: r.focus
         },{
             xtype: 'combo-language'
             ,fieldLabel: _('language')
@@ -257,12 +266,21 @@ MODx.window.UpdateLexiconEntry = function(config) {
             xtype: 'combo-lexicon-focus'
             ,fieldLabel: _('focus')
             ,name: 'focus'
+            ,id: 'ule-focus'
             ,value: r.focus
         },{
             xtype: 'combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,value: r.namespace
+            ,listeners: {
+                'select': {fn: function(cb,r,i) {
+                    cle = Ext.getCmp('ule-focus');
+                    cle.store.baseParams.namespace = cb.getValue();
+                    cle.store.reload();
+                    cle.setValue('default');
+                },scope:this}
+            }
         },{
             xtype: 'combo-language'
             ,fieldLabel: _('language')
@@ -391,11 +409,12 @@ MODx.window.ExportLexicon = function(config) {
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,listeners: {
-            	'select': {fn: function(cb) {
-                    var s = Ext.getCmp('ex-cmb-focus').store;
-                    s.baseParams.namespace = cb.getValue();
-                    s.reload();
-                },scope: this}
+                'select': {fn: function(cb,r,i) {
+                    cle = Ext.getCmp('ex-cmb-focus');
+                    cle.store.baseParams.namespace = cb.getValue();
+                    cle.store.reload();
+                    cle.setValue('default');
+                },scope:this}
             }
         },{
             xtype: 'combo-lexicon-focus'
