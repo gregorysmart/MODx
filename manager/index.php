@@ -72,7 +72,7 @@ $modx->getParser();
 
 if (isset($modx) && is_object($modx)) {
     if (!$modx->getRequest()) {
-        $modx->_log(MODX_LOG_LEVEL_FATAL,"Could not load the MODx manager request object.");
+        $modx->log(MODX_LOG_LEVEL_FATAL,"Could not load the MODx manager request object.");
     }
     $modx->request->initialize();
     $modx->request->handleRequest();

@@ -26,11 +26,11 @@ class modXMLRPCResponse extends modResponse {
     function outputContent($noEvent= false) {
         $error= '';
         if (!is_a($this->modx->resource, 'modXMLRPCResource')) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
         }
 
         if (!$this->getServer()) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
         }
 
         $this->modx->resource->_output= $this->modx->resource->_content;

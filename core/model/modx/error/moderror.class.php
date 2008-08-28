@@ -237,7 +237,7 @@ class modError {
             }
         }
         if ($this->modx->getDebug() === true)
-            $this->modx->_log(XPDO_LOG_LEVEL_DEBUG, "modJSONError::toArray() -- " . print_r($array, true));
+            $this->modx->log(XPDO_LOG_LEVEL_DEBUG, "modJSONError::toArray() -- " . print_r($array, true));
         return $array;
     }
 }

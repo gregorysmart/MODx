@@ -19,7 +19,7 @@ if (!$package->install()) {
     $modx->error->failure(sprintf($modx->lexicon('package_err_install'),$package->get('signature')));
 } else {
     $msg = sprintf($modx->lexicon('package_installed'),$package->get('signature'));
-    $modx->_log(XPDO_LOG_LEVEL_INFO,$msg);
+    $modx->log(XPDO_LOG_LEVEL_INFO,$msg);
     $modx->error->success($msg);
 }
 $modx->error->failure($modx->lexicon('package_err_install_gen'));

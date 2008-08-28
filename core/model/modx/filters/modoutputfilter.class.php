@@ -290,6 +290,6 @@ class modOutputFilter {
 
     function log( $msg ) {
          if ($this->modx->getDebug() === true)
-             $this->modx->_log(MODX_LOG_LEVEL_DEBUG, $msg);
+             $this->modx->log(MODX_LOG_LEVEL_DEBUG, $msg);
     }
 }

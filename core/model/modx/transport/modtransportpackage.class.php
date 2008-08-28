@@ -104,12 +104,12 @@ class modTransportPackage extends xPDOObject {
                         if (!$transferred) {
                             if (@ ini_get('allow_url_fopen')) {
                                 if (!$transferred= $this->transferPackage($sourceFile, $packageDir)) {
-                                    $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, "Could not transfer package {$sourceFile} to {$packageDir}");
+                                    $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not transfer package {$sourceFile} to {$packageDir}");
                                 } else {
                                     $sourceFile= basename($sourceFile);
                                 }
                             } else {
-                                $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, "Could not transfer package {$sourceFile} to {$packageDir}; allow_url_fopen is not enabled on your configuration");
+                                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not transfer package {$sourceFile} to {$packageDir}; allow_url_fopen is not enabled on your configuration");
                             }
                         }
                         if ($transferred) {
@@ -124,7 +124,7 @@ class modTransportPackage extends xPDOObject {
                             }
                         }
                     } else {
-                        $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");
+                        $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");
                     }
                 }
             }
@@ -146,7 +146,7 @@ class modTransportPackage extends xPDOObject {
                         $instance->vehicles= $this->get('manifest');
                         $this->package = $instance;
                     } else {
-                        $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");
+                        $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");
                     }
                 }
             }
@@ -217,10 +217,10 @@ class modTransportPackage extends xPDOObject {
                 $this->set('attributes',$attributes);
                 $this->save();
             } else {
-            	$this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, "Error occurred during uninstall.");
+            	$this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Error occurred during uninstall.");
             }
         } else {
-            $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, "Could not load transport package.");
+            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not load transport package.");
         }
         return $uninstalled;
 	}
@@ -249,7 +249,7 @@ class modTransportPackage extends xPDOObject {
                 }
                 @ fclose($handle);
             } else {
-                $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$source}");
+                $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$source}");
             }
             if ($content) {
                 if ($cacheManager= $this->xpdo->getCacheManager()) {
@@ -259,7 +259,7 @@ class modTransportPackage extends xPDOObject {
                 }
             }
         } else {
-            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR,'Target directory is either not a directory or writable: '.$targetDir);
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR,'Target directory is either not a directory or writable: '.$targetDir);
         }
         return $transferred;
     }

@@ -60,13 +60,13 @@ class modStaticResource extends modResource {
                     if (file_exists($this->_sourceFile)) {
                         $return= $this->getFileContent($this->_sourceFile);
                         if ($return === false) {
-                            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
+                            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
                         }
                     } else {
-                        $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Could not locate source file: {$this->_sourceFile}");
+                        $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not locate source file: {$this->_sourceFile}");
                     }
                 } else {
-                    $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "No source file specified.");
+                    $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No source file specified.");
                 }
                 break;
             default :
@@ -100,7 +100,7 @@ class modStaticResource extends modResource {
             }
             @ fclose($handle);
         } else {
-            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$file}");
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$file}");
         }
         return $content;
     }

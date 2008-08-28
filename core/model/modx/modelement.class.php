@@ -93,7 +93,7 @@ class modElement extends modAccessibleSimpleObject {
             $this->_tag = $tag;
         }
         if (empty($this->_tag)) {
-            $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Instance of ' . get_class($this) . ' produced an empty tag!');
+            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, 'Instance of ' . get_class($this) . ' produced an empty tag!');
         }
         return $this->_tag;
     }
@@ -125,7 +125,7 @@ class modElement extends modAccessibleSimpleObject {
         if (is_string($content) && !empty($content)) {
             $this->_content= $content;
         }
-        if ($this->xpdo->getDebug() === true) $this->xpdo->_log(XPDO_LOG_LEVEL_DEBUG, "Processing Element: " . $this->get('name') . ($this->_tag ? "\nTag: {$this->_tag}" : "\n") . "\nProperties: " . print_r($this->_properties, true));
+        if ($this->xpdo->getDebug() === true) $this->xpdo->log(XPDO_LOG_LEVEL_DEBUG, "Processing Element: " . $this->get('name') . ($this->_tag ? "\nTag: {$this->_tag}" : "\n") . "\nProperties: " . print_r($this->_properties, true));
         return $this->_result;
     }
 

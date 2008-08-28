@@ -113,7 +113,7 @@ class modRequest {
         $this->modx->resource->process();
 
         if (!$this->modx->getResponse()) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
         }
 
         // prepare the content for output and/or caching
@@ -285,7 +285,7 @@ class modRequest {
         if ($this->modx->loadClass('error.'.strtolower($class),'',false,true)) {
             $this->modx->error = new $class($this->modx);
         } else {
-            $this->modx->_log(XPDO_LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
+            $this->modx->log(XPDO_LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
         }
     }
 

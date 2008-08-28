@@ -113,7 +113,7 @@ class modPHPMailer extends modMail {
                 $this->mailer->Subject= $this->attributes[$key];
                 break;
             default :
-                $this->modx->_log(MODX_LOG_LEVEL_WARN, "{$key} is not a valid PHPMailer attribute and is being ignored by the implementation.");
+                $this->modx->log(MODX_LOG_LEVEL_WARN, "{$key} is not a valid PHPMailer attribute and is being ignored by the implementation.");
                 break;
         }
     }
@@ -140,9 +140,9 @@ class modPHPMailer extends modMail {
                 }
             }
         } elseif ($email === null) {
-            $this->modx->_log(MODX_LOG_LEVEL_ERROR, "modPHPMailer does not support unsetting specific addresses. Use reset() to clear all recipients and add back the ones you want to send to.");
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, "modPHPMailer does not support unsetting specific addresses. Use reset() to clear all recipients and add back the ones you want to send to.");
         } else {
-            $this->modx->_log(MODX_LOG_LEVEL_ERROR, "You must provide an email address to send to.");
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, "You must provide an email address to send to.");
         }
         return $set;
     }

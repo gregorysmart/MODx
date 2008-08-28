@@ -462,7 +462,7 @@ class modX extends xPDO {
         if (isset ($this->services[$name])) {
             $service= & $this->services[$name];
         } else {
-            $this->_log(MODX_LOG_LEVEL_ERROR, "Problem getting service {$name}, instance of class {$class}, from path {$path}, with params " . print_r($params, true));
+            $this->log(MODX_LOG_LEVEL_ERROR, "Problem getting service {$name}, instance of class {$class}, from path {$path}, with params " . print_r($params, true));
         }
         return $service;
     }
@@ -694,7 +694,7 @@ class modX extends xPDO {
                 $url= preg_replace("/&(?!amp;)/","&amp;", $url);
             }
         } else {
-            $this->_log(MODX_LOG_LEVEL_ERROR, '`' . $id . '` is not numeric and may not be passed to makeUrl()');
+            $this->log(MODX_LOG_LEVEL_ERROR, '`' . $id . '` is not numeric and may not be passed to makeUrl()');
         }
         return $url;
     }
@@ -715,7 +715,7 @@ class modX extends xPDO {
      */
     function sendRedirect($url, $count_attempts= 0, $type= '') {
         if (!$this->getResponse()) {
-            $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load response class.");
+            $this->log(MODX_LOG_LEVEL_FATAL, "Could not load response class.");
         }
         $this->response->sendRedirect($url, $count_attempts, $type);
     }
@@ -729,7 +729,7 @@ class modX extends xPDO {
      */
     function sendForward($id, $responseCode= '') {
         if (!$this->getRequest()) {
-            $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
+            $this->log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
         }
         $this->resource= $this->request->getResource('id', $id);
         if (!$this->resource) {
@@ -894,7 +894,7 @@ class modX extends xPDO {
         $cacheManager->clearCache();
         
         if (!$this->_loadConfig()) {
-            $this->_log(MODX_LOG_LEVEL_ERROR, "Could not reload core MODx configuration!");
+            $this->log(MODX_LOG_LEVEL_ERROR, "Could not reload core MODx configuration!");
         }
         return $this->config;
     }
@@ -942,7 +942,7 @@ class modX extends xPDO {
             
             $this->_config= $this->config;
             if (!$this->_loadConfig()) {
-                $this->_log(MODX_LOG_LEVEL_FATAL, "Could not load core MODx configuration!");
+                $this->log(MODX_LOG_LEVEL_FATAL, "Could not load core MODx configuration!");
                 return null;
             }
         }
@@ -985,11 +985,11 @@ class modX extends xPDO {
             // update resources that need publishing
             $tblResource= $this->getTableName('modResource');
             if (!$result= $this->exec("UPDATE {$tblResource} SET published=1,publishedon={$timeNow} WHERE pub_date < {$timeNow} AND pub_date > 0")) {
-                $this->_log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->errorInfo(), true));
+                $this->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->errorInfo(), true));
             }
             // update resources that need un-publishing
             if (!$result= $this->exec("UPDATE $tblResource SET published=0,publishedon={$timeNow} WHERE unpub_date < {$timeNow} AND unpub_date IS NOT NULL AND unpub_date > 0")) {
-                $this->_log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->errorInfo(), true));
+                $this->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->errorInfo(), true));
             }
             // clear the cache
             if ($handle= opendir($this->cachePath)) {
@@ -1010,7 +1010,7 @@ class modX extends xPDO {
             $timesArr= array ();
             $sql= "SELECT MIN(pub_date) AS minpub FROM $tblResource WHERE pub_date>$timeNow AND pub_date IS NOT NULL";
             if (!$result= $this->query($sql)) {
-                $this->_log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+                $this->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
             } else {
                 $result= $result->fetchAll(PDO_FETCH_ASSOC);
                 $minpub= $result[0]['minpub'];
@@ -1020,7 +1020,7 @@ class modX extends xPDO {
             }
             $sql= "SELECT MIN(unpub_date) AS minunpub FROM $tblResource WHERE unpub_date>$timeNow AND unpub_date IS NOT NULL";
             if (!$result= $this->query($sql)) {
-                $this->_log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+                $this->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
             } else {
                 $result= $result->fetchAll(PDO_FETCH_ASSOC);
                 $minunpub= $result[0]['minunpub'];
@@ -1190,7 +1190,7 @@ class modX extends xPDO {
      */
     function getDocumentObject($method, $identifier) {
         if (!$this->getRequest()) {
-            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+            $this->log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
         }
         $this->resource= $this->request->getResource($method, $identifier);
         $documentObject= & $this->documentObject;
@@ -1245,9 +1245,9 @@ class modX extends xPDO {
                     $msg= $plugin->process($properties);
                     $results[]= $this->event->_output;
                     if ($msg && is_string($msg)) {
-                        $this->_log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . ']' . $msg);
+                        $this->log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . ']' . $msg);
                     } elseif ($msg === false) {
-                        $this->_log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . '] Plugin failed!');
+                        $this->log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . '] Plugin failed!');
                     }
                     $this->event->activePlugin= '';
                     if ($this->event->_propagate != true) {
@@ -1401,7 +1401,7 @@ class modX extends xPDO {
             $version= $v['version'] . '.' . $v['small_version'] . '.' . $v['patch_level'];
             $code_name= isset($v['code_name'])? $v['code_name']: $code_name;
         }
-        $this->_log(MODX_LOG_LEVEL_FATAL, '<pre>msg: ' . $msg . "\n" . 'query: ' . $query . "\n" . 'nr: ' . $nr . "\n" . 'file: ' . $file . "\n" . 'source: ' . $source . "\n" . 'text: ' . $text . "\n" . 'msg: ' . $line . "</pre>\n");
+        $this->log(MODX_LOG_LEVEL_FATAL, '<pre>msg: ' . $msg . "\n" . 'query: ' . $query . "\n" . 'nr: ' . $nr . "\n" . 'file: ' . $file . "\n" . 'source: ' . $source . "\n" . 'text: ' . $text . "\n" . 'msg: ' . $line . "</pre>\n");
     }
 
 
@@ -1925,7 +1925,7 @@ class modX extends xPDO {
      */
     function cleanDocumentIdentifier($qOrig) {
         if (!$this->getRequest()) {
-            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+            $this->log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
         }
         $return= $this->request->_cleanResourceIdentifier($qOrig);
         return $return;
@@ -1940,7 +1940,7 @@ class modX extends xPDO {
      */
     function getDocumentIdentifier($method) {
         if (!$this->getRequest()) {
-            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+            $this->log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
         }
         return $this->request->getResourceIdentifier($method);
     }
@@ -1953,7 +1953,7 @@ class modX extends xPDO {
      */
     function getDocumentMethod() {
         if (!$this->getRequest()) {
-            $this->_log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
+            $this->log(MODX_LOG_LEVEL_FATAL, 'Could not load request class.');
         }
         return $this->request->getResourceMethod();
     }
@@ -2033,7 +2033,7 @@ class modX extends xPDO {
         $ml->set('item',$item);
 
         if (!$ml->save()) {
-            $this->_log(XPDO_LOG_LEVEL_ERROR,$this->lexicon('manager_log_err_save'));
+            $this->log(XPDO_LOG_LEVEL_ERROR,$this->lexicon('manager_log_err_save'));
             return null;
         }
         return $ml;
@@ -2415,7 +2415,7 @@ class modX extends xPDO {
         }
         if ($this->context) {
             if (!$this->context->prepare()) {
-                $this->_log(MODX_LOG_LEVEL_ERROR, 'Could not load context: ' . $contextKey);
+                $this->log(MODX_LOG_LEVEL_ERROR, 'Could not load context: ' . $contextKey);
             } else {
                 $this->aliasMap= & $this->context->aliasMap;
                 $this->resourceMap= & $this->context->resourceMap;
@@ -2455,7 +2455,7 @@ class modX extends xPDO {
                     if ($this->errorHandler= new $ehClass($this)) {
                         $result= set_error_handler(array ($this->errorHandler, 'handleError'));
                         if ($result === false) {
-                            $this->_log(XPDO_LOG_LEVEL_ERROR, 'Could not set error handler.  Make sure your class has a function called handleError(). Result: ' . print_r($result, true));
+                            $this->log(XPDO_LOG_LEVEL_ERROR, 'Could not set error handler.  Make sure your class has a function called handleError(). Result: ' . print_r($result, true));
                         }
                     }
                 }
@@ -2597,7 +2597,7 @@ class modX extends xPDO {
         if ($this->lexicon) {
             return $this->lexicon->process($key,$params);
         } else {
-            $this->_log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
+            $this->log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
         }
     }
     
@@ -2655,7 +2655,7 @@ class modX extends xPDO {
                 // invoke OnBeforeSaveWebPageCache event
                 $this->invokeEvent('OnBeforeSaveWebPageCache');
                 if (!$this->cacheManager->generateResource($this->resource)) {
-                    $this->_log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
+                    $this->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
                 }
             }
         }

@@ -770,7 +770,7 @@ class modInstall {
                         if (!$package->install($attributes)) {
                             $errors[] = "<p>Could not install package {$pkg}.</p>";
                         } else {
-                            $modx->_log(XPDO_LOG_LEVEL_INFO, "Successfully installed package {$pkg}");
+                            $modx->log(XPDO_LOG_LEVEL_INFO, "Successfully installed package {$pkg}");
                         }
                     } else {
                         $errors[] = "<p>Could not retrieve package {$pkg} for installation.</p>";

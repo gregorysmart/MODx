@@ -18,7 +18,7 @@ foreach ($packages as $package) {
     $pkg->set('created',date('Y-m-d h:i:s'));
     
     if (!$pkg->save()) {
-        $modx->_log(MODX_LOG_LEVEL_ERROR,'Could not create transport package: '.$pkg->get('signature'));
+        $modx->log(MODX_LOG_LEVEL_ERROR,'Could not create transport package: '.$pkg->get('signature'));
     }
 }
 

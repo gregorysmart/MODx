@@ -114,7 +114,7 @@ class modParser {
             }
         }
         if ($this->modx->getDebug() === true && !empty($matches)) {
-            $this->modx->_log(MODX_LOG_LEVEL_DEBUG, "modParser::collectElementTags \$matches = " . print_r($matches, 1) . "\n");
+            $this->modx->log(MODX_LOG_LEVEL_DEBUG, "modParser::collectElementTags \$matches = " . print_r($matches, 1) . "\n");
 //            $this->modx->cacheManager->writeFile(MODX_CORE_PATH . 'logs/parser.log', print_r($matches, 1) . "\n", 'a');
         }
         return $matchCount;
@@ -337,7 +337,7 @@ class modParser {
             }
         }
         if ($this->modx->getDebug() === true) {
-            $this->modx->_log(XPDO_LOG_LEVEL_DEBUG, "Processing {$outerTag} as {$innerTag} using tagname {$tagName}:\n" . print_r($elementOutput, 1) . "\n\n");
+            $this->modx->log(XPDO_LOG_LEVEL_DEBUG, "Processing {$outerTag} as {$innerTag} using tagname {$tagName}:\n" . print_r($elementOutput, 1) . "\n\n");
 //            $this->modx->cacheManager->writeFile(MODX_BASE_PATH . 'parser.log', "Processing {$outerTag} as {$innerTag}:\n" . print_r($elementOutput, 1) . "\n\n", 'a');
         }
         return $elementOutput;
@@ -458,7 +458,7 @@ class modTag {
             $this->_tag = $tag;
         }
         if (empty($this->_tag)) {
-            $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Instance of ' . get_class($this) . ' produced an empty tag!');
+            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, 'Instance of ' . get_class($this) . ' produced an empty tag!');
         }
         return $this->_tag;
     }
@@ -490,7 +490,7 @@ class modTag {
         if (is_string($content) && !empty($content)) {
             $this->_content= $content;
         }
-        if ($this->modx->getDebug() === true) $this->modx->_log(MODX_LOG_LEVEL_DEBUG, "Processing Element: " . $this->get('name') . ($this->_tag ? "\nTag: {$this->_tag}" : "\n") . "\nProperties: " . print_r($this->_properties, true));
+        if ($this->modx->getDebug() === true) $this->modx->log(MODX_LOG_LEVEL_DEBUG, "Processing Element: " . $this->get('name') . ($this->_tag ? "\nTag: {$this->_tag}" : "\n") . "\nProperties: " . print_r($this->_properties, true));
         return $this->_result;
     }
     /**

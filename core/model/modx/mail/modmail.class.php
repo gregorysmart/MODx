@@ -230,7 +230,7 @@ class modMail {
      * @return boolean Indicates if the mailer class was instantiated successfully.
      */
     function _getMailer() {
-        $this->modx->_log(XPDO_LOG_LEVEL_ERROR, 'Attempt to call abstract function _getMailer() in modMail class. You must implement this function in a derivative of modMail.');
+        $this->modx->log(XPDO_LOG_LEVEL_ERROR, 'Attempt to call abstract function _getMailer() in modMail class. You must implement this function in a derivative of modMail.');
         return false;
     }
     

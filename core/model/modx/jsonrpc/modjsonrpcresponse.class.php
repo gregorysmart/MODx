@@ -18,11 +18,11 @@ class modJSONRPCResponse extends modXMLRPCResponse {
     function outputContent($noEvent= false) {
         $error= '';
         if (!is_a($this->modx->resource, 'modJSONRPCResource')) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
         }
 
         if (!$this->getServer()) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
         }
 
         parent :: outputContent($noEvent);

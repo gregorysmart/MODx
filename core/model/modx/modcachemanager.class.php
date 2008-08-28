@@ -167,7 +167,7 @@ class modCacheManager extends xPDOCacheManager {
                             $resPath .= '/';
                         }
                         if (isset ($localMap[$resPath . $resAlias])) {
-                            $this->modx->_log(XPDO_LOG_LEVEL_ERROR, "Resource alias {$resPath}{$resAlias} already exists for resource id = {$localMap[$resPath . $resAlias]}; skipping duplicate resource alias for resource id = {$r->id}");
+                            $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Resource alias {$resPath}{$resAlias} already exists for resource id = {$localMap[$resPath . $resAlias]}; skipping duplicate resource alias for resource id = {$r->id}");
                             continue;
                         }
                         $localMap[$resPath . $resAlias]= $r->id;

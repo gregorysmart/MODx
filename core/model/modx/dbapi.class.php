@@ -136,7 +136,7 @@ class DBAPI {
         $tstart= $this->xpdo->getMicroTime();
         $result= $this->xpdo->query($sql);
         if (!$result) {
-            $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Execution of a query to the database failed: ' . $sql . "\n" . print_r($this->xpdo->errorInfo(), true) . "\n" . ($this->xpdo->getDebug() === true ? print_r(debug_backtrace(), true) : ''));
+            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, 'Execution of a query to the database failed: ' . $sql . "\n" . print_r($this->xpdo->errorInfo(), true) . "\n" . ($this->xpdo->getDebug() === true ? print_r(debug_backtrace(), true) : ''));
         }
         $this->affectedRows= $this->getRecordCount($result);
         $tend= $this->xpdo->getMicroTime();
@@ -234,7 +234,7 @@ class DBAPI {
         $tstart= $this->xpdo->getMicroTime();
         $result= $this->xpdo->exec($sql);
         if ($result === false) {
-            $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Execution of a query to the database failed: ' . $sql . "\n" . print_r($this->xpdo->errorInfo(), true));
+            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, 'Execution of a query to the database failed: ' . $sql . "\n" . print_r($this->xpdo->errorInfo(), true));
         }
         $this->affectedRows= $result;
         $tend= $this->xpdo->getMicroTime();

@@ -74,7 +74,7 @@ class modLexicon {
      */
     function process($key,$params = array()) {
         if (!is_string($key) || !isset($this->_lexicon[$key])) {
-            $this->modx->_log(XPDO_LOG_LEVEL_WARN,'Language string not found: "'.$key.'"');
+            $this->modx->log(XPDO_LOG_LEVEL_WARN,'Language string not found: "'.$key.'"');
             return $key;
         }
         return empty($params)
@@ -158,7 +158,7 @@ class modLexicon {
             if (file_exists($fileName)) {
                 @include_once $fileName;
             } else {
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with focus: ".$focus);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with focus: ".$focus);
             }
         }
         return $_lang;

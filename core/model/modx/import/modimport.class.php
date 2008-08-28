@@ -89,7 +89,7 @@ class modImport {
 
     function log($message) {
         $this->results[] = $message;
-//        $this->modx->_log(MODX_LOG_LEVEL_ERROR, $message);
+//        $this->modx->log(MODX_LOG_LEVEL_ERROR, $message);
     }
 }
 ?>

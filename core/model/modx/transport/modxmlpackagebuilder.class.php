@@ -40,7 +40,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
 
     function build($fileName) {
         if (!$this->parseXML($fileName)) {
-            $this->modx->_log(MODX_LOG_LEVEL_ERROR,'XML parsing failed for '.$fileName);
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,'XML parsing failed for '.$fileName);
             return false;
         }
 
@@ -86,7 +86,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
         );
 
         if (!is_file($fileName)) {
-            $this->modx->_log(XPDO_LOG_LEVEL_ERROR, "Could not find specified XML build file {$fileName}");
+            $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Could not find specified XML build file {$fileName}");
             return false;
         } else {
             $fileContent= @ file($fileName);
@@ -105,7 +105,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
         if (!xml_parse($this->xmlParser, $this->buildXML)) {
             $ln= xml_get_current_line_number($this->xmlParser);
             $msg= xml_error_string(xml_get_error_code($this->xmlParser));
-            $this->modx->_log(XPDO_LOG_LEVEL_ERROR, "Error parsing XML schema on line $ln: $msg");
+            $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Error parsing XML schema on line $ln: $msg");
             return false;
         }
 

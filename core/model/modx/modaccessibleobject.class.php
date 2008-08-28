@@ -32,7 +32,7 @@ class modAccessibleObject extends xPDOObject {
             if (!$userid) {
                 $userid = '0';
             }
-            $xpdo->_log(XPDO_LOG_LEVEL_INFO, "Principal {$userid} does not have access to requested object of class {$object->_class} with primary key " . print_r($object->getPrimaryKey(false), true));
+            $xpdo->log(XPDO_LOG_LEVEL_INFO, "Principal {$userid} does not have access to requested object of class {$object->_class} with primary key " . print_r($object->getPrimaryKey(false), true));
             $object = null;
         }
         return $object;
@@ -160,7 +160,7 @@ class modAccessibleObject extends xPDOObject {
                     foreach ($access as $targetId => $targetPolicy) {
                         foreach ($targetPolicy as $principalId => $applicablePolicy) {
                             if ($this->xpdo->getDebug() === true)
-                                $this->xpdo->_log(MODX_LOG_LEVEL_DEBUG, 'target pk='. $this->getPrimaryKey() .'; evaluating policy: ' . print_r($applicablePolicy, 1) . ' against principal for user id=' . $this->xpdo->getLoginUserID() .': ' . print_r($principal, 1));
+                                $this->xpdo->log(MODX_LOG_LEVEL_DEBUG, 'target pk='. $this->getPrimaryKey() .'; evaluating policy: ' . print_r($applicablePolicy, 1) . ' against principal for user id=' . $this->xpdo->getLoginUserID() .': ' . print_r($principal, 1));
                             $principalPolicyData = array();
                             $principalAuthority = 9999;
                             if (isset($principal[$policyAccess][$targetId][$principalId])) {
@@ -172,7 +172,7 @@ class modAccessibleObject extends xPDOObject {
                                     }
                                     if ($matches = array_intersect_assoc($principalPolicyData, $applicablePolicy['policy'])) {
                                         if ($this->xpdo->getDebug() === true)
-                                            $this->xpdo->_log(MODX_LOG_LEVEL_DEBUG, 'Evaluating policy matches: ' . print_r($matches, 1));
+                                            $this->xpdo->log(MODX_LOG_LEVEL_DEBUG, 'Evaluating policy matches: ' . print_r($matches, 1));
                                         $matched = array_diff_assoc($criteria, $matches);
                                          if (empty($matched)) {
                                             return true;

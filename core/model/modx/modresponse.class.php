@@ -49,7 +49,7 @@ class modResponse {
         $this->modx->resource->_output= $this->modx->resource->_content;
 
         if (!$contentType= $this->modx->resource->getOne('ContentType')) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, "The requested resource has no valid content type specified.\nRESOURCE: " . print_r($this->modx->resource->toArray(), true));
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, "The requested resource has no valid content type specified.\nRESOURCE: " . print_r($this->modx->resource->toArray(), true));
         }
 
         if (!$contentType->get('binary')) {
@@ -180,18 +180,18 @@ class modResponse {
      */
     function sendRedirect($url, $count_attempts= 0, $type= '') {
         if (empty ($url)) {
-            $this->modx->_log(MODX_LOG_LEVEL_ERROR, "Attempted to redirect to an empty URL.");
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, "Attempted to redirect to an empty URL.");
             return false;
         }
         if (!$this->modx->getRequest()) {
-            $this->modx->_log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
         }
         $this->modx->request->preserveRequest('referrer.redirected');
         if ($count_attempts == 1) {
             // append the redirect count string to the url
             $currentNumberOfRedirects= isset ($_REQUEST['err']) ? $_REQUEST['err'] : 0;
             if ($currentNumberOfRedirects > 3) {
-                $this->modx->_log(MODX_LOG_LEVEL_FATAL, 'Redirection attempt failed - please ensure the resource you\'re trying to redirect to exists. <p>Redirection URL: <i>' . $url . '</i></p>');
+                $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Redirection attempt failed - please ensure the resource you\'re trying to redirect to exists. <p>Redirection URL: <i>' . $url . '</i></p>');
             } else {
                 $currentNumberOfRedirects += 1;
                 if (strpos($url, "?") > 0) {

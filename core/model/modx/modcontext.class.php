@@ -47,7 +47,7 @@ class modContext extends modAccessibleObject {
                 }
             }
             if (!$rv= include ($this->xpdo->cachePath . $this->getCacheFileName())) {
-                $this->xpdo->_log(XPDO_LOG_LEVEL_ERROR, 'Could not load context configuration file: ' . $this->xpdo->cachePath . $this->_cacheFileName);
+                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, 'Could not load context configuration file: ' . $this->xpdo->cachePath . $this->_cacheFileName);
             }
         }
         return (boolean) $rv;

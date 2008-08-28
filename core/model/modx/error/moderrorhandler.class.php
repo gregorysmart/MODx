@@ -79,43 +79,43 @@ class modErrorHandler {
             case E_USER_ERROR:
                 $handled= true;
                 $errmsg= 'User error: ' . $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
                 break;
             case E_WARNING:
                 $handled= true;
                 $errmsg= 'PHP warning: ' . $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
                 break;
             case E_USER_WARNING:
                 $handled= true;
                 $errmsg= 'User warning: ' . $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
                 break;
             case E_NOTICE:
                 $handled= true;
                 $errmsg= 'PHP notice: ' . $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_WARN, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_WARN, $errmsg, '', '', $errfile, $errline);
                 break;
             case E_USER_NOTICE:
                 $handled= true;
                 $errmsg= 'User notice: ' . $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_WARN, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_WARN, $errmsg, '', '', $errfile, $errline);
                 break;
             case E_STRICT:
                 $handled= true;
 //                $errmsg= 'E_STRICT information: ' . $errstr;
-//                $this->modx->_log(MODX_LOG_LEVEL_INFO, $errmsg, '', '', $errfile, $errline);
+//                $this->modx->log(MODX_LOG_LEVEL_INFO, $errmsg, '', '', $errfile, $errline);
                 return $handled;
                 break;
             case E_RECOVERABLE_ERROR:
                 $handled= true;
                 $errmsg= 'Recoverable error: ' . $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
                 break;
             default:
                 $handled= false;
                 $errmsg= 'Un-recoverable error ' . $errno . ': '. $errstr;
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, $errmsg, '', '', $errfile, $errline);
                 break;
         }
         if (is_array($this->stack)) array_push($this->stack, $error);

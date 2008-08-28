@@ -63,7 +63,7 @@ class modTransportManager {
             if (!$this->providers = $this->modx->getCollection('transport.modTransportProvider', array (
                 'disabled' => false
             ))) {
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, "Could not find any active transport providers.");
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Could not find any active transport providers.");
             }
         }
         return $this->providers;
@@ -77,7 +77,7 @@ class modTransportManager {
     function getActiveWorkspace() {
         if ($this->workspace == null) {
             if (!$this->workspace = $this->modx->getObject('transport.modWorkspace', array ('active' => true))) {
-                $this->modx->_log(MODX_LOG_LEVEL_ERROR, "Could not find an active workspace!");
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Could not find an active workspace!");
             }
         }
         return $this->workspace;
@@ -100,7 +100,7 @@ class modTransportManager {
             $workspace->save();
             $this->workspace = $workspace;
         } else {
-            $this->modx->_log(MODX_LOG_LEVEL_ERROR, "Could not change to workspace with id = {$workspaceId}");
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, "Could not change to workspace with id = {$workspaceId}");
         }
         return $this->workspace;
     }

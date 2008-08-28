@@ -49,10 +49,10 @@ class modTransportProvider extends xPDOSimpleObject {
         $request->addParam($options);
         $response = $this->sendRequest($request);
         if (!is_a($response, 'jsonrpcresp')) {
-            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Error in getting a response from the server: " . $this->get('service_url'));
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error in getting a response from the server: " . $this->get('service_url'));
         }
         if ($response->faultCode()) {
-            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Error scanning for new packages: " . $response->faultString());
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error scanning for new packages: " . $response->faultString());
         }
         elseif ($value = $response->value()) {
             if (is_array($value)) {
@@ -81,10 +81,10 @@ class modTransportProvider extends xPDOSimpleObject {
         $request->addParam($options);
         $response = $this->sendRequest($request);
         if (!is_a($response, 'jsonrpcresp')) {
-            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Error in getting a response from the server: " . $this->get('service_url'));
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error in getting a response from the server: " . $this->get('service_url'));
         }
         if ($response->faultCode()) {
-            $this->xpdo->_log(MODX_LOG_LEVEL_ERROR, "Error scanning for package updates: " . $response->faultString());
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error scanning for package updates: " . $response->faultString());
         }
         elseif ($value = $response->value()) {
             if (is_array($value)) {
