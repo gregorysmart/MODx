@@ -51,5 +51,5 @@ foreach ($_PACKAGE['vehicles'] as $vehicle) {
 // zip up the package
 $builder->pack();
 
-$filename = $modx->config['core_path'].'packages/'.$_PACKAGE['name'].'-'.$_PACKAGE['release'].'-'.$_PACKAGE['release'].'.transport.zip';
+$filename = $modx->config['core_path'].'packages/'.$_PACKAGE['name'].'-'.$_PACKAGE['version'].'-'.$_PACKAGE['release'].'.transport.zip';
 $modx->error->success($modx->lexicon('package_built').' - '.$filename);
