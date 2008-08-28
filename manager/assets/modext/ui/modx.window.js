@@ -87,7 +87,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 				,scope: this
 				,failure: function(frm,a) {
                     this.fireEvent('failure',frm,a);
-					FormHandler.errorExt(a.result,frm);
+					MODx.form.Handler.errorExt(a.result,frm);
 				}
 				,success: function(frm,a) {
 					if (this.config.success) {

@@ -128,7 +128,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
                     r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>"
                     this.getForm().setValues(r.object);
                     Ext.getCmp('plugin-name').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }

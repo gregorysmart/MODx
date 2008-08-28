@@ -203,7 +203,7 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 				Ext.Msg.hide();
 				var e = Ext.decode(xhr.responseText);
 				if (!e.success) {
-					FormHandler.errorJSON(e);
+					MODx.form.Handler.errorJSON(e);
 					this.refresh();
 					return false;
 				}

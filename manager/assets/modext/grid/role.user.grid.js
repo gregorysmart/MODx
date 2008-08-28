@@ -71,7 +71,7 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
 					};
 					Ext.getCmp('rugrid-combo-usergroup').setValue('');
 					this.refresh();
-				} else FormHandler.errorJSON(r);
+				} else MODx.form.Handler.errorJSON(r);
 			}
 		});
 	}

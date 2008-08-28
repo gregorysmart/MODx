@@ -132,7 +132,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 		    	r = Ext.decode(r.responseText);
 		    	if (r.success) {
 		    		this.refresh();
-		    	} else FormHandler.errorJSON(r);
+		    	} else MODx.form.Handler.errorJSON(r);
 		    }
 		});
 	}

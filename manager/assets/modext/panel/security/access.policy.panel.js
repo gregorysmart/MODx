@@ -90,7 +90,7 @@ Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
                     g.getView().refresh();
                     
                     Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }
@@ -152,7 +152,7 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
                             var s = this.getSource();
                             s[v] = true;
                             this.setSource(s);
-                        } else FormHandler.errorJSON(r);
+                        } else MODx.form.Handler.errorJSON(r);
                     }
                 });
             }
@@ -174,7 +174,7 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
                     var s = this.getSource();
                     s[this.menu.record] = null;
                     this.setSource(s);
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         });
     }
@@ -194,7 +194,7 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
                if (r.success) {
                    e.record.commit();
                } else {
-                   FormHandler.errorJSON(r);
+                   MODx.form.Handler.errorJSON(r);
                }
            }
         });

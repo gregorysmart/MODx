@@ -308,7 +308,7 @@ Ext.extend(MODx.panel.PiNewProv,Ext.FormPanel,{
                 waitMsg: _('saving')
                 ,scope: this
                 ,failure: function(f,a) {
-                    FormHandler.errorExt(a.result,f);
+                    MODx.form.Handler.errorExt(a.result,f);
                 }
                 ,success: function(f,a) {
                 	var p = a.result.object;
@@ -365,7 +365,7 @@ Ext.extend(MODx.panel.PiSelPackage,Ext.FormPanel,{
                 }
                 ,scope: this
                 ,failure: function(f,a) {
-                    FormHandler.errorExt(a.result,f);
+                    MODx.form.Handler.errorExt(a.result,f);
                 }
                 ,success: function(f,a) {
                     Ext.getCmp('grid-package').refresh();

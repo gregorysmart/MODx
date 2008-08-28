@@ -121,7 +121,7 @@ Ext.extend(MODx.profile.Update,MODx.FormPanel,{
                 r = Ext.decode(r.responseText);
                 if (r.success) {
                     this.getForm().setValues(r.object);
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }

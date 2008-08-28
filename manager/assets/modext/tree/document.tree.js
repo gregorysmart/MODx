@@ -101,7 +101,7 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 			,scope: this
 			,success: function (r,o) {
 				r = Ext.decode(r.responseText);
-				r.success ?	this.refreshParentNode() : FormHandler.errorJSON(r);
+				r.success ?	this.refreshParentNode() : MODx.form.Handler.errorJSON(r);
 			}
 		});
 	}
@@ -147,7 +147,7 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
             ,scope: this
 			,success: function(r,o) {
 				r = Ext.decode(r.responseText);
-				r.success ? this.refresh() : FormHandler.errorJSON(r);
+				r.success ? this.refresh() : MODx.form.Handler.errorJSON(r);
 			}
        	});
 	}

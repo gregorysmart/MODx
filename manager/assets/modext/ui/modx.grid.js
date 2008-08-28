@@ -120,7 +120,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
 					}
 					e.record.commit();
                     this.refresh();
-				} else FormHandler.errorJSON(r);
+				} else MODx.form.Handler.errorJSON(r);
 			}
 		});
 	}

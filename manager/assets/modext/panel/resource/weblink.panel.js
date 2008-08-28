@@ -228,7 +228,7 @@ Ext.extend(MODx.panel.WebLink,MODx.FormPanel,{
                     if (r.object.pub_date == '0') r.object.pub_date = '';
                     if (r.object.unpub_date == '0') r.object.unpub_date = '';
                     this.getForm().setValues(r.object);
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }

@@ -108,7 +108,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
                     if (r.object.category == '0') r.object.category = null;
                     this.getForm().setValues(r.object);
                     Ext.getCmp('template-name').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }

@@ -168,7 +168,7 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	       r = Ext.decode(r.responseText);
     	       if (r.success) {
     	          this.refresh();
-    	       } else FormHandler.errorJSON(r);
+    	       } else MODx.form.Handler.errorJSON(r);
     	   }
     	});
     }

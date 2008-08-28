@@ -82,7 +82,7 @@ Ext.extend(MODx.grid.Message,MODx.grid.Grid,{
                     var r2 = this.getStore().getAt(ri);
                     r2.set('read',true);
                     r2.commit();
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         });
     }
@@ -100,7 +100,7 @@ Ext.extend(MODx.grid.Message,MODx.grid.Grid,{
                 if (r.success) {
                     rec.set('read',false);
                     rec.commit();
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         });
     }

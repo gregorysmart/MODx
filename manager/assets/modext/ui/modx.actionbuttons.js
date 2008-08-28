@@ -231,7 +231,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 							,reset: false
 							,scope: this
 							,failure: function(f,a) {
-								FormHandler.errorExt(a.result,f);				
+								MODx.form.Handler.errorExt(a.result,f);				
 							}
 							,success: function(f,a) {
 								// update the progress bar
@@ -256,8 +256,8 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 						Ext.Msg.alert(_('error'),_('correct_errors'));	
 					}
 				} else {
-					// now send form data through FormHandler to the connector
-					FormHandler.send(o.form_id,itm.process,function(opt,s,r) {
+					// now send form data through MODx.form.Handler to the connector
+					MODx.form.Handler.send(o.form_id,itm.process,function(opt,s,r) {
 						r = Ext.decode(r.responseText);
 						
 						if (r.success) {
@@ -268,8 +268,8 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 							o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_document_tree').refresh();
 							this.checkOnComplete(o,itm,r);
 						} else {
-							// if error, pass handling to FormHandler.js
-							FormHandler.errorJSON(r);
+							// if error, pass handling to MODx.form.Handler.js
+							MODx.form.Handler.errorJSON(r);
 						}
 					},this);
 					

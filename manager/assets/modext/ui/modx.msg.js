@@ -48,11 +48,11 @@ Ext.extend(MODx.Msg,Ext.Component,{
                         r = Ext.decode(r.responseText);
                         if (r.success && config.success) {
                             Ext.callback(config.success,config.scope || this,[r,o]);
-                        } else FormHandler.errorJSON(r);
+                        } else MODx.form.Handler.errorJSON(r);
                     }
                     ,failure: function(r,o) {
                         r = Ext.decode(r.responseText);
-                        FormHandler.errorJSON(r);
+                        MODx.form.Handler.errorJSON(r);
                     }
                 });
             }

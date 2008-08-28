@@ -330,7 +330,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 				var e = Ext.decode(r.responseText);
 				if (!e.success) {
                     this.refresh();
-					FormHandler.errorJSON(e);
+					MODx.form.Handler.errorJSON(e);
 					return false;
 				}
 			}

@@ -3,6 +3,7 @@ Ext.namespace('MODx.util','MODx.util.Progress');
 Ext.onReady(function() {
     MODx.util.LoadingBox = MODx.load({ xtype: 'modx-loading-box' });
     MODx.util.JSONReader = MODx.load({ xtype: 'modx-json-reader' });
+    MODx.form.Handler = MODx.load({ xtype: 'modx-form-handler' });
 });
 
 /**

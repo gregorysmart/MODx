@@ -79,7 +79,7 @@ Ext.extend(MODx.panel.EditFile,Ext.FormPanel,{
                 r = Ext.decode(r.responseText);
                 if (r.success) {
                     this.getForm().setValues(r.object);
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }
@@ -90,7 +90,7 @@ Ext.extend(MODx.panel.EditFile,Ext.FormPanel,{
                 ,reset: false
                 ,scope: this
                 ,failure: function(f,a) {
-                    FormHandler.errorExt(a.result);
+                    MODx.form.Handler.errorExt(a.result);
                 }
                 ,success: function(f,a) {
                     this.config.file = a.result.object.file;

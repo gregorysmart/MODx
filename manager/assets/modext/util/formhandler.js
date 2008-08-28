@@ -1,4 +1,4 @@
-Ext.namespace('MODx');
+Ext.namespace('MODx.form');
 /**
  * Automatically sends forms through AJAX calls, returns the result
  * (and parses any JS script within response), and if not TRUE, then
@@ -6,13 +6,16 @@ Ext.namespace('MODx');
  * specify the ?action= parameter in _GET, which utilitizes
  * PHP connectors to access their respective processor files.
  *  
- * @class MODx.FormHandler
+ * @class MODx.form.Handler
  * @extends Ext.Component
  * @constructor
- * @xtype modx-formhandler
+ * @xtype modx-form-handler
  */
-MODx.FormHandler = function() {};
-Ext.extend(MODx.FormHandler,Ext.Component,{
+MODx.form.Handler = function(config) {
+	config = config || {};
+    MODx.form.Handler.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.form.Handler,Ext.Component,{
 	fields: []
 	/**
 	 * Sends the request to the connector. Use Ext.Ajax instead from now on.
@@ -117,5 +120,4 @@ Ext.extend(MODx.FormHandler,Ext.Component,{
 		MODx.msg.hide();
 	}
 });
-Ext.reg('modx-formhandler',MODx.FormHandler);
-var FormHandler = new MODx.FormHandler();
+Ext.reg('modx-form-handler',MODx.form.Handler);

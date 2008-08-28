@@ -162,7 +162,7 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
                     Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
                     
                     this.showParameters(Ext.getCmp('combo-tv-widget'));
-                } else FormHandler.errorJSON(r);
+                } else MODx.form.Handler.errorJSON(r);
             }
         })
     }
