@@ -16,6 +16,6 @@
 	</div>	
 </div>
 
-<script type="text/javascript" src="assets/modext/tree/action.tree.js"></script>
-<script type="text/javascript" src="assets/modext/tree/menu.tree.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.tree.action.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.tree.menu.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/action.js"></script>

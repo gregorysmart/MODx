@@ -1,5 +1,5 @@
-<script type="text/javascript" src="assets/modext/panel/element/template.panel.js"></script>
-<script type="text/javascript" src="assets/modext/grid/template.tv.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/element/modx.grid.template.tv.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/element/modx.panel.template.js"></script>
 
 {$onTempFormPrerender}
 

@@ -9,16 +9,16 @@
     
     <script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
     <script src="assets/ext2/ext-all.js" type="text/javascript"></script>
-    <script src="assets/modext/modext.js" type="text/javascript"></script>
+    <script src="assets/modext/core/modx.js" type="text/javascript"></script>
 	<script src="{$_config.connectors_url}lang.js.php?foci=login" type="text/javascript"></script>
-    <script src="assets/modext/form/modx.form.handler.js" type="text/javascript"></script>
+    <script src="assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
+    <script src="assets/modext/core/modx.component.js" type="text/javascript"></script>
     <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
     <script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
+	<script src="assets/modext/widgets/modx.panel.js" type="text/javascript"></script>
+	<script src="assets/modext/widgets/modx.msg.js" type="text/javascript"></script>
+    <script src="assets/modext/widgets/modx.window.js" type="text/javascript"></script>
     <script src="assets/modext/sections/login.js" type="text/javascript"></script>
-	<script src="assets/modext/ui/modx.panel.js" type="text/javascript"></script>
-	<script src="assets/modext/ui/modx.component.js" type="text/javascript"></script>
-	<script src="assets/modext/ui/modx.msg.js" type="text/javascript"></script>
-    <script src="assets/modext/ui/window/modx.window.js" type="text/javascript"></script>
     
     <meta name="robots" content="noindex, nofollow" />
 </head>

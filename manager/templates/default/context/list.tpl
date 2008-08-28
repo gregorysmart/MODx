@@ -6,7 +6,7 @@
 <div id="contexts_grid" style="width: 725px;"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/ui/modx.settings.grid.js"></script>
-<script type="text/javascript" src="assets/modext/grid/settings.context.grid.js"></script>
-<script type="text/javascript" src="assets/modext/grid/context.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/modx.grid.settings.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.grid.context.settings.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.grid.context.js"></script>
 <script type="text/javascript" src="assets/modext/sections/context/list.js"></script>

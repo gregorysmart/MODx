@@ -9,5 +9,5 @@
 	<div id="grid-manager-log"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/manager.log.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.grid.manager.log.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/logs.js"></script>

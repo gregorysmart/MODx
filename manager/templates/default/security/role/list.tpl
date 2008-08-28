@@ -7,5 +7,5 @@
 
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/role.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.role.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/role/list.js"></script>

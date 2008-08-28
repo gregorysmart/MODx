@@ -9,27 +9,27 @@
 
 <script src="{$_config.manager_url}assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/ext2/ext-all.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/modext.js" type="text/javascript"></script>
-<script src="{$_config.connectors_url}lang.js.php" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.js" type="text/javascript"></script>
+<script src="{$_config.connectors_url}lang.js.php?foci=file,category" type="text/javascript"></script>
 <script src="{$_config.connectors_url}layout/modx.config.js.php" type="text/javascript"></script>
 
 
+<script src="{$_config.manager_url}assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.component.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.actionbuttons.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.view.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/util/utilities.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/form/modx.form.handler.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/modhext.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/combos.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/modx.msg.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/window/modx.window.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/window/windows.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/modx.component.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/tree/modx.tree.js" type="text/javascript"></script>
-
-<script src="{$_config.manager_url}assets/modext/ui/modx.view.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/modx.browser.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/tree/directory.tree.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/modhext.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/util/switchbutton.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/ui/modx.actionbuttons.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/modx.combo.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/modx.msg.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/modx.tree.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/modx.window.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/windows.js" type="text/javascript"></script>
+
+<script src="{$_config.manager_url}assets/modext/widget/modx.browser.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
 
 </head>
 <body>

@@ -37,9 +37,8 @@
 </div>
 </div>
 
-
-<script type="text/javascript" src="assets/modext/tree/usergroup.tree.js"></script>
-<script type="text/javascript" src="assets/modext/tree/resourcegroup.tree.js"></script>
-<script type="text/javascript" src="assets/modext/tree/document.tree.js"></script>
-<script type="text/javascript" src="assets/modext/grid/role.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/resource/modx.tree.resource.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.tree.user.group.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.tree.resource.group.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.role.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/permissions/list.js"></script>

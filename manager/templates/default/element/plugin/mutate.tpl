@@ -1,8 +1,8 @@
 <div id="panel-plugin"></div>
 
-<script type="text/javascript" src="assets/modext/panel/element/plugin.panel.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/element/modx.grid.plugin.event.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/element/modx.panel.plugin.js"></script>
 <script type="text/javascript" src="assets/modext/sections/element/plugin/common.js"></script>
-<script type="text/javascript" src="assets/modext/grid/plugin.event.grid.js"></script>
 {include file='element/plugin/_javascript.tpl'}
 
 {$onPluginFormPrerender}

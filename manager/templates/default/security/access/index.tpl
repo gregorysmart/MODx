@@ -18,6 +18,6 @@
 </div>
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/access.context.grid.js"></script>
-<script type="text/javascript" src="assets/modext/grid/access.resourcegroup.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.access.context.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.access.resourcegroup.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/access/list.js"></script>

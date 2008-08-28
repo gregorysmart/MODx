@@ -6,5 +6,5 @@
 	<div id="module_grid" style="width: 100%;margin-bottom:20px"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/module.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/element/modx.grid.module.js"></script>
 <script type="text/javascript" src="assets/modext/sections/element/module/list.js"></script>

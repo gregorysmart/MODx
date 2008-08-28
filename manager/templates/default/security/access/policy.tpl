@@ -6,5 +6,5 @@
 	<div id="policy_grid" style="width: 725px;"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/access.policy.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.access.policy.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/access/policy.js"></script>

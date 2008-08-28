@@ -56,5 +56,5 @@
 
 </form>
 
-<script type="text/javascript" src="assets/modext/tree/document.simple.tree.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/resource/modx.tree.resource.simple.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/import/resource.js"></script>

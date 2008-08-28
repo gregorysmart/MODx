@@ -1,9 +1,9 @@
 <div id="panel-static"></div>
 
 {include file='resource/_javascript.tpl'}
-<script type="text/javascript" src="assets/modext/panel/resource/static.panel.js"></script>
-<script type="text/javascript" src="assets/modext/panel/resource/resource.tv.panel.js"></script>
-<script type="text/javascript" src="assets/modext/grid/resource.security.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.tv.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.static.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/resource/modx.grid.resource.security.js"></script>
 
 <form id="mutate_document" method="post" enctype="multipart/form-data" action="{$_config.connectors_url}resource/document.php" onsubmit="return false;">
 

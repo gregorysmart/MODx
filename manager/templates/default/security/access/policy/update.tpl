@@ -2,7 +2,7 @@
     <div id="panel-access-policy" style="width: 725px;"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/panel/security/access.policy.panel.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.panel.access.policy.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/access/policy/update.js"></script>
 
 <script type="text/javascript">

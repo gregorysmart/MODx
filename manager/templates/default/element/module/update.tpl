@@ -14,7 +14,7 @@
 {/modblock}
 
 {modblock name='ab'}
-<script type="text/javascript" src="{$_config.manager_url}assets/modext/grid/module.dep.grid.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/element/modx.grid.module.dependency.js"></script>
 <script type="text/javascript" src="{$_config.manager_url}assets/modext/sections/element/module/update.js"></script>
 {literal}
 <script type="text/javascript">

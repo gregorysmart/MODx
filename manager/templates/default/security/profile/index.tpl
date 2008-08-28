@@ -14,7 +14,7 @@
 
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/user.recent.resource.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.user.recent.resource.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/profile/update.js"></script>
 {literal}
 <script type="text/javascript">

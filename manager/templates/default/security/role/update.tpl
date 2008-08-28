@@ -6,5 +6,5 @@
 
 {modblock name='othertabs'}
 <div id="role_users_grid"></div>
-<script type="text/javascript" src="assets/modext/grid/role.user.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.role.user.js"></script>
 {/modblock}

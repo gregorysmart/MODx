@@ -7,5 +7,5 @@
     
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/system.event.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.grid.system.event.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/event.js"></script>

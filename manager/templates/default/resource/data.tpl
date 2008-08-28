@@ -1,4 +1,4 @@
-<script type="text/javascript" src="assets/modext/panel/resource/resource.data.panel.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.data.js"></script>
 <script type="text/javascript" src="assets/modext/sections/resource/data.js"></script>
 {literal}
 <script type="text/javascript">

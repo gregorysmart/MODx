@@ -10,5 +10,5 @@
     </div>
 </div>
 
-<script type="text/javascript" src="assets/modext/grid/message.grid.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.message.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/message/list.js"></script>
