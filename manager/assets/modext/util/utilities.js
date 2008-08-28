@@ -10,7 +10,6 @@ Array.prototype.in_array = function(p_val) {
 };
 
 
-var loadingBox;
 MODx.enableWait = true;
 var showSpinner = function() {
     if (MODx.enableWait) {
