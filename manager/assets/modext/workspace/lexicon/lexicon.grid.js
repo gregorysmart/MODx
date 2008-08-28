@@ -44,7 +44,7 @@ MODx.grid.Lexicon = function(config) {
 			,id: 'filter_namespace'
 			,value: 'core'
 			,listeners: {
-				'change': {fn: this.changeNamespace,scope:this}
+				'select': {fn: this.changeNamespace,scope:this}
 			}
 		},{
 			xtype: 'combo-lexicon-focus'
@@ -52,7 +52,7 @@ MODx.grid.Lexicon = function(config) {
 			,id: 'filter_focus'
 			,value: 'default'
             ,listeners: {
-                'change': {fn:this.filter.createDelegate(this,['focus'],true),scope:this}
+                'select': {fn:this.filter.createDelegate(this,['focus'],true),scope:this}
             }
 		},{
 			xtype: 'combo-language'
@@ -60,7 +60,7 @@ MODx.grid.Lexicon = function(config) {
 			,id: 'filter_language'
 			,value: 'en'
             ,listeners: {
-                'change': {fn:this.filter.createDelegate(this,['language'],true),scope:this}
+                'select': {fn:this.filter.createDelegate(this,['language'],true),scope:this}
             }
 		},{
             text: _('create_new')
@@ -122,9 +122,9 @@ MODx.grid.Lexicon = function(config) {
     MODx.grid.Lexicon.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
-    filter: function(cb,nv,ov,name) {
+    filter: function(cb,r,i,name) {
     	if (!name) return false;
-    	this.store.baseParams[name] = nv;
+    	this.store.baseParams[name] = cb.getValue();
     	this.getBottomToolbar().changePage(1);
     	this.refresh();
     }
@@ -146,7 +146,7 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	s.baseParams.namespace = nv;
     	s.reload();
     	
-    	this.filter(cb,nv,ov,'namespace');
+    	this.filter(cb,null,1,'namespace');
     }
     ,loadWindow2: function(btn,e,xtype) {
     	this.menu.record = {
