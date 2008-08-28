@@ -165,7 +165,7 @@ $collection['15']->fromArray(array (
   'handler' => 'MODx.msg.confirm({
 title: _(\'logout\')
 ,text: _(\'logout_confirm\')
-,connector: MODx.config.connectors_url+\'security/logout.php\'
+,url: MODx.config.connectors_url+\'security/logout.php\'
 ,params: {
 action: \'logout\'
 }
@@ -232,7 +232,7 @@ $collection['22']->fromArray(array (
 			MODx.msg.confirm({
 				title: _(\'remove_locks\')
 				,text: _(\'confirm_remove_locks\')
-				,connector: MODx.config.connectors_url+\'system/remove_locks.php\'
+				,url: MODx.config.connectors_url+\'system/remove_locks.php\'
 				,params: {
 					action: \'remove\'
 				}
@@ -324,7 +324,7 @@ $collection['30']->fromArray(array (
   'id' => '30',
   'parent' => '9',
   'action' => '61',
-  'text' => 'edit_settings',
+  'text' => 'system_settings',
   'icon' => 'images/icons/sysinfo.gif',
   'menuindex' => '15',
   'params' => '',

@@ -624,6 +624,7 @@ $_lang['support'] = 'Support';
 $_lang['sysinfo_activity_message'] = 'This list show which documents have been recently edited by your users.';
 $_lang['sysinfo_userid'] = 'User';
 $_lang['sys_alert'] = 'System Alert';
+$_lang['system_settings'] = 'System Settings';
 $_lang['tag'] = 'Tag';
 $_lang['target'] = 'Target';
 $_lang['template'] = 'Template';
