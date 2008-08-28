@@ -36,3 +36,9 @@ h3 {
     float: right;
     font-style: italic;
 }
+
+
+.modx-console .debug { color: gray; }
+.modx-console .message { color: green; }
+.modx-console .warning { color: orange; }
+.modx-console .error { color: red; }

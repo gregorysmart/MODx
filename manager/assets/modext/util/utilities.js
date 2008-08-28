@@ -11,17 +11,20 @@ Array.prototype.in_array = function(p_val) {
 
 
 var loadingBox;
+MODx.enableWait = true;
 var showSpinner = function() {
-    Ext.Msg.show({
-        title: _('please_wait')
-        ,msg: _('loading')
-        ,width:240
-        ,progress:true
-        ,closable:false
-    });
+    if (MODx.enableWait) {
+        Ext.Msg.show({
+            title: _('please_wait')
+            ,msg: _('loading')
+            ,width:240
+            ,progress:true
+            ,closable:false
+        });
+    }
 };
 var hideSpinner = function(){
-    Ext.Msg.hide();
+    if (MODx.enableWait) Ext.Msg.hide();
 };
 Ext.onReady(function() {
     Ext.Ajax.on('beforerequest',showSpinner,this);
