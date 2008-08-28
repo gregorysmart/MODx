@@ -134,7 +134,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 		
 		_resetProgress();
 		for(var i = 1; i < 20; i++) {
-			setTimeout('_progressTime('+i+','+_progressID+')',i*1000);
+			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
 		
 		// send it to the backend to save

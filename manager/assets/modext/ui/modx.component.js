@@ -33,7 +33,7 @@ Ext.extend(MODx.Component,Ext.Component,{
      */
 	,_loadForm: function() {
 		if (!this.config.form) return false;
-        this.form = new Ext.form.BasicForm(Ext.get(this.config.form),{ errorReader : modJSONReader });
+        this.form = new Ext.form.BasicForm(Ext.get(this.config.form),{ errorReader : MODx.util.JSONReader });
         
         if (this.config.fields) {
         	for (var i in this.config.fields) {

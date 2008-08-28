@@ -113,7 +113,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 			,border: false
 			,bodyBorder: false
 			,autoHeight: true
-			,errorReader: modJSONReader
+			,errorReader: MODx.util.JSONReader
 			,url: this.config.connector || this.config.url
 			,baseParams: this.config.baseParams || {}
 			,fileUpload: this.config.fileUpload || false

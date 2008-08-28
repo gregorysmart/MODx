@@ -48,7 +48,8 @@ MODx.Console = function(config) {
 Ext.extend(MODx.Console,Ext.Window,{
     init: function() {
        Ext.Msg.hide();
-       MODx.enableWait = false;
+       if (MODx.util.LoadingBox) MODx.util.LoadingBox.disable();
+       
        var mgr = new Ext.Updater('console-body');
        mgr.startAutoRefresh(1,this.config.url,this.config.baseParams || {},function(el,s,r,o) {
            r = Ext.decode(r.responseText);

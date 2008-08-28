@@ -36,7 +36,7 @@ MODx.FormPanel = function(config) {
         ,bodyStyle: 'padding: 1em'
         ,border: false
         ,method: 'POST'
-        ,errorReader: modJSONReader
+        ,errorReader: MODx.util.JSONReader
     });
     MODx.Panel.superclass.constructor.call(this,config);
     this.config = config;

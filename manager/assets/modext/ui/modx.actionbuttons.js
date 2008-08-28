@@ -205,7 +205,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 		// action buttons handlers, abstracted to all get-out
 		switch (itm.method) {
 			case 'remote': // if using connectors
-				_resetProgress(); // reset the Progress Bar
+				MODx.util.Progress.reset(); // reset the Progress Bar
 				Ext.Msg.show({
 					title: _('please_wait')
 					,msg: _('saving')
@@ -235,7 +235,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 							}
 							,success: function(f,a) {
 								// update the progress bar
-								_progressTime(5,_progressID,_('refreshing_tree'));
+								MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
 								
 								// allow for success messages
 								if (a.result.message != '' && !itm.onComplete) {
@@ -262,7 +262,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 						
 						if (r.success) {
 							// update the progress bar
-							_progressTime(5,_progressID,_('refreshing_tree'));
+							MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
 							
 							// refresh the tree, then pass the handling onto the checkOnComplete func
 							o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_document_tree').refresh();

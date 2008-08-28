@@ -33,7 +33,7 @@ MODx.combo.ComboBox = function(config,getStore) {
             ,root: 'results'
             ,totalProperty: 'total'
             ,fields: config.fields
-            ,errorReader: modJSONReader
+            ,errorReader: MODx.util.JSONReader
             ,baseParams: config.baseParams || {}
             ,remoteSort: config.remoteSort || false
         })

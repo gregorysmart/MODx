@@ -1,35 +1,129 @@
-Ext.namespace('MODx');
+Ext.namespace('MODx.util','MODx.util.Progress');
 
-Array.prototype.in_array = function(p_val) {
-    for(var i = 0, l = this.length; i < l; i++) {
-        if(this[i] == p_val) {
-            return true;
+Ext.onReady(function() {
+    MODx.util.LoadingBox = MODx.load({ xtype: 'modx-loading-box' });
+    MODx.util.JSONReader = MODx.load({ xtype: 'modx-json-reader' });
+});
+
+/**
+ * Shows a Loading display when ajax calls are happening
+ * 
+ * @class MODx.util.LoadingBox
+ * @extends Ext.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-loading-box
+ */
+MODx.util.LoadingBox = function(config) {
+	config = config || {};
+	
+	MODx.util.LoadingBox.superclass.constructor.call(this,config);
+	
+    Ext.Ajax.on('beforerequest',this.show,this);
+    Ext.Ajax.on('requestcomplete',this.hide,this);
+    Ext.Ajax.on('requestexception',this.hide,this);
+};
+Ext.extend(MODx.util.LoadingBox,Ext.Component,{
+    enabled: true
+    ,hide: function() {
+        if (this.enabled) Ext.Msg.hide();
+    }
+    ,show: function() {
+        if (this.enabled) {
+            Ext.Msg.show({
+                title: _('please_wait')
+                ,msg: _('loading')
+                ,width:240
+                ,progress:true
+                ,closable:false
+            });
         }
     }
-    return false;
+    ,disable: function() { this.enabled = false; }
+    ,enable: function() { this.enabled = true; }
+});
+Ext.reg('modx-loading-box',MODx.util.LoadingBox);
+
+/**
+ * A JSON Reader specific to MODExt
+ * 
+ * @class MODx.util.JSONReader
+ * @extends Ext.util.JSONReader
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-json-reader
+ */
+MODx.util.JSONReader = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        successProperty:'success'
+        ,totalProperty: 'total'
+        ,root: 'data'
+    });
+    MODx.util.JSONReader.superclass.constructor.call(this,config,['id','msg']);
 };
+Ext.extend(MODx.util.JSONReader,Ext.data.JsonReader);
+Ext.reg('modx-json-reader',MODx.util.JSONReader);
 
-
-MODx.enableWait = true;
-var showSpinner = function() {
-    if (MODx.enableWait) {
-        Ext.Msg.show({
-            title: _('please_wait')
-            ,msg: _('loading')
-            ,width:240
-            ,progress:true
-            ,closable:false
-        });
+/**
+ * @class MODx.util.Progress 
+ */
+MODx.util.Progress = {
+    id: 0
+    ,time: function(v,id,msg) {
+        msg = msg || _('saving');
+        if (MODx.util.Progress.id == id && v < 11) 
+            Ext.MessageBox.updateProgress(v/10,msg);
+    }
+    ,reset: function() {
+        MODx.util.Progress.id = MODx.util.Progress.id + 1;
     }
 };
-var hideSpinner = function(){
-    if (MODx.enableWait) Ext.Msg.hide();
-};
-Ext.onReady(function() {
-    Ext.Ajax.on('beforerequest',showSpinner,this);
-    Ext.Ajax.on('requestcomplete',hideSpinner,this);
-    Ext.Ajax.on('requestexception',hideSpinner,this);
+
+
+
+/** 
+ * Static Textfield
+ */
+MODx.StaticTextField = Ext.extend(Ext.form.TextField, {
+    fieldClass: 'x-static-text-field',
+
+    onRender: function() {
+        this.readOnly = true;
+        this.disabled = !this.initialConfig.submitValue;
+        MODx.StaticTextField.superclass.onRender.apply(this, arguments);
+    }
 });
+Ext.reg('statictextfield',MODx.StaticTextField);
+
+/** 
+ * Static Boolean
+ */
+MODx.StaticBoolean = Ext.extend(Ext.form.TextField, {
+    fieldClass: 'x-static-text-field',
+
+    onRender: function(tf) {
+        this.readOnly = true;
+        this.disabled = !this.initialConfig.submitValue;
+        MODx.StaticBoolean.superclass.onRender.apply(this, arguments);
+        this.on('change',this.onChange,this);
+    }
+    
+    ,setValue: function(v) {
+        if (v == 1) {
+            this.addClass('green');
+            v = _('yes');
+        } else {
+            this.addClass('red');
+            v = _('no');
+        }
+        MODx.StaticBoolean.superclass.setValue.apply(this, arguments);
+    }
+});
+Ext.reg('staticboolean',MODx.StaticBoolean);
+
+
+/****************************************************************************
+ *    Ext-specific overrides/extensions                                     *
+ ****************************************************************************/
 
 function $(el){
     if (!el) return null;
@@ -41,6 +135,17 @@ function $(el){
     if (type != 'element') return null;
     return el;
 };
+
+
+Array.prototype.in_array = function(p_val) {
+    for(var i = 0, l = this.length; i < l; i++) {
+        if(this[i] == p_val) {
+            return true;
+        }
+    }
+    return false;
+};
+
 
 Ext.form.setCheckboxValues = function(form,id,mask) {
     var f, n=0;
@@ -61,56 +166,6 @@ Ext.form.getCheckboxMask = function(cbgroup) {
     }
     return mask;
 };
-
-var isInteger = function(s) {
-    var i;
-    for (i = 0; i < s.length; i++) {   
-        // Check that current character is number.
-        var c = s.charAt(i);
-        if (((c < '0') || (c > '9'))) return false;
-    }
-    // All characters are numbers.
-    return true;
-};
-
-
-var modJSONReader = new Ext.data.JsonReader({
-    successProperty:'success'
-    ,totalProperty: 'total'
-    ,root: 'data'
-},['id','msg']);
-
-
-
-function findPos(obj) {
-    var curleft = 0;
-    var curtop = 0;
-    if (obj.offsetParent) {
-        curleft = obj.offsetLeft;
-        curtop = obj.offsetTop;
-        while (obj = obj.offsetParent) {
-            curleft += obj.offsetLeft;
-            curtop += obj.offsetTop;
-        }
-    }
-    return [curleft,curtop];
-};
-
-
-var _progressID = 0;
-var _progressTime = function(v,id,msg) {
-    msg = msg || _('saving');
-    if (_progressID == id && v < 11) 
-        Ext.MessageBox.updateProgress(v/10,msg);
-};
-
-var _resetProgress = function() {
-    _progressID = _progressID + 1;
-};
-
-
-
-
 
 
 Ext.form.BasicForm.prototype.append = function() {
@@ -144,8 +199,6 @@ Ext.form.BasicForm.prototype.append = function() {
 
   return this;
 };
-
-
 
 
 Ext.form.AMPMField = function(id,v) {
@@ -464,43 +517,3 @@ Ext.applyIf(Ext.form.Field,{
         }
     }
 });
-
-/** 
- * Static Textfield
- */
-MODx.StaticTextField = Ext.extend(Ext.form.TextField, {
-    fieldClass: 'x-static-text-field',
-
-    onRender: function() {
-        this.readOnly = true;
-        this.disabled = !this.initialConfig.submitValue;
-        MODx.StaticTextField.superclass.onRender.apply(this, arguments);
-    }
-});
-Ext.reg('statictextfield',MODx.StaticTextField);
-
-/** 
- * Static Boolean
- */
-MODx.StaticBoolean = Ext.extend(Ext.form.TextField, {
-    fieldClass: 'x-static-text-field',
-
-    onRender: function(tf) {
-        this.readOnly = true;
-        this.disabled = !this.initialConfig.submitValue;
-        MODx.StaticBoolean.superclass.onRender.apply(this, arguments);
-        this.on('change',this.onChange,this);
-    }
-    
-    ,setValue: function(v) {
-        if (v == 1) {
-            this.addClass('green');
-            v = _('yes');
-        } else {
-            this.addClass('red');
-            v = _('no');
-        }
-        MODx.StaticBoolean.superclass.setValue.apply(this, arguments);
-    }
-});
-Ext.reg('staticboolean',MODx.StaticBoolean);

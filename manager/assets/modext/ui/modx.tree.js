@@ -296,7 +296,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 		
 		_resetProgress();
 		for(var i = 1; i < 20; i++) {
-			setTimeout('_progressTime('+i+','+_progressID+')',i*1000);
+			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
 		
 		/**
