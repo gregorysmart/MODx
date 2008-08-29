@@ -2676,6 +2676,46 @@ class modX extends xPDO {
         $modx= & $this; // allows ability to access $modx
         require_once (MODX_PROCESSORS_PATH . $file);
     }
+    
+    function _log($level, $msg, $target= '', $def= '', $file= '', $line= '') {
+        if (empty($target)) {
+            $target = $this->logTarget;
+        }
+        if (is_object($target) && is_a($target, 'modRegister')) {
+            if ($level === XPDO_LOG_LEVEL_FATAL) {
+                if (empty ($file)) $file= (isset ($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : (isset ($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '');
+                $this->_logInRegister($target, $level, $msg, $def, $file, $line);
+                while (@ob_end_flush()) {}
+                if (!empty ($def)) $def= " in {$def}";
+                if (!empty ($file)) $file= " @ {$file}";
+                if (!empty ($line)) $line= " : {$line}";
+                exit ('[' . strftime('%Y-%m-%d %H:%M:%S') . '] (' . $this->_getLogLevel($level) . $def . $file . $line . ') ' . $msg . "\n" . ($this->getDebug() === true ? '<pre>' . "\n" . print_r(debug_backtrace(), true) . "\n" . '</pre>' : ''));
+            }
+            if ($this->_debug === true || $level <= $this->logLevel) {
+                if (empty ($file)) $file= (isset ($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : (isset ($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '');
+                $this->_logInRegister($target, $level, $msg, $def, $file, $line);
+            }
+        } else {
+            parent :: _log($level, $msg, $target, $def, $file, $line);
+        }
+    }
+    
+    function _logInRegister($register, $level, $msg, $def, $file, $line) {
+        $messageKey = (string) time();
+        $message = array(
+            'timestamp' => strftime('%Y-%m-%d %H:%M:%S'),
+            'level' => $this->_getLogLevel($level),
+            'msg' => $msg,
+            'def' => $def,
+            'file' => $file,
+            'line' => $line
+        );
+        $options = array();
+        if ($level === XPDO_LOG_LEVEL_FATAL) {
+            $options['kill'] = true;
+        }
+        $register->send('', array($messageKey => $message), $options);
+    }
 }
 
 /**

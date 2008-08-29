@@ -49,6 +49,12 @@ class modRegister {
      * @access public
      */
     var $subscriptions = array();
+    /**
+     * An optional current topic to allow writes to relative paths.
+     * @var string
+     * @access protected
+     */
+    var $_currentTopic = '/';
 
     /**#@+
      * Construct a new register.
@@ -146,5 +152,14 @@ class modRegister {
     function begin($transactionKey) {}
     function commit($transactionKey) {}
     function abort($transactionKey) {}
+    
+    function setCurrentTopic($topic) {
+        if ($topic[0] != '/') $topic = $this->_currentTopic . $topic;
+        if ($topic[strlen($topic) - 1] != '/') $topic .= '/';
+        $topicIdx = array_search($topic, $this->subscriptions);
+        if ($topicIdx !== false && $topicIdx !== null) {
+            $this->_currentTopic = $topic;
+        }
+    }
 }
 ?>

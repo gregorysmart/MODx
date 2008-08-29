@@ -180,7 +180,7 @@ class modFileRegister extends modRegister {
      */
     function send($topic, $message, $options = array()) {
         $sent = false;
-        if ($topic[0] != '/') return $sent;
+        if (empty($topic) || $topic[0] != '/') $topic = $this->_currentTopic . $topic;
         $topicIdx = array_search($topic, $this->subscriptions);
         $topic = substr($topic, 1);
         if ($topicIdx !== false) {
