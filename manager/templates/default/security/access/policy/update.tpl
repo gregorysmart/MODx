@@ -10,7 +10,7 @@
 // <![CDATA[
 Ext.onReady(function() {
     MODx.load({ 
-        xtype: 'access-policy-update'
+        xtype: 'page-access-policy-update'
         ,policy: '{/literal}{$policy->id}{literal}'
     });
 });
