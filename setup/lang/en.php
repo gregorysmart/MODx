@@ -10,7 +10,7 @@ $_lang['close']= 'close';
 $_lang['connection_character_set'] = 'Connection character set:';
 $_lang['connection_collation'] = 'Collation:';
 $_lang['connection_connection_and_login_information'] = 'Database connection and login information';
-$_lang['connection_connection_note'] = 'Please enter the name of the database created for MODX. If you there is no database yet, the installer will attempt to create a database for you. This may fail depending on the MySQL configuration or the database user permissions for your domain/installation.';
+$_lang['connection_connection_note'] = 'Please enter the name of the database created for MODx. If you there is no database yet, the installer will attempt to create a database for you. This may fail depending on the MySQL configuration or the database user permissions for your domain/installation.';
 $_lang['connection_database_host'] = 'Database host:';
 $_lang['connection_database_info'] = 'Now please enter the login data for your database.';
 $_lang['connection_database_login'] = 'Database login name:';
@@ -101,7 +101,7 @@ $_lang['license_agreement_error']= 'You must agree to the License before continu
 $_lang['login'] = 'Login';
 $_lang['modx_install']= 'MODx Installation';
 $_lang['modx_install_complete'] = 'MODx Installation Complete';
-$_lang['modx_footer1']= '&copy; 2005-2008 the <a href="http://www.modxcms.com/" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;"  style="color: green; text-decoration:underline">MODx</a> Content Mangement Framework (CMF) project. All rights reserved. MODx is licensed under the GNU GPL.';
+$_lang['modx_footer1']= '&copy; 2005-2008 the <a href="http://www.modxcms.com/" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;"  style="color: green; text-decoration:underline">MODx</a> Content Management Framework (CMF) project. All rights reserved. MODx is licensed under the GNU GPL.';
 $_lang['modx_footer2']= 'MODx is free software.  We encourage you to be creative and make use of MODx in any way you see fit. Just make sure that if you do make changes and decide to redistribute your modified MODx, that you keep the source code free!';
 $_lang['next'] = 'Next';
 $_lang['none'] = 'None';
