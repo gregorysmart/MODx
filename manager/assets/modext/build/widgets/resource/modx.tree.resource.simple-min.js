@@ -1,0 +1,1 @@
+MODx.tree.SimpleDocument=function(A){A=A||{};Ext.applyIf(A,{root_id:"0",root_name:_("documents"),enableDrag:true,enableDrop:true});MODx.tree.SimpleDocument.superclass.constructor.call(this,A)};Ext.extend(MODx.tree.SimpleDocument,MODx.tree.Tree);Ext.reg("tree-document-simple",MODx.tree.SimpleDocument);

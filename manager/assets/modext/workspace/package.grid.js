@@ -59,6 +59,33 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                 return d;
         }
     }
+    
+    ,install: function(btn) {
+    	var r = this.menu.record;
+    	var console = MODx.load({
+    	   xtype: 'modx-console'
+    	   ,baseParams: {
+    	       register: r.signature
+    	       ,topic: 'install'
+    	   }
+    	});
+    	console.show(btn);
+    	
+    	Ext.Ajax.request({
+            url: url
+            ,params: {
+                action: 'install'
+            }
+            ,scope: this
+            ,success: function(r,o) {
+            	r = Ext.decode(r.responseText);
+            	console.complete();
+            	if (r.success) {
+            	
+            	} else MODx.form.Handler.errorJSON(r);
+            }
+    	});
+    }
 });
 Ext.reg('grid-package',MODx.grid.Package);
 

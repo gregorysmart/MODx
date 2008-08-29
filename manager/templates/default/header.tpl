@@ -14,31 +14,41 @@
 <script src="assets/modext/util/eventfix.js" type="text/javascript"></script>
 <script src="{$_config.connectors_url}lang.js.php?foci=file,category" type="text/javascript"></script>
 <script src="{$_config.connectors_url}layout/modx.config.js.php" type="text/javascript"></script>
-{if $_config.compress_js AND false}
-<script src="assets/modext/modext-all.js" type="text/javascript"></script>
+{if $_config.compress_js}
+<script src="assets/modext/modext.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/core/modx.msg-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/core/modx.topmenu-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/core/modx.window-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/core/modx.tree-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/windows-min.js" type="text/javascript"></script>
+
+<script src="assets/modext/build/widgets/resource/modx.tree.resource-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/element/modx.tree.element-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/system/modx.tree.directory-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/core/modx.layout-min.js" type="text/javascript"></script>
 {else}
 <script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/modx.msg.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/modx.topmenu.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/modx.window.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.msg.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.topmenu.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.window.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.tree.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/windows.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/modx.tree.js" type="text/javascript"></script>
-{/if}
 
 <script src="assets/modext/widgets/resource/modx.tree.resource.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/element/modx.tree.element.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
+<script src="assets/modext/core/modx.layout.js" type="text/javascript"></script>
+{/if}
 
 <script src="assets/modext/util/filetree/js/Ext.ux.form.BrowseButton.js" type="text/javascript"></script>
 <script src="assets/modext/util/filetree/js/Ext.ux.FileUploader.js" type="text/javascript"></script>
 <script src="assets/modext/util/filetree/js/Ext.ux.UploadPanel.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
 <link href="assets/modext/util/filetree/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="assets/modext/util/filetree/css/filetype.css" rel="stylesheet" type="text/css" />
 <link href="assets/modext/util/filetree/css/filetree.css" rel="stylesheet" type="text/css" />
 
-<script src="assets/modext/core/modx.layout.js" type="text/javascript"></script>
 </head>
 <body>
 

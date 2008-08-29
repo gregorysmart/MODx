@@ -1,4 +1,3 @@
-Ext.namespace('MODx.toolbar');
 /**
  * Generates the Top Menubar in Ext
  * 

@@ -14,7 +14,7 @@ MODx = function(config) {
 };
 Ext.extend(MODx,Ext.Component,{
     config: {}
-    ,util:{},window:{},panel:{},tree:{},form:{},grid:{},combo:{},toolbar:{},page:{}
+    ,util:{},window:{},panel:{},tree:{},form:{},grid:{},combo:{},toolbar:{},page:{},msg:{}
     
     ,load: function() {
         var a = arguments, l = a.length;

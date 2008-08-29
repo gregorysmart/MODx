@@ -1,11 +1,4 @@
 Ext.namespace('MODx.util.Progress');
-
-Ext.onReady(function() {
-    MODx.util.LoadingBox = MODx.load({ xtype: 'modx-loading-box' });
-    MODx.util.JSONReader = MODx.load({ xtype: 'modx-json-reader' });
-    MODx.form.Handler = MODx.load({ xtype: 'modx-form-handler' });
-});
-
 /**
  * Shows a Loading display when ajax calls are happening
  * 
@@ -16,14 +9,12 @@ Ext.onReady(function() {
  */
 MODx.util.LoadingBox = function(config) {
 	config = config || {};
-	
-	MODx.util.LoadingBox.superclass.constructor.call(this,config);
-	
+		
     Ext.Ajax.on('beforerequest',this.show,this);
     Ext.Ajax.on('requestcomplete',this.hide,this);
     Ext.Ajax.on('requestexception',this.hide,this);
 };
-Ext.extend(MODx.util.LoadingBox,Ext.Component,{
+Ext.override(MODx.util.LoadingBox,{
     enabled: true
     ,hide: function() {
         if (this.enabled) Ext.Msg.hide();
@@ -59,9 +50,8 @@ MODx.util.JSONReader = function(config) {
         ,totalProperty: 'total'
         ,root: 'data'
     });
-    MODx.util.JSONReader.superclass.constructor.call(this,config,['id','msg']);
+    MODx.util.JSONReader = new Ext.data.JsonReader(config,['id','msg']);
 };
-Ext.extend(MODx.util.JSONReader,Ext.data.JsonReader);
 Ext.reg('modx-json-reader',MODx.util.JSONReader);
 
 /**
@@ -517,4 +507,14 @@ Ext.applyIf(Ext.form.Field,{
             return label;
         }
     }
+});
+
+
+
+
+Ext.onReady(function() {
+    MODx.util.LoadingBox = MODx.load({ xtype: 'modx-loading-box' });
+    MODx.util.JSONReader = MODx.load({ xtype: 'modx-json-reader' });
+    MODx.form.Handler = MODx.load({ xtype: 'modx-form-handler' });
+    MODx.msg = MODx.load({ xtype: 'modx-msg' });
 });

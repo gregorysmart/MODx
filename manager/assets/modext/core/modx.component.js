@@ -81,8 +81,9 @@ Ext.extend(MODx.Component,Ext.Component,{
      */
 	,_loadTabs: function() {
 		if (!this.config.tabs) return false;
-        new MODx.Tabs({
-            renderTo: this.config.tabs_div || 'tabs_div'
+        MODx.load({
+            xtype: 'modx-tabs'
+            ,renderTo: this.config.tabs_div || 'tabs_div'
             ,items: this.config.tabs
         });
 	}

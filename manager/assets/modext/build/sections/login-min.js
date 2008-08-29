@@ -1,0 +1,1 @@
+Ext.onReady(function(){if(top.frames.length!=0){top.location=self.document.location}});var loginHandler=function(A,B,C){var C=Ext.decode(C.responseText);if(C.success){top.document.location.href=(C.object.id!=undefined)?"./index.php?id="+C.object.id:"./"}else{MODx.form.Handler.errorExt(C)}};var doLogin=function(){return MODx.form.Handler.send("loginfrm","login",loginHandler)};

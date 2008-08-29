@@ -1,8 +1,3 @@
-Ext.namespace('MODx.msg');
-Ext.onReady(function() {
-    MODx.msg = new MODx.Msg();
-});
-
 /**
  * Abstraction for Ext.Msg, adds connector handling ability
  * and spotlight features.

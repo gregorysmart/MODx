@@ -1,0 +1,1 @@
+Ext.onReady(function(){MODx.load({xtype:"page-system-event"})});MODx.page.SystemEvent=function(A){A=A||{};Ext.applyIf(A,{components:[{xtype:"grid-system-event",renderTo:"grid-system-event"}]});MODx.page.SystemEvent.superclass.constructor.call(this,A)};Ext.extend(MODx.page.SystemEvent,MODx.Component);Ext.reg("page-system-event",MODx.page.SystemEvent);

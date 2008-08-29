@@ -50,7 +50,9 @@ Ext.extend(MODx.Console,Ext.Window,{
        Ext.Msg.hide();
        if (MODx.util.LoadingBox) MODx.util.LoadingBox.disable();
        
-       var mgr = new Ext.Updater('console-body');
+       this.mgr = new Ext.Updater('console-body');
+       var mgr = this.mgr;
+       
        mgr.startAutoRefresh(1,this.config.url,this.config.baseParams || {},function(el,s,r,o) {
            r = Ext.decode(r.responseText);
            if (r.success == true) {
@@ -62,6 +64,11 @@ Ext.extend(MODx.Console,Ext.Window,{
                el.update(r.message);
            }
        },true);
+    }
+    
+    ,complete: function() {
+    	Ext.getCmp('modx-console-ok').setDisabled(false);
+    	this.mgr.stopAutoRefresh();
     }
 });
 Ext.reg('modx-console',MODx.Console);

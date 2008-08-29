@@ -1,0 +1,1 @@
+Ext.onReady(function(){MODx.load({xtype:"page-namespace"})});MODx.page.Namespace=function(A){A=A||{};Ext.applyIf(A,{components:[{xtype:"grid-namespace",renderTo:"grid-namespace"}]});MODx.page.Namespace.superclass.constructor.call(this,A)};Ext.extend(MODx.page.Namespace,MODx.Component);Ext.reg("page-namespace",MODx.page.Namespace);

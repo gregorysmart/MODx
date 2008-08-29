@@ -1,0 +1,1 @@
+Ext.onReady(function(){MODx.load({xtype:"page-content-type"})});MODx.page.ContentType=function(A){A=A||{};Ext.applyIf(A,{components:[{xtype:"grid-contenttype",renderTo:"content_type_grid"}]});MODx.page.ContentType.superclass.constructor.call(this,A)};Ext.extend(MODx.page.ContentType,MODx.Component);Ext.reg("page-content-type",MODx.page.ContentType);

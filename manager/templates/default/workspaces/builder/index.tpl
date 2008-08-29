@@ -5,7 +5,7 @@
 <div id="grid-vehicle"></div>
 </div>
 
-<script type="text/javascript" src="assets/modext/widgets/modx.grid.local.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/core/modx.grid.local.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/builder/combos.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/builder/vehicle.grid.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/builder/resolver.grid.js"></script>

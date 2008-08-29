@@ -1,0 +1,1 @@
+Ext.onReady(function(){MODx.load({xtype:"page-context"})});MODx.page.Context=function(A){A=A||{};Ext.applyIf(A,{components:[{xtype:"grid-context",renderTo:"contexts_grid"}]});MODx.page.Context.superclass.constructor.call(this,A)};Ext.extend(MODx.page.Context,MODx.Component);Ext.reg("page-context",MODx.page.Context);

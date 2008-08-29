@@ -1,0 +1,1 @@
+Ext.onReady(function(){MODx.load({xtype:"page-messages"})});MODx.page.Messages=function(A){A=A||{};Ext.applyIf(A,{tabs:[{contentEl:"tab_list",title:_("messages")}],components:[{xtype:"grid-message",renderTo:"grid-message"}]});MODx.page.Messages.superclass.constructor.call(this,A)};Ext.extend(MODx.page.Messages,MODx.Component);Ext.reg("page-messages",MODx.page.Messages);
