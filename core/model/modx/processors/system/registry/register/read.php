@@ -12,13 +12,20 @@ $register = trim($_POST['register']);
 $topic = trim($_POST['topic']);
 $format = isset($_POST['format']) ? trim($_POST['format']) : 'json';
 
+$options = array();
+$options['poll_limit'] = (isset($_POST['poll_limit']) && intval($_POST['poll_limit'])) ? intval($_POST['poll_limit']) : 1;
+$options['poll_interval'] = (isset($_POST['poll_interval']) && intval($_POST['poll_interval'])) ? intval($_POST['poll_interval']) : 1;
+$options['time_limit'] = (isset($_POST['time_limit']) && intval($_POST['time_limit'])) ? intval($_POST['time_limit']) : 10;
+$options['message_limit'] = (isset($_POST['message_limit']) && intval($_POST['message_limit'])) ? intval($_POST['message_limit']) : 100;
+$options['remove_read'] = (isset($_POST['remove_read']) && empty($_POST['remove_read'])) ? false : true;
+
 $modx->getService('registry', 'registry.modRegistry');
 $modx->registry->addRegister($register, 'registry.modFileRegister', array('directory' => $register));
 if (!$modx->registry->$register->connect()) $modx->error->failure($modx->lexicon('error'));
 
 $modx->registry->$register->subscribe($topic);
 
-$msgs = $modx->registry->$register->read();
+$msgs = $modx->registry->$register->read($options);
 if (!empty($msgs)) {
     if ($format == 'html_log') {
         $message = '';
