@@ -1,14 +1,12 @@
-Ext.namespace('MODx');
-
 /**
  * Loads the create template page
  * 
- * @class MODx.CreateTemplate
+ * @class MODx.page.CreateTemplate
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype template-create
+ * @xtype page-template-create
  */
-MODx.CreateTemplate = function(config) {
+MODx.page.CreateTemplate = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		formpanel: 'panel-template'
@@ -56,7 +54,7 @@ MODx.CreateTemplate = function(config) {
             ,name: ''
         }]
 	});
-	MODx.CreateTemplate.superclass.constructor.call(this,config);
+	MODx.page.CreateTemplate.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.CreateTemplate,MODx.Component);
-Ext.reg('template-create',MODx.CreateTemplate);
+Ext.extend(MODx.page.CreateTemplate,MODx.Component);
+Ext.reg('page-template-create',MODx.page.CreateTemplate);

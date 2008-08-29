@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.window');
-
 /** 
  * Generates the Duplicate Resource window.
  *  

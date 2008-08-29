@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.grid','MODx.toolbar','MODx.window', 'MODx.combo');
 /**
  * Loads a grid of modAccessContexts.
  * 

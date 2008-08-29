@@ -1,15 +1,15 @@
 Ext.onReady(function() {
-	MODx.load({ xtype: 'modx-help' });
+	MODx.load({ xtype: 'page-help' });
 });
 /**
  * Loads the help page
  * 
- * @class MODx.Help
+ * @class MODx.page.Help
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-help
+ * @xtype page-help
  */
-MODx.Help = function(config) {
+MODx.page.Help = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		tabs: [
@@ -18,7 +18,7 @@ MODx.Help = function(config) {
             ,{contentEl: 'credits', title: _('credits')}
         ]
 	});
-	MODx.Help.superclass.constructor.call(this,config);
+	MODx.page.Help.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Help,MODx.Component);
-Ext.reg('modx-help',MODx.Help);
+Ext.extend(MODx.page.Help,MODx.Component);
+Ext.reg('page-help',MODx.page.Help);

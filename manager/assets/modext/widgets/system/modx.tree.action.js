@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree','MODx.window','MODx.combo');
 /**
  * Generates a modAction Tree in Ext
  * 

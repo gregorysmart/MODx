@@ -8,7 +8,7 @@
 Ext.onReady(function() {
     MODx.load({
 	{/literal}
-	    xtype: 'weblink-update'
+	    xtype: 'page-weblink-update'
 	    ,id: '{$resource->id}'
 	    ,ctx: '{$resource->context_key}'
 	    ,template: '{$resource->template}'

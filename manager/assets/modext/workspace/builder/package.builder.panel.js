@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.panel');
-
 /**
  * Loads the Package Builder
  * 
@@ -242,9 +240,7 @@ MODx.panel.PackageAutoSelects = function(config) {
     });
     MODx.panel.PackageAutoSelects.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.PackageAutoSelects,MODx.FormPanel,{
-
-});
+Ext.extend(MODx.panel.PackageAutoSelects,MODx.FormPanel);
 Ext.reg('panel-pb-autoselects',MODx.panel.PackageAutoSelects);
 
 

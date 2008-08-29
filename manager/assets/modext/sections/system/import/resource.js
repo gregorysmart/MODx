@@ -1,9 +1,14 @@
-Ext.namespace('MODx.Import');
 Ext.onReady(function() {
-    MODx.load({ xtype: 'import-resource' });
+    MODx.load({ xtype: 'page-import-resource' });
 });
 
-MODx.Import.Resource = function(config) {
+/**
+ * @class MODx.page.ImportResource
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype page-import-resource
+ */
+MODx.page.ImportResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         form: 'import_site'
@@ -63,10 +68,10 @@ MODx.Import.Resource = function(config) {
             ,rootVisible: false
         }]
     });
-    MODx.Import.Resource.superclass.constructor.call(this,config);
+    MODx.page.ImportResource.superclass.constructor.call(this,config);
     this.setup();
 };
-Ext.extend(MODx.Import.Resource,MODx.Component,{
+Ext.extend(MODx.page.ImportResource,MODx.Component,{
     setup: function() {
         Ext.Ajax.timeout = 0;
         var t = Ext.getCmp('import_tree');
@@ -88,4 +93,4 @@ Ext.extend(MODx.Import.Resource,MODx.Component,{
         Ext.getCmp('import_context').setValue(iCxt);
     }
 });
-Ext.reg('import-resource',MODx.Import.Resource);
+Ext.reg('page-import-resource',MODx.page.ImportResource);

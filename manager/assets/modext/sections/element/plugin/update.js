@@ -1,14 +1,12 @@
-Ext.namespace('MODx');
-
 /**
  * Loads the update plugin page
  * 
- * @class MODx.UpdatePlugin
+ * @class MODx.page.UpdatePlugin
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype plugin-update
+ * @xtype page-plugin-update
  */
-MODx.UpdatePlugin = function(config) {
+MODx.page.UpdatePlugin = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		formpanel: 'panel-plugin'
@@ -77,7 +75,7 @@ MODx.UpdatePlugin = function(config) {
             ,name: ''
         }]
 	});
-	MODx.UpdatePlugin.superclass.constructor.call(this,config);
+	MODx.page.UpdatePlugin.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdatePlugin,MODx.Component);
-Ext.reg('plugin-update',MODx.UpdatePlugin);
+Ext.extend(MODx.page.UpdatePlugin,MODx.Component);
+Ext.reg('page-plugin-update',MODx.page.UpdatePlugin);

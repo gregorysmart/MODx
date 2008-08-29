@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.grid','MODx.panel');
-
 /**
  * Loads a grid of Messages.
  * 

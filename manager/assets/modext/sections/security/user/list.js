@@ -1,17 +1,16 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-	MODx.load({ xtype: 'modx-users' });
+	MODx.load({ xtype: 'page-users' });
 });
 
 /**
  * Loads the users page
  * 
- * @class MODx.Users
+ * @class MODx.page.Users
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-users
+ * @xtype page-users
  */
-MODx.Users = function(config) {
+MODx.page.Users = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		actions: {
@@ -32,7 +31,7 @@ MODx.Users = function(config) {
             ,renderTo: 'users_grid'
         }]
 	});
-	MODx.Users.superclass.constructor.call(this,config);
+	MODx.page.Users.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Users,MODx.Component);
-Ext.reg('modx-users',MODx.Users);	
+Ext.extend(MODx.page.Users,MODx.Component);
+Ext.reg('page-users',MODx.page.Users);	

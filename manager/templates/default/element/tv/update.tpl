@@ -8,7 +8,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'tv-update'
+		xtype: 'page-tv-update'
 		,id: '{$tv->id}'
 		,category: '{if $tv->category NEQ NULL}{$tv->category->id}{/if}'
 		,type: '{$tv->type}'

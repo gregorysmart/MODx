@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree','MODx.window');
 /**
  * Generates the Directory Tree in Ext
  * 

@@ -8,7 +8,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'snippet-create'
+		xtype: 'page-snippet-create'
 		,category: '{if $category NEQ NULL}{$category->category}{/if}'
 	{literal}
 	});

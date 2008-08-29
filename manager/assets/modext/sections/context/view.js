@@ -1,17 +1,17 @@
 Ext.onReady(function() {
 	MODx.load({
-	   xtype: 'modx-context-view'
+	   xtype: 'page-context-view'
 	   ,key: MODx.request.key
 	});
 });
 
 /**
- * @class MODx.ViewContext
+ * @class MODx.page.ViewContext
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype modx-context-view
+ * @xtype page-context-view
  */
-MODx.ViewContext = function(config) {
+MODx.page.ViewContext = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		form: 'context_data'
@@ -23,9 +23,9 @@ MODx.ViewContext = function(config) {
         }
         ,buttons: this.getButtons()
 	});
-	MODx.ViewContext.superclass.constructor.call(this,config);
+	MODx.page.ViewContext.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.ViewContext,MODx.Component,{	
+Ext.extend(MODx.page.ViewContext,MODx.Component,{	
 	getButtons: function(config) {
 		var b = [];
 	    b.push({
@@ -65,4 +65,4 @@ Ext.extend(MODx.ViewContext,MODx.Component,{
 	    return b;
 	}
 });
-Ext.reg('modx-context-view',MODx.ViewContext);
+Ext.reg('page-context-view',MODx.page.ViewContext);

@@ -1,17 +1,16 @@
-Ext.namespace('MODx','MODx.Resource');
 Ext.onReady(function() {
-	MODx.load({ xtype: 'resource-schedule' });
+	MODx.load({ xtype: 'page-resource-schedule' });
 });
 
 /**
  * Loads the Site Schedule page
  * 
- * @class MODx.Resource.Schedule
+ * @class MODx.page.ResourceSchedule
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype resource-schedule
+ * @xtype page-resource-schedule
  */
-MODx.Resource.Schedule = function(config) {
+MODx.page.ResourceSchedule = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         components: [{
@@ -19,7 +18,7 @@ MODx.Resource.Schedule = function(config) {
             ,renderTo: 'grid-resource-event'
         }]
 	});
-	MODx.Resource.Schedule.superclass.constructor.call(this,config);
+	MODx.page.ResourceSchedule.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Resource.Schedule,MODx.Component);
-Ext.reg('resource-schedule',MODx.Resource.Schedule);
+Ext.extend(MODx.page.ResourceSchedule,MODx.Component);
+Ext.reg('page-resource-schedule',MODx.page.ResourceSchedule);

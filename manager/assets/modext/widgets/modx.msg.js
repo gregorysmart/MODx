@@ -1,5 +1,4 @@
-Ext.namespace('MODx','MODx.msg');
-MODx.msg = null;
+Ext.namespace('MODx.msg');
 Ext.onReady(function() {
     MODx.msg = new MODx.Msg();
 });

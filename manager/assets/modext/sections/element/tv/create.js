@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the TV creation page
  * 
- * @class MODx.CreateTV
+ * @class MODx.page.CreateTV
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype tv-create
+ * @xtype page-tv-create
  */
-MODx.CreateTV = function(config) {
+MODx.page.CreateTV = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		formpanel: 'panel-tv'
@@ -56,7 +55,7 @@ MODx.CreateTV = function(config) {
             ,name: ''
         }]
 	});
-	MODx.CreateTV.superclass.constructor.call(this,config);
+	MODx.page.CreateTV.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.CreateTV,MODx.Component);
-Ext.reg('tv-create',MODx.CreateTV);
+Ext.extend(MODx.page.CreateTV,MODx.Component);
+Ext.reg('page-tv-create',MODx.page.CreateTV);

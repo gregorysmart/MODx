@@ -1,5 +1,10 @@
 Ext.namespace('MODx');
-
+/**
+ * @class MODx
+ * @extends Ext.Component
+ * @param {Object} config An object of config properties
+ * @xtype modx
+ */
 MODx = function(config) {
     config = config || {};
     MODx.superclass.constructor.call(this,config);
@@ -9,6 +14,7 @@ MODx = function(config) {
 };
 Ext.extend(MODx,Ext.Component,{
     config: {}
+    ,util:{},window:{},panel:{},tree:{},form:{},grid:{},combo:{},toolbar:{},page:{}
     
     ,load: function() {
         var a = arguments, l = a.length;

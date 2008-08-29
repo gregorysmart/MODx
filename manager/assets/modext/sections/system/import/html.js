@@ -1,10 +1,14 @@
-Ext.namespace('MODx.Import');
 Ext.onReady(function() {
-    MODx.load({ xtype: 'comp-import-html' });
+    MODx.load({ xtype: 'page-import-html' });
 });
 
-
-MODx.Import.HTML = function(config) {
+/**
+ * @class MODx.page.ImportHTML
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype import-html
+ */
+MODx.page.ImportHTML = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         form: 'import_site'
@@ -48,10 +52,10 @@ MODx.Import.HTML = function(config) {
             ,rootVisible: false
         }]
     });
-    MODx.Import.HTML.superclass.constructor.call(this,config);
+    MODx.page.ImportHTML.superclass.constructor.call(this,config);
     this.setup();
 };
-Ext.extend(MODx.Import.HTML,MODx.Component,{
+Ext.extend(MODx.page.ImportHTML,MODx.Component,{
     setup: function() {
         Ext.Ajax.timeout = 0;
         var t = Ext.getCmp('ih_doctree');
@@ -73,4 +77,4 @@ Ext.extend(MODx.Import.HTML,MODx.Component,{
         Ext.getCmp('import_context').setValue(iCxt);
     }
 });
-Ext.reg('comp-import-html',MODx.Import.HTML);
+Ext.reg('page-import-html',MODx.page.ImportHTML);

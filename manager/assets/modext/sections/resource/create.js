@@ -1,14 +1,12 @@
-Ext.namespace('MODx');
-
 /**
  * Loads the create resource page
  * 
- * @class MODx.CreateResource
+ * @class MODx.page.CreateResource
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype resource-create
+ * @xtype page-resource-create
  */
-MODx.CreateResource = function(config) {
+MODx.page.CreateResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/document.php'
@@ -72,7 +70,7 @@ MODx.CreateResource = function(config) {
             contentEl: 'tab_content' ,title: _('document_content')
         }]
     });
-    MODx.CreateResource.superclass.constructor.call(this,config);
+    MODx.page.CreateResource.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.CreateResource,MODx.Component);
-Ext.reg('resource-create',MODx.CreateResource);
+Ext.extend(MODx.page.CreateResource,MODx.Component);
+Ext.reg('page-resource-create',MODx.page.CreateResource);

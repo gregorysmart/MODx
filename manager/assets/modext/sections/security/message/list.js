@@ -1,9 +1,14 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-    new MODx.Messages();
+    MODx.load({ xtype: 'page-messages' });
 });
 
-MODx.Messages = function(config) {
+/**
+ * @class MODx.page.Messages
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype page-messages
+ */
+MODx.page.Messages = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         tabs: [{
@@ -11,10 +16,10 @@ MODx.Messages = function(config) {
         }]
         ,components: [{
             xtype: 'grid-message'
-            ,el: 'grid-message'
+            ,renderTo: 'grid-message'
         }]
     });
-    MODx.Messages.superclass.constructor.call(this,config);
+    MODx.page.Messages.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Messages,MODx.Component);
-Ext.reg('modx-messages',MODx.Messages);
+Ext.extend(MODx.page.Messages,MODx.Component);
+Ext.reg('page-messages',MODx.page.Messages);

@@ -113,7 +113,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'modx-welcome'
+		xtype: 'page-welcome'
 		,site_name: '{$_config.site_name}'
 		,config_display: {if $config_display}true{else}false{/if}
 		,user: '{$modx->user->id}'

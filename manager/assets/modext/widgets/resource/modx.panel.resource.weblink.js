@@ -1,5 +1,9 @@
-Ext.namespace('MODx','MODx.panel');
-
+/**
+ * @class MODx.panel.WebLink
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype panel-weblink
+ */
 MODx.panel.WebLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{

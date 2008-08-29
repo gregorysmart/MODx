@@ -1,14 +1,12 @@
-Ext.namespace('MODx','MODx.profile');
-
 /**
  * Loads the profile page
  * 
- * @class MODx.Profile
+ * @class MODx.page.Profile
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype modx-profile
+ * @xtype page-profile
  */
-MODx.Profile = function(config) {
+MODx.page.Profile = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         tabs: [
@@ -20,7 +18,7 @@ MODx.Profile = function(config) {
             ,renderTo: 'info_panel'
             ,user: config.user
         },{
-            xtype: 'panel-password-change'
+            xtype: 'panel-profile-password-change'
             ,renderTo: 'password_change_panel'
             ,user: config.user
         },{
@@ -29,20 +27,20 @@ MODx.Profile = function(config) {
             ,user: config.user
         }]
 	});
-	MODx.Profile.superclass.constructor.call(this,config);
+	MODx.page.Profile.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Profile,MODx.Component);
-Ext.reg('modx-profile',MODx.Profile);
+Ext.extend(MODx.page.Profile,MODx.Component);
+Ext.reg('page-profile',MODx.page.Profile);
 
 /**
  * The information panel for the profile
  * 
- * @class MODx.profile.Update
+ * @class MODx.panel.UpdateProfile
  * @extends MODx.FormPanel
  * @param {Object} config An object of config properties
  * @xtype: panel-profile-update
  */
-MODx.profile.Update = function(config) {
+MODx.panel.UpdateProfile = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('general_information')
@@ -105,10 +103,10 @@ MODx.profile.Update = function(config) {
             ,handler: this.submit
         }]
     });
-    MODx.profile.Update.superclass.constructor.call(this,config);
+    MODx.panel.UpdateProfile.superclass.constructor.call(this,config);
     this.setup();
 };
-Ext.extend(MODx.profile.Update,MODx.FormPanel,{
+Ext.extend(MODx.panel.UpdateProfile,MODx.FormPanel,{
     setup: function() {
         Ext.Ajax.request({
             url: MODx.config.connectors_url+'security/user.php'
@@ -126,17 +124,17 @@ Ext.extend(MODx.profile.Update,MODx.FormPanel,{
         })
     }
 });
-Ext.reg('panel-profile-update',MODx.profile.Update);
+Ext.reg('panel-profile-update',MODx.panel.UpdateProfile);
 
 /**
  * A panel for changing the user password
  * 
- * @class MODx.profile.ChangePassword
+ * @class MODx.panel.ChangeProfilePassword
  * @extends MODx.FormPanel
  * @param {Object} config An object of config properties
- * @xtype panel-password-change
+ * @xtype panel-profile-password-change
  */
-MODx.profile.ChangePassword = function(config) {
+MODx.panel.ChangeProfilePassword = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('reset_password')
@@ -178,7 +176,7 @@ MODx.profile.ChangePassword = function(config) {
             ,handler: this.submit
         }]
     });
-    MODx.profile.ChangePassword.superclass.constructor.call(this,config);
+    MODx.panel.ChangeProfilePassword.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.profile.ChangePassword,MODx.FormPanel);
-Ext.reg('panel-password-change',MODx.profile.ChangePassword);
+Ext.extend(MODx.panel.ChangeProfilePassword,MODx.FormPanel);
+Ext.reg('panel-profile-password-change',MODx.panel.ChangeProfilePassword);

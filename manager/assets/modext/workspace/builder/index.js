@@ -1,9 +1,14 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-    new MODx.PackageBuilder();
+	MODx.load({ xtype: 'page-package-builder' });
 });
 
-MODx.PackageBuilder = function(config) {
+/**
+ * @class MODx.page.PackageBuilder
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype page-package-builder
+ */
+MODx.page.PackageBuilder = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
@@ -11,9 +16,9 @@ MODx.PackageBuilder = function(config) {
             ,id: 'panel-package-builder'
             ,renderTo: 'panel-package-builder'
         }]
-    })
-    MODx.PackageBuilder.superclass.constructor.call(this,config);
+    });
+    MODx.page.PackageBuilder.superclass.constructor.call(this,config);
     Ext.Ajax.timeout = 0;
 };
-Ext.extend(MODx.PackageBuilder,MODx.Component);
-Ext.reg('modx-package-builder',MODx.PackageBuilder);
+Ext.extend(MODx.page.PackageBuilder,MODx.Component);
+Ext.reg('page-package-builder',MODx.page.PackageBuilder);

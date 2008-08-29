@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.grid','MODx.window');
-
 /**
  * Loads a grid of Vehicles for a Package.
  * 

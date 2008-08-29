@@ -1,14 +1,12 @@
-Ext.namespace('MODx.Resource');
-
 /**
  * Loads the create static resource page
  * 
- * @class MODx.Resource.CreateStatic
+ * @class MODx.page.CreateStatic
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype static-create
+ * @xtype page-static-create
  */
-MODx.Resource.CreateStatic = function(config) {
+MODx.page.CreateStatic = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/document.php'
@@ -64,7 +62,7 @@ MODx.Resource.CreateStatic = function(config) {
             ,resource: 0
         }]
     });
-    MODx.Resource.CreateStatic.superclass.constructor.call(this,config);
+    MODx.page.CreateStatic.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Resource.CreateStatic,MODx.Component);
-Ext.reg('static-create',MODx.Resource.CreateStatic);
+Ext.extend(MODx.page.CreateStatic,MODx.Component);
+Ext.reg('page-static-create',MODx.page.CreateStatic);

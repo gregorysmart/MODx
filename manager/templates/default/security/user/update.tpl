@@ -11,7 +11,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'user-update'
+		xtype: 'page-user-update'
 		,id: '{$user->id}'
 		,manager_language: '{$user->get("language")}'
 		,which_editor: '{$user->settings.which_editor}'

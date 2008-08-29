@@ -21,7 +21,7 @@
 // <![CDATA[
 Ext.onReady(function() {
 	MODx.load({
-		xtype: 'module-update'
+		xtype: 'page-module-update'
 		,id: {/literal}{$module->id}{literal}
 		,category: '{/literal}{if $category NEQ NULL}{$category->id}{/if}{literal}'
 	});

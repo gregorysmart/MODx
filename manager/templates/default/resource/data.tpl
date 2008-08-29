@@ -6,7 +6,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'resource-data'
+		xtype: 'page-resource-data'
 		,id: '{$resource->id}'
 		,ctx: '{$resource->context_key}'
 		,class_key: '{$resource->class_key}'

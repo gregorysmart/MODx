@@ -1,4 +1,3 @@
-Ext.namespace('MODx');
 /**
  * Abstract class for Ext.DataView creation in MODx
  * 

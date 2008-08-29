@@ -1,14 +1,12 @@
-Ext.namespace('MODx','MODx.Resource');
-
 /**
  * Loads the create resource page
  * 
- * @class MODx.Resource.CreateWeblink
+ * @class MODx.page.CreateWeblink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype weblink-create
+ * @xtype page-weblink-create
  */
-MODx.Resource.CreateWebLink = function(config) {
+MODx.page.CreateWebLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/document.php'
@@ -64,7 +62,7 @@ MODx.Resource.CreateWebLink = function(config) {
             ,resource: 0
         }]
     });
-    MODx.Resource.CreateWebLink.superclass.constructor.call(this,config);
+    MODx.page.CreateWebLink.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Resource.CreateWebLink,MODx.Component);
-Ext.reg('weblink-create',MODx.Resource.CreateWebLink);
+Ext.extend(MODx.page.CreateWebLink,MODx.Component);
+Ext.reg('page-weblink-create',MODx.page.CreateWebLink);

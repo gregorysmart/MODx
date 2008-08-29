@@ -1,17 +1,16 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-	MODx.load({ xtype: 'user-create' });
+	MODx.load({ xtype: 'page-user-create' });
 });
 
 /**
  * Loads the create user page 
  * 
- * @class MODx.CreateUser
+ * @class MODx.page.CreateUser
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype user-create
+ * @xtype page-user-create
  */
-MODx.CreateUser = function(config) {
+MODx.page.CreateUser = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 	   form: 'uf'
@@ -167,12 +166,12 @@ MODx.CreateUser = function(config) {
             ,{contentEl: 'tab_access', title: _('access_permissions')}
         ]
 	});
-	MODx.CreateUser.superclass.constructor.call(this,config);
+	MODx.page.CreateUser.superclass.constructor.call(this,config);
 	
     Ext.get('specpassword').dom.style.display = 'none';
 };
-Ext.extend(MODx.CreateUser,MODx.Component);
-Ext.reg('user-create',MODx.CreateUser);
+Ext.extend(MODx.page.CreateUser,MODx.Component);
+Ext.reg('page-user-create',MODx.page.CreateUser);
 
 function toggleNewPassword() {
 	Ext.get('specpassword').dom.style.display = '';

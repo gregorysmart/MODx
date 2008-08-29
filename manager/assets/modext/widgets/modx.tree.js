@@ -1,4 +1,4 @@
-Ext.namespace('MODx','MODx.tree');
+Ext.namespace('MODx.tree');
 /**
  * Generates the Tree in Ext. All modTree classes extend this base class.
  * 

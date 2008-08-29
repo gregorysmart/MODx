@@ -9,7 +9,7 @@
 Ext.onReady(function() {	
 	MODx.load({
 	{/literal}
-		xtype: 'chunk-create'
+		xtype: 'page-chunk-create'
 		,category: '{if $category NEQ NULL}{$category->category}{/if}'
 	{literal}
 	});

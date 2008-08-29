@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.grid','MODx.toolbar','MODx.dialog', 'MODx.combo');
 /**
  * Loads a grid of modAccessResourceGroups.
  * 

@@ -1,14 +1,12 @@
-Ext.namespace('MODx');
-
 /**
  * Loads the welcome page
  * 
- * @class MODx.Welcome
+ * @class MODx.page.Welcome
  * @extends MODx.Component
  * @param {Object} config An object of configuration options
- * @xtype modx-welcome
+ * @xtype page-welcome
  */
-MODx.Welcome = function(config) {
+MODx.page.Welcome = function(config) {
 	config = config || {}; 
 	Ext.applyIf(config,{
 		tabs_div: 'welcome_tabs'
@@ -19,9 +17,9 @@ MODx.Welcome = function(config) {
             ,user: config.user
         }]
 	});
-    MODx.Welcome.superclass.constructor.call(this,config);
+    MODx.page.Welcome.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Welcome,MODx.Component,{
+Ext.extend(MODx.page.Welcome,MODx.Component,{
 	getTabs: function(config) {
 		var items = [];
 		if (config.config_display) {
@@ -38,4 +36,4 @@ Ext.extend(MODx.Welcome,MODx.Component,{
         return items;
 	}
 });
-Ext.reg('modx-welcome',MODx.Welcome);
+Ext.reg('page-welcome',MODx.page.Welcome);

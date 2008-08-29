@@ -1,17 +1,16 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-	MODx.load({ xtype: 'modx-action'});
+	MODx.load({ xtype: 'page-action'});
 });
 
 /**
  * Loads the actions page
  * 
- * @class MODx.Action
+ * @class MODx.page.Action
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-action
+ * @xtype page-action
  */
-MODx.Action = function(config) {
+MODx.page.Action = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		tabs: [
@@ -26,7 +25,7 @@ MODx.Action = function(config) {
             ,el: 'modx_mtree'
         }]
 	});
-	MODx.Action.superclass.constructor.call(this,config);
+	MODx.page.Action.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Action,MODx.Component);
-Ext.reg('modx-action',MODx.Action);
+Ext.extend(MODx.page.Action,MODx.Component);
+Ext.reg('page-action',MODx.page.Action);

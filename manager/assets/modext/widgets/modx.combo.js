@@ -1,5 +1,4 @@
-Ext.namespace('MODx','MODx.combo');
-
+Ext.namespace('MODx.combo');
 /**
  * An abstraction of Ext.form.ComboBox with connector ability.
  * 

@@ -1,11 +1,8 @@
-Ext.namespace('MODx','MODx.grid','MODx.window');
-
 /**
  * Loads a grid of Vehicles for a Package.
  * 
  * @class MODx.grid.Vehicle
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of config options.
  * @xtype grid-vehicle
  */

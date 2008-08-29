@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the chunk update page
  * 
- * @class MODx.UpdateChunk
+ * @class MODx.page.UpdateChunk
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype chunk-update
+ * @xtype page-chunk-update
  */
-MODx.UpdateChunk = function(config) {
+MODx.page.UpdateChunk = function(config) {
 	config = config || {};
 	
 	Ext.applyIf(config,{
@@ -104,7 +103,7 @@ MODx.UpdateChunk = function(config) {
         }]
         ,loadStay: true
 	});
-	MODx.UpdateChunk.superclass.constructor.call(this,config);
+	MODx.page.UpdateChunk.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateChunk,MODx.Component);
-Ext.reg('chunk-update',MODx.UpdateChunk);
+Ext.extend(MODx.page.UpdateChunk,MODx.Component);
+Ext.reg('page-chunk-update',MODx.page.UpdateChunk);

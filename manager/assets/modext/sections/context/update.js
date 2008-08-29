@@ -1,17 +1,17 @@
 Ext.onReady(function() {
     MODx.load({
-        xtype: 'modx-context-update'
+        xtype: 'page-context-update'
         ,context: MODx.request.key
     });
 });
 
 /** 
- * @class MODx.UpdateContext
+ * @class MODx.page.UpdateContext
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-context-update
+ * @xtype page-context-update
  */
-MODx.UpdateContext = function(config) {
+MODx.page.UpdateContext = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         formpanel: 'panel-context'
@@ -60,7 +60,7 @@ MODx.UpdateContext = function(config) {
             ,context: config.context
         }]
     });
-    MODx.UpdateContext.superclass.constructor.call(this,config);
+    MODx.page.UpdateContext.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateContext,MODx.Component);
-Ext.reg('modx-context-update',MODx.UpdateContext);
+Ext.extend(MODx.page.UpdateContext,MODx.Component);
+Ext.reg('page-context-update',MODx.page.UpdateContext);

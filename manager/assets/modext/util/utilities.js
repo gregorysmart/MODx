@@ -1,4 +1,4 @@
-Ext.namespace('MODx.util','MODx.util.Progress');
+Ext.namespace('MODx.util.Progress');
 
 Ext.onReady(function() {
     MODx.util.LoadingBox = MODx.load({ xtype: 'modx-loading-box' });

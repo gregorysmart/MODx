@@ -20,8 +20,9 @@
 <script type="text/javascript">
 // <![CDATA[
 Ext.onReady(function() {
-	new MODx.Profile({
-		user: '{/literal}{$user->id}{literal}'
+	MODx.load({
+		xtype: 'page-profile'
+		,user: '{/literal}{$user->id}{literal}'
 	});
 });
 // ]]>

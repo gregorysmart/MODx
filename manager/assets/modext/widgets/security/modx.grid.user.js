@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.grid');
 /**
  * Loads a grid of MODx users.
  * 

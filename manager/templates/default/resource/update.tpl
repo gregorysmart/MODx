@@ -9,7 +9,7 @@
 Ext.onReady(function() {
     MODx.load({
 	{/literal}
-	    xtype: 'resource-update'
+	    xtype: 'page-resource-update'
 	    ,id: '{$resource->id}'
 	    ,ctx: '{$resource->context_key}'
 	    ,template: '{$resource->template}'

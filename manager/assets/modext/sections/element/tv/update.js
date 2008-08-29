@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the TV update page
  * 
- * @class MODx.UpdateTV
+ * @class MODx.page.UpdateTV
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype tv-update
+ * @xtype page-tv-update
  */
-MODx.UpdateTV = function(config) {
+MODx.page.UpdateTV = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		formpanel: 'panel-tv'		
@@ -78,7 +77,7 @@ MODx.UpdateTV = function(config) {
             ,name: ''
         }]
 	});
-	MODx.UpdateTV.superclass.constructor.call(this,config);
+	MODx.page.UpdateTV.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateTV,MODx.Component);
-Ext.reg('tv-update',MODx.UpdateTV);
+Ext.extend(MODx.page.UpdateTV,MODx.Component);
+Ext.reg('page-tv-update',MODx.page.UpdateTV);

@@ -1,17 +1,16 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-	MODx.load({ xtype: 'groups-roles' });
+	MODx.load({ xtype: 'page-groups-roles' });
 });
 
 /**
  * Loads the groups and roles page
  * 
- * @class MODx.GroupsRoles
+ * @class MODx.page.GroupsRoles
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype groups-roles
+ * @xtype page-groups-roles
  */
-MODx.GroupsRoles = function(config) {
+MODx.page.GroupsRoles = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		tabs: [
@@ -36,7 +35,7 @@ MODx.GroupsRoles = function(config) {
             ,enableDrop: false
         }]
 	});
-	MODx.GroupsRoles.superclass.constructor.call(this,config);
+	MODx.page.GroupsRoles.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.GroupsRoles,MODx.Component);
-Ext.reg('groups-roles',MODx.GroupsRoles);
+Ext.extend(MODx.page.GroupsRoles,MODx.Component);
+Ext.reg('page-groups-roles',MODx.page.GroupsRoles);

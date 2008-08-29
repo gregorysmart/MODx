@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the update snippet page
  * 
- * @class MODx.UpdateSnippet
+ * @class MODx.page.UpdateSnippet
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype snippet-update
+ * @xtype page-snippet-update
  */
-MODx.UpdateSnippet = function(config) {
+MODx.page.UpdateSnippet = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		formpanel: 'panel-snippet'
@@ -64,7 +63,7 @@ MODx.UpdateSnippet = function(config) {
             ,name: ''
         }]
 	});
-	MODx.UpdateSnippet.superclass.constructor.call(this,config);
+	MODx.page.UpdateSnippet.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateSnippet,MODx.Component);
-Ext.reg('snippet-update',MODx.UpdateSnippet);
+Ext.extend(MODx.page.UpdateSnippet,MODx.Component);
+Ext.reg('page-snippet-update',MODx.page.UpdateSnippet);

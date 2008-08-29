@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the create module page
  * 
- * @class MODx.CreateModule
+ * @class MODx.page.CreateModule
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype module-create
+ * @xtype page-module-create
  */
-MODx.CreateModule = function(config) {
+MODx.page.CreateModule = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         form: 'mutate_module' 
@@ -114,7 +113,7 @@ MODx.CreateModule = function(config) {
         ]
 	});
 	
-	MODx.CreateModule.superclass.constructor.call(this,config);
+	MODx.page.CreateModule.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.CreateModule,MODx.Component);
-Ext.reg('module-create',MODx.CreateModule);
+Ext.extend(MODx.page.CreateModule,MODx.Component);
+Ext.reg('page-module-create',MODx.page.CreateModule);

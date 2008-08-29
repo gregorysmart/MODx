@@ -1,17 +1,16 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-system-info' });
+    MODx.load({ xtype: 'page-system-info' });
 });
 
 /**
  * Loads the system info page
  * 
- * @class MODx.SystemInfo
+ * @class MODx.page.SystemInfo
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-system-info
+ * @xtype page-system-info
  */
-MODx.SystemInfo = function(config) {
+MODx.page.SystemInfo = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         components: [{
@@ -31,10 +30,10 @@ MODx.SystemInfo = function(config) {
             contentEl: 'tab_users', title: _('onlineusers_title')
         }]
 	});
-	MODx.SystemInfo.superclass.constructor.call(this,config);
+	MODx.page.SystemInfo.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.SystemInfo,MODx.Component);
-Ext.reg('modx-system-info',MODx.SystemInfo);
+Ext.extend(MODx.page.SystemInfo,MODx.Component);
+Ext.reg('page-system-info',MODx.page.SystemInfo);
 
 
 var viewPHPInfo = function() {

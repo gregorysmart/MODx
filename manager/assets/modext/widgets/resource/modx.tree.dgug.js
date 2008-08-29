@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree');
 /**
  * Generates the Document Group to User Group pairing Tree in Ext
  * 

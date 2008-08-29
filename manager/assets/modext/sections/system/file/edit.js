@@ -1,6 +1,10 @@
-Ext.namespace('MODx','MODx.panel');
-
-MODx.EditFile = function(config) {
+/**
+ * @class MODx.page.EditFile
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype page-file-edit
+ */
+MODx.page.EditFile = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
@@ -9,11 +13,17 @@ MODx.EditFile = function(config) {
             ,file: config.file
         }]
     });
-    MODx.EditFile.superclass.constructor.call(this,config);
+    MODx.page.EditFile.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.EditFile,MODx.Component);
-Ext.reg('file-edit',MODx.EditFile);
+Ext.extend(MODx.page.EditFile,MODx.Component);
+Ext.reg('page-file-edit',MODx.page.EditFile);
 
+/**
+ * @class MODx.panel.EditFile
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype panel-file-edit
+ */
 MODx.panel.EditFile = function(config) {
     config = config || {};
     Ext.applyIf(config,{

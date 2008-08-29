@@ -1,4 +1,3 @@
-Ext.namespace('MODx.grid');
 /**
  * A grid created that allows for dynamic editors for each column
  * based upon the data's xtype property, as well as key filtering. 

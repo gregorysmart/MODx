@@ -1,4 +1,3 @@
-Ext.namespace('MODx');
 /**
  * Renders pages and abstracts component creation to xtypes.
  * 
@@ -99,6 +98,6 @@ Ext.extend(MODx.Component,Ext.Component,{
         for (var i=0;i<l;i++) {
             Ext.ComponentMgr.create(this.config.components[i]);
         }
-    }
-	
+    }	
 });
+Ext.reg('modx-component',MODx.Component);

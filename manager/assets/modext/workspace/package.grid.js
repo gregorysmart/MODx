@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.grid','MODx.window','MODx.panel','MODx.combo');
-
 /**
  * Loads a grid of Packages.
  * 

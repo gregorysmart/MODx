@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.combo');
 /**
  * Displays a dropdown list of modTransportProviders
  * 

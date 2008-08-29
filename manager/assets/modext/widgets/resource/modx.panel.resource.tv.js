@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.panel');
 /**
  * Loads the Resource TV Panel
  * 
@@ -16,7 +15,6 @@ MODx.panel.ResourceTV = function(config) {
         ,class_key: ''
         ,resource: ''
         ,autoLoad: this.autoload(config)
-        //,autoLoad: this.autoload.createDelegate(this,[config])
     });
     MODx.panel.ResourceTV.superclass.constructor.call(this,config);
 };

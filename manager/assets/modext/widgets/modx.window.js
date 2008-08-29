@@ -1,4 +1,3 @@
-Ext.namespace('MODx');
 /**
  * Abstract class for Ext.Window creation in MODx
  * 

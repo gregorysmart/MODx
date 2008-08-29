@@ -1,17 +1,16 @@
-Ext.namespace('MODx','MODx.panel','MODx.grid');
 Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-search' });
+    MODx.load({ xtype: 'page-search' });
 });
 
 /**
  * Loads the Search page
  * 
- * @class MODx.Search
+ * @class MODx.page.Search
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype modx-search
+ * @xtype page-search
  */
-MODx.Search = function(config) {
+MODx.page.Search = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
         components: [{
@@ -22,10 +21,10 @@ MODx.Search = function(config) {
             ,id: 'panel-search'
         }]
     });
-	MODx.Search.superclass.constructor.call(this,config);
+	MODx.page.Search.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Search,MODx.Component);
-Ext.reg('modx-search',MODx.Search);
+Ext.extend(MODx.page.Search,MODx.Component);
+Ext.reg('page-search',MODx.page.Search);
 
 /**
  * Loads the search filter panel

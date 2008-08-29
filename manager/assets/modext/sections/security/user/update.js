@@ -3,12 +3,12 @@ Ext.namespace('MODx','MODx.User');
 /**
  * Loads the update user page
  * 
- * @class MODx.UpdateUser
+ * @class MODx.page.UpdateUser
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype user-update
+ * @xtype page-user-update
  */
-MODx.UpdateUser = function(config) {
+MODx.page.UpdateUser = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		form: 'uf'
@@ -172,14 +172,14 @@ MODx.UpdateUser = function(config) {
             ,user: config.id
         }]
 	});
-	MODx.UpdateUser.superclass.constructor.call(this,config);
+	MODx.page.UpdateUser.superclass.constructor.call(this,config);
 	
     Ext.get('specpassword').dom.style.display = 'none';
     Ext.get('pwg').dom.style.display = 'none';
     Ext.get('specpassword').dom.style.display = 'none';
 };
-Ext.extend(MODx.UpdateUser,MODx.Component);
-Ext.reg('user-update',MODx.UpdateUser);
+Ext.extend(MODx.page.UpdateUser,MODx.Component);
+Ext.reg('page-user-update',MODx.page.UpdateUser);
 
 
 function toggleNewPassword() {

@@ -1,5 +1,9 @@
-Ext.namespace('MODx.panel');
-
+/**
+ * @class MODx.panel.Context
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of config properties
+ * @xtype panel-context
+ */
 MODx.panel.Context = function(config) {
     config = config || {};
     Ext.applyIf(config,{

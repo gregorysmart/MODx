@@ -1,17 +1,16 @@
-Ext.namespace('MODx');
 Ext.onReady(function(){
-   MODx.load({ xtype: 'modx-context' }); 
+   MODx.load({ xtype: 'page-context' }); 
 });
 
 /**
  * Loads the context management page
  * 
- * @class MODx.Context
+ * @class MODx.page.Context
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-context
+ * @xtype page-context
  */
-MODx.Context = function(config) {
+MODx.page.Context = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		components: [{
@@ -19,7 +18,7 @@ MODx.Context = function(config) {
             ,renderTo: 'contexts_grid'
         }]
 	});
-	MODx.Context.superclass.constructor.call(this,config);
+	MODx.page.Context.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Context,MODx.Component);
-Ext.reg('modx-context',MODx.Context);    
+Ext.extend(MODx.page.Context,MODx.Component);
+Ext.reg('page-context',MODx.page.Context);    

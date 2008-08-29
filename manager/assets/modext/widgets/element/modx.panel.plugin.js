@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.panel');
-
 /**
  * 
  * @class MODx.panel.Plugin

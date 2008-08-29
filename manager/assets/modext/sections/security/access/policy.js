@@ -1,17 +1,16 @@
-Ext.namespace('MODx','MODx.Access');
 Ext.onReady(function() {
-	MODx.load({ xtype: 'access-policies' });
+	MODx.load({ xtype: 'page-access-policies' });
 });
 
 /**
  * Loads the access policies page
  * 
- * @class MODx.Access.Policies
+ * @class MODx.page.AccessPolicies
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype access-policies
+ * @xtype page-access-policies
  */
-MODx.Access.Policies = function(config) {
+MODx.page.AccessPolicies = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
         components: [{ 
@@ -19,7 +18,7 @@ MODx.Access.Policies = function(config) {
             ,renderTo: 'policy_grid'
         }] 
     });
-	MODx.Access.Policies.superclass.constructor.call(this,config);
+	MODx.page.AccessPolicies.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Access.Policies,MODx.Component);
-Ext.reg('access-policies',MODx.Access.Policies);
+Ext.extend(MODx.page.AccessPolicies,MODx.Component);
+Ext.reg('page-access-policies',MODx.page.AccessPolicies);

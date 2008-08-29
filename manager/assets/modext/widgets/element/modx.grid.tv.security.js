@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.grid');
-
 /**
  * Loads a grid of resource groups assigned to a resource. 
  * 

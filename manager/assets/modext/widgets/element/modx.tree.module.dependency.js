@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree');
 /**
  * Generates the Module Dependency Element Tree in Ext
  * 

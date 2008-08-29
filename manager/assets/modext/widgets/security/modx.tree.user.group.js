@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree');
 /**
  * Generates the User Group Tree in Ext
  *

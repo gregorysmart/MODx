@@ -9,7 +9,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'chunk-update'
+		xtype: 'page-chunk-update'
 		,id: '{$chunk->id}'
 		,category: '{if $chunk->category NEQ NULL}{$chunk->category->id}{/if}'
 	{literal}

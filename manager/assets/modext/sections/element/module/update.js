@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the update module page
  * 
- * @class MODx.UpdateModule
+ * @class MODx.page.UpdateModule
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype module-update
+ * @xtype page-module-update
  */
-MODx.UpdateModule = function(config) {
+MODx.page.UpdateModule = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 	   form: 'mutate_module'
@@ -120,7 +119,7 @@ MODx.UpdateModule = function(config) {
             ,module: config.id
         }]
 	});
-	MODx.UpdateModule.superclass.constructor.call(this,config);
+	MODx.page.UpdateModule.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateModule,MODx.Component);
-Ext.reg('module-update',MODx.UpdateModule);
+Ext.extend(MODx.page.UpdateModule,MODx.Component);
+Ext.reg('page-module-update',MODx.page.UpdateModule);

@@ -1,14 +1,12 @@
-Ext.namespace('MODx');
-
 /**
  * Loads the update template page
  * 
- * @class MODx.UpdateTemplate
+ * @class MODx.page.UpdateTemplate
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype template-update
+ * @xtype page-template-update
  */
-MODx.UpdateTemplate = function(config) {
+MODx.page.UpdateTemplate = function(config) {
 	config = config || {};
 	
 	Ext.applyIf(config,{
@@ -77,7 +75,7 @@ MODx.UpdateTemplate = function(config) {
             ,name: ''
         }]
 	});
-	MODx.UpdateTemplate.superclass.constructor.call(this,config);
+	MODx.page.UpdateTemplate.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateTemplate,MODx.Component);
-Ext.reg('template-update',MODx.UpdateTemplate);
+Ext.extend(MODx.page.UpdateTemplate,MODx.Component);
+Ext.reg('page-template-update',MODx.page.UpdateTemplate);

@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree','MODx.window');
 /**
  * Generates a Tree for managing the Top Menu
  *

@@ -1,16 +1,15 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-manager-log' });
+    MODx.load({ xtype: 'page-manager-log' });
 });
 /**
  * Loads the manager log page
  * 
- * @class MODx.ManagerLog
+ * @class MODx.page.ManagerLog
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-manager-log
+ * @xtype page-manager-log
  */
-MODx.ManagerLog = function(config) {
+MODx.page.ManagerLog = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         components: [{
@@ -21,7 +20,7 @@ MODx.ManagerLog = function(config) {
             ,renderTo: 'grid-manager-log'
         }]
 	});
-	MODx.ManagerLog.superclass.constructor.call(this,config);
+	MODx.page.ManagerLog.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.ManagerLog,MODx.Component);
-Ext.reg('modx-manager-log',MODx.ManagerLog);
+Ext.extend(MODx.page.ManagerLog,MODx.Component);
+Ext.reg('page-manager-log',MODx.page.ManagerLog);

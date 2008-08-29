@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree');
 /**
  * Generates a Simplified Document Tree in Ext
  * 

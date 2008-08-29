@@ -1,14 +1,12 @@
-Ext.namespace('MODx','MODx.Resource');
-
 /**
  * Loads the resource data page
  * 
- * @class MODx.Resource.Data
+ * @class MODx.page.ResourceData
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype resource-data
+ * @xtype page-resource-data
  */
-MODx.Resource.Data = function(config) {
+MODx.page.ResourceData = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		form: 'document_data'
@@ -49,7 +47,7 @@ MODx.Resource.Data = function(config) {
             ,pagetitle: config.pagetitle
         }]
 	});
-	MODx.Resource.Data.superclass.constructor.call(this,config);	
+	MODx.page.ResourceData.superclass.constructor.call(this,config);	
 };
-Ext.extend(MODx.Resource.Data,MODx.Component);
-Ext.reg('resource-data',MODx.Resource.Data);
+Ext.extend(MODx.page.ResourceData,MODx.Component);
+Ext.reg('page-resource-data',MODx.page.ResourceData);

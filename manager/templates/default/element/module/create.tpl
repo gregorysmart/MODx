@@ -6,7 +6,7 @@
 // <![CDATA[
 Ext.onReady(function() {
 	MODx.load({
-		xtype: 'module-create'
+		xtype: 'page-module-create'
 		,category: '{/literal}{if $category NEQ NULL}{$category->category}{/if}{literal}'
 	});
 });

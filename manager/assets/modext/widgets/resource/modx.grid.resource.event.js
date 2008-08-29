@@ -1,5 +1,3 @@
-Ext.namespace('MODx','MODx.grid');
-
 /**
  * Loads a grid of Publish/Unpublish events for a resource.
  * 

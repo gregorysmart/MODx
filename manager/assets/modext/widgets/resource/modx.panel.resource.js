@@ -1,5 +1,9 @@
-Ext.namespace('MODx','MODx.panel');
-
+/**
+ * @class MODx.panel.Resource
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of config properties
+ * @xtype panel-resource
+ */
 MODx.panel.Resource = function(config) {
     config = config || {};
     Ext.applyIf(config,{

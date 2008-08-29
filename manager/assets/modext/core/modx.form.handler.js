@@ -1,4 +1,3 @@
-Ext.namespace('MODx.form');
 /**
  * Automatically sends forms through AJAX calls, returns the result
  * (and parses any JS script within response), and if not TRUE, then

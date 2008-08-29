@@ -1,4 +1,4 @@
-Ext.namespace('MODx','MODx.grid');
+Ext.namespace('MODx.grid');
 /**
  * An abstract class for Ext Grids in MODx. 
  * 

@@ -1,14 +1,12 @@
-Ext.namespace('MODx');
-
 /**
  * Loads the create plugin page
  * 
- * @class MODx.CreatePlugin
+ * @class MODx.page.CreatePlugin
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype plugin-create
+ * @xtype page-plugin-create
  */
-MODx.CreatePlugin = function(config) {
+MODx.page.CreatePlugin = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		formpanel: 'panel-plugin'
@@ -52,7 +50,7 @@ MODx.CreatePlugin = function(config) {
             ,name: ''
         }]
 	});
-	MODx.CreatePlugin.superclass.constructor.call(this,config);
+	MODx.page.CreatePlugin.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.CreatePlugin,MODx.Component);
-Ext.reg('plugin-create',MODx.CreatePlugin);
+Ext.extend(MODx.page.CreatePlugin,MODx.Component);
+Ext.reg('page-plugin-create',MODx.page.CreatePlugin);

@@ -1,9 +1,14 @@
-Ext.namespace('MODx.panel');
 Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-lexicon-management' });
+    MODx.load({ xtype: 'page-lexicon-management' });
 });
 
-MODx.LexiconManagement = function(config) {
+/**
+ * @class MODx.page.LexiconManagement
+ * @extends MODx.Component
+ * @param {Object} config An object of configuration properties
+ * @xtype page-lexicon-management
+ */
+MODx.page.LexiconManagement = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
@@ -26,12 +31,17 @@ MODx.LexiconManagement = function(config) {
             }]
         }]
     });
-    MODx.LexiconManagement.superclass.constructor.call(this,config);
+    MODx.page.LexiconManagement.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.LexiconManagement,MODx.Component);
-Ext.reg('modx-lexicon-management',MODx.LexiconManagement);
+Ext.extend(MODx.page.LexiconManagement,MODx.Component);
+Ext.reg('page-lexicon-management',MODx.page.LexiconManagement);
 
-
+/**
+ * @class MODx.panel.Lexicon
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype panel-lexicon
+ */
 MODx.panel.Lexicon = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
@@ -53,7 +63,12 @@ MODx.panel.Lexicon = function(config) {
 Ext.extend(MODx.panel.Lexicon,MODx.Panel);
 Ext.reg('panel-lexicon',MODx.panel.Lexicon);
 
-
+/**
+ * @class MODx.panel.LexiconFoci
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype panel-lexicon-foci
+ */
 MODx.panel.LexiconFoci = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -75,7 +90,12 @@ MODx.panel.LexiconFoci = function(config) {
 Ext.extend(MODx.panel.LexiconFoci,MODx.Panel);
 Ext.reg('panel-lexicon-foci',MODx.panel.LexiconFoci);
 
-
+/**
+ * @class MODx.panel.Language
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype panel-language
+ */
 MODx.panel.Language = function(config) {
     config = config || {};
     Ext.applyIf(config,{

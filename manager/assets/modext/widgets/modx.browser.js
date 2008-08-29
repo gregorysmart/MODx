@@ -1,4 +1,4 @@
-Ext.namespace('MODx','MODx.browser');
+Ext.namespace('MODx.browser');
 /**
  * MODx.Browser
  * Handles file selection and manipulation.

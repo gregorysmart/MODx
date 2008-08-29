@@ -1,5 +1,9 @@
-Ext.namespace('MODx','MODx.panel');
-
+/**
+ * @class MODx.panel.Snippet
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype panel-snippet
+ */
 MODx.panel.Snippet = function(config) {
     config = config || {};
     Ext.applyIf(config,{

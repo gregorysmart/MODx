@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.toolbar');
 /**
  * Generates the Action Buttons in Ext
  * 

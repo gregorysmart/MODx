@@ -1,4 +1,3 @@
-Ext.namespace('MODx');
 /**
  * Custom class that extends Ext2.0 tab functionality for MODx.
  * 

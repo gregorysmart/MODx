@@ -1,6 +1,5 @@
-Ext.namespace('MODx');
 Ext.onReady(function() {    
-    new MODx.Layout();
+    MODx.load({ xtype: 'modx-layout' });
 });
 /**
  * Loads the MODx Ext-driven Layout
@@ -95,7 +94,7 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
      * @access protected
      */
     ,loadTopBar: function() {
-        new MODx.toolbar.TopMenu();
+        MODx.load({ xtype: 'modx-topmenu' });
     }
     
     /**

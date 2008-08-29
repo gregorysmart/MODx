@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.grid','MODx.toolbar');
 /**
  * Loads a grid of Role and User pairs.
  * 

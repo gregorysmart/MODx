@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.tree');
 /**
  * Generates the Element Tree in Ext
  * 

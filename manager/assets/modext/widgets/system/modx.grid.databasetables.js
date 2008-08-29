@@ -1,4 +1,3 @@
-Ext.namespace('MODx','MODx.grid');
 /**
  * Loads a grid of all the database tables in the modx database.
  * 

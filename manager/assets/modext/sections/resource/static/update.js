@@ -1,13 +1,12 @@
-Ext.namespace('MODx.Resource');
 /**
  * Loads the update static resource page
  * 
- * @class MODx.Resource.UpdateStatic
+ * @class MODx.page.UpdateStatic
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype static-update
+ * @xtype page-static-update
  */
-MODx.Resource.UpdateStatic = function(config) {
+MODx.page.UpdateStatic = function(config) {
     config = config || {};
         
     Ext.applyIf(config,{
@@ -74,12 +73,12 @@ MODx.Resource.UpdateStatic = function(config) {
             ,params: { a: MODx.action['welcome'] }
         }]
     });
-    MODx.Resource.UpdateStatic.superclass.constructor.call(this,config);
+    MODx.page.UpdateStatic.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Resource.UpdateStatic,MODx.Component,{
+Ext.extend(MODx.page.UpdateStatic,MODx.Component,{
     preview: function(id) {
         window.open(MODx.config.base_url+'index.php?id='+id);
         return false;
     }
 });
-Ext.reg('static-update',MODx.Resource.UpdateStatic);
+Ext.reg('page-static-update',MODx.page.UpdateStatic);

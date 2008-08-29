@@ -8,8 +8,9 @@
 {literal}
 <script type="text/javascript">
 Ext.onReady(function() {
-    new MODx.EditFile({
-        file: "{/literal}{$file}{literal}"
+    MODx.load({
+        xtype: 'page-file-edit'
+        ,file: "{/literal}{$file}{literal}"
     });
 });
 </script>

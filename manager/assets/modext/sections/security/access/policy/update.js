@@ -1,14 +1,12 @@
-Ext.namespace('MODx.Access');
-
 /**
  * Loads the access policy update page
  * 
- * @class MODx.Access.PolicyUpdate
+ * @class MODx.page.UpdateAccessPolicy
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype access-policy-update
+ * @xtype page-access-policy-update
  */
-MODx.Access.PolicyUpdate = function(config) {
+MODx.page.UpdateAccessPolicy = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{ 
@@ -17,7 +15,7 @@ MODx.Access.PolicyUpdate = function(config) {
             ,policy: config.policy
         }]
     });
-    MODx.Access.PolicyUpdate.superclass.constructor.call(this,config);
+    MODx.page.UpdateAccessPolicy.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.Access.PolicyUpdate,MODx.Component);
-Ext.reg('access-policy-update',MODx.Access.PolicyUpdate);
+Ext.extend(MODx.page.UpdateAccessPolicy,MODx.Component);
+Ext.reg('page-access-policy-update',MODx.page.UpdateAccessPolicy);

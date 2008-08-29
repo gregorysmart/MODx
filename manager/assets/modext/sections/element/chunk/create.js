@@ -1,13 +1,12 @@
-Ext.namespace('MODx');
 /**
  * Loads the chunk create page
  * 
- * @class MODx.CreateChunk
+ * @class MODx.page.CreateChunk
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype chunk-create
+ * @xtype page-chunk-create
  */
-MODx.CreateChunk = function(config) {
+MODx.page.CreateChunk = function(config) {
 	config = config || {};
 	
 	Ext.applyIf(config,{
@@ -79,7 +78,7 @@ MODx.CreateChunk = function(config) {
         }]
         ,loadStay: true
 	});
-	MODx.CreateChunk.superclass.constructor.call(this,config);
+	MODx.page.CreateChunk.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.CreateChunk,MODx.Component);
-Ext.reg('chunk-create',MODx.CreateChunk);
+Ext.extend(MODx.page.CreateChunk,MODx.Component);
+Ext.reg('page-chunk-create',MODx.page.CreateChunk);

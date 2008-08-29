@@ -1,5 +1,3 @@
-Ext.namespace('MODx.panel');
-
 /**
  * 
  * @class MODx.panel.AccessPolicy

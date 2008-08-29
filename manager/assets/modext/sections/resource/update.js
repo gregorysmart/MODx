@@ -1,14 +1,12 @@
-Ext.namespace('MODx','MODx.Resource');
-
 /**
  * Loads the resource update page
  * 
- * @class MODx.UpdateResource
+ * @class MODx.page.UpdateResource
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype resource-update
+ * @xtype page-resource-update
  */
-MODx.UpdateResource = function(config) {
+MODx.page.UpdateResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
     	url: MODx.config.connectors_url+'resource/document.php'
@@ -81,12 +79,12 @@ MODx.UpdateResource = function(config) {
             ,params: { a: MODx.action['welcome'] }
         }]
     });
-    MODx.UpdateResource.superclass.constructor.call(this,config);
+    MODx.page.UpdateResource.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.UpdateResource,MODx.Component,{
+Ext.extend(MODx.page.UpdateResource,MODx.Component,{
     preview: function(id) {
         window.open(MODx.config.base_url+'index.php?id='+id);
         return false;
     }
 });
-Ext.reg('resource-update',MODx.UpdateResource);
+Ext.reg('page-resource-update',MODx.page.UpdateResource);

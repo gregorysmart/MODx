@@ -1,5 +1,9 @@
-Ext.namespace('MODx.panel');
-
+/**
+ * @class MODx.panel.Static
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of config properties
+ * @xtype panel-static
+ */
 MODx.panel.Static = function(config) {
     config = config || {};
     Ext.applyIf(config,{

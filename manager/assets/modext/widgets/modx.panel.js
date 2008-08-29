@@ -1,4 +1,4 @@
-Ext.namespace('MODx','MODx.panel');
+Ext.namespace('MODx.panel');
 /**
  * An abstract class for Ext Panels in MODx. 
  * 

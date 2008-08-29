@@ -1,18 +1,18 @@
 Ext.onReady(function() {
     MODx.load({
-    	xtype: 'modx-role-update'
+    	xtype: 'page-role-update'
         ,id: MODx.request.id
     });
 });
 
 /**
  * 
- * @class MODx.UpdateRole
+ * @class MODx.page.UpdateRole
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype modx-update-role
+ * @xtype page-update-role
  */
-MODx.UpdateRole = function(config) {
+MODx.page.UpdateRole = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
         form: 'mutate_role'
@@ -42,7 +42,7 @@ MODx.UpdateRole = function(config) {
             }
         ]
     });
-	MODx.UpdateRole.superclass.constructor.call(this,config);	
+	MODx.page.UpdateRole.superclass.constructor.call(this,config);	
 };
-Ext.extend(MODx.UpdateRole,MODx.Component);
-Ext.reg('modx-role-update',MODx.UpdateRole);
+Ext.extend(MODx.page.UpdateRole,MODx.Component);
+Ext.reg('page-role-update',MODx.page.UpdateRole);
