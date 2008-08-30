@@ -676,7 +676,7 @@ class modX extends xPDO {
             if (empty($url) && ($context !== $this->context->get('key'))) {
                 $ctx= null;
                 if ($context == '') {
-                    if ($results = $this->query("SELECT `context_key` FROM {$this->getTableName('modResource')} WHERE `id` = {$id}")) {
+                    if ($results = $this->query("SELECT `context_key` FROM " . $this->getTableName('modResource') . " WHERE `id` = {$id}")) {
                         $contexts= $results->fetchAll(PDO_FETCH_COLUMN);
                         if ($contextKey = reset($contexts)) {
                             $ctx = $this->getContext($contextKey);

@@ -204,7 +204,7 @@ class modContext extends modAccessibleObject {
             }
         }
         if ($this->xpdo->getDebug() === true) {
-            $this->xpdo->log(MODX_LOG_LEVEL_DEBUG, "modContext[{$this->get('key')}]->makeUrl({$id}) = {$url}");
+            $this->xpdo->log(MODX_LOG_LEVEL_DEBUG, "modContext[" . $this->get('key') . "]->makeUrl({$id}) = {$url}");
         }
         return $url;
     }
