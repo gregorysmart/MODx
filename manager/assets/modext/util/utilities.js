@@ -50,8 +50,9 @@ MODx.util.JSONReader = function(config) {
         ,totalProperty: 'total'
         ,root: 'data'
     });
-    MODx.util.JSONReader = new Ext.data.JsonReader(config,['id','msg']);
+    MODx.util.JSONReader.superclass.constructor.call(this,config,['id','msg']);
 };
+Ext.extend(MODx.util.JSONReader,Ext.data.JsonReader);
 Ext.reg('modx-json-reader',MODx.util.JSONReader);
 
 /**

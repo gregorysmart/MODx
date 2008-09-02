@@ -11,6 +11,7 @@ Ext.onReady(function() {
 	{/literal}
 		xtype: 'page-chunk-update'
 		,id: '{$chunk->id}'
+		,name: '{$chunk->name}'
 		,category: '{if $chunk->category NEQ NULL}{$chunk->category->id}{/if}'
 	{literal}
 	});

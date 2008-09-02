@@ -18,7 +18,6 @@ $_POST['name'] = str_replace('<','',$_POST['name']);
 $chunk = $modx->getObject('modChunk',$_REQUEST['id']);
 if ($chunk == null) $error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_REQUEST['id']));
 
-
 $name_exists = $modx->getObject('modChunk',array(
 	'id:!=' => $chunk->id,
 	'name' => $_POST['name'],
@@ -52,7 +51,7 @@ $modx->invokeEvent('OnBeforeChunkFormSave',
 
 //do stuff to save the edited doc
 $chunk->fromArray($_POST);
-$chunk->set('snippet',$_POST['chunk']);
+$chunk->set('snippet',$_POST['snippet']);
 $chunk->set('locked',isset($_POST['locked']));
 $chunk->set('category',$category->id);
 if (!$chunk->save()) $error->failure($modx->lexicon('chunk_err_save'));

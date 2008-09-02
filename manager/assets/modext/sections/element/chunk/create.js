@@ -7,56 +7,9 @@
  * @xtype page-chunk-create
  */
 MODx.page.CreateChunk = function(config) {
-	config = config || {};
-	
+	config = config || {};	
 	Ext.applyIf(config,{
-		form: 'mutate_chunk'
-	    ,fields: {
-	        name: {
-                xtype: 'textfield'
-                ,width: 300
-                ,maxLength: 100
-                ,applyTo: 'name'
-            }
-            ,description: {
-                xtype: 'textfield'
-                ,width: 300
-                ,maxLength: 255
-                ,applyTo: 'description'
-            }
-            ,category: {
-                xtype: 'combo-category'
-                ,transform: 'category'
-                ,value: config.category
-            }
-            ,locked: {
-                xtype: 'checkbox'
-                ,boxLabel: _('chunk_lock')
-                ,applyTo: 'locked'
-            }
-            ,chunk: {
-                xtype: 'textarea'
-                ,width: '95%'
-                ,grow: true
-                ,applyTo: 'chunk'
-            }
-            ,which_editor: {
-                xtype: 'combo'
-                ,id: 'which_editor'
-                ,editable: false
-                ,listWidth: 300
-                ,triggerAction: 'all'
-                ,transform: 'which_editor'
-                ,listeners: {
-                    'select': {fn:function() {
-                        var w = Ext.getCmp('which_editor').getValue();
-                        this.form.submit();
-                        var u = '?a='+MODx.action['element/chunk/create']+'&which_editor='+w+'&category='+this.config.category;
-                        location.href = u;
-                    },scope:this}
-                }
-            }
-        }
+		formpanel: 'panel-chunk'
 	    ,actions: {
             'new': MODx.action['element/chunk/create']
             ,edit: MODx.action['element/chunk/update']
@@ -67,6 +20,7 @@ MODx.page.CreateChunk = function(config) {
             ,refresh: {
             	tree: 'modx_element_tree'
             	,node: 'n_type_chunk'
+            	,self: true
             }
             ,keys: [{
                 key: "s"
@@ -77,6 +31,13 @@ MODx.page.CreateChunk = function(config) {
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]
         ,loadStay: true
+        ,components: [{
+            xtype: 'panel-chunk'
+            ,id: 'panel-chunk'
+            ,renderTo: 'panel-chunk'
+            ,chunk: 0
+            ,name: ''
+        }]
 	});
 	MODx.page.CreateChunk.superclass.constructor.call(this,config);
 };

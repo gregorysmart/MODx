@@ -46,7 +46,7 @@ $modx->invokeEvent('OnBeforeChunkFormSave',array(
 //do stuff to save the new doc
 $chunk = $modx->newObject('modChunk', $_POST);
 $chunk->set('locked',isset($_POST['locked']));
-$chunk->set('snippet',$_POST['chunk']);
+$chunk->set('snippet',$_POST['snippet']);
 $chunk->set('category',$category->id);
 if (!$chunk->save())
 	$error->failure($modx->lexicon('chunk_err_save'));

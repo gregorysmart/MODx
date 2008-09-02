@@ -8,55 +8,8 @@
  */
 MODx.page.UpdateChunk = function(config) {
 	config = config || {};
-	
 	Ext.applyIf(config,{
-	   form: 'mutate_chunk'
-	   ,fields: {
-            name: {
-                xtype: 'textfield'
-                ,width: 300
-                ,maxLength: 100
-                ,applyTo: 'name'
-            }
-            ,description: {
-                xtype: 'textfield'
-                ,width: 300
-                ,maxLength: 255
-                ,applyTo: 'description'
-            }
-            ,category: {
-                xtype: 'combo-category'
-                ,transform: 'category'
-                ,value: config.category
-            }
-            ,locked: {
-                xtype: 'checkbox'
-                ,boxLabel: _('chunk_lock')
-                ,applyTo: 'locked'
-            }
-            ,chunk: {
-                xtype: 'textarea'
-                ,width: '95%'
-                ,grow: true
-                ,applyTo: 'chunk'
-            }
-            ,which_editor: {
-                xtype: 'combo'
-                ,id: 'which_editor'
-                ,editable: false
-                ,listWidth: 300
-                ,triggerAction: 'all'
-                ,transform: 'which_editor'
-                ,listeners: {
-                    'select': {fn:function() {
-                        var w = Ext.getCmp('which_editor').getValue();
-                        this.form.submit();
-                        var u = '?a='+MODx.action['element/chunk/update']+'&id='+this.config.id+'&which_editor='+w+'&category='+this.config.category;
-                        location.href = u;
-                    },scope:this}
-                }
-            }
-	   }
+	   formpanel: 'panel-chunk'
 	   ,actions: {
             'new': MODx.action['element/chunk/create']
             ,edit: MODx.action['element/chunk/update']
@@ -102,6 +55,13 @@ MODx.page.UpdateChunk = function(config) {
             ,params: {a:MODx.action['welcome']}
         }]
         ,loadStay: true
+        ,components: [{
+            xtype: 'panel-chunk'
+            ,id: 'panel-chunk'
+            ,renderTo: 'panel-chunk'
+            ,chunk: config.id
+            ,name: config.name
+        }]
 	});
 	MODx.page.UpdateChunk.superclass.constructor.call(this,config);
 };
