@@ -13,8 +13,7 @@ MODx.grid.ManagerLog = function(config) {
         title: _('manager_log')
         ,id: 'grid-manager-log'
         ,url: MODx.config.connectors_url+'system/log.php'
-        ,fields: ['id','user','occurred'
-            ,'action','classKey','item','menu']
+        ,fields: ['id','user','occurred','action','classKey','item','menu']
         ,width: 800
         ,autosave: true
         ,paging: true
@@ -109,12 +108,11 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
      */
     ,filter: function(tf,newValue,oldValue) {
         var p = this.getForm().getValues();
-        p.start = 0;
-        p.limit = 20;
-        Ext.getCmp('grid-manager-log').getStore().load({
-            params: p
-            ,scope: this
-        });
+        var g = Ext.getCmp('grid-manager-log');
+        p.action = 'getList';
+        g.getStore().baseParams = p;
+        g.refresh();
+        g.getBottomToolbar().changePage(1);
     }
     /**
      * Adds an enter key handler to a field
