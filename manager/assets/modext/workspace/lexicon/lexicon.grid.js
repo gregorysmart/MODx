@@ -17,7 +17,7 @@ MODx.grid.Lexicon = function(config) {
 			,namespace: 'core'
 			,focus: 'default'
 		}
-        ,width: '97%'
+        ,width: '98%'
         ,paging: true
         ,autosave: true
         ,columns: [{
@@ -38,6 +38,8 @@ MODx.grid.Lexicon = function(config) {
             
         }]
         ,tbar: [{
+            text: _('namespace')+':'
+        },{
 			xtype: 'combo-namespace'
 			,name: 'namespace'
 			,id: 'filter_namespace'
@@ -46,6 +48,8 @@ MODx.grid.Lexicon = function(config) {
 				'select': {fn: this.changeNamespace,scope:this}
 			}
 		},{
+		    text: _('focus')+':'
+		},{
 			xtype: 'combo-lexicon-focus'
 			,name: 'focus'
 			,id: 'filter_focus'
@@ -53,6 +57,8 @@ MODx.grid.Lexicon = function(config) {
             ,listeners: {
                 'select': {fn:this.filter.createDelegate(this,['focus'],true),scope:this}
             }
+		},{
+		    text: _('language')+':'
 		},{
 			xtype: 'combo-language'
 			,name: 'language'
@@ -66,15 +72,22 @@ MODx.grid.Lexicon = function(config) {
             ,xtype: 'button'
             ,menu: [{
                 text: _('entry')
-                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-entry-create'],true)
+                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-entry-create'}],true)
                 ,scope: this
             },{
                 text: _('focus')
-                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-focus-create'],true)
+                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-focus-create'}],true)
                 ,scope: this
             },{
                 text: _('namespace')
-                ,handler: this.loadWindow2.createDelegate(this,['window-namespace-create'],true)
+                ,handler: this.loadWindow2.createDelegate(this,[{
+                	   xtype: 'window-namespace-create'
+                	   ,listeners: {
+                            'success':{fn: function() {
+                    	       Ext.getCmp('filter_namespace').store.reload();
+                            },scope: this}
+                	   }
+                }],true)
                 ,scope: this
             }]
         }
@@ -109,12 +122,12 @@ MODx.grid.Lexicon = function(config) {
         ,{
             xtype: 'button'
             ,text: _('lexicon_import')
-            ,handler: function(btn,e) { this.loadWindow2(btn,e,'window-lexicon-import'); }
+            ,handler: function(btn,e) { this.loadWindow2(btn,e,{ xtype: 'window-lexicon-import'}); }
             ,scope: this
         },{
             xtype: 'button'
             ,text: _('lexicon_export')
-            ,handler: function(btn,e) { this.loadWindow2(btn,e,'window-lexicon-export'); }
+            ,handler: function(btn,e) { this.loadWindow2(btn,e,{ xtype: 'window-lexicon-export'}); }
             ,scope: this
         }]
     });
@@ -142,20 +155,20 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     }
     ,changeNamespace: function(cb,nv,ov) {
     	var s = Ext.getCmp('filter_focus').store;
-    	s.baseParams.namespace = nv;
+    	s.baseParams.namespace = cb.getValue();
     	s.reload();
     	
     	this.filter(cb,null,1,'namespace');
     }
-    ,loadWindow2: function(btn,e,xtype) {
+    ,loadWindow2: function(btn,e,o) {
     	this.menu.record = {
             namespace: Ext.getCmp('filter_namespace').getValue()
             ,focus: Ext.getCmp('filter_focus').getValue()
             ,language: Ext.getCmp('filter_language').getValue()
         };
-    	this.loadWindow(btn, e, {
-            xtype: xtype
-        });
+        var clef = Ext.getCmp('cle-focus');
+        if (clef) { clef.store.baseParams.namespace = this.menu.record.namespace; }
+    	this.loadWindow(btn, e, o);
     }
     ,reloadFromBase: function() {
     	Ext.Ajax.timeout = 0;
