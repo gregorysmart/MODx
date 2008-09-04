@@ -85,9 +85,6 @@ MODx.panel.Login = function(config) {
 	       ,id: 'login-rememberme'
 	   },{
 	   	   html: onManagerLoginFormRender
-	   },{
-	       html: '<br />'+_('login_modx_support')
-	       ,border: false
 	   }]
 	   ,buttons: [{
 	       text: _('login_button')
@@ -99,6 +96,12 @@ MODx.panel.Login = function(config) {
 	   	   	   location.href = (o.result.object.id != undefined) ? './index.php?id=' + o.result.object.id : './';
 	   	   },scope:this}
 	   }
+	   ,keys: [{
+            key: Ext.EventObject.ENTER,
+            fn: this.submit
+            ,scope: this
+        }]
+
 	});
 	MODx.panel.Login.superclass.constructor.call(this,config);
 };

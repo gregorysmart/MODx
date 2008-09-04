@@ -41,7 +41,7 @@ var CONNECTORS_URL = '{$_config.connectors_url}';
 var onManagerLoginFormRender = '{$onManagerLoginFormRender}';
 </script>
 </head>
-<body id="login">
+<body id="login" style="background-color: #fffffa;">
 <div id="mx_loginbox">
     {$onManagerLoginFormPrerender}
     <br />
