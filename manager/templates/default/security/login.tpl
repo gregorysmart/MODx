@@ -5,12 +5,14 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$_config.modx_charset}" />
 	<link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/index.css" />
 	<link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/xtheme-gray.css" />
     <link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/login.css" />
     
     <script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
     <script src="assets/ext2/ext-all.js" type="text/javascript"></script>
     <script src="assets/modext/build/core/modx-min.js" type="text/javascript"></script>
 	<script src="{$_config.connectors_url}lang.js.php?foci=login" type="text/javascript"></script>
+		
 	{if $_config.compress_js}
 	<script src="assets/modext/build/core/modx.form.handler-min.js" type="text/javascript"></script>
     <script src="assets/modext/build/core/modx.component-min.js" type="text/javascript"></script>
@@ -32,39 +34,23 @@
     {/if}
     
     <meta name="robots" content="noindex, nofollow" />
+
+<script type="text/javascript">
+var SITE_NAME = '{$_config.site_name}';
+var CONNECTORS_URL = '{$_config.connectors_url}';
+</script>
 </head>
 <body id="login">
 <div id="mx_loginbox">
-    <form method="post" name="loginfrm" id="loginfrm" action="{$_config.connectors_url}security/login.php" onsubmit="return false;">
-	    {$onManagerLoginFormPrerender}
-
-        <div class="sectionHeader">{$_config.site_name}</div>
-        <div class="sectionBody">
-            <p class="loginMessage">{$_lang.login_message}</p>
-			<p id="errormsg"></p>
-            <label>{$_lang.login_username} </label>
-            <input type="text" class="text" name="username" id="username" tabindex="1" value="{$username}" />
-
-            <label>{$_lang.login_password} </label>
-            <input type="password" class="text" name="password" id="password" tabindex="2" value="" />
-            <input type="hidden" name="login_context" id="login_context" value="mgr" />
-
-			{if $_config.use_captcha EQ '1'}
-            <p class="caption">{$_lang.login_captcha_message}</p>
-            <div>{$captcha_image}</div>
-            {$captcha_input}
-            {/if}
-
-            <input type="checkbox" id="rememberme" name="rememberme" tabindex="4" value="1" class="checkbox" /><label for="rememberme" style="cursor:pointer">{$_lang.remember_username}</label>
-            <input type="submit" class="login" id="submitButton" value="{$_lang.login_button}" onclick="return doLogin();" />
-            
-            {$onManagerLoginFormRender}
-            
-			<div style="color:#808080;padding-top:3em;">
-			{$_lang.login_modx_support}
-			</div>
-        </div>
-    </form>
+    <br />
+    <div id="panel-login"></div>
+<!--
+{if $_config.use_captcha EQ '1'}
+<p class="caption">{$_lang.login_captcha_message}</p>
+<div>{$captcha_image}</div>
+{$captcha_input}
+{/if}
+-->
 </div>
 <!-- close #mx_loginbox -->
 
