@@ -284,8 +284,9 @@ class modCacheManager extends xPDOCacheManager {
         return $written;
     }
 
-    function generateLexiconCache($namespace = 'core',$focus = 'default',$language = 'en') {
-    	$written= false;
+    function generateLexiconCache($namespace = 'core',$focus = 'default',$language = '') {
+    	if ($language == '') $language = $this->modx->config['manager_language'];
+        $written= false;
 
         $namespace = $this->modx->getObject('modNamespace',$namespace);
         if ($namespace == null) return false;
@@ -302,7 +303,7 @@ class modCacheManager extends xPDOCacheManager {
         $c= $this->modx->newQuery('modLexiconEntry');
         $c= $c->where(array(
             'focus' => $focus->name,
-            'language' => $this->modx->config['manager_language'],
+            'language' => $language,
         ));
         $c= $c->sortby('name','ASC');
         $entries= $this->modx->getCollection('modLexiconEntry',$c);

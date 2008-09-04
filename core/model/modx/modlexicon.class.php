@@ -145,7 +145,10 @@ class modLexicon {
      * @param string $language The language to load. Defaults to 'en'.
      * @return array The loaded lexicon array.
      */
-    function loadCache($namespace = 'core',$focus = 'default',$language = 'en') {
+    function loadCache($namespace = 'core',$focus = 'default',$language = '') {
+        if ($language == '') $language = $this->modx->config['manager_language'];
+
+
         $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$focus.'.cache.php';
 
         $_lang = array();
