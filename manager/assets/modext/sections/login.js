@@ -84,6 +84,8 @@ MODx.panel.Login = function(config) {
 	       ,name: 'rememberme'
 	       ,id: 'login-rememberme'
 	   },{
+	   	   html: onManagerLoginFormRender
+	   },{
 	       html: '<br />'+_('login_modx_support')
 	       ,border: false
 	   }]

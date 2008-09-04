@@ -38,10 +38,12 @@
 <script type="text/javascript">
 var SITE_NAME = '{$_config.site_name}';
 var CONNECTORS_URL = '{$_config.connectors_url}';
+var onManagerLoginFormRender = '{$onManagerLoginFormRender}';
 </script>
 </head>
 <body id="login">
 <div id="mx_loginbox">
+    {$onManagerLoginFormPrerender}
     <br />
     <div id="panel-login"></div>
 <!--
