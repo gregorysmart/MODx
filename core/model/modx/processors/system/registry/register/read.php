@@ -9,6 +9,8 @@ if (!isset($_POST['register']) || empty($_POST['register']) || !preg_match('/^[a
 if (!isset($_POST['topic']) || empty($_POST['topic'])) $modx->error->failure($modx->lexicon('error'));
 
 $register = trim($_POST['register']);
+$register_class = isset($_POST['register_class']) ? trim($_POST['register_class']) : 'registry.modFileRegister';
+
 $topic = trim($_POST['topic']);
 $format = isset($_POST['format']) ? trim($_POST['format']) : 'json';
 
@@ -20,7 +22,7 @@ $options['message_limit'] = (isset($_POST['message_limit']) && intval($_POST['me
 $options['remove_read'] = (isset($_POST['remove_read']) && empty($_POST['remove_read'])) ? false : true;
 
 $modx->getService('registry', 'registry.modRegistry');
-$modx->registry->addRegister($register, 'registry.modFileRegister', array('directory' => $register));
+$modx->registry->addRegister($register, $register_class, array('directory' => $register));
 if (!$modx->registry->$register->connect()) $modx->error->failure($modx->lexicon('error'));
 
 $modx->registry->$register->subscribe($topic);
