@@ -3,7 +3,7 @@
 	<h2>{$_lang.packages}</h2>
 	
 	<p>{$_lang.packages_desc}</p>
-	
+		
 	<div id="packages_grid"></div>
 </div>
 <div id="tab_provisioners" class="padding x-hide-display">

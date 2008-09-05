@@ -29,7 +29,7 @@ foreach ($packages as $package) {
                 ? $modx->lexicon('package_install')
                 : $modx->lexicon('package_reinstall'),
             'handler' => ($not_installed)
-                ? 'this.confirm.createDelegate(this,["install","package_confirm_install"])'
+                ? 'this.install'
                 : 'this.confirm.createDelegate(this,["install","package_confirm_reinstall"])',
         ),
     );

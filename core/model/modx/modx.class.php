@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  * Originally based on Etomite by Alex Butter.
  */
 
@@ -352,7 +352,7 @@ class modX extends xPDO {
             // Load the system and context configurations
             $this->getConfig();
             $this->_initContext($contextKey);
-            
+
             // Load any custom packages required for session, user, and error handling
             if (isset($this->config['extension_packages']) && ($extPackages= explode(',', $this->config['extension_packages']))) {
                 foreach ($extPackages as $extPackage) {
@@ -362,7 +362,7 @@ class modX extends xPDO {
                     }
                 }
             }
-            
+
             // Start the session, error handler, and determine the culture
             $this->_initSession();
             $this->_initErrorHandler();
@@ -689,7 +689,7 @@ class modX extends xPDO {
                     $url= $ctx->makeUrl($id, $args, $scheme);
                 }
             }
-            
+
             if (!empty($url) && isset ($this->config['xhtml_urls']) && $this->config['xhtml_urls'] == 1) {
                 $url= preg_replace("/&(?!amp;)/","&amp;", $url);
             }
@@ -892,7 +892,7 @@ class modX extends xPDO {
     function reloadConfig() {
         $cacheManager= $this->getCacheManager();
         $cacheManager->clearCache();
-        
+
         if (!$this->_loadConfig()) {
             $this->log(MODX_LOG_LEVEL_ERROR, "Could not reload core MODx configuration!");
         }
@@ -939,7 +939,7 @@ class modX extends xPDO {
                 $this->config['https_port']= isset($GLOBALS['https_port']) ? $GLOBALS['https_port'] : 443;
             if (!isset ($this->config['error_handler_class']))
                 $this->config['error_handler_class']= 'error.modErrorHandler';
-            
+
             $this->_config= $this->config;
             if (!$this->_loadConfig()) {
                 $this->log(MODX_LOG_LEVEL_FATAL, "Could not load core MODx configuration!");
@@ -2375,16 +2375,16 @@ class modX extends xPDO {
         $this->_systemConfig= $this->config;
         return true;
     }
-    
+
     /**
      * Switches the primary Context for the modX instance.
-     * 
+     *
      * Be aware that switching contexts does not allow custom session handling
      * classes to be loaded. The gateway defines the session handling that is
      * applied to a single request. To create a context with a custom session
      * handler you must create a unique context gateway that initializes that
      * context directly.
-     * 
+     *
      * @param string $contextKey The key of the context to switch to.
      * @return boolean True if the switch was successful, otherwise false.
      */
@@ -2433,7 +2433,7 @@ class modX extends xPDO {
         }
         return $initialized;
     }
-    
+
     function getContext($contextKey) {
         if (!isset($this->contexts[$contextKey])) {
             $this->contexts[$contextKey]= $this->getObject('modContext', $contextKey);
@@ -2585,14 +2585,14 @@ class modX extends xPDO {
         $this->getService('lexicon','modLexicon');
         $this->invokeEvent('OnInitCulture');
     }
-    
+
     /**
      * Grabs a processed lexicon string.
-     * 
+     *
      * @access public
      * @param string $key
      * @param array $params
-     */    
+     */
     function lexicon($key,$params = array()) {
         if ($this->lexicon) {
             return $this->lexicon->process($key,$params);
@@ -2600,7 +2600,7 @@ class modX extends xPDO {
             $this->log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
         }
     }
-    
+
     function getSessionState() {
         if ($this->_sessionState == MODX_SESSION_STATE_UNINITIALIZED) {
             if (XPDO_CLI_MODE) {
@@ -2676,7 +2676,7 @@ class modX extends xPDO {
         $modx= & $this; // allows ability to access $modx
         require_once (MODX_PROCESSORS_PATH . $file);
     }
-    
+
     function _log($level, $msg, $target= '', $def= '', $file= '', $line= '') {
         if (empty($target)) {
             $target = $this->logTarget;
@@ -2699,9 +2699,9 @@ class modX extends xPDO {
             parent :: _log($level, $msg, $target, $def, $file, $line);
         }
     }
-    
+
     function _logInRegister($register, $level, $msg, $def, $file, $line) {
-        $messageKey = (string) time();
+        $messageKey = (string) $this->getMicroTime();
         $message = array(
             'timestamp' => strftime('%Y-%m-%d %H:%M:%S'),
             'level' => $this->_getLogLevel($level),

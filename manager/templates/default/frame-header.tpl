@@ -40,6 +40,7 @@
 <script src="assets/modext/widgets/core/modx.combo.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.msg.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.grid.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.console.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/windows.js" type="text/javascript"></script>
 {/if}
 

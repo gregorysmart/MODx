@@ -62,27 +62,33 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     
     ,install: function(btn) {
     	var r = this.menu.record;
-    	var console = MODx.load({
-    	   xtype: 'modx-console'
-    	   ,baseParams: {
-    	       register: r.signature
-    	       ,topic: 'install'
-    	   }
-    	});
-    	console.show(btn);
+    	var topic = '/workspace/package/install/'+r.signature+'/';
+    	if (this.console == null) {
+        	this.console = MODx.load({
+        	   xtype: 'modx-console'
+        	   ,register: 'mgr'
+        	   ,topic: topic
+        	});
+    	} else {
+    		this.console.setRegister('mgr',topic);
+    	}
+    	this.console.show(btn);
     	
     	Ext.Ajax.request({
-            url: url
+            url: this.config.url
             ,params: {
                 action: 'install'
+                ,signature: r.signature
+                ,register: 'mgr'
+                ,topic: topic
             }
             ,scope: this
             ,success: function(r,o) {
             	r = Ext.decode(r.responseText);
-            	console.complete();
-            	if (r.success) {
-            	
-            	} else MODx.form.Handler.errorJSON(r);
+            	this.console.complete();
+            	if (r.success == false) {
+            	   Ext.Msg.hide();
+            	}
             }
     	});
     }

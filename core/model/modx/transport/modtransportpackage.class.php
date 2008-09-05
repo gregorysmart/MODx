@@ -183,11 +183,13 @@ class modTransportPackage extends xPDOObject {
     function install() {
     	$installed = false;
         if ($this->getTransport()) {
+            $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Grabbing package workspace...');
             $this->getOne('Workspace');
             $wc = is_array($this->Workspace->config) ? $this->Workspace->config : array();
             $at = is_array($this->get('attributes')) ? $this->get('attributes') : array();
             $attributes = array_merge($wc, $at);
             @ini_set('max_execution_time', 0);
+            $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Workspace environment initiated, now installing package...');
             if ($this->package->install($attributes)) {
             	$installed = true;
                 $this->set('installed', strftime('%Y-%m-%d %H:%M:%S'));

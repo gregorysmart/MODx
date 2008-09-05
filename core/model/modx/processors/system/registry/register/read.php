@@ -19,7 +19,8 @@ $options['poll_limit'] = (isset($_POST['poll_limit']) && intval($_POST['poll_lim
 $options['poll_interval'] = (isset($_POST['poll_interval']) && intval($_POST['poll_interval'])) ? intval($_POST['poll_interval']) : 1;
 $options['time_limit'] = (isset($_POST['time_limit']) && intval($_POST['time_limit'])) ? intval($_POST['time_limit']) : 10;
 $options['message_limit'] = (isset($_POST['message_limit']) && intval($_POST['message_limit'])) ? intval($_POST['message_limit']) : 100;
-$options['remove_read'] = (isset($_POST['remove_read']) && empty($_POST['remove_read'])) ? false : true;
+$options['remove_read'] = isset($_POST['remove_read']) ? (boolean) $_POST['remove_read'] : true;
+$options['show_filename'] = (isset($_POST['show_filename']) && !empty($_POST['show_filename'])) ? true : false;
 
 $modx->getService('registry', 'registry.modRegistry');
 $modx->registry->addRegister($register, $register_class, array('directory' => $register));
@@ -35,7 +36,11 @@ if (!empty($msgs)) {
             if (!empty ($msg['def'])) $msg['def']= "{$def} ";
             if (!empty ($msg['file'])) $msg['file']= "@ {$file} ";
             if (!empty ($msg['line'])) $msg['line']= "line {$line} ";
-            $message .= '<span class="' . strtolower($msg['level']) . '"><small>(' . trim($msg['def'] . $msg['file'] . $msg['line']) . ')</small>'.$msg['msg']."</span><br />\n";
+            $message .= '<span class="' . strtolower($msg['level']) . '">';
+            if ($options['show_filename']) {
+                $message .= '<small>(' . trim($msg['def'] . $msg['file'] . $msg['line']) . ')</small>';
+            }
+            $message .= $msg['msg']."</span><br />\n";
         }
         if (!empty($message)) {
             $modx->error->success($message);
