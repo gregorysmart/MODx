@@ -97,7 +97,8 @@ Ext.extend(MODx.Console,Ext.Window,{
     	    ,success: function(r,o) {
     	    	r = Ext.decode(r.responseText);
     	    	if (r.success) {
-    	    		this.hide();
+    	    		Ext.getCmp('modx-console-ok').setDisabled(true);
+                    this.hide();
     	    	} else MODx.form.Handler.errorJSON(r);
     	    }
     	});
