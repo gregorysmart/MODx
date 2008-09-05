@@ -15,16 +15,13 @@ $chunk = $modx->getObject('modChunk',$_REQUEST['id']);
 if ($chunk == null) {
         $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_REQUEST['id']));
 }
+
+if ($chunk->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('chunk_err_locked'));
+
+
 // grab category for chunk, assign to parser
 $chunk->category = $chunk->getOne('modCategory');
 $modx->smarty->assign('chunk',$chunk);
-
-// if chunk is locked, display error 
-/* TODO: refactor locked principle to 097 standards
-if ($chunk->locked == 1 && $_SESSION['mgrRole'] != 1) {
-	$modx->error->failure($modx->lexicon('chunk_err_locked'));
-}
-*/
 
 // assign RTE if being overridden
 $which_editor = isset($_POST['which_editor']) ? $_POST['which_editor'] : 'none';

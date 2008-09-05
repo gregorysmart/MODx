@@ -13,13 +13,9 @@ if ($modx->checkForLocks($modx->getLoginUserID(),22,'snippet')) $modx->error->fa
 // get snippet
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
 if ($snippet == null) $modx->error->failure($modx->lexicon('snippet_err_not_found'));
-$snippet->category = $snippet->getOne('modCategory');
+if ($snippet->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('snippet_err_locked'));
 
-// check if snippet locked
-/* TODO: refactor locked principle to 097 standards
-if ($snippet->locked == 1 && $_SESSION['mgrRole']!=1) {
-	$modx->error->failure($modx->lexicon('snippet_err_locked'));
-}*/
+$snippet->category = $snippet->getOne('modCategory');
 
 // get collection of categories
 $categories = $modx->getCollection('modCategory');

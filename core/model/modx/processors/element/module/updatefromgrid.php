@@ -15,6 +15,8 @@ $_DATA = $modx->fromJSON($_POST['data']);
 $module = $modx->getObject('modModule',$_DATA['id']);
 if ($module == null) $modx->error->failure($modx->lexicon('module_err_not_found'));
 
+if ($module->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('lock_module_msg'));
+
 $module->set('description',$_DATA['description']);
 $module->set('locked',$_DATA['locked']);
 $module->set('disabled',$_DATA['disabled']);

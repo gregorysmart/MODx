@@ -18,6 +18,8 @@ $_POST['name'] = str_replace('<','',$_POST['name']);
 $chunk = $modx->getObject('modChunk',$_REQUEST['id']);
 if ($chunk == null) $error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_REQUEST['id']));
 
+if ($chunk->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('chunk_err_locked'));
+
 $name_exists = $modx->getObject('modChunk',array(
 	'id:!=' => $chunk->id,
 	'name' => $_POST['name'],

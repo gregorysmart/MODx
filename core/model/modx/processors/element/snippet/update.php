@@ -13,6 +13,8 @@ if (!$modx->hasPermission('save_snippet')) $error->failure($modx->lexicon('permi
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
 if ($snippet == null) $error->failure($modx->lexicon('snippet_err_not_found'));
 
+if ($snippet->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('snippet_err_locked'));
+
 // validation
 if ($_POST['name'] == '') $error->addField('name',$modx->lexicon('snippet_err_not_specified_name'));
 // get rid of invalid chars

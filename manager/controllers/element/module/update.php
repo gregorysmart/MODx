@@ -22,16 +22,13 @@ function createGUID() {
 if ($msg= $modx->checkForLocks($modx->getLoginUserID(),108,'module')) $modx->error->failure($msg);
 
 $module = $modx->getObject('modModule',$_REQUEST['id']);
-$wrap = $module->get('wrap');
-if ($module == null)
-	die('<p>No record found for id "'.$_REQUEST['id'].'".</p>');
-$modx->smarty->assign('module',$module);
 
-/* TODO: refactor locked principle to 097 standards
-if ($module->locked == 1 && $_SESSION['mgrRole'] != 1) {
-	$modx->error->failure($modx->lexicon('lock_module_msg'));
-}
-*/
+if ($module->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('lock_module_msg'));
+
+if ($module == null) $error->failure('No record found for id "'.$_REQUEST['id'].'".');
+
+$wrap = $module->get('wrap');
+$modx->smarty->assign('module',$module);
 
 // invoke OnModFormPrerender event
 $onModFormPrerender = $modx->invokeEvent('OnModFormPrerender',array('id' => $_REQUEST['id']));

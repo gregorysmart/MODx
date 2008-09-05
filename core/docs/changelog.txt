@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-137] Locked Elements now editable by users with the Admin policy attribute edit_locked (not locked as in being edited by another user, but locked explicitly in the Element attributes).
 - Moved makeUrl logic to modContext class and modX now determines which context to use when building the URL.
 - Introduced modX->getContext() to retrieve, prepare and store context configurations in modX->contexts array for reuse during the single request
 - Added _config, _systemConfig and _userConfig to hold on to various parts of the configuration settings before they are merged for use, allowing other functions to remerge the settings as needed.

@@ -13,6 +13,8 @@ if (!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon
 $tv = $modx->getObject('modTemplateVar',$_POST['id']);
 if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
+if ($tv->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('tv_err_locked'));
+
 // category
 if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('id' => $_POST['category']));

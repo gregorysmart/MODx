@@ -12,7 +12,7 @@ if (!$modx->hasPermission('save_plugin')) $error->failure($modx->lexicon('permis
 $plugin = $modx->getObject('modPlugin',$_REQUEST['id']);
 if ($plugin == null) $error->failure($modx->lexicon('plugin_err_not_found'));
 
-//$modx->error->failure(print_r($_POST,true));
+if ($plugin->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('plugin_err_locked'));
 
 // Validation and data escaping
 if ($_POST['name'] == '') $error->addField('name',$modx->lexicon('plugin_err_not_specified_name'));
@@ -21,6 +21,7 @@ $name_exists = $modx->getObject('modPlugin',array(
 	'id:!=' => $plugin->id,
 	'name' => $_POST['name']
 ));
+
 if ($name_exists != null) $error->addField('name',$modx->lexicon('plugin_err_exists_name'));
 
 if ($error->hasError()) $error->failure();

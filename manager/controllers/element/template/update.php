@@ -13,14 +13,9 @@ if ($msg= $modx->checkForLocks($modx->getLoginUserID(),16,'template')) $modx->er
 // load template
 $template = $modx->getObject('modTemplate',$_REQUEST['id']);
 if ($template == null) $modx->error->failure($modx->lexicon('template_err_not_found'));
-$template->category = $template->getOne('modCategory');
+if ($template->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('template_err_locked'));
 
-// do legacy stuff, check if locked
-/* TODO: refactor locked principle to 097 standards
-if ($template->locked == 1 && $_SESSION['mgrRole'] != 1) {
-	$modx->error->failure($modx->lexicon('template_err_locked'));
-}
-*/
+$template->category = $template->getOne('modCategory');
 
 // invoke OnTempFormPrerender event
 $onTempFormPrerender = $modx->invokeEvent('OnTempFormPrerender',array('id' => $_REQUEST['id']));

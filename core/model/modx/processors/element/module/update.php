@@ -36,6 +36,8 @@ $modx->invokeEvent('OnBeforeModFormSave',array(
 $module = $modx->getObject('modModule',$_POST['id']);
 if ($module == null) $error->failure($modx->lexicon('module_err_not_found'));
 
+if ($module->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('lock_module_msg'));
+
 // update module
 $module->fromArray($_POST);
 $module->set('disabled',isset($_POST['disabled']));

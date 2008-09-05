@@ -12,6 +12,8 @@ if (!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon
 $template = $modx->getObject('modTemplate',$_REQUEST['id']);
 if ($template == null) $modx->error->failure($modx->lexicon('template_not_found'));
 
+if ($template->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('template_err_locked'));
+
 // Validation and data escaping
 if ($_POST['templatename'] == '') {
     $modx->error->addField('templatename',$modx->lexicon('template_err_not_specified_name'));

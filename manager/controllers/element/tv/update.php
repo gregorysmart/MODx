@@ -14,14 +14,9 @@ if ($msg= $modx->checkForLocks($modx->getLoginUserID(),301,'template variable'))
 // get tv
 $tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
 if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
-$tv->category = $tv->getOne('modCategory');
+if ($tv->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('tv_err_locked'));
 
-// check if locked
-/* TODO: refactor locked principle to 097 standards
-if ($tv->locked == 1 && $_SESSION['mgrRole'] != 1) {
-    $modx->error->failure($modx->lexicon('tv_err_locked'));
-}
-*/
+$tv->category = $tv->getOne('modCategory');
 
 // load templates
 $templates = $modx->getCollection('modTemplate');
