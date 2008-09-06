@@ -18,7 +18,7 @@ $options = array();
 $options['poll_limit'] = (isset($_POST['poll_limit']) && intval($_POST['poll_limit'])) ? intval($_POST['poll_limit']) : 1;
 $options['poll_interval'] = (isset($_POST['poll_interval']) && intval($_POST['poll_interval'])) ? intval($_POST['poll_interval']) : 1;
 $options['time_limit'] = (isset($_POST['time_limit']) && intval($_POST['time_limit'])) ? intval($_POST['time_limit']) : 10;
-$options['message_limit'] = (isset($_POST['message_limit']) && intval($_POST['message_limit'])) ? intval($_POST['message_limit']) : 100;
+$options['msg_limit'] = (isset($_POST['message_limit']) && intval($_POST['message_limit'])) ? intval($_POST['message_limit']) : 100;
 $options['remove_read'] = isset($_POST['remove_read']) ? (boolean) $_POST['remove_read'] : true;
 $options['show_filename'] = (isset($_POST['show_filename']) && !empty($_POST['show_filename'])) ? true : false;
 

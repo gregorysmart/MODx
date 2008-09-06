@@ -204,6 +204,7 @@ class modX extends xPDO {
      * @var array A config array that stores the user settings.
      */
     var $_userConfig= array();
+    var $_logSequence= 0;
 
     /**
      * @var DBAPI An instance of the DBAPI helper class.
@@ -2701,9 +2702,11 @@ class modX extends xPDO {
     }
 
     function _logInRegister($register, $level, $msg, $def, $file, $line) {
-        $messageKey = (string) $this->getMicroTime();
+        $timestamp = strftime('%Y-%m-%d %H:%M:%S');
+        $messageKey = (string) time();
+        $messageKey .= '-' . sprintf("%06d", $this->_logSequence);
         $message = array(
-            'timestamp' => strftime('%Y-%m-%d %H:%M:%S'),
+            'timestamp' => $timestamp,
             'level' => $this->_getLogLevel($level),
             'msg' => $msg,
             'def' => $def,
@@ -2715,6 +2718,7 @@ class modX extends xPDO {
             $options['kill'] = true;
         }
         $register->send('', array($messageKey => $message), $options);
+        $this->_logSequence++;
     }
 }
 
