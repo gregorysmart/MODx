@@ -255,6 +255,7 @@ MODx.panel.Resource = function(config) {
         var v = Ext.get('ta').dom.value;
         Ext.getCmp('hiddenContent').setValue(v);
     },this);
+    Ext.get('ta').on('keydown',this.fieldChangeEvent,this);
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     setup: function() {
