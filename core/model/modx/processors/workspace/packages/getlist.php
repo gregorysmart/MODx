@@ -42,7 +42,7 @@ foreach ($packages as $package) {
     $pa['menu'][] = '-';
     $pa['menu'][] = array(
         'text' => $modx->lexicon('package_remove'),
-        'handler' => 'this.remove.createDelegate(this,["package_confirm_remove"])',
+        'handler' => 'this.remove',
     );
     $ps[] = $pa;
 }

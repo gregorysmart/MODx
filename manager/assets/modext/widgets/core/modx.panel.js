@@ -56,6 +56,11 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
     submit: function(o) {
         var fm = this.getForm();
         if (fm.isValid()) {
+        	this.fireEvent('beforeSubmit',{
+        	   form: fm
+        	   ,options: o
+        	   ,config: this.config
+        	});
             fm.submit({
                 waitMsg: _('saving')
                 ,scope: this

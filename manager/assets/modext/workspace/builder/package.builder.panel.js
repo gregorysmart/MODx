@@ -97,6 +97,8 @@ MODx.panel.PackageXML = function(config) {
         ,url: MODx.config.connectors_url+'workspace/builder/index.php'
         ,baseParams: {
             action: 'buildFromXML'
+            ,register: 'mgr'
+            ,topic: '/workspace/package/builder/'
         }
         ,fileUpload: true
         ,bodyStyle: 'padding: 3em 3em'
@@ -112,12 +114,24 @@ MODx.panel.PackageXML = function(config) {
         }]
         ,listeners: {
             'success': {fn:function(o) {
-                MODx.msg.alert('',o.result.message,function() {
-                    var c = o.options;
-                    Ext.getCmp('pb-info').getForm().reset();
-                    Ext.callback(c.proceed,c.scope || this,['pb-start']);
-                },this);
+                var c = o.options;
+                this.console.complete();
+                Ext.getCmp('pb-info').getForm().reset();
+                Ext.callback(c.proceed,c.scope || this,['pb-start']);
             },scope:this}
+            ,'beforeSubmit': {fn:function(o) {
+            	var topic = '/workspace/package/builder/';
+                if (this.console == null) {
+                    this.console = MODx.load({
+                       xtype: 'modx-console'
+                       ,register: 'mgr'
+                       ,topic: topic
+                    });
+                } else {
+                    this.console.setRegister('mgr',topic);
+                }
+                this.console.show(Ext.getBody());
+            },scope: this}
         }
     });
     MODx.panel.PackageXML.superclass.constructor.call(this,config);
@@ -300,6 +314,8 @@ MODx.panel.BuildPackage = function(config) {
         ,url: MODx.config.connectors_url+'workspace/builder/index.php'
         ,baseParams: {
             action: 'build'
+            ,register: 'mgr'
+            ,topic: '/workspace/package/builder/'
         }
         ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '', border: false }
@@ -310,12 +326,24 @@ MODx.panel.BuildPackage = function(config) {
         }]
         ,listeners: {
             'success': {fn:function(o) {
-                MODx.msg.alert('',o.result.message,function() {
-                    var c = o.options;
-                    Ext.getCmp('pb-info').getForm().reset();
-                    Ext.callback(c.proceed,c.scope || this,['pb-start']);
-                },this);
+                var c = o.options;
+                this.console.complete();
+                Ext.getCmp('pb-info').getForm().reset();
+                Ext.callback(c.proceed,c.scope || this,['pb-start']);
             },scope:this}
+            ,'beforeSubmit': {fn:function(o) {
+                var topic = '/workspace/package/builder/';
+                if (this.console == null) {
+                    this.console = MODx.load({
+                       xtype: 'modx-console'
+                       ,register: 'mgr'
+                       ,topic: topic
+                    });
+                } else {
+                    this.console.setRegister('mgr',topic);
+                }
+                this.console.show(Ext.getBody());
+            },scope: this}
         }
     });
     MODx.panel.BuildPackage.superclass.constructor.call(this,config);

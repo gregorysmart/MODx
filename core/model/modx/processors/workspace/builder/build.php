@@ -7,14 +7,21 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
 //$modx->error->failure(print_r($_SESSION['modx.pb'],true));
+if (isset($_POST['register']) && isset($_POST['topic'])) {
+    if ($modx->getService('registryhandler','registry.modRegisterHandler')) {
+        $modx->registryhandler->load($_POST['register'],$_POST['topic']);
+    }
+}
 
 $_PACKAGE =& $_SESSION['modx.pb'];
 
 // load the modPackageBuilder class and get an instance
+$modx->log(MODX_LOG_LEVEL_INFO,'Loading package builder.');
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
 
 // create a new package
+$modx->log(MODX_LOG_LEVEL_INFO,'Creating a new package: '.$_PACKAGE['name'].'-'.$_PACKAGE['version'].'-'.$_PACKAGE['release']);
 $builder->create($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release']);
 $builder->registerNamespace($_PACKAGE['namespace'],$_PACKAGE['autoselects']);
 
@@ -32,6 +39,7 @@ $attributes= array(
     XPDO_TRANSPORT_RESOLVE_PHP => true,
 );
 
+$modx->log(MODX_LOG_LEVEL_INFO,'Loading vehicles into package.');
 foreach ($_PACKAGE['vehicles'] as $vehicle) {
     $c = $modx->getObject($vehicle['class_key'],$vehicle['object']);
     if ($c == null) continue;
@@ -49,7 +57,10 @@ foreach ($_PACKAGE['vehicles'] as $vehicle) {
 }
 
 // zip up the package
+$modx->log(MODX_LOG_LEVEL_INFO,'Attempting to pack package.');
 $builder->pack();
 
 $filename = $modx->config['core_path'].'packages/'.$_PACKAGE['name'].'-'.$_PACKAGE['version'].'-'.$_PACKAGE['release'].'.transport.zip';
+
+$modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_built').' - '.$filename);
 $modx->error->success($modx->lexicon('package_built').' - '.$filename);

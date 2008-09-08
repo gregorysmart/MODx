@@ -11,7 +11,7 @@ MODx.Console = function(config) {
 	config = config || {};
 	Ext.Updater.defaults.showLoadIndicator = false;
 	Ext.applyIf(config,{
-        title: _('progress')
+        title: _('console')
 	    ,url: MODx.config.connectors_url+'system/registry/register.php'
 	    ,baseParams: {
 	    	action: 'read'
@@ -64,7 +64,7 @@ Ext.extend(MODx.Console,Ext.Window,{
        if (this.running != true) {
            this.mgr = new Ext.Updater('console-body');
        }
-       this.mgr.startAutoRefresh(1,this.config.url,this.config.baseParams || {},this.renderMsg,true);
+       this.mgr.startAutoRefresh(.5,this.config.url,this.config.baseParams || {},this.renderMsg,true);
        this.running = true;
     }
     

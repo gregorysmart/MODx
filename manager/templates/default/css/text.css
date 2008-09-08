@@ -39,6 +39,6 @@ h3 {
 
 
 .modx-console .debug { color: gray; }
-.modx-console .message { color: green; }
-.modx-console .warning { color: orange; }
+.modx-console .success { color: green; }
+.modx-console .warn { color: blue; }
 .modx-console .error { color: red; }

@@ -60,19 +60,49 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         }
     }
     
+    ,loadConsole: function(btn,topic) {
+    	if (this.console == null) {
+            this.console = MODx.load({
+               xtype: 'modx-console'
+               ,register: 'mgr'
+               ,topic: topic
+            });
+        } else {
+            this.console.setRegister('mgr',topic);
+        }
+        this.console.show(btn);
+    }
+    
+    ,uninstall: function() {
+    	
+    }
+    
+    ,remove: function(btn,e) {
+    	var r = this.menu.record;
+        var topic = '/workspace/package/remove/'+r.signature+'/';
+        this.loadConsole(btn,topic);
+        
+        MODx.msg.confirm({
+            text: _('package_remove_confirm')
+            ,url: this.config.url
+            ,params: {
+                action: 'remove'
+                ,signature: r.signature
+                ,register: 'mgr'
+                ,topic: topic
+            }
+            ,scope: this
+            ,success: function(r) {
+                this.console.complete();
+                Ext.Msg.hide();
+            }
+        });
+    }
+    
     ,install: function(btn) {
     	var r = this.menu.record;
     	var topic = '/workspace/package/install/'+r.signature+'/';
-    	if (this.console == null) {
-        	this.console = MODx.load({
-        	   xtype: 'modx-console'
-        	   ,register: 'mgr'
-        	   ,topic: topic
-        	});
-    	} else {
-    		this.console.setRegister('mgr',topic);
-    	}
-    	this.console.show(btn);
+    	this.loadConsole(btn,topic);
     	
     	Ext.Ajax.request({
             url: this.config.url
