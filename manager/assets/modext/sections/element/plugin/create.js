@@ -17,6 +17,7 @@ MODx.page.CreatePlugin = function(config) {
         }
         ,buttons: [{
             process: 'create', text: _('save'), method: 'remote'
+            ,checkDirty: true
             ,refresh: {
             	tree: 'modx_element_tree'
             	,node: 'n_type_plugin'

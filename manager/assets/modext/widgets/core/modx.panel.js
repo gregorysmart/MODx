@@ -38,23 +38,29 @@ MODx.FormPanel = function(config) {
         ,method: 'POST'
         ,errorReader: MODx.util.JSONReader
     });
-    MODx.Panel.superclass.constructor.call(this,config);
+    if (config.items) this.addChangeEvent(config.items);
+    
+    MODx.FormPanel.superclass.constructor.call(this,config);
+    
     this.config = config;
     this.addEvents({
         setup: true
+        ,fieldChange: true
     });
     this.getForm().addEvents({
         beforeSubmit: true
         ,success: true
+        ,failure: true
     });
     this.fireEvent('setup',config);
 };
 Ext.extend(MODx.FormPanel,Ext.FormPanel,{
-    /**
+	/**
      * Submits the form to the connector.
      */
     submit: function(o) {
         var fm = this.getForm();
+        if (this.isDirty() == false) return false;
         if (fm.isValid()) {
         	this.fireEvent('beforeSubmit',{
         	   form: fm
@@ -65,7 +71,14 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
                 waitMsg: _('saving')
                 ,scope: this
                 ,failure: function(f,a) {
-                    MODx.form.Handler.errorExt(a.result,f);
+                	if (this.fireEvent('failure',{
+                	   form: f
+                	   ,result: a.result
+                	   ,options: o
+                	   ,config: this.config
+                	})) {
+                        MODx.form.Handler.errorExt(a.result,f);
+                	}
                 }
                 ,success: function(f,a) {
                     if (this.config.success) {
@@ -77,13 +90,66 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
                         ,options:o
                         ,config:this.config
                     });
+                    this.clearDirty();
                     this.fireEvent('setup',this.config);
                 }
             });
         }
     }
+    
+    ,addChangeEvent: function(items) {
+    	if (!items) return;
+    	if (typeof(items) == 'object' && items.items) {
+    		items = items.items;
+    	}
+    	
+        for (var f=0;f<items.length;f++) {
+            var cmp = items[f];
+            if (cmp.items) {
+                this.addChangeEvent(cmp.items);    
+            } else if (cmp.xtype) {
+                if (!cmp.listeners) cmp.listeners = {};
+                cmp.listeners.change = {fn:this.addFieldChangeEvent,scope:this}
+            }
+        }
+    }
+    
+    ,addFieldChangeEvent: function(fld,nv,ov) {
+       this.fireEvent('fieldChange',{
+           field: fld
+           ,nv: nv
+           ,ov: ov
+           ,form: this.getForm()
+       });
+    }
+    
+    ,isDirty: function() {
+    	return this.getForm().isDirty();
+    }
+    
+    ,clearDirty: function() {
+    	return this.getForm().clearDirty();
+    }
 });
 Ext.reg('modx-formpanel',MODx.FormPanel);
+
+/**
+ * Adds clearDirty functionality to Ext.form.BasicForm
+ */
+Ext.override(Ext.form.BasicForm,{
+    clearDirty : function(nodeToRecurse){
+        nodeToRecurse = nodeToRecurse || this;
+        var div = Ext.get('snippet-name');
+        nodeToRecurse.items.each(function(f){
+            if(f.items){
+                this.clearDirty(f);
+            } else if(f.originalValue != f.getValue()){
+                f.originalValue = f.getValue();
+            }
+        });
+    }
+});
+
 
 
 /**

@@ -42,6 +42,7 @@ MODx.page.UpdateResource = function(config) {
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
             ,text: _('save')
             ,method: 'remote'
+            ,checkDirty: true
             ,listeners: {
                 'click': {fn:function(btn,e) {
                     var g = Ext.getCmp('grid-resource-security');

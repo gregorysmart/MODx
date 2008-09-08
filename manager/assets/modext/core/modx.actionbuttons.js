@@ -19,6 +19,10 @@ MODx.toolbar.ActionButtons = function(config) {
 		if (!config.items) config.items = [];
 		config.items.push(this.getStayMenu());
 	}
+	if (config.formpanel) {
+		this.setupDirtyButtons(config.formpanel);
+	}
+	
 	this.config = config; // assign global options
 	this.render('modAB');
 };
@@ -39,6 +43,8 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 * @var {string} The stay action, default is to continue editing.
 	 */
 	,stay: 'stay' 
+	
+	,checkDirtyBtns: []
 	
 	/**
 	 * Add in an action button. Takes multiple button configs as arguments.
@@ -86,10 +92,17 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 					};
 				}
 			}
-            			
+						      			
 			// create the button	
 			var b = new Ext.Toolbar.Button(options);
-            			
+            
+			
+            // if checkDirty, disable until field change
+            if (options.checkDirty) {
+                b.setDisabled(true);
+                this.checkDirtyBtns.push(b);
+            }
+			
 			// if javascript is specified, run it when button is click, before this.checkConfirm is run
 			if (options.javascript) {
     			b.addListener('click',function(itm,e) {
@@ -225,6 +238,14 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
                             action: itm.process
                            ,'modx-ab-stay': MODx.config.stay
                         });
+                        
+                        if (itm.checkDirty) {
+                        	if (!o.form.isDirty()) {
+                        		Ext.Msg.hide();
+                        		return false;
+                        	}
+                        }
+                        
 						o.form.submit({
 							params: o.params
 							,reset: false
@@ -376,6 +397,18 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 		var t = parent.Ext.getCmp(tree);
         t.refreshNode(node,self || false);
         return false;
+	}
+	
+	,setupDirtyButtons: function(fp) {
+		var fp = Ext.getCmp(fp);
+        if (fp) {
+            fp.on('fieldChange',function(o) {
+               for (var i=0;i<this.checkDirtyBtns.length;i++) {
+                    var btn = this.checkDirtyBtns[i];
+                    btn.setDisabled(false);
+               }
+            },this);
+        }
 	}
 });
 Ext.reg('modx-actionbuttons',MODx.toolbar.ActionButtons);

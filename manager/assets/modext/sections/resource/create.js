@@ -21,6 +21,7 @@ MODx.page.CreateResource = function(config) {
             process: 'create'
             ,text: _('save')
             ,method: 'remote'
+            ,checkDirty: true
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
             ,listeners: {
                 'click': {fn:function(btn,e) {

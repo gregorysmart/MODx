@@ -111,6 +111,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     r.object.snippet = "<?php\n"+r.object.snippet+"\n?>"
                     this.getForm().setValues(r.object);
                     Ext.getCmp('snippet-name').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
+                    this.clearDirty();
                 } else MODx.form.Handler.errorJSON(r);
             }
         })

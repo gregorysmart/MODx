@@ -12,11 +12,11 @@ MODx.Component = function(config) {
     this.config = config;
     
     this._loadForm();
-    this._loadActionButtons();
     if (this.config.tabs) {
         this._loadTabs();
     }
     this._loadComponents();
+    this._loadActionButtons();
 };
 Ext.extend(MODx.Component,Ext.Component,{
 	/**
