@@ -40,6 +40,10 @@ MODx.Console = function(config) {
             ,cls: 'modx-console'            
         }]
         ,buttons: [{
+            text: 'Copy to Clipboard'
+            ,handler: this.copyToClipboard
+            ,scope: this
+        },{
             text: _('ok')
             ,id: 'modx-console-ok'
             ,disabled: true
@@ -66,6 +70,12 @@ Ext.extend(MODx.Console,Ext.Window,{
        }
        this.mgr.startAutoRefresh(.5,this.config.url,this.config.baseParams || {},this.renderMsg,true);
        this.running = true;
+    }
+    
+    ,copyToClipboard: function() {
+    	var c = Ext.get('console-body').dom.innerHTML;
+    	c = Ext.util.Format.stripTags(c);
+    	MODx.util.Clipboard.copy(c);
     }
     
     ,renderMsg: function(el,s,r,o) {
