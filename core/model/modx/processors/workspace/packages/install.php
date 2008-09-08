@@ -30,15 +30,12 @@ $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_found'));
 $installed = $package->install();
 
 if (!$installed) {
-    $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_install',array('signature' => $package->get('signature'))));
-
-    if ($modx->registryhandler) $modx->registryhandler->unload();
-    $modx->error->failure($modx->lexicon('package_err_install',array('signature' => $package->get('signature'))));
+    $msg = $modx->lexicon('package_err_install',array('signature' => $package->get('signature')));
+    $modx->log(XPDO_LOG_LEVEL_ERROR,$msg);
+    $modx->error->failure($msg);
 } else {
-    $msg = sprintf($modx->lexicon('package_installed'),$package->get('signature'));
+    $msg = $modx->lexicon('package_installed',array('signature' => $package->get('signature')));
     $modx->log(XPDO_LOG_LEVEL_WARN,$msg);
-
-    if ($modx->registryhandler) $modx->registryhandler->unload();
     $modx->error->success($msg);
 }
 $modx->error->failure($modx->lexicon('package_err_install_gen'));

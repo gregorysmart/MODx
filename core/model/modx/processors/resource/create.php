@@ -294,4 +294,10 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$error->success('', array('id' => $document->get('id')));
+// quick check to make sure it's not site_start, if so, publish
+if ($document->get('id') == $modx->config['site_start']) {
+	$document->set('published',true);
+    $document->save();
+}
+
+$modx->error->success('', array('id' => $document->get('id')));
