@@ -172,6 +172,13 @@ class modLexicon {
      * inc.php files in their proper culture directory. Can load an infinite
      * number of focus areas via a dynamic number of arguments.
      *
+     * They are loaded by language:namespace:foci, namespace:foci, or just
+     * foci.
+     * Examples:
+     * $modx->lexicon->load('en:core:snippet');
+     * $modx->lexicon->load('demo:test');
+     * $modx->lexicon->load('chunk');
+     *
      * @access public
      */
     function load() {
@@ -188,9 +195,18 @@ class modLexicon {
                     $this->_lexicon = array_merge($this->_lexicon,$_lang);
                 }
             } else { // if namespace, search specified lexicon
-                $namespace = substr($focus,0,$nspos);
-                $foc = substr($focus,$nspos+1);
-                $_lang = $this->loadCache($namespace,$foc);
+                $params = explode(':',$focus);
+                if (count($params) <= 2) {
+                    $language = $this->modx->config['manager_language'];
+                    $namespace = $params[0];
+                    $foc = $params[1];
+                } else {
+                    $language = $params[0];
+                    $namespace = $params[1];
+                    $foc = $params[2];
+                }
+
+                $_lang = $this->loadCache($namespace,$foc,$language);
                 $this->_lexicon = array_merge($this->_lexicon,$_lang);
             }
         }
