@@ -17,8 +17,12 @@ $packages = $modx->getCollection('transport.modTransportPackage',$c);
 
 $ps = array();
 foreach ($packages as $package) {
+    if ($package->installed == '0000-00-00 00:00:00') $package->set('installed',null);
     $pa = $package->toArray();
-    $not_installed = $package->installed == null || $package->installed == '0000-00-00 00:00:00';
+
+    $pa['updated'] = strftime('%Y-%m-%d %H:%M:%S',$pa['updated']);
+
+    $not_installed = $package->get('installed') == null || $package->get('installed') == '0000-00-00 00:00:00';
     $pa['menu'] = array(
         array(
             'text' => $modx->lexicon('package_update'),

@@ -42,11 +42,15 @@ Ext.extend(MODx.Msg,Ext.Component,{
                         r = Ext.decode(r.responseText);
                         if (r.success && config.success) {
                             Ext.callback(config.success,config.scope || this,[r,o]);
-                        } else MODx.form.Handler.errorJSON(r);
+                        } else if (config.failure) {
+                            Ext.callback(config.failure,config.scope || this,[r,o]);
+                        } else MODx.form.Handler.errorJSON(r); 
                     }
                     ,failure: function(r,o) {
                         r = Ext.decode(r.responseText);
-                        MODx.form.Handler.errorJSON(r);
+                        if (config.failure) {
+                        	Ext.callback(config.failure,config.scope || this,[r,o]);
+                        } else MODx.form.Handler.errorJSON(r);
                     }
                 });
             }

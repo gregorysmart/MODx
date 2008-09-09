@@ -161,7 +161,7 @@ class modTransportPackage extends xPDOObject {
 	 */
 	function remove($ancestors = array()) {
 		$removed = false;
-        if ($this->get('installed') == null) {
+        if ($this->get('installed') == null || $this->get('installed') == '0000-00-00 00:00:00') {
         	$uninstalled = true;
         } else {
             $uninstalled = $this->uninstall();

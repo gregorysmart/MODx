@@ -82,9 +82,8 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         var topic = '/workspace/package/remove/'+r.signature+'/';
         this.loadConsole(btn,topic);
         
-        MODx.msg.confirm({
-            text: _('package_remove_confirm')
-            ,url: this.config.url
+        Ext.Ajax.request({
+            url: this.config.url
             ,params: {
                 action: 'remove'
                 ,signature: r.signature
@@ -95,6 +94,12 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
             ,success: function(r) {
                 this.console.complete();
                 Ext.Msg.hide();
+                this.refresh();
+            }
+            ,failure: function(r) {
+            	this.console.complete();
+                Ext.Msg.hide();
+                this.refresh();
             }
         });
     }
@@ -119,6 +124,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
             	if (r.success == false) {
             	   Ext.Msg.hide();
             	}
+            	this.refresh();
             }
     	});
     }
