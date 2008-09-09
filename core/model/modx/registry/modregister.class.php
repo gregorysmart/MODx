@@ -55,6 +55,12 @@ class modRegister {
      * @access protected
      */
     var $_currentTopic = '/';
+    /**
+     * The key identifying this register in a registry.
+     * @var string
+     * @access protected
+     */
+    var $_key = null;
 
     /**#@+
      * Construct a new register.
@@ -62,12 +68,13 @@ class modRegister {
      * @param modX &$modx A reference to a modX instance.
      * @param array $options Optional array of registry options.
      */
-    function modRegister(& $modx, $options = array()) {
-        $this->__construct($modx, $options);
+    function modRegister(& $modx, $key, $options = array()) {
+        $this->__construct($modx, $key, $options);
     }
     /**@ignore*/
-    function __construct(& $modx, $options = array()) {
+    function __construct(& $modx, $key, $options = array()) {
         $this->modx =& $modx;
+        $this->_key = $key;
         $this->options = $options;
     }
     /**#@-*/
@@ -160,6 +167,10 @@ class modRegister {
         if ($topicIdx !== false && $topicIdx !== null) {
             $this->_currentTopic = $topic;
         }
+    }
+    
+    function getKey() {
+        return $this->_key;
     }
 }
 ?>

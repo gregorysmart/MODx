@@ -11,12 +11,6 @@ $modx->lexicon->clearCache();
 $invdirs = array('.','..','.svn','country');
 @ini_set('memory_limit','128M');
 
-if (isset($_POST['register']) && isset($_POST['topic'])) {
-    if ($modx->getService('registryhandler','registry.modRegisterHandler')) {
-        $modx->registryhandler->load($_POST['register'],$_POST['topic']);
-    }
-}
-
 $d = MODX_CORE_PATH.'/lexicon/';
 $i = 0;
 

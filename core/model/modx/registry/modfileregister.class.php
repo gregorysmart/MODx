@@ -32,17 +32,17 @@ class modFileRegister extends modRegister {
      * @param modX &$modx A reference to a modX instance.
      * @param array $options Optional array of registry options.
      */
-    function modFileRegister(& $modx, $options = array()) {
-        $this->__construct($modx, $options);
+    function modFileRegister(& $modx, $key, $options = array()) {
+        $this->__construct($modx, $key, $options);
     }
     /**@ignore*/
-    function __construct(& $modx, $options = array()) {
-        parent :: __construct($modx, $options);
+    function __construct(& $modx, $key, $options = array()) {
+        parent :: __construct($modx, $key, $options);
         $modx->getCacheManager();
         $this->directory = $modx->getCachePath() . 'registry/';
         $this->directory .= isset($options['directory'])
                 ? $options['directory']
-                : 'default';
+                : $key;
         if ($this->directory[strlen($this->directory)-1] != '/') $this->directory .= '/';
     }
     /**#@-*/

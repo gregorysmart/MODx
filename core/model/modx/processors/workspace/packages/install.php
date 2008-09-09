@@ -7,12 +7,6 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
-if (isset($_POST['register']) && isset($_POST['topic'])) {
-    if ($modx->getService('registryhandler','registry.modRegisterHandler')) {
-        $modx->registryhandler->load($_POST['register'],$_POST['topic']);
-    }
-}
-
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_beginning',array('signature' => $_REQUEST['signature'] )));
 
 // find package

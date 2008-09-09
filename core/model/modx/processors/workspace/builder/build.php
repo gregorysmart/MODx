@@ -7,11 +7,6 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
 //$modx->error->failure(print_r($_SESSION['modx.pb'],true));
-if (isset($_POST['register']) && isset($_POST['topic'])) {
-    if ($modx->getService('registryhandler','registry.modRegisterHandler')) {
-        $modx->registryhandler->load($_POST['register'],$_POST['topic']);
-    }
-}
 
 $_PACKAGE =& $_SESSION['modx.pb'];
 

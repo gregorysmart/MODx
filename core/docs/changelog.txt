@@ -4,6 +4,9 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Updating xPDO to revision 234.
+- Added support for logging to registers through any modError instance when loaded by modRequest::loadErrorHandler().
+- Removed modRegisterHandler and added logging helper functions to modRegistry. 
 - Updating xPDO to revision 233.
 - Updated modAccessibleObject::loadCollection() based on xPDO::loadCollection() changes.
 - Updating xPDO to revision 231.

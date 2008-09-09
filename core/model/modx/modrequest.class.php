@@ -284,6 +284,16 @@ class modRequest {
     function loadErrorHandler($class = 'modArrayError') {
         if ($this->modx->loadClass('error.'.strtolower($class),'',false,true)) {
             $this->modx->error = new $class($this->modx);
+            if (isset($_POST['register']) && isset($_POST['topic'])) {
+                if ($modx->getService('registry','registry.modRegistry')) {
+                    $register_class = isset($_POST['register_class']) ? $_POST['register_class'] : 'registry.modFileRegister';
+                    $register = $modx->registry->getRegister($_POST['register'], $register_class);
+                    if ($register) {
+                        $level = isset($_POST['log_level']) ? $_POST['log_level'] : MODX_LOG_LEVEL_INFO;
+                        $modx->registry->setLogging($register, $_POST['topic'], $level);
+                    }
+                }
+            }
         } else {
             $this->modx->log(XPDO_LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
         }

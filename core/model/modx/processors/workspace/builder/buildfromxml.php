@@ -6,12 +6,6 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
-if (isset($_POST['register']) && isset($_POST['topic'])) {
-    if ($modx->getService('registryhandler','registry.modRegisterHandler')) {
-        $modx->registryhandler->load($_POST['register'],$_POST['topic']);
-    }
-}
-
 // load the modPackageBuilder class and get an instance
 $modx->log(MODX_LOG_LEVEL_INFO,'Loading package builder.');
 $modx->loadClass('transport.modXMLPackageBuilder','',false, true);

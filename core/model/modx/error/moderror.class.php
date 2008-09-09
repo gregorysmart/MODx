@@ -129,6 +129,9 @@ class modError {
      * @return string|object|array The transformed object data array.
      */
     function process($message = '', $status = false, $object = null) {
+        if (isset($this->modx->registry) && $this->modx->registry->isLogging()) {
+            $this->modx->registry->resetLogging();
+        }
         if ($status === true) {
             $s = $this->_validate();
             if ($s !== '') {
