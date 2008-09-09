@@ -95,9 +95,9 @@ class modCacheManager extends xPDOCacheManager {
                 $htmlContentType->set('file_extensions', 'html,htm');
                 $collContentTypes['1']= $htmlContentType;
             }
-            $collResources= array();
+            $collResources= null;
             if ($criteria->prepare() && $criteria->stmt->execute()) {
-                $collResources= $criteria->stmt->fetchAll(PDO_FETCH_OBJ);
+                $collResources= & $criteria->stmt;
             }
             if ($collResources) {
                 $content .= "\$this->resourceMap= array ();\n";
@@ -108,71 +108,69 @@ class modCacheManager extends xPDOCacheManager {
 //                if (defined('MODX_COMPATMODE') && MODX_COMPATMODE == '0.9.5')
                     $content .= "\$this->documentListing= & \$this->resourceListing;\n";
                 $containerSuffix= isset ($contextConfig['container_suffix']) ? $contextConfig['container_suffix'] : '';
-                if (!empty ($collResources)) {
-                    $localMap= array ();
-                    foreach ($collResources as $r) {
-                        $parentId= isset($r->parent) ? strval($r->parent) : "0";
+                $localMap= array ();
+                while ($r = $collResources->fetch(PDO_FETCH_OBJ)) {
+                    $parentId= isset($r->parent) ? strval($r->parent) : "0";
 //                        if (defined('MODX_COMPATMODE') && MODX_COMPATMODE == '0.9.5')
-                            $content .= "\$this->documentMap[]= array('{$parentId}' => '" . $r->id . "');\n";
-                        $content .= "\$this->resourceMap['{$parentId}'][]= " . $r->id . ";\n";
-                        $resourceValues= get_object_vars($r);
-                        $content .= "\$this->resourceListing['" . $r->id . "']= " . var_export($resourceValues, true) . ";\n";
-                        $resAlias= '';
-                        $resPath= '';
-                        $contentType= isset ($collContentTypes[$r->content_type]) ? $collContentTypes[$r->content_type] : $collContentTypes['1'];
-                        if ((isset ($obj->config['friendly_urls']) && $obj->config['friendly_urls']) || $contextConfig['friendly_urls']) {
-                            if ((isset ($obj->config['friendly_alias_urls']) && $obj->config['friendly_alias_urls']) || $contextConfig['friendly_alias_urls']) {
-                                $resAlias= $r->alias;
-                                if (empty ($resAlias)) $resAlias= $r->id;
-                                $parentResource= '';
-                                if ((isset ($obj->config['use_alias_path']) && $obj->config['use_alias_path'] == 1) || $contextConfig['use_alias_path']) {
-                                    $pathParentId= $parentId;
-                                    $parentResources= array ();
-                                    $currResource= $r;
-                                    $parentSql= "SELECT {$resourceCols} FROM {$tblResource} WHERE `id` = :parent LIMIT 1";
-                                    $hasParent= (boolean) $pathParentId;
-                                    if ($hasParent) {
-                                        if ($parentStmt= $this->modx->prepare($parentSql)) {
-                                            $parentStmt->bindParam(':parent', $pathParentId);
-                                            if ($parentStmt->execute()) {
-                                                while ($hasParent && $currResource= $parentStmt->fetch(PDO_FETCH_OBJ)) {
-                                                    $parentAlias= $currResource->alias;
-                                                    if (empty ($parentAlias))
-                                                        $parentAlias= "{$pathParentId}";
-                                                    $parentResources[]= "{$parentAlias}";
-                                                    $pathParentId= $currResource->parent;
-                                                    $hasParent= ($pathParentId > 0 && $parentStmt->execute());
-                                                }
+                        $content .= "\$this->documentMap[]= array('{$parentId}' => '" . $r->id . "');\n";
+                    $content .= "\$this->resourceMap['{$parentId}'][]= " . $r->id . ";\n";
+                    $resourceValues= get_object_vars($r);
+                    $content .= "\$this->resourceListing['" . $r->id . "']= " . var_export($resourceValues, true) . ";\n";
+                    $resAlias= '';
+                    $resPath= '';
+                    $contentType= isset ($collContentTypes[$r->content_type]) ? $collContentTypes[$r->content_type] : $collContentTypes['1'];
+                    if ((isset ($obj->config['friendly_urls']) && $obj->config['friendly_urls']) || $contextConfig['friendly_urls']) {
+                        if ((isset ($obj->config['friendly_alias_urls']) && $obj->config['friendly_alias_urls']) || $contextConfig['friendly_alias_urls']) {
+                            $resAlias= $r->alias;
+                            if (empty ($resAlias)) $resAlias= $r->id;
+                            $parentResource= '';
+                            if ((isset ($obj->config['use_alias_path']) && $obj->config['use_alias_path'] == 1) || $contextConfig['use_alias_path']) {
+                                $pathParentId= $parentId;
+                                $parentResources= array ();
+                                $currResource= $r;
+                                $parentSql= "SELECT {$resourceCols} FROM {$tblResource} WHERE `id` = :parent LIMIT 1";
+                                $hasParent= (boolean) $pathParentId;
+                                if ($hasParent) {
+                                    if ($parentStmt= $this->modx->prepare($parentSql)) {
+                                        $parentStmt->bindParam(':parent', $pathParentId);
+                                        if ($parentStmt->execute()) {
+                                            while ($hasParent && $currResource= $parentStmt->fetch(PDO_FETCH_OBJ)) {
+                                                $parentAlias= $currResource->alias;
+                                                if (empty ($parentAlias))
+                                                    $parentAlias= "{$pathParentId}";
+                                                $parentResources[]= "{$parentAlias}";
+                                                $pathParentId= $currResource->parent;
+                                                $hasParent= ($pathParentId > 0 && $parentStmt->execute());
                                             }
                                         }
                                     }
-                                    $resPath= !empty ($parentResources) ? implode('/', array_reverse($parentResources)) : '';
                                 }
-                            } else {
-                                $resAlias= $r->id;
-                            }
-                            if (!empty($containerSuffix) && $r->isfolder) {
-                                $resourceExt= $containerSuffix;
-                            } else {
-                                $resourceExt= $contentType->getExtension();
-                            }
-                            if (!empty($resourceExt)) {
-                                $resAlias .= $resourceExt;
+                                $resPath= !empty ($parentResources) ? implode('/', array_reverse($parentResources)) : '';
                             }
                         } else {
                             $resAlias= $r->id;
                         }
-                        $content .= "\$this->resourceListing['" . $r->id . "']['path']= '{$resPath}';\n";
-                        if (!empty ($resPath)) {
-                            $resPath .= '/';
+                        if (!empty($containerSuffix) && $r->isfolder) {
+                            $resourceExt= $containerSuffix;
+                        } else {
+                            $resourceExt= $contentType->getExtension();
                         }
-                        if (isset ($localMap[$resPath . $resAlias])) {
-                            $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Resource alias {$resPath}{$resAlias} already exists for resource id = {$localMap[$resPath . $resAlias]}; skipping duplicate resource alias for resource id = {$r->id}");
-                            continue;
+                        if (!empty($resourceExt)) {
+                            $resAlias .= $resourceExt;
                         }
-                        $localMap[$resPath . $resAlias]= $r->id;
-                        $content .= "\$this->aliasMap['{$resPath}{$resAlias}']= " . $r->id . ";\n";
+                    } else {
+                        $resAlias= $r->id;
                     }
+                    $content .= "\$this->resourceListing['" . $r->id . "']['path']= '{$resPath}';\n";
+                    if (!empty ($resPath)) {
+                        $resPath .= '/';
+                    }
+                    if (isset ($localMap[$resPath . $resAlias])) {
+                        $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Resource alias {$resPath}{$resAlias} already exists for resource id = {$localMap[$resPath . $resAlias]}; skipping duplicate resource alias for resource id = {$r->id}");
+                        continue;
+                    }
+                    $localMap[$resPath . $resAlias]= $r->id;
+                    $content .= "\$this->aliasMap['{$resPath}{$resAlias}']= " . $r->id . ";\n";
                 }
             }
 
@@ -327,7 +325,8 @@ class modCacheManager extends xPDOCacheManager {
     function generateActionMap($fileName) {
         $written= false;
 		$c = $this->modx->newQuery('modAction');
-		$c->sortby('context_key,controller','ASC');
+		$c->sortby('context_key','ASC');
+		$c->sortby('controller','ASC');
 		$actions = $this->modx->getCollection('modAction',$c);
 
 		$content = "<?php \n";

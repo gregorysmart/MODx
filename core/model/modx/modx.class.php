@@ -2539,7 +2539,7 @@ class modX extends xPDO {
             $sql= "SELECT ev.`name` AS `event`, ee.`pluginid` FROM {$eeTbl} ee INNER JOIN {$pluginTbl} pl ON pl.`id` = ee.`pluginid` AND pl.`disabled` = 0 INNER JOIN {$eventTbl} ev ON {$service} ev.`id` = ee.`evtid` ORDER BY ev.`name`, ee.`priority` ASC";
             $stmt= $this->prepare($sql);
             if ($stmt->execute()) {
-                foreach ($stmt->fetchAll(PDO_FETCH_ASSOC) as $ee) {
+                while ($ee = $stmt->fetch(PDO_FETCH_ASSOC)) {
                     $eventElementMap[$ee['event']][]= $ee['pluginid'];
                 }
             }

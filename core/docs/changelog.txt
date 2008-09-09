@@ -2,8 +2,10 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
-MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
+MODx Revolution 2.0.0-alpha-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Updating xPDO to revision 231.
+- Various model updates to reduce memory usage [convert foreach with fetchAll() calls to while with fetch()].
 - [#MODX-137] Locked Elements now editable by users with the Admin policy attribute edit_locked (not locked as in being edited by another user, but locked explicitly in the Element attributes).
 - Moved makeUrl logic to modContext class and modX now determines which context to use when building the URL.
 - Introduced modX->getContext() to retrieve, prepare and store context configurations in modX->contexts array for reuse during the single request
@@ -31,6 +33,9 @@ MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 - Fix to new modLexiconEntry table structure (was not installing due to NOT NULL and no default value).
 - Removed modResource::hasAccess() function to make sure and avoid confusion with security.
 - Add default admin user to the Administrator modUserGroup with a modUserGroupRole of 2 (SuperUser) on new installs and upgrades.
+
+MODx Revolution 2.0.0-alpha-3 (LastChangedRevision: 3867, LastChangedDate: 2008-07-22 08:44:38 -0500 (Tue, 22 Jul 2008))
+====================================
 - [#MODX-210] Changed no-longer-valid help text for resource panel
 - [#MODX-216] Fixed bug with pub_date/unpub_date for the Resource panel
 - [#MODX-213] manually entered passwords not being displayed after saving
@@ -60,6 +65,9 @@ MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 - Updated build.src.url to branches/revolution
 - Fixed import html/resources
 - Fixed action pointer if version is incorrect
+
+MODx Revolution 2.0.0-alpha-2 (LastChangedRevision: 3841, LastChangedDate: 2008-07-15 09:18:24 -0500 (Tue, 15 Jul 2008))
+====================================
 - Adopting new product name, MODx Revolution, and changed version to 2.0.0
 - Fixed bug with content type grid
 - Replaced 'gender' with Role column in Users grid
@@ -156,6 +164,9 @@ MODx Revolution 2.0.0-alpha-3 ($LastChangedRevision$, $LastChangedDate$)
 - Fixed TV pages to allow for templates to be assigned access prior to TV creation, as well as making grid not save until 'Save' is clicked
 - Fixed module update, removing legacy code
 - Fixed plugin event grid: now can be used via create or update, also properly handles events, does not save until "Save" button is clicked on action bar
+
+MODx 0.9.7-alpha-1 (LastChangedRevision: 3664, LastChangedDate: 2008-04-28 12:43:15 -0500 (Mon, 28 Apr 2008))
+====================================
 - Updated ExtJS from version 2.0 to 2.0.1
 - [Trac#20] When creating new document, make the 'Log Visits' checkbox respect the main configuration setting.
 - [Trac#9] Converted Database Tables tab in System Information to use Ext Grid.
