@@ -20,7 +20,12 @@ if (isset($_REQUEST['limit'])) {
 }
 $categories = $modx->getCollection('modCategory',$c);
 $count = $modx->getCount('modCategory');
-$cs = array();
+$cs = array('0' => array(
+    'id' => '',
+    'category' => $modx->lexicon('none'),
+));
+
+
 foreach ($categories as $category) {
 	$cs[] = $category->toArray();
 }

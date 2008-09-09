@@ -23,7 +23,6 @@ MODx.combo.ComboBox = function(config,getStore) {
         ,editable: true
         ,resizable: true
         ,typeAhead: true
-        ,lazyInit: true
         ,minChars: 3
     });
     Ext.applyIf(config,{
@@ -304,16 +303,14 @@ MODx.combo.Category = function(config) {
 		name: 'category'
 		,hiddenName: 'category'
 		,displayField: 'category'
-		,mode: 'local'
+		,mode: 'remote'
 		,fields: ['id','category']
-		,forceSelection: false
+		,forceSelection: true
 		,typeAhead: false
 		,allowBlank: true
+		,editable: false
         ,enableKeyEvents: true
 		,url: MODx.config.connectors_url+'element/category.php'
-        ,listeners: {
-            'blur': {fn:this._onblur,scope:this}
-        }
 	});
 	MODx.combo.Category.superclass.constructor.call(this,config);
 };

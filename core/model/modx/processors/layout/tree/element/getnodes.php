@@ -258,7 +258,7 @@ switch ($g[0]) {
                 'id' => 'n_category_'.$category->get('id'),
                 'leaf' => 1,
                 'cls' => 'file',
-                'href' => 'welcome',
+                'href' => '',
                 'type' => 'category',
                 'menu' => array(
                     array(
