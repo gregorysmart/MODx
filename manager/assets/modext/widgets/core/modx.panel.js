@@ -109,12 +109,12 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
                 this.addChangeEvent(cmp.items);    
             } else if (cmp.xtype) {
                 if (!cmp.listeners) cmp.listeners = {};
-                cmp.listeners.change = {fn:this.addFieldChangeEvent,scope:this}
+                cmp.listeners.change = {fn:this.fieldChangeEvent,scope:this}
             }
         }
     }
     
-    ,addFieldChangeEvent: function(fld,nv,ov) {
+    ,fieldChangeEvent: function(fld,nv,ov) {
        this.fireEvent('fieldChange',{
            field: fld
            ,nv: nv
