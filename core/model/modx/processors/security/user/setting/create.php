@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('user_setting','system_setting');
+$modx->lexicon->load('setting');
 
 $_POST['user'] = isset($_POST['fk']) ? $_POST['fk'] : 0;
 

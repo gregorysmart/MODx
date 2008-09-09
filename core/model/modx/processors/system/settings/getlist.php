@@ -5,7 +5,8 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('system_setting');
+$modx->lexicon->load('setting');
+
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'key';
@@ -33,7 +34,7 @@ if (isset($_POST['key']) && $_POST['key'] != '') {
     $c->orCondition($va);
     $cc->orCondition($va);
 }
-$c->sortby('`'.$_REQUEST['sort'].'`',$_REQUEST['dir']);
+$c->sortby('`modSystemSetting`.`area`,`modSystemSetting`.`'.$_REQUEST['sort'].'`',$_REQUEST['dir']);
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
 
 $settings = $modx->getCollection('modSystemSetting',$c);
@@ -43,6 +44,10 @@ $ss = array();
 foreach ($settings as $setting) {
     $sa = $setting->toArray();
     $k = 'setting_'.$sa['key'];
+
+    if ($modx->lexicon->exists('area_'.$setting->get('area'))) {
+        $sa['area_text'] = $modx->lexicon('area_'.$setting->get('area'));
+    } else $sa['area_text'] = $sa['area'];
 
     $sa['description'] = $modx->lexicon->exists($k.'_desc')
         ? $modx->lexicon($k.'_desc')

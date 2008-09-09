@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('system_setting');
+$modx->lexicon->load('setting');
 
 $_POST['context_key'] = isset($_POST['fk']) ? $_POST['fk'] : 0;
 

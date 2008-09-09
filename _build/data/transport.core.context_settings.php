@@ -6,7 +6,7 @@ $collection['connector-modRequest.class']->fromArray(array (
   'value' => 'modConnectorRequest',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
+  'area' => 'system',
 ), '', true, true);
 $collection['mgr-allow_tags_in_post']= $xpdo->newObject('modContextSetting');
 $collection['mgr-allow_tags_in_post']->fromArray(array (
@@ -15,7 +15,7 @@ $collection['mgr-allow_tags_in_post']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
-
+  'area' => 'system',
 ), '', true, true);
 $collection['mgr-modRequest.class']= $xpdo->newObject('modContextSetting');
 $collection['mgr-modRequest.class']->fromArray(array (
@@ -24,5 +24,5 @@ $collection['mgr-modRequest.class']->fromArray(array (
   'value' => 'modManagerRequest',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
+  'area' => 'system',
 ), '', true, true);

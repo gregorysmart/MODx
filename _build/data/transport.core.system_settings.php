@@ -5,7 +5,7 @@ $collection['allow_tags_in_post']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
-
+  'area' => 'system',
 ), '', true, true);
 $collection['auto_menuindex']= $xpdo->newObject('modSystemSetting');
 $collection['auto_menuindex']->fromArray(array (
@@ -13,7 +13,7 @@ $collection['auto_menuindex']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
-
+  'area' => 'site',
 ), '', true, true);
 $collection['blocked_minutes']= $xpdo->newObject('modSystemSetting');
 $collection['blocked_minutes']->fromArray(array (
@@ -21,7 +21,7 @@ $collection['blocked_minutes']->fromArray(array (
   'value' => '60',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
+  'area' => 'authentication',
 ), '', true, true);
 $collection['cache_db']= $xpdo->newObject('modSystemSetting');
 $collection['cache_db']->fromArray(array (
@@ -29,7 +29,7 @@ $collection['cache_db']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
-
+  'area' => 'caching',
 ), '', true, true);
 $collection['cache_db_expires']= $xpdo->newObject('modSystemSetting');
 $collection['cache_db_expires']->fromArray(array (
@@ -37,7 +37,7 @@ $collection['cache_db_expires']->fromArray(array (
   'value' => '0',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
+  'area' => 'caching',
 ), '', true, true);
 $collection['cache_default']= $xpdo->newObject('modSystemSetting');
 $collection['cache_default']->fromArray(array (
@@ -45,6 +45,7 @@ $collection['cache_default']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['cache_disabled']= $xpdo->newObject('modSystemSetting');
@@ -53,6 +54,7 @@ $collection['cache_disabled']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['cache_json']= $xpdo->newObject('modSystemSetting');
@@ -61,6 +63,7 @@ $collection['cache_json']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['cache_json_expires']= $xpdo->newObject('modSystemSetting');
@@ -69,6 +72,7 @@ $collection['cache_json_expires']->fromArray(array (
   'value' => '0',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['cache_resource']= $xpdo->newObject('modSystemSetting');
@@ -77,6 +81,7 @@ $collection['cache_resource']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['cache_resource_expires']= $xpdo->newObject('modSystemSetting');
@@ -85,22 +90,25 @@ $collection['cache_resource_expires']->fromArray(array (
   'value' => '0',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['captcha_words']= $xpdo->newObject('modSystemSetting');
 $collection['captcha_words']->fromArray(array (
   'key' => 'captcha_words',
   'value' => 'MODx,Access,Better,BitCode,Cache,Desc,Design,Excell,Enjoy,URLs,TechView,Gerald,Griff,Humphrey,Holiday,Intel,Integration,Joystick,Join(),Tattoo,Genetic,Light,Likeness,Marit,Maaike,Niche,Netherlands,Ordinance,Oscillo,Parser,Phusion,Query,Question,Regalia,Righteous,Snippet,Sentinel,Template,Thespian,Unity,Enterprise,Verily,Veri,Website,WideWeb,Yap,Yellow,Zebra,Zygote',
-  'xtype' => 'textfield',
+  'xtype' => 'textarea',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['compress_js']= $xpdo->newObject('modSystemSetting');
 $collection['compress_js']->fromArray(array (
   'key' => 'compress_js',
-  'value' => '0',
+  'value' => '',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'caching',
 
 ), '', true, true);
 $collection['container_suffix']= $xpdo->newObject('modSystemSetting');
@@ -109,6 +117,7 @@ $collection['container_suffix']->fromArray(array (
   'value' => '/',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'furls',
 
 ), '', true, true);
 $collection['default_template']= $xpdo->newObject('modSystemSetting');
@@ -117,6 +126,7 @@ $collection['default_template']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-template',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['editor_css_path']= $xpdo->newObject('modSystemSetting');
@@ -125,6 +135,7 @@ $collection['editor_css_path']->fromArray(array (
   'value' => '',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'manager',
 
 ), '', true, true);
 $collection['editor_css_selectors']= $xpdo->newObject('modSystemSetting');
@@ -133,14 +144,16 @@ $collection['editor_css_selectors']->fromArray(array (
   'value' => '',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'manager',
 
 ), '', true, true);
 $collection['emailsender']= $xpdo->newObject('modSystemSetting');
 $collection['emailsender']->fromArray(array (
   'key' => 'emailsender',
-  'value' => 'you@yourdomain.com',
+  'value' => 'shaun@collabpad.com',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['emailsubject']= $xpdo->newObject('modSystemSetting');
@@ -149,6 +162,7 @@ $collection['emailsubject']->fromArray(array (
   'value' => 'Your login details',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['error_page']= $xpdo->newObject('modSystemSetting');
@@ -157,6 +171,7 @@ $collection['error_page']->fromArray(array (
   'value' => '1',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['failed_login_attempts']= $xpdo->newObject('modSystemSetting');
@@ -165,30 +180,7 @@ $collection['failed_login_attempts']->fromArray(array (
   'value' => '3',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['fck_editor_autolang']= $xpdo->newObject('modSystemSetting');
-$collection['fck_editor_autolang']->fromArray(array (
-  'key' => 'fck_editor_autolang',
-  'value' => '0',
-  'xtype' => 'combo-boolean',
-  'namespace' => 'core',
-
-), '', true, true);
-$collection['fck_editor_toolbar']= $xpdo->newObject('modSystemSetting');
-$collection['fck_editor_toolbar']->fromArray(array (
-  'key' => 'fck_editor_toolbar',
-  'value' => 'standard',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
-
-), '', true, true);
-$collection['fe_editor_lang']= $xpdo->newObject('modSystemSetting');
-$collection['fe_editor_lang']->fromArray(array (
-  'key' => 'fe_editor_lang',
-  'value' => 'en',
-  'xtype' => 'combo-language',
-  'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['feed_modx_news']= $xpdo->newObject('modSystemSetting');
@@ -197,6 +189,7 @@ $collection['feed_modx_news']->fromArray(array (
   'value' => 'http://feeds.feedburner.com/modx-announce',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['feed_modx_security']= $xpdo->newObject('modSystemSetting');
@@ -205,6 +198,16 @@ $collection['feed_modx_security']->fromArray(array (
   'value' => 'http://feeds.feedburner.com/modxsecurity',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
+
+), '', true, true);
+$collection['fe_editor_lang']= $xpdo->newObject('modSystemSetting');
+$collection['fe_editor_lang']->fromArray(array (
+  'key' => 'fe_editor_lang',
+  'value' => 'en',
+  'xtype' => 'combo-language',
+  'namespace' => 'core',
+  'area' => 'language',
 
 ), '', true, true);
 $collection['filemanager_path']= $xpdo->newObject('modSystemSetting');
@@ -213,6 +216,7 @@ $collection['filemanager_path']->fromArray(array (
   'value' => '',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['friendly_alias_urls']= $xpdo->newObject('modSystemSetting');
@@ -221,22 +225,7 @@ $collection['friendly_alias_urls']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['friendly_url_prefix']= $xpdo->newObject('modSystemSetting');
-$collection['friendly_url_prefix']->fromArray(array (
-  'key' => 'friendly_url_prefix',
-  'value' => '',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
-
-), '', true, true);
-$collection['friendly_url_suffix']= $xpdo->newObject('modSystemSetting');
-$collection['friendly_url_suffix']->fromArray(array (
-  'key' => 'friendly_url_suffix',
-  'value' => '.html',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
+  'area' => 'furls',
 
 ), '', true, true);
 $collection['friendly_urls']= $xpdo->newObject('modSystemSetting');
@@ -245,6 +234,25 @@ $collection['friendly_urls']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'furls',
+
+), '', true, true);
+$collection['friendly_url_prefix']= $xpdo->newObject('modSystemSetting');
+$collection['friendly_url_prefix']->fromArray(array (
+  'key' => 'friendly_url_prefix',
+  'value' => '',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'furls',
+
+), '', true, true);
+$collection['friendly_url_suffix']= $xpdo->newObject('modSystemSetting');
+$collection['friendly_url_suffix']->fromArray(array (
+  'key' => 'friendly_url_suffix',
+  'value' => '.html',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'furls',
 
 ), '', true, true);
 $collection['mail_check_timeperiod']= $xpdo->newObject('modSystemSetting');
@@ -253,6 +261,7 @@ $collection['mail_check_timeperiod']->fromArray(array (
   'value' => '60',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['manager_direction']= $xpdo->newObject('modSystemSetting');
@@ -261,14 +270,7 @@ $collection['manager_direction']->fromArray(array (
   'value' => 'ltr',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['manager_lang_attribute']= $xpdo->newObject('modSystemSetting');
-$collection['manager_lang_attribute']->fromArray(array (
-  'key' => 'manager_lang_attribute',
-  'value' => 'en',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
+  'area' => 'language',
 
 ), '', true, true);
 $collection['manager_language']= $xpdo->newObject('modSystemSetting');
@@ -277,6 +279,16 @@ $collection['manager_language']->fromArray(array (
   'value' => 'en',
   'xtype' => 'combo-language',
   'namespace' => 'core',
+  'area' => 'language',
+
+), '', true, true);
+$collection['manager_lang_attribute']= $xpdo->newObject('modSystemSetting');
+$collection['manager_lang_attribute']->fromArray(array (
+  'key' => 'manager_lang_attribute',
+  'value' => 'en',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'language',
 
 ), '', true, true);
 $collection['manager_layout']= $xpdo->newObject('modSystemSetting');
@@ -285,6 +297,7 @@ $collection['manager_layout']->fromArray(array (
   'value' => '4',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'manager',
 
 ), '', true, true);
 $collection['manager_theme']= $xpdo->newObject('modSystemSetting');
@@ -293,6 +306,7 @@ $collection['manager_theme']->fromArray(array (
   'value' => 'default',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'manager',
 
 ), '', true, true);
 $collection['modx_charset']= $xpdo->newObject('modSystemSetting');
@@ -301,6 +315,7 @@ $collection['modx_charset']->fromArray(array (
   'value' => 'UTF-8',
   'xtype' => 'combo-charset',
   'namespace' => 'core',
+  'area' => 'language',
 
 ), '', true, true);
 $collection['new_file_permissions']= $xpdo->newObject('modSystemSetting');
@@ -309,6 +324,7 @@ $collection['new_file_permissions']->fromArray(array (
   'value' => '0644',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['new_folder_permissions']= $xpdo->newObject('modSystemSetting');
@@ -317,14 +333,7 @@ $collection['new_folder_permissions']->fromArray(array (
   'value' => '0755',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['number_of_logs']= $xpdo->newObject('modSystemSetting');
-$collection['number_of_logs']->fromArray(array (
-  'key' => 'number_of_logs',
-  'value' => '100',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['number_of_messages']= $xpdo->newObject('modSystemSetting');
@@ -333,6 +342,7 @@ $collection['number_of_messages']->fromArray(array (
   'value' => '30',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['number_of_results']= $xpdo->newObject('modSystemSetting');
@@ -341,14 +351,7 @@ $collection['number_of_results']->fromArray(array (
   'value' => '20',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['old_template']= $xpdo->newObject('modSystemSetting');
-$collection['old_template']->fromArray(array (
-  'key' => 'old_template',
-  'value' => '',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['publish_default']= $xpdo->newObject('modSystemSetting');
@@ -357,6 +360,7 @@ $collection['publish_default']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['rb_base_dir']= $xpdo->newObject('modSystemSetting');
@@ -365,6 +369,7 @@ $collection['rb_base_dir']->fromArray(array (
   'value' => '',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['rb_base_url']= $xpdo->newObject('modSystemSetting');
@@ -373,6 +378,7 @@ $collection['rb_base_url']->fromArray(array (
   'value' => '',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['request_param_alias']= $xpdo->newObject('modSystemSetting');
@@ -381,6 +387,7 @@ $collection['request_param_alias']->fromArray(array (
   'value' => 'q',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['request_param_id']= $xpdo->newObject('modSystemSetting');
@@ -389,6 +396,7 @@ $collection['request_param_id']->fromArray(array (
   'value' => 'id',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['resolve_hostnames']= $xpdo->newObject('modSystemSetting');
@@ -397,6 +405,7 @@ $collection['resolve_hostnames']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['search_default']= $xpdo->newObject('modSystemSetting');
@@ -405,6 +414,7 @@ $collection['search_default']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['server_offset_time']= $xpdo->newObject('modSystemSetting');
@@ -413,6 +423,7 @@ $collection['server_offset_time']->fromArray(array (
   'value' => '0',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['server_protocol']= $xpdo->newObject('modSystemSetting');
@@ -421,6 +432,7 @@ $collection['server_protocol']->fromArray(array (
   'value' => 'http',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['session_cookie_domain']= $xpdo->newObject('modSystemSetting');
@@ -429,6 +441,7 @@ $collection['session_cookie_domain']->fromArray(array (
   'value' => 'localhost',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'session',
 
 ), '', true, true);
 $collection['session_cookie_lifetime']= $xpdo->newObject('modSystemSetting');
@@ -437,6 +450,7 @@ $collection['session_cookie_lifetime']->fromArray(array (
   'value' => '604800',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'session',
 
 ), '', true, true);
 $collection['session_cookie_path']= $xpdo->newObject('modSystemSetting');
@@ -445,6 +459,7 @@ $collection['session_cookie_path']->fromArray(array (
   'value' => '/',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'session',
 
 ), '', true, true);
 $collection['session_cookie_secure']= $xpdo->newObject('modSystemSetting');
@@ -453,6 +468,7 @@ $collection['session_cookie_secure']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'session',
 
 ), '', true, true);
 $collection['session_handler_class']= $xpdo->newObject('modSystemSetting');
@@ -461,6 +477,7 @@ $collection['session_handler_class']->fromArray(array (
   'value' => 'modSessionHandler',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'session',
 
 ), '', true, true);
 $collection['session_name']= $xpdo->newObject('modSystemSetting');
@@ -469,14 +486,7 @@ $collection['session_name']->fromArray(array (
   'value' => 'modxcmssession',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['set_header']= $xpdo->newObject('modSystemSetting');
-$collection['set_header']->fromArray(array (
-  'key' => 'set_header',
-  'value' => '1',
-  'xtype' => 'combo-boolean',
-  'namespace' => 'core',
+  'area' => 'session',
 
 ), '', true, true);
 $collection['settings_version']= $xpdo->newObject('modSystemSetting');
@@ -485,6 +495,16 @@ $collection['settings_version']->fromArray(array (
   'value' => '2.0.0-alpha-3',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
+
+), '', true, true);
+$collection['set_header']= $xpdo->newObject('modSystemSetting');
+$collection['set_header']->fromArray(array (
+  'key' => 'set_header',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['show_preview']= $xpdo->newObject('modSystemSetting');
@@ -493,6 +513,7 @@ $collection['show_preview']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'manager',
 
 ), '', true, true);
 $collection['signupemail_message']= $xpdo->newObject('modSystemSetting');
@@ -511,6 +532,7 @@ $collection['signupemail_message']->fromArray(array (
     Site Administrator',
   'xtype' => 'textarea',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['site_id']= $xpdo->newObject('modSystemSetting');
@@ -519,14 +541,16 @@ $collection['site_id']->fromArray(array (
   'value' => '',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'system',
 
 ), '', true, true);
 $collection['site_name']= $xpdo->newObject('modSystemSetting');
 $collection['site_name']->fromArray(array (
   'key' => 'site_name',
-  'value' => 'My MODx Site',
+  'value' => 'MODx Revolution',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['site_start']= $xpdo->newObject('modSystemSetting');
@@ -535,6 +559,7 @@ $collection['site_start']->fromArray(array (
   'value' => '1',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['site_status']= $xpdo->newObject('modSystemSetting');
@@ -543,6 +568,7 @@ $collection['site_status']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['site_unavailable_message']= $xpdo->newObject('modSystemSetting');
@@ -551,6 +577,7 @@ $collection['site_unavailable_message']->fromArray(array (
   'value' => 'The site is currently unavailable',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['strip_image_paths']= $xpdo->newObject('modSystemSetting');
@@ -559,14 +586,7 @@ $collection['strip_image_paths']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['theme_refresher']= $xpdo->newObject('modSystemSetting');
-$collection['theme_refresher']->fromArray(array (
-  'key' => 'theme_refresher',
-  'value' => '',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['tinymce_custom_buttons1']= $xpdo->newObject('modSystemSetting');
@@ -575,6 +595,7 @@ $collection['tinymce_custom_buttons1']->fromArray(array (
   'value' => 'undo,redo,selectall,separator,pastetext,pasteword,separator,search,replace,separator,nonbreaking,hr,charmap,separator,image,link,unlink,anchor,media,separator,cleanup,removeformat,separator,fullscreen,print,code,help',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => '',
 
 ), '', true, true);
 $collection['tinymce_custom_buttons2']= $xpdo->newObject('modSystemSetting');
@@ -583,6 +604,7 @@ $collection['tinymce_custom_buttons2']->fromArray(array (
   'value' => 'bold,italic,underline,strikethrough,sub,sup,separator,bullist,numlist,outdent,indent,separator,justifyleft,justifycenter,justifyright,justifyfull,separator,styleselect,formatselect,separator,styleprops',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => '',
 
 ), '', true, true);
 $collection['tinymce_custom_plugins']= $xpdo->newObject('modSystemSetting');
@@ -591,6 +613,7 @@ $collection['tinymce_custom_plugins']->fromArray(array (
   'value' => 'style,advimage,advlink,searchreplace,print,contextmenu,paste,fullscreen,noneditable,nonbreaking,xhtmlxtras,visualchars,media',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => '',
 
 ), '', true, true);
 $collection['tinymce_editor_theme']= $xpdo->newObject('modSystemSetting');
@@ -599,22 +622,7 @@ $collection['tinymce_editor_theme']->fromArray(array (
   'value' => 'editor',
   'xtype' => 'textfield',
   'namespace' => 'core',
-
-), '', true, true);
-$collection['top_howmany']= $xpdo->newObject('modSystemSetting');
-$collection['top_howmany']->fromArray(array (
-  'key' => 'top_howmany',
-  'value' => '10',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
-
-), '', true, true);
-$collection['track_visitors']= $xpdo->newObject('modSystemSetting');
-$collection['track_visitors']->fromArray(array (
-  'key' => 'track_visitors',
-  'value' => '0',
-  'xtype' => 'combo-boolean',
-  'namespace' => 'core',
+  'area' => '',
 
 ), '', true, true);
 $collection['udperms_allowroot']= $xpdo->newObject('modSystemSetting');
@@ -623,6 +631,7 @@ $collection['udperms_allowroot']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['unauthorized_page']= $xpdo->newObject('modSystemSetting');
@@ -631,6 +640,7 @@ $collection['unauthorized_page']->fromArray(array (
   'value' => '1',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'site',
 
 ), '', true, true);
 $collection['upload_files']= $xpdo->newObject('modSystemSetting');
@@ -639,6 +649,7 @@ $collection['upload_files']->fromArray(array (
   'value' => 'txt,php,html,htm,xml,js,css,cache,zip,gz,rar,z,tgz,tar,htaccess,mp3,mp4,aac,wav,au,wmv,avi,mpg,mpeg,pdf,doc,xls,txt',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['upload_flash']= $xpdo->newObject('modSystemSetting');
@@ -647,6 +658,7 @@ $collection['upload_flash']->fromArray(array (
   'value' => 'swf,fla',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['upload_images']= $xpdo->newObject('modSystemSetting');
@@ -655,6 +667,7 @@ $collection['upload_images']->fromArray(array (
   'value' => 'jpg,jpeg,png,gif,psd,ico,bmp',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['upload_maxsize']= $xpdo->newObject('modSystemSetting');
@@ -663,6 +676,7 @@ $collection['upload_maxsize']->fromArray(array (
   'value' => '1048576',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['upload_media']= $xpdo->newObject('modSystemSetting');
@@ -671,6 +685,7 @@ $collection['upload_media']->fromArray(array (
   'value' => 'mp3,wav,au,wmv,avi,mpg,mpeg',
   'xtype' => 'textfield',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['use_alias_path']= $xpdo->newObject('modSystemSetting');
@@ -679,6 +694,7 @@ $collection['use_alias_path']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'furls',
 
 ), '', true, true);
 $collection['use_browser']= $xpdo->newObject('modSystemSetting');
@@ -687,6 +703,7 @@ $collection['use_browser']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'file',
 
 ), '', true, true);
 $collection['use_captcha']= $xpdo->newObject('modSystemSetting');
@@ -695,6 +712,7 @@ $collection['use_captcha']->fromArray(array (
   'value' => '0',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['use_editor']= $xpdo->newObject('modSystemSetting');
@@ -703,6 +721,7 @@ $collection['use_editor']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'manager',
 
 ), '', true, true);
 $collection['use_udperms']= $xpdo->newObject('modSystemSetting');
@@ -711,6 +730,7 @@ $collection['use_udperms']->fromArray(array (
   'value' => '1',
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
+  'area' => 'authentication',
 
 ), '', true, true);
 $collection['webpwdreminder_message']= $xpdo->newObject('modSystemSetting');
@@ -732,7 +752,7 @@ $collection['webpwdreminder_message']->fromArray(array (
     Site Administrator',
   'xtype' => 'textarea',
   'namespace' => 'core',
-
+  'area' => 'authentication',
 ), '', true, true);
 $collection['websignupemail_message']= $xpdo->newObject('modSystemSetting');
 $collection['websignupemail_message']->fromArray(array (
@@ -750,7 +770,7 @@ $collection['websignupemail_message']->fromArray(array (
     Site Administrator',
   'xtype' => 'textarea',
   'namespace' => 'core',
-
+  'area' => 'authentication',
 ), '', true, true);
 $collection['which_editor']= $xpdo->newObject('modSystemSetting');
 $collection['which_editor']->fromArray(array (
@@ -758,5 +778,5 @@ $collection['which_editor']->fromArray(array (
   'value' => 'TinyMCE',
   'xtype' => 'combo-rte',
   'namespace' => 'core',
-
+  'area' => 'manager',
 ), '', true, true);

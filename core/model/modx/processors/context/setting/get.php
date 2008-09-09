@@ -4,7 +4,7 @@
  * @subpackage processors.context.setting
  */
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('system_setting');
+$modx->lexicon->load('setting');
 
 if (!isset($_POST['key'],$_POST['context_key'])) $modx->error->failure($modx->lexicon('setting_err_ns'));
 $setting = $modx->getObject('modContextSetting',array(

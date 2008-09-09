@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('system_setting,namespace');
+$modx->lexicon->load('setting','namespace');
 
 if (!isset($_POST['namespace'])) $modx->error->failure($modx->lexicon('namespace_err_ns'));
 $namespace = $modx->getObject('modNamespace',$_POST['namespace']);

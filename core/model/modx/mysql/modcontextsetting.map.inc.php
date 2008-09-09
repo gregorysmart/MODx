@@ -13,6 +13,7 @@ $xpdo_meta_map['modContextSetting']= array (
     'value' => NULL,
     'xtype' => 'textfield',
     'namespace' => 'core',
+    'area' => '',
     'editedon' => NULL,
   ),
   'fieldMeta' => 
@@ -53,6 +54,14 @@ $xpdo_meta_map['modContextSetting']= array (
       'phptype' => 'string',
       'null' => 'false',
       'default' => 'core',
+    ),
+    'area' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => 'false',
+      'default' => '',
     ),
     'editedon' => 
     array (

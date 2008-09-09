@@ -66,7 +66,7 @@ $collection['7']->fromArray(array (
   'parent' => '6',
   'controller' => 'context/create',
   'haslayout' => '1',
-  'lang_foci' => 'context',
+  'lang_foci' => 'context,setting',
   'assets' => '',
 ), '', true, true);
 $collection['8']= $xpdo->newObject('modAction');
@@ -76,7 +76,7 @@ $collection['8']->fromArray(array (
   'parent' => '6',
   'controller' => 'context/update',
   'haslayout' => '1',
-  'lang_foci' => 'context',
+  'lang_foci' => 'context,setting',
   'assets' => '',
 ), '', true, true);
 $collection['9']= $xpdo->newObject('modAction');
@@ -496,7 +496,7 @@ $collection['54']->fromArray(array (
   'parent' => '53',
   'controller' => 'security/user/create',
   'haslayout' => '1',
-  'lang_foci' => 'user,system_setting',
+  'lang_foci' => 'user,setting',
   'assets' => '',
 ), '', true, true);
 $collection['55']= $xpdo->newObject('modAction');
@@ -506,7 +506,7 @@ $collection['55']->fromArray(array (
   'parent' => '53',
   'controller' => 'security/user/update',
   'haslayout' => '1',
-  'lang_foci' => 'user,system_setting',
+  'lang_foci' => 'user,setting',
   'assets' => '',
 ), '', true, true);
 $collection['56']= $xpdo->newObject('modAction');
@@ -566,7 +566,7 @@ $collection['61']->fromArray(array (
   'parent' => '3',
   'controller' => 'system/settings',
   'haslayout' => '1',
-  'lang_foci' => 'system_setting',
+  'lang_foci' => 'setting',
   'assets' => '',
 ), '', true, true);
 $collection['62']= $xpdo->newObject('modAction');
@@ -706,6 +706,6 @@ $collection['75']->fromArray(array (
   'parent' => '65',
   'controller' => 'security/access/policy/update',
   'haslayout' => '1',
-  'lang_foci' => 'access,policy,user',
+  'lang_foci' => 'user,policy',
   'assets' => '',
 ), '', true, true);

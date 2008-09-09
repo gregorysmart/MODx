@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('user_setting','system_setting');
+$modx->lexicon->load('setting');
 
 if (!isset($_POST['key'],$_POST['user'])) $modx->error->failure($modx->lexicon('setting_err_ns'));
 $setting = $modx->getObject('modUserSetting',array(

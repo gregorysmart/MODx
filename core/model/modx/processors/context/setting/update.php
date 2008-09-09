@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('context_setting','system_setting');
+$modx->lexicon->load('setting');
 
 $setting = $modx->getObject('modContextSetting',array(
     'key' => $_POST['key'],

@@ -135,6 +135,9 @@ if ($connected) {
     $description = 'Added modSystemSetting `editedon`.';
     $sql = "ALTER TABLE {$table} ADD COLUMN `editedon` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
     processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added modSystemSetting `area`.';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `area` VARCHAR(255) NOT NULL";
+    processResults($this->xpdo,$results,$class,$description,$sql);
 
 
     $class = 'modContextSetting';
@@ -147,6 +150,9 @@ if ($connected) {
     processResults($this->xpdo,$results,$class,$description,$sql);
     $description = 'Added modContextSetting `editedon`.';
     $sql = "ALTER TABLE {$table} ADD COLUMN `editedon` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added modContextSetting `area`.';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `area` VARCHAR(255) NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modUserSetting';
@@ -165,6 +171,9 @@ if ($connected) {
     processResults($this->xpdo,$results,$class,$description,$sql);
     $description = 'Added modUserSetting `editedon`.';
     $sql = "ALTER TABLE {$table} ADD COLUMN `editedon` TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added modUserSetting `area`.';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `area` VARCHAR(255) NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
 

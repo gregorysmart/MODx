@@ -12,6 +12,7 @@ $xpdo_meta_map['modSystemSetting']= array (
     'value' => '',
     'xtype' => 'textfield',
     'namespace' => 'core',
+    'area' => '',
     'editedon' => NULL,
   ),
   'fieldMeta' => 
@@ -47,6 +48,14 @@ $xpdo_meta_map['modSystemSetting']= array (
       'phptype' => 'string',
       'null' => 'false',
       'default' => 'core',
+    ),
+    'area' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => 'false',
+      'default' => '',
     ),
     'editedon' => 
     array (

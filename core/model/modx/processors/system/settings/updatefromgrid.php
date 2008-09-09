@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-$modx->lexicon->load('system_setting');
+$modx->lexicon->load('setting');
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
@@ -17,6 +17,7 @@ $setting = $modx->getObject('modSystemSetting',array(
 
 // set new value
 $setting->set('value',$_DATA['value']);
+$setting->set('area',$_DATA['area']);
 
 // if name changed, change lexicon string
 $entry = $modx->getObject('modLexiconEntry',array(

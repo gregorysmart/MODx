@@ -22,6 +22,7 @@ MODx.grid.SettingsGrid = function(config) {
             ,handler: { 
                 xtype: 'window-setting-create'
                 ,url: config.url || MODx.config.connectors_url+'system/settings.php'
+                ,blankValues: true
             }
         }];
     }
@@ -48,7 +49,7 @@ MODx.grid.SettingsGrid = function(config) {
         ,baseParams: {
             action: 'getList'
         }
-        ,fields: ['key','name','value','description','xtype','namespace','editedon','oldkey','menu']
+        ,fields: ['key','name','value','description','xtype','namespace','area','area_text','editedon','oldkey','menu']
         ,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -59,6 +60,10 @@ MODx.grid.SettingsGrid = function(config) {
             ,showPreview: true
             ,enableRowBody: true
         }
+        ,grouping: true
+        ,groupBy: 'area_text'
+        ,singleText: _('setting')
+        ,pluralText: _('settings')
         ,plugins: exp
         ,columns: [exp,{
             header: _('name')
@@ -76,6 +81,12 @@ MODx.grid.SettingsGrid = function(config) {
             ,dataIndex: 'key'
             ,width: 100
             ,sortable: true
+        },{
+            header: _('area')
+            ,dataIndex: 'area_text'
+            ,width: 100
+            ,sortable: true
+            ,hidden: true
         },{
             header: _('last_modified')
             ,dataIndex: 'editedon'
@@ -239,7 +250,7 @@ MODx.window.CreateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('setting_create')
-        ,width: 400
+        ,width: 450
         ,url: config.url
         ,action: 'create'
         ,fields: [{
@@ -265,6 +276,11 @@ MODx.window.CreateSetting = function(config) {
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,value: 'core'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('area_lexicon_string')
+            ,description: _('area_lexicon_string_msg')
+            ,name: 'area'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('value')
@@ -345,7 +361,7 @@ MODx.window.UpdateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('setting_update')
-        ,width: 400
+        ,width: 450
         ,url: config.grid.config.url
         ,action: 'update'
         ,fields: [{
@@ -373,6 +389,11 @@ MODx.window.UpdateSetting = function(config) {
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,value: 'core'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('area_lexicon_string')
+            ,description: _('area_lexicon_string_msg')
+            ,name: 'area'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('value')
