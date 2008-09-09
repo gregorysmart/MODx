@@ -23,24 +23,43 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 	,windows: {}
 	,stores: {}
 		
-	,showNewCategory: function(node,e) {
+	,createCategory: function(node,e) {
 		var id = this.cm.activeNode.id.substr(2);
 		
 		if (!this.windows.createCategory) {
-			this.windows.createCategory = new MODx.window.CreateCategory({
-				success: this.refresh
+			this.windows.createCategory = MODx.load({
+				xtype: 'window-category-create'
+				,success: this.refresh
 				,scope: this
 			});
 		}
 		this.windows.createCategory.show(e.target);
 	}
+
+	,renameCategory: function(node,e) {
+        var id = this.cm.activeNode.id.substr(2).split('_'); id = id[1];
+        
+        if (!this.windows.renameCategory) {
+            this.windows.renameCategory = MODx.load({
+                xtype: 'window-category-rename'
+                ,success: this.refresh
+                ,scope: this
+                ,record: { 
+                    id: id
+                    ,name: this.cm.activeNode.text
+                }
+            });
+        }
+        this.windows.renameCategory.show(e.target);
+    }
 		
 	,removeCategory: function(item,e) {
-		var id = this.cm.activeNode.id.substr(2).split('_'); id = id[2];
+		var id = this.cm.activeNode.id.substr(2).split('_');
+        id = id.length > 2 ? id[2] : id[1];
 		MODx.msg.confirm({
 			title: _('warning')
 			,text: _('category_confirm_delete')
-			,connector: MODx.config.connectors_url+'element/category.php'
+			,url: MODx.config.connectors_url+'element/category.php'
 			,params: {
 				action: 'delete'
 				,id: id
@@ -58,8 +77,9 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         };
         
         if (!this.windows.duplicateElement) {
-            this.windows.duplicateElement = new MODx.window.DuplicateElement({
-                success: this.refresh
+            this.windows.duplicateElement = MODx.load({
+                xtype: 'window-element-duplicate'
+                ,success: this.refresh
                 ,scope: this
                 ,record: r
             });
@@ -77,7 +97,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		MODx.msg.confirm({
 			title: _('warning')
 			,text: _('remove_this_confirm')+' '+oar[0]+'?'
-			,connector: MODx.config.connectors_url+'element/'+oar[0]+'.php'
+			,url: MODx.config.connectors_url+'element/'+oar[0]+'.php'
 			,params: {
 				action: 'delete'
 				,id: oar[2]
@@ -152,3 +172,39 @@ MODx.window.DuplicateElement = function(config) {
 };
 Ext.extend(MODx.window.DuplicateElement,MODx.Window);
 Ext.reg('window-element-duplicate',MODx.window.DuplicateElement);
+
+
+
+/** 
+ * Generates the Rename Category window.
+ *  
+ * @class MODx.window.RenameCategory
+ * @extends MODx.Window
+ * @constructor
+ * @param {Object} config An object of options.
+ * @xtype window-category-rename
+ */
+MODx.window.RenameCategory = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('category_rename')
+        ,height: 150
+        ,width: 350
+        ,url: MODx.config.connectors_url+'element/category.php'
+        ,action: 'update'
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'id'
+            ,value: config.record.id
+        },{
+            fieldLabel: _('name')
+            ,name: 'category'
+            ,xtype: 'textfield'
+            ,width: 150
+            ,value: config.record.name
+        }]
+    });
+    MODx.window.RenameCategory.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.RenameCategory,MODx.Window);
+Ext.reg('window-category-rename',MODx.window.RenameCategory);

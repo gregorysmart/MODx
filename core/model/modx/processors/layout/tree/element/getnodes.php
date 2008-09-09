@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-
+$modx->lexicon->load('category');
 
 $_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : (substr($_REQUEST['id'],0,2) == 'n_' ? substr($_REQUEST['id'],2) : $_REQUEST['id']);
 
@@ -18,6 +18,7 @@ $ar_typemap = array(
 	'snippet' => 'modSnippet',
 	'plugin' => 'modPlugin',
     'module' => 'modModule',
+    'category' => 'modCategory',
 );
 $actions = $modx->request->getAllActionIDs();
 $ar_actionmap = array(
@@ -92,7 +93,7 @@ switch ($g[0]) {
                     array(
                         'text' => $modx->lexicon('edit').' '.$elementType,
                         'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->id, ),
-                    ),   
+                    ),
                     array(
                         'text' => $modx->lexicon('duplicate').' '.$elementType,
                         'handler' => 'this.duplicateElement.createDelegate(this,['.$element->id.',"'.strtolower($elementType).'"],true)',
@@ -101,14 +102,14 @@ switch ($g[0]) {
                         'text' => $modx->lexicon('remove').' '.$elementType,
                         'handler' => 'this.removeElement',
                     ),
-                    '-',                 
+                    '-',
                     array(
                         'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
                         'handler' => 'this._createElement',
                     ),
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     ),
                 ),
 			);
@@ -134,7 +135,7 @@ switch ($g[0]) {
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     )
                 ),
 			),
@@ -153,7 +154,7 @@ switch ($g[0]) {
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     )
                 ),
 			),
@@ -172,7 +173,7 @@ switch ($g[0]) {
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     )
                 ),
 			),
@@ -191,7 +192,7 @@ switch ($g[0]) {
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     )
                 ),
 			),
@@ -210,7 +211,7 @@ switch ($g[0]) {
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     )
                 ),
 			),
@@ -229,12 +230,57 @@ switch ($g[0]) {
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.showNewCategory',
+                        'handler' => 'this.createCategory',
                     )
                 ),
-            )
+            ),
+            array(
+                'text' => $modx->lexicon('categories'),
+                'id' => 'n_category',
+                'leaf' => 0,
+                'cls' => 'folder',
+                'href' => '',
+                'type' => 'category',
+                'menu' => array(
+                    array(
+                        'text' => $modx->lexicon('category_create'),
+                        'handler' => 'this.createCategory',
+                    ),
+                ),
+            ),
 		);
 		break;
+    case 'category':
+        $categories = $modx->getCollection('modCategory');
+        foreach ($categories as $category) {
+        	$resources[] = array(
+                'text' => $category->get('category'),
+                'id' => 'n_category_'.$category->get('id'),
+                'leaf' => 1,
+                'cls' => 'file',
+                'href' => 'welcome',
+                'type' => 'category',
+                'menu' => array(
+                    array(
+                        'text' => $modx->lexicon('category_create'),
+                        'handler' => 'this.createCategory',
+                    ),
+                    array(
+                        'text' => $modx->lexicon('category_rename'),
+                        'handler' => 'this.renameCategory',
+                    ),
+                    '-',
+                    array(
+                        'text' => $modx->lexicon('category_remove'),
+                        'handler' => 'this.removeCategory',
+                    ),
+                ),
+            );
+        }
+        break;
+    case 'category':
+
+        break;
 	default: // if clicking a node in a category
 		// 0: type,  1: element/category  2: elID  3: catID
 		$cat_id = isset($g[3]) ? $g[3] : ($g[1] == 'category' ? $g[2] : 0);

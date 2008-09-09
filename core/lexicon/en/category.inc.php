@@ -1,5 +1,7 @@
 <?php
+$_lang['categories'] = 'Categoriesa';
 $_lang['category_confirm_delete'] = 'Are you sure you want to remove this category? All elements in this category will be filed to uncategorized.';
+$_lang['category_create'] = 'Create Category';
 $_lang['category_err_create'] = 'An error occurred while trying to create the category.';
 $_lang['category_err_not_found'] = 'Category not found!';
 $_lang['category_err_nf'] = 'Category not found.';
@@ -16,3 +18,5 @@ $_lang['category_no_plugins'] = 'No plugins for this category.';
 $_lang['category_no_snippets'] = 'No snippets for this category.';
 $_lang['category_no_templates'] = 'No templates for this category.';
 $_lang['category_no_template_variables'] = 'No template variables for this category.';
+$_lang['category_rename'] = 'Rename Category';
+$_lang['category_remove'] = 'Remove Category';

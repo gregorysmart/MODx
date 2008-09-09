@@ -78,6 +78,7 @@ $_lang['cache_sitepublishing_file_error'] = '<p>ERROR: Could not write site publ
 $_lang['cache_unpublish_event_error'] = '<p>ERROR: Could not determine next unpublish event!</p><pre>%s</pre>';
 $_lang['cancel'] = 'Cancel';
 $_lang['captcha_code'] = 'Security code';
+$_lang['categories'] = 'Categories';
 $_lang['category'] = 'Category';
 $_lang['change_name'] = 'Change name';
 $_lang['change_password'] = 'Change Password';
