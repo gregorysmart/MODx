@@ -172,14 +172,27 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     }
     ,reloadFromBase: function() {
     	Ext.Ajax.timeout = 0;
+    	var topic = '/workspace/lexicon/reload/';
+        if (this.console == null) {
+            this.console = MODx.load({
+               xtype: 'modx-console'
+               ,register: 'mgr'
+               ,topic: topic
+            });
+        } else {
+            this.console.setRegister('mgr',topic);
+        }
+        this.console.show(Ext.getBody());
+    	
     	Ext.Ajax.request({
     	   url: this.config.url
-    	   ,params: { action: 'reloadFromBase' }
+    	   ,params: { action: 'reloadFromBase' ,register: 'mgr' ,topic: topic }
     	   ,scope: this
     	   ,success: function(r) {
     	       r = Ext.decode(r.responseText);
     	       if (r.success) {
-    	          this.refresh();
+    	          this.console.complete();
+                  this.refresh();
     	       } else MODx.form.Handler.errorJSON(r);
     	   }
     	});

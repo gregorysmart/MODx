@@ -46,5 +46,6 @@ $_lang['lexicon_import_err_ns'] = 'Lexicon file not specified.';
 $_lang['lexicon_import_err_upload'] = 'An error occurred while trying to upload the new lexicon file. Check your web server permissions in trying to upload to the tmp directory, and validate that the file you are trying to upload is a valid file.';
 $_lang['lexicon_management'] = 'Lexicon Management';
 $_lang['lexicon_management_desc'] = 'Here you can manage all the lexicon strings across namespaces and their respective foci.';
+$_lang['lexicon_rlfb_msg'] = 'Successfully regenerated [[+num]] strings.';
 $_lang['reload_from_base'] = 'Reload Core Entries from Base';
 $_lang['search_by_key'] = 'Search by Key:';

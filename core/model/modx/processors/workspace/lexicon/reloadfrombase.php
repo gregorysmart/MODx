@@ -9,10 +9,17 @@ $modx->lexicon->load('lexicon');
 
 $modx->lexicon->clearCache();
 $invdirs = array('.','..','.svn','country');
+@ini_set('memory_limit','128M');
+
+if (isset($_POST['register']) && isset($_POST['topic'])) {
+    if ($modx->getService('registryhandler','registry.modRegisterHandler')) {
+        $modx->registryhandler->load($_POST['register'],$_POST['topic']);
+    }
+}
 
 $d = MODX_CORE_PATH.'/lexicon/';
-
 $i = 0;
+
 // loop through cultures
 $dir = dir($d);
 while (false !== ($culture = $dir->read())) {
@@ -26,6 +33,7 @@ while (false !== ($culture = $dir->read())) {
             'name' => $culture,
         ),'',true,true);
         $language->save();
+        $modx->log(MODX_LOG_LEVEL_INFO,'Created language: '.$culture);
     }
 
     // loop through foci
@@ -48,6 +56,7 @@ while (false !== ($culture = $dir->read())) {
               'namespace' => 'core',
             ), '', true, true);
             $focus->save();
+            $modx->log(MODX_LOG_LEVEL_INFO,'Created focus: '.$foc);
         }
 
         $f = $fdir.$entry;
@@ -72,10 +81,15 @@ while (false !== ($culture = $dir->read())) {
                       'language' => $culture,
                     ), '', true, true);
                     $entry->save();
+                    $modx->log(MODX_LOG_LEVEL_INFO,'Created lexicon entry: "'.$key.'": '.$value);
                     $i++;
                 } else {
-                	$entry->set('value',$value);
-                    $entry->save();
+                    if ($entry->get('value') != $value) {
+                        $entry->set('value',$value);
+                        $entry->save();
+                        $modx->log(MODX_LOG_LEVEL_INFO,'Reloaded entry: "'.$entry->get('name').'": '.$value);
+                        $i++;
+                    }
                 }
             }
         }
@@ -83,4 +97,5 @@ while (false !== ($culture = $dir->read())) {
 }
 $dir->close();
 
-$modx->error->failure($i.' strings regenerated.');
+$modx->log(MODX_LOG_LEVEL_WARN,'Successfully reloaded '.$i.' strings.');
+$modx->error->success(intval($i));
