@@ -20,7 +20,39 @@ class modAccessibleObject extends xPDOObject {
     }
 
     /**
-     * Provides a custom load() function that forces access policy checking.
+     * Custom instance loader for collections that respects policy checking.
+     * 
+     * {@inheritdoc}
+     */
+    function _loadCollectionInstance(& $xpdo, & $objCollection, $className, $criteria, $row, $fromCache, $cacheFlag) {
+        if ($obj= xPDOObject :: _loadInstance($xpdo, $className, $criteria, $row)) {
+            if (($pkval= $obj->getPrimaryKey()) && !$obj->isLazy()) {
+                if (is_array($pkval)) {
+                    $cacheKey= implode('_', $pkval);
+                    $pkval= implode('-', $pkval);
+                } else {
+                    $cacheKey= $pkval;
+                }
+                if ($obj->checkPolicy('load')) {
+                    if ($xpdo->_cacheEnabled && $cacheFlag) {
+                        if (!$fromCache) {
+                            $xpdo->toCache($obj->_class . '_' . $cacheKey, $obj, $cacheFlag);
+                        } else {
+                            $obj->_cacheFlag= true;
+                        }
+                    }
+                    $objCollection[$pkval]= $obj;
+                }
+            } else {
+                if ($obj->checkPolicy('load')) {
+                    $objCollection[]= $obj;
+                }
+            }
+        }
+    }
+
+    /**
+     * Custom instance loader that forces access policy checking.
      *
      * {@inheritdoc}
      */
@@ -39,7 +71,7 @@ class modAccessibleObject extends xPDOObject {
     }
 
     /**
-     * Custom loadCollection() function that forces access policy checking.
+     * Custom collection loader that forces access policy checking.
      *
      * {@inheritdoc}
      */
@@ -69,32 +101,11 @@ class modAccessibleObject extends xPDOObject {
         }
         if (is_array ($rows)) {
             foreach ($rows as $row) {
-                if ($obj= xPDOObject :: _loadInstance($xpdo, $className, $criteria, $row)) {
-                    if ($pkval= $obj->getPrimaryKey()) {
-                        if (is_array($pkval)) {
-                            $cacheKey= implode('_', $pkval);
-                            $pkval= implode('-', $pkval);
-                        } else {
-                            $cacheKey= $pkval;
-                        }
-                        if (!$obj->checkPolicy('load')) {
-                            continue;
-                        }
-                        if ($xpdo->_cacheEnabled && $cacheFlag) {
-                            if (!$fromCache) {
-                                $xpdo->toCache($obj->_class . '_' . $cacheKey, $obj, $cacheFlag);
-                            } else {
-                                $obj->_cacheFlag= true;
-                            }
-                        }
-                        $objCollection[$pkval]= $obj;
-                    } else {
-                        if (!$obj->checkPolicy('load')) {
-                            continue;
-                        }
-                        $objCollection[]= $obj;
-                    }
-                }
+                modAccessibleObject :: _loadCollectionInstance($xpdo, $objCollection, $className, $criteria, $row, $fromCache, $cacheFlag);
+            }
+        } elseif ($rows) {
+            while ($row = $rows->fetch(PDO_FETCH_ASSOC)) {
+                modAccessibleObject :: _loadCollectionInstance($xpdo, $objCollection, $className, $criteria, $row, $fromCache, $cacheFlag);
             }
         }
         if ($xpdo->_cacheEnabled && $cacheFlag && !$fromCache) {

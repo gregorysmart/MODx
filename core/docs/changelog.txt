@@ -4,6 +4,8 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Updating xPDO to revision 233.
+- Updated modAccessibleObject::loadCollection() based on xPDO::loadCollection() changes.
 - Updating xPDO to revision 231.
 - Various model updates to reduce memory usage [convert foreach with fetchAll() calls to while with fetch()].
 - [#MODX-137] Locked Elements now editable by users with the Admin policy attribute edit_locked (not locked as in being edited by another user, but locked explicitly in the Element attributes).
