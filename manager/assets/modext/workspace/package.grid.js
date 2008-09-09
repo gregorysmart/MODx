@@ -73,8 +73,26 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         this.console.show(btn);
     }
     
-    ,uninstall: function() {
-    	
+    ,uninstall: function(btn,e) {
+    	var r = this.menu.record;
+        var topic = '/workspace/package/uninstall/'+r.signature+'/';
+        this.loadConsole(btn,topic);
+        
+        Ext.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'uninstall'
+                ,signature: r.signature
+                ,register: 'mgr'
+                ,topic: topic
+            }
+            ,scope: this
+            ,success: function(r) {
+                this.console.complete();
+                Ext.Msg.hide();
+                this.refresh();
+            }
+        });
     }
     
     ,remove: function(btn,e) {

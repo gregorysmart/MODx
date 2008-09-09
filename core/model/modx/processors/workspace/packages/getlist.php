@@ -34,13 +34,13 @@ foreach ($packages as $package) {
                 : $modx->lexicon('package_reinstall'),
             'handler' => ($not_installed)
                 ? 'this.install'
-                : 'this.confirm.createDelegate(this,["install","package_confirm_reinstall"])',
+                : 'this.install',
         ),
     );
     if ($not_installed == false) {
         $pa['menu'][] = array(
             'text' => $modx->lexicon('package_uninstall'),
-            'handler' => 'this.confirm.createDelegate(this,["uninstall","package_confirm_uninstall"])',
+            'handler' => 'this.uninstall',
         );
     }
     $pa['menu'][] = '-';
