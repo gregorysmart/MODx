@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -278,19 +278,19 @@ class modRequest {
 
     /**
      * Loads the error handling class for the request.
-     * 
+     *
      * @param string $class The class to use as the error handler.
      */
     function loadErrorHandler($class = 'modArrayError') {
         if ($this->modx->loadClass('error.'.strtolower($class),'',false,true)) {
             $this->modx->error = new $class($this->modx);
             if (isset($_POST['register']) && isset($_POST['topic'])) {
-                if ($modx->getService('registry','registry.modRegistry')) {
+                if ($this->modx->getService('registry','registry.modRegistry')) {
                     $register_class = isset($_POST['register_class']) ? $_POST['register_class'] : 'registry.modFileRegister';
-                    $register = $modx->registry->getRegister($_POST['register'], $register_class);
+                    $register = $this->modx->registry->getRegister($_POST['register'], $register_class);
                     if ($register) {
                         $level = isset($_POST['log_level']) ? $_POST['log_level'] : MODX_LOG_LEVEL_INFO;
-                        $modx->registry->setLogging($register, $_POST['topic'], $level);
+                        $this->modx->registry->setLogging($register, $_POST['topic'], $level);
                     }
                 }
             }
@@ -338,18 +338,18 @@ class modRequest {
         }
         return $this->headers;
     }
-    
+
     function getAllActionIDs($ctx = '') {
         $c = array();
         if ($ctx != '') $c['context_key'] = $ctx;
         $actions = $this->modx->getCollection('modAction',$c);
-        
+
         $as = array();
         foreach ($actions as $action) {
             $as[$action->get('controller')] = $action->get('id');
         }
         return $as;
-    }    
+    }
     function getActionIDs($actions = array(), $ctx = 'mgr') {
         if (!is_array($actions)) return false;
         $as = array();
