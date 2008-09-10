@@ -9,7 +9,7 @@
 
 <script src="{$_config.manager_url}assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/ext2/ext-all.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/build/core/modx-min.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.js" type="text/javascript"></script>
 <script src="{$_config.connectors_url}lang.js.php?foci=file,category" type="text/javascript"></script>
 <script src="{$_config.connectors_url}layout/modx.config.js.php" type="text/javascript"></script>
 

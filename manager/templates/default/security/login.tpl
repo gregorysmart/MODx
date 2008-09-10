@@ -10,7 +10,7 @@
     
     <script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
     <script src="assets/ext2/ext-all.js" type="text/javascript"></script>
-    <script src="assets/modext/build/core/modx-min.js" type="text/javascript"></script>
+    <script src="assets/modext/core/modx.js" type="text/javascript"></script>
 	<script src="{$_config.connectors_url}lang.js.php?foci=login" type="text/javascript"></script>
 		
 	{if $_config.compress_js}
