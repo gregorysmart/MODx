@@ -147,24 +147,22 @@ MODx.panel.TV = function(config) {
 Ext.extend(MODx.panel.TV,MODx.FormPanel,{
     setup: function() {
         if (this.config.tv == '' || this.config.tv == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,id: this.config.tv
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+                'success': {fn:function(r) {
                     if (r.object.category == '0') r.object.category = null;
                     this.getForm().setValues(r.object);
                     Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
                     
                     this.showParameters(Ext.getCmp('combo-tv-widget'));
-                } else MODx.form.Handler.errorJSON(r);
+                },scope:this}
             }
-        })
+        });
     }
     
     ,showParameters: function(cb,rc,i) {

@@ -67,38 +67,34 @@ MODx.grid.Message = function(config) {
 Ext.extend(MODx.grid.Message,MODx.grid.Grid,{
     read: function(exp,rec,body,ri) {
         var r = rec.data;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'read'
                 ,id: r.id
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    var r2 = this.getStore().getAt(ri);
-                    r2.set('read',true);
-                    r2.commit();
-                } else MODx.form.Handler.errorJSON(r);
+            ,listeners: {
+            	'success': {fn:function(r) {
+            		var r2 = this.getStore().getAt(ri);
+            		r2.set('read',true);
+            		r2.commit();
+            	},scope:this}
             }
         });
     }
     ,markUnread: function(btn,e) {
         var rec = this.getSelectionModel().getSelected();
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'unread'
                 ,id: rec.data.id
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    rec.set('read',false);
-                    rec.commit();
-                } else MODx.form.Handler.errorJSON(r);
+            ,listeners: {
+            	'success': {fn:function(r) {
+            		rec.set('read',false);
+            		rec.commit();
+            	},scope:this}
             }
         });
     }

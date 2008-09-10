@@ -25,14 +25,15 @@ Ext.extend(MODx.tree.ModuleDep,MODx.tree.Tree,{
 	,onNodeClick: function(node,e) {
 		e.stopEvent();
 		e.preventDefault();
-		Ext.Ajax.request({
-			url: MODx.config.connectors_url + 'element/module_dependency.php?action=fetchElement',
-			params: {id: node.id},
-			success: function(r) {
-				r = Ext.decode(r.responseText);
-				Ext.get('dlgid').dom.value = node.id;
-				Ext.get('dlgname').dom.value = r.name;
-				Ext.get('dlgdescription').dom.value = r.description;
+		MODx.Ajax.request({
+			url: MODx.config.connectors_url + 'element/module_dependency.php?action=fetchElement'
+			,params: {id: node.id}
+			,listeners: {
+				'success': {fn:function(r) {
+    				Ext.get('dlgid').dom.value = node.id;
+    				Ext.get('dlgname').dom.value = r.name;
+    				Ext.get('dlgdescription').dom.value = r.description;
+				},scope:this}				
 			}
 		});
 		return false;

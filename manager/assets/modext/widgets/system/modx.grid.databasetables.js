@@ -53,14 +53,15 @@ Ext.extend(MODx.grid.DatabaseTables,MODx.grid.Grid,{
      * @param {String} table
      */
 	truncate: function(table) {
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'truncate'
 				,t: table
 			}
-			,scope: this
-			,success: this.refresh
+            ,listeners: {
+                'success': {fn:this.refresh,scope:this}
+            }
 		});
 		return false;
 	}
@@ -69,14 +70,15 @@ Ext.extend(MODx.grid.DatabaseTables,MODx.grid.Grid,{
      * @param {String} table
      */
 	,optimize: function(table) {
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'optimize'
 				,t: table
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this}
+			}
 		});
 		return false;
 	}

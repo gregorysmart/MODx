@@ -97,24 +97,22 @@ MODx.panel.Snippet = function(config) {
 Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
     setup: function() {
         if (this.config.snippet == '' || this.config.snippet == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,id: this.config.snippet
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+            	'success': {fn:function(r) {
                     if (r.object.category == '0') r.object.category = null;
                     r.object.snippet = "<?php\n"+r.object.snippet+"\n?>"
                     this.getForm().setValues(r.object);
                     Ext.getCmp('snippet-name').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
                     this.clearDirty();
-                } else MODx.form.Handler.errorJSON(r);
+                },scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-snippet',MODx.panel.Snippet);

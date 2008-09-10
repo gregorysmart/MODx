@@ -118,7 +118,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
     
     
     ,renameNode: function(field,nv,ov) {
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 		    url: MODx.config.connectors_url+'browser/index.php'
 		    ,params: {
 		  	    action: 'rename'
@@ -126,12 +126,8 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 		  	    ,old_name: ov
 		  	    ,file: this.treeEditor.editNode.id
 		    }
-		    ,scope: this
-		    ,success: function(r) {
-		    	r = Ext.decode(r.responseText);
-		    	if (r.success) {
-		    		this.refresh();
-		    	} else MODx.form.Handler.errorJSON(r);
+		    ,listeners: {
+		    	'success': {fn:this.refresh,scope:this}
 		    }
 		});
 	}

@@ -24,17 +24,15 @@ Ext.extend(MODx.toolbar.TopMenu,Ext.Toolbar,{
 	 * Initializes the top menu, grabbing it from the JSON-based connector.
 	 */
 	,init: function() {
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: MODx.config.connectors_url+'system/menu.php'
 			,params: {
 				action: 'getMenu'
 			}
-			,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);	
-				if (r.success) {
-					this._loadMenus(r.object);
-				}
+			,listeners: {
+				'success': {fn:function(r) { 
+				    this._loadMenus(r.object);
+			    },scope:this}
 			}
 		});
 	}

@@ -260,23 +260,21 @@ MODx.panel.Resource = function(config) {
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     setup: function() {
         if (this.config.resource == '' || this.config.resource == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: MODx.config.connectors_url+'resource/document.php'
             ,params: {
                 action: 'get'
                 ,id: this.config.resource
                 ,class_key: this.config.class_key
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+            	'success': {fn:function(r) {
                     if (r.object.pub_date == '0') r.object.pub_date = '';
                     if (r.object.unpub_date == '0') r.object.unpub_date = '';
                     this.getForm().setValues(r.object);
-                } else MODx.form.Handler.errorJSON(r);
+            	},scope:this}
             }
-        })
+        });
     }
     
     ,templateWarning: function() {

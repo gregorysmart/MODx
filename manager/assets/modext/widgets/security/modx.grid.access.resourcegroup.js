@@ -180,15 +180,16 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
     ,_loadForm: function() {
         if (this.checkIfLoaded(this.config.record)) return false;
         if (this.config.id) {
-            Ext.Ajax.request({
+            MODx.Ajax.request({
                 url: MODx.config.connectors_url+'security/access/index.php'
                 ,params: {
                     action: 'getAcl'
                     ,id: this.config.id
                     ,type: this.config.type
                 }
-                ,scope: this
-                ,success: this.prepareForm
+                ,listeners: {
+                	'success': {fn:this.prepareForm,scope:this}
+                }
             });
         } else {
             this.prepareForm(null,null);

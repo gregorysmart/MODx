@@ -105,22 +105,20 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
         Ext.apply(e.record.data,p);
 		var d = Ext.util.JSON.encode(e.record.data);
         var url = this.config.saveUrl || (this.config.url || this.config.connector);
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: url
 			,params: {
 				action: this.config.save_action || 'updateFromGrid'
 				,data: d
 			}
-			,scope: this
-			,callback: function(o,s,r) {
-				r = Ext.decode(r.responseText);
-				if (r.success) {
+			,listeners: {
+				'success': {fn:function(r) {
 					if (this.config.save_callback) {
-						Ext.callback(this.config.save_callback,this.config.scope || this,[r]);
-					}
-					e.record.commit();
+                        Ext.callback(this.config.save_callback,this.config.scope || this,[r]);
+                    }
+                    e.record.commit();
                     this.refresh();
-				} else MODx.form.Handler.errorJSON(r);
+				},scope:this}
 			}
 		});
 	}
@@ -138,10 +136,11 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
         var r = this.menu.record;
         if (!this.windows[win.xtype]) {  
             Ext.applyIf(win,{
-                scope: this
-                ,success: this.refresh
-                ,record: win.blankValues ? {} : r
+                record: win.blankValues ? {} : r
                 ,grid: this
+                ,listeners: {
+                	'success': {fn:win.success || this.refresh,scope:win.scope || this}
+                }
             });
             if (or) {
                 Ext.apply(win,or);

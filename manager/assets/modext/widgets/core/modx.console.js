@@ -95,7 +95,7 @@ Ext.extend(MODx.Console,Ext.Window,{
     ,shutdown: function() {
         this.mgr.stopAutoRefresh();
         if (MODx.util.LoadingBox) MODx.util.LoadingBox.enable();
-    	Ext.Ajax.request({
+    	MODx.Ajax.request({
     	    url: this.config.url
     	    ,params: {
                 action: 'read'
@@ -103,14 +103,12 @@ Ext.extend(MODx.Console,Ext.Window,{
                 ,topic: this.config.topic || ''
                 ,format: 'html_log'
             }
-    	    ,scope: this
-    	    ,success: function(r,o) {
-    	    	r = Ext.decode(r.responseText);
-    	    	if (r.success) {
-    	    		Ext.getCmp('modx-console-ok').setDisabled(true);
+            ,listeners: {
+            	'success': {fn:function(r) {
+        	    	Ext.getCmp('modx-console-ok').setDisabled(true);
                     this.hide();
-    	    	} else MODx.form.Handler.errorJSON(r);
-    	    }
+        	    },scope:this}
+            }
     	});
     }
 });

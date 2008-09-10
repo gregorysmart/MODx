@@ -184,17 +184,15 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
         }
         this.console.show(Ext.getBody());
     	
-    	Ext.Ajax.request({
+    	MODx.Ajax.request({
     	   url: this.config.url
     	   ,params: { action: 'reloadFromBase' ,register: 'mgr' ,topic: topic }
-    	   ,scope: this
-    	   ,success: function(r) {
-    	       r = Ext.decode(r.responseText);
-    	       if (r.success) {
-    	          this.console.complete();
-                  this.refresh();
-    	       } else MODx.form.Handler.errorJSON(r);
-    	   }
+    	   ,listeners: {
+    	       'success': {fn:function(r) {
+        	       this.console.complete();
+                   this.refresh();
+        	   },scope:this}
+	       }
     	});
     }
 });

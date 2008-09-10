@@ -46,30 +46,22 @@ Ext.extend(MODx.Msg,Ext.Component,{
         Ext.Msg.confirm(config.title || _('warning'),config.text,function(e) {
             this.sl.hide();
             if (e == 'yes') {
-                Ext.Ajax.request({
-                    url: config.connector || config.url
+                MODx.Ajax.request({
+                    url: config.url
                     ,params: config.params || {}
                     ,method: 'post'
                     ,scope: this
-                    ,success: function(r,o) {
-                        r = Ext.decode(r.responseText);
-                        if (r.success) {
-                            this.fireEvent('success',{ r: r, o: o });
-                        } else if (this.fireEvent('failure',{ r: r, o: o })) {
-                            MODx.form.Handler.errorJSON(r); 
-                        }
-                    }
-                    ,failure: function(r,o) {
-                        r = Ext.decode(r.responseText);
-                        if (this.fireEvent('failure',{ r: r, o: o })) {
-                            MODx.form.Handler.errorJSON(r);
-                        }
+                    ,listeners: {
+                    	'success':{fn:function(r) {
+                    		this.fireEvent('success',r);
+                    	},scope:this}
+                    	,'failure':{fn:function(r) {
+                    		return this.fireEvent('failure',r);
+                    	},scope:this}
                     }
                 });
             } else {
-            	this.fireEvent('cancel',{
-            	   o: config
-            	});
+            	this.fireEvent('cancel',config);
             }
         },this);
         this.sl.show(this.getWindow().getEl());

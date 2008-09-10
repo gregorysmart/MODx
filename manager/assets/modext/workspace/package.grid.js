@@ -78,7 +78,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         var topic = '/workspace/package/uninstall/'+r.signature+'/';
         this.loadConsole(btn,topic);
         
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'uninstall'
@@ -86,12 +86,13 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                 ,register: 'mgr'
                 ,topic: topic
             }
-            ,scope: this
-            ,success: function(r) {
-                this.console.complete();
-                Ext.Msg.hide();
-                this.refresh();
-            }
+            ,listeners: {
+            	'success': {fn:function(r) {
+                    this.console.complete();
+                    Ext.Msg.hide();
+                    this.refresh();
+                },scope:this}
+        	}
         });
     }
     
@@ -100,7 +101,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         var topic = '/workspace/package/remove/'+r.signature+'/';
         this.loadConsole(btn,topic);
         
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'remove'
@@ -108,16 +109,17 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                 ,register: 'mgr'
                 ,topic: topic
             }
-            ,scope: this
-            ,success: function(r) {
-                this.console.complete();
-                Ext.Msg.hide();
-                this.refresh();
-            }
-            ,failure: function(r) {
-            	this.console.complete();
-                Ext.Msg.hide();
-                this.refresh();
+            ,listeners: {
+            	'success': {fn:function(r) {
+                    this.console.complete();
+                    Ext.Msg.hide();
+                    this.refresh();
+                },scope:this}
+            	,'failure': {fn:function(r) {
+                    this.console.complete();
+                    Ext.Msg.hide();
+                    this.refresh();
+                },scope:this}
             }
         });
     }
@@ -127,7 +129,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     	var topic = '/workspace/package/install/'+r.signature+'/';
     	this.loadConsole(btn,topic);
     	
-    	Ext.Ajax.request({
+    	MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'install'
@@ -135,14 +137,16 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                 ,register: 'mgr'
                 ,topic: topic
             }
-            ,scope: this
-            ,success: function(r,o) {
-            	r = Ext.decode(r.responseText);
-            	this.console.complete();
-            	if (r.success == false) {
-            	   Ext.Msg.hide();
-            	}
-            	this.refresh();
+            ,listeners: {
+            	'success': {fn:function() {
+                    this.console.complete();
+                    this.refresh();
+                },scope:this}
+                ,'failure': {fn:function() {
+                	this.console.complete();
+                	Ext.Msg.hide();
+                	this.refresh();
+                },scope:this}
             }
     	});
     }

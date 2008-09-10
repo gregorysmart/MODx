@@ -11,10 +11,12 @@ MODx = function(config) {
     this.config = config;
     this.initQuickTips();
     this.request = this.getURLParameters();
+    this.Ajax = new MODx.Ajax();
 };
 Ext.extend(MODx,Ext.Component,{
     config: {}
     ,util:{},window:{},panel:{},tree:{},form:{},grid:{},combo:{},toolbar:{},page:{},msg:{}
+    ,Ajax:{}
     
     ,load: function() {
         var a = arguments, l = a.length;
@@ -49,4 +51,52 @@ Ext.extend(MODx,Ext.Component,{
     }
 });
 Ext.reg('modx',MODx);
+
+
+/**
+ * 
+ */
+MODx.Ajax = function(config) {
+    config = config || {};
+    MODx.Ajax.superclass.constructor.call(this,config);
+    this.addEvents({
+        'success': true
+        ,'failure': true
+    });
+};
+Ext.extend(MODx.Ajax,Ext.Component,{
+    request: function(config) {
+        this.purgeListeners();
+        if (config.listeners) {
+            for (var i in config.listeners) {
+              var l = config.listeners[i];
+              this.addListener(i,l.fn,l.scope || this,l.options || {});
+            }
+        }
+        
+        Ext.applyIf(config,{
+            success: function(r,o) {
+                r = Ext.decode(r.responseText);
+                r.options = o;
+                if (r.success) {
+                    this.fireEvent('success',r);
+                } else if (this.fireEvent('failure',r)) {
+                    MODx.form.Handler.errorJSON(r);
+                }
+            }
+            ,failure: function(r,o) {
+            	r = Ext.decode(r.responseText);
+            	r.options = o;
+            	if (this.fireEvent('failure',r)) {
+            		MODx.form.Handler.errorJSON(r);
+            	}
+            }
+            ,scope: this
+        });
+        Ext.Ajax.request(config);
+    }
+});
+Ext.reg('modx-ajax',MODx.Ajax);
+
+
 MODx = new MODx();

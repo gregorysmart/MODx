@@ -37,29 +37,29 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 		var id = node.id.split('_'); 
         id = id[1] == 'context' ? 0 : id[2];
 		
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'get'
 				,id: id
 			}
-			,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);
-                Ext.apply(r.object,{
-                    parent: r.object.id
-                });
-				if (!this.windows.create_action) {
-					this.windows.create_action = MODx.load({
-						xtype: 'window-action-create'
-                        ,scope: this
-						,success: this.refresh
-						,record: r.object
-					});
-				} else {
-				    this.windows.create_action.setValues(r.object);
-                }
-				this.windows.create_action.show(e.target);
+			,listeners: {
+				'success': {fn:function(r) {
+					Ext.apply(r.object,{
+                        parent: r.object.id
+                    });
+                    if (!this.windows.create_action) {
+                        this.windows.create_action = MODx.load({
+                            xtype: 'window-action-create'
+                            ,scope: this
+                            ,success: this.refresh
+                            ,record: r.object
+                        });
+                    } else {
+                        this.windows.create_action.setValues(r.object);
+                    }
+                    this.windows.create_action.show(e.target);
+				},scope:this}
 			}
 		});
 	}
@@ -74,31 +74,31 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[2];
 		
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'get'
 				,id: id
 			}
-			,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);
-				Ext.applyIf(r.object,{
-                    parent: r.object.id
-                    ,parent_controller: r.object.controller
-                    ,loadheaders: r.object.haslayout
-                });
-				if (!this.windows.update_action) {
-					this.windows.update_action = MODx.load({
-						xtype: 'window-action-update'
-                        ,scope: this
-						,success: this.refresh
-						,record: r.object
-					});
-				} else {
-					this.windows.update_action.setValues(r.object);
-				}
-				this.windows.update_action.show(e.target);
+			,listeners: {
+				'success': {fn:function(r) {
+					Ext.applyIf(r.object,{
+                        parent: r.object.id
+                        ,parent_controller: r.object.controller
+                        ,loadheaders: r.object.haslayout
+                    });
+                    if (!this.windows.update_action) {
+                        this.windows.update_action = MODx.load({
+                            xtype: 'window-action-update'
+                            ,scope: this
+                            ,success: this.refresh
+                            ,record: r.object
+                        });
+                    } else {
+                        this.windows.update_action.setValues(r.object);
+                    }
+                    this.windows.update_action.show(e.target);
+				},scope:this}
 			}
 		});
 	}

@@ -70,16 +70,14 @@ MODx.panel.AccessPolicy = function(config) {
 Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
     setup: function() {
         if (this.config.policy == '' || this.config.policy == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,id: this.config.policy
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+            	'success':{fn:function(r) {
                     this.getForm().setValues(r.object);
                     var data = Ext.util.JSON.decode(r.object.policy_data);
                     var g = Ext.getCmp('grid-policy-property');
@@ -87,8 +85,8 @@ Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
                     g.config.policy = r.object.id;
                     g.getView().refresh();
                     
-                    Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
-                } else MODx.form.Handler.errorJSON(r);
+                    Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');            		
+            	},scope:this}
             }
         })
     }
@@ -136,21 +134,19 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
     create: function() {
         Ext.Msg.prompt(_('policy_property_create'),_('policy_property_specify_name'),function(btn,v) {
             if (btn == 'ok') {
-                Ext.Ajax.request({
+                MODx.Ajax.request({
                     url: MODx.config.connectors_url+'security/access/policy.php'
                     ,params: {
                         action: 'createPolicyData'
                         ,id: this.config.policy
                         ,key: v
                     }
-                    ,scope: this
-                    ,success: function(r,o) {
-                        r = Ext.decode(r.responseText);
-                        if (r.success) {
-                            var s = this.getSource();
-                            s[v] = true;
-                            this.setSource(s);
-                        } else MODx.form.Handler.errorJSON(r);
+                    ,listeners: {
+                    	'success': {fn:function(r) {
+                    		var s = this.getSource();
+                    		s[v] = true;
+                    		this.setSource(s);
+                    	},scope:this}
                     }
                 });
             }
@@ -158,27 +154,25 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
     }
     
     ,remove: function() {
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: MODx.config.connectors_url+'security/access/policy.php'
             ,params: {
                 action: 'removePolicyData'
                 ,id: this.config.policy
                 ,key: this.menu.record
             }
-            ,scope: this
-            ,success: function(r,o) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+            	'success': {fn:function(r) {
                     var s = this.getSource();
                     s[this.menu.record] = null;
-                    this.setSource(s);
-                } else MODx.form.Handler.errorJSON(r);
+                    this.setSource(s);            		
+            	},scope:this}
             }
         });
     }
     
     ,update: function(e) {
-        Ext.Ajax.request({
+        MODx.Ajax.request({
            url: MODx.config.connectors_url+'security/access/policy.php'
            ,params: {
                action: 'updatePolicyData'
@@ -186,14 +180,10 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
                ,key: e.record.data.name
                ,value: e.value
            }
-           ,scope: this
-           ,success: function(r,o) {
-               r = Ext.decode(r.responseText);
-               if (r.success) {
+           ,listeners: {
+               'success': {fn:function(r) {
                    e.record.commit();
-               } else {
-                   MODx.form.Handler.errorJSON(r);
-               }
+               },scope:this}
            }
         });
     }

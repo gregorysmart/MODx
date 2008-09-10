@@ -97,23 +97,21 @@ MODx.panel.Chunk = function(config) {
 Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
     setup: function() {
         if (this.config.chunk == '' || this.config.chunk == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,id: this.config.chunk
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    if (r.object.category == '0') r.object.category = null;
+            ,listeners: {
+            	'success': {fn:function(r) {
+            		if (r.object.category == '0') r.object.category = null;
                     if (r.object.snippet == 'NULL') r.object.snippet = '';
                     this.getForm().setValues(r.object);
                     Ext.getCmp('chunk-name').getEl().update('<h2>'+_('chunk')+': '+r.object.name+'</h2>');
-                } else MODx.form.Handler.errorJSON(r);
+            	},scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-chunk',MODx.panel.Chunk);

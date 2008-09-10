@@ -78,20 +78,18 @@ MODx.panel.Context = function(config) {
 Ext.extend(MODx.panel.Context,MODx.FormPanel,{
     setup: function() {
         if (this.config.context == '' || this.config.context == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,key: this.config.context
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+            	'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
                     var el = Ext.getCmp('context-name');
-                    if (el) el.getEl().update('<h2>'+_('context')+': '+r.object.key+'</h2>');
-                } else MODx.form.Handler.errorJSON(r);
+                    if (el) el.getEl().update('<h2>'+_('context')+': '+r.object.key+'</h2>');            		
+            	},scope:this}
             }
         })
     }

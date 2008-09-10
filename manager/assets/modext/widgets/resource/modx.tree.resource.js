@@ -94,16 +94,14 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 	,undeleteDocument: function(item,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: MODx.config.connectors_url+'resource/document.php'
 			,params: {
 				action: 'undelete'
 				,id: id
 			}
-			,scope: this
-			,success: function (r,o) {
-				r = Ext.decode(r.responseText);
-				r.success ?	this.refreshParentNode() : MODx.form.Handler.errorJSON(r);
+			,listeners: {
+				'success': {fn:this.refreshParentNode,scope:this}
 			}
 		});
 	}
@@ -143,15 +141,13 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 	}
 	
 	,emptyRecycleBin: function(item,e) {
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: MODx.config.connectors_url+'resource/document.php'
             ,params: {
 				action: 'emptyRecycleBin'
 			}
-            ,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);
-				r.success ? this.refresh() : MODx.form.Handler.errorJSON(r);
+			,listeners: {
+				'success':{fn:this.refresh,scope:this}
 			}
        	});
 	}

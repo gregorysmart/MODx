@@ -17,7 +17,7 @@
 
 {if $_config.compress_js}
 <script src="assets/modext/modext.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/core/modx.panel-min.js" type="text/javascript"></script>
+<script src="assets/modext/build/widgets/core/modx.panel-min.js" type="text/javascript"></script>pt>
 <script src="assets/modext/build/widgets/core/modx.tabs-min.js" type="text/javascript"></script>
 <script src="assets/modext/build/widgets/core/modx.window-min.js" type="text/javascript"></script>
 <script src="assets/modext/build/widgets/core/modx.tree-min.js" type="text/javascript"></script>

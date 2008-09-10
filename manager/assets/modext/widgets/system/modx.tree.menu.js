@@ -29,30 +29,30 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'get'
 				,id: id
 			}
-			,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);
-				Ext.applyIf(r.object,{
-					parent: r.object.id
-					,parent_text: r.object.text
-				});
-				if (!this.windows.create_menu) {
-					this.windows.create_menu = MODx.load({
-						xtype: 'window-menu-create'
-                        ,scope: this
-						,success: this.refresh
-						,record: r.object
-					});
-				} else {
-					this.windows.create_menu.setValues(r.object);
-				}
-				this.windows.create_menu.show(e.target);
+			,listeners: {
+				'success': {fn:function(r) {
+					Ext.applyIf(r.object,{
+                        parent: r.object.id
+                        ,parent_text: r.object.text
+                    });
+                    if (!this.windows.create_menu) {
+                        this.windows.create_menu = MODx.load({
+                            xtype: 'window-menu-create'
+                            ,scope: this
+                            ,success: this.refresh
+                            ,record: r.object
+                        });
+                    } else {
+                        this.windows.create_menu.setValues(r.object);
+                    }
+                    this.windows.create_menu.show(e.target);
+				},scope:this}
 			}
 		});
 	}
@@ -61,29 +61,29 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'get'
 				,id: id
 			}
-			,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);
-				Ext.applyIf(r.object,{
-                    action_id: r.object.action
-				});
-				if (!this.windows.update_menu) {
-					this.windows.update_menu = MODx.load({
-						xtype: 'window-menu-update'
-                        ,scope: this
-						,success: this.refresh
-						,record: r.object
-					});
-				} else {
-					this.windows.update_menu.setValues(r.object);
-				}
-				this.windows.update_menu.show(e.target);
+			,listeners: {
+				'success': {fn:function(r) {
+					Ext.applyIf(r.object,{
+                        action_id: r.object.action
+                    });
+                    if (!this.windows.update_menu) {
+                        this.windows.update_menu = MODx.load({
+                            xtype: 'window-menu-update'
+                            ,scope: this
+                            ,success: this.refresh
+                            ,record: r.object
+                        });
+                    } else {
+                        this.windows.update_menu.setValues(r.object);
+                    }
+                    this.windows.update_menu.show(e.target);
+				},scope:this}
 			}
 		});
 	}

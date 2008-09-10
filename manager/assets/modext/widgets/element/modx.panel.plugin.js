@@ -112,23 +112,21 @@ MODx.panel.Plugin = function(config) {
 Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
     setup: function() {
         if (this.config.plugin == '' || this.config.plugin == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,id: this.config.plugin
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
-                    if (r.object.category == '0') r.object.category = null;
+            ,listeners: {
+            	'success': {fn:function(r) {
+            		if (r.object.category == '0') r.object.category = null;
                     r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>"
                     this.getForm().setValues(r.object);
                     Ext.getCmp('plugin-name').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
-                } else MODx.form.Handler.errorJSON(r);
+            	},scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-plugin',MODx.panel.Plugin);

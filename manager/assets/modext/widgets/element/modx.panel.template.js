@@ -95,22 +95,20 @@ MODx.panel.Template = function(config) {
 Ext.extend(MODx.panel.Template,MODx.FormPanel,{
     setup: function() {
         if (this.config.template == '' || this.config.template == 0) return;
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,id: this.config.template
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+                'success': {fn:function(r) {
                     if (r.object.category == '0') r.object.category = null;
                     this.getForm().setValues(r.object);
                     Ext.getCmp('template-name').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
-                } else MODx.form.Handler.errorJSON(r);
+                },scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-template',MODx.panel.Template);

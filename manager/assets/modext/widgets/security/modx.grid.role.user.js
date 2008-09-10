@@ -54,24 +54,22 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
      */
 	,addUser: function(btn,e) {
 		var user = Ext.getCmp('rugrid-combo-user').getValue();
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
 				action: 'addUser'
 				,role: this.config.role
 				,user: user
 			}
-			,scope: this
-			,success: function(r,o) {
-				r = Ext.decode(r.responseText);
-				if (r.success) {
-					this.getStore().baseParams = { 
-						action: 'getUsers'
-						,role: this.config.role
-					};
-					Ext.getCmp('rugrid-combo-usergroup').setValue('');
-					this.refresh();
-				} else MODx.form.Handler.errorJSON(r);
+			,listeners: {
+				'success': {fn:function(r) {
+                    this.getStore().baseParams = { 
+                        action: 'getUsers'
+                        ,role: this.config.role
+                    };
+                    Ext.getCmp('rugrid-combo-usergroup').setValue('');
+                    this.refresh();					
+				},scope:this}
 			}
 		});
 	}
