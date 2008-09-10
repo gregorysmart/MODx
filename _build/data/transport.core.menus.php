@@ -163,16 +163,15 @@ $collection['15']->fromArray(array (
   'menuindex' => '8',
   'params' => '',
   'handler' => 'MODx.msg.confirm({
-title: _(\'logout\')
-,text: _(\'logout_confirm\')
-,connector: MODx.config.connectors_url+\'security/logout.php\'
-,params: {
-action: \'logout\'
-}
-,scope: this
-,success: function(r) {
-    location.href = \'./\';
-}
+    title: _(\'logout\')
+    ,text: _(\'logout_confirm\')
+    ,url: MODx.config.connectors_url+\'security/logout.php\'
+    ,params: {
+        action: \'logout\'
+    }
+    ,listeners: {
+        \'success\': {fn:function() { location.href = \'./\'; },scope:this}
+    }
 });',
 ), '', true, true);
 $collection['17']= $xpdo->newObject('modMenu');
@@ -229,18 +228,17 @@ $collection['22']->fromArray(array (
   'menuindex' => '0',
   'params' => '',
   'handler' => 'e.preventDefault();
-			MODx.msg.confirm({
-				title: _(\'remove_locks\')
-				,text: _(\'confirm_remove_locks\')
-				,connector: MODx.config.connectors_url+\'system/remove_locks.php\'
-				,params: {
-					action: \'remove\'
-				}
-				,scope: this
-				,success: function(r) {
-					navtree.refresh();
-				}
-			});',
+            MODx.msg.confirm({
+                title: _(\'remove_locks\')
+                ,text: _(\'confirm_remove_locks\')
+                ,url: MODx.config.connectors_url+\'system/remove_locks.php\'
+                ,params: {
+                    action: \'remove\'
+                }
+                ,listeners: {
+                    \'success\': {fn:function() { navtree.refresh(); },scope:this}
+                }
+            });',
 ), '', true, true);
 $collection['23']= $xpdo->newObject('modMenu');
 $collection['23']->fromArray(array (
