@@ -221,10 +221,11 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
         MODx.msg.confirm({
             title: _('warning')
             ,text: _(text)
-            ,connector: this.config.url
+            ,url: this.config.url
             ,params: p
-            ,scope: this
-            ,success: this.refresh
+            ,listeners: {
+            	'success': {fn:this.refresh,scope:this}
+            }
         }); 
     }
     

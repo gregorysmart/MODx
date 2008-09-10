@@ -292,15 +292,16 @@ Ext.extend(MODx.panel.PiFirst,Ext.FormPanel,{
     	MODx.msg.confirm({
            title: _('package_search_local_title')
            ,text: _('package_search_local_confirm')
-           ,connector: MODx.config.connectors_url+'workspace/packages.php'
+           ,url: MODx.config.connectors_url+'workspace/packages.php'
            ,params: {
                 action: 'scanLocal' 
     	   }
-    	   ,scope: this
-    	   ,success: function(r) {
-                Ext.getCmp('grid-package').refresh();
-                Ext.getCmp('window-package-installer').hide();
-    	   }
+           ,listeners: {
+                'success':{fn:function(r) {
+                    Ext.getCmp('grid-package').refresh();
+                    Ext.getCmp('window-package-installer').hide();
+                },scope:this}
+           }
     	});
     }
 });

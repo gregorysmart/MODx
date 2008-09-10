@@ -52,7 +52,7 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
         });
 		
 		this.fp = this.createForm({
-			url: this.config.connector || MODx.config.connectors_url+'resource/document.php'
+			url: this.config.url || MODx.config.connectors_url+'resource/document.php'
 			,baseParams: this.config.baseParams || {
 				action: 'duplicate'
 				,id: this.config.resource
@@ -115,7 +115,7 @@ MODx.window.AddUserToUserGroup = function(config) {
 		title: _('add_user_to_group')
 		,height: 150
 		,width: 375
-        ,connector: MODx.config.connectors_url+'security/group.php'
+        ,url: MODx.config.connectors_url+'security/group.php'
         ,action: 'addUser'
         ,fields: [{
             fieldLabel: _('name')
@@ -147,7 +147,7 @@ MODx.window.CreateDocumentGroup = function(config) {
 		title: _('create_document_group')
 		,height: 150
 		,width: 350
-        ,connector: MODx.config.connectors_url+'security/documentgroup.php'
+        ,url: MODx.config.connectors_url+'security/documentgroup.php'
         ,action: 'create'
         ,fields: [{
             fieldLabel: _('name')
@@ -176,7 +176,7 @@ MODx.window.CreateCategory = function(config) {
 		title: _('new_category')
 		,height: 150
 		,width: 350
-        ,connector: MODx.config.connectors_url+'element/category.php'
+        ,url: MODx.config.connectors_url+'element/category.php'
         ,action: 'create'
         ,fields: [{
             fieldLabel: _('name')

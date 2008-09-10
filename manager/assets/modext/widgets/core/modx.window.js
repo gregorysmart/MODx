@@ -69,7 +69,7 @@ Ext.extend(MODx.Window,Ext.Window,{
             }
         }
         this.fp = this.createForm({
-            url: this.config.connector || this.config.url
+            url: this.config.url
             ,baseParams: this.config.baseParams || { action: this.config.action || '' }
             ,items: this.config.fields || []
         });
@@ -113,7 +113,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 			,bodyBorder: false
 			,autoHeight: true
 			,errorReader: MODx.util.JSONReader
-			,url: this.config.connector || this.config.url
+			,url: this.config.url
 			,baseParams: this.config.baseParams || {}
 			,fileUpload: this.config.fileUpload || false
 		});

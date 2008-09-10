@@ -88,8 +88,9 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
                 action: 'delete'
                 ,id: this.menu.record.id
             }
-            ,scope: this
-            ,success: this.refresh
+            ,listeners: {
+            	'success': {fn:this.refresh,scope:this}
+            }
         });
     }
     

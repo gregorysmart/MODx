@@ -56,11 +56,13 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		if (this.windows.duplicate) {
            this.windows.duplicate.destroy(); 
         }
-        this.windows.duplicate = new MODx.window.DuplicateResource({
-            resource: id
+        this.windows.duplicate = MODx.load({
+        	xtype: 'window-resource-duplicate'
+            ,resource: id
             ,is_folder: node.getUI().hasClass('folder')
-        	,scope: this
-        	,success: this.refreshParentNode
+            ,listeners: {
+            	'success': {fn:this.refreshParentNode,scope:this}
+            }
         });
 		this.windows.duplicate.setValues(r);
 		this.windows.duplicate.show(e.target);
@@ -78,13 +80,14 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		MODx.msg.confirm({
 			title: _('delete_document')
 			,text: _('confirm_delete_document')
-			,connector: MODx.config.connectors_url+'resource/document.php'
+			,url: MODx.config.connectors_url+'resource/document.php'
 			,params: {
 				action: 'delete'
 				,id: id
 			}
-			,scope: this
-			,success: this.refreshParentNode
+			,listeners: {
+				'success': {fn:this.refreshParentNode,scope:this}
+			}
 		});
 	}
 	
@@ -111,13 +114,14 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		MODx.msg.confirm({
 			title: _('publish_document')
 			,text: _('confirm_publish')
-			,connector: MODx.config.connectors_url+'resource/document.php'
+			,url: MODx.config.connectors_url+'resource/document.php'
 			,params: {
 				action: 'publish'
 				,id: id
 			}
-			,scope: this
-			,success: this.refreshParentNode
+			,listeners: {
+				'success': {fn:this.refreshParentNode,scope:this}
+			}
 		});
 	}
 	
@@ -127,13 +131,14 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		MODx.msg.confirm({
 			title: _('unpublish_document')
 			,text: _('confirm_unpublish')
-			,connector: MODx.config.connectors_url+'resource/document.php'
+			,url: MODx.config.connectors_url+'resource/document.php'
 			,params: {
 				action: 'unpublish'
 				,id: id
 			}
-			,scope: this
-			,success: this.refreshParentNode
+			,listeners: {
+				'success': {fn:this.refreshParentNode,scope:this}
+			}
 		});
 	}
 	

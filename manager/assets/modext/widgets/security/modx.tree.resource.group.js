@@ -38,14 +38,15 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 		
 		MODx.msg.confirm({
 			text: _('confirm_delete_document_group_document')
-			,connector: this.config.url
+			,url: this.config.url
 			,params: {
 				action: 'removeDocument'
 				,document: doc_id
 				,document_group: dg_id
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this} 
+			}
 		});
 	}
 	
@@ -55,21 +56,24 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 		
 		MODx.msg.confirm({
 			text: _('confirm_delete_document_group')
-			,connector: this.config.url
+			,url: this.config.url
 			,params: {
 				action: 'remove'
 				,id: id
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this}
+			}
 		});
 	}
 	
 	,create: function(itm,e) {
 		if (!this.windows.create) {
-			this.windows.create = new MODx.window.CreateDocumentGroup({
-				success: this.refresh
-				,scope: this
+			this.windows.create = MODx.load({
+				xtype: 'window-resourcegroup-create'
+				,listeners: {
+				    'success': {fn:this.refresh,scope:this}
+				}
 			});
         }
 		this.windows.create.show(e.target);

@@ -44,8 +44,9 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
 				,user: this.menu.record.id
 				,role: this.config.role
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this}
+			}
 		});
 	}
     /**

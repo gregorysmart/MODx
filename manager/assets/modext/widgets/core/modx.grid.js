@@ -170,10 +170,11 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
         MODx.msg.confirm({
             title: _(type)
             ,text: _(text) || _('confirm_remove')
-            ,connector: this.config.url
+            ,url: this.config.url
             ,params: p
-            ,scope: this
-            ,success: this.refresh
+            ,listeners: {
+            	'success': {fn:this.refresh,scope:this}
+            }
         });
     }
     
@@ -195,10 +196,11 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
         MODx.msg.confirm({
             title: _('warning')
             ,text: _(text)
-            ,connector: this.config.url
+            ,url: this.config.url
             ,params: p
-            ,scope: this
-            ,success: this.removeActiveRow
+            ,listeners: {
+            	'success': {fn:this.removeActiveRow,scope:this}
+            }
         });
     }
     

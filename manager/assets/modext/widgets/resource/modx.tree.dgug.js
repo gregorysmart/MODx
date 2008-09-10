@@ -36,15 +36,14 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 		var dg_id = n.parentNode.id.substr(2).split('_'); dg_id = dg_id[1];
 		MODx.msg.confirm({
 			text: _('confirm_delete_user_group_document_group')
-			,connector: MODx.config.connectors_url+'security/documentgroup.php'
+			,url: MODx.config.connectors_url+'security/documentgroup.php'
 			,params: { 
 				action: 'removePairing'
 				,ug_id: ug_id
 				,dg_id: dg_id
 			}
-			,scope: this
-			,success: function(r,o) {
-				this.refresh();
+			,listeners: {
+			     'success': {fn:function() { this.refresh(); },scope:this}
 			}
 		});
 	}
@@ -54,15 +53,16 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 		var id = n.id.substr(2).split('_'); id = id[1];
 		MODx.msg.confirm({
 			text: _('confirm_delete_document_group')
-			,connector: MODx.config.connectors_url+'security/documentgroup.php'
+			,url: MODx.config.connectors_url+'security/documentgroup.php'
 			,params: { 
 				action: 'remove'
 				,id: id
 			}
-			,scope: this
-			,success: function(r,o) {
-				this.refresh();
-				this.dgtree.refresh();
+			,listeners: {
+				'success': {fn:function() {
+				    this.refresh();
+				    this.dgtree.refresh();
+			    },scope:this}
 			}
 		});
 	}
@@ -72,11 +72,12 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 		
 		var d = new MODx.window.CreateDocumentGroup({
 			title: _('create_document_group')
-			,success: function() {
-				this.refresh();
-				this.dgtree.refresh();
+			,listeners: {
+				'success': {fn:function() {
+				    this.refresh();
+				    this.dgtree.refresh();
+			     },scope: this}
 			}
-			,scope: this
 		});
 		d.show(e.target);
 		this.dialogs.create = d;

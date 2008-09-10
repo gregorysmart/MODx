@@ -233,13 +233,14 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         MODx.msg.confirm({
             title: _('warning')
             ,text: _('file_remove_confirm')
-            ,connector: MODx.config.connectors_url+'browser/file.php'
+            ,url: MODx.config.connectors_url+'browser/file.php'
             ,params: {
                 action: 'remove'
                 ,file: data.pathname
             }
-            ,scope: this
-            ,success: this.run
+            ,listeners: {
+            	'success': {fn:this.run,scope:this}
+            }
         });
     }
     

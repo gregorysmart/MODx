@@ -140,10 +140,12 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
         var r = {parent: node.id};
         if (!this.windows.create) {
-    		this.windows.create = new MODx.window.CreateDirectory({
-    			record: r
-    			,scope: this
-    			,success: this.refresh
+    		this.windows.create = MODx.load({
+    			xtype: 'window-directory-create'
+    			,record: r
+                ,listeners: {
+                    'success':{fn:this.refresh,scope:this}
+                }
     		});
         } else {
             this.windows.create.setValues(r);
@@ -155,10 +157,12 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
         var r = {dir: node.id};
         if (!this.windows.chmod) {
-            this.windows.chmod = new MODx.window.ChmodDirectory({
-    			record: r
-    			,scope: this
-    			,success: this.refresh			
+            this.windows.chmod = MODx.load({
+    			xtype: 'window-directory-chmod'
+    			,record: r
+                ,listeners: {
+                    'success':{fn:this.refresh,scope:this}
+                }
     		});
         } else {
             this.windows.chmod.setValues(r);
@@ -170,13 +174,14 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         var node = this.cm.activeNode;
         MODx.msg.confirm({
             text: _('file_confirm_remove')
-            ,connector: MODx.config.connectors_url+'browser/file.php'
+            ,url: MODx.config.connectors_url+'browser/file.php'
             ,params: {
                 action: 'remove'
                 ,file: node.id
             }
-            ,scope: this
-            ,success: this.refreshParentNode
+            ,listeners: {
+                'success':{fn:this.refreshParentNode,scope:this}
+            }
         });
     }
 });
@@ -197,7 +202,7 @@ MODx.window.CreateDirectory = function(config) {
 		width: 430
 		,height: 200
 		,title: _('file_folder_create')
-        ,connector: MODx.config.connectors_url+'browser/directory.php'
+        ,url: MODx.config.connectors_url+'browser/directory.php'
         ,action: 'create'
         ,fields: [{
             fieldLabel: _('name')
@@ -232,7 +237,7 @@ MODx.window.ChmodDirectory = function(config) {
 		title: _('file_folder_chmod')
         ,width: 430
 		,height: 200
-        ,connector: MODx.config.connectors_url+'browser/directory.php'
+        ,url: MODx.config.connectors_url+'browser/directory.php'
         ,action: 'chmod'
         ,fields: [{
             fieldLabel: _('mode')

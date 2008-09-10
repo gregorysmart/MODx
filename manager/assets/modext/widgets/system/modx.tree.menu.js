@@ -100,8 +100,9 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 				action: 'remove'
 				,id: id
 			}
-			,scope: this
-			,success: this.refresh
+            ,listeners: {
+                'success':{fn:this.refresh,scope:this}
+            }
 		});	
 	}
 });

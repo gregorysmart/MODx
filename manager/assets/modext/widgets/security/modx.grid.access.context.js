@@ -43,20 +43,22 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
             ,user_group: r.principal
         });
 		if (!this.windows.create_acl) {
-			this.windows.create_acl = new MODx.window.AccessContext({
-	            scope: this
-	            ,success: function(frm,a) {
-	                var o = a.result.object;
-	                this.getStore().baseParams = { 
-	                    action: 'getList'
-	                    ,type: this.config.type
-	                    ,target: this.combos.ctx.getValue()
-	                    ,principal: this.combos.ug.getValue()
-	                    ,principal_class: 'modUserGroup'
-	                };
-	                this.refresh();
+			this.windows.create_acl = MODx.load({
+                xtype: 'window-accesscontext'
+	            ,record: r
+	            ,listeners: {
+	            	'success': {fn:function(frm,a) {
+    	                var o = a.result.object;
+    	                this.getStore().baseParams = { 
+    	                    action: 'getList'
+    	                    ,type: this.config.type
+    	                    ,target: this.combos.ctx.getValue()
+    	                    ,principal: this.combos.ug.getValue()
+    	                    ,principal_class: 'modUserGroup'
+    	                };
+    	                this.refresh();
+	            	},scope:this}
 	            }
-				,record: r
 	        });
 		} else {
 			this.windows.create_acl.setValues(r);
@@ -72,11 +74,13 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
             ,user_group: r.principal
         });
         if (!this.windows.update_acl) {
-			this.windows.update_acl = new MODx.window.AccessContext({
-	            id: r.id
-	            ,scope: this
-	            ,success: this.refresh
-				,record: r
+			this.windows.update_acl = MODx.load({
+	            xtype: 'window-accesscontext'
+	            ,id: r.id
+	            ,record: r
+	            ,listeners: {
+	            	'success': {fn:this.refresh,scope:this}
+	            }
 	        });
 		} else {
 			this.windows.update_acl.setValues(r);
@@ -88,14 +92,15 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
         MODx.msg.confirm({
             title: _('ugc_remove')
             ,text: _('access_confirm_remove')
-            ,connector: this.config.url
+            ,url: this.config.url
             ,params: {
                 action: 'removeAcl'
                 ,id: this.menu.record.id
                 ,type: this.config.type
             }
-            ,scope: this
-            ,success: this.refresh
+            ,listeners: {
+            	'success': {fn:this.refresh,scope:this}
+            }
         });
     }
 	
@@ -113,26 +118,34 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
 	}
 	
 	,getToolbar: function() {
-		this.combos.ug = new MODx.combo.UserGroup();
-	    this.combos.ug.on('select',function(btn,e) {
-	        this.getStore().baseParams = {
-	            action: 'getList'
-	            ,type: this.config.type
-	            ,target: this.combos.rg.getValue()
-	            ,principal: this.combos.ug.getValue()
-	        }
-	        this.getStore().load();
-	    },this);
-	    this.combos.ctx = new MODx.combo.Context();
-	    this.combos.ctx.on('select',function(btn,e) {
-	        this.getStore().baseParams = {
-	            action: 'getList'
-	            ,type: this.config.type
-	            ,target: this.combos.ctx.getValue()
-	            ,principal: this.combos.ug.getValue()
-	        }
-	        this.getStore().load();
-	    },this);
+		this.combos.ug = MODx.load({ 
+            xtype: 'combo-usergroup'
+            ,listeners: {
+              	'select': {fn:function(btn,e) {
+                    this.getStore().baseParams = {
+                        action: 'getList'
+                        ,type: this.config.type
+                        ,target: this.combos.rg.getValue()
+                        ,principal: this.combos.ug.getValue()
+                    }
+                    this.getStore().load();
+                },scope:this}
+            }
+		});
+	    this.combos.ctx = MODx.load({ 
+            xtype: 'combo-context'
+            ,listeners: {
+               	'select': {fn:function(btn,e) {
+                    this.getStore().baseParams = {
+                        action: 'getList'
+                        ,type: this.config.type
+                        ,target: this.combos.ctx.getValue()
+                        ,principal: this.combos.ug.getValue()
+                    }
+                    this.getStore().load();
+                },scope:this}
+            }
+        });
 	    
 		return [
 	    	_('context') +': '
@@ -213,7 +226,7 @@ Ext.extend(MODx.window.AccessContext,MODx.Window,{
         this.config.values = data;		
 				
         this.fp = this.createForm({
-            url: this.config.connector || MODx.config.connectors_url+'security/access/index.php'
+            url: this.config.url || MODx.config.connectors_url+'security/access/index.php'
             ,baseParams: this.config.baseParams || { action: 'addAcl', type: this.config.type }
 			,items: [ 
             	{

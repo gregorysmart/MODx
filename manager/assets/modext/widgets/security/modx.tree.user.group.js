@@ -37,10 +37,12 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 		var r = {user_group: ug};
         
         if (!this.windows.adduser) {
-            this.windows.adduser = new MODx.window.AddUserToUserGroup({
-    			record: r
-    			,success: this.refresh
-    			,scope: this
+            this.windows.adduser = MODx.load({
+    			xtype: 'window-usergroup-adduser'
+    			,record: r
+    			,listeners: {
+    				'success': {fn:this.refresh,scope:this}
+    			}
     		});
         } else {
             this.windows.adduser.setValues(r);
@@ -58,10 +60,12 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
         var r = {parent: p};
         
 		if (!this.windows.create) {
-    		this.windows.create = new MODx.window.CreateUserGroup({
-    			record: r
-    			,success: this.refresh
-    			,scope: this
+    		this.windows.create = MODx.load({
+    			xtype: 'window-usergroup-create'
+    			,record: r
+    			,listeners: {
+    				'success': {fn:this.refresh,scope:this}
+    			}
     		});
         } else {
             this.windows.create.setValues(r);
@@ -83,10 +87,12 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
             ,success: function(r,o) {
                 r = Ext.decode(r.responseText);
                 if (!this.windows.update) {
-                    this.windows.update = new MODx.window.UpdateUserGroup({
-                        scope: this
-                        ,success: this.refresh
+                    this.windows.update = MODx.load({
+                        xtype: 'window-usergroup-update'
                         ,record: r.object
+                        ,listeners: {
+                        	'success': {fn:this.refresh,scope:this}
+                        }
                     });
                 } else {
                     this.windows.update.setValues(r.object);
@@ -103,13 +109,14 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 		MODx.msg.confirm({
 			title: _('warning')
 			,text: _('confirm_delete_user_group')
-			,connector: this.config.url
+			,url: this.config.url
 			,params: {
 				action: 'remove'
 				,id: id
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this}
+			}
 		});
 	}
 	
@@ -121,14 +128,15 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 		MODx.msg.confirm({
 			title: _('warning')
 			,text: _('confirm_remove_user_from_group')
-			,connector: this.config.url
+			,url: this.config.url
 			,params: { 
 				action: 'removeUser'
 				,user_id: user_id
 				,group_id: group_id
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success':{fn:this.refresh,scope:this}
+			}
 		});
 	}
 });

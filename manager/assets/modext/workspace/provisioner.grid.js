@@ -54,7 +54,7 @@ MODx.window.CreateProvider = function(config) {
     Ext.applyIf(config,{
         title: _('provider_add')
         ,width: 375
-        ,connector: MODx.config.connectors_url+'workspace/providers.php'
+        ,url: MODx.config.connectors_url+'workspace/providers.php'
         ,action: 'create'
         ,fields: [{
             fieldLabel: _('name')
@@ -95,7 +95,7 @@ MODx.window.UpdateProvider = function(config) {
     Ext.applyIf(config,{
         title: _('provider_update')
         ,width: 375
-        ,connector: MODx.config.connectors_url+'workspace/providers.php'
+        ,url: MODx.config.connectors_url+'workspace/providers.php'
         ,action: 'update'
         ,fields: [{
             name: 'id'

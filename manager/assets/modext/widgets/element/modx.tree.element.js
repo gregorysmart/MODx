@@ -29,8 +29,9 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		if (!this.windows.createCategory) {
 			this.windows.createCategory = MODx.load({
 				xtype: 'window-category-create'
-				,success: this.refresh
-				,scope: this
+				,listeners: {
+					'success': {fn:this.refresh,scope:this}
+				}
 			});
 		}
 		this.windows.createCategory.show(e.target);
@@ -42,11 +43,12 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         if (!this.windows.renameCategory) {
             this.windows.renameCategory = MODx.load({
                 xtype: 'window-category-rename'
-                ,success: this.refresh
-                ,scope: this
                 ,record: { 
                     id: id
                     ,name: this.cm.activeNode.text
+                }
+                ,listeners: {
+                	'success':{fn:this.refresh,scope:this}
                 }
             });
         }
@@ -64,8 +66,9 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 				action: 'delete'
 				,id: id
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this}
+			}
 		});
 	}
 	    
@@ -79,9 +82,10 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         if (!this.windows.duplicateElement) {
             this.windows.duplicateElement = MODx.load({
                 xtype: 'window-element-duplicate'
-                ,success: this.refresh
-                ,scope: this
                 ,record: r
+                ,listeners: {
+                	'success': {fn:this.refresh,scope:this}
+                }
             });
         } else {
             var u = MODx.config.connectors_url+'element/'+type+'.php';
@@ -102,8 +106,9 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 				action: 'delete'
 				,id: oar[2]
 			}
-			,scope: this
-			,success: this.refresh
+			,listeners: {
+				'success': {fn:this.refresh,scope:this}
+			}
 		});
 	}
 	

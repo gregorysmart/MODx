@@ -47,10 +47,11 @@ Ext.extend(MODx.grid.Context,MODx.grid.Grid,{
         }
         this.windows.update = MODx.load({
             xtype: 'window-context-update'
-            ,scope: this
-            ,success: this.refresh
             ,record: r
             ,context_key: r.key
+            ,listeners: {
+            	'success':{fn:this.refresh,scope:this}
+            }
         });
         this.windows.update.setValues(r);
         this.windows.update.show(e.target);

@@ -40,20 +40,22 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
     ,createArg: function(btn,e) {
         var r = this.menu.record;
         if (!this.windows.create_arg) {
-            this.windows.create_arg = new MODx.window.AccessResourceGroup({
-                scope: this
-                ,success: function(frm,a) {
-                    var o = a.result.object;
-                    this.getStore().baseParams = { 
-                        action: 'getList'
-                        ,type: this.config.type
-                        ,target: this.combos.rg.getValue()
-                        ,principal: this.combos.rg.getValue()
-                        ,principal_class: 'modUserGroup'
-                    };
-                    this.refresh();
-                }
+            this.windows.create_arg = MODx.load({
+                xtype: 'window-access-resourcegroup'
                 ,record: r
+                ,listeners: {
+                	'success': {fn: function(frm,a) {
+                        var o = a.result.object;
+                        this.getStore().baseParams = { 
+                            action: 'getList'
+                            ,type: this.config.type
+                            ,target: this.combos.rg.getValue()
+                            ,principal: this.combos.rg.getValue()
+                            ,principal_class: 'modUserGroup'
+                        };
+                        this.refresh();
+                    },scope:this}
+                }
             });
         } else {
             this.windows.create_arg.setValues(r);
@@ -64,11 +66,13 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
     ,editAcl: function(itm,e) {
         var r = this.menu.record;
         if (!this.windows.update_arg) {
-            this.windows.update_arg = new MODx.window.AccessResourceGroup({
-                id: r.id
-                ,scope: this
-                ,success: this.refresh
+            this.windows.update_arg = MODx.load({
+                xtype: 'window-access-resourcegroup'
+                ,id: r.id
                 ,record: r
+                ,listeners: {
+                	'success': {fn:this.refresh,scope:this}
+                }
             });
         } else {
             this.windows.update_arg.setValues(r);
@@ -80,14 +84,15 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         MODx.msg.confirm({
             title: _('ugrg_remove')
             ,text: _('access_confirm_remove')
-            ,connector: this.config.url
+            ,url: this.config.url
             ,params: {
                 action: 'removeAcl'
                 ,id: this.menu.record.id
                 ,type: this.config.type
             }
-            ,scope: this
-            ,success: this.refresh
+            ,listeners: {
+            	'success': {fn:this.refresh,scope:this}
+            }
         });
     }
     
@@ -105,7 +110,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
     }
     
     ,getToolbar: function() {
-        this.combos.ug = new MODx.combo.UserGroup();
+        this.combos.ug = MODx.load({ xtype: 'combo-usergroup' });
         this.combos.ug.on('select',function(btn,e) {
             this.getStore().baseParams = {
                 action: 'getList'
@@ -116,7 +121,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
             this.getStore().reload();
         },this);
         
-        this.combos.rg = new MODx.combo.ResourceGroup();
+        this.combos.rg = MODx.load({ xtype: 'combo-resourcegroup' });
         this.combos.rg.on('select',function(btn,e) {
             this.getStore().baseParams = {
                 action: 'getList'
@@ -198,14 +203,14 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                 data = r.object;
                 this.config.baseParams = {
                     action: 'updateAcl'
-                    ,type: this.options.type
+                    ,type: this.config.type
                 }
             }
         }
         this.options.values = data;
                 
         this.fp = this.createForm({
-            url: this.config.connector || MODx.config.connectors_url+'security/access/index.php'
+            url: this.config.url || MODx.config.connectors_url+'security/access/index.php'
             ,baseParams: this.config.baseParams || { action: 'addAcl', type: this.config.type }
             ,items: [
                 {

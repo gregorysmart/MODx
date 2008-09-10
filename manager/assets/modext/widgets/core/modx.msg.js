@@ -15,6 +15,11 @@ MODx.Msg = function(config) {
         ,duration: .3
     });
     MODx.Msg.superclass.constructor.call(this,config);
+    this.addEvents({
+        'success': true
+        ,'failure': true
+        ,'cancel': true
+    });
 };
 Ext.extend(MODx.Msg,Ext.Component,{
     /**
@@ -30,6 +35,14 @@ Ext.extend(MODx.Msg,Ext.Component,{
      * @param {Object} options An object of options to initialize with.
      */
     ,confirm: function(config) {
+    	// reloads listeners, prevents past listeners from occurring
+    	this.purgeListeners();
+    	if (config.listeners) {
+    		for (var i in config.listeners) {
+    		  var l = config.listeners[i];
+    		  this.addListener(i,l.fn,l.scope || this,l.options || {});
+    		}
+    	}
         Ext.Msg.confirm(config.title || _('warning'),config.text,function(e) {
             this.sl.hide();
             if (e == 'yes') {
@@ -37,22 +50,26 @@ Ext.extend(MODx.Msg,Ext.Component,{
                     url: config.connector || config.url
                     ,params: config.params || {}
                     ,method: 'post'
-                    ,scope: config.scope || this
+                    ,scope: this
                     ,success: function(r,o) {
                         r = Ext.decode(r.responseText);
-                        if (r.success && config.success) {
-                            Ext.callback(config.success,config.scope || this,[r,o]);
-                        } else if (config.failure) {
-                            Ext.callback(config.failure,config.scope || this,[r,o]);
-                        } else MODx.form.Handler.errorJSON(r); 
+                        if (r.success) {
+                            this.fireEvent('success',{ r: r, o: o });
+                        } else if (this.fireEvent('failure',{ r: r, o: o })) {
+                            MODx.form.Handler.errorJSON(r); 
+                        }
                     }
                     ,failure: function(r,o) {
                         r = Ext.decode(r.responseText);
-                        if (config.failure) {
-                        	Ext.callback(config.failure,config.scope || this,[r,o]);
-                        } else MODx.form.Handler.errorJSON(r);
+                        if (this.fireEvent('failure',{ r: r, o: o })) {
+                            MODx.form.Handler.errorJSON(r);
+                        }
                     }
                 });
+            } else {
+            	this.fireEvent('cancel',{
+            	   o: config
+            	});
             }
         },this);
         this.sl.show(this.getWindow().getEl());
