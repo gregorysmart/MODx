@@ -1,1 +1,0 @@
-Ext.onReady(function(){MODx.load({xtype:"page-settings"})});MODx.page.Settings=function(A){A=A||{};Ext.applyIf(A,{components:[{xtype:"grid-system-settings",renderTo:"settings_grid",height:525,autoHeight:Ext.isSafari?false:true}]});MODx.page.Settings.superclass.constructor.call(this,A)};Ext.extend(MODx.page.Settings,MODx.Component);Ext.reg("page-settings",MODx.page.Settings);

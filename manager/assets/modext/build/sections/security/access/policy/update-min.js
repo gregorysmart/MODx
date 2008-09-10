@@ -1,1 +1,0 @@
-MODx.page.UpdateAccessPolicy=function(A){A=A||{};Ext.applyIf(A,{components:[{xtype:"panel-access-policy",renderTo:"panel-access-policy",policy:A.policy}]});MODx.page.UpdateAccessPolicy.superclass.constructor.call(this,A)};Ext.extend(MODx.page.UpdateAccessPolicy,MODx.Component);Ext.reg("page-access-policy-update",MODx.page.UpdateAccessPolicy);

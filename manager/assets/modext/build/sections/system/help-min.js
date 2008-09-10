@@ -1,1 +1,0 @@
-Ext.onReady(function(){MODx.load({xtype:"page-help"})});MODx.page.Help=function(A){A=A||{};Ext.applyIf(A,{tabs:[{contentEl:"about",title:_("about_title")},{contentEl:"help",title:_("help_title")},{contentEl:"credits",title:_("credits")}]});MODx.page.Help.superclass.constructor.call(this,A)};Ext.extend(MODx.page.Help,MODx.Component);Ext.reg("page-help",MODx.page.Help);

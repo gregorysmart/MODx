@@ -1,1 +1,0 @@
-MODx.Tabs=function(A){A=A||{};Ext.apply(A,{enableTabScroll:true,resizeTabs:true,defaults:{autoScroll:true,autoHeight:true},activeTab:0,border:false});MODx.Tabs.superclass.constructor.call(this,A);this.config=A};Ext.extend(MODx.Tabs,Ext.TabPanel);Ext.reg("modx-tabs",MODx.Tabs);
