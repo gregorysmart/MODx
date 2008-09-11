@@ -17,9 +17,9 @@ MODx.combo.LexiconFocus = function(config) {
         ,allowBlank: false
         ,listWidth: 300
         ,url: MODx.config.connectors_url+'workspace/lexicon/focus.php'
-        ,fields: ['name']
+        ,fields: ['id','name','namespace']
         ,displayField: 'name'
-        ,valueField: 'name'
+        ,valueField: 'id'
         ,baseParams: { 
             action: 'getList'
             ,namespace: 'core'

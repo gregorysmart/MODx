@@ -7,10 +7,9 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
-if (!isset($_POST['name'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
+if (!isset($_POST['id'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
 $focus = $modx->getObject('modLexiconFocus',array(
-    'name' => $_POST['name'],
-    'namespace' => $_POST['namespace'],
+    'id' => $_POST['id'],
 ));
 if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
 

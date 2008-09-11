@@ -290,25 +290,25 @@ class modCacheManager extends xPDOCacheManager {
         if ($namespace == null) return false;
 
         $focus = $this->modx->getObject('modLexiconFocus',array(
-            'namespace' => $namespace->name,
+            'namespace' => $namespace->get('name'),
             'name' => $focus,
         ));
         if ($focus == null) return false;
 
-        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->name.'/'.$focus->name.'.cache.php';
+        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->get('name').'/'.$focus->get('name').'.cache.php';
 
         $content= "<?php \n";
         $c= $this->modx->newQuery('modLexiconEntry');
         $c= $c->where(array(
-            'focus' => $focus->name,
+            'focus' => $focus->get('id'),
             'language' => $language,
         ));
         $c= $c->sortby('name','ASC');
         $entries= $this->modx->getCollection('modLexiconEntry',$c);
 
         foreach ($entries as $entry) {
-        	$v = str_replace("'","\'",$entry->value);
-            $content .= '$_lang[\''.$entry->name.'\'] = \''.$v.'\';'."\n";
+        	$v = str_replace("'","\'",$entry->get('value'));
+            $content .= '$_lang[\''.$entry->get('name').'\'] = \''.$v.'\';'."\n";
         }
 
         $written= $this->writeFile($fileName, $content);

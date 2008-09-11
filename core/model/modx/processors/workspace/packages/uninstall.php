@@ -23,5 +23,5 @@ if (!$package->uninstall()) {
     $modx->error->failure(sprintf($modx->lexicon('package_err_uninstall'),$package->getPrimaryKey()));
 }
 
-$modx->log(MODX_LOG_LEVEL_WARN,'Package successfully uninstalled.');
+$modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_uninstalled',array('signature' => $package->get('signature'))));
 $modx->error->success();

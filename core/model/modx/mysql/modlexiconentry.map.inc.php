@@ -10,7 +10,7 @@ $xpdo_meta_map['modLexiconEntry']= array (
   array (
     'name' => '',
     'value' => '',
-    'focus' => 'default',
+    'focus' => '1',
     'namespace' => 'core',
     'language' => 'en',
     'createdon' => NULL,
@@ -35,11 +35,12 @@ $xpdo_meta_map['modLexiconEntry']= array (
     ),
     'focus' => 
     array (
-      'dbtype' => 'varchar',
-      'precision' => '100',
-      'phptype' => 'string',
+      'dbtype' => 'int',
+      'precision' => '10',
+      'attributes' => 'unsigned',
+      'phptype' => 'integer',
       'null' => 'false',
-      'default' => 'default',
+      'default' => '1',
     ),
     'namespace' => 
     array (
@@ -84,7 +85,7 @@ $xpdo_meta_map['modLexiconEntry']= array (
     array (
       'class' => 'modLexiconFocus',
       'local' => 'focus',
-      'foreign' => 'name',
+      'foreign' => 'id',
       'cardinality' => 'one',
       'owner' => 'foreign',
     ),

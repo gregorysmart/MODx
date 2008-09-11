@@ -10,12 +10,21 @@ $modx->lexicon->load('lexicon');
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['namespace'])) $_REQUEST['namespace'] = 'core';
-if (!isset($_REQUEST['focus'])) $_REQUEST['focus'] = 'default';
 if (!isset($_REQUEST['language'])) $_REQUEST['language'] = 'en';
+
+if (!isset($_POST['focus']) || $_POST['focus'] == '') {
+    $focus = $modx->getObject('modLexiconFocus',array(
+        'name' => 'default',
+        'namespace' => 'core',
+    ));
+} else {
+    $focus = $modx->getObject('modLexiconFocus',$_POST['focus']);
+    if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
+}
 
 $wa = array(
     'namespace' => $_REQUEST['namespace'],
-    'focus' => $_REQUEST['focus'],
+    'focus' => $focus->get('id'),
     'language' => $_REQUEST['language'],
 );
 if (isset($_REQUEST['name']) && $_REQUEST['name'] != '') {
@@ -26,8 +35,10 @@ $c = $modx->newQuery('modLexiconEntry');
 $c->where($wa);
 $c->sortby('name', 'ASC');
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
+
 $entries = $modx->getCollection('modLexiconEntry',$c);
 $count = $modx->getCount('modLexiconEntry',$wa);
+
 
 $ps = array();
 foreach ($entries as $entry) {

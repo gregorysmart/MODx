@@ -12,25 +12,13 @@ $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
 if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 if (!isset($_POST['focus'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
-$focus = $modx->getObject('modLexiconFocus',array(
-    'name' => $_POST['focus'],
-    'namespace' => $namespace->get('name'),
-));
-if ($focus == null) {
-    if ($_POST['focus'] == 'default') {
-        $focus = $modx->newObject('modLexiconFocus');
-        $focus->set('name','default');
-        $focus->set('namespace',$namespace->get('name'));
-        $focus->save();
-    } else {
-    	$modx->error->failure($modx->lexicon('focus_err_nf'));
-    }
-}
+$focus = $modx->getObject('modLexiconFocus',$_POST['focus']);
+if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
 
 $entry = $modx->newObject('modLexiconEntry');
 $entry->set('name',$_POST['name']);
 $entry->set('namespace',$namespace->get('name'));
-$entry->set('focus',$focus->get('name'));
+$entry->set('focus',$focus->get('id'));
 $entry->set('language',$_POST['language']);
 $entry->set('value',$_POST['value']);
 $entry->set('createdon',date('Y-m-d h:i:s'));

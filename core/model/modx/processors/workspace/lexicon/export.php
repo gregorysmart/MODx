@@ -13,17 +13,14 @@ $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
 if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 if (!isset($_POST['focus'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
-$focus = $modx->getObject('modLexiconFocus',array(
-    'name' => $_POST['focus'],
-    'namespace' => $namespace->name,
-));
+$focus = $modx->getObject('modLexiconFocus',$_POST['focus']);
 if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
 
 if (!isset($_POST['language'])) $_POST['language'] = 'en';
 
 $entries = $modx->getCollection('modLexiconEntry',array(
     'namespace' => $namespace->get('name'),
-    'focus' => $focus->get('name'),
+    'focus' => $focus->get('id'),
     'language' => $_POST['language'],
 ));
 

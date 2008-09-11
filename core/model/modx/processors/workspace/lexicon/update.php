@@ -14,8 +14,13 @@ if ($entry == null) {
     $modx->error->failure(sprintf($modx->lexicon('entry_err_nfs'),$_POST['id']));
 }
 
+if (!isset($_POST['focus'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
+$focus = $modx->getObject('modLexiconFocus',$_POST['focus']);
+if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
+
+
 $old_namespace = $entry->namespace;
-$old_focus = $entry->focus;
+$old_focus = $entry->getOne('modLexiconFocus');
 
 if (!isset($_POST['name']) || $_POST['name'] == '') {
     $modx->error->failure($modx->lexicon('entry_err_ns_name'));
@@ -25,12 +30,12 @@ $entry->set('name',$_POST['name']);
 $entry->set('value',$_POST['value']);
 $entry->set('editedon',date('Y-m-d h:i:s'));
 $entry->set('namespace',$_POST['namespace']);
-$entry->set('focus',$_POST['focus']);
+$entry->set('focus',$focus->get('id'));
 $entry->set('language',$_POST['language']);
 
 if (!$entry->save()) $modx->error->failure($modx->lexicon('entry_err_save'));
 
-$r = $modx->lexicon->clearCache($old_namespace.'/'.$old_focus.'.cache.php');
-$r = $modx->lexicon->clearCache($entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
+$r = $modx->lexicon->clearCache($old_namespace.'/'.$old_focus->get('name').'.cache.php');
+$r = $modx->lexicon->clearCache($entry->get('namespace').'/'.$focus->get('name').'.cache.php');
 
 $modx->error->success();

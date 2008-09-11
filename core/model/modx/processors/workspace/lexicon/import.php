@@ -34,14 +34,14 @@ $_lang = array();
 foreach ($_lang as $key => $str) {
 	$entry = $modx->getObject('modLexiconEntry',array(
         'name' => $key,
-        'focus' => $focus->get('name'),
+        'focus' => $focus->get('id'),
         'namespace' => $namespace->get('name'),
         'language' => $_POST['language'],
     ));
     if ($entry == null) {
     	$entry = $modx->newObject('modLexiconEntry');
         $entry->set('name',$key);
-        $entry->set('focus',$focus->get('name'));
+        $entry->set('focus',$focus->get('id'));
         $entry->set('namespace',$focus->get('namespace'));
         $entry->set('language',$_POST['language']);
     }

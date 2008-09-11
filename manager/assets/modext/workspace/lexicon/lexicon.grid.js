@@ -15,7 +15,7 @@ MODx.grid.Lexicon = function(config) {
 		,baseParams: {
 			action: 'getList'
 			,namespace: 'core'
-			,focus: 'default'
+			,focus: ''
 		}
         ,width: '98%'
         ,paging: true

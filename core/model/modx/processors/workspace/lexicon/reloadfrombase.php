@@ -56,12 +56,12 @@ while (false !== ($culture = $dir->read())) {
         $f = $fdir.$entry;
         if (file_exists($f)) {
             $_lang = array();
-            @include_once $f;
+            @include $f;
 
             foreach ($_lang as $key => $value) {
                 $entry = $modx->getObject('modLexiconEntry',array(
                     'name' => $key,
-                    'focus' => $foc,
+                    'focus' => $focus->get('id'),
                     'namespace' => 'core',
                     'language' => $culture,
                 ));
@@ -70,7 +70,7 @@ while (false !== ($culture = $dir->read())) {
                     $entry->fromArray(array (
                       'name' => $key,
                       'value' => $value,
-                      'focus' => $foc,
+                      'focus' => $focus->get('id'),
                       'namespace' => 'core',
                       'language' => $culture,
                     ), '', true, true);

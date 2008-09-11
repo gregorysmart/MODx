@@ -22,7 +22,6 @@ MODx.grid.LexiconFoci = function(config) {
         ,width: '97%'
         ,paging: true
         ,autosave: true
-        ,primaryKey: 'name'
         ,columns: [{
             header: _('name')
             ,dataIndex: 'name'

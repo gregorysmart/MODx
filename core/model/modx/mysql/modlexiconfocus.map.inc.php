@@ -20,7 +20,8 @@ $xpdo_meta_map['modLexiconFocus']= array (
       'phptype' => 'string',
       'null' => 'false',
       'default' => '',
-      'index' => 'pk',
+      'index' => 'unique',
+      'indexgrp' => 'foci',
     ),
     'namespace' => 
     array (
@@ -29,7 +30,8 @@ $xpdo_meta_map['modLexiconFocus']= array (
       'phptype' => 'string',
       'null' => 'false',
       'default' => 'core',
-      'index' => 'pk',
+      'index' => 'unique',
+      'indexgrp' => 'foci',
     ),
   ),
   'composites' => 
@@ -37,7 +39,7 @@ $xpdo_meta_map['modLexiconFocus']= array (
     'modLexiconEntry' => 
     array (
       'class' => 'modLexiconEntry',
-      'local' => 'name',
+      'local' => 'id',
       'foreign' => 'focus',
       'cardinality' => 'many',
       'owner' => 'local',

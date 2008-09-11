@@ -200,6 +200,21 @@ if ($connected) {
     $description = 'Changed modLexiconEntry `createdon` to allow NULL.';
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `createdon` `createdon` DATETIME NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Changed modLexiconEntry `focus` from VARCHAR(100) to INT(10).';
+    $sql = "ALTER TABLE {$table} CHANGE COLUMN `focus` `focus` INT(10) unsigned NOT NULL DEFAULT 1";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modLexiconFocus';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Dropped modLexiconFocus PRIMARY KEY';
+    $sql = "ALTER TABLE {$table} DROP PRIMARY KEY";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added modLexiconFocus `id` column.';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Changed modLexiconFocus `name` from PRIMARY KEY to UNIQUE KEY';
+    $sql = "ALTER TABLE {$table} ADD INDEX `foci` (`name`,`namespace`)";
+
 }
 return $results;
 
