@@ -153,13 +153,13 @@ class modLexicon {
 
         $_lang = array();
         if (file_exists($fileName)) {
-            @include_once $fileName;
+            @include $fileName;
         } else { // if cache files don't exist, generate
             $cacheManager = $this->modx->getCacheManager();
             $cacheManager->generateLexiconCache($namespace,$focus,$language);
 
             if (file_exists($fileName)) {
-                @include_once $fileName;
+                @include $fileName;
             } else {
                 $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with focus: ".$focus);
             }
@@ -183,6 +183,7 @@ class modLexicon {
      */
     function load() {
         $foci = func_get_args(); // allow for dynamic number of lexicons to load
+
         foreach ($foci as $focus) {
             if (!is_string($focus) || $focus == '') return false;
             $nspos = strpos($focus,':');

@@ -18,19 +18,25 @@ while (false !== ($culture = $dir->read())) {
     // loop through foci
     $fdir = $d.$culture.'/';
     $fd = dir($fdir);
+    $fcount = 1;
     while (false !== ($entry = $fd->read())) {
         if (in_array($entry,$invdirs)) continue;
         if (is_dir($fdir.$entry)) continue;
 
         $foc = str_replace('.inc.php','',$entry);
 
-        $foci[$foc]= $xpdo->newObject('modLexiconFocus');
-        $foci[$foc]->fromArray(array (
-          'name' => $foc,
-          'namespace' => 'core',
-        ), '', true, true);
+        $focus = $xpdo->getObject('modLexiconFocus');
+        if ($focus == null) {
+            $focus= $xpdo->newObject('modLexiconFocus');
+            $focus->fromArray(array (
+              'id' => $fcount,
+              'name' => $foc,
+              'namespace' => 'core',
+            ), '', true, true);
+        }
 
         $f = $fdir.$entry;
+        $entries = array();
         if (file_exists($f)) {
             $_lang = array();
             @include_once $f;
@@ -48,6 +54,9 @@ while (false !== ($culture = $dir->read())) {
                 $i++;
             }
         }
+        $focus->addMany($entries);
+        $foci[$focus->get('id')] = $focus;
+        $fcount++;
     }
 }
 $dir->close();

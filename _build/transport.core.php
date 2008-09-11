@@ -365,20 +365,27 @@ unset ($collection, $c, $attributes);
 $entries = array ();
 $foci = array ();
 $languages = array ();
-$attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => true,
-);
 $namespace = $xpdo->newObject('modNamespace');
 $namespace->set('name','core');
 $namespace->set('path','{core_path}');
-$package->put($namespace,$attributes);
+$package->put($namespace,array(
+    XPDO_TRANSPORT_PRESERVE_KEYS => true,
+    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+));
 include dirname(__FILE__).'/data/transport.core.lexicon.php';
-foreach ($entries as $c) {
-    $package->put($c, $attributes);
+foreach ($foci as $f) {
+    $package->put($f,array (
+        XPDO_TRANSPORT_PRESERVE_KEYS => false,
+        XPDO_TRANSPORT_UPDATE_OBJECT => true,
+        XPDO_TRANSPORT_RELATED_OBJECTS => true,
+    ));
 }
-foreach ($foci as $f) { $package->put($f, $attributes); }
-foreach ($languages as $l) { $package->put($l, $attributes); }
+foreach ($languages as $l) {
+    $package->put($l,array (
+        XPDO_TRANSPORT_PRESERVE_KEYS => true,
+        XPDO_TRANSPORT_UPDATE_OBJECT => true,
+    ));
+}
 unset ($entries, $languages, $foci, $attributes, $c, $f, $l);
 
 

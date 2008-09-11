@@ -283,17 +283,23 @@ class modCacheManager extends xPDOCacheManager {
     }
 
     function generateLexiconCache($namespace = 'core',$focus = 'default',$language = '') {
-    	if ($language == '') $language = $this->modx->config['manager_language'];
+        if ($language == '') $language = $this->modx->config['manager_language'];
         $written= false;
 
         $namespace = $this->modx->getObject('modNamespace',$namespace);
-        if ($namespace == null) return false;
+        if ($namespace == null) {
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find the namespace "'.$namespace.'" to generate the lexicon cache."');
+            return false;
+        }
 
         $focus = $this->modx->getObject('modLexiconFocus',array(
             'namespace' => $namespace->get('name'),
             'name' => $focus,
         ));
-        if ($focus == null) return false;
+        if ($focus == null) {
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find focus "'.$focus.'" to generate lexicon cache.');
+            return false;
+        }
 
         $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->get('name').'/'.$focus->get('name').'.cache.php';
 
