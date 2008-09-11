@@ -26,6 +26,10 @@ class modRSSParser {
         if (!defined('MAGPIE_CACHE_DIR')) {
             define('MAGPIE_CACHE_DIR',$this->modx->config['core_path'].'cache/rss/');
         }
+        if (!defined('MAGPIE_USER_AGENT')) {
+            $this->modx->getVersionData();
+            define('MAGPIE_USER_AGENT','RevoRSS/'.$this->modx->version['full_version']);
+        }
         $this->modx->loadClass('xmlrss.rssfetch','',false,true);
     }
     /**#@- */
