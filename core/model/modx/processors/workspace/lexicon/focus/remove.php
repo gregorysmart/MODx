@@ -9,7 +9,7 @@ $modx->lexicon->load('lexicon');
 
 if (!isset($_POST['name'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
 $focus = $modx->getObject('modLexiconFocus',array(
-    'id' => $_POST['id'],
+    'name' => $_POST['name'],
     'namespace' => $_POST['namespace'],
 ));
 if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));

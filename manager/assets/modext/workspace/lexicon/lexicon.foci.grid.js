@@ -16,6 +16,9 @@ MODx.grid.LexiconFoci = function(config) {
             action: 'getList'
             ,namespace: 'core'
         }
+        ,saveParams: {
+        	namespace: 'core'
+        }
         ,width: '97%'
         ,paging: true
         ,autosave: true
@@ -77,6 +80,7 @@ Ext.extend(MODx.grid.LexiconFoci,MODx.grid.Grid,{
     filter: function(cb,nv,ov,name) {
         if (!name) return false;
         this.store.baseParams[name] = nv;
+        this.config.saveParams[name] = nv;
         this.refresh();
     }
     ,loadWindow2: function(btn,e,xtype) {
