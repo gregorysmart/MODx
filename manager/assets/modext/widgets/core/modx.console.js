@@ -99,9 +99,10 @@ Ext.extend(MODx.Console,Ext.Window,{
     	    url: this.config.url
     	    ,params: {
                 action: 'read'
-                ,register: this.config.register || ''
-                ,topic: this.config.topic || ''
+                ,register: this.config.baseParams.register || ''
+                ,topic: this.config.baseParams.topic || ''
                 ,format: 'html_log'
+                ,remove_read: 1
             }
             ,listeners: {
             	'success': {fn:function(r) {
