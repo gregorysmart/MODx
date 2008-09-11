@@ -309,3 +309,8 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     }
 });
 Ext.reg('panel-resource',MODx.panel.Resource);
+
+// global accessor for TV dynamic fields
+var triggerDirtyField = function(fld) {
+    Ext.getCmp('panel-resource').fieldChangeEvent(fld);
+};

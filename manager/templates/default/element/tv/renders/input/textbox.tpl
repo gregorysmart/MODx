@@ -3,5 +3,5 @@
 	value="{$tv->get('value')|escape}"
 	{$style}
 	tvtype="{$tv->type}"
-	onchange="documentDirty=true;" 
+	onchange="javascript:triggerDirtyField(this);" 
 />

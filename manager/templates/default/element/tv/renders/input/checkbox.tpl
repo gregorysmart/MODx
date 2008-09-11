@@ -4,7 +4,7 @@
 		type="checkbox" 
 		value="{$item.value}"
 		{if $item.checked} checked="checked"{/if}
-		onchange="documentDirty=true;"
+		onchange="javascript:triggerDirtyField(this);"
 	/>
 	{$item.text}
 	</label>

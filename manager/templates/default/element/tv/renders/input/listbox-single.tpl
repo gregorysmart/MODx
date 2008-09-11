@@ -1,5 +1,5 @@
 <select id="tv{$tv->id}" name="tv{$tv->id}"
-	onchange="documentDirty=true;"
+	onchange="javascript:triggerDirtyField(this);"
 	size="8"
 >
 {foreach from=$opts item=item}

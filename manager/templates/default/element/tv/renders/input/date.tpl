@@ -3,5 +3,5 @@
 	value="{$tv->get('value')}"
 	modx:format="Y-m-d H:i:s"
 	modx:allowblank="1"
-	onblur="documentDirty=true"
+	onblur="javascript:triggerDirtyField(this);"
 />

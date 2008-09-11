@@ -2,7 +2,7 @@
 	type="text"
 	value="{$tv->get('value')}"
 	{$style}
-	onchange="documentDirty=true;" 
+	onchange="javascript:triggerDirtyField(this);" 
 />&nbsp;
 <input type="button" 
 	value="{$_lang.insert}"

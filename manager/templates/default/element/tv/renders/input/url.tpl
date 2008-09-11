@@ -10,5 +10,5 @@
 	type="text"
 	value="{$tv->get('value')}"
 	style="width: 250px;"
-	onchange="documentDirty=true;"
+	onchange="javascript:triggerDirtyField(this);"
 />
