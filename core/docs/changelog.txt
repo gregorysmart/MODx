@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Modified Ant build to automatically compress and concatenate js files (SVN users cannot use compress_js option without performing the complete-wc task in build.xml).
 - Updating xPDO to revision 234.
 - Added support for logging to registers through any modError instance when loaded by modRequest::loadErrorHandler().
 - Removed modRegisterHandler and added logging helper functions to modRegistry. 
