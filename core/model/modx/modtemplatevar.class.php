@@ -162,9 +162,9 @@ class modTemplateVar extends modElement {
         $outputRenderFile = $outputRenderPath.$this->get('display').'.php';
 
         if (!file_exists($outputRenderFile)) {
-            $o = require_once $outputRenderPath.'default.php';
+            $o = include $outputRenderPath.'default.php';
         } else {
-        	$o = require_once $outputRenderFile;
+        	$o = include $outputRenderFile;
         }
         return $o;
     }
@@ -195,9 +195,9 @@ class modTemplateVar extends modElement {
         $inputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/input/';
         $inputRenderFile = $inputRenderPath.$this->get('type').'.php';
         if (!file_exists($inputRenderFile)) {
-            $field_html .= require_once $inputRenderPath.'textbox.php';
+            $field_html .= include $inputRenderPath.'textbox.php';
         } else {
-            $field_html .= require_once $inputRenderFile;
+            $field_html .= include $inputRenderFile;
         }
 
         return $field_html;
