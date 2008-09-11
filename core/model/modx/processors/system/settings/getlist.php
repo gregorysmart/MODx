@@ -53,7 +53,7 @@ foreach ($settings as $setting) {
         ? $modx->lexicon($k.'_desc')
         : '';
     $sa['name'] = $modx->lexicon->exists($k)
-        ? $modx->lexicon('setting_'.$sa['key'])
+        ? $modx->lexicon($k)
         : $sa['key'];
     $sa['oldkey'] = $sa['key'];
     $sa['editedon'] = $sa['editedon'] == '0000-00-00 00:00:00' || $sa['editedon'] == null
