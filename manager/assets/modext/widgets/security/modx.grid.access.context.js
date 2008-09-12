@@ -47,8 +47,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
                 xtype: 'window-accesscontext'
 	            ,record: r
 	            ,listeners: {
-	            	'success': {fn:function(frm,a) {
-    	                var o = a.result.object;
+	            	'success': {fn:function(o) {    	                
     	                this.getStore().baseParams = { 
     	                    action: 'getList'
     	                    ,type: this.config.type
