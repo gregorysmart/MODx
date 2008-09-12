@@ -45,7 +45,6 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
                 ,record: r
                 ,listeners: {
                 	'success': {fn: function(frm,a) {
-                        var o = a.result.object;
                         this.getStore().baseParams = { 
                             action: 'getList'
                             ,type: this.config.type
