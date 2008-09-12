@@ -135,7 +135,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 			,closable:false
 		});
 		
-		_resetProgress();
+		MODx.util.Progress.reset();
 		for(var i = 1; i < 20; i++) {
 			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
