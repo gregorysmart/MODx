@@ -377,7 +377,15 @@ foreach ($foci as $f) {
     $package->put($f,array (
         XPDO_TRANSPORT_PRESERVE_KEYS => false,
         XPDO_TRANSPORT_UPDATE_OBJECT => true,
+        XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
         XPDO_TRANSPORT_RELATED_OBJECTS => true,
+        XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array (
+            'modLexiconEntry' => array (
+                XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus'),
+            )
+        )
     ));
 }
 foreach ($languages as $l) {
