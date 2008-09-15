@@ -37,6 +37,7 @@ MODx.FormPanel = function(config) {
         ,border: false
         ,method: 'POST'
         ,errorReader: MODx.util.JSONReader
+        ,checkDirty: true
     });
     if (config.items) this.addChangeEvent(config.items);
     
@@ -60,7 +61,7 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
      */
     submit: function(o) {
         var fm = this.getForm();
-        if (this.isDirty() == false) return false;
+        if (this.config.checkDirty && this.isDirty() == false) return false;
         if (fm.isValid()) {
         	this.fireEvent('beforeSubmit',{
         	   form: fm
@@ -253,3 +254,17 @@ Ext.extend(MODx.panel.Wizard,Ext.Panel,{
     }
 });
 Ext.reg('modx-panel-wizard',MODx.panel.Wizard);
+
+MODx.panel.WizardPanel = function(config) {
+	config = config || {};
+	Ext.applyIf(config,{
+        wizard: null
+        ,checkDirty: false
+        ,bodyStyle: 'padding: 3em 3em'
+	});
+	MODx.panel.WizardPanel.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.WizardPanel,MODx.FormPanel,{
+
+});
+Ext.reg('modx-wizard-panel',MODx.panel.WizardPanel);

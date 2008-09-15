@@ -50,7 +50,6 @@ MODx.panel.PackageStart = function(config) {
         ,baseParams: {
             action: 'start'
         }
-        ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('package_method')+'</h2>'
@@ -78,7 +77,7 @@ MODx.panel.PackageStart = function(config) {
     });
     MODx.panel.PackageStart.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.PackageStart,MODx.FormPanel);
+Ext.extend(MODx.panel.PackageStart,MODx.panel.WizardPanel);
 Ext.reg('panel-pb-start',MODx.panel.PackageStart);
 
 
@@ -101,7 +100,6 @@ MODx.panel.PackageXML = function(config) {
             ,topic: '/workspace/package/builder/'
         }
         ,fileUpload: true
-        ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('package_build_xml')+'</h2>'
@@ -136,7 +134,7 @@ MODx.panel.PackageXML = function(config) {
     });
     MODx.panel.PackageXML.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.PackageXML,MODx.FormPanel);
+Ext.extend(MODx.panel.PackageXML,MODx.panel.WizardPanel);
 Ext.reg('panel-pb-xml',MODx.panel.PackageXML);
 
 
@@ -156,7 +154,6 @@ MODx.panel.PackageInfo = function(config) {
         ,baseParams: {
             action: 'create'
         }
-        ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('package_info')+'</h2>'
@@ -202,7 +199,7 @@ MODx.panel.PackageInfo = function(config) {
     });
     MODx.panel.PackageInfo.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.PackageInfo,MODx.FormPanel);
+Ext.extend(MODx.panel.PackageInfo,MODx.panel.WizardPanel);
 Ext.reg('panel-pb-info',MODx.panel.PackageInfo);
 
 
@@ -223,7 +220,6 @@ MODx.panel.PackageAutoSelects = function(config) {
         ,baseParams: {
             action: 'autoselects'
         }
-        ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('package_autoselects')+'</h2>'
@@ -254,7 +250,7 @@ MODx.panel.PackageAutoSelects = function(config) {
     });
     MODx.panel.PackageAutoSelects.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.PackageAutoSelects,MODx.FormPanel);
+Ext.extend(MODx.panel.PackageAutoSelects,MODx.panel.WizardPanel);
 Ext.reg('panel-pb-autoselects',MODx.panel.PackageAutoSelects);
 
 
@@ -275,7 +271,6 @@ MODx.panel.SelectVehicles = function(config) {
         ,baseParams: {
             action: 'create'
         }
-        ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '' }
         ,items: [{
             html: '<h2>'+_('vehicles_add')+'</h2>'
@@ -291,7 +286,7 @@ MODx.panel.SelectVehicles = function(config) {
     });
     MODx.panel.SelectVehicles.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.SelectVehicles,MODx.FormPanel,{
+Ext.extend(MODx.panel.SelectVehicles,MODx.panel.WizardPanel,{
     submit: function(o) {
         Ext.callback(o.proceed,o.scope || this,['pb-build']);
     }
@@ -317,7 +312,6 @@ MODx.panel.BuildPackage = function(config) {
             ,register: 'mgr'
             ,topic: '/workspace/package/builder/'
         }
-        ,bodyStyle: 'padding: 3em 3em'
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('package_build')+'</h2>'
@@ -348,5 +342,5 @@ MODx.panel.BuildPackage = function(config) {
     });
     MODx.panel.BuildPackage.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.BuildPackage,MODx.FormPanel);
+Ext.extend(MODx.panel.BuildPackage,MODx.panel.WizardPanel);
 Ext.reg('panel-pb-build',MODx.panel.BuildPackage);
