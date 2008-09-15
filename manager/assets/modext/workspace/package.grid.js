@@ -26,7 +26,6 @@ MODx.grid.Package = function(config) {
             },{ 
                 header: _('provisioner')
                 ,dataIndex: 'provider'
-                ,editor: { xtype: 'combo-provider' ,renderer: true }
             },{
                 header: _('disabled')
                 ,dataIndex: 'disabled'
