@@ -1,5 +1,5 @@
 <?php
-$_lang['categories'] = 'Categoriesa';
+$_lang['categories'] = 'Categories';
 $_lang['category_confirm_delete'] = 'Are you sure you want to remove this category? All elements in this category will be filed to uncategorized.';
 $_lang['category_create'] = 'Create Category';
 $_lang['category_err_create'] = 'An error occurred while trying to create the category.';

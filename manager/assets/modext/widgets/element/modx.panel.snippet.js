@@ -96,7 +96,10 @@ MODx.panel.Snippet = function(config) {
 };
 Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
     setup: function() {
-        if (this.config.snippet == '' || this.config.snippet == 0) return;
+        if (this.config.snippet == '' || this.config.snippet == 0) {            
+            this.fireEvent('ready');
+            return;
+        }
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -110,6 +113,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     this.getForm().setValues(r.object);
                     Ext.getCmp('snippet-name').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
                     this.clearDirty();
+                    this.fireEvent('ready',r.object);
                 },scope:this}
             }
         });

@@ -94,7 +94,10 @@ MODx.panel.Template = function(config) {
 };
 Ext.extend(MODx.panel.Template,MODx.FormPanel,{
     setup: function() {
-        if (this.config.template == '' || this.config.template == 0) return;
+        if (this.config.template == '' || this.config.template == 0) {            
+            this.fireEvent('ready');
+            return;
+        }
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -106,6 +109,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
                     if (r.object.category == '0') r.object.category = null;
                     this.getForm().setValues(r.object);
                     Ext.getCmp('template-name').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
+                    this.fireEvent('ready',r.object);
                 },scope:this}
             }
         });

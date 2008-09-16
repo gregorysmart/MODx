@@ -146,7 +146,10 @@ MODx.panel.TV = function(config) {
 };
 Ext.extend(MODx.panel.TV,MODx.FormPanel,{
     setup: function() {
-        if (this.config.tv == '' || this.config.tv == 0) return;
+        if (this.config.tv == '' || this.config.tv == 0) {            
+            this.fireEvent('ready');
+            return;
+        };
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -160,6 +163,7 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
                     Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
                     
                     this.showParameters(Ext.getCmp('combo-tv-widget'));
+                    this.fireEvent('ready',r.object);
                 },scope:this}
             }
         });

@@ -69,7 +69,10 @@ MODx.panel.AccessPolicy = function(config) {
 };
 Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
     setup: function() {
-        if (this.config.policy == '' || this.config.policy == 0) return;
+        if (this.config.policy == '' || this.config.policy == 0) {
+            this.fireEvent('ready');
+            return;
+        };
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -85,7 +88,8 @@ Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
                     g.config.policy = r.object.id;
                     g.getView().refresh();
                     
-                    Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');            		
+                    Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
+                    this.fireEvent('ready');
             	},scope:this}
             }
         })

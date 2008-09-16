@@ -41,25 +41,28 @@ MODx.FormPanel = function(config) {
     });
     if (config.items) this.addChangeEvent(config.items);
     
-    MODx.FormPanel.superclass.constructor.call(this,config);
-    
+    MODx.FormPanel.superclass.constructor.call(this,config);    
     this.config = config;
+    
     this.addEvents({
         setup: true
         ,fieldChange: true
+        ,ready: true
     });
     this.getForm().addEvents({
         beforeSubmit: true
         ,success: true
         ,failure: true
     });
+    this.on('ready',this.onReady);
     this.fireEvent('setup',config);
 };
 Ext.extend(MODx.FormPanel,Ext.FormPanel,{
+	isReady: false
 	/**
      * Submits the form to the connector.
      */
-    submit: function(o) {
+    ,submit: function(o) {
         var fm = this.getForm();
         if (this.config.checkDirty && this.isDirty() == false) return false;
         if (fm.isValid()) {
@@ -107,21 +110,29 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
         for (var f=0;f<items.length;f++) {
             var cmp = items[f];
             if (cmp.items) {
-                this.addChangeEvent(cmp.items);    
+                this.addChangeEvent(cmp.items);
             } else if (cmp.xtype) {
                 if (!cmp.listeners) cmp.listeners = {};
-                cmp.listeners.change = {fn:this.fieldChangeEvent,scope:this}
+                var ctype = 'change';
+                switch (cmp.xtype) {
+                	case 'checkbox':
+                	case 'radio':
+                	   ctype = 'check';
+                	   break;
+                }
+                cmp.listeners[ctype] = {fn:this.fieldChangeEvent,scope:this}
             }
         }
     }
     
     ,fieldChangeEvent: function(fld,nv,ov) {
-       this.fireEvent('fieldChange',{
-           field: fld
-           ,nv: nv
-           ,ov: ov
-           ,form: this.getForm()
-       });
+        if (!this.isReady) return false;
+        this.fireEvent('fieldChange',{
+            field: fld
+            ,nv: nv
+            ,ov: ov
+            ,form: this.getForm()
+        });
     }
     
     ,isDirty: function() {
@@ -130,6 +141,10 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
     
     ,clearDirty: function() {
     	return this.getForm().clearDirty();
+    }
+    
+    ,onReady: function(r) {
+    	this.isReady = true;
     }
 });
 Ext.reg('modx-formpanel',MODx.FormPanel);

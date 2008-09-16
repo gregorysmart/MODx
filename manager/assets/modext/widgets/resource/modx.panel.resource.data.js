@@ -172,7 +172,10 @@ MODx.panel.ResourceData = function(config) {
 };
 Ext.extend(MODx.panel.ResourceData,MODx.FormPanel,{
     setup: function() {
-        if (this.config.resource == '' || this.config.resource == 0) return;
+        if (this.config.resource == '' || this.config.resource == 0) {
+            this.fireEvent('ready');
+        	return;
+        }
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'resource/document.php'
             ,params: {
@@ -185,6 +188,7 @@ Ext.extend(MODx.panel.ResourceData,MODx.FormPanel,{
                     if (r.object.pub_date == '0') r.object.pub_date = '';
                     if (r.object.unpub_date == '0') r.object.unpub_date = '';
                     this.getForm().setValues(r.object);
+                    this.fireEvent('ready');
             	},scope:this}
             }
         });

@@ -96,7 +96,10 @@ MODx.panel.Chunk = function(config) {
 };
 Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
     setup: function() {
-        if (this.config.chunk == '' || this.config.chunk == 0) return;
+        if (this.config.chunk == '' || this.config.chunk == 0) {            
+            this.fireEvent('ready');
+            return;
+        }
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -109,6 +112,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
                     if (r.object.snippet == 'NULL') r.object.snippet = '';
                     this.getForm().setValues(r.object);
                     Ext.getCmp('chunk-name').getEl().update('<h2>'+_('chunk')+': '+r.object.name+'</h2>');
+                    this.fireEvent('ready',r.object);
             	},scope:this}
             }
         });

@@ -216,7 +216,10 @@ MODx.panel.Static = function(config) {
 };
 Ext.extend(MODx.panel.Static,MODx.FormPanel,{
     setup: function() {
-        if (this.config.resource == '' || this.config.resource == 0) return;
+        if (this.config.resource == '' || this.config.resource == 0) {
+            this.fireEvent('ready');
+            return;
+        }
         Ext.Ajax.request({
             url: MODx.config.connectors_url+'resource/document.php'
             ,params: {
@@ -231,6 +234,7 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
                     if (r.object.pub_date == '0') r.object.pub_date = '';
                     if (r.object.unpub_date == '0') r.object.unpub_date = '';
                     this.getForm().setValues(r.object);
+                    this.fireEvent('ready');
                 } else MODx.form.Handler.errorJSON(r);
             }
         })
