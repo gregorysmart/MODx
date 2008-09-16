@@ -208,6 +208,11 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 		}
 		return true;
 	}
+	
+	,reloadNode: function(n) {
+        this.getLoader().load(n);
+        n.expand();
+	}
     
     /**
      * Abstracted remove function
@@ -295,7 +300,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 			,closable:false
 		});
 		
-		_resetProgress();
+		MODx.util.Progress.reset();
 		for(var i = 1; i < 20; i++) {
 			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
@@ -316,24 +321,26 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 		
         // JSON-encode our tree
 		var encNodes = Ext.encode(simplifyNodes(dropEvent.tree.root));
-				
+		
 		// send it to the backend to save
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
-			,scope: this
 			,params: {
 				data: encodeURIComponent(encNodes)
 				,action: 'sort'
 			}
-			,success: function(r) {
-                _resetProgress();
-				Ext.Msg.hide();
-				var e = Ext.decode(r.responseText);
-				if (!e.success) {
-                    this.refresh();
-					MODx.form.Handler.errorJSON(e);
-					return false;
-				}
+			,listeners: {
+				'success': {fn:function(r) {
+                    MODx.util.Progress.reset();
+    				Ext.Msg.hide();
+    				this.reloadNode(dropEvent.target);
+				},scope:this}
+				,'failure': {fn:function(r) {
+					MODx.util.Progress.reset();
+					Ext.Msg.hide();
+                    MODx.form.Handler.errorJSON(r);
+                    return false;
+				},scope:this}
 			}
 		});
 	}

@@ -206,5 +206,26 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		this.filterBar.destroy();
 		this._filterVisible = false;
 	}
+	
+	
+    ,_handleDrop:  function(e){
+        var dropNode = e.dropNode;
+        var targetParent = e.target;
+
+        if (targetParent.findChild('id',dropNode.attributes.id) != null) return false;        
+        var ap = true;
+        if (targetParent.attributes.type == 'context' && e.point != 'append') {
+        	ap = false;
+        }
+        
+        return dropNode.attributes.text != 'root' && dropNode.attributes.text != '' 
+            && targetParent.attributes.text != 'root' && targetParent.attributes.text != ''
+            && ap;
+    }
+        
+    ,isValidDrag: function(e, n) {
+       
+    }
+    
 });
 Ext.reg('tree-document',MODx.tree.Document);
