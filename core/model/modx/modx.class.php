@@ -514,12 +514,13 @@ class modX extends xPDO {
      */
     function getChildIds($id= null, $depth= 10) {
         $children= array ();
-        if ($id !== null && intval($depth) >= 0) {
+        if ($id !== null && intval($depth) >= 1) {
             $id= intval($id);
             if (isset ($this->resourceMap["{$id}"])) {
                 if ($children= $this->resourceMap["{$id}"]) {
                     foreach ($children as $child) {
-                        if ($c= $this->getChildIds($child, $depth--)) {
+                    	$processDepth = $depth - 1;
+                        if ($c= $this->getChildIds($child, $processDepth)) {
                             $children= array_merge($children, $c);
                         }
                     }
