@@ -47,7 +47,7 @@ while (false !== ($culture = $dir->read())) {
                   'id' => $i,
                   'name' => $key,
                   'value' => $value,
-                  'focus' => $foc,
+                  'focus' => $focus->get('id'),
                   'namespace' => 'core',
                   'language' => $culture,
                 ), '', true, true);
