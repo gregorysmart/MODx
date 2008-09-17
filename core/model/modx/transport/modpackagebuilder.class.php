@@ -260,63 +260,7 @@ class modPackageBuilder {
         $i = 0;
         $foci = array();
         $languages = array();
-
-        // loop through cultures
-        $dir = dir($path);
-        while (false !== ($culture = $dir->read())) {
-            if (in_array($culture,$invdirs)) continue;
-            if (!is_dir($path.$culture)) continue;
-
-            $languages[$culture]= $this->modx->newObject('modLexiconLanguage');
-            $languages[$culture]->fromArray(array(
-                'name' => $culture,
-            ),'',true,true);
-
-            // loop through foci
-            $fdir = $path.$culture.'/';
-            $fd = dir($fdir);
-            $fcount = 1;
-            while (false !== ($entry = $fd->read())) {
-                if (in_array($entry,$invdirs)) continue;
-                if (is_dir($fdir.$entry)) continue;
-
-                $foc = str_replace('.inc.php','',$entry);
-
-                $focus = $this->modx->getObject('modLexiconFocus');
-                if ($focus == null) {
-                    $focus= $this->modx->newObject('modLexiconFocus');
-                    $focus->fromArray(array (
-                      'id' => $fcount,
-                      'name' => $foc,
-                      'namespace' => $this->namespace->get('name'),
-                    ), '', true, true);
-                }
-
-                $f = $fdir.$entry;
-                $entries = array();
-                if (file_exists($f)) {
-                    $_lang = array();
-                    @include_once $f;
-
-                    foreach ($_lang as $key => $value) {
-                        $entries[$i]= $this->modx->newObject('modLexiconEntry');
-                        $entries[$i]->fromArray(array (
-                          'id' => $i,
-                          'name' => $key,
-                          'value' => $value,
-                          'focus' => $focus->get('id'),
-                          'namespace' => $this->namespace->get('name'),
-                          'language' => $culture,
-                        ), '', true, true);
-                        $i++;
-                    }
-                }
-                $focus->addMany($entries);
-                $foci[$focus->get('id')] = $focus;
-                $fcount++;
-            }
-        }
-        $dir->close();
+        $entries = array();
 
         // package in languages
         $attributes= array(
@@ -329,23 +273,85 @@ class modPackageBuilder {
             $this->putVehicle($vehicle);
         }
 
-        // package in foci w/ entries
-        foreach ($foci as $f) {
-            $vehicle = $this->createVehicle($f,array (
-                XPDO_TRANSPORT_PRESERVE_KEYS => false,
-                XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
-                XPDO_TRANSPORT_RELATED_OBJECTS => true,
-                XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array (
-                    'modLexiconEntry' => array (
-                        XPDO_TRANSPORT_PRESERVE_KEYS => false,
-                        XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                        XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus'),
+        // loop through cultures
+        $dir = dir($path);
+        while (false !== ($culture = $dir->read())) {
+            if (in_array($culture,$invdirs)) continue;
+            if (!is_dir($path.$culture)) continue;
+
+            $language= $this->modx->getObject('modLexiconLanguage',$culture);
+            if ($language == null) {
+                $language= $this->modx->newObject('modLexiconLanguage');
+                $language->fromArray(array(
+                    'name' => $culture,
+                ),'',true,true);
+                $language->save();
+            }
+            $languages[$culture]= $language;
+
+            // loop through foci
+            $fdir = $path.$culture.'/';
+            $fd = dir($fdir);
+            while (false !== ($entry = $fd->read())) {
+                if (in_array($entry,$invdirs)) continue;
+                if (is_dir($fdir.$entry)) continue;
+
+                $foc = str_replace('.inc.php','',$entry);
+
+                $focus = $this->modx->getObject('modLexiconFocus',array(
+                    'name' => $foc,
+                    'namespace' => $this->namespace->get('name'),
+                ));
+                if ($focus == null) {
+                    $focus= $this->modx->newObject('modLexiconFocus');
+                    $focus->fromArray(array (
+                      'name' => $foc,
+                      'namespace' => $this->namespace->get('name'),
+                    ));
+                    $focus->save();
+                }
+
+                $f = $fdir.$entry;
+                $entries = array();
+                if (file_exists($f)) {
+                    $_lang = array();
+                    @include $f;
+
+                    foreach ($_lang as $key => $value) {
+                        $entry = $this->modx->newObject('modLexiconEntry');
+                        $entry->fromArray(array (
+                          'name' => $key,
+                          'value' => $value,
+                          'focus' => $focus->get('id'),
+                          'namespace' => $this->namespace->get('name'),
+                          'language' => $culture,
+                        ));
+                        $entries[] = $entry;
+                    }
+                }
+                $focus->addMany($entries);
+                $focus->save();
+
+                $vehicle = $this->createVehicle($focus,array (
+                    XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                    XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
+                    XPDO_TRANSPORT_RELATED_OBJECTS => true,
+                    XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array (
+                        'modLexiconEntry' => array (
+                            XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                            XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                            XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus', 'namespace', 'language'),
+                        ),
                     ),
-                ),
-            ));
-            $this->putVehicle($vehicle);
+                ));
+                $this->putVehicle($vehicle);
+
+                $focus->remove();
+            }
         }
+        $dir->close();
+
 
         return true;
     }
