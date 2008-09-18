@@ -84,3 +84,10 @@ Ext.extend(MODx.grid.DatabaseTables,MODx.grid.Grid,{
 	}
 });
 Ext.reg('grid-databasetables',MODx.grid.DatabaseTables);
+
+var truncate = function(name) {
+    Ext.getCmp('grid-dbtable').truncate(name);
+};
+var optimize = function(name) {
+    Ext.getCmp('grid-dbtable').optimize(name);
+};

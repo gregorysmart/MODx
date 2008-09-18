@@ -40,10 +40,3 @@ var viewPHPInfo = function() {
 	dontShowWorker = true; // prevent worker from being displayed
 	window.location.href= MODx.config.connectors_url+'system/phpinfo.php';
 };
-
-var truncate = function(name) {
-    Ext.getCmp('grid-dbtable').truncate(name);
-};
-var optimize = function(name) {
-    Ext.getCmp('grid-dbtable').optimize(name);
-};
