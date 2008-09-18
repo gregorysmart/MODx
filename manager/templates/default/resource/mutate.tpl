@@ -33,31 +33,6 @@
 <!-- END Access Permissions -->
 
 
-<br /><br />
-<!-- START Content -->
-<div id="tabs_div">
-<div id="tab_content" class="x-hide-display">
-    {if $resource->richtext EQ 1 AND $_config.use_editor EQ 1}
-    <div style="width:98%">
-        <textarea id="ta" name="ta" style="width:100%; height: 400px;">{$htmlcontent}</textarea> 
-    
-        <label for="which_editor">{$_lang.which_editor_title}</label>
-        <select id="which_editor" name="which_editor" onchange="changeRTE();">
-            <option value="none" {if $which_editor EQ 'none'}selected="selected"{/if}>{$_lang.none}</option>
-        {foreach from=$text_editors item=te}
-            <option value="{$te}" {if $which_editor EQ $te} selected="selected"{/if}>{$te}</option>
-        {/foreach}
-        </select>
-    </div>
-    {else}
-    <div style="width:98%">
-        <textarea id="ta" name="ta" style="width:100%; height: 400px;">{$resource->content|escape}</textarea>
-    </div>
-    {/if}
-</div>
-</div>
-<!-- END Content -->
-
 {$onDocFormRender}
 
 {if $resource->richtext AND $_config.use_editor}

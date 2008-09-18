@@ -34,9 +34,6 @@ MODx.page.UpdateResource = function(config) {
             ,id: 'grid-resource-security'
             ,resource: config.id
         }]
-        ,tabs: [{
-            contentEl: 'tab_content' ,title: _('document_content')
-        }]
         ,buttons: [{
             process: 'update'
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'

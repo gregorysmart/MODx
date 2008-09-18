@@ -67,9 +67,6 @@ MODx.page.CreateResource = function(config) {
             ,class_key: config.class_key
             ,resource: 0
         }]
-        ,tabs: [{
-            contentEl: 'tab_content' ,title: _('document_content')
-        }]
     });
     MODx.page.CreateResource.superclass.constructor.call(this,config);
 };

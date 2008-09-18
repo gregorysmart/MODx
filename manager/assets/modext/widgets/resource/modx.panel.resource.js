@@ -245,6 +245,44 @@ MODx.panel.Resource = function(config) {
                 ,title: _('access_permissions')
                 
             } : {})]
+        },{
+            html: '<hr />'
+            ,border: false
+        },{
+            autoHeight: true
+            ,layout: 'form'
+            ,bodyStyle: 'padding: 1.5em;'
+            ,border: false
+            ,items: [{
+                html: '<h2>'+_('document_content')+'</h2>'
+                ,border: false
+            },{
+                xtype: 'textarea'
+                ,name: 'ta'
+                ,id: 'ta'
+                ,hideLabel: true
+                ,width: '97%'
+                ,height: 400
+                ,grow: false
+            },{
+                xtype: 'combo-rte'
+                ,fieldLabel: _('which_editor_title')
+                ,id: 'which_editor'
+                ,name: 'which_editor'
+                ,value: config.which_editor
+                ,editable: false
+                ,listWidth: 300
+                ,triggerAction: 'all'
+                ,allowBlank: true
+                ,listeners: {
+                    'select': {fn:function() {
+                        var w = Ext.getCmp('which_editor').getValue();
+                        this.form.submit();
+                        var u = '?a='+MODx.request.a+'&id='+MODx.request.id+'&which_editor='+w;
+                        location.href = u;
+                    },scope:this}
+                }
+            }]
         }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
@@ -274,7 +312,13 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             	'success': {fn:function(r) {
                     if (r.object.pub_date == '0') { r.object.pub_date = ''; }
                     if (r.object.unpub_date == '0') { r.object.unpub_date = ''; }
+                    r.object.ta = r.object.content;
                     this.getForm().setValues(r.object);
+                    
+                    if (r.object.richtext && MODx.config.use_editor && loadRTE !== null) {
+                    	loadRTE('ta');
+                    }
+                    
                     this.fireEvent('ready');
             	},scope:this}
             }
@@ -318,3 +362,7 @@ Ext.reg('panel-resource',MODx.panel.Resource);
 var triggerDirtyField = function(fld) {
     Ext.getCmp('panel-resource').fieldChangeEvent(fld);
 };
+var triggerRTEOnChange = function(i) {
+	Ext.getCmp('ta').fireEvent('change');
+}
+var loadRTE = null;
