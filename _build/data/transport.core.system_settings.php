@@ -150,7 +150,7 @@ $collection['editor_css_selectors']->fromArray(array (
 $collection['emailsender']= $xpdo->newObject('modSystemSetting');
 $collection['emailsender']->fromArray(array (
   'key' => 'emailsender',
-  'value' => 'shaun@collabpad.com',
+  'value' => 'email@example.com',
   'xtype' => 'textfield',
   'namespace' => 'core',
   'area' => 'authentication',
