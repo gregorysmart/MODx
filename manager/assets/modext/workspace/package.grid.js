@@ -18,14 +18,16 @@ MODx.grid.Package = function(config) {
             ,{ header: _('created') ,dataIndex: 'created' }
             ,{ header: _('updated') ,dataIndex: 'updated' }
             ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }
-            ,{ header: _('package_state') ,dataIndex: 'state' }
             ,{ 
                header: _('workspace')
                ,dataIndex: 'workspace'
                ,editor: { xtype:'combo-workspace' ,renderer: true }
+               ,editable: false
             },{ 
                 header: _('provisioner')
                 ,dataIndex: 'provider'
+                ,editor: { xtype: 'combo-provider' ,renderer: true }
+                ,editable: false
             },{
                 header: _('disabled')
                 ,dataIndex: 'disabled'
