@@ -134,7 +134,9 @@ MODx.grid.Lexicon = function(config) {
     MODx.grid.Lexicon.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
-    filter: function(cb,r,i,name) {
+    console: null
+    
+    ,filter: function(cb,r,i,name) {
     	if (!name) { return false; }
     	this.store.baseParams[name] = cb.getValue();
     	this.getBottomToolbar().changePage(1);
