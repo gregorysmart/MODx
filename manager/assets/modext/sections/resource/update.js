@@ -61,20 +61,17 @@ MODx.page.UpdateResource = function(config) {
                 ,alt: true
                 ,ctrl: true
             }]
-        }
-        ,'-',{
+        },'-',{
             process: 'duplicate'
             ,text: _('duplicate')
             ,confirm: _('confirm_duplicate_document')
             ,method: 'remote'
-        }
-        ,'-'
-        ,{
+        },'-',{
             process: 'preview'
             ,text: _('preview')
             ,handler: this.preview.createDelegate(this,[config.id])
             ,scope: this
-        },{
+        },'-',{
             process: 'cancel'
             ,text: _('cancel')
             ,params: { a: MODx.action['welcome'] }

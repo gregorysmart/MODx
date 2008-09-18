@@ -41,7 +41,7 @@ MODx.page.CreateResource = function(config) {
                 ,alt: true
                 ,ctrl: true
             }]
-        },{
+        },'-',{
             process: 'cancel'
             ,text: _('cancel')
             ,params: { a: MODx.action['welcome'] }
