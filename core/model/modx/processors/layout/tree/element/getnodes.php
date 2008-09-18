@@ -308,7 +308,7 @@ switch ($g[0]) {
                     ),'-',
                     array(
                         'text' => $modx->lexicon('edit').' '.$elementType,
-                        'params' => array( 'a' => 'element/'.strtolower($elementType).'/update', 'id' => $element->id, ),
+                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->id, ),
                     ),
                     array(
                         'text' => $modx->lexicon('duplicate').' '.$elementType,
