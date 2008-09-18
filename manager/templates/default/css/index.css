@@ -38,6 +38,7 @@ th.x-form-element, td.x-form-element {
 	color: #CC3333 !important;
 	text-decoration: line-through !important;
 }
+.hidemenu a span { color: gray !important; }
 
 .error { color: red !important; }
 

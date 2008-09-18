@@ -118,7 +118,7 @@ foreach ($collection as $item) {
         );
     } else {
 
-    	$class = ($item->isfolder ? 'folder' : 'file').($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '');
+    	$class = ($item->isfolder ? 'folder' : 'file').($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '').($item->hidemenu == 1 ? ' hidemenu' : '');
 
 		$menu = array(
             array(
