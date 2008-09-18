@@ -135,7 +135,7 @@ MODx.grid.Lexicon = function(config) {
 };
 Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     filter: function(cb,r,i,name) {
-    	if (!name) return false;
+    	if (!name) { return false; }
     	this.store.baseParams[name] = cb.getValue();
     	this.getBottomToolbar().changePage(1);
     	this.refresh();
@@ -173,7 +173,7 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     ,reloadFromBase: function() {
     	Ext.Ajax.timeout = 0;
     	var topic = '/workspace/lexicon/reload/';
-        if (this.console == null) {
+        if (this.console === null) {
             this.console = MODx.load({
                xtype: 'modx-console'
                ,register: 'mgr'

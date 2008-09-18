@@ -12,11 +12,11 @@ MODx.toolbar.ActionButtons = function(config) {
 	MODx.toolbar.ActionButtons.superclass.constructor.call(this,config);
 	this.id = id;
 	Ext.applyIf(config,{
-		actions: { 'close': MODx.action['welcome'] }
+		actions: { 'close': MODx.action.welcome }
         ,params: {}
 	});
-	if (config.loadStay == true) {
-		if (!config.items) config.items = [];
+	if (config.loadStay === true) {
+		if (!config.items) { config.items = []; }
 		config.items.push(this.getStayMenu());
 	}
 	if (config.formpanel) {
@@ -76,7 +76,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 			// this can be used for doing document-specific actions
 			// such as using a Ext.menu.DateMenu in the action buttons
 			// or some other item that opens up more options...you get the idea
-			if (options.handler == null && options.menu == null) {
+			if (options.handler === null && options.menu === null) {
 				options.handler = this.checkConfirm;
 			} else if (options.handler) {
 				if (options.confirm) {
@@ -91,7 +91,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 						},s);
 					};
 				}
-			}
+			} else { options.handler = this.handleClick; }
 						      			
 			// create the button	
 			var b = new Ext.Toolbar.Button(options);
@@ -119,9 +119,9 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
             
             if (options.keys) {
                 var map = new Ext.KeyMap(Ext.get(document));
-                var c = options.keys.length;
-                for (var i=0;i<c;i++) {
-                    var k = options.keys[i];
+                var y = options.keys.length;
+                for (var x=0;x<y;x++) {
+                    var k = options.keys[x];
                     Ext.applyIf(k,{
                         scope: this
                         ,stopEvent: true
@@ -140,11 +140,11 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 * @param {Ext.EventObject} e The event object.
 	 */
 	,checkConfirm: function(itm,e) {
-		if (itm.confirm != null) {
+		if (itm.confirm !== null) {
 			this.confirm(itm,function() {
 				this.handleClick(itm,e);
 			},this);
-		} else this.handleClick(itm,e);
+		} else { this.handleClick(itm,e); }
 		return false;
 	}
 	
@@ -159,15 +159,15 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 */
 	,confirm: function(itm,callback,scope) {
 		// if no message go ahead and redirect...we dont like blank questions
-		if (itm.confirm == null) return true;
+		if (itm.confirm === null) { return true; }
 		
 		Ext.Msg.confirm('',itm.confirm,function(e) {
 			// if the user is okay with the action
 			if (e == 'yes') {
-				if (callback == null) return true;
+				if (callback === null) { return true; }
 				if (typeof(callback) == 'function') { // if callback is a function, run it, and pass Button
 					Ext.callback(callback,scope || this,[itm]);
-				} else location.href = callback;
+				} else { location.href = callback; }
 			}
 		},this);
 	}
@@ -227,12 +227,12 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 				});
 				
                 // if using formpanel
-                if (o.formpanel != undefined && o.formpanel != '' && o.formpanel != null) {
+                if (o.formpanel !== undefined && o.formpanel !== '' && o.formpanel !== null) {
                     o.form = Ext.getCmp(o.formpanel).getForm();
                 }
                 
 				// if using Ext.form
-                if (o.form != undefined) {
+                if (o.form !== undefined) {
 					if (o.form.isValid()) { // client-side validation with modHExt
                         Ext.applyIf(o.params,{
                             action: itm.process
@@ -258,7 +258,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 								MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
 								
 								// allow for success messages
-								if (a.result.message != '' && !itm.onComplete) {
+								if (a.result.message !== '' && !itm.onComplete) {
 									Ext.Msg.alert(_('success'),a.result.message,function() {
 										if (this.checkOnComplete(o,itm,a.result)) {
 										  o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_document_tree').refresh();
@@ -297,7 +297,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 				break;
 				
 			default: // this is any other action besides remote
-				var id = o['id'] || 0; // append the ID of the element if specified
+				var id = o.id || 0; // append the ID of the element if specified
 				//var loc = 'index.php?a='+o.actions[itm.type]+'&id='+id;
 				Ext.applyIf(itm.params || {},o.baseParams || {});
 				var loc = 'index.php?id='+id+'&'+Ext.urlEncode(itm.params);
@@ -334,14 +334,14 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 				// if Continue Editing, then don't reload the page - just hide the Progress bar
 				// unless the user is on a 'Create' page...if so, then redirect
 				// to the proper Edit page
-				if ((itm.process == 'create' || itm.process == 'duplicate' || itm.reload) && res.object.id != null) {
-					location.href = 'index.php?a='+o.actions['edit']+'&id='+res.object.id+'&'+a;
+				if ((itm.process == 'create' || itm.process == 'duplicate' || itm.reload) && res.object.id !== null) {
+					location.href = 'index.php?a='+o.actions.edit+'&id='+res.object.id+'&'+a;
 				} else if (itm.process == 'delete') {
-					location.href = 'index.php?a='+o.actions['cancel']+'&'+a;
-				} else Ext.Msg.hide();
+					location.href = 'index.php?a='+o.actions.cancel+'&'+a;
+				} else { Ext.Msg.hide(); }
 				break;
 			case 'close': // redirect to the cancel action
-				location.href = 'index.php?a='+o.actions['cancel']+'&'+a;
+				location.href = 'index.php?a='+o.actions.cancel+'&'+a;
 				break;
 		}
 	}
@@ -399,8 +399,8 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
         return false;
 	}
 	
-	,setupDirtyButtons: function(fp) {
-		var fp = Ext.getCmp(fp);
+	,setupDirtyButtons: function(f) {
+		var fp = Ext.getCmp(f);
         if (fp) {
             fp.on('fieldChange',function(o) {
                for (var i=0;i<this.checkDirtyBtns.length;i++) {

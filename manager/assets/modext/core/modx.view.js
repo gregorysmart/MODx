@@ -46,11 +46,12 @@ Ext.extend(MODx.DataView,Ext.DataView,{
             if (options == '-') {
                 this.cm.add('-');
                 continue;
-            };
+            }
+            var h = Ext.emptyFn;
             if (options.handler) {
-                var h = eval(options.handler);
+                h = eval(options.handler);
             } else {
-                var h = function(itm,e) {
+                h = function(itm,e) {
                     var o = itm.options;
                     var id = this.cm.activeNode.id.split('_'); id = id[1];
                     var w = Ext.get('modx_content');
@@ -59,20 +60,20 @@ Ext.extend(MODx.DataView,Ext.DataView,{
                             if (e == 'yes') {
                                 var a = Ext.urlEncode(o.params || {action: o.action});
                                 var s = 'index.php?id='+id+'&'+a;
-                                if (w == null) {
+                                if (w === null) {
                                     location.href = s;
-                                } else w.dom.src = s
+                                } else { w.dom.src = s; }
                             }
                         },this);
                     } else {
                         var a = Ext.urlEncode(o.params);
                         var s = 'index.php?id='+id+'&'+a;
-                        if (w == null) {
+                        if (w === null) {
                             location.href = s;
-                        } else w.dom.src = s;
+                        } else { w.dom.src = s; }
                     }
                 };
-            };
+            }
             this.cm.add({
                 id: options.id
                 ,text: options.text

@@ -38,23 +38,7 @@ MODx.grid.Context = function(config) {
 };
 Ext.extend(MODx.grid.Context,MODx.grid.Grid,{
     update: function(itm,e) {
-        var r = this.menu.record;
-        
-        location.href = 'index.php?a='+MODx.action['context/update']+'&key='+r.key;
-        return false;
-        if (this.windows.update) {
-            this.windows.update.destroy();
-        }
-        this.windows.update = MODx.load({
-            xtype: 'window-context-update'
-            ,record: r
-            ,context_key: r.key
-            ,listeners: {
-            	'success':{fn:this.refresh,scope:this}
-            }
-        });
-        this.windows.update.setValues(r);
-        this.windows.update.show(e.target);
+        location.href = 'index.php?a='+MODx.action['context/update']+'&key='+this.menu.record.key;
     }
 });
 Ext.reg('grid-context',MODx.grid.Context);

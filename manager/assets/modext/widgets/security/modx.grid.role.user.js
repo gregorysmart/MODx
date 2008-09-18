@@ -110,7 +110,7 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
                             action: 'getUsers'
                             ,role: this.config.role
                             ,group: Ext.getCmp('rugrid-combo-usergroup').getValue()
-                        }
+                        };
                         this.refresh();
                     },scope:this}
                 }

@@ -33,7 +33,7 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 	,addUser: function(item,e) {
 		var n = this.cm.activeNode;
 		var ug = n.id.substr(2).split('_'); ug = ug[1];
-		if (ug == undefined) ug = 0;
+		if (ug === undefined) { ug = 0; }
 		var r = {user_group: ug};
         
         if (!this.windows.adduser) {
@@ -52,11 +52,12 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 	
 	,create: function(item,e,tbar) {
 		tbar = tbar || false;
-        if (tbar == false) {
+        var p;
+        if (tbar === false) {
             var n = this.cm.activeNode;
-		    var p = n.id.substr(2).split('_'); p = p[1];
-		    if (p == undefined) p = 0;
-        } else var p = 0;
+		    p = n.id.substr(2).split('_'); p = p[1];
+		    if (p === undefined) { p = 0; }
+        } else { p = 0; }
         var r = {parent: p};
         
 		if (!this.windows.create) {

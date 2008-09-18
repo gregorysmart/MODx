@@ -34,7 +34,7 @@ Ext.onReady(function() {
 			,transform: el.dom.id
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		d.render(span);
 		_hourfields[el.dom.id] = d;
@@ -46,7 +46,7 @@ Ext.onReady(function() {
 		fields: ['min']
 		,data: [['00'],['15'],['30'],['45']]
 	});
-	var els = Ext.get(Ext.query('select.minutefield'));
+	els = Ext.get(Ext.query('select.minutefield'));
 	els.each(function(el){
 		var span = dh.insertBefore(el,{tag:'span'});
 		var d = new Ext.form.ComboBox({
@@ -65,7 +65,7 @@ Ext.onReady(function() {
 			,width: 50
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		d.render(span);
 		_minfields[el.dom.id] = d;
@@ -77,7 +77,7 @@ Ext.onReady(function() {
 		fields: ['min']
 		,data: [['am'],['pm']]
 	});
-	var els = Ext.get(Ext.query('select.ampmfield'));
+	els = Ext.get(Ext.query('select.ampmfield'));
 	els.each(function(el){
 		var span = dh.insertBefore(el,{tag:'span'});
 		var d = new Ext.form.ComboBox({
@@ -96,7 +96,7 @@ Ext.onReady(function() {
 			,width: 50
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		d.render(span);
 		_ampmfields[el.dom.id] = d;
@@ -104,7 +104,7 @@ Ext.onReady(function() {
 	
 	// textfields
 	_textfields = {};
-	var els = Ext.get(Ext.query('input.textfield'));
+	els = Ext.get(Ext.query('input.textfield'));
 	els.each(function(el){
 		var span = dh.insertBefore(el,{tag:'span'});
 		var allb = el.getAttributeNS('modx','allowblank');
@@ -112,18 +112,18 @@ Ext.onReady(function() {
 			width: el.getAttributeNS('modx','width') || 300
 			,maxLength: el.getAttributeNS('modx','maxlength')
 			,inputType: el.getAttributeNS('modx','inputtype') || 'text'
-			,allowBlank: allb && allb == false ? false : true
+			,allowBlank: allb && allb === false ? false : true
 			,applyTo: el.dom.id
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		_textfields[el.dom.id] = d;
 	});
 	
 	// comboboxes
 	_comboboxes = {};
-	var els = Ext.get(Ext.query('select.combobox'));
+	els = Ext.get(Ext.query('select.combobox'));
 	els.each(function(el){
 		var span = dh.insertBefore(el,{tag:'span'});
 		var ed = el.getAttributeNS('modx','editable');
@@ -131,9 +131,9 @@ Ext.onReady(function() {
 		var d = new Ext.form.ComboBox({
 			el: el.dom
 			,value: el.dom.value
-			,forceSelection: fs && fs == false ? false : true
+			,forceSelection: fs && fs === false ? false : true
 			,typeAhead: el.getAttributeNS('modx','typeahead') ? true : false
-			,editable: ed && ed == false ? false : true
+			,editable: ed && ed === false ? false : true
 			,triggerAction: 'all'
 			,transform: el.dom.id
 			,hiddenName: el.dom.name
@@ -141,7 +141,7 @@ Ext.onReady(function() {
             ,listWidth: el.getAttributeNS('modx','listwidth') || 300
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) {
+		if (oc && oc !== undefined) {
 			d.on('blur',oc);
 		}
 		
@@ -151,7 +151,7 @@ Ext.onReady(function() {
 	
 	// textareas
 	_textareas = {};
-	var els = Ext.get(Ext.query('textarea.textarea'));
+	els = Ext.get(Ext.query('textarea.textarea'));
 	els.each(function(el){
 		var span = dh.insertBefore(el,{tag:'span'});
 		var d = new Ext.form.TextArea({
@@ -160,14 +160,14 @@ Ext.onReady(function() {
 			,applyTo: el.dom.id
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		_textareas[el.dom.id] = d;
 	});
 	
 	// datefields
 	_datefields = {};
-	var els = Ext.get(Ext.query('input.datefield'));
+	els = Ext.get(Ext.query('input.datefield'));
 	els.each(function(el){
 		var span = dh.insertBefore(el, {tag:'span'});
 		var f = el.getAttributeNS('modx','format');
@@ -175,10 +175,10 @@ Ext.onReady(function() {
 			el: el.dom
 			,value: el.dom.value
 			,allowBlank: el.getAttributeNS('modx','allowblank') ? true : false
-			,format: f && f != undefined ? f : 'd-m-Y H:i:s'
+			,format: f && f !== undefined ? f : 'd-m-Y H:i:s'
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		d.render(span);
 		_datefields[el.dom.id] = d;
@@ -187,7 +187,7 @@ Ext.onReady(function() {
 	
 	// radios
 	_radios = {};
-	var els = Ext.get(Ext.query('input.radio'));
+	els = Ext.get(Ext.query('input.radio'));
 	els.each(function(el){
 		var d = new Ext.form.Radio({
 			name: el.dom.name
@@ -199,14 +199,14 @@ Ext.onReady(function() {
 			,applyTo: el.dom.id
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		_radios[el.dom.id] = d;
 	});
 	
 	// checkboxes
 	_checkboxes = {};
-	var els = Ext.get(Ext.query('input.checkbox'));
+	els = Ext.get(Ext.query('input.checkbox'));
 	els.each(function(el){
 		var d = new Ext.form.Radio({
 			name: el.dom.name
@@ -218,14 +218,14 @@ Ext.onReady(function() {
 			,applyTo: el.dom.id
 		});
 		var oc = el.dom.onchange;
-		if (oc && oc != undefined) d.on('change',oc);
+		if (oc && oc !== undefined) { d.on('change',oc); }
 		
 		_checkboxes[el.dom.id] = d;
 	});
 	
 	// hiddens
 	_hiddens = {};
-	var els = Ext.get(Ext.query('input.hidden'));
+	els = Ext.get(Ext.query('input.hidden'));
 	els.each(function(el){
 		var d = new Ext.form.Field({
 			name: el.dom.name

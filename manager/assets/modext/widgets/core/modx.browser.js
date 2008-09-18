@@ -167,7 +167,7 @@ Ext.extend(MODx.browser.Window,Ext.Window,{
             ,listeners: {
                 'select': {fn:this.sortImages, scope:this}
             }
-        }]        
+        }];
     }
     
     ,onSelect: function(data) {
@@ -246,7 +246,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
     
     ,run: function(p) {
         p = p || {};
-        if (p.dir) this.dir = p.dir;
+        if (p.dir) { this.dir = p.dir; }
         Ext.applyIf(p,{
             action: 'getFiles'
             ,dir: this.dir
@@ -265,7 +265,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
             var data = this.lookup[selNode.id];
             detailEl.hide();
             this.templates.details.overwrite(detailEl, data);
-            detailEl.slideIn('l', {stopFx:true,duration:.2});
+            detailEl.slideIn('l', {stopFx:true,duration:'.2'});
         }else{
             Ext.getCmp('ok-btn').disable();
             detailEl.update('');

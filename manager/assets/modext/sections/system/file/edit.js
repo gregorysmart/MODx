@@ -78,20 +78,18 @@ MODx.panel.EditFile = function(config) {
 };
 Ext.extend(MODx.panel.EditFile,Ext.FormPanel,{
     setup: function() {
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'get'
                 ,file: this.config.file
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+                'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
-                } else MODx.form.Handler.errorJSON(r);
+                },scope:this}
             }
-        })
+        });
     }
     ,submit: function() {
         if (this.getForm().isValid()) {

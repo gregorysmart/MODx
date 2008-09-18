@@ -119,7 +119,7 @@ MODx.panel.PackageXML = function(config) {
             },scope:this}
             ,'beforeSubmit': {fn:function(o) {
             	var topic = '/workspace/package/builder/';
-                if (this.console == null) {
+                if (this.console === null) {
                     this.console = MODx.load({
                        xtype: 'modx-console'
                        ,register: 'mgr'
@@ -327,7 +327,7 @@ MODx.panel.BuildPackage = function(config) {
             },scope:this}
             ,'beforeSubmit': {fn:function(o) {
                 var topic = '/workspace/package/builder/';
-                if (this.console == null) {
+                if (this.console === null) {
                     this.console = MODx.load({
                        xtype: 'modx-console'
                        ,register: 'mgr'

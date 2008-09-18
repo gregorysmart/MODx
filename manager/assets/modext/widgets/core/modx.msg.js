@@ -12,7 +12,7 @@ MODx.Msg = function(config) {
     
     this.sl = new Ext.Spotlight({
         easing: 'easeOut'
-        ,duration: .3
+        ,duration: '.3'
     });
     MODx.Msg.superclass.constructor.call(this,config);
     this.addEvents({

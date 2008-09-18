@@ -128,7 +128,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		if(e.point == 'above' || e.point == 'below') {
 			target = e.target.parentNode;
 		}
-        if (!this.isCorrectType(e.dropNode,target)) return false;
+        if (!this.isCorrectType(e.dropNode,target)) { return false; }
 		
 		return e.target.getDepth() > 0;
 	}

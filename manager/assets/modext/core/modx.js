@@ -11,7 +11,7 @@ MODx = function(config) {
     this.config = config;
     this.initQuickTips();
     this.request = this.getURLParameters();
-    this.Ajax = new MODx.Ajax();
+    this.Ajax = this.load({ xtype: 'modx-ajax' });
 };
 Ext.extend(MODx,Ext.Component,{
     config: {}
@@ -23,7 +23,9 @@ Ext.extend(MODx,Ext.Component,{
         var os = [];
         for(var i = 0; i < l; i++) {
             var o = a[i];
-            if (!o.xtype || o.xtype == '') return false;
+            if (!o.xtype || o.xtype === '') {
+                return false;
+            }
             os.push(Ext.ComponentMgr.create(o));
         }
         return (os.length == 1) ? os[0] : os;
@@ -37,7 +39,7 @@ Ext.extend(MODx,Ext.Component,{
     }
     
     ,getURLParameters: function() {
-        var arg = new Object();
+        var arg = {};
         var href = document.location.href;
         
         if (href.indexOf( "?") != -1) {
@@ -54,7 +56,12 @@ Ext.reg('modx',MODx);
 
 
 /**
+ * An override class for Ext.Ajax, which adds success/failure events.
  * 
+ * @class MODx.Ajax
+ * @extends Ext.Component
+ * @param {Object} config An object of config properties
+ * @xtype modx-ajax
  */
 MODx.Ajax = function(config) {
     config = config || {};

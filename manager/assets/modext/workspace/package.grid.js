@@ -62,7 +62,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     }
     
     ,loadConsole: function(btn,topic) {
-    	if (this.console == null) {
+    	if (this.console === null) {
             this.console = MODx.load({
                xtype: 'modx-console'
                ,register: 'mgr'
@@ -464,7 +464,7 @@ Ext.extend(MODx.panel.PiSelPackage,Ext.FormPanel,{
                     Ext.getCmp('window-package-installer').hide();
                 }
             });
-        } else Ext.Msg.alert('',_('package_select_download_ns'));
+        } else { Ext.Msg.alert('',_('package_select_download_ns')); }
     }
 });
 Ext.reg('panel-pi-selpackage',MODx.panel.PiSelPackage);

@@ -101,11 +101,11 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
         var a = e.target.attributes;
 		var docid = n.attributes.id.split('_'); docid = 'n_'+docid[1];
 
-		if (e.target.findChild('id',docid) != null) return false;
-		if (n.attributes.type != 'modResource') return false;
-		if (e.point != 'append') return false;
-		if (a.type != 'modResourceGroup') return false;
-		if (a.leaf === true) return false;
+		if (e.target.findChild('id',docid) !== null) { return false; }
+		if (n.attributes.type != 'modResource') { return false; }
+		if (e.point != 'append') { return false; }
+		if (a.type != 'modResourceGroup') { return false; }
+		if (a.leaf === true) { return false; }
 		return true;
 	}
 	
@@ -150,9 +150,9 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 				,action: 'updateDocumentsIn'
 			}
 			,success: function(r,o) {
-				_resetProgress();
+				MODx.util.Progress.reset();
 				Ext.Msg.hide();
-				var r = Ext.decode(r.responseText);
+				r = Ext.decode(r.responseText);
 				if (!r.success) {
 					Ext.Msg.alert(_('error'),r.message);
 					this.refresh();

@@ -111,9 +111,9 @@ MODx.panel.Plugin = function(config) {
 };
 Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
     setup: function() {
-        if (this.config.plugin == '' || this.config.plugin == 0) {            
+        if (this.config.plugin === '' || this.config.plugin === 0) {            
             this.fireEvent('ready');
-            return;
+            return false;
         }
         MODx.Ajax.request({
             url: this.config.url
@@ -123,8 +123,8 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
             }
             ,listeners: {
             	'success': {fn:function(r) {
-            		if (r.object.category == '0') r.object.category = null;
-                    r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>"
+            		if (r.object.category == '0') { r.object.category = null; }
+                    r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>";
                     this.getForm().setValues(r.object);
                     Ext.getCmp('plugin-name').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready',r.object);

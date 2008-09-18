@@ -50,7 +50,7 @@ MODx.grid.ResourceEvent = function(config) {
 };
 Ext.extend(MODx.grid.ResourceEvent,MODx.grid.Grid,{
     toggle: function(btn,e) {
-        var btn = Ext.getCmp('btn-toggle');
+        btn = Ext.getCmp('btn-toggle');
         var s = this.getStore();
         if (btn.pressed) {
             s.baseParams.mode = 'unpub_date';

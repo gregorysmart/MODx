@@ -25,7 +25,7 @@ MODx.tree.Menu = function(config) {
 Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 	windows: {}
 	
-	,create: function(node,e) {
+	,create: function(n,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		
@@ -57,7 +57,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 		});
 	}
 	
-	,update: function(node,e) {
+	,update: function(n,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		
@@ -88,7 +88,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 		});
 	}
 	
-	,remove: function(node,e) {
+	,remove: function(n,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		
@@ -251,7 +251,7 @@ MODx.combo.Action = function(config) {
 		,listWidth: 300
 	});
 	MODx.combo.Action.superclass.constructor.call(this,config);
-}
+};
 Ext.extend(MODx.combo.Action,MODx.combo.ComboBox);
 Ext.reg('combo-action',MODx.combo.Action);
 
@@ -277,6 +277,6 @@ MODx.combo.Menu = function(config) {
         ,listWidth: 300
     });
     MODx.combo.Menu.superclass.constructor.call(this,config);
-}
+};
 Ext.extend(MODx.combo.Menu,MODx.combo.ComboBox);
 Ext.reg('combo-menu',MODx.combo.Menu);

@@ -85,7 +85,7 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 	
 	,isUGCopy: function(e, n) {
         var a = e.target.attributes;
-		if (e.target.findChild('id',n.attributes.id) != null) return false;
+		if (e.target.findChild('id',n.attributes.id) !== null) { return false; }
         return n.attributes.type == 'usergroup' && n.getOwnerTree().getEl().id == this.ugtree.getEl().id && 
            ((e.point == 'append' && a.type == 'documentgroup') || a.leaf === false);
 	}
@@ -175,7 +175,7 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 		_resetProgress();
 		for(var i = 1; i < 20; i++) {
 			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
-		};
+		}
 		
 		function simplifyNodes(node) {
 			var resultNode = {};
@@ -185,7 +185,7 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 				resultNode[kids[i].id] = simplifyNodes(kids[i]);
 			}
 			return resultNode;
-		};
+		}
 		
         // JSON-encode our tree
 		var encNodes = Ext.encode(simplifyNodes(dropEvent.tree.root));

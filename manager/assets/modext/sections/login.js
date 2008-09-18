@@ -1,18 +1,18 @@
 Ext.onReady(function() {
-    if (top.frames.length!=0) {
+    if (top.frames.length !== 0) {
         top.location=self.document.location;
     }
     MODx.load({ xtype: 'page-login' });
 });
 var loginHandler = function(opt,s,r) {
-    var r = Ext.decode(r.responseText);
+    r = Ext.decode(r.responseText);
     if (r.success) {
-       top.document.location.href = (r.object.id != undefined) ? './index.php?id=' + r.object.id : './';
-    } else MODx.form.Handler.errorExt(r);
-}
+       top.document.location.href = (r.object.id !== undefined) ? './index.php?id=' + r.object.id : './';
+    } else { MODx.form.Handler.errorExt(r); }
+};
 var doLogin = function() {
     return MODx.form.Handler.send('loginfrm', 'login', loginHandler);
-}
+};
 
 /**
  * @class MODx.page.Login
@@ -93,7 +93,7 @@ MODx.panel.Login = function(config) {
 	   }]
 	   ,listeners: {
 	   	   'success': {fn:function(o) {
-	   	   	   location.href = (o.result.object.id != undefined) ? './index.php?id=' + o.result.object.id : './';
+	   	   	   location.href = (o.result.object.id !== undefined) ? './index.php?id=' + o.result.object.id : './';
 	   	   },scope:this}
 	   }
 	   ,keys: [{
@@ -106,4 +106,4 @@ MODx.panel.Login = function(config) {
 	MODx.panel.Login.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.Login,MODx.FormPanel);
-Ext.reg('panel-login',MODx.panel.Login)
+Ext.reg('panel-login',MODx.panel.Login);

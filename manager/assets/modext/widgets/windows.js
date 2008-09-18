@@ -21,7 +21,7 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
 			this.fp.getForm().baseParams = {
 				action: 'duplicate'
 				,id: this.config.resource
-			}
+			};
 			return false;
 		}
 		var items = [];
@@ -36,7 +36,9 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
                     'check': {fn: function(cb,checked) { 
                         if (checked) {
                             this.fp.getForm().findField('drd_name').disable();
-                        } else this.fp.getForm().findField('drd_name').enable();
+                        } else {
+                            this.fp.getForm().findField('drd_name').enable();
+                        }
                     },scope:this}
                 }
             });

@@ -8,12 +8,12 @@
 
 Ext.Spotlight = function(config){
     Ext.apply(this, config);
-}
+};
 Ext.Spotlight.prototype = {
     active : false,
     animate : true,
     animated : false,
-    duration: .25,
+    duration: '.25',
     easing:'easeNone',
 
     createElements : function(){

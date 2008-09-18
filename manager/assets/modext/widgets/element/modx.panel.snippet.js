@@ -96,7 +96,7 @@ MODx.panel.Snippet = function(config) {
 };
 Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
     setup: function() {
-        if (this.config.snippet == '' || this.config.snippet == 0) {            
+        if (this.config.snippet === '' || this.config.snippet === 0) {       
             this.fireEvent('ready');
             return;
         }
@@ -108,8 +108,8 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
             }
             ,listeners: {
             	'success': {fn:function(r) {
-                    if (r.object.category == '0') r.object.category = null;
-                    r.object.snippet = "<?php\n"+r.object.snippet+"\n?>"
+                    if (r.object.category == '0') { r.object.category = null; }
+                    r.object.snippet = "<?php\n"+r.object.snippet+"\n?>";
                     this.getForm().setValues(r.object);
                     Ext.getCmp('snippet-name').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
                     this.clearDirty();

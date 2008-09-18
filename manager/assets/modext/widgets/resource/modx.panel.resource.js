@@ -259,9 +259,9 @@ MODx.panel.Resource = function(config) {
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     setup: function() {
-        if (this.config.resource == '' || this.config.resource == 0) {
+        if (this.config.resource === '' || this.config.resource === 0) {
             this.fireEvent('ready');
-            return;
+            return false;
         }
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'resource/document.php'
@@ -272,8 +272,8 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             }
             ,listeners: {
             	'success': {fn:function(r) {
-                    if (r.object.pub_date == '0') r.object.pub_date = '';
-                    if (r.object.unpub_date == '0') r.object.unpub_date = '';
+                    if (r.object.pub_date == '0') { r.object.pub_date = ''; }
+                    if (r.object.unpub_date == '0') { r.object.unpub_date = ''; }
                     this.getForm().setValues(r.object);
                     this.fireEvent('ready');
             	},scope:this}
@@ -283,7 +283,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     
     ,templateWarning: function() {
         var t = Ext.getCmp('tpl');
-        if (!t) return;
+        if (!t) { return false; }
         // if selection isn't the current value (originalValue), then show dialog
         if(t.getValue() != t.originalValue) {
             Ext.Msg.confirm(_('warning'), _('resource_change_template_confirm'), function(e) {

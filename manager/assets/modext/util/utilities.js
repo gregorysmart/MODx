@@ -17,7 +17,7 @@ MODx.util.LoadingBox = function(config) {
 Ext.override(MODx.util.LoadingBox,{
     enabled: true
     ,hide: function() {
-        if (this.enabled) Ext.Msg.hide();
+        if (this.enabled) { Ext.Msg.hide(); }
     }
     ,show: function() {
         if (this.enabled) {
@@ -62,8 +62,9 @@ MODx.util.Progress = {
     id: 0
     ,time: function(v,id,msg) {
         msg = msg || _('saving');
-        if (MODx.util.Progress.id == id && v < 11) 
+        if (MODx.util.Progress.id == id && v < 11) {
             Ext.MessageBox.updateProgress(v/10,msg);
+        }
     }
     ,reset: function() {
         MODx.util.Progress.id = MODx.util.Progress.id + 1;
@@ -118,15 +119,15 @@ Ext.reg('staticboolean',MODx.StaticBoolean);
  ****************************************************************************/
 
 function $(el){
-    if (!el) return null;
+    if (!el) { return null; }
     var type = Ext.type(el);
     if (type == 'string'){
         el = document.getElementById(el);
         type = (el) ? 'element' : false;
     }
-    if (type != 'element') return null;
+    if (type != 'element') { return null; }
     return el;
-};
+}
 
 
 Array.prototype.in_array = function(p_val) {
@@ -141,7 +142,7 @@ Array.prototype.in_array = function(p_val) {
 
 Ext.form.setCheckboxValues = function(form,id,mask) {
     var f, n=0;
-    while ((f = form.findField(id+n)) != null) {
+    while ((f = form.findField(id+n)) !== null) {
         f.setValue((mask & (1<<n))?'true':'false');
         n++;
     } 
@@ -150,11 +151,13 @@ Ext.form.setCheckboxValues = function(form,id,mask) {
 Ext.form.getCheckboxMask = function(cbgroup) {
     var mask='';
     if (typeof(cbgroup) != "undefined") {
-        if ((typeof(cbgroup)=="string"))
+        if ((typeof(cbgroup)=="string")) { 
             mask = cbgroup+'';
-        else
-            for(var i = 0, len = cbgroup.length; i < len; i++)
-                mask += (mask != '' ? ',' : '')+(cbgroup[i]-0);
+        } else {
+            for(var i = 0, len = cbgroup.length; i < len; i++) {
+                mask += (mask !== '' ? ',' : '')+(cbgroup[i]-0);
+            }
+        }
     }
     return mask;
 };
@@ -184,8 +187,8 @@ Ext.form.BasicForm.prototype.append = function() {
     this.items.addAll(fields);
 
     // Render each field
-    for(var i = 0; i < fields.length; i++) {
-      fields[i].render('x-form-el-' + fields[i].id);
+    for(var f=0;f<fields.length;f++) {
+      fields[f].render('x-form-el-' + fields[f].id);
     }
   }
 
@@ -351,7 +354,7 @@ Ext.extend(Ext.form.ColorField, Ext.form.TriggerField,  {
             });
             if(!this.allowBlank) {
                 this.markInvalid(String.format(this.blankText, value));
-                return false
+                return false;
             }
             return true;
         }
@@ -452,7 +455,7 @@ Ext.extend(Ext.form.ColorField, Ext.form.TriggerField,  {
         if(this.disabled){
             return;
         }
-        if(this.menu == null){
+        if(this.menu === null){
             this.menu = new Ext.menu.ColorMenu();
             this.menu.palette.on('select', this.handleSelect, this );
         }

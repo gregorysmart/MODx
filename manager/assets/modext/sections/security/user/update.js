@@ -137,7 +137,7 @@ MODx.page.UpdateUser = function(config) {
             ,cancel: MODx.action['security/user']
        }
        ,onComplete: function(o,itm,res) {
-            if (Ext.get('password_notify_method_s').dom.checked == true) {
+            if (Ext.get('password_notify_method_s').dom.checked === true) {
                 var self = this;
                 Ext.Msg.hide();
                 Ext.Msg.show({
@@ -145,7 +145,7 @@ MODx.page.UpdateUser = function(config) {
                     ,msg: res.message
                     ,buttons: Ext.Msg.OK
                     ,fn: function(btn) {
-                        if (btn == 'ok') self.redirectStay(o,itm,res);
+                        if (btn == 'ok') { self.redirectStay(o,itm,res); }
                         return false;
                     }
                 });
@@ -181,10 +181,9 @@ MODx.page.UpdateUser = function(config) {
 Ext.extend(MODx.page.UpdateUser,MODx.Component);
 Ext.reg('page-user-update',MODx.page.UpdateUser);
 
-
-function toggleNewPassword() {
+var toggleNewPassword = function() {
 	 if (Ext.get('pwg').dom.style.display=='none') {
-	 	Ext.get('pwg').slideIn('t',{useDisplay:true})
+	 	Ext.get('pwg').slideIn('t',{useDisplay:true});
 	 } else {
 	 	Ext.get('pwg').slideOut('t',{useDisplay:true});
 	 }

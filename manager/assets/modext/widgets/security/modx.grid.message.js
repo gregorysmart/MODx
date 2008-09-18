@@ -183,18 +183,18 @@ Ext.extend(MODx.window.CreateMessage,MODx.Window,{
     ,initRecipient: function() {
         for (var i=1;i<this.tps.length;i++) {
             var f = this.fp.getForm().findField('mc-recipient-'+this.tps[i]);
-            if (f) this.hideField(f);
+            if (f) { this.hideField(f); }
         }
     }
     
     ,showRecipient: function(cb,rec,i) {
-        for (var i=0;i<this.tps.length;i++) {
-            var f = this.fp.getForm().findField('mc-recipient-'+this.tps[i]);
-            if (f) this.hideField(f);
+        for (var x=0;x<this.tps.length;x++) {
+            var f = this.fp.getForm().findField('mc-recipient-'+this.tps[x]);
+            if (f) { this.hideField(f); }
         }
         var type = rec.data.type;
         var fd = this.fp.getForm().findField('mc-recipient-'+type);
-        if (fd) this.showField(fd);
+        if (fd) { this.showField(fd); }
     }
 });
 Ext.reg('window-message-create',MODx.window.CreateMessage);

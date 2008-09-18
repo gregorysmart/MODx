@@ -216,9 +216,9 @@ MODx.panel.Static = function(config) {
 };
 Ext.extend(MODx.panel.Static,MODx.FormPanel,{
     setup: function() {
-        if (this.config.resource == '' || this.config.resource == 0) {
+        if (this.config.resource === '' || this.config.resource === 0) {
             this.fireEvent('ready');
-            return;
+            return false;
         }
         Ext.Ajax.request({
             url: MODx.config.connectors_url+'resource/document.php'
@@ -231,18 +231,18 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
             ,success: function(r) {
                 r = Ext.decode(r.responseText);
                 if (r.success) {
-                    if (r.object.pub_date == '0') r.object.pub_date = '';
-                    if (r.object.unpub_date == '0') r.object.unpub_date = '';
+                    if (r.object.pub_date == '0') { r.object.pub_date = ''; }
+                    if (r.object.unpub_date == '0') { r.object.unpub_date = ''; }
                     this.getForm().setValues(r.object);
                     this.fireEvent('ready');
-                } else MODx.form.Handler.errorJSON(r);
+                } else { MODx.form.Handler.errorJSON(r); }
             }
-        })
+        });
     }
     
     ,templateWarning: function() {
         var t = Ext.getCmp('tpl');
-        if (!t) return;
+        if (!t) { return false; }
         // if selection isn't the current value (originalValue), then show dialog
         if(t.getValue() != t.originalValue) {
             Ext.Msg.confirm(_('tmplvar_change_template'), _('tmplvar_change_template_msg'), function(e) {

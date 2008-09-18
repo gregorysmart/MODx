@@ -32,7 +32,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 	 * @param {Ext.tree.TreeNode} node The selected TreeNode.
 	 * @param {Ext.EventObject} e The event object.
 	 */
-	,create: function(node,e) {
+	,create: function(n,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); 
         id = id[1] == 'context' ? 0 : id[2];
@@ -70,7 +70,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 	 * @param {Ext.tree.TreeNode} node The selected TreeNode.
 	 * @param {Ext.EventObject} e The event object.
 	 */
-	,update: function(node,e) {
+	,update: function(n,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[2];
 		
@@ -109,7 +109,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 	 * @param {Ext.tree.TreeNode} node The selected TreeNode.
 	 * @param {Ext.EventObject} e The event object.
 	 */
-	,remove: function(node,e) {
+	,remove: function(n,e) {
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[2];
 		

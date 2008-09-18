@@ -31,7 +31,7 @@ Ext.extend(MODx.Component,Ext.Component,{
      * @access protected
      */
 	,_loadForm: function() {
-		if (!this.config.form) return false;
+		if (!this.config.form) { return false; }
         this.form = new Ext.form.BasicForm(Ext.get(this.config.form),{ errorReader : MODx.util.JSONReader });
         
         if (this.config.fields) {
@@ -53,25 +53,28 @@ Ext.extend(MODx.Component,Ext.Component,{
      * @access protected
      */
 	,_loadActionButtons: function() {
-		if (!this.config.buttons) return false;
-		this.ab = new MODx.toolbar.ActionButtons({
-            form: this.form || null
+		if (!this.config.buttons) { return false; }
+		this.ab = MODx.load({
+            xtype: 'modx-actionbuttons'
+            ,form: this.form || null
             ,formpanel: this.config.formpanel || null
             ,actions: this.config.actions || null
             ,id: this.config.id || null 
         });
         
-        if (!this.config.buttons) this.config.buttons = [];        
+        if (!this.config.buttons) {
+            this.config.buttons = [];
+        }        
         var l = this.config.buttons.length;
         for (var i=0; i<l; i++) {
         	var b = this.config.buttons[i];
         	if (b.refresh) {
-        		b.onComplete = this.ab.refreshTreeNode.createDelegate(this,[b.refresh.tree,b.refresh.node,b.refresh.self || false])
+        		b.onComplete = this.ab.refreshTreeNode.createDelegate(this,[b.refresh.tree,b.refresh.node,b.refresh.self || false]);
         	}
         	this.ab.create(b);
         }
         
-        if (this.config.loadStay) this.ab.loadStay();
+        if (this.config.loadStay) { this.ab.loadStay(); }
 	}
 	
     /**
@@ -80,7 +83,7 @@ Ext.extend(MODx.Component,Ext.Component,{
      * @access protected
      */
 	,_loadTabs: function() {
-		if (!this.config.tabs) return false;
+		if (!this.config.tabs) { return false; }
         MODx.load({
             xtype: 'modx-tabs'
             ,renderTo: this.config.tabs_div || 'tabs_div'
@@ -94,7 +97,7 @@ Ext.extend(MODx.Component,Ext.Component,{
      * @access protected
      */
     ,_loadComponents: function() {
-        if (!this.config.components) return false;
+        if (!this.config.components) { return false; }
         var l = this.config.components.length;
         for (var i=0;i<l;i++) {
             Ext.ComponentMgr.create(this.config.components[i]);

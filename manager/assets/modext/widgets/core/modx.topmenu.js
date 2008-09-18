@@ -45,7 +45,7 @@ Ext.extend(MODx.toolbar.TopMenu,Ext.Toolbar,{
 		for (var i=0; i<data.length; i++) {
 			var mi = data[i];
             var t = _(mi.text);
-            if (t == undefined || t == '') t = mi.text;
+            if (t === undefined || t === '') { t = mi.text; }
 			this.addMenu({
 				id: 'mi_'+mi.id
 				,icon: MODx.config.template_url+mi.icon
@@ -55,18 +55,19 @@ Ext.extend(MODx.toolbar.TopMenu,Ext.Toolbar,{
 			if (mi.children.length > 0) {
 				for (var j=0; j<mi.children.length; j++) {
 					var msi = mi.children[j];
+                    var msio;
 					if (msi.text == '-') {
-						var msio = '-';
+						msio = '-';
 					} else {
-                        var t = _(msi.text);
-                        if (t == undefined || t == '') {
-                            t = msi.text;
+                        var tx = _(msi.text);
+                        if (tx === undefined || tx === '') {
+                            tx = msi.text;
                         }
-						var msio = {
-							text: t
-						};
-						if (msi.icon != '') msio.icon = MODx.config.template_url+msi.icon;
-						if (msi.handler != '') {
+						msio = { text: tx };
+						if (msi.icon !== '') {
+                            msio.icon = MODx.config.template_url+msi.icon;
+                        }
+						if (msi.handler !== '') {
 							msio.handler = new Function('itm','e',''+msi.handler+'; return false;');
 							msio.href = 'javascript:;';
 						} else {

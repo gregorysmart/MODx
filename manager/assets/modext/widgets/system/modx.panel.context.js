@@ -77,9 +77,9 @@ MODx.panel.Context = function(config) {
 };
 Ext.extend(MODx.panel.Context,MODx.FormPanel,{
     setup: function() {
-        if (this.config.context == '' || this.config.context == 0) {
+        if (this.config.context === '' || this.config.context === 0) {
             this.fireEvent('ready');
-            return;
+            return false;
         }
         MODx.Ajax.request({
             url: this.config.url
@@ -91,11 +91,11 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
             	'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
                     var el = Ext.getCmp('context-name');
-                    if (el) el.getEl().update('<h2>'+_('context')+': '+r.object.key+'</h2>');
+                    if (el) { el.getEl().update('<h2>'+_('context')+': '+r.object.key+'</h2>'); }
                     this.fireEvent('ready');
             	},scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-context',MODx.panel.Context);

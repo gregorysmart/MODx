@@ -25,7 +25,7 @@ MODx.page.Workspace = function(config) {
             xtype: 'grid-provisioner'
             ,el: 'provisioners_grid'
         }]
-    })
+    });
     MODx.page.Workspace.superclass.constructor.call(this,config);
     Ext.Ajax.timeout = 0;
 };

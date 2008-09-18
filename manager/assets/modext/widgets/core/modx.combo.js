@@ -53,14 +53,14 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
      * @param {boolean} b True to bypass check
 	 */
 	,setValue: function(v,b) {
-        if (this.isLoaded || b == true || this.mode == 'local') {
+        if (this.isLoaded || b === true || this.mode == 'local') {
             MODx.combo.ComboBox.superclass.setValue.call(this,v);
         } else {
             this.store.load({
                 params: this.baseParams
                 ,callback: function(r,o,s) {
                     this.isLoaded = true;
-                    if (s) MODx.combo.ComboBox.superclass.setValue.call(this,v);
+                    if (s) { MODx.combo.ComboBox.superclass.setValue.call(this,v); }
                     this.collapse();
                 }
                 ,scope: this
@@ -78,17 +78,18 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
 MODx.combo.Renderer = function(combo) {
     var loaded = false;
     return (function(v) {
-        if (!combo.store || !combo.store.proxy) return v;
+        if (!combo.store || !combo.store.proxy) { return v; }
+        var idx,rec;
         if (!loaded) { 
            combo.store.load();
            loaded = true;
-           var idx = combo.store.find(combo.valueField,v);
-           var rec = combo.store.getAt(idx);
-           return (rec == null ? v : rec.get(combo.displayField));
+           idx = combo.store.find(combo.valueField,v);
+           rec = combo.store.getAt(idx);
+           return (rec === undefined || rec === null ? v : rec.get(combo.displayField));
         } else {
-            var idx = combo.store.find(combo.valueField,v);
-            var rec = combo.store.getAt(idx);
-            return (rec == null ? v : rec.get(combo.displayField));
+           idx = combo.store.find(combo.valueField,v);
+           rec = combo.store.getAt(idx);
+           return (rec === undefined || rec === null ? v : rec.get(combo.displayField));
         }
     });
 };

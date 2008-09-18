@@ -108,20 +108,18 @@ MODx.panel.UpdateProfile = function(config) {
 };
 Ext.extend(MODx.panel.UpdateProfile,MODx.FormPanel,{
     setup: function() {
-        Ext.Ajax.request({
+        MODx.Ajax.request({
             url: MODx.config.connectors_url+'security/user.php'
             ,params: {
                 action: 'get'
                 ,id: this.config.user
             }
-            ,scope: this
-            ,success: function(r) {
-                r = Ext.decode(r.responseText);
-                if (r.success) {
+            ,listeners: {
+                'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
-                } else MODx.form.Handler.errorJSON(r);
+                },scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-profile-update',MODx.panel.UpdateProfile);

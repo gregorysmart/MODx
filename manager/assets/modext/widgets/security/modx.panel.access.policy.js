@@ -69,10 +69,10 @@ MODx.panel.AccessPolicy = function(config) {
 };
 Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
     setup: function() {
-        if (this.config.policy == '' || this.config.policy == 0) {
+        if (this.config.policy === '' || this.config.policy === 0) {
             this.fireEvent('ready');
-            return;
-        };
+            return false;
+        }
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -92,7 +92,7 @@ Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
                     this.fireEvent('ready');
             	},scope:this}
             }
-        })
+        });
     }
 });
 Ext.reg('panel-access-policy',MODx.panel.AccessPolicy);
@@ -203,7 +203,7 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
             text: _('policy_property_remove')
             ,scope: this
             ,handler: this.remove
-        })
+        });
         
         this.menu.show(e.target);
     }

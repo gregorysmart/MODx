@@ -146,10 +146,10 @@ MODx.panel.TV = function(config) {
 };
 Ext.extend(MODx.panel.TV,MODx.FormPanel,{
     setup: function() {
-        if (this.config.tv == '' || this.config.tv == 0) {            
+        if (this.config.tv === '' || this.config.tv === 0) {
             this.fireEvent('ready');
-            return;
-        };
+            return false;
+        }
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
@@ -158,7 +158,7 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
             }
             ,listeners: {
                 'success': {fn:function(r) {
-                    if (r.object.category == '0') r.object.category = null;
+                    if (r.object.category == '0') { r.object.category = null; }
                     this.getForm().setValues(r.object);
                     Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
                     

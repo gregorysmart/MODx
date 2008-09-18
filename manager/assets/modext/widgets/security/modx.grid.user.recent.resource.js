@@ -50,7 +50,7 @@ Ext.extend(MODx.grid.RecentlyEditedResourcesByUser,MODx.grid.Grid,{
             ,dataIndex: 'deleted'
             ,width: 120
             ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
-        }]
+        }];
     }
     
     ,preview: function() {

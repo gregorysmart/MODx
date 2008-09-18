@@ -51,7 +51,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 	 * Abstract loader for FormPanel creation
 	 */
 	_loadForm: function() {
-		if (this.checkIfLoaded(this.config.record || null)) return false;		
+		if (this.checkIfLoaded(this.config.record || null)) { return false; }		
 		
         var r = this.config.record;
         // set values here, since setValue after render seems to be broken
@@ -145,7 +145,7 @@ Ext.extend(MODx.Window,Ext.Window,{
      * @param {Object} r An object of values to set.
      */
     ,setValues: function(r) {
-        if (r == null) return false;
+        if (r === null) { return false; }
         this.fp.getForm().setValues(r);
     }
     /**
@@ -156,7 +156,7 @@ Ext.extend(MODx.Window,Ext.Window,{
         f.disable();
         f.hide();
         var d = f.getEl().up('.x-form-item');
-        if (d) d.setDisplayed(false);
+        if (d) { d.setDisplayed(false); }
     }
     /**
      * Shows a field in the form.
@@ -166,7 +166,7 @@ Ext.extend(MODx.Window,Ext.Window,{
         f.enable();
         f.show();
         var d = f.getEl().up('.x-form-item');
-        if (d) d.setDisplayed(true);
+        if (d) { d.setDisplayed(true); }
     }
     
     /**

@@ -126,7 +126,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
                         ,type: this.config.type
                         ,target: this.combos.rg.getValue()
                         ,principal: this.combos.ug.getValue()
-                    }
+                    };
                     this.getStore().load();
                 },scope:this}
             }
@@ -140,7 +140,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
                         ,type: this.config.type
                         ,target: this.combos.ctx.getValue()
                         ,principal: this.combos.ug.getValue()
-                    }
+                    };
                     this.getStore().load();
                 },scope:this}
             }
@@ -193,7 +193,7 @@ Ext.extend(MODx.window.AccessContext,MODx.Window,{
     combos: {}
 	
     ,_loadForm: function() {
-        if (this.checkIfLoaded(this.config.record)) return false;
+        if (this.checkIfLoaded(this.config.record)) { return false; }
         if (this.config.id) {
             MODx.Ajax.request({
                 url: MODx.config.connectors_url+'security/access/index.php'
@@ -220,7 +220,7 @@ Ext.extend(MODx.window.AccessContext,MODx.Window,{
                 this.config.baseParams = {
                     action: 'updateAcl',
                     type: this.config.type
-                }
+                };
             }
         }
         this.config.values = data;		

@@ -38,7 +38,7 @@ Ext.EventManager = function(){
         if(ename == "mousedown" && el == document){ // fix stopped mousedowns on the document
             Ext.EventManager.stoppedMouseDownEvent.addListener(wrap);
         }
-    }
+    };
 
     var removeListener = function(el, ename, fn, scope){
         el = Ext.getDom(el);
@@ -63,7 +63,7 @@ Ext.EventManager = function(){
         if(ename == "mousedown" && el == document && wrap){ // fix stopped mousedowns on the document
             Ext.EventManager.stoppedMouseDownEvent.removeListener(wrap);
         }
-    }
+    };
 
     var removeAll = function(el){
         el = Ext.getDom(el);
@@ -81,7 +81,7 @@ Ext.EventManager = function(){
             }
             delete elHash[id];
         }
-    }
+    };
 
     var fireDocReady = function(){
         if(!docReadyState){

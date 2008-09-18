@@ -94,9 +94,9 @@ MODx.panel.Template = function(config) {
 };
 Ext.extend(MODx.panel.Template,MODx.FormPanel,{
     setup: function() {
-        if (this.config.template == '' || this.config.template == 0) {            
+        if (this.config.template === '' || this.config.template === 0) {            
             this.fireEvent('ready');
-            return;
+            return false;
         }
         MODx.Ajax.request({
             url: this.config.url
@@ -106,7 +106,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
             }
             ,listeners: {
                 'success': {fn:function(r) {
-                    if (r.object.category == '0') r.object.category = null;
+                    if (r.object.category == '0') { r.object.category = null; }
                     this.getForm().setValues(r.object);
                     Ext.getCmp('template-name').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
                     this.fireEvent('ready',r.object);

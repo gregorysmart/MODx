@@ -98,7 +98,7 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
             ,name: 'date_end'
             ,allowBlank: true
             ,listeners: lsr
-        }]
+        }];
     }
     /**
      * Filters the grid via the panel fields

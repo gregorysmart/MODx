@@ -26,7 +26,7 @@ MODx.grid.LocalGrid = function(config) {
             if (itm.handler && typeof(itm.handler) == 'object' && itm.handler.xtype) {
                 itm.handler = this.loadWindow.createDelegate(this,[itm.handler],true);
             }
-            if (!itm.scope) itm.scope = this;
+            if (!itm.scope) { itm.scope = this; }
         }
     }
     Ext.applyIf(config,{
@@ -112,14 +112,15 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
             if (options == '-') {
                 this.menu.add('-');
                 continue;
-            };
+            }
+            var h = Ext.emptyFn;
             if (options.handler) {
-                var h = eval(options.handler);
+                h = eval(options.handler);
                 if (h && typeof(h) == 'object' && h.xtype) {
                     h = this.loadWindow.createDelegate(this,[h],true);
                 }
             } else {
-                var h = function(itm,e) {
+                h = function(itm,e) {
                     var o = itm.options;
                     var id = this.menu.record.id;
                     var w = Ext.get('modx_content');
@@ -128,20 +129,20 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
                             if (e == 'yes') {
                                 var a = Ext.urlEncode(o.params || {action: o.action});
                                 var s = 'index.php?id='+id+'&'+a;
-                                if (w == null) {
+                                if (w === null) {
                                     location.href = s;
-                                } else w.dom.src = s
+                                } else { w.dom.src = s; }
                             }
                         },this);
                     } else {
                         var a = Ext.urlEncode(o.params || {action: o.action});
                         var s = 'index.php?id='+id+'&'+a;
-                        if (w == null) {
+                        if (w === null) {
                             location.href = s;
-                        } else w.dom.src = s;
+                        } else { w.dom.src = s; }
                     }
                 };
-            };
+            }
             this.menu.add({
                 id: options.id || Ext.id()
                 ,text: options.text

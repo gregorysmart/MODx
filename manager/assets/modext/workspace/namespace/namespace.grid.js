@@ -52,7 +52,7 @@ MODx.grid.Namespace = function(config) {
 };
 Ext.extend(MODx.grid.Namespace,MODx.grid.Grid,{
     filter: function(cb,nv,ov,name) {
-        if (!name) return false;
+        if (!name) { return false; }
         this.store.baseParams[name] = nv;
         this.refresh();
     }

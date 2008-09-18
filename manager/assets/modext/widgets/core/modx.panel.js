@@ -39,7 +39,7 @@ MODx.FormPanel = function(config) {
         ,errorReader: MODx.util.JSONReader
         ,checkDirty: true
     });
-    if (config.items) this.addChangeEvent(config.items);
+    if (config.items) { this.addChangeEvent(config.items); }
     
     MODx.FormPanel.superclass.constructor.call(this,config);    
     this.config = config;
@@ -64,7 +64,7 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
      */
     ,submit: function(o) {
         var fm = this.getForm();
-        if (this.config.checkDirty && this.isDirty() == false) return false;
+        if (this.config.checkDirty && this.isDirty() === false) { return false; }
         if (fm.isValid()) {
         	this.fireEvent('beforeSubmit',{
         	   form: fm
@@ -102,7 +102,7 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
     }
     
     ,addChangeEvent: function(items) {
-    	if (!items) return;
+    	if (!items) { return false; }
     	if (typeof(items) == 'object' && items.items) {
     		items = items.items;
     	}
@@ -112,7 +112,7 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
             if (cmp.items) {
                 this.addChangeEvent(cmp.items);
             } else if (cmp.xtype) {
-                if (!cmp.listeners) cmp.listeners = {};
+                if (!cmp.listeners) { cmp.listeners = {}; }
                 var ctype = 'change';
                 switch (cmp.xtype) {
                 	case 'checkbox':
@@ -120,13 +120,13 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
                 	   ctype = 'check';
                 	   break;
                 }
-                cmp.listeners[ctype] = {fn:this.fieldChangeEvent,scope:this}
+                cmp.listeners[ctype] = {fn:this.fieldChangeEvent,scope:this};
             }
         }
     }
     
     ,fieldChangeEvent: function(fld,nv,ov) {
-        if (!this.isReady) return false;
+        if (!this.isReady) { return false; }
         this.fireEvent('fieldChange',{
             field: fld
             ,nv: nv

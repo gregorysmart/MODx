@@ -63,12 +63,12 @@ Ext.extend(MODx.Console,Ext.Window,{
     
     ,init: function() {
        Ext.Msg.hide();
-       if (MODx.util.LoadingBox) MODx.util.LoadingBox.disable();
+       if (MODx.util.LoadingBox) { MODx.util.LoadingBox.disable(); }
        Ext.get('console-body').update('');
-       if (this.running != true) {
+       if (this.running !== true) {
            this.mgr = new Ext.Updater('console-body');
        }
-       this.mgr.startAutoRefresh(.5,this.config.url,this.config.baseParams || {},this.renderMsg,true);
+       this.mgr.startAutoRefresh('.5',this.config.url,this.config.baseParams || {},this.renderMsg,true);
        this.running = true;
     }
     
@@ -94,7 +94,7 @@ Ext.extend(MODx.Console,Ext.Window,{
     
     ,shutdown: function() {
         this.mgr.stopAutoRefresh();
-        if (MODx.util.LoadingBox) MODx.util.LoadingBox.enable();
+        if (MODx.util.LoadingBox) { MODx.util.LoadingBox.enable(); }
     	MODx.Ajax.request({
     	    url: this.config.url
     	    ,params: {

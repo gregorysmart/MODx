@@ -41,7 +41,7 @@ Ext.SwitchButton = Ext.extend(Ext.Component, {
 			var cell = row.appendChild(document.createElement('td'));
 			cell.id = this.id + '-rbi-' + i;
 			
-			var cls = i == 0 ? 'x-rbtn-first' : (i == last ? 'x-rbtn-last' : 'x-rbtn-item');
+			var cls = i === 0 ? 'x-rbtn-first' : (i == last ? 'x-rbtn-last' : 'x-rbtn-item');
 			item.baseCls = cls;
 			
 			if(this.activeItem == item){

@@ -25,7 +25,7 @@ MODx.page.Modules = function(config) {
             xtype: 'grid-module'
             ,renderTo: 'module_grid'
         }]
-    })
+    });
 	MODx.page.Modules.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.Modules,MODx.Component);

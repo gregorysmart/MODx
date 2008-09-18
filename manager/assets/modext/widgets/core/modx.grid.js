@@ -65,11 +65,11 @@ MODx.grid.Grid = function(config) {
             if (itm.handler && typeof(itm.handler) == 'object' && itm.handler.xtype) {
                 itm.handler = this.loadWindow.createDelegate(this,[itm.handler],true);
             }
-            if (!itm.scope) itm.scope = this;
+            if (!itm.scope) { itm.scope = this; }
         }
     }
 	MODx.grid.Grid.superclass.constructor.call(this,config);
-	if (!config.preventRender) this.render();
+	if (!config.preventRender) { this.render(); }
 	
 	if (config.autosave) {
 		this.on('afteredit',this.saveRecord,this);
@@ -325,14 +325,15 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
             if (options == '-') {
                 this.menu.add('-');
                 continue;
-            };
+            }
+            var h = Ext.emptyFn;
             if (options.handler) {
-                var h = eval(options.handler);
+                h = eval(options.handler);
                 if (h && typeof(h) == 'object' && h.xtype) {
                     h = this.loadWindow.createDelegate(this,[h],true);
                 }
             } else {
-                var h = function(itm,e) {
+                h = function(itm,e) {
                     var o = itm.options;
                     var id = this.menu.record.id;
                     var w = Ext.get('modx_content');
@@ -341,20 +342,20 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
                             if (e == 'yes') {
                                 var a = Ext.urlEncode(o.params || {action: o.action});
                                 var s = 'index.php?id='+id+'&'+a;
-                                if (w == null) {
+                                if (w === null) {
                                     location.href = s;
-                                } else w.dom.src = s
+                                } else { w.dom.src = s; }
                             }
                         },this);
                     } else {
                         var a = Ext.urlEncode(o.params || {action: o.action});
                         var s = 'index.php?id='+id+'&'+a;
-                        if (w == null) {
+                        if (w === null) {
                             location.href = s;
-                        } else w.dom.src = s;
+                        } else { w.dom.src = s; }
                     }
                 };
-            };
+            }
             this.menu.add({
                 id: options.id || Ext.id()
                 ,text: options.text
@@ -534,7 +535,7 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
 
     renderer : function(v, p, record){
         p.cellAttr = 'rowspan="2"';
-        if (record.data.description != null && record.data.description == '') return '';
+        if (record.data.description !== null && record.data.description === '') { return ''; }
         return '<div class="x-grid3-row-expander">&#160;</div>';
     },
 

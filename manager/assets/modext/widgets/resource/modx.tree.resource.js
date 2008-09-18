@@ -33,8 +33,8 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 	
 	,_initExpand: function() {
 		var treeState = Ext.state.Manager.get(this.treestate_id);
-		if (treeState == undefined) {
-			if (this.root) this.root.expand();
+		if (treeState === undefined) {
+			if (this.root) { this.root.expand(); }
 			var wn = this.getNodeById('web_0');
 			if (wn && this.config.expandFirst) {
 				wn.select();
@@ -153,7 +153,7 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 	}
 	
 	,showFilter: function(itm,e) {
-		if (this._filterVisible) return false;
+		if (this._filterVisible) { return false; }
 		
 		var t = Ext.get('modx_doctree_filter');
 		var fbd = t.createChild({tag: 'div'});
@@ -212,20 +212,15 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
         var dropNode = e.dropNode;
         var targetParent = e.target;
 
-        if (targetParent.findChild('id',dropNode.attributes.id) != null) return false;        
+        if (targetParent.findChild('id',dropNode.attributes.id) !== null) { return false; }        
         var ap = true;
         if (targetParent.attributes.type == 'context' && e.point != 'append') {
         	ap = false;
         }
         
-        return dropNode.attributes.text != 'root' && dropNode.attributes.text != '' 
-            && targetParent.attributes.text != 'root' && targetParent.attributes.text != ''
+        return dropNode.attributes.text != 'root' && dropNode.attributes.text !== '' 
+            && targetParent.attributes.text != 'root' && targetParent.attributes.text !== ''
             && ap;
     }
-        
-    ,isValidDrag: function(e, n) {
-       
-    }
-    
 });
 Ext.reg('tree-document',MODx.tree.Document);

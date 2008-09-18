@@ -215,11 +215,12 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
      */
     ,renderDynField: function(v,md,rec,ri,ci,s,g) {
         var r = s.getAt(ri).data;
+        var f;
         if (r.xtype == 'combo-boolean') {
-            var f = MODx.grid.Grid.prototype.rendYesNo;
+            f = MODx.grid.Grid.prototype.rendYesNo;
             return f(v == 1 ? true : false,md);
         } else if (r.xtype === 'datefield') {
-            var f = Ext.util.Format.dateRenderer('Y-m-d');
+            f = Ext.util.Format.dateRenderer('Y-m-d');
             return f(v);
         } else if (r.xtype.substr(0,5) == 'combo') {
             var cm = g.getColumnModel();
@@ -229,7 +230,7 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
                 ed = new Ext.grid.GridEditor(o);
                 cm.setEditor(ci,ed);
             }
-            var f = MODx.combo.Renderer(ed.field);
+            f = MODx.combo.Renderer(ed.field);
             return f(v);
         }
         return v;
