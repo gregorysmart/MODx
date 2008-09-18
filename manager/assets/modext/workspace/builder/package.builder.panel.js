@@ -134,7 +134,9 @@ MODx.panel.PackageXML = function(config) {
     });
     MODx.panel.PackageXML.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.PackageXML,MODx.panel.WizardPanel);
+Ext.extend(MODx.panel.PackageXML,MODx.panel.WizardPanel,{
+    console: null
+});
 Ext.reg('panel-pb-xml',MODx.panel.PackageXML);
 
 
@@ -342,5 +344,7 @@ MODx.panel.BuildPackage = function(config) {
     });
     MODx.panel.BuildPackage.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.BuildPackage,MODx.panel.WizardPanel);
+Ext.extend(MODx.panel.BuildPackage,MODx.panel.WizardPanel,{
+    console: null
+});
 Ext.reg('panel-pb-build',MODx.panel.BuildPackage);

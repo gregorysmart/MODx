@@ -45,7 +45,9 @@ MODx.grid.Package = function(config) {
     MODx.grid.Package.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
-    update: function() {
+    console: null
+    
+    ,update: function() {
     	Ext.Msg.alert(_('information'), 'This feature is not yet implemented.');
     }
     
