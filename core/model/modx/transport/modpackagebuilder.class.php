@@ -99,7 +99,7 @@ class modPackageBuilder {
         $s['name']= $name;
         $s['version']= $version;
         if (!empty($release)) $s['release']= $release;
-		$this->signature = implode('-',$s);
+		$this->signature = $s['name'].'-'.$s['version'].'-'.$s['release'];
 		$this->filename = $this->signature . '.transport.zip';
 
 
