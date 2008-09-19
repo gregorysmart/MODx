@@ -1,9 +1,13 @@
 <div id="panel-resource"></div>
 
 {include file='resource/_javascript.tpl'}
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.grid.resource.security.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.tv.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/core/modx.view.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/core/modx.browser.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/system/modx.tree.directory.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/element/modx.panel.tv.renders.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/resource/modx.grid.resource.security.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/resource/modx.panel.resource.tv.js"></script>
+<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/resource/modx.panel.resource.js"></script>
 
 {modblock name='ab'}{/modblock}
 {$onDocFormPrerender}

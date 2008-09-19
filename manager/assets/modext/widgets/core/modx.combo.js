@@ -578,3 +578,52 @@ MODx.combo.Namespace = function(config) {
 };
 Ext.extend(MODx.combo.Namespace,MODx.combo.ComboBox);
 Ext.reg('combo-namespace',MODx.combo.Namespace);
+
+
+
+/**
+ * Launches MODx.Browser in a nice, clean way.
+ * 
+ * @class MODx.combo.Browser
+ * @extends Ext.form.TriggerField
+ * @param {Object} config An object of configuration properties
+ * @xtype combo-browser
+ */
+MODx.combo.Browser = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+       width: 300
+       ,triggerAction: 'all'
+       ,browserEl: 'modx-browser'
+    });
+    MODx.combo.Browser.superclass.constructor.call(this,config);
+    this.config = config;
+};
+Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
+    browser: null
+    
+    ,onTriggerClick : function(){
+        if (this.disabled){
+            return false;
+        }
+        
+        if (this.browser === null) {
+            this.browser = MODx.load({
+                xtype: 'modx-browser'
+                ,el: this.config.browserEl
+                ,listeners: {
+                    'select': {fn: function(data) {
+                        this.setValue(data.url);
+                        this.fireEvent('select',data);
+                    },scope:this}
+                }
+            });
+        }
+        this.browser.show(this.config.browserEl);
+    }
+    
+    ,onDestroy: function(){
+        MODx.combo.Catalog.superclass.onDestroy.call(this);
+    }
+});
+Ext.reg('combo-browser',MODx.combo.Browser);

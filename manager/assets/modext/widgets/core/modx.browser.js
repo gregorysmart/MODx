@@ -7,7 +7,7 @@ Ext.namespace('MODx.browser');
  * @extends Ext.Component
  * @constructor
  * @param {Object} config An object of config options.
- * @xtype modx-browser
+ * @xtype cp-browser
  */
 MODx.Browser = function(config) {
     config = config || {};
@@ -20,9 +20,11 @@ MODx.Browser = function(config) {
     
     this.win = new MODx.browser.Window(config);
     this.win.reset();
-    this.win.show(config.el);
 };
-Ext.extend(MODx.Browser,Ext.Component);
+Ext.extend(MODx.Browser,Ext.Component,{
+    show: function(el) { this.win.show(el); }
+    ,hide: function() { this.win.hide(); }
+});
 Ext.reg('modx-browser',MODx.Browser);
 
 /**
@@ -36,11 +38,13 @@ Ext.reg('modx-browser',MODx.Browser);
  */
 MODx.browser.Window = function(config) {
     config = config || {};
-    this.view = new MODx.browser.View({
-        onSelect: {fn: this.onSelect, scope: this}
+    this.view = MODx.load({
+        xtype: 'modx-browser-view'
+        ,onSelect: {fn: this.onSelect, scope: this}
     });
-    this.tree = new MODx.tree.Directory({
-        onUpload: function() { this.view.run(); }
+    this.tree = MODx.load({
+        xtype: 'tree-directory'
+        ,onUpload: function() { this.view.run(); }
         ,scope: this
     });
     this.tree.on('click',function(node,e) {
@@ -53,7 +57,7 @@ MODx.browser.Window = function(config) {
         ,layout: 'border'
         ,minWidth: 500
         ,minHeight: 300
-        ,width: 750
+        ,width: '90%'
         ,height: 500
         ,modal: false
         ,closeAction: 'hide'
@@ -62,13 +66,14 @@ MODx.browser.Window = function(config) {
             id: 'browser-tree'
             ,cls: 'browser-tree'
             ,region: 'west'
-            ,width: 200
+            ,width: 250
             ,items: this.tree
+            ,autoScroll: true
         },{
             cls: 'browser-view'
             ,region: 'center'
             ,autoScroll: true
-            ,width: 500
+            ,width: 450
             ,items: this.view
             ,tbar: this.getToolbar()
         },{
@@ -97,13 +102,16 @@ MODx.browser.Window = function(config) {
     });
     MODx.browser.Window.superclass.constructor.call(this,config);
     this.config = config;
+    this.addEvents({
+        'select': true
+    });
 };
 Ext.extend(MODx.browser.Window,Ext.Window,{
     returnEl: null
     
     ,filter : function(){
         var filter = Ext.getCmp('filter');
-        this.view.store.filter('name', filter.getValue());
+        this.view.store.filter('name', filter.getValue(),true);
         this.view.select(0);
     }
     
@@ -179,6 +187,7 @@ Ext.extend(MODx.browser.Window,Ext.Window,{
             if(selNode && callback){
                 var data = lookup[selNode.id];
                 Ext.callback(callback,scope || this,[data]);
+                this.fireEvent('select',data);
                 if (window.top.opener) {
                     window.top.close();
                     window.top.opener.focus();
@@ -200,7 +209,7 @@ Ext.reg('modx-browser-window',MODx.browser.Window);
  * @extends MODx.DataView
  * @constructor
  * @param {Object} config An object of config options.
- * @xtype modx-browser-view 
+ * @xtype cp-browser-view 
  */
 MODx.browser.View = function(config) {
     config = config || {};
@@ -231,12 +240,11 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
         MODx.msg.confirm({
-            title: _('warning')
-            ,text: _('file_remove_confirm')
+            text: _('file_remove_confirm')
             ,url: MODx.config.connectors_url+'browser/file.php'
             ,params: {
                 action: 'remove'
-                ,file: data.pathname
+                ,file: this.dir+'/'+node.id
             }
             ,listeners: {
             	'success': {fn:this.run,scope:this}
@@ -298,7 +306,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         this.templates.details = new Ext.XTemplate(
             '<div class="details">'
             ,'<tpl for=".">'
-                ,'<img src="{url}" alt="" /><div class="details-info">'
+                ,'<img src="{url}" alt="" width="90" height="90" /><div class="details-info">'
                 ,'<b>'+_('file_name')+':</b>'
                 ,'<span>{name}</span>'
                 ,'<b>'+_('file_size')+':</b>'
