@@ -118,7 +118,13 @@ foreach ($collection as $item) {
         );
     } else {
 
-    	$class = ($item->isfolder ? 'folder' : 'file').($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '').($item->hidemenu == 1 ? ' hidemenu' : '');
+        $class = '';
+        if ($item->class_key == 'modWebLink') {
+            $class = 'weblink';
+        } else {
+            $class = $item->isfolder ? 'folder' : 'file';
+        }
+    	$class .= ($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '').($item->hidemenu == 1 ? ' hidemenu' : '');
 
 		$menu = array(
             array(

@@ -45,6 +45,10 @@ th.x-form-element, td.x-form-element {
 .folder .x-tree-node-icon {
 	background-image:url(../../../assets/ext2/resources/images/default/tree/folder.gif) !important;	
 }
+.weblink .x-tree-node-icon {
+	background-image:url(../images/icons/weblink.gif) !important;	
+}
+
 
 .tree ul, .tree ul li { 
 	list-style: none;
