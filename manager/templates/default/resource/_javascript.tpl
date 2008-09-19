@@ -6,7 +6,7 @@
 function cleanupRTE(editor) {
     if (typeof(tinyMCE) != 'undefined' && editor == 'TinyMCE') {
         tinyMCE.triggerSave(true,true);
-        Ext.get('ta').dom.value = tinyMCE.getContent();
+        Ext.get('ta').dom.value = tinyMCE.activeEditor.getContent();
     }
     return false;
 }
