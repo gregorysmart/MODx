@@ -12,6 +12,9 @@ MODx = function(config) {
     this.initQuickTips();
     this.request = this.getURLParameters();
     this.Ajax = this.load({ xtype: 'modx-ajax' });
+    Ext.override(Ext.form.Field,{
+        defaultAutoCreate: {tag: "input", type: "text", size: "20", autocomplete: "on" }
+    });
 };
 Ext.extend(MODx,Ext.Component,{
     config: {}

@@ -47,8 +47,32 @@ MODx.grid.Package = function(config) {
 Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     console: null
     
-    ,update: function() {
-    	Ext.Msg.alert(_('information'), 'This feature is not yet implemented.');
+    ,update: function(btn,e) {
+    	var r = this.menu.record;
+        var topic = '/workspace/package/update/'+r.signature+'/';
+        this.loadConsole(btn,topic);
+        
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'update'
+                ,signature: r.signature
+                ,register: 'mgr'
+                ,topic: topic
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    this.console.complete();
+                    Ext.Msg.hide();
+                    this.refresh();
+                },scope:this}
+                ,'failure': {fn:function(r) {
+                	this.console.complete();
+                	Ext.Msg.hide();
+                	return false;
+                },scope:this}
+            }
+        });
     }
     
     ,_rins: function(d,c) {
