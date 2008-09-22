@@ -84,6 +84,24 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+// modx wtf provisioner
+$collection = array ();
+$collection['1'] = $xpdo->newObject('transport.modTransportProvider');
+$collection['1']->fromArray(array (
+    'id' => 1,
+    'name' => 'MODx Web Transport Facility',
+    'description' => 'The official MODx transport facility for 3rd party components.',
+    'service_url' => 'http://wtf.modxcms.com/repos/addons.js',
+), '', true, true);
+$attributes = array (
+    XPDO_TRANSPORT_PRESERVE_KEYS => false,
+    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+);
+foreach ($collection as $c) {
+    $package->put($c, $attributes);
+}
+unset ($collection, $c, $attributes);
+
 
 // modAction
 $collection= array();
