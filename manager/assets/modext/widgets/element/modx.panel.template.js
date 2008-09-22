@@ -84,6 +84,9 @@ MODx.panel.Template = function(config) {
                ,preventRender: true
                ,template: config.template
                ,bodyStyle: ''
+                ,listeners: {
+                    'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
+                }
             }]
         }
         ,listeners: {

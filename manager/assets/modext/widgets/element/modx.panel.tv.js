@@ -131,11 +131,17 @@ MODx.panel.TV = function(config) {
                 ,id: 'grid-tv-templates'
                 ,tv: config.tv
                 ,preventRender: true
+                ,listeners: {
+                    'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
+                }
             },{
                 xtype: 'grid-tv-security'
                 ,id: 'grid-tv-security'
                 ,tv: config.tv
                 ,preventRender: true
+                ,listeners: {
+                    'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
+                }
             }]
         }
         ,listeners: {

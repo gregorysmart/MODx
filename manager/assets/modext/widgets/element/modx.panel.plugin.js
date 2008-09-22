@@ -100,7 +100,10 @@ MODx.panel.Plugin = function(config) {
                     ,id: 'grid-plugin-event'
                     ,preventRender: true
                     ,plugin: config.plugin
-                }]                
+                    ,listeners: {
+                        'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
+                    }
+                }]             
             }]
         }
         ,listeners: {

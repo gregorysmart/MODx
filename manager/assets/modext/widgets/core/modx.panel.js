@@ -114,7 +114,12 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
             } else if (cmp.xtype) {
                 if (!cmp.listeners) { cmp.listeners = {}; }
                 var ctype = 'change';
+                cmp.enableKeyEvents = true;
                 switch (cmp.xtype) {
+                	case 'textfield':
+                	case 'textarea':
+                	   ctype = 'keydown';
+                	   break;
                 	case 'checkbox':
                 	case 'radio':
                 	   ctype = 'check';
