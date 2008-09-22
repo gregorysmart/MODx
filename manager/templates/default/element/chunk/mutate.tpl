@@ -3,3 +3,6 @@
 
 {modblock name='ab'}{/modblock}
 
+<script type="text/javascript">
+var onChunkFormRender = '{$onChunkFormRender}';
+</script>

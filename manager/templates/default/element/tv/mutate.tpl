@@ -6,3 +6,7 @@
 <div id="panel-tv"></div>
 
 {modblock name='ab'}{/modblock}
+
+<script type="text/javascript">
+var onTVFormRender = '{$onTVFormRender}';
+</script>

@@ -72,6 +72,9 @@ MODx.panel.Snippet = function(config) {
                     ,description: _('snippet_lock_msg')
                     ,name: 'locked'
                 },{
+                    html: onSnipFormRender
+                    ,border: false
+                },{
                     html: '<br />'+_('snippet_code')
                 },{
                     xtype: 'textarea'

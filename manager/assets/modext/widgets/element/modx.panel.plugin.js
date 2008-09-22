@@ -73,6 +73,9 @@ MODx.panel.Plugin = function(config) {
                     ,description: _('plugin_lock_msg')
                     ,name: 'locked'
                 },{
+                    html: onPluginFormRender
+                    ,border: false
+                },{
                     html: '<br />'+_('plugin_code')
                 },{
                     xtype: 'textarea'

@@ -3,8 +3,10 @@
 
 {$onTempFormPrerender}
 
-{$onTempFormRender}
-
 <div id="panel-template"></div>
 
 {modblock name='ab'}{/modblock}
+
+<script type="text/javascript">
+var onTempFormRender = '{$onTempFormRender}';
+</script>

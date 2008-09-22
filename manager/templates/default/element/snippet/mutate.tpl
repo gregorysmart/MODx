@@ -10,4 +10,6 @@
 {include file='element/snippet/sections/properties.tpl'}
 </div>
 
-{$onSnipFormRender} 
+<script type="text/javascript">
+var onSnipFormRender = '{$onSnipFormRender}';
+</script>

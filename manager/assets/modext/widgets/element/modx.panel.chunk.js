@@ -61,6 +61,9 @@ MODx.panel.Chunk = function(config) {
                 ,name: 'locked'
                 ,inputValue: true
             },{
+                html: onChunkFormRender
+                ,border: false
+            },{
                 html: '<br />'+_('chunk_code')
                 ,border: false
             },{

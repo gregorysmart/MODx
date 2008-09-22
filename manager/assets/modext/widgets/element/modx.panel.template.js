@@ -70,6 +70,9 @@ MODx.panel.Template = function(config) {
                     ,description: _('template_lock_msg')
                     ,name: 'locked'
                 },{
+                	html: onTempFormRender
+                	,border: false
+                },{
                     html: '<br />'+_('template_code')
                 },{
                     xtype: 'textarea'

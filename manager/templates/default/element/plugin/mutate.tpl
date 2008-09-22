@@ -11,3 +11,7 @@
 <div id="tab_configuration" class="x-hide-display">
 {include file='element/plugin/sections/config.tpl'}
 </div>
+
+<script type="text/javascript">
+var onPluginFormRender = '{$onPluginFormRender}';
+</script>

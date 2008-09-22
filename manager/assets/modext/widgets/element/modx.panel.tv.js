@@ -83,6 +83,9 @@ MODx.panel.TV = function(config) {
                     ,allowNegative: false
                     ,allowBlank: false
                     ,value: 0
+                },{
+                    html: onTVFormRender
+                    ,border: false
                 }]
             },{
                 title: _('rendering_options')
