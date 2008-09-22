@@ -46,13 +46,6 @@ var onManagerLoginFormRender = '{$onManagerLoginFormRender}';
     {$onManagerLoginFormPrerender}
     <br />
     <div id="panel-login"></div>
-<!--
-{if $_config.use_captcha EQ '1'}
-<p class="caption">{$_lang.login_captcha_message}</p>
-<div>{$captcha_image}</div>
-{$captcha_input}
-{/if}
--->
 </div>
 <!-- close #mx_loginbox -->
 
