@@ -5,6 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
+if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['document_group'])) $error->failure($modx->lexicon('document_group_err_not_specified'));
 if (!isset($_POST['document'])) $error->failure($modx->lexicon('document_err_not_specified'));

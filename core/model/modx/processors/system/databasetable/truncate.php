@@ -8,7 +8,7 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_info');
 
 
-if (!($modx->hasPermission('settings') && ($modx->hasPermission('logs')||$modx->hasPermission('bk_manager')))) {
+if (!($modx->hasPermission('database_truncate'))) {
     $modx->error->failure($modx->lexicon('permission_denied'));
 }
 

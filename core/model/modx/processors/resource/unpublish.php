@@ -12,20 +12,11 @@ $user_id = $modx->getLoginUserID();
 $document = $modx->getObject('modResource',$_REQUEST['id']);
 if ($document == null) $error->failure($modx->lexicon('document_not_found'));
 
-//if (!$modx->hasPermission('publish_document')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('publish_document')) $error->failure($modx->lexicon('permission_denied'));
 
 // check permissions on the document
-if (!$document->checkPolicy(array('save'=>1, 'publish'=>1)))
+if (!$document->checkPolicy(array('save'=>1, 'unpublish'=>1)))
     $error->failure($modx->lexicon('permission_denied'));
-
-//include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//$udperms = new udperms();
-//$udperms->user = $user_id;
-//$udperms->document = $_REQUEST['id'];
-//$udperms->role = $_SESSION['mgrRole'];
-//
-//if (!$udperms->checkPermissions())
-//	$error->failure($modx->lexicon('access_permission_denied'));
 
 // update the document
 $document->set('published',0);

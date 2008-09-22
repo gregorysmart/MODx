@@ -19,11 +19,11 @@ $c->sortby('`' . $_REQUEST['sort'] . '`', $_REQUEST['dir']);
 $c->limit($_REQUEST['limit'], $_REQUEST['start']);
 
 $collection = $modx->getCollection('modContext', $c);
-$count = $modx->getCount('modContext');
 $actions = $modx->request->getAllActionIDs();
 
 $list = array();
 foreach ($collection as $key => $object) {
+    if (!$object->checkPolicy('list')) continue;
 	$la = array_merge(
        $object->toArray(),
        array('key_link' => '<a href="index.php?a='.$actions['context/update'].'&key='.$key.'" title="' . $modx->lexicon('click_to_edit_title') . '">' . $key . '</a>')
@@ -45,4 +45,4 @@ foreach ($collection as $key => $object) {
     }
     $list[]= $la;
 }
-$this->outputArray($list,$count);
+$this->outputArray($list);

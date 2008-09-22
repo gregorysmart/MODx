@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
+if (!$modx->hasPermission('change_password')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (isset($_POST['password_reset'])) {
 

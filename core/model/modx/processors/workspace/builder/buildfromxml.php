@@ -6,6 +6,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
+if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 // load the modPackageBuilder class and get an instance
 $modx->log(MODX_LOG_LEVEL_INFO,'Loading package builder.');
 $modx->loadClass('transport.modXMLPackageBuilder','',false, true);

@@ -32,9 +32,6 @@ if ($modx->request->hasFormValues()) {
     $formRestored = true;
 }
 
-// retain form values if template was changed
-// edited to convert pub_date and unpub_date
-// sottwell 02-09-2006
 if ($formRestored == true || isset ($_REQUEST['newtemplate'])) {
 	foreach ($_POST as $key => $val) {
 		$resource->set($key,$val);
@@ -46,7 +43,7 @@ if ($formRestored == true || isset ($_REQUEST['newtemplate'])) {
         $pub_date = strtotime("$m/$d/$Y $H:$M:$S");
         $resource->set('pub_date',$pub_date);
     }
-    if (!empty ($resource->unpub_date) && $resource->pub_date != '') {
+    if (!empty ($resource->unpub_date) && $resource->unpub_date != '') {
         $unpub_date = $resource->unpub_date;
         list ($d, $m, $Y, $H, $M, $S) = sscanf($unpub_date, "%2d-%2d-%4d %2d:%2d:%2d");
         $unpub_date = strtotime("$m/$d/$Y $H:$M:$S");
@@ -65,12 +62,7 @@ $onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array('id' => 0));
 if (is_array($onDocFormPrerender))
     $onDocFormPrerender = implode('',$onDocFormPrerender);
 $modx->smarty->assign('onDocFormPrerender',$onDocFormPrerender);
-/*
-$c = $modx->newQuery('modTemplate');
-$c = $c->sortby('templatename','ASC');
-$templates = $modx->getCollection('modTemplate',$c);
-$modx->smarty->assign('templates',$templates);
-*/
+
 // PARENT DOCUMENT
 if (isset ($_REQUEST['id'])) {
 	if ($_REQUEST['id'] == 0) {

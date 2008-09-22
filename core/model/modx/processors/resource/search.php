@@ -47,14 +47,16 @@ $actions = $modx->request->getAllActionIDs();
 
 $rs = array();
 foreach ($resources as $resource) {
-    $ra = $resource->toArray();
-    $ra['menu'] = array(
-        array(
-            'text' => $modx->lexicon('edit_document'),
-            'params' => array('a' => $actions['resource/update']),
-        ),
-    );
-    $rs[] = $ra;
+    if ($resource->checkPolicy('list')) {
+        $ra = $resource->toArray();
+        $ra['menu'] = array(
+            array(
+                'text' => $modx->lexicon('edit_document'),
+                'params' => array('a' => $actions['resource/update']),
+            ),
+        );
+        $rs[] = $ra;
+    }
 }
 
 $this->outputArray($rs);

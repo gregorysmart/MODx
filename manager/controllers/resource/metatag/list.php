@@ -1,5 +1,5 @@
 <?php
-if (!$modx->hasPermission('manage_metatags')) $error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('manage_metatags')) $modx->error->failure($modx->lexicon('access_denied'));
 
 $metatags = $modx->getCollection('modMetatag');	
 $modx->smarty->assign('metatags',$metatags);

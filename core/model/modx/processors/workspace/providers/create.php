@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
+if (!$modx->hasPermission('providers')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['name']) || $_POST['name'] == '') {
     $modx->error->failure($modx->lexicon('provider_err_ns_name'));
 }

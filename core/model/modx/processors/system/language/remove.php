@@ -6,6 +6,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
+if (!$modx->hasPermission('languages')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['name'])) $modx->error->failure($modx->lexicon('language_err_ns'));
 $language = $modx->getObject('modLexiconLanguage',$_POST['name']);
 if ($language == null) $modx->error->failure($modx->lexicon('language_err_nf'));

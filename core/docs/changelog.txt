@@ -4,6 +4,11 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Introduced additional default policy attributes and policy checks throughout the controllers and processors for more robust access control.
+- [#MODX-349] Added processor and menu item to reload your own access policies without logging out and logging back in.
+- [#MODX-349] Added processor and menu item to flush all user sessions from the database.
+- [#MODX-349] Modified user policies to cache policies by Context; previously policies cached for one context were being applied to other contexts when switching or accessing both from the same browser session.
+- Updated xPDO to revision 246 to fix problem with modLexiconEntry rows being duplicated in upgrades after deleting modLexiconFocus records.
 - Modified Ant build to automatically compress and concatenate js files (SVN users cannot use compress_js option without performing the complete-wc task in build.xml).
 - Updating xPDO to revision 234.
 - Added support for logging to registers through any modError instance when loaded by modRequest::loadErrorHandler().

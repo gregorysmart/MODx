@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
+if (!$modx->hasPermission('change_profile')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $profile = $modx->user->getOne('modUserProfile');
 if ($profile == null) $error->failure($modx->lexicon('user_profile_err_not_found'));

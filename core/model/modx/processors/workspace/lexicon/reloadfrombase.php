@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
+if (!$modx->hasPermission('lexicons')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $modx->lexicon->clearCache();
 $invdirs = array('.','..','.svn','country');
 @ini_set('memory_limit','128M');

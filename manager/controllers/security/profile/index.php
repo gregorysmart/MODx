@@ -5,6 +5,8 @@
  * @package modx
  * @subpackage manager.security.profile
  */
+if (!$modx->hasPermission('change_profile')) $modx->error->failure($modx->lexicon('access_denied'));
+
 $modx->user->profile = $modx->user->getOne('modUserProfile');
 $modx->smarty->assign('user',$modx->user);
 

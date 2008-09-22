@@ -15,6 +15,7 @@ $resource = $modx->getObject('modResource', $_REQUEST['id']);
 if ($resource == null) {
     $modx->error->failure($modx->lexicon('document_not_found'));
 }
+if (!$resource->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $ra = $resource->toArray();
 $ra['pub_date'] = $ra['pub_date'] != '0' ? strftime('%Y-%m-%d',$ra['pub_date']) : '';

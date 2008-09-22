@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
+if (!$modx->hasPermission('menus')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
 $nodes = array();

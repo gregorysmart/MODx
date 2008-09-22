@@ -7,8 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_info');
 
-if (!($modx->hasPermission('settings') && ($modx->hasPermission('logs')||$modx->hasPermission('bk_manager')))) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('database')) {
+    $error->failure($modx->lexicon('permission_denied'));
 }
 
 if ($_POST['t'] == '' || !isset($_POST['t'])) {

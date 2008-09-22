@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
+if (!$modx->hasPermission('messages')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 // validation
 if (!isset($_POST['subject']) || $_POST['subject'] == '') {

@@ -22,10 +22,9 @@ $module = $modx->getObject('modModule',$_REQUEST['id']);
 
 if($module->disabled == 1) processError($modx->lexicon('module_disabled'));
 
-if($_SESSION['mgrRole']!=1) {
-	$module->usergroups = $module->getMany('modModuleUserGroup');
+if ($module->getMany('modModuleUserGroup')) {
 	$memberships= $modx->user->getMany('modUserGroupMember');
-	foreach($module->usergroups as $usergroup) {
+	foreach($module->modModuleUserGroup as $usergroup) {
 		foreach ($memberships as $membership) {
 			if ($usergroup->usergroup == $membership->user_group) $has_access = true;
 		}

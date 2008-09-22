@@ -12,21 +12,18 @@ $newname = isset($_POST['name']) && $_POST['name'] != '' ? $_POST['name'] : '';
 // get user id for createdby column
 $user_id = $modx->getLoginUserID();
 
-//if ($modx->config['use_udperms'] == 1) {
-//	include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//	$udperms = new udperms();
-//	$udperms->user = $user_id;
-//	$udperms->document = $_REQUEST['id'];
-//	$udperms->role = $_SESSION['mgrRole'];
-//
-//	if (!$udperms->checkPermissions()) $error->failure($_lang['access_permission_parent_denied']);
-//}
-
 // get document
 $old_document = $modx->getObject('modResource',$_REQUEST['id']);
 if ($old_document == NULL) $error->failure($_lang['document_not_found']);
 
-if (!$old_document->checkPolicy(array('save'=>1, 'duplicate'=>1)))
+if (!$modx->hasPermission('new_document'))
+    $error->failure($modx->lexicon('permission_denied'));
+if (!$old_document->checkPolicy('copy'))
+    $error->failure($modx->lexicon('permission_denied'));
+
+// get parent
+$parent = $old_document->getOne('Parent');
+if ($parent && !$parent->checkPolicy('add_children'))
     $error->failure($modx->lexicon('permission_denied'));
 
 // get document's children
@@ -49,7 +46,7 @@ function duplicateDocument($document,$newname = '',$duplicate_children = true,$_
 	$new_document->set('alias', null);
 	$new_document->set('parent',$_toplevel == 0 ? $document->parent : $_toplevel); //make sure children get assigned to new parent
 	$new_document->set('createdby',$user_id);
-	$new_document->set('createdon',date('Y-m-d'));
+	$new_document->set('createdon',time());
 	$new_document->set('editedby',0);
 	$new_document->set('editedon',0);
 	$new_document->set('deleted',0);

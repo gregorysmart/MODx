@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
+if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_REQUEST['signature'])) {
     $modx->error->failure($modx->lexicon('package_err_ns'));
 }

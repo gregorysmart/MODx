@@ -6,6 +6,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','lexicon');
 
+if (!$modx->hasPermission('namespaces')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['name']) || $_POST['name'] == '') {
 	$modx->error->failure($modx->lexicon('namespace_err_ns_name'));
 }

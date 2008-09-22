@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
+if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['id']) || $_REQUEST['id'] == '') {
     $modx->error->failure($modx->lexicon('role_err_ns'));

@@ -13,10 +13,11 @@ if (file_exists($delegateView)) {
     }
 }
 
-$resource = $modx->newObject($resourceClass);
+// Set which RTE
+$rte = isset($_REQUEST['which_editor']) ? $_REQUEST['which_editor'] : $modx->config['which_editor'];
+$modx->smarty->assign('which_editor',$rte);
 
-// get document groups for current user
-if ($_SESSION['mgrDocgroups']) $docgrp = implode(',',$_SESSION['mgrDocgroups']);
+$resource = $modx->newObject($resourceClass);
 
 // restore saved form
 $formRestored = false;
@@ -36,7 +37,7 @@ if ($formRestored == true || isset ($_REQUEST['newtemplate'])) {
         $pub_date = strtotime("$m/$d/$Y $H:$M:$S");
         $resource->set('pub_date',$pub_date);
     }
-    if (!empty ($resource->unpub_date) && $resource->pub_date != '') {
+    if (!empty ($resource->unpub_date) && $resource->unpub_date != '') {
         $unpub_date = $resource->unpub_date;
         list ($d, $m, $Y, $H, $M, $S) = sscanf($unpub_date, "%2d-%2d-%4d %2d:%2d:%2d");
         $unpub_date = strtotime("$m/$d/$Y $H:$M:$S");
@@ -46,7 +47,7 @@ if ($formRestored == true || isset ($_REQUEST['newtemplate'])) {
 
 // increase menu index if this is a new document
 if (!isset($modx->config['auto_menuindex']) || $modx->config['auto_menuindex'])
-	$menuindex = $modx->getCount('modResource',array('parent' => intval($_REQUEST['pid'])));
+	$menuindex = $modx->getCount('modResource',array('parent' => intval($_REQUEST['parent'])));
 $resource->set('menuindex',isset($menuindex) ? $menuindex : 0);
 
 
@@ -55,11 +56,6 @@ $onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array('id' => 0));
 if (is_array($onDocFormPrerender))
     $onDocFormPrerender = implode('',$onDocFormPrerender);
 $modx->smarty->assign('onDocFormPrerender',$onDocFormPrerender);
-
-$c = $modx->newQuery('modTemplate');
-$c = $c->sortby('templatename','ASC');
-$templates = $modx->getCollection('modTemplate',$c);
-$modx->smarty->assign('templates',$templates);
 
 // PARENT DOCUMENT
 if (isset ($_REQUEST['id'])) {
@@ -96,76 +92,57 @@ if($modx->hasPermission('edit_doc_metatags')) {
 
 }
 
-$template = $modx->config['default_template'];
-if (isset ($_REQUEST['newtemplate'])) {
-    $template = $_REQUEST['newtemplate'];
+if ($modx->config['use_editor'] == 1) {
+    // replace image path
+    $htmlcontent = $resource->content;
+    if (!empty ($htmlcontent)) {
+        if (substr($modx->config['rb_base_url'], -1) != '/') {
+            $im_base_url = $modx->config['rb_base_url'] . '/';
+        } else {
+            $im_base_url = $modx->config['rb_base_url'];
+        }
+        $elements = parse_url($im_base_url);
+        $image_path = $elements['path'];
+        // make sure image path ends with a /
+        if (substr($image_path, -1) != '/') {
+            $image_path .= '/';
+        }
+        $modx_root = MODX_BASE_PATH;
+        $image_prefix = substr($image_path, strlen($modx_root));
+        if (substr($image_prefix, -1) != '/') {
+            $image_prefix .= '/';
+        }
+        // escape / in path
+        $image_prefix = str_replace('/', '\/', $image_prefix);
+        $newcontent = preg_replace("/(<img[^>]+src=['\"])($image_prefix)([^'\"]+['\"][^>]*>)/", "\${1}$im_base_url\${3}", $resource->content);
+        $htmlcontent = $newcontent;
+    }
+
+	$modx->smarty->assign('htmlcontent',$htmlcontent);
+    // invoke OnRichTextEditorRegister event
+    $text_editors = $modx->invokeEvent('OnRichTextEditorRegister');
+    $modx->smarty->assign('text_editors',$text_editors);
+
+    $replace_richtexteditor = array('ta');
+	$modx->smarty->assign('replace_richtexteditor',$replace_richtexteditor);
 }
 
-// Template Variables
-$categories = $modx->getCollection('modCategory');
-// add in uncategorized
-$emptycat = $modx->newObject('modCategory');
-$emptycat->set('category','uncategorized');
-$emptycat->id = 0;
-$categories[] = $emptycat;
-
-foreach ($categories as $catKey => $category) {
-	$c = new xPDOCriteria($modx,'
-		SELECT
-			DISTINCT tv.*,
-			tv.default_text AS value
-		FROM '.$modx->getTableName('modTemplateVar').' AS tv
-
-			INNER JOIN '.$modx->getTableName('modTemplateVarTemplate').' AS tvtpl
-			ON tvtpl.tmplvarid = tv.id
-			AND tvtpl.templateid = :template
-
-			LEFT JOIN '.$modx->getTableName('modTemplateVarResourceGroup').' AS tva
-			ON tva.tmplvarid = tv.id
-
-		WHERE
-			tv.category = :category
-		AND (
-			1 = :mgrRole
-			OR ISNULL(tva.documentgroup)
-		)
-		ORDER BY tvtpl.rank,tv.rank
-	',array(
-		':mgrRole' => $_SESSION['mgrRole'],
-		':template' => $template,
-		':category' => $category->id,
-	));
-	$tvs = $modx->getCollection('modTemplateVar',$c);
-
-	if (count($tvs) > 0) {
-
-		foreach ($tvs as $tv) {
-			// go through and display all the document variables
-			if ($tv->type == 'richtext' || $tv->type == 'htmlarea') { // htmlarea for backward compatibility
-				if (is_array($replace_richtexteditor))
-					$replace_richtexteditor = array_merge($replace_richtexteditor, array (
-						'tv' . $tv->id
-					));
-				else
-					$replace_richtexteditor = array (
-						'tv' . $tv->id
-					);
-			}
-            $fe = $tv->renderInput($resource->id);
-
-			$tv->set('formElement',$fe);
-		} //loop through all template variables
-	} // end if count($tvs) > 0
-
-	$categories[$catKey]->tvs = $tvs;
-} // end category loop
-$modx->smarty->assign('categories',$categories);
-
+$templateId = 0;
+if (isset ($_REQUEST['newtemplate'])) {
+    $templateId = $_REQUEST['newtemplate'];
+}
+if (!$templateId) {
+    $templateId = $modx->config['default_template'];
+}
+if (!$templateId || (!$template = $modx->getObject('modTemplate', $templateId))) {
+    $templateId = 0;
+}
+$resource->set('template',$templateId);
 
 $groupsarray = array ();
 // set permissions on the document based on the permissions of the parent document
-if (!empty ($_REQUEST['pid'])) {
-    $dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['pid']));
+if (!empty ($_REQUEST['parent'])) {
+    $dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['parent']));
     foreach ($dgds as $dgd)
         $groupsarray[$dgd->id] = $dgd->document_group;
 }
@@ -180,10 +157,11 @@ $c = $c->sortby('name','ASC');
 $docgroups = $modx->getCollection('modResourceGroup',$c);
 foreach ($docgroups as $docgroup) {
     $checked = in_array($docgroup->id,$groupsarray);
-    $docgroup->set('selected',$checked);
+    $docgroup->selected= $checked;
 }
 
 $modx->smarty->assign('docgroups',$docgroups);
+$modx->smarty->assign('hasdocgroups',count($docgroups) > 0);
 
 
 // invoke OnDocFormRender event
@@ -222,5 +200,3 @@ $modx->smarty->assign('contentTypes',$ar_cts);
 $modx->smarty->assign('resource',$resource);
 
 $modx->smarty->display('resource/staticresource/create.tpl');
-
-?>

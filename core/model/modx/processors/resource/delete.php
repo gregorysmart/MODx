@@ -10,17 +10,7 @@ require_once MODX_PROCESSORS_PATH . 'index.php';
 $user_id = $modx->getLoginUserID();
 $deltime = time();
 
-// check permissions on the document
-//include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//$udperms = new udperms();
-//$udperms->user = $user_id;
-//$udperms->document = $_REQUEST['id'];
-//$udperms->role = $_SESSION['mgrRole'];
-
-//if(!$udperms->checkPermissions())
-//	$error->failure($modx->lexicon('access_permission_denied']);
-//
-//if (!$modx->hasPermission('delete_document')) $error->failure($modx->lexicon('permission_denied']);
+if (!$modx->hasPermission('delete_document')) $error->failure($modx->lexicon('permission_denied'));
 
 // get document
 $document = $modx->getObject('modResource', $_REQUEST['id']);
@@ -30,9 +20,9 @@ if ($document == null)
 if (!$document->checkPolicy(array('save'=>1, 'delete'=>1)))
     $error->failure($modx->lexicon('permission_denied'));
 
-if ($site_start == $document->id)
+if ($modx->config['site_start'] == $document->id)
     $error->failure($modx->lexicon('document_err_delete_sitestart'));
-if ($site_unavailable_page == $document->id)
+if ($modx->config['site_unavailable_page'] == $document->id)
     $error->failure($modx->lexicon('document_err_delete_siteunavailable'));
 
 $ar_children = array ();

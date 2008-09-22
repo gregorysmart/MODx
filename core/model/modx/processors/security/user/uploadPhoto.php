@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
+if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $files = array();
 foreach($_FILES as $k => $v) {

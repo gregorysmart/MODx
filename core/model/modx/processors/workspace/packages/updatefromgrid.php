@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
+if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $_DATA = $modx->fromJSON($_POST['data']);
 
 $package = $modx->getObject('transport.modTransportPackage',array(

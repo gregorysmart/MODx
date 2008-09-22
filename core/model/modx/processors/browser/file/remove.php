@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
+if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['file']) || $_POST['file'] == '')
 	$error->failure($modx->lexicon('file_err_ns'));
 

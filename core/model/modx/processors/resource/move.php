@@ -32,19 +32,8 @@ if ($parent == NULL && $parent != 0) $error->failure(sprintf($modx->lexicon('par
 $oldparent = $document->parent;
 
 // check user has permission to move document to chosen location
-if (!$document->checkPolicy(array('save'=>1,'move'=>1)) || !$parent->checkPolicy(array('save'=>1,'add_children'=>1)))
+if (!$document->checkPolicy(array('save'=>1,'move'=>1)) || !$parent->checkPolicy('add_children'))
     $error->failure($modx->lexicon('permission_denied'));
-
-//if ($modx->config['use_udperms'] == 1) {
-//	include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//	$udperms = new udperms();
-//	$udperms->user = $modx->getLoginUserID();
-//	$udperms->document = $_REQUEST['new_parent'];
-//	$udperms->role = $_SESSION['mgrRole'];
-//
-//	if (!$udperms->checkPermissions())
-//		$error->failure($modx->lexicon('access_permission_parent_denied']);
-//}
 
 function allChildren($currDocID,$children = array()) {
 	global $modx;

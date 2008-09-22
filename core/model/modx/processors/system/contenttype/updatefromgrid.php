@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('content_type');
+if (!$modx->hasPermission('content_types')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 

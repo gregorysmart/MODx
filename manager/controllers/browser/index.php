@@ -5,6 +5,8 @@
  * @package modx
  * @subpackage manager.browser
  */
+if (!$modx->hasPermission('file_manager')) $error->failure($modx->lexicon('permission_denied'));
+
 require_once dirname(__FILE__).'/init.php';
 
 // eventually replace this line with rte-specific handler injected by transport

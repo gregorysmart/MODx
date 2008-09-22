@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
+if (!$modx->hasPermission('menus')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['id'])) $error->failure($modx->lexicon('menu_err_ns'));
 $menu = $modx->getObject('modMenu',$_REQUEST['id']);

@@ -17,9 +17,9 @@ if (isset($_REQUEST['limit'])) {
     $c = $c->limit($_REQUEST['limit'],$_REQUEST['start']);
 }
 $resources = $modx->getCollection('modResource',$c);
-$count = $modx->getCount('modResource');
 $cs = array();
 foreach ($resources as $resource) {
-    $cs[] = $resource->toArray();
+    if ($resource->checkPolicy('list'))
+        $cs[] = $resource->toArray();
 }
-$this->outputArray($cs,$count);
+$this->outputArray($cs);

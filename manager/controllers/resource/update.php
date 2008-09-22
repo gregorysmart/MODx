@@ -9,7 +9,7 @@
 if (!$modx->hasPermission('edit_document')) $modx->error->failure($modx->lexicon('access_denied'));
 
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($resource == null) $modx->error->failure('Resource not found!');
+if ($resource == null) $modx->error->failure(sprintf($modx->lexicon('resource_with_id_not_found'), $_REQUEST['id']));
 
 $resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
 $resourceDir= strtolower(substr($resourceClass, 3));
@@ -58,7 +58,7 @@ $modx->smarty->assign('parentname',$parentname);
 // KEYWORDS AND METATAGS
 if($modx->hasPermission('edit_doc_metatags')) {
 
-	// get list of site keywords - code by stevew! modified by Raymond
+	// get list of site keywords
 	$selected_keywords = array();
 	$keywords_xref = $modx->getCollection('modResourceKeyword',array('content_id' => $resource->id));
 	foreach ($keywords_xref as $kwx) {
@@ -131,8 +131,8 @@ if ($modx->config['use_editor'] == 1) {
 
 $groupsarray = array ();
 // set permissions on the document based on the permissions of the parent document
-if (!empty ($_REQUEST['pid'])) {
-	$dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['pid']));
+if (!empty ($_REQUEST['parent'])) {
+	$dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['parent']));
 } else {
     $dgds = $resource->getMany('modResourceGroupResource');
 }

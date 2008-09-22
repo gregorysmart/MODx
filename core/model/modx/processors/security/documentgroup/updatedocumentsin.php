@@ -5,6 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
+if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 // format data
 $_POST['resource'] = substr(strrchr($_POST['resource'],'_'),1);

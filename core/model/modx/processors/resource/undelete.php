@@ -17,15 +17,6 @@ if ($document == NULL) $error->failure($modx->lexicon('document_not_found'));
 if (!$document->checkPolicy(array('save'=>1, 'undelete'=>1)))
     $error->failure($modx->lexicon('permission_denied'));
 
-//include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//$udperms = new udperms();
-//$udperms->user = $user_id;
-//$udperms->document = $document->id;
-//$udperms->role = $_SESSION['mgrRole'];
-//
-//if (!$udperms->checkPermissions())
-//	$error->failure($modx->lexicon('access_permission_denied'));
-
 $deltime = $document->deletedon;
 
 function getChildren($parent) {

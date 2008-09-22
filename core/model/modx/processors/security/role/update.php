@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
 
-if (!$modx->hasPermission('save_role')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'save_role' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $role = $modx->getObject('modUserGroupRole',$_REQUEST['id']);
 if ($role == null) $error->failure($modx->lexicon('role_err_not_found'));

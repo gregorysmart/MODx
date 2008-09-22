@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('import');
 
+if (!$modx->hasPermission('import_static')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $importstart= $modx->getMicroTime();
 
 $modx->getService('import', 'import.modStaticImport', '', array ());

@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission('delete_user')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'delete_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $user = $modx->getObject('modUser',$_REQUEST['id']);
 if ($user == null) $error->failure($modx->lexicon('user_err_nf'));

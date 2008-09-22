@@ -25,15 +25,20 @@ class modUser extends modPrincipal {
      *
      * @todo Remove the legacy docgroup support.
      */
-    function loadAttributes($target, $context = '') {
+    function loadAttributes($target, $context = '', $reload = false) {
         $context = !empty($context) ? $context : $this->xpdo->context->get('key');
-        if ($this->_attributes === null) {
+        if ($this->_attributes === null || $reload) {
             $this->_attributes = array();
-            if (isset($_SESSION["modx.{$context}.principal.attributes"])) {
-                $this->_attributes = $_SESSION["modx.{$context}.principal.attributes"];
+            if (isset($_SESSION["modx.principal.attributes"])) {
+                if ($reload) {
+                    unset($_SESSION["modx.principal.attributes"]);
+                } else {
+                    $this->_attributes = $_SESSION["modx.principal.attributes"];
+                }
             }
         }
-        if (!isset($this->_attributes[$target])) {
+        if (!isset($this->_attributes[$context])) $this->_attributes[$context] = array();
+        if (!isset($this->_attributes[$context][$target])) {
             $accessTable = $this->xpdo->getTableName($target);
             $policyTable = $this->xpdo->getTableName('modAccessPolicy');
             $memberTable = $this->xpdo->getTableName('modUserGroupMember');
@@ -57,7 +62,7 @@ class modUser extends modPrincipal {
                     $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
                     if ($query->stmt && $query->stmt->execute()) {
                         while ($row = $query->stmt->fetch(PDO_FETCH_ASSOC)) {
-                            $this->_attributes[$target][$row['target']][$row['principal']] = array(
+                            $this->_attributes[$context][$target][$row['target']][$row['principal']] = array(
                                 'authority' => $row['authority'],
                                 'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
                             );
@@ -81,7 +86,7 @@ class modUser extends modPrincipal {
                     $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
                     if ($query->stmt && $query->stmt->execute()) {
                         while ($row = $query->stmt->fetch(PDO_FETCH_ASSOC)) {
-                            $this->_attributes[$target][$row['target']][$row['principal']] = array(
+                            $this->_attributes[$context][$target][$row['target']][$row['principal']] = array(
                                 'authority' => $row['authority'],
                                 'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
                             );
@@ -105,7 +110,7 @@ class modUser extends modPrincipal {
                     $query = new xPDOCriteria($this->xpdo, $sql, $bindings);
                     if ($query->stmt && $query->stmt->execute()) {
                         while ($row = $query->stmt->fetch(PDO_FETCH_ASSOC)) {
-                            $this->_attributes[$target][$row['target']][$row['principal']] = array(
+                            $this->_attributes[$context][$target][$row['target']][$row['principal']] = array(
                                 'authority' => $row['authority'],
                                 'policy' => $row['data'] ? xPDO :: fromJSON($row['data'], true) : array(),
                             );
@@ -115,8 +120,8 @@ class modUser extends modPrincipal {
                 default :
                     break;
             }
-            if (!isset($this->_attributes[$target])) {
-                $this->_attributes[$target] = array();
+            if (!isset($this->_attributes[$context][$target])) {
+                $this->_attributes[$context][$target] = array();
             }
             $_SESSION["modx.{$context}.principal.attributes"] = $this->_attributes;
         }
@@ -284,11 +289,6 @@ class modUser extends modPrincipal {
                 $_SESSION['mgrFailedlogins']= $ua->get('failedlogincount');
                 $_SESSION['mgrLastlogin']= $ua->get('lastlogin');
                 $_SESSION['mgrLogincount']= $ua->get('logincount'); // login count
-//                $_SESSION['mgrRole']= $ua->get('role');
-//                $ua->getOne('modUserRole');
-//                if ($role= & $ua->modUserRole) {
-//                    $_SESSION['mgrPermissions']= $role->toArray();
-//                }
             }
 //            $documentGroups= array ();
 //            if ($memberships= $this->getMany('modUserGroupMember')) {

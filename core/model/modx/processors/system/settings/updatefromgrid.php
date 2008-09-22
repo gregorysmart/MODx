@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
+if (!$modx->hasPermission('settings')) $error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 

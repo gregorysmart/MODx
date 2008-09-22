@@ -174,6 +174,27 @@ $collection['15']->fromArray(array (
     }
 });',
 ), '', true, true);
+$collection['16']= $xpdo->newObject('modMenu');
+$collection['16']->fromArray(array (
+  'id' => '16',
+  'parent' => '8',
+  'action' => '0',
+  'text' => 'flush_sessions',
+  'icon' => 'images/icons/unzip.gif',
+  'menuindex' => '4',
+  'params' => '',
+  'handler' => 'MODx.msg.confirm({
+    title: _(\'flush_sessions\')
+    ,text: _(\'flush_sessions_confirm\')
+    ,url: MODx.config.connectors_url+\'security/flush.php\'
+    ,params: {
+        action: \'flush\'
+    }
+    ,listeners: {
+        \'success\': {fn:function() { location.href = \'./\'; },scope:this}
+    }
+});',
+), '', true, true);
 $collection['17']= $xpdo->newObject('modMenu');
 $collection['17']->fromArray(array (
   'id' => '17',
@@ -217,6 +238,27 @@ $collection['20']->fromArray(array (
   'menuindex' => '2',
   'params' => '',
   'handler' => '',
+), '', true, true);
+$collection['21']= $xpdo->newObject('modMenu');
+$collection['21']->fromArray(array (
+  'id' => '21',
+  'parent' => '8',
+  'action' => '0',
+  'text' => 'flush_access',
+  'icon' => 'images/icons/unzip.gif',
+  'menuindex' => '3',
+  'params' => '',
+  'handler' => 'MODx.msg.confirm({
+    title: _(\'flush_access\')
+    ,text: _(\'flush_access_confirm\')
+    ,url: MODx.config.connectors_url+\'security/access/index.php\'
+    ,params: {
+        action: \'flush\'
+    }
+    ,listeners: {
+        \'success\': {fn:function() { location.href = \'./\'; },scope:this}
+    }
+});',
 ), '', true, true);
 $collection['22']= $xpdo->newObject('modMenu');
 $collection['22']->fromArray(array (

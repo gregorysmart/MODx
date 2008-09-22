@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
+if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['user_group'])) $error->failure($modx->lexicon('user_group_err_not_specified'));
 if (!isset($_POST['member'])) $error->failure($modx->lexicon('user_err_not_specified'));

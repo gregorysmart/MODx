@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('import');
 
+if (!$modx->hasPermission('import_static')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!function_exists('getFiles')) {
     function getFiles(& $modx, & $results, & $filesfound, $directory, $listing= array (), $count= 0) {
         $dummy= $count;

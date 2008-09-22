@@ -10,7 +10,7 @@ $modx->lexicon->load('module');
 
 // get module
 $module = $modx->getObject('modModule',$_REQUEST['module']);
-if ($module->locked == 1) $modx->error->failure($modx->lexicon('access_denied'));
+if ($module->locked == 1) $modx->error->failure($modx->lexicon('permission_denied'));
 
 // get dependencies
 $c = $modx->newQuery('modModuleDepobj');

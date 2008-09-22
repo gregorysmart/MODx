@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
+if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $modx->log(XPDO_LOG_LEVEL_INFO,'Grabbing package to remove...');
 $package = $modx->getObject('transport.modTransportPackage', $_REQUEST['signature']);
 if ($package == null) $modx->error->failure($modx->lexicon('package_err_nfs',array('signature' => $_REQUEST['signature'])));

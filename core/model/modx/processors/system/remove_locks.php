@@ -6,7 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('settings')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('remove_locks')) $error->failure($modx->lexicon('permission_denied'));
 
 // Remove locks
 $locks = $modx->getCollection('modActiveUser');

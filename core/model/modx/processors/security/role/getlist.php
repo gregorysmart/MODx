@@ -6,7 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
-if (!$modx->hasPermission('edit_role')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'edit_role' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;

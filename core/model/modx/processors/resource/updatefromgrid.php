@@ -6,6 +6,8 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
+if (!$modx->hasPermission('save_document')) $error->failure($modx->lexicon('permission_denied'));
+
 $_DATA = $modx->fromJSON($_POST['data']);
 
 if (!isset($_DATA['id'])) $error->failure($modx->lexicon('document_err_not_specified'));

@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
+if (!$context = $modx->getObject('modContext', $_POST['context_key'])) $modx->error->failure($modx->lexicon('setting_err_nf'));
+if (!$context->checkPolicy('save')) $modx->error->failure($modx->lexicon('permission_denied'));
 $setting = $modx->getObject('modContextSetting',array(
     'key' => $_POST['key'],
     'context_key' => $_POST['context_key'],

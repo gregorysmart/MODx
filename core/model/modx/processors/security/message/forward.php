@@ -6,6 +6,8 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
+if (!$modx->hasPermission('messages')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 //old_message = $modx->getObject('modUserMessage',$_POST['id']);
 //if ($old_message == NULL) $error->failure($modx->lexicon('messages_err_not_found']);
 

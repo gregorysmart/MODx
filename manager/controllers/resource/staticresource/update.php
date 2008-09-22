@@ -1,9 +1,9 @@
 <?php
 // check permissions
-if (!$modx->hasPermission('edit_document')) $error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_document')) $modx->error->failure($modx->lexicon('access_denied'));
 
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($resource == NULL) $error->failure('Resource not found!');
+if ($resource == null) $modx->error->failure('Resource not found!');
 
 $resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
 $resourceDir= strtolower(substr($resourceClass, 3));
@@ -16,25 +16,9 @@ if (file_exists($delegateView)) {
     }
 }
 
-// get document groups for current user
-if ($_SESSION['mgrDocgroups']) $docgrp = implode(',',$_SESSION['mgrDocgroups']);
-
-
-// restore saved form
-$formRestored = false;
-if ($modx->request->hasFormValues()) {
-    $modx->request->loadFormValues();
-    $formRestored = true;
-}
-
-
-//editing an existing document
-// check permissions on the document
-//include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//$udperms = new udperms();
-//$udperms->user = $modx->getLoginUserID();
-//$udperms->document = $resource->id;
-//$udperms->role = $_SESSION['mgrRole'];
+// Set which RTE
+$rte = isset($_REQUEST['which_editor']) ? $_REQUEST['which_editor'] : $modx->config['which_editor'];
+$modx->smarty->assign('which_editor',$rte);
 
 if (!$resource->checkPolicy('save')) {
 	?><br /><br /><div class="sectionHeader"><?php echo $modx->lexicon('access_permissions'); ?></div><div class="sectionBody">
@@ -54,22 +38,13 @@ if (is_array($onDocFormPrerender))
 $modx->smarty->assign('onDocFormPrerender',$onDocFormPrerender);
 
 
-
-
-$c = $modx->newQuery('modTemplate');
-$c = $c->sortby('templatename','ASC');
-$templates = $modx->getCollection('modTemplate',$c);
-$modx->smarty->assign('templates',$templates);
-
 // PARENT DOCUMENT
 if ($resource->parent == 0) {
 	$parentname = $modx->config['site_name'];
 } else {
 	$parent = $modx->getObject('modResource',$resource->parent);
-	if ($parent == NULL) {
-		$e->setError(8);
-		$e->dumpError();
-	}
+	if ($parent == null) $error->failure($modx->lexicon('access_denied'));
+    if (!$parent->checkPolicy('add_children')) $error->failure($modx->lexicon('access_denied'));
 	$parentname = $parent->pagetitle;
 }
 $modx->smarty->assign('parentname',$parentname);
@@ -77,7 +52,7 @@ $modx->smarty->assign('parentname',$parentname);
 // KEYWORDS AND METATAGS
 if($modx->hasPermission('edit_doc_metatags')) {
 
-	// get list of site keywords - code by stevew! modified by Raymond
+	// get list of site keywords
 	$selected_keywords = array();
 	$keywords_xref = $modx->getCollection('modResourceKeyword',array('content_id' => $resource->id));
 	foreach ($keywords_xref as $kwx) {
@@ -112,82 +87,51 @@ if($modx->hasPermission('edit_doc_metatags')) {
 
 }
 
-// Template Variables
-$categories = $modx->getCollection('modCategory');
-// add in uncategorized
-$emptycat = $modx->newObject('modCategory');
-$emptycat->set('category','uncategorized');
-$emptycat->id = 0;
-$categories[] = $emptycat;
+if ($modx->config['use_editor'] == 1) {
+    // replace image path
+    $htmlcontent = $resource->content;
 
-foreach ($categories as $catKey => $category) {
+    if (!empty ($htmlcontent)) {
+        if (substr($modx->config['rb_base_url'], -1) != '/') {
+            $im_base_url = $modx->config['rb_base_url'] . '/';
+        } else {
+            $im_base_url = $modx->config['rb_base_url'];
+        }
+        $elements = parse_url($im_base_url);
+        $image_path = $elements['path'];
+        // make sure image path ends with a /
+        if (substr($image_path, -1) != '/') {
+            $image_path .= '/';
+        }
+        $modx_root = MODX_BASE_PATH;
+        $image_prefix = substr($image_path, strlen($modx_root));
+        if (substr($image_prefix, -1) != '/') {
+            $image_prefix .= '/';
+        }
+        // escape / in path
+        $image_prefix = str_replace('/', '\/', $image_prefix);
+        $newcontent = preg_replace("/(<img[^>]+src=['\"])($image_prefix)([^'\"]+['\"][^>]*>)/", "\${1}$im_base_url\${3}", $resource->content);
+        $htmlcontent = $newcontent;
+    }
 
-	$c = new xPDOCriteria($modx,'
-		SELECT
-			DISTINCT tv.*,
-			IF(tvc.value != :blank,tvc.value,tv.default_text) AS value
+	$modx->smarty->assign('htmlcontent',$htmlcontent);
+    // invoke OnRichTextEditorRegister event
+    $text_editors = $modx->invokeEvent('OnRichTextEditorRegister');
+    $modx->smarty->assign('text_editors',$text_editors);
 
-		FROM '.$modx->getTableName('modTemplateVar').' AS tv
-
-			INNER JOIN '.$modx->getTableName('modTemplateVarTemplate').' AS tvtpl
-			ON tvtpl.tmplvarid = tv.id
-			AND tvtpl.templateid = :template
-
-			LEFT JOIN '.$modx->getTableName('modTemplateVarResource').' AS tvc
-			ON tvc.tmplvarid = tv.id
-			AND tvc.contentid = :document_id
-
-			LEFT JOIN '.$modx->getTableName('modTemplateVarResourceGroup').' AS tva
-			ON tva.tmplvarid = tv.id
-
-		WHERE
-			tv.category = :category
-		AND (
-			1 = :mgrRole
-			OR ISNULL(tva.documentgroup)
-			'.((!$docgrp) ? '' : 'OR tva.documentgroup IN ('.$docgrp.')').'
-		)
-		ORDER BY tvtpl.rank,tv.rank
-	',array(
-		':blank' => '',
-		':document_id' => $resource->id,
-		':mgrRole' => $_SESSION['mgrRole'],
-		':template' => $resource->template,
-		':category' => $category->id,
-	));
-	$tvs = $modx->getCollection('modTemplateVar',$c);
-
-	if (count($tvs) > 0) {
-		foreach ($tvs as $tv) {
-			// go through and display all the document variables
-			if ($tv->type == 'richtext' || $tv->type == 'htmlarea') { // htmlarea for backward compatibility
-				if (is_array($replace_richtexteditor))
-					$replace_richtexteditor = array_merge($replace_richtexteditor, array (
-						'tv' . $tv->id
-					));
-				else
-					$replace_richtexteditor = array (
-						'tv' . $tv->id
-					);
-			}
-			$fe = $tv->renderInput($resource->id);
-
-			$tv->set('formElement',$fe);
-		} //loop through all template variables
-	} // end if count($tvs) > 0
-
-	$categories[$catKey]->tvs = $tvs;
-} // end category loop
-$modx->smarty->assign('categories',$categories);
-
+    $replace_richtexteditor = array('ta');
+	$modx->smarty->assign('replace_richtexteditor',$replace_richtexteditor);
+}
 
 $groupsarray = array ();
 // set permissions on the document based on the permissions of the parent document
-if (!empty ($_REQUEST['pid'])) {
-    $dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['pid']));
-    foreach ($dgds as $dgd)
-        $groupsarray[$dgd->id] = $dgd->document_group;
+if (!empty ($_REQUEST['parent'])) {
+	$dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['parent']));
+} else {
+    $dgds = $resource->getMany('modResourceGroupResource');
 }
+foreach ($dgds as $dgd)
+    $groupsarray[$dgd->document_group] = $dgd->document_group;
 
 // retain selected doc groups between post
 if (isset($_POST['docgroups'])) {
@@ -199,10 +143,11 @@ $c = $c->sortby('name','ASC');
 $docgroups = $modx->getCollection('modResourceGroup',$c);
 foreach ($docgroups as $docgroup) {
     $checked = in_array($docgroup->id,$groupsarray);
-    $docgroup->set('selected',$checked);
+    $docgroup->selected= $checked;
 }
 
 $modx->smarty->assign('docgroups',$docgroups);
+$modx->smarty->assign('hasdocgroups',count($docgroups) > 0);
 
 
 // invoke OnDocFormRender event
@@ -241,5 +186,3 @@ $modx->smarty->assign('contentTypes',$ar_cts);
 $modx->smarty->assign('resource',$resource);
 
 $modx->smarty->display('resource/staticresource/update.tpl');
-
-?>

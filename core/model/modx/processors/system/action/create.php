@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu','context');
 
+if (!$modx->hasPermission('actions')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['controller']) || $_POST['controller'] == '') {
 	$error->failure($modx->lexicon('controller_err_ns'));
 }

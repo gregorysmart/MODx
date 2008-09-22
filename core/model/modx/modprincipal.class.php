@@ -35,24 +35,27 @@ class modPrincipal extends xPDOSimpleObject {
      * from.
      * @param string $context Context to check within, defaults to current
      * context.
+     * @param boolean $reload If true, the attributes will be reloaded and
+     * the session updated.
      */
-    function loadAttributes($target, $context = '') {
+    function loadAttributes($target, $context = '', $reload = false) {
         $this->_attributes = array();
     }
 
-    function getAttributes($targets = array(), $context = '') {
+    function getAttributes($targets = array(), $context = '', $reload = false) {
         $context = !empty($context) ? $context : $this->xpdo->context->get('key');
         if (is_null($targets) || empty($targets))
             $targets = array('modAccessContext', 'modAccessResourceGroup', 'modAccessElement');
         if (is_array($targets)) {
             foreach ($targets as $target) {
-                $this->loadAttributes($target, $context);
+                $this->loadAttributes($target, $context, $reload);
+                $reload = false;
             }
         }
         elseif (is_string($targets)) {
-            $this->loadAttributes($targets, $context);
+            $this->loadAttributes($targets, $context, $reload);
         }
-        return $this->_attributes;
+        return $this->_attributes[$context];
     }
 }
 ?>

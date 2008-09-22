@@ -19,15 +19,6 @@ if (!$modx->hasPermission('publish_document')) $error->failure($modx->lexicon('p
 if (!$document->checkPolicy(array('save'=>1, 'publish'=>1)))
     $error->failure($modx->lexicon('permission_denied'));
 
-//include_once MODX_CORE_PATH.'model/modx/udperms.class.php';
-//$udperms = new udperms();
-//$udperms->user = $user_id;
-//$udperms->document = $document->id;
-//$udperms->role = $_SESSION['mgrRole'];
-//
-//if(!$udperms->checkPermissions())
-//	$error->failure($modx->lexicon('access_permission_denied'));
-
 // publish document
 $document->set('published',1);
 $document->set('pub_date',0);

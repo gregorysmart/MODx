@@ -6,6 +6,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','lexicon');
 
+if (!$modx->hasPermission('namespaces')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $_DATA = $modx->fromJSON($_POST['data']);
 
 if (!isset($_DATA['name']) || $_DATA['name'] == '') {

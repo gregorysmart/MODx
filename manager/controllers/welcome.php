@@ -5,6 +5,7 @@
  * @package modx
  * @subpackage manager
  */
+if (!$modx->hasPermission('home')) $error->failure($modx->lexicon('permission_denied'));
 
 // get current version from database, prevents a cached value being used
 $current_version = $modx->getObject('modSystemSetting','settings_version');

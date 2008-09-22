@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
+if (!$modx->hasPermission('settings')) $error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['key'])) $modx->error->failure($modx->lexicon('setting_err_ns'));
 $setting = $modx->getObject('modSystemSetting',$_POST['key']);

@@ -5,5 +5,6 @@
  * @package modx
  * @subpackage manager.workspaces
  */
+if (!$modx->hasPermission('namespaces')) $modx->error->failure($modx->lexicon('access_denied'));
 
 $modx->smarty->display('workspaces/namespace/index.tpl');

@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
+if (!$modx->hasPermission('lexicons')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['id'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
 $focus = $modx->getObject('modLexiconFocus',array(
     'id' => $_POST['id'],

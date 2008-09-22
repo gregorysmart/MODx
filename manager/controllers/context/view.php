@@ -10,6 +10,7 @@ $context= $modx->getObjectGraph('modContext', '{"modContextSetting":{}}', $_REQU
 if ($context == null) {
     $modx->error->failure(sprintf($modx->lexicon('context_with_key_not_found'), $_REQUEST['key']));
 }
+if (!$context->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 // prepare context data for display
 if (!$context->prepare()) {

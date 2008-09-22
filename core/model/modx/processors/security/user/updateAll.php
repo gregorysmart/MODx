@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission('save_user')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 

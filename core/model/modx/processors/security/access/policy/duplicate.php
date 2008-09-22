@@ -6,8 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('policy');
-
-//if (!$modx->hasPermission('new_policy')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 // Get old policy
 $old_policy = $modx->getObject('modAccessPolicy',$_REQUEST['id']);

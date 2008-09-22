@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_info');
 
+if (!$modx->hasPermission('database')) $error->failure($modx->lexicon('permission_denied'));
+
 $c = new xPDOCriteria($modx, 'SHOW TABLE STATUS FROM `'.$modx->config['dbname'].'`');
 $c->stmt->execute();
 $dt = array();

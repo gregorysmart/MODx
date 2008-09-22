@@ -7,6 +7,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
+if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $dir = !isset($_POST['dir']) || $_POST['dir'] == 'root' ? '' : $_POST['dir'];
 $dir = trim($dir,'/');
 

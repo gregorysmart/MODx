@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission('new_user')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'new_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $user = $modx->newObject('modUser');
 

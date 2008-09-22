@@ -13,5 +13,6 @@ $context = $modx->getObject('modContext',$_REQUEST['key']);
 if ($context == null) {
     $modx->error->failure(sprintf($modx->lexicon('context_err_nfs'),$_REQUEST['key']));
 }
+if(!$context->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $modx->error->success('',$context);

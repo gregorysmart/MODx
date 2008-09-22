@@ -10,4 +10,4 @@
 // check permissions
 if (!$modx->hasPermission('delete_context')) $modx->error->failure($modx->lexicon('access_denied'));
 
-$modx->loadProcessor('context/delete.php');
+$modx->loadProcessor('context/remove.php');

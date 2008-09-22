@@ -8,6 +8,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
+if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 if (!isset($_POST['workspace'])) $_POST['workspace'] = 1;
 $workspace = $modx->getObject('modWorkspace',$_POST['workspace']);
 if ($workspace == null) $error->failure($modx->lexicon('workspace_err_nf'));

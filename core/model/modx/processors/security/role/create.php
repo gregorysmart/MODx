@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
 
-if (!$modx->hasPermission('new_role')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'new_role' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $role = $modx->newObject('modUserGroupRole');
 

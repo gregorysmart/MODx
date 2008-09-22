@@ -1,5 +1,5 @@
 <?php
-
+//TODO: remove all this since this is access policy related
 $_lang['role_about'] = 'View the about page';
 $_lang['role_access_persmissions'] = 'Access permissions';
 $_lang['role_actionok'] = 'View action completed screen';

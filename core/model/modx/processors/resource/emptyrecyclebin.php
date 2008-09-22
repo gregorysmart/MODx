@@ -6,8 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-// FIXME: How should we handle permissions to empty the trash
-//if (!$modx->checkSession('mgr')) $error->failure(['permission_denied']);
+if (!$modx->hasPermission('purge_deleted')) $error->failure($modx->lexicon('permission_denied'));
 
 // get documents
 $documents = $modx->getCollection('modResource',array('deleted' => 1));

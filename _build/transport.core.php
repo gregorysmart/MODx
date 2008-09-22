@@ -401,7 +401,7 @@ foreach ($foci as $f) {
             'modLexiconEntry' => array (
                 XPDO_TRANSPORT_PRESERVE_KEYS => false,
                 XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus'),
+                XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus', 'language'),
             )
         )
     ));

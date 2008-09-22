@@ -6,6 +6,8 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
+if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+
 $file = rawurldecode($_POST['file']);
 
 if (!file_exists($file)) $modx->error->failure($modx->lexicon('file_err_nf'));
