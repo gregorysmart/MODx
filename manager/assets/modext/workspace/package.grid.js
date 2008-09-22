@@ -510,6 +510,7 @@ MODx.grid.PackageDownload = function(config) {
             ,'release'
             ,'description'
             ,'location'
+            ,'date_modified'
             ,'menu']
         ,paging: true
         ,layout: 'fit'
@@ -529,6 +530,9 @@ MODx.grid.PackageDownload = function(config) {
             },{
                 header: _('description')
                 ,dataIndex: 'description'
+            },{
+            	header: _('last_modified')
+            	,dataIndex: 'date_modified'
             }
         ]
     });
