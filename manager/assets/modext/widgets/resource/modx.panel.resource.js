@@ -236,11 +236,13 @@ MODx.panel.Resource = function(config) {
                 ,class_key: config.class_key
                 ,template: config.template
                 
-            },(config.edit_doc_metatags ? {
+            },/*
+            :TODO: Recreate admin interface for metatags
+            (config.edit_doc_metatags ? {
                 contentEl: 'tab_mtkw'
                 ,title: _('meta_keywords')
                 
-            } : {}),(config.access_permissions ? {
+            } : {}),*/(config.access_permissions ? {
                 contentEl: 'tab_access'
                 ,title: _('access_permissions')
                 
