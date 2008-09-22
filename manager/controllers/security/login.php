@@ -1,7 +1,7 @@
 <?php
 /**
- * Loads the login screen 
- * 
+ * Loads the login screen
+ *
  * @package modx
  * @subpackage manager.security
  */
@@ -36,6 +36,8 @@ if (isset ($installGoingOn)) {
 // invoke OnManagerLoginFormRender event
 $eventInfo= $modx->invokeEvent('OnManagerLoginFormRender');
 $eventInfo= is_array($eventInfo) ? implode("\n", $eventInfo) : (string) $eventInfo;
+$eventInfo= str_replace('\'','\\\'',$eventInfo);
+
 $modx->smarty->assign('onManagerLoginFormRender', $eventInfo);
 
 $modx->smarty->display('security/login.tpl');
