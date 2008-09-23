@@ -91,10 +91,6 @@ $_lang['setting_cache_resource_desc'] = 'Partial resource caching is configurabl
 $_lang['setting_cache_resource_expires'] = 'Expiration Time for Partial Resource Cache';
 $_lang['setting_cache_resource_expires_desc'] = '';
 
-$_lang['setting_captcha_words'] = 'CAPTCHA Words';
-$_lang['setting_captcha_words_desc'] = 'Here you can enter a list of CAPTCHA words to use if CAPTCHA is enabled. Separate the words with commas. This input field is limited to 255 characters.';
-$_lang['setting_captcha_words_err'] = 'You must specify at least one word to use CAPTCHA.';
-
 $_lang['setting_compress_js'] = 'Use Compressed Javascript Libraries';
 $_lang['setting_compress_js_desc'] = 'When this is enabled, MODx will use a compressed version of its custom JavaScript libraries. This greatly reduces load and execution time. Disable only if you are modifying core elements. LEAVE OFF UNTIL 097-final IS RELEASED!';
 
@@ -315,10 +311,6 @@ $_lang['setting_use_alias_path_desc'] = 'Setting this option to \'yes\' will dis
 $_lang['setting_use_browser'] = 'Enable Resource Browser';
 $_lang['setting_use_browser_desc'] = 'Select yes to enable the resource browser. This will allow your users to browse and upload resources such as images, flash and media files on the server.';
 $_lang['setting_use_browser_err'] = 'Please state whether or not you want to use the resource browser.';
-
-$_lang['setting_use_captcha'] = 'Use CAPTCHA codes';
-$_lang['setting_use_captcha_desc'] = 'Enable this to strengthen security by requiring users to enter a code which is unreadable by machines (and scriptkiddy hacking scripts).';
-$_lang['setting_use_captcha_err'] = 'Please state whether or not you want to use CAPTCHA.';
 
 $_lang['setting_use_editor'] = 'Enable editor';
 $_lang['setting_use_editor_desc'] = 'Do you want to enable the rich text editor? If you\'re more comfortable writing HTML, then you can turn the editor off using this setting. Note that this setting applies to all documents and all users!';

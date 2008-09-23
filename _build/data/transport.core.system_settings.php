@@ -93,15 +93,6 @@ $collection['cache_resource_expires']->fromArray(array (
   'area' => 'caching',
 
 ), '', true, true);
-$collection['captcha_words']= $xpdo->newObject('modSystemSetting');
-$collection['captcha_words']->fromArray(array (
-  'key' => 'captcha_words',
-  'value' => 'MODx,Access,Better,BitCode,Cache,Desc,Design,Excell,Enjoy,URLs,TechView,Gerald,Griff,Humphrey,Holiday,Intel,Integration,Joystick,Join(),Tattoo,Genetic,Light,Likeness,Marit,Maaike,Niche,Netherlands,Ordinance,Oscillo,Parser,Phusion,Query,Question,Regalia,Righteous,Snippet,Sentinel,Template,Thespian,Unity,Enterprise,Verily,Veri,Website,WideWeb,Yap,Yellow,Zebra,Zygote',
-  'xtype' => 'textarea',
-  'namespace' => 'core',
-  'area' => 'authentication',
-
-), '', true, true);
 $collection['compress_js']= $xpdo->newObject('modSystemSetting');
 $collection['compress_js']->fromArray(array (
   'key' => 'compress_js',
@@ -704,15 +695,6 @@ $collection['use_browser']->fromArray(array (
   'xtype' => 'combo-boolean',
   'namespace' => 'core',
   'area' => 'file',
-
-), '', true, true);
-$collection['use_captcha']= $xpdo->newObject('modSystemSetting');
-$collection['use_captcha']->fromArray(array (
-  'key' => 'use_captcha',
-  'value' => '0',
-  'xtype' => 'combo-boolean',
-  'namespace' => 'core',
-  'area' => 'authentication',
 
 ), '', true, true);
 $collection['use_editor']= $xpdo->newObject('modSystemSetting');
