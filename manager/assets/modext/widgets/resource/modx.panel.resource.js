@@ -365,6 +365,6 @@ var triggerDirtyField = function(fld) {
     Ext.getCmp('panel-resource').fieldChangeEvent(fld);
 };
 var triggerRTEOnChange = function(i) {
-	Ext.getCmp('ta').fireEvent('change');
+	triggerDirtyField(Ext.getCmp('ta'));
 }
 var loadRTE = null;
