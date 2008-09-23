@@ -128,6 +128,16 @@ $cacheManager->writeFile(dirname(__FILE__) . '/data/transport.core.accesspolicie
 unset($content, $collection, $key, $c);
 
 
+// Get the default AccessContext ACLs 
+$content= "<?php\n";
+$collection= $modx->getCollection('modAccessContext');
+foreach ($collection as $key => $c) {
+    $content.= $cacheManager->generateObject($c, "collection['{$key}']", false, false, 'xpdo');
+}
+$cacheManager->writeFile(dirname(__FILE__) . '/data/transport.core.access_contexts.php', $content);
+unset($content, $collection, $key, $c);
+
+
 $mtime= microtime();
 $mtime= explode(" ", $mtime);
 $mtime= $mtime[1] + $mtime[0];

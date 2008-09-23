@@ -414,6 +414,18 @@ foreach ($languages as $l) {
 }
 unset ($entries, $languages, $foci, $attributes, $c, $f, $l);
 
+// modAccessContext
+$collection = array ();
+include dirname(__FILE__).'/data/transport.core.access_contexts.php';
+$attributes = array (
+    XPDO_TRANSPORT_PRESERVE_KEYS => true,
+    XPDO_TRANSPORT_UPDATE_OBJECT => false,
+);
+foreach ($collection as $c) {
+    $package->put($c, $attributes);
+}
+unset ($collection, $c, $attributes);
+
 
 $package->pack();
 
