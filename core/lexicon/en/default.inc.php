@@ -298,6 +298,7 @@ $_lang['flush_access_confirm'] = 'Are you sure you want to flush your access per
 $_lang['flush_sessions'] = 'Flush All Sessions';
 $_lang['flush_sessions_confirm'] = 'Are you sure you want to flush all user sessions? This will destroy all current and recent user sessions, including your own, forcing everyone to login following this action.';
 $_lang['flush_sessions_err'] = 'An error occured while attempting to flush the current user sessions.';
+$_lang['flush_sessions_not_supported'] = 'Flushing user sessions is not supported on your configuration.';
 $_lang['folder'] = 'Folder';
 $_lang['forgot_password_email_fine_print'] = '* The URL above will expire once you change your password or after today.';
 $_lang['forgot_password_email_instructions'] = 'From there you will be able to change your password from the My Account menu.';
