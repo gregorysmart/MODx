@@ -9,7 +9,7 @@ $modx->lexicon->load('login');
 
 $username = $_POST['username'];
 $givenPassword = $_POST['password'];
-$captcha_code = isset ($_POST['captcha_code']) ? $_POST['captcha_code'] : '';
+
 $rememberme= isset ($_POST['rememberme']) ? ($_POST['rememberme'] == 'on' || $_POST['rememberme'] == true) : false;
 $loginContext= isset ($_POST['login_context']) ? $_POST['login_context'] : 'mgr';
 
@@ -21,10 +21,21 @@ $onBeforeLoginParams = array(
         'loginContext' => & $loginContext
     )
 );
+
+$rt = false;  //$rt will be an array if the event fires
 if ($loginContext == 'mgr' || $loginContext == 'connector') {
-    $modx->invokeEvent("OnBeforeManagerLogin", $onBeforeLoginParams);
+    $rt = $modx->invokeEvent("OnBeforeManagerLogin", $onBeforeLoginParams);
 } else {
-    $modx->invokeEvent("OnBeforeWebLogin", $onBeforeLoginParams);
+    $rt = $modx->invokeEvent("OnBeforeWebLogin", $onBeforeLoginParams);
+}
+/* If the event fired, loop through the event array and fail if there's an error message  */
+if (is_array($rt)) {
+    foreach ($rt as $key => $value) {   //php4 compatible
+        if ($value !== true) {
+            $modx->error->failure($value);
+        }
+    }
+    unset($key,$value);
 }
 
 $user= $modx->getObjectGraph('modUser', '{"modUserProfile":{},"modUserSetting":{}}', array ('modUser.username' => $username));
@@ -102,12 +113,6 @@ if (!$rt || (is_array($rt) && !in_array(true, $rt))) {
     }
 }
 
-if (isset ($modx->config['use_captcha']) && $modx->config['use_captcha'] == 1) {
-    if (!isset ($_SESSION['veriword']) || $_SESSION['veriword'] != $captcha_code) {
-        $error->failure($modx->lexicon('login_captcha_error'));
-    }
-}
-
 $user->addSessionContext($loginContext);
 if ($loginContext == 'mgr') $user->addSessionContext('connector');
 
@@ -125,10 +130,11 @@ $postLoginAttributes = array(
     )
 );
 if ($loginContext == 'mgr') {
-    $modx->invokeEvent("OnManagerLogin", $postLoginAttributes);
+    $rt = $modx->invokeEvent("OnManagerLogin", $postLoginAttributes);
 } else {
     $modx->invokeEvent("OnWebLogin", $postLoginAttributes);
 }
+
 
 if (!isset($manager_login_startup)) {
     $manager_login_startup= 0;

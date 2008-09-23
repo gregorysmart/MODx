@@ -9,18 +9,10 @@ $modx->lexicon->load('login');
 $modx->smarty->assign('_lang',$modx->lexicon->fetch());
 
 // invoke OnManagerLoginFormPrerender event
+
 $eventInfo= $modx->invokeEvent('OnManagerLoginFormPrerender');
 $eventInfo= is_array($eventInfo) ? implode("\n", $eventInfo) : (string) $eventInfo;
 $modx->smarty->assign('onManagerLoginFormPrerender', $eventInfo);
-
-$captcha_image= '';
-$captcha_input= '';
-if (isset ($modx->config['use_captcha']) && $modx->config['use_captcha'] == 1) {
-    $captcha_image= '<a href="'.$_SERVER['PHP_SELF'].'" class="loginCaptcha"><img src="'.$modx->config['connectors_url'].'security/captcha.php?rand='.rand().'" alt="'.$modx->lexicon("login_captcha_message").'" /></a>';
-    $captcha_input= '<label>'.$modx->lexicon("captcha_code").'</label> <input type="text" name="captcha_code" tabindex="3" value="" />';
-}
-$modx->smarty->assign('captcha_image', $captcha_image);
-$modx->smarty->assign('captcha_input', $captcha_input);
 
 // andrazk 20070416 - notify user of install/update
 if (isset($_REQUEST['installGoingOn'])) {
