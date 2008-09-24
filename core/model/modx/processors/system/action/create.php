@@ -10,17 +10,17 @@ $modx->lexicon->load('action','menu','context');
 if (!$modx->hasPermission('actions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['controller']) || $_POST['controller'] == '') {
-	$error->failure($modx->lexicon('controller_err_ns'));
+	$modx->error->failure($modx->lexicon('controller_err_ns'));
 }
 $loadheaders = isset($_POST['loadheaders']) ? true : false;
 
-if (!isset($_POST['parent'])) $error->failure($modx->lexicon('action_parent_err_ns'));
+if (!isset($_POST['parent'])) $modx->error->failure($modx->lexicon('action_parent_err_ns'));
 if ($_POST['parent'] == 0) {
 	$parent = $modx->newObject('modAction');
 	$parent->id = 0;
 } else {
 	$parent = $modx->getObject('modAction',$_POST['parent']);
-	if ($parent == null) $error->failure($modx->lexicon('action_parent_err_nf'));
+	if ($parent == null) $modx->error->failure($modx->lexicon('action_parent_err_nf'));
 }
 
 if (!isset($_POST['context'])) $modx->error->failure($modx->lexicon('context_err_nf'));
@@ -35,9 +35,9 @@ $action->set('loadheaders',$loadheaders);
 $action->set('lang_foci',$_POST['lang_foci']);
 $action->set('assets',$_POST['assets']);
 
-if (!$action->save()) $error->failure($modx->lexicon('action_err_create'));
+if (!$action->save()) $modx->error->failure($modx->lexicon('action_err_create'));
 
 // log manager action
 $modx->logManagerAction('action_create','modAction',$action->id);
 
-$error->success();
+$modx->error->success();
