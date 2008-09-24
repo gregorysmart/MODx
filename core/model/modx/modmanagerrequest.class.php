@@ -19,13 +19,15 @@ class modManagerRequest extends modRequest {
      * @access public
      */
     var $error= null;
+    var $actionVar = 'a';
+    var $defaultAction = 0;
 
     function modManagerRequest(& $modx) {
         $this->__construct($modx);
     }
     function __construct(& $modx) {
         parent :: __construct($modx);
-		if ($this->modx->actionMap === NULL || !is_array($this->modx->actionMap)) {
+		if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
 			$this->loadActionMap();
 		}
     }
@@ -155,7 +157,7 @@ class modManagerRequest extends modRequest {
         $this->loadErrorHandler('modArrayError');
 
         // save page to manager object
-        $this->action = isset($_REQUEST['a']) ? $_REQUEST['a'] : 0;
+        $this->action = isset($_REQUEST[$this->actionVar]) ? $_REQUEST[$this->actionVar] : $this->defaultAction;
 
         // invoke OnManagerPageInit event
         $this->modx->invokeEvent('OnManagerPageInit',array('action' => $this->action));
