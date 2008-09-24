@@ -669,16 +669,6 @@ $collection['71']->fromArray(array (
   'lang_foci' => 'file',
   'assets' => '',
 ), '', true, true);
-$collection['72']= $xpdo->newObject('modAction');
-$collection['72']->fromArray(array (
-  'id' => '72',
-  'context_key' => 'mgr',
-  'parent' => '68',
-  'controller' => 'workspaces/builder',
-  'haslayout' => '1',
-  'lang_foci' => 'workspace,file,package_builder',
-  'assets' => '',
-), '', true, true);
 $collection['73']= $xpdo->newObject('modAction');
 $collection['73']->fromArray(array (
   'id' => '73',

@@ -524,17 +524,6 @@ $collection['44']->fromArray(array (
   'params' => '',
   'handler' => '',
 ), '', true, true);
-$collection['45']= $xpdo->newObject('modMenu');
-$collection['45']->fromArray(array (
-  'id' => '45',
-  'parent' => '9',
-  'action' => '72',
-  'text' => 'package_builder',
-  'icon' => 'images/icons/logging.gif',
-  'menuindex' => '11',
-  'params' => '',
-  'handler' => '',
-), '', true, true);
 $collection['46']= $xpdo->newObject('modMenu');
 $collection['46']->fromArray(array (
   'id' => '46',
