@@ -165,9 +165,11 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     ,loadWindow2: function(btn,e,o) {
     	this.menu.record = {
             namespace: Ext.getCmp('filter_namespace').getValue()
-            ,focus: Ext.getCmp('filter_focus').getValue()
             ,language: Ext.getCmp('filter_language').getValue()
         };
+        if (o.xtype != 'window-lexicon-import') {
+        	this.menu.record.focus = Ext.getCmp('filter_focus').getValue();
+        }
         var clef = Ext.getCmp('cle-focus');
         if (clef) { clef.store.baseParams.namespace = this.menu.record.namespace; }
     	this.loadWindow(btn, e, o);
