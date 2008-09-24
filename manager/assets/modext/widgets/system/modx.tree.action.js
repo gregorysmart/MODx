@@ -60,6 +60,24 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
                     }
                     this.windows.create_action.show(e.target);
 				},scope:this}
+				,'failure': {fn:function(r) {
+					if (!id) {
+						Ext.Msg.hide();
+						Ext.apply(r.object,{parent: 0});
+                        if (!this.windows.create_action) {
+                            this.windows.create_action = MODx.load({
+                                xtype: 'window-action-create'
+                                ,scope: this
+                                ,success: this.refresh
+                                ,record: r.object
+                            });
+                        } else {
+                            this.windows.create_action.setValues(r.object);
+                        }
+                        this.windows.create_action.show(e.target);
+                        return false;
+					}
+				},scope:this}
 			}
 		});
 	}
