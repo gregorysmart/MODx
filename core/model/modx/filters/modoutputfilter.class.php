@@ -272,6 +272,7 @@ class modOutputFilter {
                     // Default, custom modifier (run snippet with modifier name)
                     default:
                         //@todo Possibility to only look for snippet names prefixed with 'filter:'
+                        //@todo Maybe pass whole element by reference instead of token/tag/name?
                         $params = array (
                             'input' => $output,
                             'options' => $m_val,
