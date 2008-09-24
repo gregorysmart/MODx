@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.menu
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 if (!$modx->hasPermission('menus')) $modx->error->failure($modx->lexicon('permission_denied'));
@@ -14,15 +13,15 @@ if ($_POST['action_id'] == 0) {
 	$action->id = 0;
 } else {
 	$action = $modx->getObject('modAction',$_POST['action_id']);
-	if ($action == NULL) $error->failure($modx->lexicon('action_err_nf'));
+	if ($action == null) $modx->error->failure($modx->lexicon('action_err_nf'));
 }
-if (!isset($_POST['parent'])) $error->failure($modx->lexicon('menu_parent_err_ns'));
+if (!isset($_POST['parent'])) $modx->error->failure($modx->lexicon('menu_parent_err_ns'));
 if ($_POST['parent'] == 0) {
 	$parent = $modx->newObject('modMenu');
 	$parent->id = 0;
 } else {
 	$parent = $modx->getObject('modMenu',$_POST['parent']);
-	if ($parent == null) $error->failure($modx->lexicon('menu_parent_err_nf'));
+	if ($parent == null) $modx->error->failure($modx->lexicon('menu_parent_err_nf'));
 }
 
 $count = $modx->getCount('modMenu',array('parent' => $parent->id));
@@ -36,9 +35,9 @@ $menu->set('menuindex',$count);
 $menu->set('params',isset($_POST['params']) ? $_POST['params'] : '');
 $menu->set('handler',isset($_POST['handler']) ? $_POST['handler'] : '');
 
-if (!$menu->save()) $error->failure($modx->lexicon('menu_err_save'));
+if (!$menu->save()) $modx->error->failure($modx->lexicon('menu_err_save'));
 
 // log manager action
 $modx->logManagerAction('menu_create','modMenu',$menu->id);
 
-$error->success();
+$modx->error->success();
