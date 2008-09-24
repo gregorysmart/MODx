@@ -119,6 +119,11 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                     Ext.Msg.hide();
                     this.refresh();
                 },scope:this}
+                ,'failure': {fn:function(r) {
+                    this.console.complete();
+                    Ext.Msg.hide();
+                    this.refresh();
+                },scope:this}
         	}
         });
     }
