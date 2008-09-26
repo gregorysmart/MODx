@@ -224,19 +224,20 @@ class modInstall {
      */
     function getContextPaths() {
         $config = array ();
+        $webUrl= substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], 'setup/'));
         $config['core_path'] = MODX_CORE_PATH;
         $config['web_path_auto'] = isset ($_POST['context_web_path_toggle']) && $_POST['context_web_path_toggle'] ? 1 : 0;
-        $config['web_path'] = $_POST['context_web_path'];
+        $config['web_path'] = isset($_POST['context_web_path']) ? $_POST['context_web_path'] : MODX_INSTALL_PATH;
         $config['web_url_auto'] = isset ($_POST['context_web_url_toggle']) && $_POST['context_web_url_toggle'] ? 1 : 0;
-        $config['web_url'] = $_POST['context_web_url'];
+        $config['web_url'] = isset($_POST['context_web_url']) ? $_POST['context_web_url'] : $webUrl;
         $config['mgr_path_auto'] = isset ($_POST['context_mgr_path_toggle']) && $_POST['context_mgr_path_toggle'] ? 1 : 0;
-        $config['mgr_path'] = $_POST['context_mgr_path'];
+        $config['mgr_path'] = isset($_POST['context_mgr_path']) ? $_POST['context_mgr_path'] : MODX_INSTALL_PATH . 'manager/';
         $config['mgr_url_auto'] = isset ($_POST['context_mgr_url_toggle']) && $_POST['context_mgr_url_toggle'] ? 1 : 0;
-        $config['mgr_url'] = $_POST['context_mgr_url'];
+        $config['mgr_url'] = isset($_POST['context_mgr_url']) ? $_POST['context_mgr_url'] : $webUrl . 'manager/';
         $config['connectors_path_auto'] = isset ($_POST['context_connectors_path_toggle']) && $_POST['context_connectors_path_toggle'] ? 1 : 0;
-        $config['connectors_path'] = $_POST['context_connectors_path'];
+        $config['connectors_path'] = isset($_POST['context_connectors_path']) ? $_POST['context_connectors_path'] : MODX_INSTALL_PATH . 'connectors/';
         $config['connectors_url_auto'] = isset ($_POST['context_connectors_url_toggle']) && $_POST['context_connectors_url_toggle'] ? 1 : 0;
-        $config['connectors_url'] = $_POST['context_connectors_url'];
+        $config['connectors_url'] = isset($_POST['context_connectors_url']) ? $_POST['context_connectors_url'] : $webUrl . 'connectors/';
         $config['processors_path'] = MODX_CORE_PATH . 'model/modx/processors/';
         $config['assets_path'] = $config['web_path'] . 'assets/';
         $config['assets_url'] = $config['web_url'] . 'assets/';
@@ -366,6 +367,7 @@ class modInstall {
         }
 
         // check context paths if inplace, else make sure paths can be written
+        $coreConfigsExist = false;
         if ($this->config['inplace']) {
             // web_path
             $results['context_web_exists']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['web_path']}</span> directory exists: ";
@@ -376,7 +378,32 @@ class modInstall {
                 $results['context_web_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
                 $results['context_web_exists']['class'] = 'testPassed';
             }
-        } else {
+            // mgr_path
+            $results['context_mgr_exists']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['mgr_path']}</span> directory exists: ";
+            if (!file_exists($this->config['mgr_path'])) {
+                $results['context_mgr_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
+                $results['context_mgr_exists']['class'] = 'testFailed';
+            } else {
+                $results['context_mgr_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
+                $results['context_mgr_exists']['class'] = 'testPassed';
+            }
+            // connectors_path
+            $results['context_connectors_exists']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['connectors_path']}</span> directory exists: ";
+            if (!file_exists($this->config['connectors_path'])) {
+                $results['context_connectors_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
+                $results['context_connectors_exists']['class'] = 'testFailed';
+            } else {
+                $results['context_connectors_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
+                $results['context_connectors_exists']['class'] = 'testPassed';
+            }
+            if (file_exists($this->config['web_path'] . 'config.core.php') &&
+                file_exists($this->config['connectors_path'] . 'config.core.php') &&
+                file_exists($this->config['mgr_path'] . 'config.core.php')) {
+                $coreConfigsExist = true;
+            }
+        }
+        if ($mode == 0 || !$coreConfigsExist) {
+            // web_path
             $results['context_web_writable']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['web_path']}</span> directory is writable: ";
             if (!$this->_inWritableContainer($this->config['web_path'])) {
                 $results['context_web_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
@@ -384,6 +411,24 @@ class modInstall {
             } else {
                 $results['context_web_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
                 $results['context_web_writable']['class'] = 'testPassed';
+            }
+            // mgr_path
+            $results['context_mgr_writable']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['mgr_path']}</span> directory is writable: ";
+            if (!$this->_inWritableContainer($this->config['mgr_path'])) {
+                $results['context_mgr_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
+                $results['context_mgr_writable']['class'] = 'testFailed';
+            } else {
+                $results['context_mgr_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
+                $results['context_mgr_writable']['class'] = 'testPassed';
+            }
+            // connectors_path
+            $results['context_connectors_writable']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['connectors_path']}</span> directory is writable: ";
+            if (!$this->_inWritableContainer($this->config['connectors_path'])) {
+                $results['context_connectors_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
+                $results['context_connectors_writable']['class'] = 'testFailed';
+            } else {
+                $results['context_connectors_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
+                $results['context_connectors_writable']['class'] = 'testPassed';
             }
         }
 
@@ -399,7 +444,7 @@ class modInstall {
         }
         $isWriteable = is_writable($configFilePath);
         if (!$isWriteable) {
-            $results['config_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p><p><strong>For new Linux/Unix installs, please create a blank file named <span class=\"mono\">" . MODX_CONFIG_KEY . ".inc.php</span> in your MODx core <span class=\"mono\">config/</span> directory with permissions set to 755.</strong></p>";
+            $results['config_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p><p><strong>For new Linux/Unix installs, please create a blank file named <span class=\"mono\">" . MODX_CONFIG_KEY . ".inc.php</span> in your MODx core <span class=\"mono\">config/</span> directory with permissions set to be writable by PHP.</strong></p>";
             $results['config_writable']['class'] = 'testFailed';
         } else {
             $results['config_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";

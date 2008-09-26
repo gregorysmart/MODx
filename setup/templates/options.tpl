@@ -49,10 +49,14 @@
 	</th>
 	<td>{$_lang.options_upgrade_advanced_note}</td>
 </tr>
+{if $smarty.const.MODX_SETUP_KEY EQ '@traditional' AND $unpacked EQ 1 AND $files_exist EQ 1}
+<input type="hidden" name="unpacked" id="unpacked" value="1" />
+<input type="hidden" name="inplace" id="inplace" value="1" />
+{else}
 <tr>
 	<th style="padding-top: 3em;">
 		<label>
-			<input type="checkbox" name="unpacked" id="unpacked" value="1"{if $unpacked EQ 0} disabled="disabled"{/if}{if $safe_mode EQ 1 OR $unpacked EQ 1 AND $installmode LT 1} checked="checked"{/if} />
+			<input type="checkbox" name="unpacked" id="unpacked" value="1"{if $unpacked EQ 0} disabled="disabled"{/if}{if $unpacked EQ 1} checked="checked"{/if} />
 			{$_lang.options_core_unpacked}
 		</label>
 	</th>
@@ -61,12 +65,13 @@
 <tr>
     <th>
 		<label>
-	   		<input type="checkbox" name="inplace" id="inplace" value="1"{if $files_exist EQ 0} disabled="disabled"{/if}{if $safe_mode EQ 1} checked="checked"{/if} />
+	   		<input type="checkbox" name="inplace" id="inplace" value="1"{if $files_exist EQ 0} disabled="disabled"{/if}{if $files_exist EQ 1} checked="checked"{/if} />
 			{$_lang.options_core_inplace}
 		</label>
 	</th>
     <td>{$_lang.options_core_inplace_note}</td>
 </tr>
+{/if}
 </tbody>
 </table>
 <br />

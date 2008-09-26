@@ -55,7 +55,6 @@
         <antcall target="modext-concat-min"></antcall>
         <antcall target="modext-concat"></antcall>
         <antcall target="copy-prepared-js"></antcall>
-        <antcall target="copy-prepared-js-wc"></antcall>
         <antcall target="generate-core-transport"></antcall>
         <!--<antcall target="generate-phpdocs"></antcall>-->
         <antcall target="prepare-build-image"></antcall>
@@ -71,7 +70,7 @@
     <target name="complete-wc" description="--> Complete Working Copy Build">
         <antcall target="modext-minify-wc"></antcall>
         <antcall target="modext-concat-min"></antcall>
-        <antcall target="modext-concat"></antcall>
+        <antcall target="modext-concat-wc"></antcall>
         <antcall target="copy-prepared-js-wc"></antcall>
         <antcall target="generate-core-transport"></antcall>
     </target>
@@ -241,6 +240,44 @@ General Public License for more details.
         </concat>
     </target>
 
+    <!-- Concat the non-minified MODExt JavaScript libraries -->
+    <target name="modext-concat-wc" description="Create modext-debug.js">
+        <echo>Creating modext-debug.js in ${build.image.modext.dir}</echo>
+        
+        <concat destfile="${build.image.modext.dir}/modext-debug.js">
+            <header filtering="no" trimleading="yes">
+/**
+MODExt Revolution 1.0
+Copyright (c) 2007-2008, Shaun McCormick
+All rights reserved
+MODx-specific JS extension for ExtJS 2.2
+
+-------------
+
+The MODExt JS extension is distributed under the terms of the GNU GPLv3 license.
+It extends ExtJS, distributed under the Open Source GPL 3.0 license.
+
+http://www.gnu.org/licenses/gpl.html
+
+-------------
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+*/
+            </header>
+            <fileset dir="${project.modext.dir}/core"
+                includes="**/*.js"
+                  excludes="widgets/**,modx.js,modx.layout.js,modx.onready.js" />
+                  
+            <fileset dir="${project.modext.dir}/util"
+                includes="**/*.js"
+                  excludes="filetree/**" />
+                  
+        </concat>
+    </target>
+
     <!-- Copy the minified and concatenated MODExt files to the working copy -->
     <target name="copy-prepared-js" description="copy the minified and concatenated js files to the image">
         <copy todir="${build.image.dir}/manager/assets/modext">
@@ -302,6 +339,7 @@ General Public License for more details.
 
     <!-- Build a MODx SDK distrib with all files in place and extracted -->
     <target name="build-sdk" description="create the traditional distribution package">
+        <replace file="${build.image.dir}/setup/includes/config.core.php" token="@svn" value="@sdk" />
         <delete dir="${build.image.dir}/core/packages/core" />
         <unzip src="${build.image.dir}/core/packages/core.transport.zip" dest="${build.image.dir}/core/packages/">
             <patternset>
@@ -309,13 +347,30 @@ General Public License for more details.
                 <include name="core/*/*.php" />
             </patternset>
         </unzip>
+        <echo file="${build.image.dir}/config.core.php" append="false"><?php
+    define('MODX_CORE_PATH', dirname(__FILE__) . '/');
+    define('MODX_CONFIG_KEY', 'config');
+        ?></echo>
+        <echo file="${build.image.dir}/manager/config.core.php" append="false"><?php
+    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
+    define('MODX_CONFIG_KEY', 'config');
+        ?></echo>
+        <echo file="${build.image.dir}/connectors/config.core.php" append="false"><?php
+    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
+    define('MODX_CONFIG_KEY', 'config');
+        ?></echo>
         <zip destfile="${build.distrib.dir}/${project.name}-${modx.core.version}-${modx.core.release}-${build.number}-sdk.zip">
             <fileset dir="${build.image.dir}" />
         </zip>
+        <replace file="${build.image.dir}/setup/includes/config.core.php" token="@sdk" value="@svn" />
+        <delete file="${build.image.dir}/config.core.php" />
+        <delete file="${build.image.dir}/manager/config.core.php" />
+        <delete file="${build.image.dir}/connectors/config.core.php" />
     </target>
 
     <!-- Build a traditional MODx distrib with all files in place and extracted -->
     <target name="build-traditional" description="create the traditional distribution package">
+        <replace file="${build.image.dir}/setup/includes/config.core.php" token="@svn" value="@traditional" />
         <delete dir="${build.image.dir}/core/packages/core" />
         <unzip src="${build.image.dir}/core/packages/core.transport.zip" dest="${build.image.dir}/core/packages/">
             <patternset>
@@ -323,17 +378,34 @@ General Public License for more details.
                 <include name="core/*/*.php" />
             </patternset>
         </unzip>
+        <echo file="${build.image.dir}/config.core.php" append="false"><?php
+    define('MODX_CORE_PATH', dirname(__FILE__) . '/');
+    define('MODX_CONFIG_KEY', 'config');
+        ?></echo>
+        <echo file="${build.image.dir}/manager/config.core.php" append="false"><?php
+    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
+    define('MODX_CONFIG_KEY', 'config');
+        ?></echo>
+        <echo file="${build.image.dir}/connectors/config.core.php" append="false"><?php
+    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
+    define('MODX_CONFIG_KEY', 'config');
+        ?></echo>
         <zip destfile="${build.distrib.dir}/${project.name}-${modx.core.version}-${modx.core.release}-${build.number}.zip">
             <fileset dir="${build.image.basedir}">
                 <include name="${project.name}-${modx.core.version}-${modx.core.release}/**" />
                 <exclude name="${project.name}-${modx.core.version}-${modx.core.release}/_build/**" />
             </fileset>
         </zip>
+        <replace file="${build.image.dir}/setup/includes/config.core.php" token="@traditional" value="@svn" />
+        <delete file="${build.image.dir}/config.core.php" />
+        <delete file="${build.image.dir}/manager/config.core.php" />
+        <delete file="${build.image.dir}/connectors/config.core.php" />
     </target>
 
     <!-- Build a new advanced MODx distrib with only the core/ and setup/ dirs 
         and the core transport package included -->
     <target name="build-advanced" description="create the advanced distribution package">
+        <replace file="${build.image.dir}/setup/includes/config.core.php" token="@svn" value="@advanced" />
         <zip destfile="${build.distrib.dir}/${project.name}-${modx.core.version}-${modx.core.release}-${build.number}-advanced.zip">
             <fileset dir="${build.image.dir}">
                 <include name="core/**" />
@@ -341,6 +413,7 @@ General Public License for more details.
                 <include name="setup/**" />
             </fileset>
         </zip>
+        <replace file="${build.image.dir}/setup/includes/config.core.php" token="@advanced" value="@svn" />
     </target>
 
     <!-- Publish a distrib to a server -->

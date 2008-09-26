@@ -11,8 +11,10 @@ if ($installMode == 0) {
 }
 $this->parser->assign('config', $install->config);
 
+$action = MODX_SETUP_KEY == '@traditional' ? 'goAction(\'summary\')' : 'doAction(\'database\')';
+
 $navbar= '
-<input type="button" value="'.$install->lexicon['next'].'" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="return doAction(\'database\');" />
+<input type="button" value="'.$install->lexicon['next'].'" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="return ' . $action . ';" />
 <span style="float:right">&nbsp;</span>
 <input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'options\');"/>
 ';

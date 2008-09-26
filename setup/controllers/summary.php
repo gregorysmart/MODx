@@ -27,10 +27,12 @@ $this->parser->assign('testClass', $failed ? 'error' : 'success');
 $nextButton= $failed ? $install->lexicon['retry'] : $install->lexicon['install'];
 $nextAction= $failed ? 'return goAction(\'summary\')' : 'return goAction(\'install\');';
 
+$prevAction= MODX_SETUP_KEY == '@traditional' ? 'return goAction(\'database\')' : 'return goAction(\'contexts\');';
+
 $navbar= '
 <input type="button" value="' . $nextButton . '" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="' . $nextAction . '" />
 <span style="float:right">&nbsp;</span>
-<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'contexts\');"/>
+<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="' . $prevAction . '"/>
 ';
 $this->parser->assign('navbar', $navbar);
 $this->parser->display('summary.tpl');
