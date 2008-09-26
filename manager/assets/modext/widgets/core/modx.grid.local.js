@@ -47,9 +47,6 @@ MODx.grid.LocalGrid = function(config) {
             ,autoFill: true
             ,showPreview: true
         }
-        ,listeners: {
-            'rowcontextmenu': {fn:this._showMenu,scope:this}
-        }
         ,tools: [{ 
             id: 'help'
             ,qtip: _('help')
@@ -59,6 +56,7 @@ MODx.grid.LocalGrid = function(config) {
     });
     this.menu = new Ext.menu.Menu({ defaultAlign: 'tl-b?' });
     MODx.grid.LocalGrid.superclass.constructor.call(this,config);
+    this.on('rowcontextmenu',this._showMenu,this);
 };
 Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
     windows: {}
