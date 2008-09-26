@@ -56,6 +56,7 @@ MODx.grid.LocalGrid = function(config) {
     });
     this.menu = new Ext.menu.Menu({ defaultAlign: 'tl-b?' });
     MODx.grid.LocalGrid.superclass.constructor.call(this,config);
+    this.config = config;
     this.on('rowcontextmenu',this._showMenu,this);
 };
 Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
@@ -159,6 +160,29 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
                 this.getStore().remove(r);
             }
         },this);
+    }
+    
+    
+    /**
+     * Encodes modified record data into JSON array for form sending
+     * 
+     * @access public
+     */
+    ,encode: function() {
+        var s = this.getStore();
+        var ct = s.getTotalCount();
+        var rs = this.config.encodeByPk ? {} : [];
+        var r;
+        for (var j=0;j<ct;j++) {
+        	r = s.getAt(j).data;
+        	if (this.config.encodeAssoc) {
+        	   rs[r[this.config.encodeByPk || 'id']] = r;
+        	} else {
+        	   rs.push(r);
+        	}
+        }
+        
+        return Ext.encode(rs);
     }
 });
 Ext.reg('grid-local',MODx.grid.LocalGrid);
