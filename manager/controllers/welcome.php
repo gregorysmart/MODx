@@ -7,14 +7,6 @@
  */
 if (!$modx->hasPermission('home')) $error->failure($modx->lexicon('permission_denied'));
 
-// get current version from database, prevents a cached value being used
-$current_version = $modx->getObject('modSystemSetting','settings_version');
-if ($modx->hasPermission('settings') && (!isset($modx->config['settings_version']) || $current_version->value != $modx->version['full_version'])) {
-    $acts = $modx->request->getActionIDs(array('system/settings'));
-    // seems to be a new install or upgrade - send the user to the configuration page
-    die('<script type="text/javascript">document.location.href="index.php?a='.$acts['system/settings'].'";</script>');
-}
-
 $modx->smarty->assign('site_name',$modx->config['site_name']);
 
 

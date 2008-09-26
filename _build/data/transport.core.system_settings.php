@@ -480,15 +480,6 @@ $collection['session_name']->fromArray(array (
   'area' => 'session',
 
 ), '', true, true);
-$collection['settings_version']= $xpdo->newObject('modSystemSetting');
-$collection['settings_version']->fromArray(array (
-  'key' => 'settings_version',
-  'value' => '2.0.0-alpha-3',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
-  'area' => 'system',
-
-), '', true, true);
 $collection['set_header']= $xpdo->newObject('modSystemSetting');
 $collection['set_header']->fromArray(array (
   'key' => 'set_header',

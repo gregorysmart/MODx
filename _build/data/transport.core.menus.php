@@ -181,7 +181,7 @@ $collection['16']->fromArray(array (
   'action' => '0',
   'text' => 'flush_sessions',
   'icon' => 'images/icons/unzip.gif',
-  'menuindex' => '4',
+  'menuindex' => '5',
   'params' => '',
   'handler' => 'MODx.msg.confirm({
     title: _(\'flush_sessions\')
@@ -246,7 +246,7 @@ $collection['21']->fromArray(array (
   'action' => '0',
   'text' => 'flush_access',
   'icon' => 'images/icons/unzip.gif',
-  'menuindex' => '3',
+  'menuindex' => '4',
   'params' => '',
   'handler' => 'MODx.msg.confirm({
     title: _(\'flush_access\')
