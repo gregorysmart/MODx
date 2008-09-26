@@ -170,7 +170,7 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
      */
     ,encode: function() {
         var s = this.getStore();
-        var ct = s.getTotalCount();
+        var ct = s.getCount();
         var rs = this.config.encodeByPk ? {} : [];
         var r;
         for (var j=0;j<ct;j++) {
