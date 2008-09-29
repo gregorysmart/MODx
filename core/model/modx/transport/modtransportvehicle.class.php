@@ -100,4 +100,3 @@ class modTransportVehicle {
 		return $this->obj;
 	}
 }
-?>

@@ -63,7 +63,7 @@ class modPackageBuilder {
 		$this->modx->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 
 		if (!$workspace= $this->modx->getObject('modWorkspace', array('active' => 1))) {
-			echo "\nYou must have a valid core installation with an active workspace to run the build.\n";
+			$this->modx->log(MODX_LOG_LEVEL_FATAL,"\nYou must have a valid core installation with an active workspace to run the build.\n");
 			exit();
 		}
 		$this->directory = $workspace->get('path') . 'packages/';
@@ -79,7 +79,7 @@ class modPackageBuilder {
 	function setWorkspace($workspace_id) {
 		if (!is_numeric($workspace_id)) return false;
 		$workspace = $this->modx->getObject('modWorkspace',$workspace_id);
-		if ($workspace == NULL) return false;
+		if ($workspace == null) return false;
 
 		$this->directory = $workspace->get('path') . 'packages/';
 		return $workspace;
@@ -115,6 +115,7 @@ class modPackageBuilder {
 
         // create the transport package
 		$this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'Created new transport package with signature: '.$this->signature);
 
 		return $this->package;
 	}
@@ -140,7 +141,10 @@ class modPackageBuilder {
 		if ($this->namespace) {
 			$attr['namespace'] = $this->namespace; // package the namespace into the metadata
         }
-        return new modTransportVehicle($obj, $attr);
+        $vehicle = new modTransportVehicle($obj, $attr);
+
+        $modx->log(MODX_LOG_LEVEL_INFO,'Created new transport vehicle with attributes: '.print_r($attr,true));
+        return $vehicle;
 	}
 
     /**
@@ -261,6 +265,12 @@ class modPackageBuilder {
         $foci = array();
         $languages = array();
         $entries = array();
+
+        if (!is_dir($path)) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL,'<b>Error</b> - Lexicon path not found: '.$path);
+        }
+
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'Auto-building in lexicon from path: '.$path);
 
         // package in languages
         $attributes= array(
