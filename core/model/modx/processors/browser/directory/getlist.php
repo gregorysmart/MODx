@@ -15,8 +15,8 @@ $directories = array();
 
 $actions = $modx->request->getAllActionIDs();
 
-$root = isset($_POST['path']) && $_POST['path'] != null
-    ? $_POST['path']
+$root = isset($_POST['prependPath']) && $_POST['prependPath'] != null
+    ? $_POST['prependPath']
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $fullpath = $root.($dir != '' ? $dir : '');
 $odir = dir($fullpath);

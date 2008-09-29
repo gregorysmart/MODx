@@ -91,7 +91,8 @@ Ext.extend(MODx.DataView,Ext.DataView,{
             url: config.url
             ,baseParams: config.baseParams || { 
                 action: 'getList'
-                ,lpath: config.path || null
+                ,prependPath: config.prependPath || null
+                ,prependUrl: config.prependUrl || null
             }
             ,root: config.root || 'results'
             ,fields: config.fields

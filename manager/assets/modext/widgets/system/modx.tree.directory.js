@@ -19,7 +19,7 @@ MODx.tree.Directory = function(config) {
 		,ddAppendOnly: true
 		,url: MODx.config.connectors_url+'browser/directory.php'
 		,baseParams: {
-			path: config.path || null
+			prependPath: config.prependPath || null
 			,hideFiles: config.hideFiles || false
 		}
 		,action: 'getList'

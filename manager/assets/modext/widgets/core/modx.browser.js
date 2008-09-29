@@ -41,13 +41,14 @@ MODx.browser.Window = function(config) {
     this.view = MODx.load({
         xtype: 'modx-browser-view'
         ,onSelect: {fn: this.onSelect, scope: this}
-        ,path: config.path || null
+        ,prependPath: config.prependPath || null
+        ,prependUrl: config.prependUrl || null
     });
     this.tree = MODx.load({
         xtype: 'tree-directory'
         ,onUpload: function() { this.view.run(); }
         ,scope: this
-        ,path: config.path || null
+        ,prependPath: config.prependPath || null
         ,hideFiles: config.hideFiles || false
     });
     this.tree.on('click',function(node,e) {
@@ -228,7 +229,8 @@ MODx.browser.View = function(config) {
         ]
         ,baseParams: { 
             action: 'getFiles'
-            ,path: config.path || null
+            ,prependPath: config.prependPath || null
+            ,prependUrl: config.prependUrl || null
         }
         ,tpl: this.templates.thumb
         ,listeners: {

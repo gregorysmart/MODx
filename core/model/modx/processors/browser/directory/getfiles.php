@@ -12,8 +12,8 @@ if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon(
 $dir = !isset($_POST['dir']) || $_POST['dir'] == 'root' ? '' : $_POST['dir'];
 $dir = trim($dir,'/');
 
-$root = isset($_POST['path']) && $_POST['path'] != null
-    ? $_POST['path']
+$root = isset($_POST['prependPath']) && $_POST['prependPath'] != null
+    ? $_POST['prependPath']
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $fullpath = $root.'/'.$dir;
 $odir = dir($fullpath);
@@ -32,7 +32,11 @@ while(false !== ($name = $odir->read())) {
 		}
 		$fileClass = $this->fileClass . $fileExtension;
 		$size = @filesize($fullname);
-		$url = $root.$dir.'/'.$name;
+		if (isset($_POST['prependUrl']) && $_POST['prependUrl'] != null) {
+            $url = $_POST['prependUrl'].$dir.'/'.$name;
+        } else {
+            $url = $modx->config['rb_base_url'].$dir.'/'.$name;
+        }
 		$files[] = array(
 			'name' => $name,
 			'cls' => 'file',
