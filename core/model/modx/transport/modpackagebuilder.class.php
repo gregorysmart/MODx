@@ -143,7 +143,6 @@ class modPackageBuilder {
         }
         $vehicle = new modTransportVehicle($obj, $attr);
 
-        $this->modx->log(MODX_LOG_LEVEL_INFO,'Created new transport vehicle.');
         return $vehicle;
 	}
 
