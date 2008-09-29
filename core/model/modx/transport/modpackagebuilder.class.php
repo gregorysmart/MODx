@@ -143,7 +143,7 @@ class modPackageBuilder {
         }
         $vehicle = new modTransportVehicle($obj, $attr);
 
-        $modx->log(MODX_LOG_LEVEL_INFO,'Created new transport vehicle with attributes: '.print_r($attr,true));
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'Created new transport vehicle.');
         return $vehicle;
 	}
 
@@ -170,6 +170,8 @@ class modPackageBuilder {
     	} else $namespace = $ns;
         $this->namespace = $namespace;
 
+        $this->modx->log(MODX_LOG_LEVEL_INFO,'Registered package namespace as: '.$this->namespace->get('name'));
+
         // define some basic attributes
         $attributes= array(
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
@@ -184,9 +186,11 @@ class modPackageBuilder {
 
             // put it into the package
             if (!$this->putVehicle($v)) return false;
+            $this->modx->log(MODX_LOG_LEVEL_INFO,'Packaged namespace "'.$this->namespace->get('name').'" into package.');
         }
 
         if ($autoincludes == true || (is_array($autoincludes) && !empty($autoincludes))) {
+            $this->modx->log(MODX_LOG_LEVEL_INFO,'Packaging in autoincludes: '.print_r($autoincludes,true));
             if (is_array($autoincludes)) {
                 // set automatically included packages
                 $this->setAutoSelects($autoincludes);
