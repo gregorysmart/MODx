@@ -15,7 +15,10 @@ $directories = array();
 
 $actions = $modx->request->getAllActionIDs();
 
-$fullpath = $modx->config['base_path'].$modx->config['rb_base_dir'].($dir != '' ? $dir : '');
+$root = isset($_POST['path']) && $_POST['path'] != null
+    ? $_POST['path']
+    : $modx->config['base_path'].$modx->config['rb_base_dir'];
+$fullpath = $root.($dir != '' ? $dir : '');
 $odir = dir($fullpath);
 while(false !== ($name = $odir->read())) {
 	if(in_array($name,array('.','..','.svn','_notes'))) continue;
@@ -49,7 +52,7 @@ while(false !== ($name = $odir->read())) {
             ),
 		);
 	}
-    
+
     // get files in current dir
     if (!is_dir($fullname) && !isset($_POST['hideFiles'])) {
         $directories[] = array(

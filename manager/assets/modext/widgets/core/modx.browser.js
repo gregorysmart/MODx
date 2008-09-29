@@ -41,11 +41,14 @@ MODx.browser.Window = function(config) {
     this.view = MODx.load({
         xtype: 'modx-browser-view'
         ,onSelect: {fn: this.onSelect, scope: this}
+        ,path: config.path || null
     });
     this.tree = MODx.load({
         xtype: 'tree-directory'
         ,onUpload: function() { this.view.run(); }
         ,scope: this
+        ,path: config.path || null
+        ,hideFiles: config.hideFiles || false
     });
     this.tree.on('click',function(node,e) {
         this.load(node.id);
@@ -223,7 +226,10 @@ MODx.browser.View = function(config) {
             ,{name:'lastmod', type:'date', dateFormat:'timestamp'}
             ,'menu'
         ]
-        ,baseParams: { action: 'getFiles' }
+        ,baseParams: { 
+            action: 'getFiles'
+            ,path: config.path || null
+        }
         ,tpl: this.templates.thumb
         ,listeners: {
             'selectionchange': {fn:this.showDetails, scope:this, buffer:100}

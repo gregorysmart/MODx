@@ -89,7 +89,10 @@ Ext.extend(MODx.DataView,Ext.DataView,{
     ,_loadStore: function(config) {
         this.store = new Ext.data.JsonStore({
             url: config.url
-            ,baseParams: config.baseParams || { action: 'getList' }
+            ,baseParams: config.baseParams || { 
+                action: 'getList'
+                ,lpath: config.path || null
+            }
             ,root: config.root || 'results'
             ,fields: config.fields
             ,listeners: {

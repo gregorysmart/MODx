@@ -611,6 +611,8 @@ Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
             this.browser = MODx.load({
                 xtype: 'modx-browser'
                 ,el: this.config.browserEl
+                ,path: this.config.path || null
+                ,hideFiles: this.config.hideFiles || false
                 ,listeners: {
                     'select': {fn: function(data) {
                         this.setValue(data.url);

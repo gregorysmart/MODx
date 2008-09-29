@@ -18,6 +18,10 @@ MODx.tree.Directory = function(config) {
 		,enableDrop: false
 		,ddAppendOnly: true
 		,url: MODx.config.connectors_url+'browser/directory.php'
+		,baseParams: {
+			path: config.path || null
+			,hideFiles: config.hideFiles || false
+		}
 		,action: 'getList'
         ,primaryKey: 'dir'
 	});
