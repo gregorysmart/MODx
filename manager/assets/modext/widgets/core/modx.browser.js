@@ -253,6 +253,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
             ,params: {
                 action: 'remove'
                 ,file: this.dir+'/'+node.id
+                ,prependPath: this.config.prependPath
             }
             ,listeners: {
             	'success': {fn:this.run,scope:this}

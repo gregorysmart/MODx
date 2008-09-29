@@ -61,6 +61,8 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
             ,enableProgress: true
             ,baseParams: {
                 action: 'upload'
+                ,prependPath: this.config.prependPath || null
+                ,prependUrl: this.config.prependUrl || null
             }
         });
         this.uploader.on({
@@ -128,6 +130,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 		  	    action: 'rename'
 		  	    ,new_name: nv
 		  	    ,old_name: ov
+                ,prependPath: this.config.prependPath || null
 		  	    ,file: this.treeEditor.editNode.id
 		    }
 		    ,listeners: {
@@ -143,6 +146,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
     		this.windows.create = MODx.load({
     			xtype: 'window-directory-create'
     			,record: r
+                ,prependPath: this.config.prependPath || null
                 ,listeners: {
                     'success':{fn:this.refresh,scope:this}
                 }
@@ -160,6 +164,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
             this.windows.chmod = MODx.load({
     			xtype: 'window-directory-chmod'
     			,record: r
+                ,prependPath: this.config.prependPath || null
                 ,listeners: {
                     'success':{fn:this.refresh,scope:this}
                 }
@@ -178,6 +183,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
             ,params: {
                 action: 'remove'
                 ,file: node.id
+                ,prependPath: this.config.prependPath || null
             }
             ,listeners: {
                 'success':{fn:this.refreshParentNode,scope:this}
@@ -205,6 +211,10 @@ MODx.window.CreateDirectory = function(config) {
         ,url: MODx.config.connectors_url+'browser/directory.php'
         ,action: 'create'
         ,fields: [{
+            xtype: 'hidden'
+            ,name: 'prependPath'
+            ,value: config.prependPath || null
+        },{
             fieldLabel: _('name')
             ,name: 'name'
             ,xtype: 'textfield'
@@ -240,6 +250,10 @@ MODx.window.ChmodDirectory = function(config) {
         ,url: MODx.config.connectors_url+'browser/directory.php'
         ,action: 'chmod'
         ,fields: [{
+            xtype: 'hidden'
+            ,name: 'prependPath'
+            ,value: config.prependPath || null
+        },{
             fieldLabel: _('mode')
             ,name: 'mode'
             ,xtype: 'textfield'
