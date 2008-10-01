@@ -4,6 +4,11 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Updated xPDO to rev 248
+- More log messages for modPackageBuilder
+- Fixed some bugs with MODx.Browser
+- Enabled specific path setting for MODx.Browser
+- Fix to remove redirect to system settings if version info differs.
 - Added MODX_SETUP_KEY to setup to identify the distribution type and allow setup logic to be conditional based on this information.
 - Introduced additional default policy attributes and policy checks throughout the controllers and processors for more robust access control.
 - [#MODX-349] Added processor and menu item to reload your own access policies without logging out and logging back in.
