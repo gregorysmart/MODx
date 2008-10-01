@@ -17,13 +17,17 @@ $d = isset($_POST['prependPath']) && $_POST['prependPath'] != null
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $file = $d.$_POST['file'];
 
+// in case rootVisible is true
+$file = str_replace('root/','',$file);
+$file = str_replace('undefined/','',$file);
+
 if (!file_exists($file))
-	$error->failure($modx->lexicon('file_err_nf'));
+	$modx->error->failure($modx->lexicon('file_err_nf').': '.$file);
 if (!is_readable($file) || !is_writable($file))
-	$error->failure($modx->lexicon('file_err_perms_remove'));
+	$modx->error->failure($modx->lexicon('file_err_perms_remove'));
 if (!is_file($file))
-	$error->failure($modx->lexicon('file_err_invalid'));
+	$modx->error->failure($modx->lexicon('file_err_invalid'));
 
-if (!@unlink($file)) $error->failure($modx->lexicon('file_err_remove'));
+if (!@unlink($file)) $modx->error->failure($modx->lexicon('file_err_remove'));
 
-$error->success();
+$modx->error->success();

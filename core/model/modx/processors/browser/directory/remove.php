@@ -17,6 +17,10 @@ $d = isset($_POST['prependPath']) && $_POST['prependPath'] != null
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $directory = $d.$_POST['dir'];
 
+// in case rootVisible is true
+$directory = str_replace('root/','',$directory);
+$directory = str_replace('undefined/','',$directory);
+
 if (!is_dir($directory)) $modx->error->failure($modx->lexicon('file_folder_err_invalid'));
 
 if (!is_readable($directory) || !is_writable($directory))

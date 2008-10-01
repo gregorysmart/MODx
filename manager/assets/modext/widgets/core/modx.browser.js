@@ -258,12 +258,14 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
     ,removeFile: function(item,e) {
         var node = this.cm.activeNode;
         var data = this.lookup[node.id];
+        var d = '';
+        if (typeof(this.dir) != 'object') { d = this.dir; }
         MODx.msg.confirm({
             text: _('file_remove_confirm')
             ,url: MODx.config.connectors_url+'browser/file.php'
             ,params: {
                 action: 'remove'
-                ,file: this.dir+'/'+node.id
+                ,file: d+'/'+node.id
                 ,prependPath: this.config.prependPath
             }
             ,listeners: {
