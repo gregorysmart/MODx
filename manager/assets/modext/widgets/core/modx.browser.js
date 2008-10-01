@@ -35,14 +35,16 @@ Ext.reg('modx-browser',MODx.Browser);
  * @constructor
  * @param {Object} config An object of config options.
  * @xtype modx-browser-window
- */
+ */ e
 MODx.browser.Window = function(config) {
     config = config || {};
+    this.ident = Ext.id(); // generate unique id
     this.view = MODx.load({
         xtype: 'modx-browser-view'
         ,onSelect: {fn: this.onSelect, scope: this}
         ,prependPath: config.prependPath || null
         ,prependUrl: config.prependUrl || null
+        ,ident: this.ident
     });
     this.tree = MODx.load({
         xtype: 'tree-directory'
@@ -50,6 +52,7 @@ MODx.browser.Window = function(config) {
         ,scope: this
         ,prependPath: config.prependPath || null
         ,hideFiles: config.hideFiles || false
+        ,ident: this.ident
     });
     this.tree.on('click',function(node,e) {
         this.load(node.id);
@@ -67,21 +70,22 @@ MODx.browser.Window = function(config) {
         ,closeAction: 'hide'
         ,border: false
         ,items: [{
-            id: 'browser-tree'
+            id: this.ident+'-browser-tree'
             ,cls: 'browser-tree'
             ,region: 'west'
             ,width: 250
             ,items: this.tree
             ,autoScroll: true
         },{
-            cls: 'browser-view'
+            id: this.ident+'-browser-view'
+            ,cls: 'browser-view'
             ,region: 'center'
             ,autoScroll: true
             ,width: 450
             ,items: this.view
             ,tbar: this.getToolbar()
         },{
-            id: 'img-detail-panel'
+            id: this.ident+'-img-detail-panel'
             ,region: 'east'
             ,split: true
             ,width: 150
@@ -89,7 +93,7 @@ MODx.browser.Window = function(config) {
             ,maxWidth: 250
         }]
         ,buttons: [{
-            id: 'ok-btn'
+            id: this.ident+'-ok-btn'
             ,text: _('ok')
             ,handler: this.onSelect
             ,scope: this
@@ -275,7 +279,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
     
     ,showDetails : function(){
         var selNode = this.getSelectedNodes();
-        var detailEl = Ext.getCmp('img-detail-panel').body;
+        var detailEl = Ext.getCmp(this.config.ident+'-img-detail-panel').body;
         if(selNode && selNode.length > 0){
             selNode = selNode[0];
             Ext.getCmp('ok-btn').enable();
