@@ -614,6 +614,7 @@ Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
                 ,prependPath: this.config.prependPath || null
                 ,prependUrl: this.config.prependUrl || null
                 ,hideFiles: this.config.hideFiles || false
+                ,rootVisible: this.config.rootVisible || false
                 ,listeners: {
                     'select': {fn: function(data) {
                         this.setValue(data.url);

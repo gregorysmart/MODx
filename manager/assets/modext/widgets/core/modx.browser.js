@@ -53,6 +53,7 @@ MODx.browser.Window = function(config) {
         ,prependPath: config.prependPath || null
         ,hideFiles: config.hideFiles || false
         ,ident: this.ident
+        ,rootVisible: config.rootVisible
     });
     this.tree.on('click',function(node,e) {
         this.load(node.id);
@@ -183,6 +184,12 @@ Ext.extend(MODx.browser.Window,Ext.Window,{
             ,listeners: {
                 'select': {fn:this.sortImages, scope:this}
             }
+        },'-',{
+            icon: MODx.config.template_url+'images/icons/sort.png'
+            ,cls: 'x-btn-icon'
+            ,tooltip: {text: _('tree_refresh')}
+            ,handler: this.load
+            ,scope: this
         }];
     }
     
@@ -288,7 +295,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
             this.templates.details.overwrite(detailEl, data);
             detailEl.slideIn('l', {stopFx:true,duration:'.2'});
         }else{
-            Ext.getCmp('ok-btn').disable();
+            Ext.getCmp(this.config.ident+'-ok-btn').disable();
             detailEl.update('');
         }
     }
