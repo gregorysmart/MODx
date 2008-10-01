@@ -35,7 +35,7 @@ Ext.reg('modx-browser',MODx.Browser);
  * @constructor
  * @param {Object} config An object of config options.
  * @xtype modx-browser-window
- */ e
+ */
 MODx.browser.Window = function(config) {
     config = config || {};
     this.ident = Ext.id(); // generate unique id
