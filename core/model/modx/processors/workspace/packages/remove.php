@@ -13,14 +13,31 @@ $modx->log(XPDO_LOG_LEVEL_INFO,'Grabbing package to remove...');
 $package = $modx->getObject('transport.modTransportPackage', $_REQUEST['signature']);
 if ($package == null) $modx->error->failure($modx->lexicon('package_err_nfs',array('signature' => $_REQUEST['signature'])));
 
-$modx->log(XPDO_LOG_LEVEL_INFO,'Successfully grabbed package. Now attempting to remove actual file...');
+$modx->log(XPDO_LOG_LEVEL_INFO,'Successfully grabbed package. Now attempting to remove transport zip...');
 
+$cacheManager = $modx->getCacheManager();
+
+// remove transport zip
 $f = $modx->config['core_path'].'packages/'.$package->signature.'.transport.zip';
 if (!file_exists($f)) {
-    $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport file was not found and could not be removed from the core/packages directory.');
+    $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport zip was not found and could not be removed from the core/packages directory.');
 } else if (!@unlink($f)) {
-    $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport file was unable to be removed, check your permissions.');
+    $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport zip was unable to be removed, check your permissions.');
+} else {
+    $modx->log(XPDO_LOG_LEVEL_INFO,'Successfully removed transport zip.');
 }
+$modx->log(XPDO_LOG_LEVEL_INFO,'Attempting to remove extracted transport directory...');
+
+// remove transport dir
+$f = $modx->config['core_path'].'packages/'.$package->signature.'/';
+if (!file_exists($f)) {
+    $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport directory was not found and could not be removed from the core/packages directory.');
+} else if (!$cacheManager->deleteTree($f)) {
+    $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport directory was unable to be removed, check your permissions.');
+} else {
+    $modx->log(XPDO_LOG_LEVEL_INFO,'Successfully removed extracted transport directory.');
+}
+
 
 if ($package->remove() == false) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_remove'));
