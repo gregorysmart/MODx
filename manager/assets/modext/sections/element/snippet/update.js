@@ -31,26 +31,6 @@ MODx.page.UpdateSnippet = function(config) {
                 ,ctrl: true
             }]
         },{
-            process: 'duplicate'
-            ,text: _('duplicate')
-            ,method: 'remote'
-            ,confirm: _('snippet_duplicate_confirm')
-            ,refresh: {
-                tree: 'modx_element_tree'
-                ,node: 'n_type_snippet'
-                ,self: true
-            }
-        },{
-            process: 'delete'
-            ,text: _('delete')
-            ,method: 'remote'
-            ,confirm: _('snippet_delete_confirm')
-            ,refresh: {
-                tree: 'modx_element_tree'
-                ,node: 'n_type_snippet'
-                ,self: true
-            }
-        },{
             process: 'cancel'
             ,text: _('cancel')
             ,params:{a:MODx.action['welcome']}

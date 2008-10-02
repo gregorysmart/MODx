@@ -45,26 +45,6 @@ MODx.page.UpdateTV = function(config) {
                 ,ctrl: true
             }]
         },{
-            process: 'duplicate'
-            ,text: _('duplicate')
-            ,method: 'remote'
-            ,confirm: _('tv_duplicate_confirm')
-            ,refresh: {
-                tree: 'modx_element_tree'
-                ,node: 'n_type_tv'
-                ,self: true
-            }
-        },{
-            process: 'delete'
-            ,text: _('delete')
-            ,method: 'remote'
-            ,confirm: _('tv_delete_confirm')
-            ,refresh: {
-                tree: 'modx_element_tree'
-                ,node: 'n_type_tv'
-                ,self: true
-            }
-        },{
             process: 'cancel'
             ,text: _('cancel')
             ,params: {a:MODx.action['welcome']}
