@@ -15,7 +15,7 @@ if (!isset($_POST['name']) || $_POST['name'] == '')
 if (!isset($_POST['parent'])) {
 	$_POST['parent'] = '';
 }
-$d = isset($_POST['prependPath']) && $_POST['prependPath'] != null
+$d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['prependPath'] != null
     ? $_POST['prependPath']
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $parentdir = $d.$_POST['parent'].'/';

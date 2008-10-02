@@ -14,7 +14,7 @@ if (!isset($_POST['mode']) || $_POST['mode'] == '')
 if (!isset($_POST['dir']) || $_POST['dir'] == '')
 	$modx->error->failure($modx->lexicon('file_folder_err_ns'));
 
-$d = isset($_POST['prependPath']) && $_POST['prependPath'] != null
+$d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['prependPath'] != null
     ? $_POST['prependPath']
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $directory = realpath($d.$_POST['dir']);
