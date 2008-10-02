@@ -85,6 +85,13 @@ class modPackageBuilder {
 		return $workspace;
 	}
 
+    /**
+     * @deprecated
+     */
+    function create($name,$version,$release= '') {
+        $this->createPackage($name,$version,$release);
+    }
+
 	/**
     * Creates a new xPDOTransport package.
 	*
