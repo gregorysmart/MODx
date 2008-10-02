@@ -19,7 +19,7 @@ $builder = new modPackageBuilder($modx);
 
 // create a new package
 $modx->log(MODX_LOG_LEVEL_INFO,'Creating a new package: '.$_PACKAGE['name'].'-'.$_PACKAGE['version'].'-'.$_PACKAGE['release']);
-$builder->create($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release']);
+$builder->createPackage($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release']);
 $builder->registerNamespace($_PACKAGE['namespace'],$_PACKAGE['autoselects']);
 
 // define some locations for file resources

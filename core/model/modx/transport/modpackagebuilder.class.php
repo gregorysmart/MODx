@@ -94,7 +94,7 @@ class modPackageBuilder {
     * package.
 	* @returns xPDOTransport The xPDOTransport package object.
     */
-	function create($name, $version, $release= '') {
+	function createPackage($name, $version, $release= '') {
         // setup the signature and filename
         $s['name']= $name;
         $s['version']= $version;
