@@ -32,7 +32,7 @@ $modx->log(XPDO_LOG_LEVEL_INFO,'Attempting to remove extracted transport directo
 $f = $modx->config['core_path'].'packages/'.$package->signature.'/';
 if (!file_exists($f)) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport directory was not found and could not be removed from the core/packages directory.');
-} else if (!$cacheManager->deleteTree($f)) {
+} else if (!$cacheManager->deleteTree($f,true,false,array())) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,'Transport directory was unable to be removed, check your permissions.');
 } else {
     $modx->log(XPDO_LOG_LEVEL_INFO,'Successfully removed extracted transport directory.');
