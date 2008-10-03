@@ -149,7 +149,7 @@ $collection['14']->fromArray(array (
   'action' => '0',
   'text' => '-',
   'icon' => '',
-  'menuindex' => '7',
+  'menuindex' => '8',
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -160,7 +160,7 @@ $collection['15']->fromArray(array (
   'action' => '0',
   'text' => 'logout',
   'icon' => 'images/icons/unzip.gif',
-  'menuindex' => '8',
+  'menuindex' => '9',
   'params' => '',
   'handler' => 'MODx.msg.confirm({
     title: _(\'logout\')
@@ -524,6 +524,17 @@ $collection['44']->fromArray(array (
   'params' => '',
   'handler' => '',
 ), '', true, true);
+$collection['45']= $xpdo->newObject('modMenu');
+$collection['45']->fromArray(array (
+  'id' => '45',
+  'parent' => '9',
+  'action' => '72',
+  'text' => 'package_builder',
+  'icon' => 'images/icons/logging.gif',
+  'menuindex' => '11',
+  'params' => '',
+  'handler' => '',
+), '', true, true);
 $collection['46']= $xpdo->newObject('modMenu');
 $collection['46']->fromArray(array (
   'id' => '46',
@@ -566,5 +577,16 @@ $collection['49']->fromArray(array (
   'icon' => '',
   'menuindex' => '14',
   'params' => '',
+  'handler' => '',
+), '', true, true);
+$collection['50']= $xpdo->newObject('modMenu');
+$collection['50']->fromArray(array (
+  'id' => '50',
+  'parent' => '1',
+  'action' => '44',
+  'text' => 'add_symlink',
+  'icon' => 'images/icons/link_add.png',
+  'menuindex' => '7',
+  'params' => '&class_key=modSymLink',
   'handler' => '',
 ), '', true, true);

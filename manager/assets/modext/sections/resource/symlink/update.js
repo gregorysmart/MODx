@@ -1,27 +1,27 @@
 /**
- * Loads the update weblink resource page
+ * Loads the update symlink resource page
  * 
- * @class MODx.page.UpdateWebLink
+ * @class MODx.page.UpdateSymLink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-weblink-update
+ * @xtype page-symlink-update
  */
-MODx.page.UpdateWebLink = function(config) {
+MODx.page.UpdateSymLink = function(config) {
     config = config || {};
         
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/document.php'
         ,which_editor: 'none'
-        ,formpanel: 'panel-weblink'
+        ,formpanel: 'panel-symlink'
         ,actions: {
-            'new': MODx.action['resource/weblink/create']
-            ,edit: MODx.action['resource/weblink/update']
+            'new': MODx.action['resource/symlink/create']
+            ,edit: MODx.action['resource/symlink/update']
             ,preview: MODx.action['resource/preview']
             ,cancel: MODx.action['welcome']
         }
         ,components: [{
-            xtype: 'panel-weblink'
-            ,renderTo: 'panel-weblink'
+            xtype: 'panel-symlink'
+            ,renderTo: 'panel-symlink'
             ,resource: config.id
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -73,12 +73,12 @@ MODx.page.UpdateWebLink = function(config) {
             ,params: { a: MODx.action['welcome'] }
         }]
     });
-    MODx.page.UpdateWebLink.superclass.constructor.call(this,config);
+    MODx.page.UpdateSymLink.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.UpdateWebLink,MODx.Component,{
+Ext.extend(MODx.page.UpdateSymLink,MODx.Component,{
     preview: function(id) {
         window.open(MODx.config.base_url+'index.php?id='+id);
         return false;
     }
 });
-Ext.reg('page-weblink-update',MODx.page.UpdateWebLink);
+Ext.reg('page-symlink-update',MODx.page.UpdateSymLink);

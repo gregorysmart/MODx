@@ -79,6 +79,15 @@ foreach ($collection as $item) {
                     ),
                 ),
                 array(
+                    'id' => 'create_symlink',
+                    'text' => $modx->lexicon('create_symlink_here'),
+                    'params' => array(
+                        'a' => $actions['resource/create'],
+                        'class_key' => 'modSymLink',
+                        'context_key' => $item->get('key'),
+                    ),
+                ),
+                array(
                     'id' => 'create_static_resource',
                     'text' => $modx->lexicon('create_static_resource_here'),
                     'params' => array(
@@ -150,6 +159,16 @@ foreach ($collection as $item) {
                     'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modWebLink',
+                        'parent' => $item->id,
+                        'context_key' => $item->get('context_key'),
+                    ),
+                ),
+                array(
+                    'id' => 'create_symlink',
+                    'text' => $modx->lexicon('create_symlink_here'),
+                    'params' => array(
+                        'a' => $actions['resource/create'],
+                        'class_key' => 'modSymLink',
                         'parent' => $item->id,
                         'context_key' => $item->get('context_key'),
                     ),

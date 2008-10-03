@@ -381,6 +381,7 @@
         <aggregate alias="modModule" class="modModule" key="guid" local="moduleguid" foreign="guid" cardinality="one" owner="foreign" />
     </object>
     <object class="modStaticResource" extends="modResource" />
+    <object class="modSymLink" extends="modResource" />
     <object class="modSystemSetting" table="system_settings" extends="xPDOObject">
         <field key="key" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="pk" />
         <field key="value" dbtype="text" phptype="string" null="false" default="" />

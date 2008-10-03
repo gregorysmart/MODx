@@ -1,20 +1,20 @@
 /**
  * Loads the create resource page
  * 
- * @class MODx.page.CreateWebLink
+ * @class MODx.page.CreateSymLink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-weblink-create
+ * @xtype page-symlink-create
  */
-MODx.page.CreateWebLink = function(config) {
+MODx.page.CreateSymLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/document.php'
-        ,formpanel: 'panel-weblink'
+        ,formpanel: 'panel-symlink'
         ,which_editor: 'none'
         ,actions: {
-            'new': MODx.action['resource/weblink/create']
-            ,edit: MODx.action['resource/weblink/update']
+            'new': MODx.action['resource/symlink/create']
+            ,edit: MODx.action['resource/symlink/update']
             ,cancel: MODx.action['welcome']
         }
         ,buttons: [{
@@ -42,8 +42,8 @@ MODx.page.CreateWebLink = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-weblink'
-            ,renderTo: 'panel-weblink'
+            xtype: 'panel-symlink'
+            ,renderTo: 'panel-symlink'
             ,resource: 0
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -62,7 +62,7 @@ MODx.page.CreateWebLink = function(config) {
             ,resource: 0
         }]
     });
-    MODx.page.CreateWebLink.superclass.constructor.call(this,config);
+    MODx.page.CreateSymLink.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.CreateWebLink,MODx.Component);
-Ext.reg('page-weblink-create',MODx.page.CreateWebLink);
+Ext.extend(MODx.page.CreateSymLink,MODx.Component);
+Ext.reg('page-symlink-create',MODx.page.CreateSymLink);

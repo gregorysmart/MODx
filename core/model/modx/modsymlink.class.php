@@ -1,23 +1,23 @@
 <?php
 /**
- * A modResource derivative the represents a redirect link.
+ * A modResource derivative the represents a symbolic link.
  *
  * {@inheritdoc}
  *
  * @package modx
  */
-class modWebLink extends modResource {
-    function modWebLink(& $xpdo) {
+class modSymLink extends modResource {
+    function modSymLink(& $xpdo) {
         $this->__construct($xpdo);
     }
     function __construct(& $xpdo) {
         parent :: __construct($xpdo);
         $this->set('type', 'reference');
-        $this->set('class_key', 'modWebLink');
+        $this->set('class_key', 'modSymLink');
     }
 
     /**
-     * Process the modWebLink and redirect to the specified resource.
+     * Process the modSymLink and forward to the specified resource.
      */
     function process() {
         $this->_content= $this->get('content');
@@ -36,7 +36,6 @@ class modWebLink extends modResource {
         } else {
             $this->_output= $this->_content;
         }
-        $this->xpdo->sendRedirect($this->_output);
+        $this->xpdo->sendForward($this->_output);
     }
 }
-?>

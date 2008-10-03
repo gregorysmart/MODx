@@ -2,7 +2,7 @@
 // check permissions
 if (!$modx->hasPermission('new_document')) $modx->error->failure($modx->lexicon('access_denied'));
 
-$resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modWebLink';
+$resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modSymLink';
 $resourceDir= strtolower(substr($resourceClass, 3));
 
 $delegateView= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__);
@@ -133,6 +133,6 @@ $modx->smarty->assign('onDocFormRender',$onDocFormRender);
 
 $modx->smarty->assign('resource',$resource);
 
-$modx->smarty->display('resource/weblink/create.tpl');
+$modx->smarty->display('resource/symlink/create.tpl');
 
 ?>
