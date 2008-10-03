@@ -2497,24 +2497,25 @@ class modX extends xPDO {
             }
             $cookieLifetime= 0;
             if (isset ($this->config['session_cookie_lifetime'])) {
-                @ini_set('session.cookie_lifetime', $this->config['session_cookie_lifetime']);
-                $cookieLifetime= (integer) $this->config['session_cookie_lifetime'];
+                $cookieLifetime= intval($this->config['session_cookie_lifetime']);
             }
             $cookiePath= isset ($this->config['session_cookie_path']) ? $this->config['session_cookie_path'] : $this->config['base_path'];
+            @ini_set('session.cookie_lifetime', $cookieLifetime);
             @ini_set('session.cookie_path', $cookiePath);
             $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
             session_name($site_sessionname);
+            
             session_start();
             $this->_sessionState = MODX_SESSION_STATE_INITIALIZED;
             $this->getUser($contextKey);
             $cookieExpiration= 0;
             if (isset ($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']) && is_numeric($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime'])) {
                 $cookieLifetime= intval($_SESSION['modx.' . $contextKey . '.session.cookie.lifetime']);
+                if ($cookieLifetime) {
+                    $cookieExpiration= time() + $cookieLifetime;
+                }
+                setcookie(session_name(), session_id(), $cookieExpiration, $cookiePath);
             }
-            if ($cookieLifetime) {
-                $cookieExpiration= time() + $cookieLifetime;
-            }
-            setcookie(session_name(), session_id(), $cookieExpiration, $cookiePath);
         }
     }
 

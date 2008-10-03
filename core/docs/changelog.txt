@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-329] Fixed error with browser "remembering" user even when "remember me" is not checked.  Was always using the system setting regardless of rememberme.
 - [#MODX-380] Created modSymLink resource class which forwards requests to other resources without changing the URL (as opposed to modWebLink which redirects).
 
 MODx Revolution 2.0.0-alpha-4 (LastChangedRevision: 4213 ,LastChangedDate: 2008-10-01 12:18:41 -0500 (Wed, 01 Oct 2008))
