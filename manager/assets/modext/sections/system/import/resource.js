@@ -59,10 +59,10 @@ MODx.page.ImportResource = function(config) {
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]
         ,components: [{
-            xtype: 'tree-document-simple'
-            ,title: _('documents')
+            xtype: 'tree-resource-simple'
+            ,title: _('resources')
             ,id: 'import_tree'
-            ,el: 'import_doctree'
+            ,el: 'import_resource_tree'
             ,url: MODx.config.connectors_url+'resource/document.php'
             ,enableDrop: false
             ,rootVisible: false

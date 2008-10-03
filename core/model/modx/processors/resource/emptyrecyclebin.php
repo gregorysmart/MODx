@@ -5,27 +5,31 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
-if (!$modx->hasPermission('purge_deleted')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('purge_deleted')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 // get documents
-$documents = $modx->getCollection('modResource',array('deleted' => 1));
+$resources = $modx->getCollection('modResource',array('deleted' => 1));
 
-foreach ($documents as $document) {
-	$document->groups = $document->getMany('modResourceGroupResource');
-	$document->tvds = $document->getMany('modTemplateVarResource');
+foreach ($resources as $resource) {
+	$resource->groups = $resource->getMany('modResourceGroupResource');
+	$resource->tvds = $resource->getMany('modTemplateVarResource');
 
-	foreach ($document->groups as $pair)
-		if (!$pair->remove()) $error->failure($modx->lexicon('document_err_delete_accessperms'));
+	foreach ($resource->groups as $pair) {
+	   $pair->remove();
+    }
 
-	foreach ($document->tvds as $tvd)
-		if (!$tvd->remove()) $error->failure($modx->lexicon('document_err_delete_tv'));
+	foreach ($resource->tvds as $tvd) {
+		$tvd->remove();
+    }
 
-	if (!$document->remove())
-		$error->failure($modx->lexicon('document_err_delete'));
+	if ($resource->remove() == false) {
+		$modx->error->failure($modx->lexicon('resource_err_delete'));
+    }
 
 	// see if document's parent has any children left
-	$parent = $modx->getObject('modResource',$document->parent);
+	$parent = $modx->getObject('modResource',$resource->parent);
 	if ($parent->id != null) {
 		$num_children = $modx->getCount('modResource',array('parent' => $parent->id));
 		if ($num_children <= 0) {
@@ -39,4 +43,4 @@ foreach ($documents as $document) {
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$error->success('');
+$modx->error->success();

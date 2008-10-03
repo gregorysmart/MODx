@@ -3,41 +3,41 @@
  * @package modx
  * @subpackage processors.resource
  */
-global $document;
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
-$user_id = $modx->getLoginUserID();
+// get resource
+$resource = $modx->getObject('modResource',$_REQUEST['id']);
+if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
-// get document
-$document = $modx->getObject('modResource',$_REQUEST['id']);
-if ($document == NULL) $error->failure($modx->lexicon('document_not_found'));
+if (!$modx->hasPermission('publish_document')) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
-if (!$modx->hasPermission('publish_document')) $error->failure($modx->lexicon('permission_denied'));
-
-// check permissions on the document
-if (!$document->checkPolicy(array('save'=>1, 'publish'=>1)))
-    $error->failure($modx->lexicon('permission_denied'));
+// check permissions on the resource
+if (!$resource->checkPolicy(array('save'=>1, 'publish'=>1))) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
 // publish document
-$document->set('published',1);
-$document->set('pub_date',0);
-$document->set('unpub_date',0);
-$document->set('editedby',$user_id);
-$document->set('editedon',time());
-$document->set('publishedby',$user_id);
-$document->set('publishedon',time());
+$resource->set('published',1);
+$resource->set('pub_date',0);
+$resource->set('unpub_date',0);
+$resource->set('editedby',$user_id);
+$resource->set('editedon',time());
+$resource->set('publishedby',$user_id);
+$resource->set('publishedon',time());
 
-if (!$document->save()) $error->failure($modx->lexicon('document_err_publish'));
+if (!$resource->save()) $modx->error->failure($modx->lexicon('resource_err_publish'));
 
 // invoke OnDocPublished event
-$modx->invokeEvent('OnDocPublished',array('docid' => $document->id));
+$modx->invokeEvent('OnDocPublished',array('docid' => $resource->id));
 
 // empty the cache
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
 // log manager action
-$modx->logManagerAction('publish_resource','modDocument',$document->id);
+$modx->logManagerAction('publish_resource','modResource',$resource->id);
 
-$error->success('',$document->get(array('id', 'pub_date', 'unpub_date', 'editedby', 'editedon', 'publishedby', 'publishedon')));
+$error->success('',$resource->get(array('id', 'pub_date', 'unpub_date', 'editedby', 'editedon', 'publishedby', 'publishedon')));

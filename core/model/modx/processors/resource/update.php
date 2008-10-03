@@ -6,8 +6,9 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
+if (!isset($_REQUEST['id'])) $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($resource == null) $error->failure($modx->lexicon('document_not_found'));
+if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
 if (!$modx->hasPermission('save_document') || !$resource->checkPolicy('save')) {
     $modx->error->failure($modx->lexicon('permission_denied'));
@@ -32,7 +33,7 @@ $_POST['variablesmodified'] = isset($_POST['variablesmodified'])
 if (isset($_POST['ta'])) $_POST['content'] = $_POST['ta'];
 
 // default pagetitle
-if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_document');
+if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('resource_untitled');
 
 $_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 0 : 1;
 $_POST['isfolder'] = !isset($_POST['isfolder']) ? 0 : 1;
@@ -86,12 +87,12 @@ if ($modx->config['friendly_alias_urls']) {
         $duplicateId= $resourceContext->aliasMap[$fullAlias];
         if ($duplicateId != $resource->get('id')) {
             $err = sprintf($modx->lexicon('duplicate_alias_found'), $duplicateId, $fullAlias);
-            $error->addField('alias', $err);
+            $modx->error->addField('alias', $err);
         }
     }
 }
 
-if ($error->hasError()) $error->failure();
+if ($modx->error->hasError()) $modx->error->failure();
 
 // publish and unpublish dates
 $now = time();
@@ -182,10 +183,10 @@ $_POST['publishedby'] = $_POST['published'] ? $modx->getLoginUserID() : 0;
 $oldparent = $modx->getObject('modResource',$resource->parent);
 
 if ($resource->id == $modx->config['site_start'] && $_POST['published'] == 0) {
-    $error->failure($modx->lexicon('document_err_unpublish_sitestart'));
+    $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart'));
 }
 if ($resource->id == $modx->config['site_start'] && ($_POST['pub_date'] != '0' || $_POST['unpub_date'] != '0')) {
-    $error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
+    $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
 }
 
 $count_children = $modx->getCount('modResource',array('parent' => $resource->id));
@@ -211,7 +212,9 @@ $resource->fromArray($_POST);
 $resource->set('editedby', $modx->getLoginUserID());
 $resource->set('editedon', time());
 
-if (!$resource->save()) $error->failure($modx->lexicon('document_err_save'));
+if ($resource->save() == false) {
+    $modx->error->failure($modx->lexicon('resource_err_save'));
+}
 
 foreach ($tmplvars as $field => $value) {
      if (!is_array($value)) {
@@ -220,23 +223,21 @@ foreach ($tmplvars as $field => $value) {
             'tmplvarid' => $value,
             'contentid' => $resource->id,
         ));
-        if ($tvc != NULL) {
-            if (!$tvc->remove()) $error->failure('An error occurred while trying to refresh the TVs.');
-        }
+        if ($tvc != null) $tvc->remove();
     } else {
         //update the existing record
         $tvc = $modx->getObject('modTemplateVarResource',array(
             'tmplvarid' => $value[0],
             'contentid' => $resource->id,
         ));
-        if ($tvc == NULL) {
+        if ($tvc == null) {
             //add a new record
             $tvc = $modx->newObject('modTemplateVarResource');
             $tvc->set('tmplvarid',$value[0]);
             $tvc->set('contentid',$resource->id);
         }
         $tvc->set('value',$value[1]);
-        if (!$tvc->save()) $error->failure('An error occurred while trying to save the TV.');
+        $tvc->save();
     }
 }
 
@@ -294,7 +295,7 @@ if ($modx->hasPermission('edit_doc_metatags')) {
         }
     }
 
-    if ($resource != NULL) {
+    if ($resource != null) {
         $resource->set('haskeywords',count($keywords) ? 1 : 0);
         $resource->set('hasmetatags',count($metatags) ? 1 : 0);
         $resource->save();
@@ -325,4 +326,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$error->success('', $resource->get(array('id')));
+$modx->error->success('', $resource->get(array('id')));

@@ -1,21 +1,20 @@
 /**
- * Generates a Simplified Document Tree in Ext
+ * Generates a Simplified Resource Tree in Ext
  * 
- * @class MODx.tree.SimpleDocument
+ * @class MODx.tree.SimpleResource
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-document-simple
+ * @xtype tree-resource-simple
  */
-MODx.tree.SimpleDocument = function(config) {
+MODx.tree.SimpleResource = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		root_id: '0'
-		,root_name: _('documents')
+		,root_name: _('resources')
 		,enableDrag: true
 		,enableDrop: true
 	});	
-	MODx.tree.SimpleDocument.superclass.constructor.call(this,config);
+	MODx.tree.SimpleResource.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.tree.SimpleDocument,MODx.tree.Tree);
-Ext.reg('tree-document-simple',MODx.tree.SimpleDocument);
+Ext.extend(MODx.tree.SimpleResource,MODx.tree.Tree);
+Ext.reg('tree-resource-simple',MODx.tree.SimpleResource);

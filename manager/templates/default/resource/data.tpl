@@ -21,6 +21,6 @@ Ext.onReady(function() {
 
 <div id="panel-data"></div>
 
-<form id="document_data" action="{$_config.connectors_url}resource/document.php" onsubmit="return false;">
+<form id="resource_data" action="{$_config.connectors_url}resource/index.php" onsubmit="return false;">
 <input type="hidden" class="hidden" id="id" name="id" value="{$resource->id}" />
 </form>

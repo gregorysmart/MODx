@@ -131,7 +131,7 @@ MODx.grid.Search = function(config) {
 	Ext.applyIf(config,{
 	    title: _('search_results')
         ,id: 'grid-search'
-        ,url: MODx.config.connectors_url+'resource/document.php'
+        ,url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {
             action: 'search'
         }

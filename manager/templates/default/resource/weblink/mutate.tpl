@@ -9,7 +9,7 @@
 <script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.weblink.js"></script>
 <script type="text/javascript" src="assets/modext/widgets/resource/modx.grid.resource.security.js"></script>
 
-<form id="mutate_document" method="post" enctype="multipart/form-data" action="{$_config.connectors_url}resource/document.php" onsubmit="return false;">
+<form id="mutate_document" method="post" enctype="multipart/form-data" action="{$_config.connectors_url}resource/index.php" onsubmit="return false;">
 
 
 {modblock name='ab'}{/modblock}
@@ -30,7 +30,7 @@
 <div id="tab_access" class="padding x-hide-display">
 	<h2>{$_lang.security}</h2>
 	
-	<p>{$_lang.access_permissions_docs_message}</p>
+	<p>{$_lang.resource_access_message}</p>
 	<div id="grid-resource-security"></div>
 </div>
 <!-- END Access Permissions -->

@@ -9,7 +9,7 @@
 MODx.page.CreateWebLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/document.php'
+        url: MODx.config.connectors_url+'resource/index.php'
         ,formpanel: 'panel-weblink'
         ,which_editor: 'none'
         ,actions: {
@@ -31,7 +31,7 @@ MODx.page.CreateWebLink = function(config) {
                 },scope:this}
                 ,'success': function(o,i,r) {
                     Ext.getCmp('grid-resource-security').getStore().commitChanges();
-                    var t = parent.Ext.getCmp('modx_document_tree');
+                    var t = parent.Ext.getCmp('modx_resource_tree');
                     t.refresh();
                 }
             }

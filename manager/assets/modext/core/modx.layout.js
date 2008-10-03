@@ -6,7 +6,6 @@ Ext.onReady(function() {
  * 
  * @class MODx.Layout
  * @extends Ext.Viewport
- * @constructor
  * @param {Object} config An object of config options.
  * @xtype modx-layout
  */
@@ -32,11 +31,13 @@ MODx.Layout = function(config){
                 ,el: 'modx_content_div'
                 ,autoHeight: true
                 ,layout: 'fit'
+                ,minSize: 250
             },{
                 region: 'west'
                 ,id: 'west-panel'
                 ,split: true
                 ,width: '25%'
+                ,minSize: 200
                 ,collapsible: true
                 ,layout: 'accordion'
                 ,layoutConfig: { 
@@ -50,7 +51,7 @@ MODx.Layout = function(config){
                     ,fitToFrame: true
                 }
                 ,items: [{
-                    title: _('documents')
+                    title: _('resources')
                     ,contentEl: 'modx_rt_div'
                     ,resizeEl: 'modx_resource_tree'
                 },{
@@ -103,16 +104,19 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
      * @access protected
      */
     ,loadTrees: function() {
-        this.rtree = new MODx.tree.Document({
-            el: 'modx_resource_tree'
-            ,id: 'modx_document_tree'
+        this.rtree = MODx.load({
+            xtype: 'tree-resource'
+            ,el: 'modx_resource_tree'
+            ,id: 'modx_resource_tree'
         });
-        this.eltree = new MODx.tree.Element({
-            el: 'modx_element_tree'
+        this.eltree = MODx.load({
+            xtype: 'tree-element'
+            ,el: 'modx_element_tree'
             ,id: 'modx_element_tree' 
         });
-        this.ftree = new MODx.tree.Directory({
-            el: 'modx_file_tree'
+        this.ftree = MODx.load({
+            xtype: 'tree-directory'
+            ,el: 'modx_file_tree'
             ,id: 'modx_file_tree'
             ,title: ''
         });

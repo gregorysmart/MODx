@@ -7,7 +7,7 @@
 MODx.panel.Static = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/document.php'
+        url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
         ,id: 'panel-static'
         ,class_key: 'modStaticResource'
@@ -221,7 +221,7 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
             return false;
         }
         Ext.Ajax.request({
-            url: MODx.config.connectors_url+'resource/document.php'
+            url: MODx.config.connectors_url+'resource/index.php'
             ,params: {
                 action: 'get'
                 ,id: this.config.resource
@@ -272,3 +272,13 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
     }
 });
 Ext.reg('panel-static',MODx.panel.Static);
+
+
+// global accessor for TV dynamic fields
+var triggerDirtyField = function(fld) {
+    Ext.getCmp('panel-resource').fieldChangeEvent(fld);
+};
+var triggerRTEOnChange = function(i) {
+    triggerDirtyField(Ext.getCmp('ta'));
+}
+var loadRTE = null;

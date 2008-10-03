@@ -7,10 +7,10 @@
 MODx.panel.Resource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/document.php'
+        url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
         ,id: 'panel-resource'
-        ,class_key: 'modDocument'
+        ,class_key: 'modResource'
         ,resource: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
@@ -26,7 +26,7 @@ MODx.panel.Resource = function(config) {
                 ,labelWidth: 150
             }
             ,items: [{
-                title: _('document_setting')
+                title: _('resource_settings')
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                     html: '<h2>'+_('general_settings')+'</h2>'
@@ -36,8 +36,8 @@ MODx.panel.Resource = function(config) {
                     ,value: config.resource
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_title')
-                    ,description: _('document_title_help')
+                    ,fieldLabel: _('resource_pagetitle')
+                    ,description: _('resource_pagetitle_help')
                     ,name: 'pagetitle'
                     ,width: 300
                     ,maxLength: 255
@@ -45,32 +45,32 @@ MODx.panel.Resource = function(config) {
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('long_title')
-                    ,description: _('document_long_title_help')
+                    ,fieldLabel: _('resource_longtitle')
+                    ,description: _('resource_longtitle_help')
                     ,name: 'longtitle'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_description')
-                    ,description: _('document_description_help')
+                    ,fieldLabel: _('resource_description')
+                    ,description: _('resource_description_help')
                     ,name: 'description'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_alias')
-                    ,description: _('document_alias_help')
+                    ,fieldLabel: _('resource_alias')
+                    ,description: _('resource_alias_help')
                     ,name: 'alias'
                     ,width: 300
                     ,maxLength: 100
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('link_attributes')
-                    ,description: _('link_attributes_help')
+                    ,fieldLabel: _('resource_link_attributes')
+                    ,description: _('resource_link_attributes_help')
                     ,name: 'link_attributes'
                     ,width: 300
                     ,maxLength: 255
@@ -78,7 +78,7 @@ MODx.panel.Resource = function(config) {
                 },(config.class_key == 'modWebLink' ? {
                     xtype: 'textfield'
                     ,fieldLabel: _('weblink')
-                    ,description: _('document_weblink_help')
+                    ,description: _('weblink_help')
                     ,name: 'ta'
                     ,width: 300
                     ,maxLength: 255
@@ -86,16 +86,16 @@ MODx.panel.Resource = function(config) {
                     
                 } : {
                     xtype: 'textarea'
-                    ,fieldLabel: _('document_summary')
-                    ,description: _('document_summary_help')
+                    ,fieldLabel: _('resource_summary')
+                    ,description: _('resource_summary_help')
                     ,name: 'introtext'
                     ,width: 300
                     ,grow: true
                     
                 }),{
                     xtype: 'combo-template'
-                    ,fieldLabel: _('page_data_template')
-                    ,description: _('page_data_template_help')
+                    ,fieldLabel: _('resource_template')
+                    ,description: _('resource_template_help')
                     ,name: 'template'
                     ,id: 'tpl'
                     ,width: 300
@@ -109,52 +109,52 @@ MODx.panel.Resource = function(config) {
                     ,value: config.template
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_opt_menu_title')
-                    ,description: _('document_opt_menu_title_help')
+                    ,fieldLabel: _('resource_menutitle')
+                    ,description: _('resource_menutitle_help')
                     ,name: 'menutitle'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_show_menu')
-                    ,description: _('document_opt_show_menu_help')
+                    ,fieldLabel: _('resource_hide_from_menus')
+                    ,description: _('resource_hide_from_menus_help')
                     ,name: 'hidemenu'
                     ,inputValue: 1
                     ,checked: false
                     
                 }]
             },{
-                title: _('settings_page_settings')
+                title: _('page_settings')
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                     html: '<h2>'+_('resource_settings')+'</h2>'
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_folder')
-                    ,description: _('document_opt_folder_help')
+                    ,fieldLabel: _('resource_folder')
+                    ,description: _('resource_folder_help')
                     ,name: 'isfolder'
                     ,inputValue: 1
                     
                 },(config.class_key == 'modDocument' ? {
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_richtext')
-                    ,description: _('document_opt_richtext_help')
+                    ,fieldLabel: _('resource_richtext')
+                    ,description: _('resource_richtext_help')
                     ,name: 'richtext'
                     ,inputValue: 1
                     
                 } : {}),(config.publish_document ? {
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_published')
-                    ,description: _('document_opt_published_help')
+                    ,fieldLabel: _('resource_published')
+                    ,description: _('resource_published_help')
                     ,name: 'published'
                     ,inputValue: 1
                     ,checked: MODx.config.publish_default == '1' ? true : false
                     
                 }:{}),(config.publish_document ? {
                     xtype: 'datefield'
-                    ,fieldLabel: _('page_data_publishdate')
-                    ,description: _('page_data_publishdate_help')
+                    ,fieldLabel: _('resource_publishdate')
+                    ,description: _('resource_publishdate_help')
                     ,name: 'pub_date'
                     ,format: 'Y-m-d'
                     ,allowBlank: true
@@ -162,8 +162,8 @@ MODx.panel.Resource = function(config) {
                     
                 }:{}),(config.publish_document ? {
                     xtype: 'datefield'
-                    ,fieldLabel: _('page_data_unpublishdate')
-                    ,description: _('page_data_unpublishdate_help')
+                    ,fieldLabel: _('resource_unpublishdate')
+                    ,description: _('resource_unpublishdate_help')
                     ,name: 'unpub_date'
                     ,format: 'Y-m-d'
                     ,allowBlank: true
@@ -171,40 +171,40 @@ MODx.panel.Resource = function(config) {
                     
                 }:{}),{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('page_data_searchable')
-                    ,description: _('page_data_searchable_help')
+                    ,fieldLabel: _('resource_searchable')
+                    ,description: _('resource_searchable_help')
                     ,name: 'searchable'
                     ,inputValue: 1
                     ,checked: MODx.config.search_default == '1' ? true : false
                     
                 },(config.class_key != 'modWebLink' ? {
                     xtype: 'checkbox'
-                    ,fieldLabel: _('page_data_cacheable')
-                    ,description: _('page_data_cacheable_help')
+                    ,fieldLabel: _('resource_cacheable')
+                    ,description: _('resource_cacheable_help')
                     ,name: 'cacheable'
                     ,inputValue: 1
                     ,checked: MODx.config.cache_default == '1' ? true : false
                     
                 }:{}),{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_emptycache')
-                    ,description: _('document_opt_emptycache_help')
+                    ,fieldLabel: _('resource_syncsite')
+                    ,description: _('resource_syncsite_help')
                     ,name: 'syncsite'
                     ,inputValue: 1
                     ,checked: true
                     
                 },(config.class_key != 'modWebLink' ? {
                     xtype: 'combo-contenttype'
-                    ,fieldLabel: _('page_data_contentType')
-                    ,description: _('page_data_contentType_help')
+                    ,fieldLabel: _('resource_content_type')
+                    ,description: _('resource_content_type_help')
                     ,name: 'content_type'
                     ,width: 200
                     ,value: 1
                     
                 }:{}),(config.class_key != 'modWebLink' ? {
                     xtype: 'combo-content-disposition'
-                    ,fieldLabel: _('document_opt_contentdispo')
-                    ,description: _('document_opt_contentdispo_help')
+                    ,fieldLabel: _('resource_contentdispo')
+                    ,description: _('resource_contentdispo_help')
                     ,name: 'content_dispo'
                     
                 }:{}),{
@@ -256,7 +256,7 @@ MODx.panel.Resource = function(config) {
             ,bodyStyle: 'padding: 1.5em;'
             ,border: false
             ,items: [{
-                html: '<h2>'+_('document_content')+'</h2>'
+                html: '<h2>'+_('resource_content')+'</h2>'
                 ,border: false
             },{
                 xtype: 'textarea'
@@ -304,7 +304,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             return false;
         }
         MODx.Ajax.request({
-            url: MODx.config.connectors_url+'resource/document.php'
+            url: MODx.config.connectors_url+'resource/index.php'
             ,params: {
                 action: 'get'
                 ,id: this.config.resource

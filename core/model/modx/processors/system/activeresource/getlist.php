@@ -1,7 +1,7 @@
 <?php
 /**
  * @package modx
- * @subpackage processors.system.activedocuments
+ * @subpackage processors.system.activeresource
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';

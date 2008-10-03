@@ -9,11 +9,11 @@ $modx->lexicon->load('resource');
 
 // get resource
 if (!isset($_REQUEST['id'])) {
-    $modx->error->failure($modx->lexicon('document_not_specified'));
+    $modx->error->failure($modx->lexicon('resource_err_ns'));
 }
 $resource = $modx->getObject('modResource', $_REQUEST['id']);
 if ($resource == null) {
-    $modx->error->failure($modx->lexicon('document_not_found'));
+    $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 }
 if (!$resource->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
 
@@ -26,7 +26,7 @@ $ra = $resource->toArray();
 // format pub/unpub dates
 $ra['pub_date'] = $ra['pub_date'] != '0' ? strftime('%Y-%m-%d',$ra['pub_date']) : '';
 $ra['unpub_date'] = $ra['unpub_date'] != '0' ? strftime('%Y-%m-%d',$ra['unpub_date']) : '';
-$ra['status'] = $ra['published'] ? $modx->lexicon('page_data_published') : $modx->lexicon('page_data_unpublished');
+$ra['status'] = $ra['published'] ? $modx->lexicon('resource_published') : $modx->lexicon('resource_unpublished');
 
 // keywords
 $dkws = $resource->getMany('modResourceKeyword');
@@ -63,9 +63,9 @@ if (file_exists($cache_file)) {
             $buffer .= fgets($handle, 4096);
         }
         fclose ($handle);
-        $modx->smarty->assign('buffer', htmlspecialchars($buffer));
+        $buffer = htmlspecialchars($buffer);
     }
 }
-$ra['buffer'] = $buffer ? $buffer : $modx->lexicon('page_data_notcached');
+$ra['buffer'] = $buffer ? $buffer : $modx->lexicon('resource_notcached');
 
 $modx->error->success('',$ra);

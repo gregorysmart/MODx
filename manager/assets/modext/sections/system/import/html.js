@@ -42,12 +42,12 @@ MODx.page.ImportHTML = function(config) {
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]
         ,components: [{
-            xtype: 'tree-document-simple'
-            ,title: _('documents')
+            xtype: 'tree-resource-simple'
+            ,title: _('resources')
             ,url: MODx.config.connectors_url+'resource/document.php'
-            ,el: 'modx_doctree'
-            ,id: 'ih_doctree'
-            ,tb_id: 'modx_doctree_tb'
+            ,el: 'modx_resource_tree'
+            ,id: 'ih_resource_tree'
+            ,tb_id: 'modx_resource_tree_tb'
             ,enableDrop: false
             ,rootVisible: false
         }]
@@ -58,7 +58,7 @@ MODx.page.ImportHTML = function(config) {
 Ext.extend(MODx.page.ImportHTML,MODx.Component,{
     setup: function() {
         Ext.Ajax.timeout = 0;
-        var t = Ext.getCmp('ih_doctree');
+        var t = Ext.getCmp('ih_resource_tree');
         t.getSelectionModel().on('selectionchange',this.handleClick,t);
     }
     

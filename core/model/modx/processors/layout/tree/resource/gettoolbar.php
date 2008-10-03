@@ -1,9 +1,9 @@
 <?php
 /**
- * Gets a dynamic toolbar for the Document tree.
- * TODO: Implement security for emptying recycle bin and creating resources.
+ * Gets a dynamic toolbar for the Resource tree. TODO: Implement security for
+ * emptying recycle bin and creating resources.
  * @package modx
- * @subpackage processors.layout.tree.document
+ * @subpackage processors.layout.tree.resource
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
@@ -26,7 +26,7 @@ $items = array(
     '-',
     array(
         'icon' => $p.'images/icons/folder_page_add.png',
-        'tooltip' => $modx->lexicon('add_document'),
+        'tooltip' => $modx->lexicon('resource_create'),
         'handler' => 'new Function("this.redirect(\"index.php?a='.$actions['resource/create'].'\");");',
     ),
     array(

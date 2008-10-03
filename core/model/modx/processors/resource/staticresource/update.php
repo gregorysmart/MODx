@@ -193,32 +193,32 @@ $resource->fromArray($_POST);
 $resource->set('editedby', $modx->getLoginUserID());
 $resource->set('editedon', time());
 
-if (!$resource->save()) $error->failure($modx->lexicon('document_err_save'));
+if (!$resource->save()) $modx->error->failure($modx->lexicon('document_err_save'));
 
 foreach ($tmplvars as $field => $value) {
 	 if (!is_array($value)) {
-			//delete unused variable
-			$tvc = $modx->getObject('modTemplateVarResource',array(
-				'tmplvarid' => $value,
-				'contentid' => $resource->id,
-			));
-        if ($tvc != NULL) {
-            if (!$tvc->remove()) $error->failure('An error occurred while trying to refresh the TVs.');
+		//delete unused variable
+		$tvc = $modx->getObject('modTemplateVarResource',array(
+			'tmplvarid' => $value,
+			'contentid' => $resource->id,
+		));
+        if ($tvc != null) {
+            $tvc->remove();
 		}
 	} else {
-			//update the existing record
-			$tvc = $modx->getObject('modTemplateVarResource',array(
-            'tmplvarid' => $value[0],
-				'contentid' => $resource->id,
-			));
-        if ($tvc == NULL) {
+		//update the existing record
+		$tvc = $modx->getObject('modTemplateVarResource',array(
+        'tmplvarid' => $value[0],
+			'contentid' => $resource->id,
+		));
+        if ($tvc == null) {
         	//add a new record
 			$tvc = $modx->newObject('modTemplateVarResource');
             $tvc->set('tmplvarid',$value[0]);
 			$tvc->set('contentid',$resource->id);
 		}
 		$tvc->set('value',$value[1]);
-        if (!$tvc->save()) $error->failure('An error occurred while trying to save the TV.');
+        $tvc->save();
 	}
 }
 
@@ -244,8 +244,8 @@ if (isset($_POST['resource_groups'])) {
             ));
             if ($rgr == null) continue;
             $rgr->remove();
+        }
     }
-}
 }
 
 // Save META Keywords
@@ -276,7 +276,7 @@ if ($modx->hasPermission('edit_doc_metatags')) {
 		}
 	}
 
-	if ($resource != NULL) {
+	if ($resource != null) {
 		$resource->set('haskeywords',count($keywords) ? 1 : 0);
 		$resource->set('hasmetatags',count($metatags) ? 1 : 0);
 		$resource->save();
@@ -307,5 +307,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$error->success();
-?>
+$modx->error->success();

@@ -10,7 +10,7 @@ MODx.page.UpdateWebLink = function(config) {
     config = config || {};
         
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/document.php'
+        url: MODx.config.connectors_url+'resource/index.php'
         ,which_editor: 'none'
         ,formpanel: 'panel-weblink'
         ,actions: {
@@ -49,7 +49,7 @@ MODx.page.UpdateWebLink = function(config) {
                 },scope:this}
                 ,'success': function(o,i,r) {
                     Ext.getCmp('grid-resource-security').getStore().commitChanges();
-                    var t = parent.Ext.getCmp('modx_document_tree');
+                    var t = parent.Ext.getCmp('modx_resource_tree');
                     t.refreshNode(config.ctx+'_'+config.id);
                 }
             }
@@ -58,7 +58,7 @@ MODx.page.UpdateWebLink = function(config) {
         ,{
             process: 'duplicate'
             ,text: _('duplicate')
-            ,confirm: _('confirm_duplicate_document')
+            ,confirm: _('resource_duplicate_confirm')
             ,method: 'remote'
         }
         ,'-'

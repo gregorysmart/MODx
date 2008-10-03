@@ -3,11 +3,10 @@
  * @package modx
  * @subpackage processors.resource
  */
-global $document;
-
+global $resource;
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('new_document')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_document')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $resourceClass = isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modDocument';
 $resourceDir= strtolower(substr($resourceClass, 3));
@@ -16,11 +15,11 @@ $delegateProcessor= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FI
 if (file_exists($delegateProcessor)) {
     $overridden= include ($delegateProcessor);
     if ($overridden !== false) {
-        $error->failure('Warning! Delegate processor did not provide appropriate response.');
+        $modx->error->failure('Warning! Delegate processor did not provide appropriate response.');
     }
 }
 
-$document = $modx->newObject($resourceClass);
+$resource = $modx->newObject($resourceClass);
 
 $_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 0 : 1;
 $_POST['isfolder'] = !isset($_POST['isfolder']) ? 0 : 1;
@@ -41,7 +40,7 @@ $_POST['parent'] = $_POST['parent'] != '' ? $_POST['parent'] : 0;
 if (isset($_POST['ta'])) $_POST['content'] = $_POST['ta'];
 
 // default pagetitle
-if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_document');
+if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('resource_untitled');
 
 $_POST['context_key']= !isset($_POST['context_key']) || $_POST['context_key'] == '' ? 'web' : $_POST['context_key'];
 
@@ -49,9 +48,9 @@ $_POST['context_key']= !isset($_POST['context_key']) || $_POST['context_key'] ==
 if ($modx->config['friendly_alias_urls']) {
     // auto assign alias
     if ($_POST['alias'] == '' && $modx->config['automatic_alias']) {
-        $_POST['alias'] = strtolower(trim($document->cleanAlias($_POST['pagetitle'])));
+        $_POST['alias'] = strtolower(trim($resource->cleanAlias($_POST['pagetitle'])));
     } else {
-        $_POST['alias'] = $document->cleanAlias($_POST['alias']);
+        $_POST['alias'] = $resource->cleanAlias($_POST['alias']);
     }
     $resourceContext= $modx->getObject('modContext', $_POST['context_key']);
     $resourceContext->prepare();
@@ -87,11 +86,11 @@ if ($modx->config['friendly_alias_urls']) {
     if (isset ($resourceContext->aliasMap[$fullAlias])) {
         $duplicateId= $resourceContext->aliasMap[$fullAlias];
         $err = sprintf($modx->lexicon('duplicate_alias_found'), $duplicateId, $fullAlias);
-        $error->addField('alias', $err);
+        $modx->error->addField('alias', $err);
     }
 }
 
-if ($error->hasError()) $error->failure();
+if ($modx->error->hasError()) $modx->error->failure();
 
 
 
@@ -114,19 +113,14 @@ if (empty($_POST['unpub_date'])) {
 }
 
 $tmplvars = array();
-$c = new xPDOCriteria($modx,'
-	SELECT
-		DISTINCT tv.*,
-		tv.default_text AS value
-	FROM '.$modx->getTableName('modTemplateVar').' AS tv
-		INNER JOIN '.$modx->getTableName('modTemplateVarTemplate').' AS tvtpl
-		ON tvtpl.tmplvarid = tv.id
-	WHERE
-		tvtpl.templateid = :template
-	ORDER BY tv.rank
-',array(
-	':template' => $_POST['template']
+$c = $modx->newQuery('modTemplateVar');
+$c->select('DISTINCT modTemplateVar.*, modTemplateVar.default_text AS value');
+$c->innerJoin('modTemplateVarTemplate','modTemplateVarTemplate');
+$c->where(array(
+    'modTemplateVarTemplate.templateid' => $_POST['template'],
 ));
+$c->sortby('modTemplateVar.rank');
+
 $tvs = $modx->getCollection('modTemplateVar',$c);
 
 foreach ($tvs as $tv) {
@@ -183,12 +177,12 @@ $_POST['publishedon'] = $_POST['published'] ? time() : 0;
 $_POST['publishedby'] = $_POST['published'] ? $modx->getLoginUserID() : 0;
 
 // Now save data
-$document->fromArray($_POST);
-if (!$document->class_key) {
-    $document->set('class_key', $resourceClass);
+$resource->fromArray($_POST);
+if (!$resource->class_key) {
+    $resource->set('class_key', $resourceClass);
 }
 
-if (!$document->save()) $error->failure($modx->lexicon('document_err_save'));
+if (!$resource->save()) $modx->error->failure($modx->lexicon('resource_err_save'));
 
 
 // Save resource groups
@@ -198,18 +192,18 @@ if (isset($_POST['resource_groups'])) {
         if ($group['access']) {
             $rgr = $modx->getObject('modResourceGroupResource',array(
                 'document_group' => $group['id'],
-                'document' => $document->id,
+                'document' => $resource->id,
             ));
             if ($rgr == null) {
                 $rgr = $modx->newObject('modResourceGroupResource');
             }
             $rgr->set('document_group',$group['id']);
-            $rgr->set('document',$document->id);
+            $rgr->set('document',$resource->id);
             $rgr->save();
         } else {
             $rgr = $modx->getObject('modResourceGroupResource',array(
                 'document_group' => $group['id'],
-                'document' => $document->id,
+                'document' => $resource->id,
             ));
             if ($rgr == null) continue;
             $rgr->remove();
@@ -223,7 +217,7 @@ foreach ($tmplvars as $field => $value) {
 		$tvVal = $value[1];
 		$tvc = $modx->newObject('modTemplateVarResource');
 		$tvc->set('tmplvarid',$value[0]);
-		$tvc->set('contentid',$document->id);
+		$tvc->set('contentid',$resource->id);
 		$tvc->set('value',$value[1]);
 		$tvc->save();
 	}
@@ -232,60 +226,60 @@ foreach ($tmplvars as $field => $value) {
 if ($_POST['parent'] != 0) {
 	$parent = $modx->getObject('modResource', $_POST['parent']);
 	$parent->set('isfolder', 1);
-	if (!$parent->save()) $error->failure($modx->lexicon('document_err_change_parent_to_folder'));
+	if (!$parent->save()) $modx->error->failure($modx->lexicon('resource_err_change_parent_to_folder'));
 }
 
 // Save META Keywords
 if ($modx->hasPermission('edit_doc_metatags')) {
 	// keywords - remove old keywords first
-	$okws = $modx->getCollection('modResourceKeyword',array('content_id' => $document->id));
+	$okws = $modx->getCollection('modResourceKeyword',array('content_id' => $resource->id));
 	foreach ($okws as $kw) $kw->remove();
 
 	if (is_array($keywords)) {
 		foreach ($keywords as $keyword) {
 			$kw = $modx->newObject('modResourceKeyword');
-			$kw->set('content_id',$document->id);
+			$kw->set('content_id',$resource->id);
 			$kw->set('keyword_id',$keyword);
 			$kw->save();
 		}
 	}
 
 	// meta tags - remove old tags first
-	$omts = $modx->getCollection('modResourceMetatag',array('content_id' => $document->id));
+	$omts = $modx->getCollection('modResourceMetatag',array('content_id' => $resource->id));
 	foreach ($omts as $mt) $mt->remove();
 
 	if (is_array($metatags)) {
 		foreach ($metatags as $metatag) {
 			$mt = $modx->newObject('modResourceMetatag');
-			$mt->set('content_id',$document->id);
+			$mt->set('content_id',$resource->id);
 			$mt->set('metatag_id',$metatag);
 			$mt->save();
 		}
 	}
 
-	if ($document != null) {
-		$document->set('haskeywords',count($keywords) ? 1 : 0);
-		$document->set('hasmetatags',count($metatags) ? 1 : 0);
-		$document->save();
+	if ($resource != null) {
+		$resource->set('haskeywords',count($keywords) ? 1 : 0);
+		$resource->set('hasmetatags',count($metatags) ? 1 : 0);
+		$resource->save();
 	}
 }
 
 // invoke OnDocFormSave event
 $modx->invokeEvent('OnDocFormSave', array(
 	'mode' => 'new',
-	'id' => $document->get('id'),
-    'resource' => & $document
+	'id' => $resource->get('id'),
+    'resource' => & $resource
 ));
 
 // log manager action
-$modx->logManagerAction('save_resource','modDocument',$document->id);
+$modx->logManagerAction('save_resource','modDocument',$resource->id);
 
 if ($_POST['syncsite'] == 1) {
 	// empty cache
     $cacheManager= $modx->getCacheManager();
     $cacheManager->clearCache(array (
-            "{$document->context_key}/resources/",
-            "{$document->context_key}/context.cache.php",
+            "{$resource->context_key}/resources/",
+            "{$resource->context_key}/context.cache.php",
         ),
         array(
             'objects' => array('modResource', 'modContext', 'modTemplateVarResource'),
@@ -295,9 +289,9 @@ if ($_POST['syncsite'] == 1) {
 }
 
 // quick check to make sure it's not site_start, if so, publish
-if ($document->get('id') == $modx->config['site_start']) {
-	$document->set('published',true);
-    $document->save();
+if ($resource->get('id') == $modx->config['site_start']) {
+	$resource->set('published',true);
+    $resource->save();
 }
 
-$modx->error->success('', array('id' => $document->get('id')));
+$modx->error->success('', array('id' => $resource->get('id')));

@@ -5,6 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 20;
@@ -18,13 +19,13 @@ if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
     $where['id'] = $_REQUEST['id'];
 }
 if (isset($_REQUEST['pagetitle']) && $_REQUEST['pagetitle'] != '') {
-    $where['pagetitle:LIKE'] = '%'.$_REQUEST['pagetitle'].'%'; 
+    $where['pagetitle:LIKE'] = '%'.$_REQUEST['pagetitle'].'%';
 }
 if (isset($_REQUEST['longtitle']) && $_REQUEST['longtitle'] != '') {
     $where['longtitle:LIKE'] = '%'.$_REQUEST['longtitle'].'%';
 }
 if (isset($_REQUEST['content']) && $_REQUEST['content'] != '') {
-    $where['content:LIKE'] = '%'.$_REQUEST['content'].'%';  
+    $where['content:LIKE'] = '%'.$_REQUEST['content'].'%';
 }
 if (isset($_REQUEST['published']) && $_REQUEST['published'] == 'on') {
     $where['published'] = true;
@@ -51,7 +52,7 @@ foreach ($resources as $resource) {
         $ra = $resource->toArray();
         $ra['menu'] = array(
             array(
-                'text' => $modx->lexicon('edit_document'),
+                'text' => $modx->lexicon('resource_edit'),
                 'params' => array('a' => $actions['resource/update']),
             ),
         );

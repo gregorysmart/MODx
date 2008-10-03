@@ -172,7 +172,7 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 			,closable:false
 		});
 		
-		_resetProgress();
+		MODx.util.Progress.reset();
 		for(var i = 1; i < 20; i++) {
 			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
@@ -199,7 +199,7 @@ Ext.extend(MODx.tree.DGUG,MODx.tree.Tree,{
 				,action: 'updatePairing'
 			}
 			,callback: function(o,s,xhr) {
-				_resetProgress();
+				MODx.util.Progress.reset();
 				Ext.Msg.hide();
 				var e = Ext.decode(xhr.responseText);
 				if (!e.success) {

@@ -5,7 +5,7 @@
  */
 if ($resourceClass != 'modStaticResource') $error->failure('Resource class is incorrect.');
 
-$document = $modx->newObject($resourceClass);
+$resource = $modx->newObject($resourceClass);
 
 // specific data escaping
 $_POST['pagetitle'] = trim($_POST['pagetitle']);
@@ -33,9 +33,9 @@ $_POST['context_key']= !isset($_POST['context_key']) ? 'web' : $_POST['context_k
 if ($modx->config['friendly_alias_urls']) {
     // auto assign alias
     if ($_POST['alias'] == '' && $modx->config['automatic_alias']) {
-        $_POST['alias'] = strtolower(trim($document->cleanAlias($_POST['pagetitle'])));
+        $_POST['alias'] = strtolower(trim($resource->cleanAlias($_POST['pagetitle'])));
     } else {
-        $_POST['alias'] = $document->cleanAlias($_POST['alias']);
+        $_POST['alias'] = $resource->cleanAlias($_POST['alias']);
     }
     $resourceContext= $modx->getObject('modContext', $_POST['context_key']);
     $resourceContext->prepare();
@@ -71,11 +71,11 @@ if ($modx->config['friendly_alias_urls']) {
     if (isset ($resourceContext->aliasMap[$fullAlias])) {
         $duplicateId= $resourceContext->aliasMap[$fullAlias];
         $err = sprintf($modx->lexicon('duplicate_alias_found'), $duplicateId, $fullAlias);
-        $error->addField('alias', $err);
+        $modx->error->addField('alias', $err);
     }
 }
 
-if ($error->hasError()) $error->failure();
+if ($modx->error->hasError()) $modx->error->failure();
 
 
 // publish and unpublish dates
@@ -168,12 +168,12 @@ $_POST['publishedon'] = $_POST['published'] ? time() : 0;
 $_POST['publishedby'] = $_POST['published'] ? $modx->getLoginUserID() : 0;
 
 // Now save data
-$document->fromArray($_POST);
-if (!$document->class_key) {
-    $document->set('class_key', $resourceClass);
+$resource->fromArray($_POST);
+if (!$resource->class_key) {
+    $resource->set('class_key', $resourceClass);
 }
 
-if (!$document->save()) $error->failure($modx->lexicon('document_err_save'));
+if (!$resource->save()) $modx->error->failure($modx->lexicon('resource_err_save'));
 
 // Modified by Raymond for TV - Orig Added by Apodigm for DocVars
 foreach ($tmplvars as $field => $value) {
@@ -182,7 +182,7 @@ foreach ($tmplvars as $field => $value) {
 		$tvVal = $value[1];
 		$tvc = $modx->newObject('modTemplateVarResource');
 		$tvc->set('tmplvarid',$value[0]);
-		$tvc->set('contentid',$document->id);
+		$tvc->set('contentid',$resource->id);
 		$tvc->set('value',$value[1]);
 		$tvc->save();
 	}
@@ -193,8 +193,8 @@ if (is_array($_POST['docgroups'])) {
     foreach ($_POST['docgroups'] as $dgkey => $value) {
         $dgd = $modx->newObject('modResourceGroupResource');
         $dgd->set('document_group',$value);
-        $dgd->set('document',$document->id);
-        if (!$dgd->save()) $error->failure($modx->lexicon('document_err_add_to_group'));
+        $dgd->set('document',$resource->id);
+        $dgd->save();
     }
 }
 
@@ -202,7 +202,7 @@ if (is_array($_POST['docgroups'])) {
 if ($_POST['parent'] != 0) {
 	$parent = $modx->getObject('modResource', $_POST['parent']);
 	$parent->set('isfolder', 1);
-	if (!$parent->save()) $error->failure($modx->lexicon('document_err_change_parent_to_folder'));
+	$parent->save();
 }
 // end of the parent stuff
 /*******************************************************************************/
@@ -210,51 +210,51 @@ if ($_POST['parent'] != 0) {
 // Save META Keywords
 if ($modx->hasPermission('edit_doc_metatags')) {
 	// keywords - remove old keywords first
-	$okws = $modx->getCollection('modResourceKeyword',array('content_id' => $document->id));
+	$okws = $modx->getCollection('modResourceKeyword',array('content_id' => $resource->id));
 	foreach ($okws as $kw) $kw->remove();
 
 	if (is_array($keywords)) {
 		foreach ($keywords as $keyword) {
 			$kw = $modx->newObject('modResourceKeyword');
-			$kw->set('content_id',$document->id);
+			$kw->set('content_id',$resource->id);
 			$kw->set('keyword_id',$keyword);
 			$kw->save();
 		}
 	}
 
 	// meta tags - remove old tags first
-	$omts = $modx->getCollection('modResourceMetatag',array('content_id' => $document->id));
+	$omts = $modx->getCollection('modResourceMetatag',array('content_id' => $resource->id));
 	foreach ($omts as $mt) $mt->remove();
 
 	if (is_array($metatags)) {
 		foreach ($metatags as $metatag) {
 			$mt = $modx->newObject('modResourceMetatag');
-			$mt->set('content_id',$document->id);
+			$mt->set('content_id',$resource->id);
 			$mt->set('metatag_id',$metatag);
 			$mt->save();
 		}
 	}
 
-	if ($document != NULL) {
-		$document->set('haskeywords',count($keywords) ? 1 : 0);
-		$document->set('hasmetatags',count($metatags) ? 1 : 0);
-		$document->save();
+	if ($resource != null) {
+		$resource->set('haskeywords',count($keywords) ? 1 : 0);
+		$resource->set('hasmetatags',count($metatags) ? 1 : 0);
+		$resource->save();
 	}
 }
 
 // invoke OnDocFormSave event
 $modx->invokeEvent('OnDocFormSave',array(
 	'mode' => 'new',
-	'id' => $document->id,
-    'resource' => & $document
+	'id' => $resource->id,
+    'resource' => & $resource
 ));
 
 if ($_POST['syncsite'] == 1) {
 	// empty cache
     $cacheManager= $modx->getCacheManager();
     $cacheManager->clearCache(array (
-            "{$document->context_key}/resources/",
-            "{$document->context_key}/context.cache.php",
+            "{$resource->context_key}/resources/",
+            "{$resource->context_key}/context.cache.php",
         ),
         array(
             'objects' => array('modResource', 'modContext', 'modTemplateVarResource'),
@@ -263,5 +263,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$error->success('', array('id' => $document->id));
-?>
+$modx->error->success('', array('id' => $resource->id));

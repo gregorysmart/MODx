@@ -286,7 +286,8 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
         e.preventDefault();
         e.stopEvent();
         if (n.attributes.href && n.attributes.href !== '') {
-            Ext.get('modx_content').dom.src = n.attributes.href;
+            var d = Ext.get('modx_content');
+            if (d) { d.dom.src = n.attributes.href; }
         }
     }
     

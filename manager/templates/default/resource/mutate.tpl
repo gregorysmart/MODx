@@ -31,7 +31,7 @@
 <div id="tab_access" class="x-hide-display">
     <h2>{$_lang.security}</h2>
 
-    <p>{$_lang.access_permissions_docs_message}</p>
+    <p>{$_lang.resource_access_message}</p>
     <div id="grid-resource-security"></div>
 </div>
 <!-- END Access Permissions -->

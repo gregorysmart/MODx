@@ -5,19 +5,17 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
-$id = $_REQUEST['id'];
-$user_id = $modx->getLoginUserID();
-
-$document = $modx->getObject('modResource',$_REQUEST['id']);
-if ($document == NULL) $error->failure($modx->lexicon('document_not_found'));
-
+$resource = $modx->getObject('modResource',$_REQUEST['id']);
+if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
 // check permissions on the document
-if (!$document->checkPolicy(array('save'=>1, 'undelete'=>1)))
-    $error->failure($modx->lexicon('permission_denied'));
+if (!$resource->checkPolicy(array('save'=>1, 'undelete'=>1))) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
-$deltime = $document->deletedon;
+$deltime = $resource->deletedon;
 
 function getChildren($parent) {
 	global $modx;
@@ -30,34 +28,36 @@ function getChildren($parent) {
 	));
 
 	if(count($kids) > 0) {
-		// the document has children documents, we'll need to undelete those too
+		// the resource has children resources, we'll need to undelete those too
 		foreach ($kids as $kid) {
-			//$children[] = $doc;
 			$kid->set('deleted',0);
 			$kid->set('deletedby',0);
 			$kid->set('deletedon',0);
-			if (!$kid->save())
-				$error->failure($modx->lexicon('document_err_undelete_children'));
+			if (!$kid->save()) {
+				$modx->error->failure($modx->lexicon('resource_err_undelete_children'));
+            }
 			getChildren($kid->id);
 		}
 	}
 }
 
-getChildren($document->id);
+getChildren($resource->id);
 
-//'undelete' the document.
+//'undelete' the resource.
 
-$document->set('deleted',0);
-$document->set('deletedby',0);
-$document->set('deletedon',0);
+$resource->set('deleted',0);
+$resource->set('deletedby',0);
+$resource->set('deletedon',0);
 
-if (!$document->save()) $error->failure($modx->lexicon('document_err_undelete_document'));
+if ($resource->save() == false) {
+    $modx->error->failure($modx->lexicon('resource_err_undelete'));
+}
 
 // log manager action
-$modx->logManagerAction('undelete_resource','modDocument',$document->id);
+$modx->logManagerAction('undelete_resource','modResource',$resource->id);
 
 // empty cache
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$error->success('',$document->get(array('id')));
+$modx->error->success('',$resource->get(array('id')));

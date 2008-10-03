@@ -11,7 +11,7 @@ if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'pagetitle';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
 $c = $modx->newQuery('modResource');
-$c = $c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
+$c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
 
 if (isset($_REQUEST['limit'])) {
     $c = $c->limit($_REQUEST['limit'],$_REQUEST['start']);
@@ -19,7 +19,8 @@ if (isset($_REQUEST['limit'])) {
 $resources = $modx->getCollection('modResource',$c);
 $cs = array();
 foreach ($resources as $resource) {
-    if ($resource->checkPolicy('list'))
+    if ($resource->checkPolicy('list')) {
         $cs[] = $resource->toArray();
+    }
 }
 $this->outputArray($cs);

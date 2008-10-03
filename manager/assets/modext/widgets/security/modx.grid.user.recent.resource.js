@@ -12,7 +12,7 @@ MODx.grid.RecentlyEditedResourcesByUser = function(config) {
     Ext.applyIf(config,{
         title: _('recent_docs')
         ,url: MODx.config.connectors_url+'security/user.php'
-        ,saveUrl: MODx.config.connectors_url+'resource/document.php'
+        ,saveUrl: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {
             action: 'getRecentlyEditedResources'
             ,user: config.user

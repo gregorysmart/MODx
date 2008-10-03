@@ -261,13 +261,13 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 								if (a.result.message !== '' && !itm.onComplete) {
 									Ext.Msg.alert(_('success'),a.result.message,function() {
 										if (this.checkOnComplete(o,itm,a.result)) {
-										  o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_document_tree').refresh();
+										  o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_resource_tree').refresh();
 										}
 									 },this);
 								} else {
 									// refresh the tree, then pass the handling onto the checkOnComplete func									
 									if (this.checkOnComplete(o,itm,a.result)) {
-									   o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_document_tree').refresh();
+									   o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_resource_tree').refresh();
 									}
 								}
 							}
@@ -285,7 +285,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 							MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
 							
 							// refresh the tree, then pass the handling onto the checkOnComplete func
-							o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_document_tree').refresh();
+							o.refreshTree ? o.refreshTree.refresh() : parent.Ext.get('modx_resource_tree').refresh();
 							this.checkOnComplete(o,itm,r);
 						} else {
 							// if error, pass handling to MODx.form.Handler.js

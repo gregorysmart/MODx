@@ -9,7 +9,7 @@
 MODx.page.ResourceData = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		form: 'document_data'
+		form: 'resource_data'
 		,actions: {
             'new': MODx.action['resource/create']
             ,edit: MODx.action['resource/update']
@@ -23,14 +23,14 @@ MODx.page.ResourceData = function(config) {
             process: 'duplicate'
             ,text: _('duplicate')
             ,method: 'remote'
-            ,confirm: _('confirm_duplicate_document')
+            ,confirm: _('resource_duplicate_confirm')
         },{
             process: 'delete'
             ,text: _('delete')
             ,method: 'remote'
-            ,confirm: _('confirm_delete_document')
+            ,confirm: _('resource_delete_confirm')
             ,refresh: {
-            	tree: 'modx_document_tree'
+            	tree: 'modx_resource_tree'
             	,node: config.ctx+'_'+config.id
             }
         },'-',{

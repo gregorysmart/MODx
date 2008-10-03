@@ -9,7 +9,7 @@
 MODx.page.UpdateResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-    	url: MODx.config.connectors_url+'resource/document.php'
+    	url: MODx.config.connectors_url+'resource/index.php'
         ,which_editor: 'none'
         ,formpanel: 'panel-resource'
     	,actions: {
@@ -61,7 +61,7 @@ MODx.page.UpdateResource = function(config) {
         },'-',{
             process: 'duplicate'
             ,text: _('duplicate')
-            ,confirm: _('confirm_duplicate_document')
+            ,confirm: _('resource_duplicate_confirm')
             ,method: 'remote'
         },'-',{
             process: 'preview'

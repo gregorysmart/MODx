@@ -17,8 +17,8 @@ MODx.page.SystemInfo = function(config) {
             xtype: 'grid-databasetables'
             ,renderTo: 'dt_grid'
         },{
-            xtype: 'grid-activedocuments'
-            ,renderTo: 'documents_grid'
+            xtype: 'grid-resource-active'
+            ,renderTo: 'grid-resource-active'
         }]
         ,tabs: [{
             contentEl: 'tab_server', title: _('server')

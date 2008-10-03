@@ -10,10 +10,10 @@
 MODx.tree.ResourceGroup = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		title: _('document_groups')
+		title: _('resource_groups')
         ,url: MODx.config.connectors_url+'security/documentgroup.php'
 		,root_id: '0'
-		,root_name: _('document_groups')
+		,root_name: _('resource_groups')
 		,enableDrag: false
 		,enableDrop: true
 		,ddAppendOnly: true
@@ -141,7 +141,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 		}
 		
 		// send it to the backend to save
-		Ext.Ajax.request({
+		MODx.Ajax.request({
 			url: this.config.url
 			,scope: this
 			,params: {
@@ -149,16 +149,18 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
                 ,resource_group: dropEvent.target.attributes.id
 				,action: 'updateDocumentsIn'
 			}
-			,success: function(r,o) {
-				MODx.util.Progress.reset();
-				Ext.Msg.hide();
-				r = Ext.decode(r.responseText);
-				if (!r.success) {
-					Ext.Msg.alert(_('error'),r.message);
-					this.refresh();
-					return false;
-				}
-			}
+            ,listeners: {
+                'success': {fn:function(r,o) {
+    				MODx.util.Progress.reset();
+    				Ext.Msg.hide();
+    				r = Ext.decode(r.responseText);
+    				if (!r.success) {
+    					Ext.Msg.alert(_('error'),r.message);
+    					this.refresh();
+    					return false;
+    				}
+    			},scope:this}
+            }
 		});
 	}
 });

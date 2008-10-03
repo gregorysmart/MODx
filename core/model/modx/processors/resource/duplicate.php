@@ -3,8 +3,8 @@
  * @package modx
  * @subpackage processors.resource
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 $duplicate_children = isset($_POST['duplicate_children']);
 $newname = isset($_POST['name']) && $_POST['name'] != '' ? $_POST['name'] : '';
@@ -12,111 +12,102 @@ $newname = isset($_POST['name']) && $_POST['name'] != '' ? $_POST['name'] : '';
 // get user id for createdby column
 $user_id = $modx->getLoginUserID();
 
-// get document
-$old_document = $modx->getObject('modResource',$_REQUEST['id']);
-if ($old_document == NULL) $error->failure($_lang['document_not_found']);
+// get resource
+$old_resource = $modx->getObject('modResource',$_REQUEST['id']);
+if ($old_resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
-if (!$modx->hasPermission('new_document'))
-    $error->failure($modx->lexicon('permission_denied'));
-if (!$old_document->checkPolicy('copy'))
-    $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_document')) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
+if (!$old_resource->checkPolicy('copy'))
+    $modx->error->failure($modx->lexicon('permission_denied'));
 
 // get parent
-$parent = $old_document->getOne('Parent');
-if ($parent && !$parent->checkPolicy('add_children'))
-    $error->failure($modx->lexicon('permission_denied'));
+$parent = $old_resource->getOne('Parent');
+if ($parent && !$parent->checkPolicy('add_children')) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
-// get document's children
-$old_document->children = getChildren($old_document);
+// get resource's children
+$old_resource->children = getChildren($old_resource);
 
-$newdocid = $_REQUEST['id'];
-$new_document = duplicateDocument($old_document,$newname,$duplicate_children);
+$new_id = $_REQUEST['id'];
+$new_resource = duplicateResource($old_resource,$newname,$duplicate_children);
 
 
-function duplicateDocument($document,$newname = '',$duplicate_children = true,$_toplevel = 0) {
+function duplicateResource($resource,$newname = '',$duplicate_children = true,$_toplevel = 0) {
 	global $modx;
-	global $error;
 	global $user_id;
 
-	if ($newname == '') $newname = 'Duplicate of '.$document->pagetitle;
-	// duplicate document
-	$new_document = $modx->newObject($document->_class);
-	$new_document->fromArray($document->toArray('', true), '', false, true);
-	$new_document->set('pagetitle',$newname);
-	$new_document->set('alias', null);
-	$new_document->set('parent',$_toplevel == 0 ? $document->parent : $_toplevel); //make sure children get assigned to new parent
-	$new_document->set('createdby',$user_id);
-	$new_document->set('createdon',time());
-	$new_document->set('editedby',0);
-	$new_document->set('editedon',0);
-	$new_document->set('deleted',0);
-	$new_document->set('deletedon',0);
-	$new_document->set('deletedby',0);
-	$new_document->set('publishedon',0);
-	$new_document->set('publishedby',0);
-	$new_document->set('published',false);
-	if (!$new_document->save())
-		$error->failure('An error occurred while duplicating the document.');
+	if ($newname == '') $newname = $modx->lexicon('duplicate_of').$resource->pagetitle;
+	// duplicate resource
+	$new_resource = $modx->newObject($resource->_class);
+	$new_resource->fromArray($resource->toArray('', true), '', false, true);
+	$new_resource->set('pagetitle',$newname);
+	$new_resource->set('alias', null);
+	$new_resource->set('parent',$_toplevel == 0 ? $resource->parent : $_toplevel); //make sure children get assigned to new parent
+	$new_resource->set('createdby',$user_id);
+	$new_resource->set('createdon',time());
+	$new_resource->set('editedby',0);
+	$new_resource->set('editedon',0);
+	$new_resource->set('deleted',0);
+	$new_resource->set('deletedon',0);
+	$new_resource->set('deletedby',0);
+	$new_resource->set('publishedon',0);
+	$new_resource->set('publishedby',0);
+	$new_resource->set('published',false);
+	if (!$new_resource->save())
+		$modx->error->failure($modx->lexicon('resource_err_duplicate'));
 
 	if($_toplevel==0) {
-		global $newdocid;
-		$newdocid = $new_document->get('id');
+		global $new_id;
+		$new_id = $new_resource->get('id');
 	}
 
-	if($_toplevel==0) {
-		global $newdocid;
-		$newdocid = $new_document->id;
-	}
-
-	// duplicate document TVDs
-	$document->tvds = $document->getMany('modTemplateVarResource');
-	foreach ($document->tvds as $old_tvd) {
+	// duplicate resource TVs
+	$resource->tvds = $resource->getMany('modTemplateVarResource');
+	foreach ($resource->tvds as $old_tvd) {
 		$new_tvd = $modx->newObject('modTemplateVarResource');
-		$new_tvd->set('contentid',$new_document->id);
+		$new_tvd->set('contentid',$new_resource->id);
 		$new_tvd->set('tmplvarid',$old_tvd->tmplvarid);
 		$new_tvd->set('value',$old_tvd->value);
-		if (!$new_tvd->save())
-			$error->failure('An error occurred while duplicating template variables.');
+		$new_tvd->save();
 	}
 
-	// duplicate document keywords
-	$document->keywords = $document->getMany('modResourceKeyword');
-	foreach ($document->keywords as $old_kw) {
+	// duplicate resource keywords
+	$resource->keywords = $resource->getMany('modResourceKeyword');
+	foreach ($resource->keywords as $old_kw) {
 		$new_kw = $modx->newObject('modResourceKeyword');
-		$new_kw->set('content_id',$new_document->id);
+		$new_kw->set('content_id',$new_resource->id);
 		$new_kw->set('keyword_id',$old_kw->keyword_id);
-		if (!$new_kw->save())
-			$error->failure('An error occurred while duplicating document keywords.');
+		$new_kw->save();
 	}
 
-	// duplicate document groups
-	$document->groups = $document->getMany('modResourceGroupResource');
-	foreach ($document->groups as $old_group) {
+	// duplicate resource groups
+	$resource->groups = $resource->getMany('modResourceGroupResource');
+	foreach ($resource->groups as $old_group) {
 		$new_group = $modx->newObject('modResourceGroupResource');
 		$new_group->set('document_group',$old_group->document_group);
-		$new_group->set('document',$new_document->id);
-		if (!$new_group->save())
-			$error->failure('An error occurred while duplicating document groups.');
+		$new_group->set('document',$new_resource->id);
+		$new_group->save();
 	}
 
-	// duplicate document metatags
-	$document->metatags = $document->getMany('modResourceMetatag');
-	foreach ($document->metatags as $old_mt) {
+	// duplicate resource metatags
+	$resource->metatags = $resource->getMany('modResourceMetatag');
+	foreach ($resource->metatags as $old_mt) {
 		$new_mt = $modx->newObject('modResourceMetatag');
-		$new_mt->set('content_id',$new_document->id);
+		$new_mt->set('content_id',$new_resource->id);
 		$new_mt->set('metatag_id',$old_mt->id);
-		if (!$new_mt->save()) {
-			$error->failure('An error occurred while duplicating document metatags.');
-	}
+		$new_mt->save();
 	}
 
-	// duplicate children, recursively
-	if ($duplicate_children && count($document->children) > 0) {
-		foreach ($document->children as $child) {
-			duplicateDocument($child,'',true,$new_document->id);
+	// duplicate resource, recursively
+	if ($duplicate_children && count($resource->children) > 0) {
+		foreach ($resource->children as $child) {
+			duplicateDocument($child,'',true,$new_resource->id);
 		}
 	}
-	return $new_document;
+	return $new_resource;
 }
 
 // Get Children
@@ -132,6 +123,6 @@ function getChildren($parent) {
 }
 
 // log manager action
-$modx->logManagerAction('delete_resource','modDocument',$document->id);
+$modx->logManagerAction('delete_resource','modResource',$new_resource->id);
 
-$error->success('', array ('id' => $new_document->get('id')));
+$modx->error->success('', array ('id' => $new_resource->get('id')));

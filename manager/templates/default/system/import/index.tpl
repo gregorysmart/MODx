@@ -36,7 +36,7 @@
     </td>
 </tr>
 <tr>
-    <th><label for="modx_doctree">{$_lang.import_parent_document}</label></th>
+    <th><label for="import_resource_tree">{$_lang.import_parent_document}</label></th>
     <td>
         {$_lang.import_parent_document_message}
     </td>
@@ -45,7 +45,7 @@
 </table>
 
 <div style="padding: 1em;">
-    <div id="import_doctree" class="tree"></div>
+    <div id="import_resource_tree" class="tree"></div>
     <br style="clear: right" />
 </div>
 <br style="clear: both" />

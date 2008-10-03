@@ -13,7 +13,7 @@ if (!isset($_REQUEST['id'])) {
 }
 $resource = $modx->getObject('modResource', $_REQUEST['id']);
 if ($resource == null) {
-    $modx->error->failure($modx->lexicon('document_not_found'));
+    $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 }
 if (!$resource->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
 

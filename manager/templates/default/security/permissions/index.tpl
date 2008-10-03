@@ -14,14 +14,14 @@
 </div>
 
 <div id="tab_dg" class="padding x-hide-display">
-	<h2>{$_lang.document_groups}</h2>
+	<h2>{$_lang.resource_groups}</h2>
 	
 	<p>
-		Drag documents into document groups here.
+		Drag resources into resource groups here.
 	</p>
 	<br />
 	
-	<div id="modx_doctree" class="tree" style="float: left; margin: 1em; width: 300px;"></div>
+	<div id="modx_resource_tree" class="tree" style="float: left; margin: 1em; width: 300px !important;"></div>
 	
 	<div id="modx_dgtree" class="tree" style="float: left; margin: 1em; width: 300px;"></div>
 	

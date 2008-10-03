@@ -65,7 +65,7 @@
     <div class="padding x-hide-display" id="tab_documents">
         <h2>{$_lang.recent_docs}</h2>
         <p>{$_lang.sysinfo_activity_message}</p>
-        <div id="documents_grid" style="overflow:hidden; width:100%;"></div>
+        <div id="grid-resource-active" style="overflow:hidden; width:100%;"></div>
     </div>
     
     <!-- database -->

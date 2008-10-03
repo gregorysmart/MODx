@@ -1,13 +1,12 @@
 /**
- * Generates the Document Tree in Ext
+ * Generates the Resource Tree in Ext
  * 
- * @class MODx.tree.Document
+ * @class MODx.tree.Resource
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-document
+ * @xtype tree-resource
  */
-MODx.tree.Document = function(config) {
+MODx.tree.Resource = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		rootVisible: false
@@ -17,16 +16,16 @@ MODx.tree.Document = function(config) {
 		,sortBy: 'menuindex'
 		,title: ''
 		,remoteToolbar: true
-		,url: MODx.config.connectors_url+'layout/tree/document.php'
+		,url: MODx.config.connectors_url+'layout/tree/resource.php'
 	});
-	MODx.tree.Document.superclass.constructor.call(this,config);
+	MODx.tree.Resource.superclass.constructor.call(this,config);
     if (config.el) {
         var el = Ext.get(config.el);
-        el.createChild({ tag: 'div', id: 'modx_doctree_tb' });
-        el.createChild({ tag: 'div', id: 'modx_doctree_filter' });
+        el.createChild({ tag: 'div', id: 'modx_resource_tree_tb' });
+        el.createChild({ tag: 'div', id: 'modx_resource_tree_filter' });
     }
 };
-Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
+Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
 	forms: {}
 	,windows: {}
 	,stores: {}
@@ -78,9 +77,9 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		MODx.msg.confirm({
-			title: _('delete_document')
-			,text: _('confirm_delete_document')
-			,url: MODx.config.connectors_url+'resource/document.php'
+			title: _('resource_delete')
+			,text: _('resource_delete_confirm')
+			,url: MODx.config.connectors_url+'resource/index.php'
 			,params: {
 				action: 'delete'
 				,id: id
@@ -95,7 +94,7 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		MODx.Ajax.request({
-			url: MODx.config.connectors_url+'resource/document.php'
+			url: MODx.config.connectors_url+'resource/index.php'
 			,params: {
 				action: 'undelete'
 				,id: id
@@ -110,9 +109,9 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		MODx.msg.confirm({
-			title: _('publish_document')
-			,text: _('confirm_publish')
-			,url: MODx.config.connectors_url+'resource/document.php'
+			title: _('resource_publish')
+			,text: _('resource_publish_confirm')
+			,url: MODx.config.connectors_url+'resource/index.php'
 			,params: {
 				action: 'publish'
 				,id: id
@@ -127,9 +126,9 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 		var node = this.cm.activeNode;
 		var id = node.id.split('_'); id = id[1];
 		MODx.msg.confirm({
-			title: _('unpublish_document')
-			,text: _('confirm_unpublish')
-			,url: MODx.config.connectors_url+'resource/document.php'
+			title: _('resource_unpublish')
+			,text: _('resource_unpublish_confirm')
+			,url: MODx.config.connectors_url+'resource/index.php'
 			,params: {
 				action: 'unpublish'
 				,id: id
@@ -142,7 +141,7 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 	
 	,emptyRecycleBin: function(item,e) {
         MODx.Ajax.request({
-            url: MODx.config.connectors_url+'resource/document.php'
+            url: MODx.config.connectors_url+'resource/index.php'
             ,params: {
 				action: 'emptyRecycleBin'
 			}
@@ -155,7 +154,7 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
 	,showFilter: function(itm,e) {
 		if (this._filterVisible) { return false; }
 		
-		var t = Ext.get('modx_doctree_filter');
+		var t = Ext.get('modx_resource_tree_filter');
 		var fbd = t.createChild({tag: 'div'});
 		var tb = new Ext.Toolbar(fbd);
 		var cb = new Ext.form.ComboBox({
@@ -223,4 +222,4 @@ Ext.extend(MODx.tree.Document,MODx.tree.Tree,{
             && ap;
     }
 });
-Ext.reg('tree-document',MODx.tree.Document);
+Ext.reg('tree-resource',MODx.tree.Resource);

@@ -19,7 +19,7 @@
     </td>
 </tr>
 <tr class="odd">
-    <th><label for="modx_doctree">{$_lang.import_parent_document}</label></th>
+    <th><label for="modx_resource_tree">{$_lang.import_parent_document}</label></th>
     <td>
         {$_lang.import_use_doc_tree}
     </td>
@@ -28,9 +28,7 @@
 </table>
 
 <div style="padding: 1em;">
-    <div id="modx_doctree" class="tree">
-        <div id="modx_doctree_tb"></div>
-    </div>
+    <div id="modx_resource_tree" class="tree"><div id="modx_resource_tree_tb"></div></div>
     <br style="clear: right" />
 </div>
 <br style="clear: both" />

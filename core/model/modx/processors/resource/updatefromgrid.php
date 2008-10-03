@@ -6,18 +6,17 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('save_document')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_document')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
-if (!isset($_DATA['id'])) $error->failure($modx->lexicon('document_err_not_specified'));
+if (!isset($_DATA['id'])) $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_DATA['id']);
-if ($resource == null) $error->failure($modx->lexicon('document_not_found'));
+if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_DATA['id'])));
 
 $resource->fromArray($_DATA);
-
 if ($resource->save() === false) {
-    $modx->error->failure($modx->lexicon('document_err_save'));
+    $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
 $cacheManager= $modx->getCacheManager();

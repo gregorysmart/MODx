@@ -15,7 +15,7 @@ foreach ($menus as $menu) {
     $as[] = $menu;
 }
 
-$error->success('',$as);
+$modx->error->success('',$as);
 
 
 function getSubMenus($menu) {
@@ -31,7 +31,18 @@ function getSubMenus($menu) {
     $menus = $modx->getCollection('modMenu',$c);
     $av = array();
     foreach ($menus as $menu) {
+
+        // if 3rd party menu item, load proper text
+        $action = $menu->getOne('Action');
+        if ($action) {
+            $ctx = $action->getOne('Context');
+            if ($ctx->get('key') != 'mgr' && !$modx->lexicon->exists($menu->get('text'))) {
+                $modx->lexicon->load($ctx->get('key').':default');
+                $menu->set('text',$modx->lexicon($menu->text));
+            }
+        }
         $ma = $menu->toArray();
+
         if ($menu->get('controller')) {
             $ma['controller'] = $menu->get('controller');
         } else {
