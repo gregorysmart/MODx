@@ -650,6 +650,37 @@ class modX extends xPDO {
         }
         return $placeholder;
     }
+    
+    /**
+     * Unset a placeholder value by key.
+     * 
+     * @param string $key The key of the placeholder to unset.
+     */
+    function unsetPlaceholder($key) {
+        if (is_string($key) && array_key_exists($key, $this->placeholders)) {
+            unset($this->placeholders[$key]);
+        }
+    }
+    
+    /**
+     * Unset multiple placeholders, either by prefix or an array of keys.
+     * 
+     * @param string|array $keys A string prefix or an array of keys indicating
+     * the placeholders to unset.
+     */
+    function unsetPlaceholders($keys) {
+        if (is_array($keys)) {
+            foreach ($keys as $key) {
+                if (is_string($key)) $this->unsetPlaceholder($key);
+                if (is_array($key)) $this->unsetPlaceholders($key);
+            }
+        } elseif (is_string($keys)) {
+            $placeholderKeys = array_keys($this->placeholders);
+            foreach ($placeholderKeys as $key) {
+                if (strpos($key, $keys) === 0) $this->unsetPlaceholder($key);
+            }
+        }
+    }
 
     /**
      * Generates a URL representing a specified resource.

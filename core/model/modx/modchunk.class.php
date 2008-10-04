@@ -1,6 +1,6 @@
 <?php
 /**
- * Represents a chunk of static content.
+ * Represents a chunk of static HTML content.
  *
  * @package modx
  */
@@ -42,6 +42,9 @@ class modChunk extends modElement {
             $this->_output= $this->_content;
 
             $this->cache();
+            
+            // remove the placeholders set from the properties of this element
+            $this->xpdo->unsetPlaceholders($this->get('name') . '.');
         }
         $this->_processed= true;
 
