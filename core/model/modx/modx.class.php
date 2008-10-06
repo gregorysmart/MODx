@@ -650,10 +650,10 @@ class modX extends xPDO {
         }
         return $placeholder;
     }
-    
+
     /**
      * Unset a placeholder value by key.
-     * 
+     *
      * @param string $key The key of the placeholder to unset.
      */
     function unsetPlaceholder($key) {
@@ -661,10 +661,10 @@ class modX extends xPDO {
             unset($this->placeholders[$key]);
         }
     }
-    
+
     /**
      * Unset multiple placeholders, either by prefix or an array of keys.
-     * 
+     *
      * @param string|array $keys A string prefix or an array of keys indicating
      * the placeholders to unset.
      */
@@ -1129,7 +1129,7 @@ class modX extends xPDO {
         if (strpos(strtolower($src), "<style") !== false || strpos(strtolower($src), "<link") !== false) {
             $this->sjscripts[count($this->sjscripts)]= $src;
         } else {
-            $this->sjscripts[count($this->sjscripts)]= '<!-- MODx registered -->' . "\n" . '  <link rel="stylesheet" href="' . $src . '" />';
+            $this->sjscripts[count($this->sjscripts)]= '<!-- MODx registered -->' . "\n" . '  <link rel="stylesheet" href="' . $src . '" type="text/css" />';
         }
     }
 
@@ -2535,7 +2535,7 @@ class modX extends xPDO {
             @ini_set('session.cookie_path', $cookiePath);
             $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
             session_name($site_sessionname);
-            
+
             session_start();
             $this->_sessionState = MODX_SESSION_STATE_INITIALIZED;
             $this->getUser($contextKey);
