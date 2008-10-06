@@ -10,9 +10,9 @@ if (isset($_REQUEST['action']) && isset($_REQUEST['ctx'])
     $action = $modx->actionMap[$_REQUEST['action']];
 }
 
-if (isset($_REQUEST['foci']) && $_REQUEST['foci'] != '') {
-    $foci = explode(',',$_REQUEST['foci']);
-    foreach($foci as $focus) $modx->lexicon->load($focus);
+if (isset($_REQUEST['topic']) && $_REQUEST['topic'] != '') {
+    $topics = explode(',',$_REQUEST['topic']);
+    foreach($topics as $topic) $modx->lexicon->load($topic);
 }
 
 $_lang = $modx->lexicon->fetch();

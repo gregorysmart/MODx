@@ -6,14 +6,14 @@
 $xpdo_meta_map['modNamespace']= array (
   'package' => 'modx',
   'table' => 'namespaces',
-  'fields' => 
+  'fields' =>
   array (
     'name' => '',
     'path' => '',
   ),
-  'fieldMeta' => 
+  'fieldMeta' =>
   array (
-    'name' => 
+    'name' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '40',
@@ -22,18 +22,18 @@ $xpdo_meta_map['modNamespace']= array (
       'default' => '',
       'index' => 'pk',
     ),
-    'path' => 
+    'path' =>
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'default' => '',
     ),
   ),
-  'aggregates' => 
+  'aggregates' =>
   array (
-    'modLexiconFocus' => 
+    'modLexiconTopic' =>
     array (
-      'class' => 'modLexiconFocus',
+      'class' => 'modLexiconTopic',
       'local' => 'name',
       'foreign' => 'namespace',
       'cardinality' => 'many',

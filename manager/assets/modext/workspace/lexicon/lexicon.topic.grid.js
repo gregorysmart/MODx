@@ -1,16 +1,16 @@
 /**
- * Loads a grid for managing lexicon foci.
+ * Loads a grid for managing lexicon topics.
  * 
- * @class MODx.grid.LexiconFoci
+ * @class MODx.grid.LexiconTopic
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype grid-lexicon-foci
+ * @xtype grid-lexicon-topic
  */
-MODx.grid.LexiconFoci = function(config) {
+MODx.grid.LexiconTopic = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('lexicon_foci')
-        ,url: MODx.config.connectors_url+'workspace/lexicon/focus.php'
+        title: _('lexicon_topics')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/topic.php'
         ,fields: ['id','name','namespace','menu']
         ,baseParams: {
             action: 'getList'
@@ -63,8 +63,8 @@ MODx.grid.LexiconFoci = function(config) {
             text: _('create_new')
             ,xtype: 'button'
             ,menu: [{
-                text: _('focus')
-                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-focus-create'],true)
+                text: _('topic')
+                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-topic-create'],true)
                 ,scope: this
             },{
                 text: _('namespace')
@@ -73,9 +73,9 @@ MODx.grid.LexiconFoci = function(config) {
             }]
         }]
     });
-    MODx.grid.LexiconFoci.superclass.constructor.call(this,config);
+    MODx.grid.LexiconTopic.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.grid.LexiconFoci,MODx.grid.Grid,{
+Ext.extend(MODx.grid.LexiconTopic,MODx.grid.Grid,{
     filter: function(cb,nv,ov,name) {
         if (!name) { return false; }
         this.store.baseParams[name] = nv;
@@ -91,23 +91,22 @@ Ext.extend(MODx.grid.LexiconFoci,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-lexicon-foci',MODx.grid.LexiconFoci);
+Ext.reg('grid-lexicon-topic',MODx.grid.LexiconTopic);
 
 /**
- * Generates the create lexicon focus window.
+ * Generates the create lexicon topic window.
  *  
- * @class MODx.window.CreateLexiconFocus
+ * @class MODx.window.CreateLexiconTopic
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-lexicon-focus-create
+ * @xtype window-lexicon-topic-create
  */
-MODx.window.CreateLexiconFocus = function(config) {
+MODx.window.CreateLexiconTopic = function(config) {
     config = config || {};
     var r = config.record;
     Ext.applyIf(config,{
-        title: _('focus_create')
-        ,url: MODx.config.connectors_url+'workspace/lexicon/focus.php'
+        title: _('topic_create')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/topic.php'
         ,action: 'create'
         ,fields: [{
             xtype: 'textfield'
@@ -122,7 +121,7 @@ MODx.window.CreateLexiconFocus = function(config) {
             ,value: r.namespace
         }]
     });
-    MODx.window.CreateLexiconFocus.superclass.constructor.call(this,config);
+    MODx.window.CreateLexiconTopic.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.window.CreateLexiconFocus,MODx.Window);
-Ext.reg('window-lexicon-focus-create',MODx.window.CreateLexiconFocus);
+Ext.extend(MODx.window.CreateLexiconTopic,MODx.Window);
+Ext.reg('window-lexicon-topic-create',MODx.window.CreateLexiconTopic);

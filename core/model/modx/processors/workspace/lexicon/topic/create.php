@@ -1,7 +1,7 @@
 <?php
 /**
  * @package modx
- * @subpackage processors.workspace.lexicon.focus
+ * @subpackage processors.workspace.lexicon.topic
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
@@ -13,12 +13,12 @@ if (!isset($_POST['namespace'])) $modx->error->failure($modx->lexicon('namespace
 $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
 if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
-$focus = $modx->newObject('modLexiconFocus');
-$focus->set('name',$_POST['name']);
-$focus->set('namespace',$namespace->name);
+$topic = $modx->newObject('modLexiconTopic');
+$topic->set('name',$_POST['name']);
+$topic->set('namespace',$namespace->name);
 
-if ($focus->save() === false) {
-	$modx->error->failure($modx->lexicon('focus_err_create'));
+if ($topic->save() === false) {
+	$modx->error->failure($modx->lexicon('topic_err_create'));
 }
 
 $modx->error->success();

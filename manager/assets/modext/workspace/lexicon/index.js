@@ -25,7 +25,7 @@ MODx.page.LexiconManagement = function(config) {
             ,items: [{
                 xtype: 'panel-lexicon'
             },{
-                xtype: 'panel-lexicon-foci'
+                xtype: 'panel-lexicon-topic'
             },{
                 xtype: 'panel-language'
             }]
@@ -64,31 +64,31 @@ Ext.extend(MODx.panel.Lexicon,MODx.Panel);
 Ext.reg('panel-lexicon',MODx.panel.Lexicon);
 
 /**
- * @class MODx.panel.LexiconFoci
+ * @class MODx.panel.LexiconTopic
  * @extends MODx.FormPanel
  * @param {Object} config An object of configuration properties
- * @xtype panel-lexicon-foci
+ * @xtype panel-lexicon-topic
  */
-MODx.panel.LexiconFoci = function(config) {
+MODx.panel.LexiconTopic = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-       title: _('lexicon_foci')
+       title: _('lexicon_topics')
        ,items: [{
-            html: '<h2>'+_('lexicon_foci')+'</h2>'
+            html: '<h2>'+_('lexicon_topics')+'</h2>'
             ,border: false
        },{
-            html: '<p>'+_('lexicon_foci_desc')+'</h2>'
+            html: '<p>'+_('lexicon_topics_desc')+'</h2>'
             ,border: false
        },{
-            xtype: 'grid-lexicon-foci'
-            ,id: 'grid-lexicon-foci'
-            ,renderTo: 'grid-lexicon-foci'
+            xtype: 'grid-lexicon-topic'
+            ,id: 'grid-lexicon-topic'
+            ,renderTo: 'grid-lexicon-topic'
        }]
     });
-    MODx.panel.LexiconFoci.superclass.constructor.call(this,config);    
+    MODx.panel.LexiconTopic.superclass.constructor.call(this,config);    
 };
-Ext.extend(MODx.panel.LexiconFoci,MODx.Panel);
-Ext.reg('panel-lexicon-foci',MODx.panel.LexiconFoci);
+Ext.extend(MODx.panel.LexiconTopic,MODx.Panel);
+Ext.reg('panel-lexicon-topic',MODx.panel.LexiconTopic);
 
 /**
  * @class MODx.panel.Language

@@ -6,18 +6,18 @@
 $xpdo_meta_map['modAction']= array (
   'package' => 'modx',
   'table' => 'actions',
-  'fields' => 
+  'fields' =>
   array (
     'context_key' => 'mgr',
     'parent' => '0',
     'controller' => NULL,
     'haslayout' => '1',
-    'lang_foci' => NULL,
+    'lang_topics' => NULL,
     'assets' => NULL,
   ),
-  'fieldMeta' => 
+  'fieldMeta' =>
   array (
-    'context_key' => 
+    'context_key' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '100',
@@ -25,7 +25,7 @@ $xpdo_meta_map['modAction']= array (
       'null' => 'false',
       'default' => 'mgr',
     ),
-    'parent' => 
+    'parent' =>
     array (
       'dbtype' => 'int',
       'precision' => '10',
@@ -35,14 +35,14 @@ $xpdo_meta_map['modAction']= array (
       'default' => '0',
       'index' => 'index',
     ),
-    'controller' => 
+    'controller' =>
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
       'null' => 'false',
     ),
-    'haslayout' => 
+    'haslayout' =>
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
@@ -51,22 +51,22 @@ $xpdo_meta_map['modAction']= array (
       'null' => 'false',
       'default' => '1',
     ),
-    'lang_foci' => 
+    'lang_foci' =>
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => 'false',
     ),
-    'assets' => 
+    'assets' =>
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => 'false',
     ),
   ),
-  'aggregates' => 
+  'aggregates' =>
   array (
-    'Context' => 
+    'Context' =>
     array (
       'class' => 'modContext',
       'local' => 'context_key',
@@ -74,7 +74,7 @@ $xpdo_meta_map['modAction']= array (
       'owner' => 'foreign',
       'cardinality' => 'one',
     ),
-    'Parent' => 
+    'Parent' =>
     array (
       'class' => 'modAction',
       'local' => 'parent',
@@ -82,7 +82,7 @@ $xpdo_meta_map['modAction']= array (
       'owner' => 'foreign',
       'cardinality' => 'one',
     ),
-    'Children' => 
+    'Children' =>
     array (
       'class' => 'modAction',
       'local' => 'id',
@@ -91,9 +91,9 @@ $xpdo_meta_map['modAction']= array (
       'cardinality' => 'many',
     ),
   ),
-  'composites' => 
+  'composites' =>
   array (
-    'Menus' => 
+    'Menus' =>
     array (
       'class' => 'modMenu',
       'local' => 'id',
@@ -101,7 +101,7 @@ $xpdo_meta_map['modAction']= array (
       'owner' => 'local',
       'cardinality' => 'many',
     ),
-    'Acls' => 
+    'Acls' =>
     array (
       'class' => 'modAccessAction',
       'local' => 'id',

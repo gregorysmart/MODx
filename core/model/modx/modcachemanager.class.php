@@ -282,7 +282,7 @@ class modCacheManager extends xPDOCacheManager {
         return $written;
     }
 
-    function generateLexiconCache($namespace = 'core',$focus = 'default',$language = '') {
+    function generateLexiconCache($namespace = 'core',$topic = 'default',$language = '') {
         if ($language == '') $language = $this->modx->config['manager_language'];
         $written= false;
 
@@ -292,24 +292,24 @@ class modCacheManager extends xPDOCacheManager {
             return false;
         }
 
-        $focus = $this->modx->getObject('modLexiconFocus',array(
+        $topic = $this->modx->getObject('modLexiconTopic',array(
             'namespace' => $namespace->get('name'),
-            'name' => $focus,
+            'name' => $topic,
         ));
-        if ($focus == null) {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find focus "'.$focus.'" to generate lexicon cache.');
+        if ($topic == null) {
+            $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find topic "'.$topic.'" to generate lexicon cache.');
             return false;
         }
 
-        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->get('name').'/'.$focus->get('name').'.cache.php';
+        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->get('name').'/'.$topic->get('name').'.cache.php';
 
         $content= "<?php \n";
         $c= $this->modx->newQuery('modLexiconEntry');
-        $c= $c->where(array(
-            'focus' => $focus->get('id'),
+        $c->where(array(
+            'topic' => $topic->get('id'),
             'language' => $language,
         ));
-        $c= $c->sortby('name','ASC');
+        $c->sortby('name','ASC');
         $entries= $this->modx->getCollection('modLexiconEntry',$c);
 
         foreach ($entries as $entry) {

@@ -13,14 +13,14 @@ if (!isset($_POST['namespace'])) $modx->error->failure($modx->lexicon('namespace
 $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
 if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
-if (!isset($_POST['focus'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
-$focus = $modx->getObject('modLexiconFocus',$_POST['focus']);
-if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
+if (!isset($_POST['topic'])) $modx->error->failure($modx->lexicon('topic_err_ns'));
+$topic = $modx->getObject('modLexiconTopic',$_POST['topic']);
+if ($topic == null) $modx->error->failure($modx->lexicon('topic_err_nf'));
 
 $entry = $modx->newObject('modLexiconEntry');
 $entry->set('name',$_POST['name']);
 $entry->set('namespace',$namespace->get('name'));
-$entry->set('focus',$focus->get('id'));
+$entry->set('topic',$topic->get('id'));
 $entry->set('language',$_POST['language']);
 $entry->set('value',$_POST['value']);
 $entry->set('createdon',date('Y-m-d h:i:s'));

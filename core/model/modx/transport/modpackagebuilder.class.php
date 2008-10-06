@@ -272,7 +272,7 @@ class modPackageBuilder {
     function buildLexicon($path) {
         $invdirs = array('.','..','.svn');
         $i = 0;
-        $foci = array();
+        $topics = array();
         $languages = array();
         $entries = array();
 
@@ -309,26 +309,26 @@ class modPackageBuilder {
             }
             $languages[$culture]= $language;
 
-            // loop through foci
+            // loop through topics
             $fdir = $path.$culture.'/';
             $fd = dir($fdir);
             while (false !== ($entry = $fd->read())) {
                 if (in_array($entry,$invdirs)) continue;
                 if (is_dir($fdir.$entry)) continue;
 
-                $foc = str_replace('.inc.php','',$entry);
+                $top = str_replace('.inc.php','',$entry);
 
-                $focus = $this->modx->getObject('modLexiconFocus',array(
-                    'name' => $foc,
+                $topic = $this->modx->getObject('modLexiconTopic',array(
+                    'name' => $top,
                     'namespace' => $this->namespace->get('name'),
                 ));
-                if ($focus == null) {
-                    $focus= $this->modx->newObject('modLexiconFocus');
-                    $focus->fromArray(array (
-                      'name' => $foc,
+                if ($topic == null) {
+                    $topic= $this->modx->newObject('modLexiconTopic');
+                    $topic->fromArray(array (
+                      'name' => $top,
                       'namespace' => $this->namespace->get('name'),
                     ));
-                    $focus->save();
+                    $topic->save();
                 }
 
                 $f = $fdir.$entry;
@@ -342,17 +342,17 @@ class modPackageBuilder {
                         $entry->fromArray(array (
                           'name' => $key,
                           'value' => $value,
-                          'focus' => $focus->get('id'),
+                          'topic' => $topic->get('id'),
                           'namespace' => $this->namespace->get('name'),
                           'language' => $culture,
                         ));
                         $entries[] = $entry;
                     }
                 }
-                $focus->addMany($entries);
-                $focus->save();
+                $topic->addMany($entries);
+                $topic->save();
 
-                $vehicle = $this->createVehicle($focus,array (
+                $vehicle = $this->createVehicle($topic,array (
                     XPDO_TRANSPORT_PRESERVE_KEYS => false,
                     XPDO_TRANSPORT_UPDATE_OBJECT => true,
                     XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
@@ -361,13 +361,13 @@ class modPackageBuilder {
                         'modLexiconEntry' => array (
                             XPDO_TRANSPORT_PRESERVE_KEYS => false,
                             XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                            XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus', 'namespace', 'language'),
+                            XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'topic', 'namespace', 'language'),
                         ),
                     ),
                 ));
                 $this->putVehicle($vehicle);
 
-                $focus->remove();
+                $topic->remove();
             }
         }
         $dir->close();
@@ -376,4 +376,3 @@ class modPackageBuilder {
         return true;
     }
 }
-?>

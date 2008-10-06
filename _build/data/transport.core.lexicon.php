@@ -15,22 +15,22 @@ while (false !== ($culture = $dir->read())) {
         'name' => $culture,
     ),'',true,true);
 
-    // loop through foci
+    // loop through topics
     $fdir = $d.$culture.'/';
     $fd = dir($fdir);
-    $fcount = 1;
+    $tcount = 1;
     while (false !== ($entry = $fd->read())) {
         if (in_array($entry,$invdirs)) continue;
         if (is_dir($fdir.$entry)) continue;
 
-        $foc = str_replace('.inc.php','',$entry);
+        $topicname = str_replace('.inc.php','',$entry);
 
-        $focus = $xpdo->getObject('modLexiconFocus');
-        if ($focus == null) {
-            $focus= $xpdo->newObject('modLexiconFocus');
-            $focus->fromArray(array (
-              'id' => $fcount,
-              'name' => $foc,
+        $topic = $xpdo->getObject('modLexiconTopic');
+        if ($topic == null) {
+            $topic= $xpdo->newObject('modLexiconTopic');
+            $topic->fromArray(array (
+              'id' => $tcount,
+              'name' => $topicname,
               'namespace' => 'core',
             ), '', true, true);
         }
@@ -47,16 +47,16 @@ while (false !== ($culture = $dir->read())) {
                   'id' => $i,
                   'name' => $key,
                   'value' => $value,
-                  'focus' => $focus->get('id'),
+                  'topic' => $topic->get('id'),
                   'namespace' => 'core',
                   'language' => $culture,
                 ), '', true, true);
                 $i++;
             }
         }
-        $focus->addMany($entries);
-        $foci[$focus->get('id')] = $focus;
-        $fcount++;
+        $topic->addMany($entries);
+        $topics[$topic->get('id')] = $topic;
+        $tcount++;
     }
 }
 $dir->close();

@@ -60,7 +60,7 @@ $classes= array (
     'modNamespace',
     'modLexiconEntry',
     'modLexiconLanguage',
-    'modLexiconFocus',
+    'modLexiconTopic',
 );
 
 $this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');

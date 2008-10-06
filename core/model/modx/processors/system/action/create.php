@@ -32,7 +32,7 @@ $action->set('context_key',$context->key);
 $action->set('parent',$parent->id);
 $action->set('controller',$_POST['controller']);
 $action->set('loadheaders',$loadheaders);
-$action->set('lang_foci',$_POST['lang_foci']);
+$action->set('lang_topics',$_POST['lang_topics']);
 $action->set('assets',$_POST['assets']);
 
 if (!$action->save()) $modx->error->failure($modx->lexicon('action_err_create'));

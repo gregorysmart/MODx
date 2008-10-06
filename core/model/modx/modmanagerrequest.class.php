@@ -210,9 +210,9 @@ class modManagerRequest extends modRequest {
 			if (isset($this->modx->actionMap[$this->action])) {
 				$action = $this->modx->actionMap[$this->action];
 
-                $foci = explode(',',$action['lang_foci']);
-                foreach ($foci as $focus) { $this->modx->lexicon->load($focus); }
-                $this->modx->smarty->assign('_lang_foci',$action['lang_foci']);
+                $topics = explode(',',$action['lang_topics']);
+                foreach ($topics as $topic) { $this->modx->lexicon->load($topic); }
+                $this->modx->smarty->assign('_lang_topics',$action['lang_topics']);
                 $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
                 $this->modx->smarty->assign('_ctx',$action['context']);
 

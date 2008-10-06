@@ -33,7 +33,6 @@ $classes = array (
     'modNamespace',
     'modLexiconEntry',
     'modLexiconLanguage',
-    'modLexiconFocus',
 );
 
 $this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
@@ -117,6 +116,9 @@ if ($connected) {
     $description = 'Added modAction `lang_foci` field.';
     $sql = "ALTER TABLE {$table} ADD COLUMN `lang_foci` TEXT AFTER `haslayout`";
     processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Renamed modAction `lang_foci` field to `lang_topics`.';
+    $sql = "ALTER TABLE {$table} CHANGE COLUMN `lang_foci` `lang_topics` TEXT";
+    processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modSystemSetting';
     $table = $this->xpdo->getTableName($class);
@@ -196,7 +198,7 @@ if ($connected) {
     processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modLexiconFocus';
-    $table = $this->xpdo->getTableName($class);
+    $table = $this->config['table_prefix'].'lexicon_foci';
     $description = 'Dropped modLexiconFocus PRIMARY KEY';
     $sql = "ALTER TABLE {$table} DROP PRIMARY KEY";
     processResults($this->xpdo,$results,$class,$description,$sql);
@@ -212,19 +214,26 @@ if ($connected) {
     $sql = "ALTER TABLE {$table} ADD UNIQUE INDEX `foci` (`name`,`namespace`)";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
+
     $class = 'modLexiconEntry';
-    $focusTable = $table;
+    $focusTable = $this->config['table_prefix'].'lexicon_foci';
     $table = $this->xpdo->getTableName($class);
     $description = 'Changed modLexiconEntry `createdon` to allow NULL.';
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `createdon` `createdon` DATETIME NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
     if ($lexiconFocusChanged) {
-        $description = 'Updated modLexiconEntry `focus` column data from string to new int foreign key from modLexiconFocus.';
+        $description = 'Updated modLexiconEntry `focus` column data from string to new int foreign key from modLexiconTopic.';
         $sql = "UPDATE {$table} `e`, {$focusTable} `f` SET `e`.`focus` = `f`.`id` WHERE `e`.`focus` = `f`.`name` AND `e`.`namespace` = `f`.`namespace`";
         processResults($this->xpdo,$results,$class,$description,$sql);
     }
-    $description = 'Changed modLexiconEntry `focus` from VARCHAR(100) to INT(10).';
-    $sql = "ALTER TABLE {$table} CHANGE COLUMN `focus` `focus` INT(10) unsigned NOT NULL DEFAULT 1";
+    $description = 'Renamed modLexiconEntry `focus` to `topic`';
+    $sql = "ALTER TABLE {$table} CHANGE `focus` `topic` INT( 10 ) UNSIGNED NOT NULL DEFAULT '1'";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+
+    $description = 'Renamed modx_lexicon_foci to modx_lexicon_topics';
+    $topicTable = $this->xpdo->getTableName('modLexiconTopic');
+    $sql = "RENAME TABLE {$focusTable} TO {$topicTable}";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
 }

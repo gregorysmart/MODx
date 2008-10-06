@@ -2,7 +2,6 @@
 /**
  * @package modx
  * @subpackage mysql
- * @deprecated 2.0.0
  */
 $xpdo_meta_map['modUserRole']= array (
   'package' => 'modx',

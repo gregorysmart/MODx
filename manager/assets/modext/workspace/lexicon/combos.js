@@ -1,22 +1,22 @@
 /**
- * Displays a dropdown list of available Lexicon Focus. Requires a namespace.
+ * Displays a dropdown list of available Lexicon Topics. Requires a namespace.
  * 
- * @class MODx.combo.LexiconFocus
+ * @class MODx.combo.LexiconTopic
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-lexicon-focus
+ * @param {Object} config An object of config properties
+ * @xtype combo-lexicon-topic
  */
-MODx.combo.LexiconFocus = function(config) {
+MODx.combo.LexiconTopic = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        name: 'focus'
-        ,hiddenName: 'focus'
+        name: 'topic'
+        ,hiddenName: 'topic'
         ,forceSelection: true
         ,typeAhead: false
         ,editable: false
         ,allowBlank: false
         ,listWidth: 300
-        ,url: MODx.config.connectors_url+'workspace/lexicon/focus.php'
+        ,url: MODx.config.connectors_url+'workspace/lexicon/topic.php'
         ,fields: ['id','name','namespace']
         ,displayField: 'name'
         ,valueField: 'id'
@@ -25,7 +25,7 @@ MODx.combo.LexiconFocus = function(config) {
             ,namespace: 'core'
         }
     });
-    MODx.combo.LexiconFocus.superclass.constructor.call(this,config);
+    MODx.combo.LexiconTopic.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.combo.LexiconFocus,MODx.combo.ComboBox);
-Ext.reg('combo-lexicon-focus',MODx.combo.LexiconFocus);
+Ext.extend(MODx.combo.LexiconTopic,MODx.combo.ComboBox);
+Ext.reg('combo-lexicon-topic',MODx.combo.LexiconTopic);

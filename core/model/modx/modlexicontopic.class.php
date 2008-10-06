@@ -3,8 +3,8 @@
  * @package modx
  * @subpackage mysql
  */
-class modLexiconFocus extends modLexiconTopic {
-    function modLexiconFocus(& $xpdo) {
+class modLexiconTopic extends xPDOSimpleObject {
+    function modLexiconTopic(& $xpdo) {
         $this->__construct($xpdo);
     }
     function __construct(& $xpdo) {

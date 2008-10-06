@@ -32,27 +32,27 @@ while (false !== ($culture = $dir->read())) {
         $modx->log(MODX_LOG_LEVEL_INFO,'Created language: '.$culture);
     }
 
-    // loop through foci
+    // loop through topics
     $fdir = $d.$culture.'/';
     $fd = dir($fdir);
     while (false !== ($entry = $fd->read())) {
         if (in_array($entry,$invdirs)) continue;
         if (is_dir($fdir.$entry)) continue;
 
-        $foc = str_replace('.inc.php','',$entry);
+        $top = str_replace('.inc.php','',$entry);
 
-        $focus = $modx->getObject('modLexiconFocus',array(
-            'name' => $foc,
+        $topic = $modx->getObject('modLexiconTopic',array(
+            'name' => $top,
             'namespace' => 'core',
         ));
-        if ($focus == null) {
-            $focus = $modx->newObject('modLexiconFocus');
-            $focus->fromArray(array (
-              'name' => $foc,
+        if ($topic == null) {
+            $topic = $modx->newObject('modLexiconTopic');
+            $topic->fromArray(array (
+              'name' => $top,
               'namespace' => 'core',
             ), '', true, true);
-            $focus->save();
-            $modx->log(MODX_LOG_LEVEL_INFO,'Created focus: '.$foc);
+            $topic->save();
+            $modx->log(MODX_LOG_LEVEL_INFO,'Created topic: '.$foc);
         }
 
         $f = $fdir.$entry;
@@ -63,7 +63,7 @@ while (false !== ($culture = $dir->read())) {
             foreach ($_lang as $key => $value) {
                 $entry = $modx->getObject('modLexiconEntry',array(
                     'name' => $key,
-                    'focus' => $focus->get('id'),
+                    'topic' => $topic->get('id'),
                     'namespace' => 'core',
                     'language' => $culture,
                 ));
@@ -72,7 +72,7 @@ while (false !== ($culture = $dir->read())) {
                     $entry->fromArray(array (
                       'name' => $key,
                       'value' => $value,
-                      'focus' => $focus->get('id'),
+                      'topic' => $topic->get('id'),
                       'namespace' => 'core',
                       'language' => $culture,
                     ), '', true, true);

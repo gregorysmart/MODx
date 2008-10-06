@@ -3,7 +3,6 @@
  * 
  * @class MODx.tree.Action
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
  * @xtype tree-action
  */
@@ -27,8 +26,8 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 	windows: {}
 		
 	/**
-	 * Loads the MODx.dialog.CreateAction with the parent action information.
-	 * @see MODx.dialog.CreateAction
+	 * Loads the MODx.window.CreateAction with the parent action information.
+	 * @see MODx.window.CreateAction
 	 * @param {Ext.tree.TreeNode} node The selected TreeNode.
 	 * @param {Ext.EventObject} e The event object.
 	 */
@@ -83,8 +82,8 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 	}
 	
 	/**
-	 * Loads the UpdateAction dialog.
-	 * @see MODx.dialog.UpdateAction.
+	 * Loads the UpdateAction window.
+	 * @see MODx.window.UpdateAction.
 	 * @param {Ext.tree.TreeNode} node The selected TreeNode.
 	 * @param {Ext.EventObject} e The event object.
 	 */
@@ -152,7 +151,6 @@ Ext.reg('tree-action',MODx.tree.Action);
  * 
  * @class MODx.window.CreateAction
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
  * @xtype window-action-create
  */
@@ -187,9 +185,9 @@ MODx.window.CreateAction = function(config) {
             ,xtype: 'checkbox'
             ,checked: true
         },{
-            fieldLabel: _('lang_foci')
-            ,description: _('lang_foci_desc')
-            ,name: 'lang_foci'
+            fieldLabel: _('lang_topics')
+            ,description: _('lang_topics_desc')
+            ,name: 'lang_topics'
             ,xtype: 'textfield'
             ,width: 200
         },{
@@ -211,7 +209,6 @@ Ext.reg('window-action-create',MODx.window.CreateAction);
  * 
  * @class MODx.window.UpdateAction
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
  * @xtype window-action-update
  */
@@ -253,9 +250,9 @@ MODx.window.UpdateAction = function(config) {
             ,xtype: 'checkbox'
             ,checked: true
         },{
-            fieldLabel: _('lang_foci')
-            ,description: _('lang_foci_desc')
-            ,name: 'lang_foci'
+            fieldLabel: _('lang_topics')
+            ,description: _('lang_topics_desc')
+            ,name: 'lang_topics'
             ,xtype: 'textfield'
             ,width: 200
         },{
@@ -276,7 +273,6 @@ Ext.reg('window-action-update',MODx.window.UpdateAction);
  * Displays a dropdown list of modActions.
  * @class MODx.combo.Action
  * @extends MODx.combo.ComboBox
- * @constructor
  * @xtype combo-action
  */
 MODx.combo.Action = function(config) {

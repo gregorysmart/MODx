@@ -2,7 +2,7 @@
 $_lang['as_system_settings'] = 'System Settings';
 $_lang['as_context_settings'] = 'Context Settings';
 $_lang['as_lexicon_entries'] = 'Lexicon Entries';
-$_lang['as_lexicon_foci'] = 'Lexicon Foci';
+$_lang['as_lexicon_topics'] = 'Lexicon Topics';
 $_lang['build'] = 'Build';
 $_lang['class_key'] = 'Class Key';
 $_lang['class_key_desc'] = 'The type of object you would like to map to the vehicle.';

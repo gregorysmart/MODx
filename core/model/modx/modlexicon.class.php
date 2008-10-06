@@ -136,78 +136,75 @@ class modLexicon {
     }
 
     /**
-     * Loads a lexicon focus from the cache. If not found, tries to generate a
+     * Loads a lexicon topic from the cache. If not found, tries to generate a
      * cache file from the database.
      *
      * @access public
      * @param string $namespace The namespace to load from. Defaults to 'core'.
-     * @param string $focus The focus to load. Defaults to 'default'
+     * @param string $topic The topic to load. Defaults to 'default'.
      * @param string $language The language to load. Defaults to 'en'.
      * @return array The loaded lexicon array.
      */
-    function loadCache($namespace = 'core',$focus = 'default',$language = '') {
+    function loadCache($namespace = 'core',$topic = 'default',$language = '') {
         if ($language == '') $language = $this->modx->config['manager_language'];
 
 
-        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$focus.'.cache.php';
+        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$topic.'.cache.php';
 
         $_lang = array();
         if (file_exists($fileName)) {
             @include $fileName;
         } else { // if cache files don't exist, generate
             $cacheManager = $this->modx->getCacheManager();
-            $cacheManager->generateLexiconCache($namespace,$focus,$language);
+            $cacheManager->generateLexiconCache($namespace,$topic,$language);
 
             if (file_exists($fileName)) {
                 @include $fileName;
             } else {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with focus: ".$focus);
+                $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with topic: ".$topic);
             }
         }
         return $_lang;
     }
 
     /**
-     * Loads a variable number of focus areas. They must reside as focusname.
+     * Loads a variable number of topic areas. They must reside as topicname.
      * inc.php files in their proper culture directory. Can load an infinite
-     * number of focus areas via a dynamic number of arguments.
+     * number of topic areas via a dynamic number of arguments.
      *
-     * They are loaded by language:namespace:foci, namespace:foci, or just
-     * foci.
-     * Examples:
-     * $modx->lexicon->load('en:core:snippet');
-     * $modx->lexicon->load('demo:test');
-     * $modx->lexicon->load('chunk');
+     * They are loaded by language:namespace:topic, namespace:topic, or just
+     * topic. Examples: $modx->lexicon->load('en:core:snippet'); $modx->lexicon-
+     * >load ('demo:test'); $modx->lexicon->load('chunk');
      *
      * @access public
      */
     function load() {
-        $foci = func_get_args(); // allow for dynamic number of lexicons to load
+        $topics = func_get_args(); // allow for dynamic number of lexicons to load
 
-        foreach ($foci as $focus) {
-            if (!is_string($focus) || $focus == '') return false;
-            $nspos = strpos($focus,':');
-            $focus = str_replace('.','/',$focus); // allow for lexicon subdirs
+        foreach ($topics as $topic) {
+            if (!is_string($topic) || $topic == '') return false;
+            $nspos = strpos($topic,':');
+            $topic = str_replace('.','/',$topic); // allow for lexicon subdirs
 
             // if no namespace, search all lexicons
             if ($nspos === false) {
                 foreach ($this->_paths as $namespace => $path) {
-                    $_lang = $this->loadCache($namespace,$focus);
+                    $_lang = $this->loadCache($namespace,$topic);
                     $this->_lexicon = array_merge($this->_lexicon,$_lang);
                 }
             } else { // if namespace, search specified lexicon
-                $params = explode(':',$focus);
+                $params = explode(':',$topic);
                 if (count($params) <= 2) {
                     $language = $this->modx->config['manager_language'];
                     $namespace = $params[0];
-                    $foc = $params[1];
+                    $top = $params[1];
                 } else {
                     $language = $params[0];
                     $namespace = $params[1];
-                    $foc = $params[2];
+                    $top = $params[2];
                 }
 
-                $_lang = $this->loadCache($namespace,$foc,$language);
+                $_lang = $this->loadCache($namespace,$top,$language);
                 $this->_lexicon = array_merge($this->_lexicon,$_lang);
             }
         }

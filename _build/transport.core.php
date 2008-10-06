@@ -381,7 +381,7 @@ unset ($collection, $c, $attributes);
 
 // Lexicon stuff
 $entries = array ();
-$foci = array ();
+$topics = array ();
 $languages = array ();
 $namespace = $xpdo->newObject('modNamespace');
 $namespace->set('name','core');
@@ -391,8 +391,8 @@ $package->put($namespace,array(
     XPDO_TRANSPORT_UPDATE_OBJECT => true,
 ));
 include dirname(__FILE__).'/data/transport.core.lexicon.php';
-foreach ($foci as $f) {
-    $package->put($f,array (
+foreach ($topics as $t) {
+    $package->put($t,array (
         XPDO_TRANSPORT_PRESERVE_KEYS => false,
         XPDO_TRANSPORT_UPDATE_OBJECT => true,
         XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
@@ -401,7 +401,7 @@ foreach ($foci as $f) {
             'modLexiconEntry' => array (
                 XPDO_TRANSPORT_PRESERVE_KEYS => false,
                 XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'focus', 'language'),
+                XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'topic', 'language'),
             )
         )
     ));
@@ -412,7 +412,7 @@ foreach ($languages as $l) {
         XPDO_TRANSPORT_UPDATE_OBJECT => true,
     ));
 }
-unset ($entries, $languages, $foci, $attributes, $c, $f, $l);
+unset ($entries, $languages, $topics, $attributes, $c, $t, $l);
 
 // modAccessContext
 $collection = array ();

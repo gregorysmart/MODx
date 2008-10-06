@@ -1,7 +1,7 @@
 <?php
 /**
  * @package modx
- * @subpackage processors.workspace.lexicon
+ * @subpackage processors.workspace.lexicon.topic
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
@@ -20,21 +20,21 @@ if (isset($_REQUEST['name']) && $_REQUEST['name'] != '') {
 	$wa['name:LIKE'] = '%'.$_REQUEST['name'].'%';
 }
 
-$c = $modx->newQuery('modLexiconFocus');
+$c = $modx->newQuery('modLexiconTopic');
 $c->where($wa);
 $c->sortby('name', 'ASC');
 if ($limit) $c->limit($_REQUEST['limit'],$_REQUEST['start']);
-$foci = $modx->getCollection('modLexiconFocus',$c);
-$count = $modx->getCount('modLexiconFocus',$wa);
+$topics = $modx->getCollection('modLexiconTopic',$c);
+$count = $modx->getCount('modLexiconTopic',$wa);
 
 $ps = array();
-foreach ($foci as $focus) {
-    $pa = $focus->toArray();
+foreach ($topics as $topic) {
+    $pa = $topic->toArray();
 
     $pa['menu'] = array(
         array(
-            'text' => $modx->lexicon('focus_remove'),
-            'handler' => 'this.remove.createDelegate(this,["focus_confirm_remove"])',
+            'text' => $modx->lexicon('topic_remove'),
+            'handler' => 'this.remove.createDelegate(this,["topic_remove_confirm"])',
         ),
     );
     $ps[] = $pa;

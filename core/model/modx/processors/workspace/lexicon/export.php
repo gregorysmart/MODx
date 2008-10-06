@@ -13,15 +13,15 @@ if (!isset($_POST['namespace'])) $modx->error->failure($modx->lexicon('namespace
 $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
 if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
-if (!isset($_POST['focus'])) $modx->error->failure($modx->lexicon('focus_err_ns'));
-$focus = $modx->getObject('modLexiconFocus',$_POST['focus']);
-if ($focus == null) $modx->error->failure($modx->lexicon('focus_err_nf'));
+if (!isset($_POST['topic'])) $modx->error->failure($modx->lexicon('topic_err_ns'));
+$topic = $modx->getObject('modLexiconTopic',$_POST['topic']);
+if ($topic == null) $modx->error->failure($modx->lexicon('topic_err_nf'));
 
 if (!isset($_POST['language'])) $_POST['language'] = 'en';
 
 $entries = $modx->getCollection('modLexiconEntry',array(
     'namespace' => $namespace->get('name'),
-    'focus' => $focus->get('id'),
+    'topic' => $topic->get('id'),
     'language' => $_POST['language'],
 ));
 
@@ -31,7 +31,7 @@ foreach ($entries as $entry) {
     $o .= "\$_lang['".$entry->get('name')."'] = '".$value."';\n";
 }
 
-$fileName = $modx->config['core_path'].'export/lexicon/'.$namespace->get('name').'/'.$focus->get('name').'.inc.php';
+$fileName = $modx->config['core_path'].'export/lexicon/'.$namespace->get('name').'/'.$topic->get('name').'.inc.php';
 
 $cacheManager = $modx->getCacheManager();
 $s = $cacheManager->writeFile($fileName,$o);

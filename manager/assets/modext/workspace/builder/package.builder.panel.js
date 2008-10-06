@@ -239,7 +239,7 @@ MODx.panel.PackageAutoSelects = function(config) {
         		{boxLabel: _('as_system_settings') ,inputValue: 'modSystemSetting' ,id: 'pb-as-cb-ss'}
         		,{boxLabel: _('as_context_settings') ,inputValue: 'modContextSetting' ,id: 'pb-as-cb-cs'}
         		,{boxLabel: _('as_lexicon_entries') ,inputValue: 'modLexiconEntry', id: 'pb-as-cb-le'}
-        		,{boxLabel: _('as_lexicon_foci') ,inputValue: 'modLexiconFocus' ,id: 'pb-as-cb-lf'}
+        		,{boxLabel: _('as_lexicon_topics') ,inputValue: 'modLexiconTopic' ,id: 'pb-as-cb-lf'}
     		]
         }]
         ,listeners: {

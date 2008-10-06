@@ -11,11 +11,11 @@ MODx.grid.Lexicon = function(config) {
     Ext.applyIf(config,{
         title: _('lexicon')
         ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
-        ,fields: ['id','name','value','namespace','focus','language','editedon','menu']
+        ,fields: ['id','name','value','namespace','topic','language','editedon','menu']
 		,baseParams: {
 			action: 'getList'
 			,namespace: 'core'
-			,focus: ''
+			,topic: ''
 		}
         ,width: '98%'
         ,paging: true
@@ -48,14 +48,14 @@ MODx.grid.Lexicon = function(config) {
 				'select': {fn: this.changeNamespace,scope:this}
 			}
 		},{
-		    text: _('focus')+':'
+		    text: _('topic')+':'
 		},{
-			xtype: 'combo-lexicon-focus'
-			,name: 'focus'
-			,id: 'filter_focus'
+			xtype: 'combo-lexicon-topic'
+			,name: 'topic'
+			,id: 'filter_topic'
 			,value: 'default'
             ,listeners: {
-                'select': {fn:this.filter.createDelegate(this,['focus'],true),scope:this}
+                'select': {fn:this.filter.createDelegate(this,['topic'],true),scope:this}
             }
 		},{
 		    text: _('language')+':'
@@ -75,8 +75,8 @@ MODx.grid.Lexicon = function(config) {
                 ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-entry-create'}],true)
                 ,scope: this
             },{
-                text: _('focus')
-                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-focus-create'}],true)
+                text: _('topic')
+                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-topic-create'}],true)
                 ,scope: this
             },{
                 text: _('namespace')
@@ -146,17 +146,17 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	this.store.baseParams = {
     		action: 'getList'
             ,namespace: 'core'
-            ,focus: 'default'
+            ,topic: 'default'
             ,language: 'en'
     	};
     	this.getBottomToolbar().changePage(1);
     	Ext.getCmp('filter_namespace').setValue('core');
-    	Ext.getCmp('filter_focus').setValue('default');
+    	Ext.getCmp('filter_topic').setValue('default');
     	Ext.getCmp('filter_language').setValue('en');
     	this.refresh();
     }
     ,changeNamespace: function(cb,nv,ov) {
-    	var s = Ext.getCmp('filter_focus').store;
+    	var s = Ext.getCmp('filter_topic').store;
     	s.baseParams.namespace = cb.getValue();
     	s.reload();
     	
@@ -168,9 +168,9 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
             ,language: Ext.getCmp('filter_language').getValue()
         };
         if (o.xtype != 'window-lexicon-import') {
-        	this.menu.record.focus = Ext.getCmp('filter_focus').getValue();
+        	this.menu.record.topic = Ext.getCmp('filter_topic').getValue();
         }
-        var clef = Ext.getCmp('cle-focus');
+        var clef = Ext.getCmp('cle-topic');
         if (clef) { clef.store.baseParams.namespace = this.menu.record.namespace; }
     	this.loadWindow(btn, e, o);
     }
@@ -207,7 +207,6 @@ Ext.reg('grid-lexicon',MODx.grid.Lexicon);
  *  
  * @class MODx.window.CreateLexiconEntry
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
  * @xtype window-lexicon-entry-create
  */
@@ -231,18 +230,18 @@ MODx.window.CreateLexiconEntry = function(config) {
             ,value: r.namespace
             ,listeners: {
             	'select': {fn: function(cb,r,i) {
-                    cle = Ext.getCmp('cle-focus');
+                    cle = Ext.getCmp('cle-topic');
                     cle.store.baseParams.namespace = cb.getValue();
                     cle.store.reload();
                     cle.setValue('default');
             	},scope:this}
             }
         },{
-            xtype: 'combo-lexicon-focus'
-            ,fieldLabel: _('focus')
-            ,name: 'focus'
-            ,id: 'cle-focus'
-            ,value: r.focus
+            xtype: 'combo-lexicon-topic'
+            ,fieldLabel: _('topic')
+            ,name: 'topic'
+            ,id: 'cle-topic'
+            ,value: r.topic
         },{
             xtype: 'combo-language'
             ,fieldLabel: _('language')
@@ -267,7 +266,6 @@ Ext.reg('window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
  *  
  * @class MODx.window.UpdateLexiconEntry
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
  * @xtype window-lexicon-entry-update
  */
@@ -290,11 +288,11 @@ MODx.window.UpdateLexiconEntry = function(config) {
             ,maxLength: 100
             ,value: r.name
         },{
-            xtype: 'combo-lexicon-focus'
-            ,fieldLabel: _('focus')
-            ,name: 'focus'
-            ,id: 'ule-focus'
-            ,value: r.focus
+            xtype: 'combo-lexicon-topic'
+            ,fieldLabel: _('topic')
+            ,name: 'topic'
+            ,id: 'ule-topic'
+            ,value: r.topic
         },{
             xtype: 'combo-namespace'
             ,fieldLabel: _('namespace')
@@ -302,7 +300,7 @@ MODx.window.UpdateLexiconEntry = function(config) {
             ,value: r.namespace
             ,listeners: {
                 'select': {fn: function(cb,r,i) {
-                    cle = Ext.getCmp('ule-focus');
+                    cle = Ext.getCmp('ule-topic');
                     cle.store.baseParams.namespace = cb.getValue();
                     cle.store.reload();
                     cle.setValue('default');
@@ -328,20 +326,19 @@ Ext.extend(MODx.window.UpdateLexiconEntry,MODx.Window);
 Ext.reg('window-lexicon-entry-update',MODx.window.UpdateLexiconEntry);
 
 /**
- * Generates the create lexicon focus window.
+ * Generates the create lexicon topic window.
  *  
- * @class MODx.window.CreateLexiconFocus
+ * @class MODx.window.CreateLexiconTopic
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-lexicon-focus-create
+ * @xtype window-lexicon-topic-create
  */
-MODx.window.CreateLexiconFocus = function(config) {
+MODx.window.CreateLexiconTopic = function(config) {
     config = config || {};
     var r = config.record;
     Ext.applyIf(config,{
-        title: _('focus_create')
-        ,url: MODx.config.connectors_url+'workspace/lexicon/focus.php'
+        title: _('topic_create')
+        ,url: MODx.config.connectors_url+'workspace/lexicon/topic.php'
         ,action: 'create'
         ,fields: [{
             xtype: 'textfield'
@@ -356,10 +353,10 @@ MODx.window.CreateLexiconFocus = function(config) {
             ,value: r.namespace
         }]
     });
-    MODx.window.CreateLexiconFocus.superclass.constructor.call(this,config);
+    MODx.window.CreateLexiconTopic.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.window.CreateLexiconFocus,MODx.Window);
-Ext.reg('window-lexicon-focus-create',MODx.window.CreateLexiconFocus);
+Ext.extend(MODx.window.CreateLexiconTopic,MODx.Window);
+Ext.reg('window-lexicon-topic-create',MODx.window.CreateLexiconTopic);
 
 
 /**
@@ -367,7 +364,6 @@ Ext.reg('window-lexicon-focus-create',MODx.window.CreateLexiconFocus);
  *  
  * @class MODx.window.ImportLexicon
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
  * @xtype window-lexicon-import
  */
@@ -395,8 +391,8 @@ MODx.window.ImportLexicon = function(config) {
             ,name: 'namespace'
         },{
             xtype: 'textfield'
-            ,fieldLabel: _('focus')
-            ,name: 'focus'
+            ,fieldLabel: _('topic')
+            ,name: 'topic'
         },{
             xtype: 'combo-language'
             ,fieldLabel: _('language')
@@ -415,7 +411,6 @@ Ext.reg('window-lexicon-import',MODx.window.ImportLexicon);
  *  
  * @class MODx.window.ExportLexicon
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
  * @xtype window-lexicon-export
  */
@@ -437,17 +432,17 @@ MODx.window.ExportLexicon = function(config) {
             ,name: 'namespace'
             ,listeners: {
                 'select': {fn: function(cb,r,i) {
-                    cle = Ext.getCmp('ex-cmb-focus');
+                    cle = Ext.getCmp('ex-cmb-topic');
                     cle.store.baseParams.namespace = cb.getValue();
                     cle.store.reload();
                     cle.setValue('default');
                 },scope:this}
             }
         },{
-            xtype: 'combo-lexicon-focus'
-            ,fieldLabel: _('focus')
-            ,name: 'focus'
-            ,id: 'ex-cmb-focus'
+            xtype: 'combo-lexicon-topic'
+            ,fieldLabel: _('topic')
+            ,name: 'topic'
+            ,id: 'ex-cmb-topic'
         },{
             xtype: 'combo-language'
             ,fieldLabel: _('language')
