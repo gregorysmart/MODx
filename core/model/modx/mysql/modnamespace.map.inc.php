@@ -6,14 +6,14 @@
 $xpdo_meta_map['modNamespace']= array (
   'package' => 'modx',
   'table' => 'namespaces',
-  'fields' =>
+  'fields' => 
   array (
     'name' => '',
     'path' => '',
   ),
-  'fieldMeta' =>
+  'fieldMeta' => 
   array (
-    'name' =>
+    'name' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '40',
@@ -22,16 +22,16 @@ $xpdo_meta_map['modNamespace']= array (
       'default' => '',
       'index' => 'pk',
     ),
-    'path' =>
+    'path' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'default' => '',
     ),
   ),
-  'aggregates' =>
+  'composites' => 
   array (
-    'modLexiconTopic' =>
+    'modLexiconTopic' => 
     array (
       'class' => 'modLexiconTopic',
       'local' => 'name',
@@ -39,7 +39,39 @@ $xpdo_meta_map['modNamespace']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
+    'modLexiconEntry' => 
+    array (
+      'class' => 'modLexiconEntry',
+      'local' => 'name',
+      'foreign' => 'namespace',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'modSystemSetting' => 
+    array (
+      'class' => 'modSystemSetting',
+      'local' => 'name',
+      'foreign' => 'namespace',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'modContextSetting' => 
+    array (
+      'class' => 'modContextSetting',
+      'local' => 'name',
+      'foreign' => 'namespace',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+    'modUserSetting' => 
+    array (
+      'class' => 'modUserSetting',
+      'local' => 'name',
+      'foreign' => 'namespace',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
   ),
 );
-if (XPDO_PHP4_MODE) $xpdo_meta_map['modNamespace']['aggregates']= array_merge($xpdo_meta_map['modNamespace']['aggregates'], array_change_key_case($xpdo_meta_map['modNamespace']['aggregates']));
+if (XPDO_PHP4_MODE) $xpdo_meta_map['modNamespace']['composites']= array_merge($xpdo_meta_map['modNamespace']['composites'], array_change_key_case($xpdo_meta_map['modNamespace']['composites']));
 $xpdo_meta_map['modnamespace']= & $xpdo_meta_map['modNamespace'];

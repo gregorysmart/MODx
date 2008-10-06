@@ -6,14 +6,14 @@
 $xpdo_meta_map['modLexiconTopic']= array (
   'package' => 'modx',
   'table' => 'lexicon_topics',
-  'fields' =>
+  'fields' => 
   array (
     'name' => '',
     'namespace' => 'core',
   ),
-  'fieldMeta' =>
+  'fieldMeta' => 
   array (
-    'name' =>
+    'name' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '100',
@@ -23,7 +23,7 @@ $xpdo_meta_map['modLexiconTopic']= array (
       'index' => 'unique',
       'indexgrp' => 'foci',
     ),
-    'namespace' =>
+    'namespace' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '40',
@@ -34,9 +34,9 @@ $xpdo_meta_map['modLexiconTopic']= array (
       'indexgrp' => 'foci',
     ),
   ),
-  'composites' =>
+  'composites' => 
   array (
-    'modLexiconEntry' =>
+    'modLexiconEntry' => 
     array (
       'class' => 'modLexiconEntry',
       'local' => 'id',
@@ -45,9 +45,9 @@ $xpdo_meta_map['modLexiconTopic']= array (
       'owner' => 'local',
     ),
   ),
-  'aggregates' =>
+  'aggregates' => 
   array (
-    'modNamespace' =>
+    'modNamespace' => 
     array (
       'class' => 'modNamespace',
       'local' => 'namespace',

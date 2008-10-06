@@ -258,7 +258,11 @@
     <object class="modNamespace" table="namespaces" extends="xPDOObject">
         <field key="name" dbtype="varchar" precision="40" phptype="string" null="false" default="" index="pk" />
         <field key="path" dbtype="text" phptype="string" default="" />
-        <aggregate alias="modLexiconTopic" class="modLexiconTopic" local="name" foreign="namespace" cardinality="many" owner="local" />
+        <composite alias="modLexiconTopic" class="modLexiconTopic" local="name" foreign="namespace" cardinality="many" owner="local" />
+        <composite alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="namespace" cardinality="many" owner="local" />
+        <composite alias="modSystemSetting" class="modSystemSetting" local="name" foreign="namespace" cardinality="many" owner="local" />
+        <composite alias="modContextSetting" class="modContextSetting" local="name" foreign="namespace" cardinality="many" owner="local" />
+        <composite alias="modUserSetting" class="modUserSetting" local="name" foreign="namespace" cardinality="many" owner="local" />
     </object>
     <object class="modPlugin" table="site_plugins" extends="modScript">
         <field key="cache_type" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
