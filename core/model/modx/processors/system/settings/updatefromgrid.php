@@ -6,11 +6,9 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
-if (!$modx->hasPermission('settings')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
-
-//$modx->error->failure(print_r($_DATA,true));
 
 $setting = $modx->getObject('modSystemSetting',array(
     'key' => $_DATA['key'],
@@ -22,13 +20,13 @@ $setting->set('area',$_DATA['area']);
 
 // if name changed, change lexicon string
 $entry = $modx->getObject('modLexiconEntry',array(
-    'namespace' => 'core',
+    'namespace' => $setting->get('namespace'),
     'name' => 'setting_'.$_DATA['oldkey'],
 ));
 if ($entry != null) {
     $entry->set('value',$_DATA['name']);
     $entry->save();
-    $r = $modx->lexicon->clearCache($entry->get('language').'/'.$entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
+    $entry->clearCache();
 }
 
 if ($setting->save() == false) {

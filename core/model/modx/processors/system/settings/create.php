@@ -28,6 +28,18 @@ $setting= $modx->newObject('modSystemSetting');
 $setting->fromArray($_POST,'',true);
 
 // set lexicon name/description
+$topic = $modx->getObject('modLexiconTopic',array(
+    'name' => 'default',
+    'namespace' => $setting->namespace,
+));
+if ($topic == null) {
+    $topic = $modx->newObject('modLexiconTopic');
+    $topic->set('name','default');
+    $topic->set('namespace',$setting->namespace);
+    $topic->save();
+}
+
+
 $entry = $modx->getObject('modLexiconEntry',array(
     'namespace' => $namespace->name,
     'name' => 'setting_'.$_POST['key'],
@@ -37,11 +49,11 @@ if ($entry == null) {
     $entry->set('namespace',$namespace->name);
     $entry->set('name','setting_'.$_POST['key']);
     $entry->set('value',$_POST['name']);
-    $entry->set('focus','system_setting');
+    $entry->set('topic',$topic->get('id'));
     $entry->set('language',$modx->cultureKey);
     $entry->save();
 
-    $r = $modx->lexicon->clearCache($entry->get('language').'/'.$entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
+    $entry->clearCache();
 }
 $description = $modx->getObject('modLexiconEntry',array(
     'namespace' => $namespace->name,
@@ -52,11 +64,11 @@ if ($description == null) {
     $description->set('namespace',$namespace->name);
     $description->set('name','setting_'.$_POST['key'].'_desc');
 	$description->set('value',$_POST['description']);
-    $description->set('focus','system_setting');
+    $description->set('topic',$topic->get('id'));
     $description->set('language',$modx->cultureKey);
     $description->save();
 
-    $r = $modx->lexicon->clearCache($description->get('language').'/'.$description->get('namespace').'/'.$description->get('focus').'.cache.php');
+    $description->clearCache();
 }
 
 if ($setting->save() === false) {

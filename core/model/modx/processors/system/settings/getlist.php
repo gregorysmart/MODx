@@ -15,18 +15,18 @@ if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
 $c = $modx->newQuery('modSystemSetting');
 $cc = $modx->newQuery('modSystemSetting');
-if (isset($_POST['key']) && $_POST['key'] != '') {
+if (isset($_REQUEST['key']) && $_REQUEST['key'] != '') {
     $c->leftJoin('modLexiconEntry','Entry','CONCAT("setting_",modSystemSetting.key) = Entry.name');
     $cc->leftJoin('modLexiconEntry','Entry','CONCAT("setting_",modSystemSetting.key) = Entry.name');
 
     $wa = array(
-        'modSystemSetting.key:LIKE' => '%'.$_POST['key'].'%',
+        'modSystemSetting.key:LIKE' => '%'.$_REQUEST['key'].'%',
     );
     $na = array(
-        'Entry.value:LIKE' => '%'.$_POST['key'].'%',
+        'Entry.value:LIKE' => '%'.$_REQUEST['key'].'%',
     );
     $va = array(
-        'modSystemSetting.value:LIKE' => '%'.$_POST['key'].'%',
+        'modSystemSetting.value:LIKE' => '%'.$_REQUEST['key'].'%',
     );
     $c->where($wa);
     $cc->where($wa);
@@ -45,6 +45,10 @@ $ss = array();
 foreach ($settings as $setting) {
     $sa = $setting->toArray();
     $k = 'setting_'.$sa['key'];
+
+
+    // if 3rd party setting, load proper text
+    $modx->lexicon->load($setting->namespace.':default');
 
     if ($modx->lexicon->exists('area_'.$setting->get('area'))) {
         $sa['area_text'] = $modx->lexicon('area_'.$setting->get('area'));
