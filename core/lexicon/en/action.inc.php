@@ -21,4 +21,4 @@ $_lang['controller_err_nf'] = 'Controller file not found!';
 $_lang['controller_err_ns'] = 'No controller specified!';
 $_lang['controller_parent'] = 'Parent Controller';
 $_lang['lang_topics'] = 'Language Topics';
-$_lang['lang_topics_desc'] = 'This is a list of strings that represent lexicon topics that this action should load.'
+$_lang['lang_topics_desc'] = 'This is a list of strings that represent lexicon topics that this action should load.';

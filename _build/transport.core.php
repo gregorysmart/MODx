@@ -7,6 +7,8 @@ $tstart = $mtime;
 // get rid of time limit
 set_time_limit(0);
 
+error_reporting(E_ALL); ini_set('display_errors',true);
+
 // override with your own defines here (see build.config.sample.php)
 @ require_once dirname(__FILE__) . '/build.config.php';
 
@@ -412,7 +414,7 @@ foreach ($languages as $l) {
         XPDO_TRANSPORT_UPDATE_OBJECT => true,
     ));
 }
-unset ($entries, $languages, $topics, $attributes, $c, $t, $l);
+unset ($entries, $languages, $topics, $c, $t, $l);
 
 // modAccessContext
 $collection = array ();
@@ -425,7 +427,6 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
-
 
 $package->pack();
 

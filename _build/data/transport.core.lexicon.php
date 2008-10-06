@@ -1,7 +1,7 @@
 <?php
 $invdirs = array('.','..','.svn','country');
 
-$d = MODX_CORE_PATH.'/lexicon/';
+$d = MODX_CORE_PATH.'lexicon/';
 
 $i = 0;
 // loop through cultures
@@ -18,28 +18,28 @@ while (false !== ($culture = $dir->read())) {
     // loop through topics
     $fdir = $d.$culture.'/';
     $fd = dir($fdir);
-    $tcount = 1;
-    while (false !== ($entry = $fd->read())) {
-        if (in_array($entry,$invdirs)) continue;
-        if (is_dir($fdir.$entry)) continue;
+    $topcount = 1;
+    while (false !== ($topicFile = $fd->read())) {
+        if (in_array($topicFile,$invdirs)) continue;
+        if (is_dir($fdir.$topicFile)) continue;
 
-        $topicname = str_replace('.inc.php','',$entry);
+        $topicname = str_replace('.inc.php','',$topicFile);
 
         $topic = $xpdo->getObject('modLexiconTopic');
         if ($topic == null) {
             $topic= $xpdo->newObject('modLexiconTopic');
             $topic->fromArray(array (
-              'id' => $tcount,
+              'id' => $topcount,
               'name' => $topicname,
               'namespace' => 'core',
             ), '', true, true);
         }
 
-        $f = $fdir.$entry;
+        $f = $fdir.$topicFile;
         $entries = array();
         if (file_exists($f)) {
             $_lang = array();
-            @include_once $f;
+            @include $f;
 
             foreach ($_lang as $key => $value) {
                 $entries[$i]= $xpdo->newObject('modLexiconEntry');
@@ -56,7 +56,7 @@ while (false !== ($culture = $dir->read())) {
         }
         $topic->addMany($entries);
         $topics[$topic->get('id')] = $topic;
-        $tcount++;
+        $topcount++;
     }
 }
 $dir->close();
