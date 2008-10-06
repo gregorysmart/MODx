@@ -57,6 +57,10 @@ MODx.grid.LocalGrid = function(config) {
     this.menu = new Ext.menu.Menu({ defaultAlign: 'tl-b?' });
     MODx.grid.LocalGrid.superclass.constructor.call(this,config);
     this.config = config;
+    this.addEvents({
+        beforeRemoveRow: true
+        ,afterRemoveRow: true
+    });
     this.on('rowcontextmenu',this._showMenu,this);
 };
 Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
@@ -75,7 +79,7 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
             }
             this.windows[win.xtype] = Ext.ComponentMgr.create(win);
         }
-        if (this.windows[win.xtype].setValues && win.blankValues !== true) {
+        if (this.windows[win.xtype].setValues && win.blankValues !== true && r != undefined) {
             this.windows[win.xtype].setValues(r);
         }
         this.windows[win.xtype].show(e.target);
@@ -154,14 +158,16 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
     
     
     ,remove: function(config) {
-        Ext.Msg.confirm(config.title || '',config.text || '',function(e) {
-            if (e == 'yes') {
-                var r = this.getSelectionModel().getSelected();
-                this.getStore().remove(r);
-            }
-        },this);
+        var r = this.getSelectionModel().getSelected();
+        if (this.fireEvent('beforeRemoveRow',r)) {
+            Ext.Msg.confirm(config.title || '',config.text || '',function(e) {
+                if (e == 'yes') {
+                    this.getStore().remove(r);
+                    this.fireEvent('afterRemoveRow',r);
+                }
+            },this);
+        }
     }
-    
     
     /**
      * Encodes modified record data into JSON array for form sending

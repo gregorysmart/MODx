@@ -69,6 +69,10 @@ MODx.grid.Grid = function(config) {
         }
     }
 	MODx.grid.Grid.superclass.constructor.call(this,config);
+    this.addEvents({
+        beforeRemoveRow: true
+        ,afterRemoveRow: true
+    });
 	if (!config.preventRender) { this.render(); }
 	
 	if (config.autosave) {
@@ -147,7 +151,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
             }
             this.windows[win.xtype] = Ext.ComponentMgr.create(win);
         }
-        if (this.windows[win.xtype].setValues && win.blankValues !== true) {
+        if (this.windows[win.xtype].setValues && win.blankValues !== true && r != undefined) {
             this.windows[win.xtype].setValues(r);
         }
         this.windows[win.xtype].show(e.target);
@@ -192,15 +196,21 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
         var k = this.config.primaryKey || 'id';
         p[k] = r[k];
         
-        MODx.msg.confirm({
-            title: _('warning')
-            ,text: _(text)
-            ,url: this.config.url
-            ,params: p
-            ,listeners: {
-            	'success': {fn:this.removeActiveRow,scope:this}
-            }
-        });
+        if (this.fireEvent('beforeRemoveRow',r)) {
+            MODx.msg.confirm({
+                title: _('warning')
+                ,text: _(text)
+                ,url: this.config.url
+                ,params: p
+                ,listeners: {
+                	'success': {fn:function() {
+                        if (this.fireEvent('afterRemoveRow',r)) {
+                            this.removeActiveRow(r);
+                        }
+                    },scope:this}
+                }
+            });
+        }
     }
     
     /**
