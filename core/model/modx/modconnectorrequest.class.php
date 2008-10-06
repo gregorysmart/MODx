@@ -93,7 +93,7 @@ class modConnectorRequest extends modManagerRequest {
         if ($this->action === null || $this->action == '') {
             $this->modx->error->failure($modx->lexicon('action_err_ns'));
         } else {
-            $file = $this->_directory.strtr($location.'/'.$this->action,'\\','/').'.php';
+            $file = $this->_directory.str_replace('\\','/',$location.'/'.$this->action).'.php';
 
             // verify processor exists
             if (!file_exists($file)) {
