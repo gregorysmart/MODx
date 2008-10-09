@@ -56,13 +56,13 @@
         <antcall target="modext-concat"></antcall>
         <antcall target="copy-prepared-js"></antcall>
         <antcall target="generate-core-transport"></antcall>
-        <!--<antcall target="generate-phpdocs"></antcall>-->
+        <antcall target="generate-phpdocs"></antcall>
         <antcall target="prepare-build-image"></antcall>
         <antcall target="copy-core-transport"></antcall>
         
         <buildnumber />
         
-        <!--<antcall target="build-sdk"></antcall>-->
+        <antcall target="build-sdk"></antcall>
         <antcall target="build-traditional"></antcall>
         <antcall target="build-advanced"></antcall>
     </target>
@@ -347,18 +347,21 @@ General Public License for more details.
                 <include name="core/*/*.php" />
             </patternset>
         </unzip>
-        <echo file="${build.image.dir}/config.core.php" append="false"><?php
-    define('MODX_CORE_PATH', dirname(__FILE__) . '/');
-    define('MODX_CONFIG_KEY', 'config');
-        ?></echo>
-        <echo file="${build.image.dir}/manager/config.core.php" append="false"><?php
-    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
-    define('MODX_CONFIG_KEY', 'config');
-        ?></echo>
-        <echo file="${build.image.dir}/connectors/config.core.php" append="false"><?php
-    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
-    define('MODX_CONFIG_KEY', 'config');
-        ?></echo>
+        <copy file="${build.dir}/config.core.php.txt" tofile="${build.image.dir}/config.core.php">
+            <filterset>
+                <filter token="core-path" value="dirname(__FILE__) . '/core/'" />
+            </filterset>
+        </copy>
+        <copy file="${build.dir}/config.core.php.txt" tofile="${build.image.dir}/manager/config.core.php">
+            <filterset>
+                <filter token="core-path" value="dirname(dirname(__FILE__)) . '/core/'" />
+            </filterset>
+        </copy>
+        <copy file="${build.dir}/config.core.php.txt" tofile="${build.image.dir}/connectors/config.core.php">
+            <filterset>
+                <filter token="core-path" value="dirname(dirname(__FILE__)) . '/core/'" />
+            </filterset>
+        </copy>
         <zip destfile="${build.distrib.dir}/${project.name}-${modx.core.version}-${modx.core.release}-${build.number}-sdk.zip">
             <fileset dir="${build.image.dir}" />
         </zip>
@@ -378,18 +381,21 @@ General Public License for more details.
                 <include name="core/*/*.php" />
             </patternset>
         </unzip>
-        <echo file="${build.image.dir}/config.core.php" append="false"><?php
-    define('MODX_CORE_PATH', dirname(__FILE__) . '/');
-    define('MODX_CONFIG_KEY', 'config');
-        ?></echo>
-        <echo file="${build.image.dir}/manager/config.core.php" append="false"><?php
-    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
-    define('MODX_CONFIG_KEY', 'config');
-        ?></echo>
-        <echo file="${build.image.dir}/connectors/config.core.php" append="false"><?php
-    define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/');
-    define('MODX_CONFIG_KEY', 'config');
-        ?></echo>
+        <copy file="${build.dir}/config.core.php.txt" tofile="${build.image.dir}/config.core.php">
+            <filterset>
+                <filter token="core-path" value="dirname(__FILE__) . '/core/'" />
+            </filterset>
+        </copy>
+        <copy file="${build.dir}/config.core.php.txt" tofile="${build.image.dir}/manager/config.core.php">
+            <filterset>
+                <filter token="core-path" value="dirname(dirname(__FILE__)) . '/core/'" />
+            </filterset>
+        </copy>
+        <copy file="${build.dir}/config.core.php.txt" tofile="${build.image.dir}/connectors/config.core.php">
+            <filterset>
+                <filter token="core-path" value="dirname(dirname(__FILE__)) . '/core/'" />
+            </filterset>
+        </copy>
         <zip destfile="${build.distrib.dir}/${project.name}-${modx.core.version}-${modx.core.release}-${build.number}.zip">
             <fileset dir="${build.image.basedir}">
                 <include name="${project.name}-${modx.core.version}-${modx.core.release}/**" />
