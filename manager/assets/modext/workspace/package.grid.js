@@ -252,7 +252,7 @@ Ext.extend(MODx.window.PackageInstaller,Ext.Window,{
 	,navHandler: function(dir) {
         this.doLayout();
         var a = this.getLayout().activeItem;
-        if (dir == -1) {
+        if (dir === -1) {
             this.proceed(a.config.back || a.config.id);
         } else {
             a.submit({
@@ -264,9 +264,9 @@ Ext.extend(MODx.window.PackageInstaller,Ext.Window,{
 	
 	,proceed: function(id) {
 		this.getLayout().setActiveItem(id);
-        if (id == this.config.firstPanel) {
+        if (id === this.config.firstPanel) {
             this.getBottomToolbar().items.item(0).setDisabled(true);
-        } else if (id == this.config.lastPanel) {
+        } else if (id === this.config.lastPanel) {
         	this.getBottomToolbar().items.item(1).setText(_('finish'));
         } else {
             this.getBottomToolbar().items.item(0).setDisabled(false);
@@ -316,7 +316,7 @@ Ext.extend(MODx.panel.PiFirst,Ext.FormPanel,{
     	var va = this.getForm().getValues();
     	if (!va.method) {
     		
-    	} else if (va.method == 'local') {
+    	} else if (va.method === 'local') {
     	   this.searchLocal();
     	} else {
     	   Ext.callback(o.proceed,o.scope || this,['pi-'+va.method]);

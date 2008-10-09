@@ -34,7 +34,7 @@ MODx.panel.PackageDownload = function(config) {
         }]
     });
     MODx.panel.PackageDownload.superclass.constructor.call(this,config);
-    this.loadTemplates();   
+    this.loadTemplates();
     
     var t = Ext.getCmp('tree-package-download');
     t.on('click',function(n,e) {
@@ -97,7 +97,7 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
                 ,'</tpl></div>'
             )
         };
-        for (var i in this.tpls) { this.tpls[i].compile(); } 
+        for (var i in this.tpls) { if (this.tpls[i]) { this.tpls[i].compile(); } }
     }
     
 });

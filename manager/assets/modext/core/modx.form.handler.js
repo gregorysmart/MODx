@@ -33,7 +33,7 @@ Ext.extend(MODx.form.Handler,Ext.Component,{
             ,params: Ext.Ajax.serializeForm(fid)
             ,method: 'post'
             ,scope: scope || this
-            ,callback: h == null ? this.handle : h
+            ,callback: h === null ? this.handle : h
         });
         return false;
     }
@@ -54,27 +54,27 @@ Ext.extend(MODx.form.Handler,Ext.Component,{
     }
     
     ,highlightField: function(f) {
-        if (f.id != 'undefined' && f.id != 'forEach' && f.id != '') {
+        if (f.id !== undefined && f.id !== 'forEach' && f.id !== '') {
             Ext.get(f.id).dom.style.border = '1px solid red';
             var ef = Ext.get(f.id+'_error');
-            if (ef) ef.innerHTML = f.msg;
+            if (ef) { ef.innerHTML = f.msg; }
             this.fields.push(f.id);
         }
     }
     
     ,unhighlightFields: function() {
-        for (var i=0;i<this.fields.length;i++) {
+        for (var i=0;i<this.fields.length;i=i+1) {
             Ext.get(this.fields[i]).dom.style.border = '';
             var ef = Ext.get(this.fields[i]+'_error');
-            if (ef) ef.innerHTML = '';
+            if (ef) { ef.innerHTML = ''; }
         }
         this.fields = [];
     }
     
     ,errorJSON: function(e) {
-        if (e == '') return this.showError(e);
-        if (e.data != null) {
-            for (var p=0;p<e.data.length;p++) {
+        if (e === '') { return this.showError(e); }
+        if (e.data !== null) {
+            for (var p=0;p<e.data.length;p=p+1) {
                 this.highlightField(e.data[p]);
             }
         }
@@ -85,10 +85,10 @@ Ext.extend(MODx.form.Handler,Ext.Component,{
     
     ,errorExt: function(r,frm) {
         this.unhighlightFields();
-        if (r.errors != null && frm) {
+        if (r.errors !== null && frm) {
             frm.markInvalid(r.errors);
         }
-        if (r.message != undefined && r.message != '') { 
+        if (r.message !== undefined && r.message !== '') { 
             this.showError(r.message);
         } else {
             MODx.msg.hide();    
@@ -96,23 +96,12 @@ Ext.extend(MODx.form.Handler,Ext.Component,{
         return false;
     }
     
-    ,unescapeJson: function(obj) {
-        for (var prop in obj) {
-            if ($type(obj[prop]) == 'object')
-                for (var p in obj[prop]) obj[prop][p] = unescape(obj[prop][p]);
-            else if ($type(obj[prop]) == 'string')
-                obj[prop] = unescape(obj[prop]);
-            else if ($type(obj[prop]) == 'array')
-                for (var i = 0; i < obj[prop].length; i++)
-                    for (var p in obj[prop][i]) obj[prop][i] = this.unescapeJson(obj[prop][i]);
-        }
-        return obj;
-    }
-    
     ,showError: function(e) {
-        e == ''
-            ? MODx.msg.hide()
-            : MODx.msg.alert(_('error'),e,function() { });
+        if (e === '') {
+            MODx.msg.hide();
+        } else {
+            MODx.msg.alert(_('error'),e,Ext.emptyFn);
+        }
     }
     
     ,closeError: function() {

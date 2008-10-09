@@ -62,7 +62,7 @@ MODx.util.Progress = {
     id: 0
     ,time: function(v,id,msg) {
         msg = msg || _('saving');
-        if (MODx.util.Progress.id == id && v < 11) {
+        if (MODx.util.Progress.id === id && v < 11) {
             Ext.MessageBox.updateProgress(v/10,msg);
         }
     }
@@ -101,7 +101,7 @@ MODx.StaticBoolean = Ext.extend(Ext.form.TextField, {
     }
     
     ,setValue: function(v) {
-        if (v == 1) {
+        if (v === 1) {
             this.addClass('green');
             v = _('yes');
         } else {
@@ -121,18 +121,18 @@ Ext.reg('staticboolean',MODx.StaticBoolean);
 function $(el){
     if (!el) { return null; }
     var type = Ext.type(el);
-    if (type == 'string'){
+    if (type === 'string'){
         el = document.getElementById(el);
         type = (el) ? 'element' : false;
     }
-    if (type != 'element') { return null; }
+    if (type !== 'element') { return null; }
     return el;
 }
 
 
 Array.prototype.in_array = function(p_val) {
-    for(var i = 0, l = this.length; i < l; i++) {
-        if(this[i] == p_val) {
+    for(var i=0,l=this.length;i<l;i=i+1) {
+        if(this[i] === p_val) {
             return true;
         }
     }
@@ -144,17 +144,17 @@ Ext.form.setCheckboxValues = function(form,id,mask) {
     var f, n=0;
     while ((f = form.findField(id+n)) !== null) {
         f.setValue((mask & (1<<n))?'true':'false');
-        n++;
+        n=n+1;
     } 
 };
 
 Ext.form.getCheckboxMask = function(cbgroup) {
     var mask='';
-    if (typeof(cbgroup) != "undefined") {
-        if ((typeof(cbgroup)=="string")) { 
+    if (typeof(cbgroup) !== 'undefined') {
+        if ((typeof(cbgroup)==='string')) { 
             mask = cbgroup+'';
         } else {
-            for(var i = 0, len = cbgroup.length; i < len; i++) {
+            for(var i=0,len=cbgroup.length;i<len;i=i+1) {
                 mask += (mask !== '' ? ',' : '')+(cbgroup[i]-0);
             }
         }
@@ -172,7 +172,7 @@ Ext.form.BasicForm.prototype.append = function() {
   layout.stack.push.apply(layout.stack, arguments);
 
   // Add only those fields that are form fields to the 'fields' array
-  for(var i = 0; i < arguments.length; i++) {
+  for(var i = 0; i < arguments.length; i=i+1) {
     if(arguments[i].isFormField) {
       fields.push(arguments[i]);
     }
@@ -187,7 +187,7 @@ Ext.form.BasicForm.prototype.append = function() {
     this.items.addAll(fields);
 
     // Render each field
-    for(var f=0;f<fields.length;f++) {
+    for(var f=0;f<fields.length;f=f+1) {
       fields[f].render('x-form-el-' + fields[f].id);
     }
   }
@@ -235,7 +235,7 @@ Ext.form.HourField = function(id,name,v){
 Ext.override(Ext.tree.TreeNodeUI,{
     hasClass : function(className){
         var el = Ext.fly(this.elNode);
-        return className && (' '+el.dom.className+' ').indexOf(' '+className+' ') != -1;
+        return className && (' '+el.dom.className+' ').indexOf(' '+className+' ') !== -1;
     }
 });
 
@@ -248,7 +248,7 @@ Ext.override(Ext.form.Action.Submit,{
             var rs = this.form.errorReader.read(response);
             var errors = [];
             if(rs.records){
-                for(var i = 0, len = rs.records.length; i < len; i++) {
+                for(var i = 0, len = rs.records.length; i < len; i=i+1) {
                     var r = rs.records[i];
                     errors[i] = r.data;
                 }
@@ -401,7 +401,7 @@ Ext.extend(Ext.form.ColorField, Ext.form.TriggerField,  {
      */
     setColor : function(hex) {
         this.curColor = hex;
-        h = hex.substr(0,1) != '#' ? '#'+hex : hex;
+        h = hex.substr(0,1) !== '#' ? '#'+hex : hex;
         
         this.el.setStyle( {
             'background-color': h,
@@ -540,7 +540,7 @@ Ext.override(Ext.grid.GridView, {
             }
         }
         if(this.forceFit){
-            if(this.lastViewWidth != vw){
+            if(this.lastViewWidth !== vw){
                 this.fitColumns(false, false);
                 this.lastViewWidth = vw;
             }

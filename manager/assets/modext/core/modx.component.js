@@ -36,12 +36,14 @@ Ext.extend(MODx.Component,Ext.Component,{
         
         if (this.config.fields) {
         	for (var i in this.config.fields) {
-        	   var f = this.config.fields[i];
-               if (f.xtype) {
-                f = Ext.ComponentMgr.create(f);
+               if (this.config.fields.hasOwnProperty(i)) {
+            	   var f = this.config.fields[i];
+                   if (f.xtype) {
+                    f = Ext.ComponentMgr.create(f);
+                   }
+            	   this.fields[i] = f;
+            	   this.form.add(f);
                }
-        	   this.fields[i] = f;
-        	   this.form.add(f);
         	}
         }
         this.form.render();
@@ -66,7 +68,7 @@ Ext.extend(MODx.Component,Ext.Component,{
             this.config.buttons = [];
         }        
         var l = this.config.buttons.length;
-        for (var i=0; i<l; i++) {
+        for (var i=0;i<l;i=i+1) {
         	var b = this.config.buttons[i];
         	if (b.refresh) {
         		b.onComplete = this.ab.refreshTreeNode.createDelegate(this,[b.refresh.tree,b.refresh.node,b.refresh.self || false]);
@@ -99,7 +101,7 @@ Ext.extend(MODx.Component,Ext.Component,{
     ,_loadComponents: function() {
         if (!this.config.components) { return false; }
         var l = this.config.components.length;
-        for (var i=0;i<l;i++) {
+        for (var i=0;i<l;i=i+1) {
             Ext.ComponentMgr.create(this.config.components[i]);
         }
     }	

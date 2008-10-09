@@ -40,10 +40,10 @@ Ext.extend(MODx.DataView,Ext.DataView,{
      */
     ,_addContextMenuItem: function(items) {
         var a = items, l = a.length;
-        for(var i = 0; i < l; i++) {
+        for(var i=0;i<l;i=i+1) {
             var options = a[i];
             
-            if (options == '-') {
+            if (options === '-') {
                 this.cm.add('-');
                 continue;
             }
@@ -57,7 +57,7 @@ Ext.extend(MODx.DataView,Ext.DataView,{
                     var w = Ext.get('modx_content');
                     if (o.confirm) {
                         Ext.Msg.confirm('',o.confirm,function(e) {
-                            if (e == 'yes') {
+                            if (e === 'yes') {
                                 var a = Ext.urlEncode(o.params || {action: o.action});
                                 var s = 'index.php?id='+id+'&'+a;
                                 if (w === null) {

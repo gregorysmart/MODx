@@ -16,7 +16,7 @@ MODx.tree.CheckboxTree = function(config) {
     var tb = this.getToolbar();
     if (config.tbar && config.useDefaultToolbar) {
         tb.push('-');
-        for (var i=0;i<config.tbar.length;i++) {
+        for (var i=0;i<config.tbar.length;i=i+1) {
             tb.push(config.tbar[i]);
         }
     } else if (config.tbar) {
@@ -31,6 +31,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
     ,root: null
     
     ,setup: function() {
+        var root;
         if (this.config.url) {            
             this.config.loader = new Ext.tree.TreeLoader({
                 preloadChildren: false
@@ -39,7 +40,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
                 }
                 ,dataUrl: this.config.url
             });
-            var root = new Ext.tree.AsyncTreeNode({
+            root = new Ext.tree.AsyncTreeNode({
                 text: this.config.rootName || ''
                 ,draggable: false
                 ,id: this.config.rootId || 'root'
@@ -51,7 +52,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
                     uiProvider: MODx.tree.CheckboxNodeUI
                 }
             });
-            var root = new Ext.tree.TreeNode({
+            root = new Ext.tree.TreeNode({
                 text: this.config.rootName || ''
                 ,draggable: false
                 ,id: this.config.rootId || 'root'
@@ -76,12 +77,12 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
         },this);        
     }
     
-    ,encode: function(node) {        
-        if (!node) node = this.getRootNode();
+    ,encode: function(node) {
+        if (!node) { node = this.getRootNode(); }
         var _encode = function(node) {
             var resultNode = {};
             var kids = node.childNodes;
-            for (var i = 0; i < kids.length; i++) {
+            for (var i = 0;i < kids.length;i=i+1) {
                 var n = kids[i];
                 resultNode[n.id] = {
                     id: n.id
@@ -124,10 +125,10 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
      */
     ,addContextMenuItem: function(items) {
         var a = items, l = a.length;
-        for(var i = 0; i < l; i++) {
+        for(var i=0;i<l;i=i+1) {
             var options = a[i];
             
-            if (options == '-') {
+            if (options === '-') {
                 this.cm.add('-');
                 continue;
             }
@@ -141,7 +142,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
                     var w = Ext.get('modx_content');
                     if (o.confirm) {
                         Ext.Msg.confirm('',o.confirm,function(e) {
-                            if (e == 'yes') {
+                            if (e === 'yes') {
                                 var a = Ext.urlEncode(o.params || {action: o.action});
                                 var s = 'index.php?id='+id+'&'+a;
                                 if (w === null) {
@@ -180,7 +181,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
     ,loadRemoteData: function(data) {
         this.removeChildren(this.getRootNode());
         for (var c in data) {
-            if (typeof(data[c]) == 'object') {
+            if (typeof data[c] === 'object') {
                 this.getRootNode().appendChild(data[c]);
             }
         }
@@ -213,9 +214,11 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
         var treeState = Ext.state.Manager.get(this.treestateId);
         var root = this.getRootNode();
         if (this.config.url) { root.reload(); }
-        treeState === undefined
-            ? this.root.expand(null,null)
-            : this.expandPath(treeState,null);
+        if (treeState === undefined) {
+            this.root.expand(null,null);
+        } else {
+            this.expandPath(treeState,null);
+        }
         this.fireEvent('refresh',{root:this.getRootNode()});
         return true;
     }
@@ -417,12 +420,13 @@ Ext.override(Ext.tree.TreeNodeUI, {
         var index = 3;
         if(cb){
             this.checkbox = cs[3];
-            index++;
+            index=index+1;
         }
         this.anchor = cs[index];
         this.textNode = cs[index].firstChild;
+        var z;
         if (a.description && this.textNode) {
-            new Ext.ToolTip({
+            z = new Ext.ToolTip({
                 target: this.textNode
                 ,html: a.description
             });
@@ -471,7 +475,8 @@ Ext.override(Ext.tree.TreeEventModel, {
             this.lastCbOver = this.getNode(e);
             this.onCheckboxOver(e, this.lastCbOver);
         }
-        if(t = this.getNodeTarget(e)){
+        t = this.getNodeTarget(e);
+        if (t) {
             this.onNodeOver(e, this.getNode(e));
         }
     },
@@ -479,21 +484,23 @@ Ext.override(Ext.tree.TreeEventModel, {
         if(!this.beforeEvent(e)){
             return;
         }
+        var n;
         if(e.getTarget('.x-tree-ec-icon', 1)){
-            var n = this.getNode(e);
+            n = this.getNode(e);
             this.onIconOut(e, n);
-            if(n == this.lastEcOver){
+            if(n === this.lastEcOver){
                 delete this.lastEcOver;
             }
         }
         else if(e.getTarget('.x-tree-checkbox', 1)){
-            var n = this.getNode(e);
+            n = this.getNode(e);
             this.onCheckboxOut(e, n);
-            if(n == this.lastCbOver){
+            if(n === this.lastCbOver){
                 delete this.lastCbOver;
             }
         }
-        if((t = this.getNodeTarget(e)) && !e.within(t, true)){
+        t = this.getNodeTarget(e);
+        if(t && !e.within(t, true)){
             this.onNodeOut(e, this.getNode(e));
         }
     },
@@ -517,17 +524,18 @@ Ext.override(Ext.tree.TreeEventModel, {
         if(!this.beforeEvent(e)){
             return;
         }
+        var n;
         if(e.getTarget('.x-tree-ec-icon', 1)){
-            var n = this.getNode(e);
+            n = this.getNode(e);
             this.onIconOut(e, n);
-            if(n == this.lastEcOver){
+            if(n === this.lastEcOver){
                 delete this.lastEcOver;
             }
         }
         else if(e.getTarget('.x-tree-checkbox', 1)){
-            var n = this.getNode(e);
+            n = this.getNode(e);
             this.onCheckboxOut(e, n);
-            if(n == this.lastCbOver){
+            if(n === this.lastCbOver){
                 delete this.lastCbOver;
             }
         }

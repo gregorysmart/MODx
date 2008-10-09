@@ -24,14 +24,13 @@ Ext.extend(MODx,Ext.Component,{
     ,load: function() {
         var a = arguments, l = a.length;
         var os = [];
-        for(var i = 0; i < l; i++) {
-            var o = a[i];
-            if (!o.xtype || o.xtype === '') {
+        for(var i=0;i<l;i=i+1) {
+            if (!a[i].xtype || a[i].xtype === '') {
                 return false;
             }
-            os.push(Ext.ComponentMgr.create(o));
+            os.push(Ext.ComponentMgr.create(a[i]));
         }
-        return (os.length == 1) ? os[0] : os;
+        return (os.length === 1) ? os[0] : os;
     }
     
     ,initQuickTips: function() {
@@ -45,11 +44,11 @@ Ext.extend(MODx,Ext.Component,{
         var arg = {};
         var href = document.location.href;
         
-        if (href.indexOf( "?") != -1) {
-            var params = href.split( "?")[1];
-            var param = params.split("&");        
-            for (var i = 0; i < param.length; ++i) {
-                arg[param[i].split("=")[0]] = param[i].split("=")[1];
+        if (href.indexOf('?') !== -1) {
+            var params = href.split('?')[1];
+            var param = params.split('&');        
+            for (var i=0; i<param.length;i=i+1) {
+                arg[param[i].split('=')[0]] = param[i].split('=')[1];
             }
         }
         return arg;
@@ -79,8 +78,10 @@ Ext.extend(MODx.Ajax,Ext.Component,{
         this.purgeListeners();
         if (config.listeners) {
             for (var i in config.listeners) {
-              var l = config.listeners[i];
-              this.addListener(i,l.fn,l.scope || this,l.options || {});
+              if (config.listeners.hasOwnProperty(i)) {
+                var l = config.listeners[i];
+                this.addListener(i,l.fn,l.scope || this,l.options || {});
+              }
             }
         }
         
