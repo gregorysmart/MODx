@@ -15,6 +15,8 @@
 </div>
 </div>
 
+<script type="text/javascript" src="assets/modext/widgets/core/modx.tree.checkbox.js"></script>
+<script type="text/javascript" src="assets/modext/workspace/package.download.panel.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/combos.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/package.grid.js"></script>
 <script type="text/javascript" src="assets/modext/workspace/provisioner.grid.js"></script>

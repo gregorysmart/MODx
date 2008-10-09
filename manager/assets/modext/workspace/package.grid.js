@@ -207,7 +207,7 @@ MODx.window.PackageInstaller = function(config) {
         ,collapsible: true
         ,maximizable: true
         ,autoHeight: true
-        ,width: 750
+        ,width: '90%'
         ,firstPanel: 'pi-start'
         ,lastPanel: 'pi-selpackage'
         ,defaults: { border: false }
@@ -378,8 +378,10 @@ Ext.extend(MODx.panel.PiSelProv,Ext.FormPanel,{
     submit: function(o) {
     	if (this.getForm().isValid()) {
         	var vs = this.getForm().getValues();
-            Ext.getCmp('grid-package-download').setProvider(vs.provider);          
+            Ext.getCmp('tree-package-download').setProvider(vs.provider);    
+            Ext.getCmp('window-package-installer').center();        
             Ext.callback(o.proceed,o.scope || this,['pi-selpackage']);
+            Ext.getCmp('window-package-installer').center();
     	}
     }
 });
@@ -434,7 +436,8 @@ Ext.extend(MODx.panel.PiNewProv,Ext.FormPanel,{
                 }
                 ,success: function(f,a) {
                 	var p = a.result.object;
-                    var g = Ext.getCmp('grid-package-download').setProvider(p.id);
+                    Ext.getCmp('tree-package-download').setProvider(vs.provider);
+                    Ext.getCmp('window-package-installer').center();
                 	Ext.callback(o.proceed,o.scope || this,['pi-selpackage']);
                 }
     		});
@@ -464,8 +467,7 @@ MODx.panel.PiSelPackage = function(config) {
             ,style: 'padding-bottom: 2em'
             ,border: false
         },{
-            xtype: 'grid-package-download'
-            ,id: 'grid-package-download'
+            xtype: 'panel-package-download'
         }]
     });
     MODx.panel.PiSelPackage.superclass.constructor.call(this,config);
@@ -473,17 +475,12 @@ MODx.panel.PiSelPackage = function(config) {
 };
 Ext.extend(MODx.panel.PiSelPackage,Ext.FormPanel,{
     submit: function(o) {
-        var grid = Ext.getCmp('grid-package-download');
-        var sels = grid.getSelectionModel().getSelections();
-        var pkgs = [];
-        for (var i=0,l=sels.length;i<l;i++) {
-        	pkgs.push(sels[i].data);
-        }
+        var pkgs = Ext.getCmp('tree-package-download').encode();        
         if (pkgs.length > 0) {
             this.getForm().submit({
                 waitMsg: _('downloading')
                 ,params: {
-                    packages: Ext.encode(pkgs)
+                    packages: pkgs
                 }
                 ,scope: this
                 ,failure: function(f,a) {
@@ -491,7 +488,6 @@ Ext.extend(MODx.panel.PiSelPackage,Ext.FormPanel,{
                 }
                 ,success: function(f,a) {
                     Ext.getCmp('grid-package').refresh();
-                    grid.getSelectionModel().clearSelections();
                     Ext.getCmp('window-package-installer').hide();
                 }
             });

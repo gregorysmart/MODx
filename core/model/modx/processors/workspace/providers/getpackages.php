@@ -14,11 +14,11 @@ if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'name';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
-$provider = $modx->getObject('transport.modTransportProvider',$_POST['provider']);
+
+$provider = $modx->getObject('transport.modTransportProvider',$_REQUEST['provider']);
 if ($provider == null) {
     $modx->error->failure($modx->lexicon('provider_err_nf'));
 }
+$map = $provider->scanForPackages();
 
-$packages = $provider->scanForPackages();
-
-$this->outputArray($packages);
+$modx->error->success('',$map);
