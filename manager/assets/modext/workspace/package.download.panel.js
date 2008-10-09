@@ -62,9 +62,9 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
                 ,'<tpl for=".">'
                     ,'<div class="details-info">'
                     ,'<h3>{name}</h3>'
-                    ,'<b>'+'Version'+':</b>&nbsp;'
+                    ,'<b>'+_('version')+':</b>&nbsp;'
                     ,'<span>{version}</span><br />'
-                    ,'<b>'+'Release'+':</b>&nbsp;'
+                    ,'<b>'+_('release')+':</b>&nbsp;'
                     ,'<span>{release}</span><br />'
                     ,'<b>Release Date:</b>&nbsp;'
                     ,'<span>{releasedon}</span>'
@@ -117,7 +117,7 @@ MODx.tree.PackageDownload = function(config) {
             action: 'getPackages'
             ,provider: ''
         }
-    })
+    });
     MODx.tree.PackageDownload.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.tree.PackageDownload,MODx.tree.CheckboxTree,{
