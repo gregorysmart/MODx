@@ -30,8 +30,15 @@ session_start();
 // set error reporting
 error_reporting(E_ALL & ~E_NOTICE);
 
+// check for compatible PHP version
+define('MODX_SETUP_PHP_VERSION', phpversion());
+$php_ver_comp = version_compare(MODX_SETUP_PHP_VERSION, '4.3.3');
+if ($php_ver_comp < 0) {
+    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Wrong PHP version! You\'re using PHP version '.MODX_SETUP_PHP_VERSION.', and MODx requires version 4.3.3 or higher.</p></body></html>');
+}
+
 // session loop-back tester
-if (!$_SESSION['session_test'] && $_GET['s'] != 'set') {
+if ((!isset($_GET['s']) || $_GET['s'] != 'set') && !isset($_SESSION['session_test'])) {
     $_SESSION['session_test']= 1;
     $installBaseUrl= (!isset ($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') ? 'http://' : 'https://';
     $installBaseUrl .= $_SERVER['HTTP_HOST'];
@@ -40,6 +47,8 @@ if (!$_SESSION['session_test'] && $_GET['s'] != 'set') {
     $installBaseUrl .= ($_SERVER['SERVER_PORT'] == 80 || isset ($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) == 'on') ? '' : ':' . $_SERVER['SERVER_PORT'];
     echo "<html><head><title>Loading...</title><script>window.location.href='" . $installBaseUrl . $_SERVER['PHP_SELF'] . "?s=set';</script></head><body></body></html>";
     exit ();
+} elseif (isset($_GET['s']) && $_GET['s'] == 'set' && !isset($_SESSION['session_test'])) {
+    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure your PHP session configuration is valid and working.</p></body></html>');
 }
 
 $setupPath= strtr(realpath(dirname(__FILE__)), '\\', '/') . '/';
@@ -47,11 +56,23 @@ define('MODX_SETUP_PATH', $setupPath);
 $installPath= strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/';
 define('MODX_INSTALL_PATH', $installPath);
 
-if (! @ include (MODX_SETUP_PATH . 'includes/config.core.php')) {
-    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have specified the MODX_CORE_PATH in your config file.</p></body></html>');
+if (version_compare(MODX_SETUP_PHP_VERSION, '5.1') < 0 && !extension_loaded('mysql')) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the mysql extension when using PHP versions before 5.1 and it does not appear to be loaded.</p></body></html>');
 }
-if (! @ include (MODX_SETUP_PATH . 'includes/modinstall.class.php')) {
-    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all the necessary files.</p></body></html>');
+if (version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0 && extension_loaded('PDO') && !extension_loaded('pdo_mysql')) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the pdo_mysql driver when PDO is enabled and it does not appear to be loaded.</p></body></html>');
+}
+if (!include(MODX_SETUP_PATH . 'includes/config.core.php')) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all of the setup/ files; your setup/includes/config.core.php file is missing.</p></body></html>');
+}
+if (!include(MODX_SETUP_PATH . 'includes/modinstall.class.php')) {
+    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all of the setup/ files; your setup/includes/modinstall.class.php file is missing.</p></body></html>');
+}
+if (!is_dir(MODX_SETUP_PATH . 'templates/_compiled') || !is_writable(MODX_SETUP_PATH . 'templates/_compiled')) {
+    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure your setup/templates/_compiled directory exists and is writable by the PHP process.</p></body></html>');
+}
+if (!file_exists(MODX_CORE_PATH) || !is_dir(MODX_CORE_PATH)) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have specified a valid MODX_CORE_PATH in your setup/includes/config.core.php file; this must point to a working MODx core.</p></body></html>');
 }
 
 $modInstall = new modInstall();

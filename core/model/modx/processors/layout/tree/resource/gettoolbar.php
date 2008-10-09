@@ -7,7 +7,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-
+$modx->lexicon->load('resource');
 $p = $modx->config['manager_url'].'templates/'.$modx->config['manager_theme'].'/';
 
 $actions = $modx->request->getAllActionIDs();
@@ -33,6 +33,11 @@ $items = array(
         'icon' => $p.'images/icons/link_add.png',
         'tooltip' => $modx->lexicon('add_weblink'),
         'handler' => 'new Function("this.redirect(\"index.php?a='.$actions['resource/create'].'&class_key=modWebLink\");");',
+    ),
+    array(
+        'icon' => $p.'images/icons/link_add.png',
+        'tooltip' => $modx->lexicon('add_symlink'),
+        'handler' => 'new Function("this.redirect(\"index.php?a='.$actions['resource/create'].'&class_key=modSymLink\");");',
     ),
     '-',
     array(

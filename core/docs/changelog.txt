@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-88] Move version checking to setup script and add notifications.
 - [#MODX-66] Change the way properties work within the scope of a chunk; placeholders set by the chunks properties are now removed after the chunk is processed.
 - Added modX::unsetPlaceholder() and modX::unsetPlaceholders() functions.
 - [#MODX-329] Fixed error with browser "remembering" user even when "remember me" is not checked.  Was always using the system setting regardless of rememberme.

@@ -66,7 +66,7 @@ class modInstall {
         if ($included) {
             $this->request = new $class($this);
         } else {
-        	die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all the necessary files.</p></body></html>');
+            die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all the necessary files.</p></body></html>');
         }
         return $included;
     }
@@ -76,7 +76,7 @@ class modInstall {
      */
     function loadLang() {
         $_lang= array ();
-        @ include (MODX_SETUP_PATH . "lang/en.php");
+        include (MODX_SETUP_PATH . "lang/en.php");
 
         $language= 'en';
         if (isset ($_COOKIE['modx_setup_language'])) {
@@ -84,7 +84,7 @@ class modInstall {
         }
         $language= isset ($_REQUEST['language']) ? $_REQUEST['language'] : $language;
         if ($language && $language != 'en') {
-            @ include (MODX_SETUP_PATH . "lang/{$language}.php");
+            include (MODX_SETUP_PATH . "lang/{$language}.php");
         }
         $this->lexicon = $_lang;
     }
@@ -885,7 +885,7 @@ class modInstall {
      * @return xPDO The xPDO instance to be used by the installation.
      */
     function _connect($dsn, $user = '', $password = '', $prefix = '') {
-        @ require_once (MODX_CORE_PATH . "xpdo/xpdo.class.php");
+        require_once (MODX_CORE_PATH . "xpdo/xpdo.class.php");
         $xpdo = new xPDO($dsn, $user, $password, array(
                 XPDO_OPT_CACHE_PATH => MODX_CORE_PATH . 'cache/',
                 XPDO_OPT_TABLE_PREFIX => $prefix,
@@ -912,7 +912,7 @@ class modInstall {
         $modx = null;
 
         // to validate installation, instantiate the modX class and run a few tests
-        if (@ require_once (MODX_CORE_PATH . 'model/modx/modx.class.php')) {
+        if (require_once (MODX_CORE_PATH . 'model/modx/modx.class.php')) {
             $modx = new modX(MODX_CORE_PATH . 'config/');
             if (!is_object($modx) || !is_a($modx, 'modX')) {
                 $errors[] = '<p>Could not instantiate the MODx class.</p>';
