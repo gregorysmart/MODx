@@ -118,6 +118,7 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
             xtype: 'tree-directory'
             ,el: 'modx_file_tree'
             ,id: 'modx_file_tree'
+            ,hideFiles: false
             ,title: ''
         });
     }

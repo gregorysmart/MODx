@@ -9,6 +9,9 @@ $modx->lexicon->load('file');
 
 if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
 
+$_POST['hideFiles'] = isset($_POST['hideFiles']) &&
+    ($_POST['hideFiles'] === true || $_POST['hideFiles'] === 'true') ? true : false;
+
 $dir = !isset($_REQUEST['id']) || $_REQUEST['id'] == 'root' ? '' : str_replace('n_','',$_REQUEST['id']);
 $da = array();
 $directories = array();
@@ -54,7 +57,7 @@ while(false !== ($name = $odir->read())) {
 	}
 
     // get files in current dir
-    if (!is_dir($fullname) && !isset($_POST['hideFiles'])) {
+    if (!is_dir($fullname) && $_POST['hideFiles'] != true) {
         $directories[] = array(
             'id' => $dir.'/'.$name,
             'text' => $name,
