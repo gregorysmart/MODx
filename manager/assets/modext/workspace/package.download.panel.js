@@ -72,7 +72,7 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
                 ,'</tpl>'
                 ,'</div>'
             )
-            ,package: new Ext.XTemplate(
+            ,'package': new Ext.XTemplate(
                 '<div class="details" style="padding: 1em;">'
                 ,'<tpl for=".">'
                     ,'<div class="details-info">'
