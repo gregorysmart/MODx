@@ -64,23 +64,23 @@ class modTemplateVar extends modElement {
     /**
      * Get the value of a template variable for a resource.
      *
-     * @param integer $documentId The id of the resource; 0 defaults to the
+     * @param integer $resourceId The id of the resource; 0 defaults to the
      * current resource.
      * @return mixed The raw value of the template variable in context of the
      * specified (or current) resource.
      */
-    function getValue($documentId= 0) {
+    function getValue($resourceId= 0) {
         $value= null;
-        if ($documentId) {
-            if ($documentId === $this->xpdo->resourceIdentifier && isset ($this->xpdo->documentObject[$this->get('name')]) && is_array($this->xpdo->documentObject[$this->get('name')])) {
+        if ($resourceId) {
+            if ($resourceId === $this->xpdo->resourceIdentifier && isset ($this->xpdo->documentObject[$this->get('name')]) && is_array($this->xpdo->documentObject[$this->get('name')])) {
                 $value= $this->xpdo->documentObject[$this->get('name')][1];
             } else {
-                $document = $this->xpdo->getObject('modTemplateVarResource',array(
+                $resource = $this->xpdo->getObject('modTemplateVarResource',array(
                     'tmplvarid' => $this->get('id'),
-                    'contentid' => $documentId,
+                    'contentid' => $resourceId,
                 ),true);
-                if ($document != null) {
-                    $value= $document->get('value');
+                if ($resource != null) {
+                    $value= $resource->get('value');
                 }
             }
         }
@@ -93,21 +93,17 @@ class modTemplateVar extends modElement {
     /**
      * Set the value of a template variable for a resource.
      *
-     * @param integer $documentId The id of the resource; 0 defaults to the
+     * @param integer $resourceId The id of the resource; 0 defaults to the
      * current resource.
      * @param mixed $value The value to give the template variable for the
      * specified document.
      */
-    function setValue($documentId= 0, $value= null) {
+    function setValue($resourceId= 0, $value= null) {
         $oldValue= '';
-        if (intval($documentId)) {
-            $bindings= array (
-                ':tv_id' => $this->get('id'),
-                ':document_id' => $documentId,
-            );
+        if (intval($resourceId)) {
             $tvd = $this->xpdo->getObject('modTemplateVarResource',array(
                 'tmplvarid' => $this->get('id'),
-                'contentid' => $documentId,
+                'contentid' => $resourceId,
             ),true);
 
             if (!$tvd) {
@@ -117,7 +113,7 @@ class modTemplateVar extends modElement {
                 if (!$tvd->_new) {
                     $tvd->set('value', $value);
                 } else {
-                    $tvd->set('document_id', $documentId);
+                    $tvd->set('contentid', $resourceId);
                     $tvd->set('value', $value);
                     $this->addOne($tvd);
                 }
@@ -130,15 +126,15 @@ class modTemplateVar extends modElement {
     /**
      * Returns the processed output of a template variable.
      *
-     * @param integer $documentId The id of the resource; 0 defaults to the
+     * @param integer $resourceId The id of the resource; 0 defaults to the
      * current resource.
      * @return mixed The processed output of the template variable.
      */
-    function renderOutput($documentId= 0) {
-        $value= $this->getValue($documentId);
+    function renderOutput($resourceId= 0) {
+        $value= $this->getValue($resourceId);
 
         // process any TV commands in value
-        $value= $this->processBindings($value, $documentId);
+        $value= $this->processBindings($value, $resourceId);
 
         $param= array ();
         if ($paramstring= $this->get('display_params')) {
@@ -273,10 +269,10 @@ class modTemplateVar extends modElement {
 	 * Process bindings assigned to a template variable.
 	 *
 	 * @param string $value The value specified from the binding.
-	 * @param integer $documentId The document in which the TV is assigned.
+	 * @param integer $resourceId The resource in which the TV is assigned.
 	 * @return string The processed value.
 	 */
-    function processBindings($value= '', $documentId= 0) {
+    function processBindings($value= '', $resourceId= 0) {
 		$etomite =& $this->xpdo; // backward compat for eval/snippets
         $modx =& $this->xpdo;
         $nvalue= trim($value);
@@ -297,7 +293,7 @@ class modTemplateVar extends modElement {
                 case 'DOCUMENT':    // retrieve a document and process it's content
                     $rs = $this->xpdo->getDocument($param);
                     if (is_array($rs)) $output = $rs['content'];
-                    else $output = 'Unable to locate document '.$param;
+                    else $output = 'Unable to locate resource '.$param;
                     break;
 
                 case 'SELECT': // selects a record from the cms database
@@ -438,4 +434,3 @@ class modTemplateVar extends modElement {
         return $policy;
     }
 }
-?>

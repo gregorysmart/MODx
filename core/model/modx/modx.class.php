@@ -1494,11 +1494,12 @@ class modX extends xPDO {
     }
 
     /**
-     * Returns an array of document groups that current user is assigned to.
+     * Returns an array of resource groups that current user is assigned to.
      *
      * This function will first return the web user doc groups when running from
-     * frontend otherwise it will return manager user's docgroup.
-     * @param boolean $resolveIds Set to true to return the document group names.
+     * frontend otherwise it will return manager user's resource group.
+     * @param boolean $resolveIds Set to true to return the resource group
+     * names.
      * @return mixed An array of document group ids, names, false or empty string.
      * @deprecated 2007-09-17 To be removed in 1.0
      */
@@ -1549,7 +1550,7 @@ class modX extends xPDO {
     }
 
     /**
-     * Get children of the specified document without regard to status.
+     * Get children of the specified resource without regard to status.
      * @deprecated 2007-09-17 To be removed in 1.0
      */
     function getAllChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
@@ -1666,12 +1667,12 @@ class modX extends xPDO {
      * @return mixed An array of the template variable fields or false.
      * @deprecated 2007-09-17 To be removed in 1.0
      */
-    function getTemplateVar($idname="", $fields = "*", $docid="", $published=1) {
+    function getTemplateVar($idname="", $fields = "*", $resourceId="", $published=1) {
         if($idname=="") {
             return false;
         }
         else {
-            $result = $this->getTemplateVars(array($idname),$fields,$docid,$published,"",""); //remove sorting for speed
+            $result = $this->getTemplateVars(array($idname),$fields,$resourceId,$published,"",""); //remove sorting for speed
             return reset($result);
         }
     }
@@ -1680,18 +1681,18 @@ class modX extends xPDO {
      * Returns an array of TV records.
      *
      * @param string|array $idnames Can be an id or name that belongs to
-     * the template assigned to the current document.
+     * the template assigned to the current resource.
      * @deprecated 2007-09-17 To be removed in 1.0
      */
-    function getTemplateVars($idnames=array(), $fields = "*", $docid="", $published=1, $sort="tv.rank,tvtpl.rank", $dir="ASC,ASC") {
+    function getTemplateVars($idnames=array(), $fields = "*", $resourceId="", $published=1, $sort="tv.rank,tvtpl.rank", $dir="ASC,ASC") {
         if(($idnames!='*' && !is_array($idnames)) || count($idnames)==0) {
             return false;
         }
         else {
-            $docid = intval($docid);
-            if ($docid < 1) {
+            $resourceId = intval($resourceId);
+            if ($resourceId < 1) {
                 if (is_object($this->resource)) {
-                    $docid = intval($this->resource->resourceIdentifier);
+                    $resourceId = intval($this->resource->resourceIdentifier);
                 }
             }
             $result = array();
@@ -1704,12 +1705,12 @@ class modX extends xPDO {
                 'tvtpl.tmplvarid = tv.id',
             ));
             $query->innerJoin('modResource', 'sc', array(
-                'sc.id = ' . intval($docid),
+                'sc.id = ' . intval($resourceId),
                 'tvtpl.templateid = sc.template',
             ));
             $query->leftJoin('modTemplateVarResource', 'tvc', array(
                 'tvc.tmplvarid = tv.id',
-                array('tvc.contentid' => $docid)
+                array('tvc.contentid' => $resourceId)
             ));
             if ($idnames == '*') {
                 $query->where(array('tv.id:!=' => '0'));
@@ -1745,7 +1746,7 @@ class modX extends xPDO {
             foreach ($collection as $pk => $tv) {
                 $result[$tv->get('name')]= array (
                     'name' => $tv->get('name'),
-                    'value' => $tv->getValue($docid),
+                    'value' => $tv->getValue($resourceId),
                     'display' => $tv->get('display'),
                     'display_params' => $tv->get('display_params'),
                     'type' => $tv->get('type')
@@ -1759,20 +1760,20 @@ class modX extends xPDO {
      * Gets an array of template variable data, with processed output.
      *
      * @param string|array $idnames
-     * @param integer $docid
+     * @param integer $resourceId
      * @param integer $published
      * @return mixed
      * @deprecated 2007-09-17 To be removed in 1.0
      */
-    function getTemplateVarOutput($idnames=array(), $docid="", $published=1) {
+    function getTemplateVarOutput($idnames=array(), $resourceId="", $published=1) {
         if(count($idnames)==0) {
             return false;
         }
         else {
             $output = array();
             // get document record
-            if ($docid=="") {
-                $docid = $this->resourceIdentifier;
+            if ($resourceId=="") {
+                $resourceId = $this->resourceIdentifier;
             }
 
             $query = $this->newQuery('modTemplateVar');
@@ -1781,7 +1782,7 @@ class modX extends xPDO {
                 'tvtpl.tmplvarid = tv.id',
             ));
             $query->innerJoin('modResource', 'sc', array(
-                'sc.id = ' . intval($docid),
+                'sc.id = ' . intval($resourceId),
                 'tvtpl.templateid = sc.template',
             ));
             $query->leftJoin('modTemplateVarResource', 'tvc', array(
@@ -1805,14 +1806,14 @@ class modX extends xPDO {
 
             $collection = $this->getCollection('modTemplateVar', $query);
             foreach ($collection as $pk => $tv) {
-                $output[$tv->get('name')]= $tv->renderOutput($docid);
+                $output[$tv->get('name')]= $tv->renderOutput($resourceId);
             }
             return $output;
         }
     }
 
     /**
-     * Gets the parent document.
+     * Gets the parent resource.
      *
      * @param integer $pid
      * @param integer $active
@@ -1836,7 +1837,7 @@ class modX extends xPDO {
     }
 
     /**
-     * Gets data from a document.
+     * Gets data from a resource.
      *
      * @param integer $pageid
      * @param integer $active
