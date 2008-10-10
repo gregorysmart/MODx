@@ -22,7 +22,7 @@ MODx.page.UpdateSnippet = function(config) {
             ,checkDirty: true
             ,refresh: {
                 tree: 'modx_element_tree'
-                ,node: 'n_type_snippet'
+                ,node: (config.category != '' ? 'n_snippet_category_'+config.category : 'n_type_snippet')
                 ,self: true
             }
             ,keys: [{

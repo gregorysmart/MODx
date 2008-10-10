@@ -22,7 +22,7 @@ MODx.page.CreateTemplate = function(config) {
             ,checkDirty: true
             ,refresh: {
             	tree: 'modx_element_tree'
-            	,node: 'n_type_template'
+            	,node: (config.category != '' ? 'n_template_category_'+config.category : 'n_type_template')
             	,self: true
             }
             ,listeners: {

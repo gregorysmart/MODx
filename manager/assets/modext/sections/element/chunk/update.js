@@ -21,7 +21,7 @@ MODx.page.UpdateChunk = function(config) {
             ,method: 'remote'
             ,refresh: {
             	tree: 'modx_element_tree'
-            	,node: 'n_type_chunk'
+            	,node: (config.category != '' ? 'n_chunk_category_'+config.category : 'n_type_chunk')
                 ,self: true
             }
             ,keys: [{

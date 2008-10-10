@@ -20,7 +20,7 @@ MODx.page.CreatePlugin = function(config) {
             ,checkDirty: true
             ,refresh: {
             	tree: 'modx_element_tree'
-            	,node: 'n_type_plugin'
+            	,node: (config.category != '' ? 'n_plugin_category_'+config.category : 'n_type_plugin')
             }
             ,listeners: {
                 'click': {fn:function(btn,e) {

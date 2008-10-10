@@ -22,7 +22,7 @@ MODx.page.CreateTV = function(config) {
             ,checkDirty: true
             ,refresh: {
             	tree: 'modx_element_tree'
-            	,node: 'n_type_tv'
+            	,node: (config.category != '' ? 'n_tv_category_'+config.category : 'n_type_tv')
             	,self: true
             }
             ,listeners: {
