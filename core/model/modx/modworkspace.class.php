@@ -18,4 +18,3 @@ class modWorkspace extends xPDOSimpleObject {
         return $saved;
     }
 }
-?>

@@ -44,6 +44,7 @@ class modJSONError extends modError {
      */
     function process($message = '', $status = false, $object = null) {
         $objarray= parent :: process($message, $status, $object);
+        //:TODO: Remove comment when releasing beta
         //@header("Content-Type: text/json; charset=UTF-8");
         return $this->modx->toJSON(array (
             'success' => $this->status,
