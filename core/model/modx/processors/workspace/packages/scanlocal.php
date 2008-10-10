@@ -12,7 +12,7 @@ if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('per
 
 if (!isset($_POST['workspace'])) $_POST['workspace'] = 1;
 $workspace = $modx->getObject('modWorkspace',$_POST['workspace']);
-if ($workspace == null) $error->failure($modx->lexicon('workspace_err_nf'));
+if ($workspace == null) $modx->error->failure($modx->lexicon('workspace_err_nf'));
 
 $packages = array();
 
@@ -48,7 +48,9 @@ foreach ($packages as $signature) {
 	$package->set('installed',0);
 	$package->set('workspace',$workspace->id);
 
-	if (!$package->save()) $error->failure($modx->lexicon('package_err_create'));
+	if ($package->save() === false) {
+        $modx->error->failure($modx->lexicon('package_err_create'));
+    }
 }
 
-$error->success();
+$modx->error->success();

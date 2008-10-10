@@ -9,7 +9,7 @@ $modx->lexicon->load('workspace');
 
 if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-$modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_beginning',array('signature' => $_REQUEST['signature'] )));
+$modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_info_start',array('signature' => $_REQUEST['signature'] )));
 
 // find package
 if (!isset($_REQUEST['signature'])) {
@@ -20,7 +20,7 @@ if ($package == null) {
     $modx->error->failure(sprintf($modx->lexicon('package_err_nfs'),$_REQUEST['signature']));
 }
 
-$modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_found'));
+$modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_info_found'));
 
 // install package
 $installed = $package->install();
@@ -30,7 +30,7 @@ if (!$installed) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$msg);
     $modx->error->failure($msg);
 } else {
-    $msg = $modx->lexicon('package_installed',array('signature' => $package->get('signature')));
+    $msg = $modx->lexicon('package_install_info_success',array('signature' => $package->get('signature')));
     $modx->log(XPDO_LOG_LEVEL_WARN,$msg);
     $modx->error->success($msg);
 }

@@ -9,6 +9,8 @@ $modx->lexicon->load('workspace');
 
 if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
 
+$modx->error->failure('Not yet implemented.');
+
 $package = $modx->getObject('transport.modTransportPackage',$_REQUEST['signature']);
 if ($package == null) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_nf'));
@@ -22,14 +24,14 @@ if ($package->provider != 0) {
         $modx->error->failure();
     }
 } else {
-    $modx->log(XPDO_LOG_LEVEL_ERROR,'This package cannot be updated, because it was not installed from a provider.');
+    $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_update_err_provider_nf'));
     $modx->error->failure();
 }
 
-$modx->log(MODX_LOG_LEVEL_INFO,'Scanning for package updates from provisioner: '.$provider->name);
+$modx->log(MODX_LOG_LEVEL_INFO,$modx->lexicon('package_update_info_provider_scan',array('provider' => $provider->name)));
 $downloadedPackages = $provider->scanForPackages();
 if (empty($downloadedPackages)) {
-    $modx->log(MODX_LOG_LEVEL_ERROR,'No packages found in the specified provider.');
+    $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('package_update_err_provider_empty'));
     $modx->error->failure();
 }
 
@@ -44,7 +46,7 @@ foreach ($downloadedPackages as $p) {
 
     if ($updateName == $packageName) {
         $found = true;
-        $modx->log(MODX_LOG_LEVEL_INFO,'Found package. Checking for version difference.');
+        $modx->log(MODX_LOG_LEVEL_INFO,$modx->lexicon('package_update_info_diff'));
 
         // check version number
         if (!empty($updateVersion) && !empty($packageVersion)) {

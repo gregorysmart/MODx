@@ -378,10 +378,10 @@ Ext.extend(MODx.panel.PiSelProv,Ext.FormPanel,{
     submit: function(o) {
     	if (this.getForm().isValid()) {
         	var vs = this.getForm().getValues();
-            Ext.getCmp('tree-package-download').setProvider(vs.provider);    
-            Ext.getCmp('window-package-installer').center();        
-            Ext.callback(o.proceed,o.scope || this,['pi-selpackage']);
+            Ext.getCmp('tree-package-download').setProvider(vs.provider);
+            Ext.getCmp('pi-selpackage').provider = vs.provider;            
             Ext.getCmp('window-package-installer').center();
+            Ext.callback(o.proceed,o.scope || this,['pi-selpackage']);
     	}
     }
 });
@@ -436,7 +436,8 @@ Ext.extend(MODx.panel.PiNewProv,Ext.FormPanel,{
                 }
                 ,success: function(f,a) {
                 	var p = a.result.object;
-                    Ext.getCmp('tree-package-download').setProvider(vs.provider);
+                    Ext.getCmp('tree-package-download').setProvider(p.id);
+                    Ext.getCmp('pi-selpackage').provider = p.id;
                     Ext.getCmp('window-package-installer').center();
                 	Ext.callback(o.proceed,o.scope || this,['pi-selpackage']);
                 }
@@ -474,13 +475,16 @@ MODx.panel.PiSelPackage = function(config) {
     this.config = config;
 };
 Ext.extend(MODx.panel.PiSelPackage,Ext.FormPanel,{
-    submit: function(o) {
+    provider: null
+    
+    ,submit: function(o) {
         var pkgs = Ext.getCmp('tree-package-download').encode();        
         if (pkgs.length > 0) {
             this.getForm().submit({
                 waitMsg: _('downloading')
                 ,params: {
                     packages: pkgs
+                    ,provider: this.provider
                 }
                 ,scope: this
                 ,failure: function(f,a) {

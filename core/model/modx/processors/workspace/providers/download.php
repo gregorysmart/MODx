@@ -8,6 +8,10 @@ $modx->lexicon->load('workspace');
 
 if (!$modx->hasPermission('providers')) $modx->error->failure($modx->lexicon('permission_denied'));
 
+if (!isset($_POST['provider'])) $modx->error->failure($modx->lexicon('provider_err_ns'));
+$provider = $modx->getObject('transport.modTransportProvider',$_POST['provider']);
+if ($provider == null) $modx->error->failure($modx->lexicon('provider_err_nf'));
+
 $_package_cache = $modx->config['core_path'].'packages/';
 $pkgs = $modx->fromJSON($_POST['packages']);
 
@@ -15,7 +19,7 @@ $packages = array();
 getNodesFormatted($packages,$pkgs);
 
 if (count($packages) == 0) {
-    $modx->error->failure('Please select at least one package version to download.');
+    $modx->error->failure($modx->lexicon('package_download_err_ns'));
 }
 
 foreach ($packages as $package) {
@@ -25,9 +29,10 @@ foreach ($packages as $package) {
     $pkg->set('workspace',1);
     $pkg->transferPackage($package['location'],$_package_cache);
     $pkg->set('created',date('Y-m-d h:i:s'));
+    $pkg->set('provider',$provider->get('id'));
 
-    if (!$pkg->save()) {
-        $modx->log(MODX_LOG_LEVEL_ERROR,'Could not create transport package: '.$pkg->get('signature'));
+    if ($pkg->save() == false) {
+        $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('package_download_err_create',array('signature' => $pkg->get('signature'))));
     }
 }
 
