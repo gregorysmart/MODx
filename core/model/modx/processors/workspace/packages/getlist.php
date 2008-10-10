@@ -20,7 +20,20 @@ foreach ($packages as $package) {
     if ($package->installed == '0000-00-00 00:00:00') $package->set('installed',null);
     $pa = $package->toArray();
 
-    $pa['updated'] = strftime('%Y-%m-%d %H:%M:%S',$pa['updated']);
+    // format timestamps
+    if ($package->get('updated') != '0000-00-00 00:00:00' && $package->get('updated') != null) {
+        $pa['updated'] = strftime('%b %e, %Y %I:%M %p',$package->get('updated'));
+    } else {
+        $pa['updated'] = '';
+    }
+    $pa['created']= strftime('%b %e, %Y %I:%M %p',strtotime($package->get('created')));
+    if ($package->get('installed') == null || $package->get('installed') == '0000-00-00 00:00:00') {
+        $not_installed = true;
+        $pa['installed'] = null;
+    } else {
+        $not_installed = false;
+        $pa['installed'] = strftime('%b %e, %Y %I:%M %p',strtotime($package->get('installed')));
+    }
 
     $not_installed = $package->get('installed') == null || $package->get('installed') == '0000-00-00 00:00:00';
     $pa['menu'] = array(
