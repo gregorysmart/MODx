@@ -276,6 +276,15 @@ class modCacheManager extends xPDOCacheManager {
                         $content .= "\$this->modx->elementCache['" .$tag . "']= " . var_export($out, true) . ";\n";
                     }
                 }
+                if (!empty($this->modx->sjscripts)) {
+                    $content .= "\$this->modx->sjscripts= " . var_export($this->modx->sjscripts, true) . ";\n";
+                }
+                if (!empty($this->modx->jscripts)) {
+                    $content .= "\$this->modx->jscripts= " . var_export($this->modx->jscripts, true) . ";\n";
+                }
+                if (!empty($this->modx->loadedjscripts)) {
+                    $content .= "\$this->modx->loadedjscripts= " . var_export($this->modx->loadedjscripts, true) . ";\n";
+                }
                 $written= $this->writeFile($fileName, $content);
             }
         }

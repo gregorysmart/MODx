@@ -54,27 +54,47 @@ class modResource extends modAccessibleSimpleObject {
      * @return string The raw, cacheable content of a resource.
      */
     function process() {
-        if ($this->_processed && $this->_content && $this->get('cacheable')) {
-            return $this->_content;
-        }
-        $this->_content= '';
-        $this->_output= '';
-        $this->xpdo->getParser();
-        if ($baseElement= $this->getOne('modTemplate')) {
-            if ($baseElement->process()) {
-                $this->_content= $baseElement->_output;
+        if (!$this->get('cacheable') || !$this->_processed || !$this->_content) {
+            $this->_content= '';
+            $this->_output= '';
+            $this->xpdo->getParser();
+            if ($baseElement= $this->getOne('modTemplate')) {
+                if ($baseElement->process()) {
+                    $this->_content= $baseElement->_output;
+                    $this->_processed= true;
+                }
+            } else {
+                $this->_content= '[[*content]]';
+                $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
+                $this->xpdo->parser->processElementTags('', $this->_content, false, false, '[[', ']]', array(), $maxIterations);
                 $this->_processed= true;
             }
-        } else {
-            $this->_content= '[[*content]]';
-            $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
-            $this->xpdo->parser->processElementTags('', $this->_content, false, false, '[[', ']]', array(), $maxIterations);
-            $this->_processed= true;
         }
-        if($this->get('hasmetatags') || $this->get('haskeywords')) {
-            $this->_content = $this->xpdo->mergeDocumentMETATags($this->_content);
-        }
+        $this->mergeKeywords();
+        $this->mergeMetatags();
         return $this->_content;
+    }
+    
+    function mergeKeywords() {
+        if ($this->get('haskeywords')) {
+            $keywords = implode(", ",$this->xpdo->getKeywords());
+            $metas = "<meta name=\"keywords\" content=\"{$keywords}\" />\n";
+            $this->_content = preg_replace("/(<head>)/i", "\\1\n".$metas, $this->_content);
+        }
+    }
+    
+    function mergeMetaTags() {
+        if ($this->get('hasmetatags')) {
+            if ($tags = $this->xpdo->getMETATags()) {
+                foreach ($tags as $n=>$col) {
+                    $tag = strtolower($col['tag']);
+                    $tagvalue = $col['tagvalue'];
+                    $tagstyle = $col['http_equiv'] ? 'http-equiv':'name';
+                    $metas.= "\t<meta $tagstyle=\"$tag\" content=\"$tagvalue\" />\n";
+                }
+                $this->_content = preg_replace("/(<head>)/i", "\\1\n".$metas, $this->_content);
+            }
+        }
     }
 
     /**

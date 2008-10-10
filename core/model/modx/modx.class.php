@@ -2084,36 +2084,6 @@ class modX extends xPDO {
     }
 
     /**
-     * Makes a list.
-     * @deprecated 2007-09-17 Use anything else, please!
-     */
-    function makeList($array, $ulroot='root', $ulprefix='sub_', $type='', $ordered=false, $tablevel=0) {
-        // first find out whether the value passed is an array
-        if(!is_array($array)) {
-            return "<ul><li>Bad list</li></ul>";
-        }
-        if(!empty($type)) {
-            $typestr = " style='list-style-type: $type'";
-        } else {
-            $typestr = "";
-        }
-        $tabs = "";
-        for($i=0; $i<$tablevel; $i++) {
-            $tabs .= "\t";
-        }
-        $listhtml = $ordered==true ? $tabs."<ol class='$ulroot'$typestr>\n" : $tabs."<ul class='$ulroot'$typestr>\n" ;
-        foreach($array as $key=>$value) {
-            if(is_array($value)) {
-                $listhtml .= $tabs."\t<li>".$key."\n".$this->makeList($value, $ulprefix.$ulroot, $ulprefix, $type, $ordered, $tablevel+2).$tabs."\t</li>\n";
-            } else {
-                $listhtml .= $tabs."\t<li>".$value."</li>\n";
-            }
-        }
-        $listhtml .= $ordered==true ? $tabs."</ol>\n" : $tabs."</ul>\n" ;
-        return $listhtml;
-    }
-
-    /**
      * Checks if a user is authenticated and returns array of data if so.
      *
      * @return mixed An array of authenticated user data or false.
@@ -2140,32 +2110,6 @@ class modX extends xPDO {
         else {
             return false;
         }
-    }
-
-    /**
-     * Merges META tags assigned to the document.
-     *
-     * @param string $template
-     * @return string
-     */
-    function mergeDocumentMETATags($template) {
-        if ($this->resource->has_keywords) {
-            // insert keywords
-            $keywords = implode(", ",$this->getKeywords());
-            $metas = "\t<meta name=\"keywords\" content=\"$keywords\" />\n";
-        }
-        if ($this->documentObject['hasmetatags']==1) {
-            // insert meta tags
-            $tags = $this->getMETATags();
-            foreach ($tags as $n=>$col) {
-                $tag = strtolower($col['tag']);
-                $tagvalue = $col['tagvalue'];
-                $tagstyle = $col['http_equiv'] ? 'http-equiv':'name';
-                $metas.= "\t<meta $tagstyle=\"$tag\" content=\"$tagvalue\" />\n";
-            }
-        }
-        $template = preg_replace("/(<head>)/i", "\\1\n".$metas, $template);
-        return $template;
     }
 
     /**

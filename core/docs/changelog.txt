@@ -4,6 +4,9 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-364] Results of regClient*() functions are now cached into the Resource cache files to solve error on cached pages with cached snippets.
+- Removed deprecated modX::mergeDocumentMETATags() and moved feature to modResource::mergeMetatags() and modResource::mergeKeywords().
+- Removed deprecated modX::makeList() function.
 - [#MODX-88] Move version checking to setup script and add notifications.
 - [#MODX-66] Change the way properties work within the scope of a chunk; placeholders set by the chunks properties are now removed after the chunk is processed.
 - Added modX::unsetPlaceholder() and modX::unsetPlaceholders() functions.
