@@ -1,12 +1,5 @@
 <?php
-/**
- * modManagerRequest
- *
- * @package modx
- */
-
-/** Make sure the parent class is included. */
-@require_once MODX_CORE_PATH . 'model/modx/modrequest.class.php';
+@require_once(MODX_CORE_PATH . 'model/modx/modrequest.class.php');
 
 /**
  * Encapsulates the interaction of MODx manager with an HTTP request.
@@ -276,4 +269,74 @@ class modManagerRequest extends modRequest {
         }
         exit();
     }
+
+    /**
+     * @deprecated 2007-09-19 To be removed in 1.0
+     */
+    function initPageViewState($id= 0) {
+        global $_PAGE;
+        $vsid= isset ($_SESSION['mgrPageViewSID']) ? $_SESSION['mgrPageViewSID'] : '';
+        if ($vsid != $this->action) {
+            $_SESSION['mgrPageViewSDATA']= array (); // new view state
+            $_SESSION['mgrPageViewSID']= $id > 0 ? $id : $this->action; // set id
+        }
+        $_PAGE['vs']= & $_SESSION['mgrPageViewSDATA']; // restore viewstate
+    }
+
+    /**
+     * Save page view state - not really necessary.
+     * @deprecated 2007-09-19 To be removed in 1.0
+     */
+    function savePageViewState($id= 0) {
+        global $_PAGE;
+        $_SESSION['mgrPageViewSDATA']= $_PAGE['vs'];
+        $_SESSION['mgrPageViewSID']= $id > 0 ? $id : $this->action;
+    }
+
+    /**
+     * Check for saved form.
+     * @deprecated 2007-09-19 To be removed in 1.0
+     */
+    function hasFormValues() {
+        if (isset ($_SESSION['mgrFormValueId'])) {
+            if ($this->action == $_SESSION['mgrFormValueId']) {
+                return true;
+            } else {
+                $this->clearSavedFormValues();
+            }
+        }
+    }
+
+    /**
+     * Saved form post from $_POST.
+     * @deprecated 2007-09-19 To be removed in 1.0
+     */
+    function saveFormValues($id= 0) {
+        $_SESSION['mgrFormValues']= $_POST;
+        $_SESSION['mgrFormValueId']= $id > 0 ? $id : $this->action;
+    }
+
+    /**
+     * Load saved form values into $_POST.
+     * @deprecated 2007-09-19 To be removed in 1.0
+     */
+    function loadFormValues() {
+        if ($this->hasFormValues()) {
+            $p= $_SESSION['mgrFormValues'];
+            while (list($k, $v)= each($p)) {
+                $_POST[$k]= $v;
+            }
+            $this->clearSavedFormValues();
+        }
+    }
+
+    /**
+     * Clear form post.
+     * @deprecated 2007-09-19 To be removed in 1.0
+     */
+    function clearSavedFormValues() {
+        unset ($_SESSION['mgrFormValues']);
+        unset ($_SESSION['mgrFormValueId']);
+    }
 }
+?>
