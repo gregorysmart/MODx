@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -19,25 +19,30 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
-
-// do a little bit of environment cleanup if possible
+/**
+ * Instantiates the setup program.
+ *
+ * @package modx
+ * @subpackage setup
+ */
+/* do a little bit of environment cleanup if possible */
 @ ini_set('magic_quotes_runtime', 0);
 @ ini_set('magic_quotes_sybase', 0);
 
-// start session
+/* start session */
 session_start();
 
-// set error reporting
+/* set error reporting */
 error_reporting(E_ALL & ~E_NOTICE);
 
-// check for compatible PHP version
+/* check for compatible PHP version */
 define('MODX_SETUP_PHP_VERSION', phpversion());
 $php_ver_comp = version_compare(MODX_SETUP_PHP_VERSION, '4.3.3');
 if ($php_ver_comp < 0) {
     die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Wrong PHP version! You\'re using PHP version '.MODX_SETUP_PHP_VERSION.', and MODx requires version 4.3.3 or higher.</p></body></html>');
 }
 
-// session loop-back tester
+/* session loop-back tester */
 if ((!isset($_GET['s']) || $_GET['s'] != 'set') && !isset($_SESSION['session_test'])) {
     $_SESSION['session_test']= 1;
     $installBaseUrl= (!isset ($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') ? 'http://' : 'https://';
@@ -80,4 +85,3 @@ $modInstall->loadLang();
 $modInstall->loadRequestHandler();
 $modInstall->request->loadParser();
 $modInstall->request->handle();
-
