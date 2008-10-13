@@ -102,15 +102,14 @@ class modPackageBuilder {
 	* @returns xPDOTransport The xPDOTransport package object.
     */
 	function createPackage($name, $version, $release= '') {
-        // setup the signature and filename
+        /* setup the signature and filename */
         $s['name']= $name;
         $s['version']= $version;
         if (!empty($release)) $s['release']= $release;
 		$this->signature = $s['name'].'-'.$s['version'].'-'.$s['release'];
 		$this->filename = $this->signature . '.transport.zip';
 
-
-        // remove the package if it's already been made
+        /* remove the package if it's already been made */
 		if (file_exists($this->directory . $this->filename)) {
 			unlink($this->directory . $this->filename);
 		}
@@ -120,7 +119,7 @@ class modPackageBuilder {
 			}
 		}
 
-        // create the transport package
+        /* create the transport package */
 		$this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
         $this->modx->log(MODX_LOG_LEVEL_INFO,'Created new transport package with signature: '.$this->signature);
 
@@ -146,7 +145,7 @@ class modPackageBuilder {
     */
 	function createVehicle($obj, $attr) {
 		if ($this->namespace) {
-			$attr['namespace'] = $this->namespace; // package the namespace into the metadata
+			$attr['namespace'] = $this->namespace; /* package the namespace into the metadata */
         }
         $vehicle = new modTransportVehicle($obj, $attr);
 
@@ -178,7 +177,7 @@ class modPackageBuilder {
 
         $this->modx->log(MODX_LOG_LEVEL_INFO,'Registered package namespace as: '.$this->namespace->get('name'));
 
-        // define some basic attributes
+        /* define some basic attributes */
         $attributes= array(
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
@@ -187,22 +186,23 @@ class modPackageBuilder {
             XPDO_TRANSPORT_RESOLVE_PHP => true,
         );
         if ($packageNamespace) {
-            // create the namespace vehicle
+            /* create the namespace vehicle */
             $v = $this->createVehicle($namespace,$attributes);
 
-            // put it into the package
+            /* put it into the package */
             if (!$this->putVehicle($v)) return false;
             $this->modx->log(MODX_LOG_LEVEL_INFO,'Packaged namespace "'.$this->namespace->get('name').'" into package.');
         }
 
+        /* Can automatically package in certain classes based upon their namespace values */
         if ($autoincludes == true || (is_array($autoincludes) && !empty($autoincludes))) {
             $this->modx->log(MODX_LOG_LEVEL_INFO,'Packaging in autoincludes: '.print_r($autoincludes,true));
             if (is_array($autoincludes)) {
-                // set automatically included packages
+                /* set automatically included packages */
                 $this->setAutoSelects($autoincludes);
             }
 
-            // grab all related classes that can be auto-packaged and package them in
+            /* grab all related classes that can be auto-packaged and package them in */
             foreach ($this->autoselects as $classname) {
                 $objs = $this->modx->getCollection($classname,array(
                     'namespace' => $namespace->get('name'),
@@ -264,7 +264,7 @@ class modPackageBuilder {
 
 
     /**
-     * Build in the lexicon into the package
+     * Build in the lexicon into the package.
      *
      * @access public
      * @return boolean True if successful
@@ -282,7 +282,7 @@ class modPackageBuilder {
 
         $this->modx->log(MODX_LOG_LEVEL_INFO,'Auto-building in lexicon from path: '.$path);
 
-        // package in languages
+        /* package in languages */
         $attributes= array(
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
@@ -293,7 +293,7 @@ class modPackageBuilder {
             $this->putVehicle($vehicle);
         }
 
-        // loop through cultures
+        /* loop through cultures */
         $dir = dir($path);
         while (false !== ($culture = $dir->read())) {
             if (in_array($culture,$invdirs)) continue;
@@ -309,7 +309,7 @@ class modPackageBuilder {
             }
             $languages[$culture]= $language;
 
-            // loop through topics
+            /* loop through topics */
             $fdir = $path.$culture.'/';
             $fd = dir($fdir);
             while (false !== ($entry = $fd->read())) {
@@ -332,6 +332,7 @@ class modPackageBuilder {
                 }
 
                 $f = $fdir.$entry;
+                /* loop through entries in topic */
                 $entries = array();
                 if (file_exists($f)) {
                     $_lang = array();

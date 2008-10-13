@@ -62,15 +62,16 @@ class modConnectorRequest extends modManagerRequest {
         if (!is_string($action)) return false;
         if ($action == '' && isset($_REQUEST['action'])) $action = $_REQUEST['action'];
 
-        // Load JSON error processing class for output to browser.
+        /* Load JSON error processing class for output to browser. */
         $this->loadErrorHandler('modJSONError');
 
+        /* validate manager session */
         if (!isset ($_SESSION['mgrValidated']) && $action != 'login' && $location != 'security') {
             $this->modx->error->failure($this->modx->lexicon('access_denied'));
             exit();
         }
 
-        // Cleanup action and store.
+        /* Cleanup action and store. */
         $this->action = strtolower($action);
         $this->_prepareResponse($location);
     }
@@ -82,24 +83,24 @@ class modConnectorRequest extends modManagerRequest {
      * @param string $location The subdirectory to load from.
      */
     function _prepareResponse($location = '') {
-        // variable assigning for easier access
+        /* variable pointer for easier access */
         $modx =& $this->modx;
 
-        // backwards compat
+        /* backwards compat */
         $_lang =& $this->modx->lexicon;
         $error =& $this->modx->error;
 
-        // redirect to proper controller/template
+        /* redirect to proper controller/template */
         if ($this->action === null || $this->action == '') {
             $this->modx->error->failure($modx->lexicon('action_err_ns'));
         } else {
             $file = $this->_directory.str_replace('\\','/',$location.'/'.$this->action).'.php';
 
-            // verify processor exists
+            /* verify processor exists */
             if (!file_exists($file)) {
                 $this->modx->error->failure($this->modx->lexicon('processor_err_nf').$file);
             }
-            // go load the correct processor
+            /* go load the correct processor */
             @include $file;
         }
         exit();

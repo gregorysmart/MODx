@@ -44,11 +44,11 @@ class modXMLPackageBuilder extends modPackageBuilder {
             return false;
         }
 
-        // create a new package
+        /* create a new package */
         $this->createPackage($this->build['name'], $this->build['version'], $this->build['release']);
         $this->registerNamespace($this->build['namespace'],$this->build['autoincludes']);
 
-        // set up some attributes that define install behavior
+        /* set up some attributes that define install behavior */
         $attributes= array(
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
@@ -73,7 +73,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
             $this->putVehicle($v);
         }
 
-        // zip up the package
+        /* zip up the package */
         $this->pack();
 
         return true;
@@ -92,7 +92,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
             $fileContent= @ file($fileName);
             $this->buildXML= implode('', $fileContent);
         }
-        // Create the parser and set handlers.
+        /* Create the parser and set handlers. */
         $this->xmlParser= xml_parser_create('UTF-8');
 
         xml_set_object($this->xmlParser, $this);
@@ -101,7 +101,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
         xml_set_element_handler($this->xmlParser, '_handleOpenElement', '_handleCloseElement');
         xml_set_character_data_handler($this->xmlParser, "_handleCData");
 
-        // Parse it.
+        /* Parse it. */
         if (!xml_parse($this->xmlParser, $this->buildXML)) {
             $ln= xml_get_current_line_number($this->xmlParser);
             $msg= xml_error_string(xml_get_error_code($this->xmlParser));
@@ -109,7 +109,7 @@ class modXMLPackageBuilder extends modPackageBuilder {
             return false;
         }
 
-        // Free up the parser and clear memory
+        /* Free up the parser and clear memory */
         xml_parser_free($this->xmlParser);
         unset ($this->xmlParser);
 
@@ -178,4 +178,3 @@ class modXMLPackageBuilder extends modPackageBuilder {
 
     function _handleCData(& $parser, & $data) {}
 }
-?>

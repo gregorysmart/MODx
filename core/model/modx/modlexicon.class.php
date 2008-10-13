@@ -73,10 +73,12 @@ class modLexicon {
      * @return string The text of the lexicon key, blank if not found.
      */
     function process($key,$params = array()) {
+        /* make sure key exists */
         if (!is_string($key) || !isset($this->_lexicon[$key])) {
             $this->modx->log(XPDO_LOG_LEVEL_WARN,'Language string not found: "'.$key.'"');
             return $key;
         }
+        /* if params are passed, allow for parsing of [[+key]] values to strings */
         return empty($params)
             ? $this->_lexicon[$key]
             : $this->_parse($this->_lexicon[$key],$params);
@@ -122,14 +124,14 @@ class modLexicon {
              'core' => $this->modx->config['core_path'] . 'cache/lexicon/',
         );
         if ($this->modx->isBackend()) {
-            // include_once the language file
+            /* include the language file */
             if(!isset($this->modx->config['manager_language'])) {
                 $this->modx->cultureKey= 'en';
-                // if not set, get the english language file.
+                /* if not set, get the english language file. */
             } else {
                 $this->modx->cultureKey = $this->modx->config['manager_language'];
             }
-            // load default core cache file of lexicon strings
+            /* load default core cache file of lexicon strings */
             $_lang = $this->loadCache('core','default',$this->modx->cultureKey);
         }
         $this->_lexicon = & $_lang;
@@ -148,13 +150,12 @@ class modLexicon {
     function loadCache($namespace = 'core',$topic = 'default',$language = '') {
         if ($language == '') $language = $this->modx->config['manager_language'];
 
-
         $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$topic.'.cache.php';
 
         $_lang = array();
         if (file_exists($fileName)) {
             @include $fileName;
-        } else { // if cache files don't exist, generate
+        } else { /* if cache files don't exist, generate */
             $cacheManager = $this->modx->getCacheManager();
             $cacheManager->generateLexiconCache($namespace,$topic,$language);
 
@@ -179,39 +180,40 @@ class modLexicon {
      * @access public
      */
     function load() {
-        $topics = func_get_args(); // allow for dynamic number of lexicons to load
+        $topics = func_get_args(); /* allow for dynamic number of lexicons to load */
 
         foreach ($topics as $topic) {
             if (!is_string($topic) || $topic == '') return false;
             $nspos = strpos($topic,':');
-            $topic = str_replace('.','/',$topic); // allow for lexicon subdirs
+            $topic = str_replace('.','/',$topic); /** @deprecated 2.0.0 Allow for lexicon subdirs */
 
-            // if no namespace, search all lexicons
+            /* if no namespace, search all lexicons */
             if ($nspos === false) {
                 foreach ($this->_paths as $namespace => $path) {
                     $_lang = $this->loadCache($namespace,$topic);
                     $this->_lexicon = array_merge($this->_lexicon,$_lang);
                 }
-            } else { // if namespace, search specified lexicon
+            } else { /* if namespace, search specified lexicon */
                 $params = explode(':',$topic);
                 if (count($params) <= 2) {
                     $language = $this->modx->config['manager_language'];
                     $namespace = $params[0];
-                    $top = $params[1];
+                    $topc = $params[1];
                 } else {
                     $language = $params[0];
                     $namespace = $params[1];
-                    $top = $params[2];
+                    $topc = $params[2];
                 }
 
-                $_lang = $this->loadCache($namespace,$top,$language);
+                $_lang = $this->loadCache($namespace,$topc,$language);
                 $this->_lexicon = array_merge($this->_lexicon,$_lang);
             }
         }
     }
 
     /**
-     * Sets a lexicon key to a value.
+     * Sets a lexicon key to a value. Not recommended, since doesn't query the
+     * database.
      *
      * @access public
      * @param string/array $keys Either an array of array pairs of key/values or

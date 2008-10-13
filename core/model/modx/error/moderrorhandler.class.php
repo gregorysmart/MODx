@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -103,8 +103,8 @@ class modErrorHandler {
                 break;
             case E_STRICT:
                 $handled= true;
-//                $errmsg= 'E_STRICT information: ' . $errstr;
-//                $this->modx->log(MODX_LOG_LEVEL_INFO, $errmsg, '', '', $errfile, $errline);
+                /* $errmsg= 'E_STRICT information: ' . $errstr; */
+                /* $this->modx->log(MODX_LOG_LEVEL_INFO, $errmsg, '','',$errfile,$errline); */
                 return $handled;
                 break;
             case E_RECOVERABLE_ERROR:
@@ -137,4 +137,3 @@ class modErrorHandler {
         return $string;
     }
 }
-?>

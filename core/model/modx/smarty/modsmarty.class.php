@@ -47,7 +47,7 @@ class modSmarty extends Smarty {
 		parent :: Smarty();
         $this->modx= & $modx;
 
-		// Set up configuration variables for Smarty.
+		/* set up configuration variables for Smarty. */
         $this->template_dir = $modx->config['manager_path'] . 'templates/';
         $this->compile_dir  = $modx->cachePath . 'smarty/';
         $this->config_dir   = $modx->config['core_path'] . 'model/smarty/configs';
@@ -100,4 +100,3 @@ class modSmarty extends Smarty {
 		return $ret;
 	}
 }
-?>
