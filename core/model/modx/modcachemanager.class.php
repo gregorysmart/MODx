@@ -266,7 +266,7 @@ class modCacheManager extends xPDOCacheManager {
                 if ($docGroups= $obj->getMany('modResourceGroupResource')) {
                     $content.= "\$docGroups= array ();\n";
                     foreach ($docGroups as $docGroup) {
-                        $content.= $this->generateObject($docGroup, 'docGroup', false, false, 'this');
+                        $content.= $this->generateObject($docGroup, 'docGroup', false, false, 'this->modx');
                         $content.= "\$docGroups[]= \$docGroup;\n";
                     }
                     $content.= "\$resource->addMany(\$docGroups);\n";
