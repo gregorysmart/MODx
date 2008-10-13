@@ -144,7 +144,7 @@ class modUser extends modPrincipal {
             if ($this->hasSessionContext($sessionContext)) {
                 $isAuthenticated= true;
             }
-            elseif (isset ($_SESSION[$sessionContext . "Validated"])) { // legacy support
+            elseif (isset ($_SESSION[$sessionContext . "Validated"])) {
                 $isAuthenticated= ($_SESSION[$sessionContext . "Validated"] == 1);
             }
         }
@@ -177,25 +177,31 @@ class modUser extends modPrincipal {
                 $changed= $this->save();
                 $contextKey= $this->xpdo->context->get('key');
                 switch ($contextKey) {
-                	case 'web':
+                    case 'web':
                         $this->xpdo->invokeEvent("OnWebChangePassword", array (
                             "userid" => $this->get('id'),
                             "username" => $this->get('username'),
                             "userpassword" => $newPassword)
                         );
-                		break;
-                	case 'mgr':
+                        break;
+                    case 'mgr':
                         $this->xpdo->invokeEvent("OnManagerChangePassword", array (
                             "userid" => $this->get('id'),
                             "username" => $this->get('username'),
                             "userpassword" => $newPassword)
                         );
-                		break;
+                        break;
+                    default:
+                        $this->xpdo->invokeEvent("OnUserChangePassword", array (
+                            "userid" => $this->get('id'),
+                            "username" => $this->get('username'),
+                            "userpassword" => $newPassword)
+                        );
+                        break;
                 }
-                return $changed;
             }
         }
-        return false;
+        return $changed;
     }
 
     /**
@@ -246,7 +252,11 @@ class modUser extends modPrincipal {
                     }
 
                     $cookieExpiration= 0;
-                    $cookieLifetime= ini_get('session.cookie_lifetime');
+                    if (!isset($this->xpdo->config['session_cookie_lifetime'])) {
+                        $cookieLifetime= @ini_get('session.cookie_lifetime');
+                    } else {
+                        $cookieLifetime= intval($this->xpdo->config['session_cookie_lifetime']);
+                    }
                     if (isset ($_SESSION['modx.' . $context . '.session.cookie.lifetime']) && is_numeric($_SESSION['modx.' . $context . '.session.cookie.lifetime'])) {
                         $cookieLifetime= intval($_SESSION['modx.' . $context . '.session.cookie.lifetime']);
                     }
@@ -255,7 +265,7 @@ class modUser extends modPrincipal {
                     }
                     setcookie(session_name(), session_id(), $cookieExpiration, $cookiePath);
                 }
-                //HACK: [PHP < 5.1.0] Removing the old session object from the database so it can't be hijacked.
+                /* HACK: [PHP < 5.1.0] Removing the old session object from the database so it can't be hijacked. */
                 if ($oldSession= $this->xpdo->getObject('modSession', array ('id' => $oldSessionId), false)) {
                     $oldSession->remove();
                 }
@@ -277,10 +287,10 @@ class modUser extends modPrincipal {
                 $_SESSION['webFailedlogins']= $ua->get('failedlogincount');
                 $_SESSION['webLastlogin']= $ua->get('lastlogin');
                 $_SESSION['webnrlogins']= $ua->get('logincount');
-                $_SESSION['webUserGroupNames']= ''; // reset user group names
+                $_SESSION['webUserGroupNames']= '';
             }
             elseif ($context == 'mgr') {
-                $_SESSION['usertype']= 'manager'; // user is a backend user -- deprecated
+                $_SESSION['usertype']= 'manager';
                 $_SESSION['mgrShortname']= $this->get('username');
                 $_SESSION['mgrFullname']= $ua->get('fullname');
                 $_SESSION['mgrEmail']= $ua->get('email');
@@ -288,19 +298,8 @@ class modUser extends modPrincipal {
                 $_SESSION['mgrInternalKey']= $this->get('id');
                 $_SESSION['mgrFailedlogins']= $ua->get('failedlogincount');
                 $_SESSION['mgrLastlogin']= $ua->get('lastlogin');
-                $_SESSION['mgrLogincount']= $ua->get('logincount'); // login count
+                $_SESSION['mgrLogincount']= $ua->get('logincount');
             }
-//            $documentGroups= array ();
-//            if ($memberships= $this->getMany('modUserGroupMember')) {
-//                foreach ($memberships as $membership) {
-//                    if ($documentGroupAccess= $membership->getMany('modUserGroupResourceGroup')) {
-//                        foreach ($documentGroupAccess as $dga) {
-//                            $documentGroups[]= $dga->documentgroup;
-//                        }
-//                    }
-//                }
-//            }
-//            $_SESSION[$context . 'Docgroups']= $documentGroups;
             if ($ua && !isset ($this->sessionContexts[$context]) || $this->sessionContexts[$context] != $this->get('id')) {
                 $ua->set('failedlogincount', 0);
                 $ua->set('logincount', $ua->logincount + 1);
@@ -368,7 +367,7 @@ class modUser extends modPrincipal {
                     unset ($_SESSION['mgrInternalKey']);
                     unset ($_SESSION['mgrFailedlogins']);
                     unset ($_SESSION['mgrLastlogin']);
-                    unset ($_SESSION['mgrLogincount']); // login count
+                    unset ($_SESSION['mgrLogincount']);
                     unset ($_SESSION['mgrRole']);
                     unset ($_SESSION['mgrDocgroups']);
                     break;
@@ -413,17 +412,78 @@ class modUser extends modPrincipal {
         return $this->xpdo->getCount('modUserMessage', $criteria);
     }
 
-	/**
-	 * Gets settings in array format
-	 */
-	function getSettings() {
-		$settings = array();
-		$uss = $this->xpdo->getCollection('modUserSetting',array('user' => $this->id));
-		foreach ($uss as $us) {
-			$settings[$us->get('key')] = $us->value;
-		}
-		$this->settings = $settings;
-		return $settings;
-	}
+    /**
+     * Gets settings in array format
+     */
+    function getSettings() {
+        $settings = array();
+        $uss = $this->xpdo->getCollection('modUserSetting',array('user' => $this->id));
+        foreach ($uss as $us) {
+            $settings[$us->get('key')] = $us->value;
+        }
+        $this->settings = $settings;
+        return $settings;
+    }
+
+    function getResourceGroups() {
+        $resourceGroups= array ();
+        if (isset($_SESSION['modx.user.resourceGroups'])) {
+            $resourceGroups= $_SESSION['modx.user.resourceGroups'];
+        } else {
+            if ($memberships= $this->getMany('modUserGroupMember')) {
+                foreach ($memberships as $membership) {
+                    if ($documentGroupAccess= $membership->getMany('modUserGroupResourceGroup')) {
+                        foreach ($documentGroupAccess as $dga) {
+                            $resourceGroups[]= $dga->documentgroup;
+                        }
+                    }
+                }
+            }
+            $_SESSION['modx.user.resourceGroups']= $resourceGroups;
+        }
+        return $resourceGroups;
+    }
+
+    function getUserGroups() {
+        $groups= array();
+        if (isset($_SESSION['modx.user.userGroups'])) {
+            $groups= $_SESSION['modx.user.userGroups'];
+        } else {
+            $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"modUserGroupMember":{}}', array('`modUserGroupMember`.`member`' => $this->get('id')));
+            if ($memberGroups) {
+                foreach ($memberGroups as $group) $groups[]= $group->get('id');
+            }
+            $_SESSION['modx.user.userGroups']= $groups;
+        }
+        return $groups;
+    }
+    
+    function getUserGroupNames() {
+        $groupNames= array();
+        if (isset($_SESSION['modx.user.userGroupNames'])) {
+            $groupNames= $_SESSION['modx.user.userGroupNames'];
+        } else {
+            $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"modUserGroupMember":{}}', array('`modUserGroupMember`.`member`' => $this->get('id')));
+            if ($memberGroups) {
+                foreach ($memberGroups as $group) $groupNames[]= $group->get('name');
+            }
+            $_SESSION['modx.user.userGroupNames']= $groupNames;
+        }
+        return $groupNames;
+    }
+
+    function isMember($groups) {
+        $isMember= false;
+        $groupNames= $this->getUserGroupNames();
+        if ($groupNames) {
+            if (is_array($groups)) {
+                $matches= array_diff($groups, $groupNames);
+                $isMember= empty($matches);
+            } else {
+                $isMember= (array_search($groups, $groupNames) !== false);
+            }
+        }
+        return $isMember;
+    }
 }
 ?>

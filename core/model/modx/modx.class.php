@@ -19,7 +19,6 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
- * Originally based on Etomite by Alex Butter.
  */
 
 /**
@@ -209,14 +208,14 @@ class modX extends xPDO {
     /**
      * @var DBAPI An instance of the DBAPI helper class.
      * @deprecated Aug 28, 2006 For legacy component support only; use xPDO
-     * methods inherited by modX class instead.
+     * methods inherited by modX class instead. To be removed in 2.1.
      */
     var $db= null;
 
     var $pluginCache= array ();
 
     /**#@+
-     * @deprecated 2006-09-15 To be removed
+     * @deprecated 2006-09-15 To be removed in 2.1
      */
     var $Event= null;
     var $documentMap= null;
@@ -235,16 +234,13 @@ class modX extends xPDO {
      * Harden the environment against common security flaws.
      */
     function protect() {
-        // NULL is evil
         if (isset ($_SERVER['QUERY_STRING']) && strpos(urldecode($_SERVER['QUERY_STRING']), chr(0)) !== false) die();
-        // unregister globals from request
         if (@ ini_get('register_globals') && isset ($_REQUEST)) {
             while (list($key, $value)= each($_REQUEST)) {
-                $GLOBALS[$key] = null; // This is NOT paranoid because
-                unset ($GLOBALS[$key]); // unset may not work.
+                $GLOBALS[$key] = null;
+                unset ($GLOBALS[$key]);
             }
         }
-        // clean $_SERVER variables
         $targets= array ('PHP_SELF', 'HTTP_USER_AGENT', 'HTTP_REFERER', 'QUERY_STRING');
         foreach ($targets as $target) {
             $_SERVER[$target] = isset ($_SERVER[$target]) ? htmlspecialchars($_SERVER[$target], ENT_QUOTES) : null;
@@ -313,8 +309,6 @@ class modX extends xPDO {
             );
             $this->setPackage('modx', MODX_CORE_PATH . 'model/');
             $this->setLogTarget('HTML');
-            $this->documentIdentifier= & $this->resourceIdentifier;
-            $this->documentMethod= & $this->resourceMethod;
         } else {
             include (MODX_CORE_PATH . 'error/unavailable.include.php');
             die('Could not find the configuration file!');
@@ -325,8 +319,9 @@ class modX extends xPDO {
      * Initializes the modX engine.
      *
      * This includes preparing the session, pre-loading some common
-     * classes and objects, the user currently logged in, the current site
-     * and context settings, etc.
+     * classes and objects, the current site and context settings, extension
+     * packages used to override session handling, error handling, or other
+     * initialization classes
      *
      * @param string Indicates the context to initialize.
      * @return void
@@ -340,7 +335,6 @@ class modX extends xPDO {
                 $this->startTime= $this->getMicroTime();
             }
 
-            //preload a few important classes which other classes inherit
             $this->loadClass('modAccess');
             $this->loadClass('modAccessibleObject');
             $this->loadClass('modAccessibleSimpleObject');
@@ -350,11 +344,9 @@ class modX extends xPDO {
             $this->loadClass('modPrincipal');
             $this->loadClass('modUser');
 
-            // Load the system and context configurations
             $this->getConfig();
             $this->_initContext($contextKey);
 
-            // Load any custom packages required for session, user, and error handling
             if (isset($this->config['extension_packages']) && ($extPackages= explode(',', $this->config['extension_packages']))) {
                 foreach ($extPackages as $extPackage) {
                     $exploded= explode(':', $extPackage);
@@ -364,7 +356,6 @@ class modX extends xPDO {
                 }
             }
 
-            // Start the session, error handler, and determine the culture
             $this->_initSession();
             $this->_initErrorHandler();
             $this->_initCulture();
@@ -375,7 +366,6 @@ class modX extends xPDO {
                 $this->db= new DBAPI();
             }
 
-            // set configuration variable placeholders
             if (is_array ($this->config)) {
                 $this->setPlaceholders($this->config, '+');
             }
@@ -939,7 +929,6 @@ class modX extends xPDO {
      */
     function getConfig() {
         if (!$this->_initialized || !is_array($this->config) || empty ($this->config)) {
-            // ALWAYS append these inside config array, unless already specified in config
             if (!isset ($this->config['base_url']))
                 $this->config['base_url']= MODX_BASE_URL;
             if (!isset ($this->config['base_path']))
@@ -984,7 +973,7 @@ class modX extends xPDO {
 
     /**
      * Alias for getConfig().
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getSettings() {
         $this->getConfig();
@@ -999,81 +988,10 @@ class modX extends xPDO {
      */
     function _checkSiteStatus() {
         $status = false;
-        if ($this->config['site_status'] == '1' || $this->checkSession('mgr')) {
+        if ($this->config['site_status'] == '1' || $this->hasPermission('view_offline')) {
             $status = true;
         }
         return $status;
-    }
-
-    /**
-     * Checks the current status of timed publishing events.
-     * @todo refactor checkPublishStatus...offload to cachemanager?
-     */
-    function checkPublishStatus() {
-        $cacheRefreshTime= 0;
-        include ($this->cachePath . "sitePublishing.idx.php");
-        $timeNow= time() + $this->config['server_offset_time'];
-        if ($cacheRefreshTime != 0 && $cacheRefreshTime <= strtotime($timeNow)) {
-            //FIXME: want to find a better way to handle this publishing check without mass updates to the database!
-            // update resources that need publishing
-            $tblResource= $this->getTableName('modResource');
-            if (!$result= $this->exec("UPDATE {$tblResource} SET published=1,publishedon={$timeNow} WHERE pub_date < {$timeNow} AND pub_date > 0")) {
-                $this->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->errorInfo(), true));
-            }
-            // update resources that need un-publishing
-            if (!$result= $this->exec("UPDATE $tblResource SET published=0,publishedon={$timeNow} WHERE unpub_date < {$timeNow} AND unpub_date IS NOT NULL AND unpub_date > 0")) {
-                $this->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->errorInfo(), true));
-            }
-            // clear the cache
-            if ($handle= opendir($this->cachePath)) {
-                $filesincache= 0;
-                $deletedfilesincache= 0;
-                while (false !== ($file= readdir($handle))) {
-                    if ($file != "." && $file != "..") {
-                        $filesincache += 1;
-                        if (preg_match("/\.pageCache/", $file)) {
-                            $deletedfilesincache += 1;
-                            while (!unlink($this->cachePath . "/" . $file));
-                        }
-                    }
-                }
-                closedir($handle);
-            }
-            // update publish time file
-            $timesArr= array ();
-            $sql= "SELECT MIN(pub_date) AS minpub FROM $tblResource WHERE pub_date>$timeNow AND pub_date IS NOT NULL";
-            if (!$result= $this->query($sql)) {
-                $this->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
-            } else {
-                $result= $result->fetchAll(PDO_FETCH_ASSOC);
-                $minpub= $result[0]['minpub'];
-                if ($minpub != NULL) {
-                    $timesArr[]= $minpub;
-                }
-            }
-            $sql= "SELECT MIN(unpub_date) AS minunpub FROM $tblResource WHERE unpub_date>$timeNow AND unpub_date IS NOT NULL";
-            if (!$result= $this->query($sql)) {
-                $this->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
-            } else {
-                $result= $result->fetchAll(PDO_FETCH_ASSOC);
-                $minunpub= $result[0]['minunpub'];
-                if ($minunpub != NULL) {
-                    $timesArr[]= $minunpub;
-                }
-            }
-            if (count($timesArr) > 0) {
-                $nextevent= min($timesArr);
-            } else {
-                $nextevent= 0;
-            }
-            $fp= @ fopen($this->cachePath . "sitePublishing.idx.php", "wb");
-            if ($fp) {
-                @ flock($fp, LOCK_EX);
-                @ fwrite($fp, "<?php \$cacheRefreshTime=$nextevent; ?>");
-                @ flock($fp, LOCK_UN);
-                @ fclose($fp);
-            }
-        }
     }
 
     /**
@@ -1384,7 +1302,7 @@ class modX extends xPDO {
 
     /**
      * Get persistent data from a specific document.
-     * @deprecated 2007-09-17 To be removed in 1.0.
+     * @deprecated 2007-09-17 To be removed in 2.1.
      */
     function getDocument($id=0,$fields="*",$published=1, $deleted=0) {
         if($id==0) {
@@ -1402,6 +1320,7 @@ class modX extends xPDO {
 
     /**
      * Get persistent data from a collection of specified documents.
+     * @deprecated 2008-10-10 To be removed in 2.1.
      */
     function getDocuments($ids=array(), $published=1, $deleted=0, $fields="*", $where='', $sort="menuindex", $dir="ASC", $limit="") {
         $collection = array();
@@ -1501,7 +1420,7 @@ class modX extends xPDO {
      * @param boolean $resolveIds Set to true to return the resource group
      * names.
      * @return mixed An array of document group ids, names, false or empty string.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getUserDocGroups($resolveIds= false) {
         $dgn= false;
@@ -1521,7 +1440,6 @@ class modX extends xPDO {
             return $dgn;
         }
         elseif (is_array($dg)) {
-            // resolve ids to names
             $dgn= array ();
             $tbl= $this->getTableName('modResourceGroup');
             $criteria= new xPDOCriteria($this, "SELECT * FROM {$tbl} WHERE `id` IN (" . implode(",", $dg) . ")");
@@ -1529,7 +1447,6 @@ class modX extends xPDO {
             foreach ($collResourceGroups as $rg) {
                 $dgn[count($dgn)]= $rg->get('name');
             }
-            // cache docgroup names to session
             if ($this->isFrontend()) {
                 $_SESSION['webDocgrpNames']= $dgn;
             }
@@ -1543,7 +1460,8 @@ class modX extends xPDO {
     /**
      * Returns the full table name based on db settings.
      *
-     * @deprecated Aug 28, 2006 Use {@link getTableName($className)} instead.
+     * @deprecated Aug 28, 2006 Use {@link getTableName($className)} instead. To
+     * be removed in 2.1.
      */
     function getFullTableName($tbl){
         return '`' . $this->db->config['dbase']. '`.`' .$this->db->config['table_prefix'].$tbl . '`';
@@ -1551,7 +1469,7 @@ class modX extends xPDO {
 
     /**
      * Get children of the specified resource without regard to status.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getAllChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
         $collection = array();
@@ -1570,7 +1488,7 @@ class modX extends xPDO {
 
     /**
      * Get all published children documents of the specified document.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getActiveChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
         $collection = array();
@@ -1594,7 +1512,7 @@ class modX extends xPDO {
 
     /**
      * Get all children documents of the specified document.
-     * @deprecated
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getDocumentChildren($parentid= 0, $published= 1, $deleted= 0, $fields= "*", $where= '', $sort= "menuindex", $dir= "ASC", $limit= "") {
         $collection = array();
@@ -1619,12 +1537,9 @@ class modX extends xPDO {
     }
 
     /**
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getDocumentChildrenTVars($parentid=0, $tvidnames=array(), $published=1, $docsort="menuindex", $docsortdir="ASC", $tvfields="*", $tvsort="rank", $tvsortdir="ASC") {
-//        $fields = ($tvfields=="") ? "tv.*" : 'tv.'.implode(',tv.',preg_replace("/^\s/i","",explode(',',$tvfields)));
-//        $tvsort = ($tvsort=="") ? "":'tv.'.implode(',tv.',preg_replace("/^\s/i","",explode(',',$tvsort)));
-
         $collection = array();
         $all= ($tvidnames=="*");
         $byName= (is_numeric($tvidnames[0]) == false);
@@ -1665,14 +1580,14 @@ class modX extends xPDO {
      * @param integer $docid
      * @param integer $published 1 for published, 0 for unpublished.
      * @return mixed An array of the template variable fields or false.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getTemplateVar($idname="", $fields = "*", $resourceId="", $published=1) {
         if($idname=="") {
             return false;
         }
         else {
-            $result = $this->getTemplateVars(array($idname),$fields,$resourceId,$published,"",""); //remove sorting for speed
+            $result = $this->getTemplateVars(array($idname),$fields,$resourceId,$published,"","");
             return reset($result);
         }
     }
@@ -1682,7 +1597,7 @@ class modX extends xPDO {
      *
      * @param string|array $idnames Can be an id or name that belongs to
      * the template assigned to the current resource.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getTemplateVars($idnames=array(), $fields = "*", $resourceId="", $published=1, $sort="tv.rank,tvtpl.rank", $dir="ASC,ASC") {
         if(($idnames!='*' && !is_array($idnames)) || count($idnames)==0) {
@@ -1763,7 +1678,7 @@ class modX extends xPDO {
      * @param integer $resourceId
      * @param integer $published
      * @return mixed
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getTemplateVarOutput($idnames=array(), $resourceId="", $published=1) {
         if(count($idnames)==0) {
@@ -1771,7 +1686,6 @@ class modX extends xPDO {
         }
         else {
             $output = array();
-            // get document record
             if ($resourceId=="") {
                 $resourceId = $this->resourceIdentifier;
             }
@@ -1819,7 +1733,7 @@ class modX extends xPDO {
      * @param integer $active
      * @param string $fields
      * @return mixed
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getParent($pid=-1, $active=1, $fields='id, pagetitle, description, alias, parent, class_key, context_key') {
         if($pid==-1) {
@@ -1828,9 +1742,7 @@ class modX extends xPDO {
         }else if($pid==0) {
             return false;
         } else {
-            // first get the child document
             $child = $this->getPageInfo($pid,$active,"id,parent");
-            // now return the child's parent
             $pid = (isset ($child['parent']) && intval($child['parent']))? intval($child['parent']):0;
             return ($pid==0)? false:$this->getPageInfo($pid,$active,$fields);
         }
@@ -1843,7 +1755,7 @@ class modX extends xPDO {
      * @param integer $active
      * @param string $fields
      * @return mixed
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getPageInfo($pageid=-1, $active=1, $fields='id, pagetitle, description, alias, class_key, context_key') {
         $data = false;
@@ -1862,11 +1774,11 @@ class modX extends xPDO {
     }
 
     /**
-     * Returns an array of manager user data.
+     * Returns an array of user data.
      *
      * @param integer $uid
      * @return mixed
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getUserInfo($uid) {
         $userInfo= false;
@@ -1884,7 +1796,7 @@ class modX extends xPDO {
      *
      * @param integer $uid
      * @return mixed
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getWebUserInfo($uid) {
         $userInfo= $this->getUserInfo($uid);
@@ -1893,7 +1805,7 @@ class modX extends xPDO {
 
     /**
      * Alias of getUserDocGroups().
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function getDocGroups() {
         $docGroups= $this->getUserDocGroups();
@@ -1902,7 +1814,7 @@ class modX extends xPDO {
 
     /**
      * Alias of changePassword().
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function changeWebUserPassword($oldPwd, $newPwd) {
         $rt= $this->changePassword($oldPwd, $newPwd);
@@ -1915,36 +1827,12 @@ class modX extends xPDO {
      * @param string $o The old password.
      * @param string $n The new password.
      * @return mixed true if successful, otherwise return error message.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function changePassword($o, $n) {
         $rt= false;
-        if ($user= $this->getUser()) {
-            if (!empty ($newPwd) && !empty ($oldPwd) && strcmp($user->get('password'), md5($oldPwd)) ) {
-                if ($rt= $user->set('password', $newPwd)) {
-                    switch ($this->context->get('key')) {
-                        case 'web':
-                            $this->invokeEvent("OnWebChangePassword", array (
-                                "userid" => $user->get('id'),
-                                "username" => $user->get('username'),
-                                "userpassword" => $newPwd
-                            ));
-                            break;
-                        case 'mgr':
-                            $this->invokeEvent('OnManagerChangePassword', array (
-                                "userid" => $user->get('id'),
-                                "username" => $user->get('username'),
-                                "userpassword" => $newPwd
-                            ));
-                            break;
-                    }
-                    $this->invokeEvent('OnUserChangePassword', array (
-                        "userid" => $user->get('id'),
-                        "username" => $user->get('username'),
-                        "userpassword" => $newPwd
-                    ));
-                }
-            }
+        if ($this->getUser()) {
+            $rt= $this->user->changePassword($n, $o);
         }
         return $rt;
     }
@@ -1955,7 +1843,7 @@ class modX extends xPDO {
      * @access private
      * @param string|integer $qOrig
      * @return string|integer
-     * @deprecated 2007-09-17 TO be removed in 1.0
+     * @deprecated 2007-09-17 TO be removed in 2.1
      */
     function cleanDocumentIdentifier($qOrig) {
         if (!$this->getRequest()) {
@@ -1970,7 +1858,7 @@ class modX extends xPDO {
      *
      * @param string $method 'id' or 'alias'.
      * @return string|integer The requested document alias or id.
-     * @deprecated 2007-09-17 TO be removed in 1.0
+     * @deprecated 2007-09-17 TO be removed in 2.1
      */
     function getDocumentIdentifier($method) {
         if (!$this->getRequest()) {
@@ -1983,7 +1871,7 @@ class modX extends xPDO {
      * Gets the method being used to request a document.
      *
      * @return string 'id', 'alias', or 'none'.
-     * @deprecated 2007-09-17 TO be removed in 1.0
+     * @deprecated 2007-09-17 TO be removed in 2.1
      */
     function getDocumentMethod() {
         if (!$this->getRequest()) {
@@ -1996,18 +1884,14 @@ class modX extends xPDO {
      * Checks to see if the preview parameter is set.
      *
      * @return boolean
-     * @deprecated 2007-09-17 TO be removed in 1.0
+     * @deprecated 2007-09-17 TO be removed in 2.1
      */
     function checkPreview() {
-        if ($this->checkSession('mgr') === true) {
-            if (isset ($_REQUEST['z']) && $_REQUEST['z'] == 'manprev') {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+        $preview= false;
+        if ($this->getResponse()) {
+            $preview= $this->response->checkPreview();
         }
+        return $preview;
     }
 
     /**
@@ -2088,24 +1972,22 @@ class modX extends xPDO {
      * Checks if a user is authenticated and returns array of data if so.
      *
      * @return mixed An array of authenticated user data or false.
-     * @deprecated 2007-09-17 To be removed in 1.0
+     * @deprecated 2007-09-17 To be removed in 2.1
      */
     function userLoggedIn() {
         $userdetails = array();
         if($this->isFrontend() && isset($_SESSION['webValidated'])) {
-            // web user
             $userdetails['loggedIn']=true;
             $userdetails['id']=$_SESSION['webInternalKey'];
             $userdetails['username']=$_SESSION['webShortname'];
-            $userdetails['usertype']='web'; // added by Raymond
+            $userdetails['usertype']='web';
             return $userdetails;
         }
         else if($this->isBackend() && isset($_SESSION['mgrValidated'])) {
-            // manager user
             $userdetails['loggedIn']=true;
             $userdetails['id']=$_SESSION['mgrInternalKey'];
             $userdetails['username']=$_SESSION['mgrShortname'];
-            $userdetails['usertype']='manager'; // added by Raymond
+            $userdetails['usertype']='manager';
             return $userdetails;
         }
         else {
@@ -2161,17 +2043,8 @@ class modX extends xPDO {
     }
 
     /**
-     * Makes a friendly URL from a specified prefix, alias, and suffix.
-     * @deprecated 2007-09-17 To be removed in 1.0
-     */
-    function makeFriendlyURL($pre,$suff,$alias) {
-        $dir = dirname($alias);
-        return ($dir!='.' ? "$dir/":"").$pre.basename($alias).$suff;
-    }
-
-    /**
      * Processes document content tags.
-     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     * @deprecated 2007-09-17 To be removed in 2.1 - use modParser::processElementTags().
      */
     function mergeDocumentContent($content) {
         $this->getParser();
@@ -2181,7 +2054,7 @@ class modX extends xPDO {
 
     /**
      * Processes document setting tags (and placeholders).
-     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     * @deprecated 2007-09-17 To be removed in 2.1 - use modParser::processElementTags().
      */
     function mergeSettingsContent($content) {
         $this->getParser();
@@ -2191,7 +2064,7 @@ class modX extends xPDO {
 
     /**
      * Processes chunk content tags.
-     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     * @deprecated 2007-09-17 To be removed in 2.1 - use modParser::processElementTags().
      */
     function mergeChunkContent($content) {
         $this->getParser();
@@ -2201,7 +2074,7 @@ class modX extends xPDO {
 
     /**
      * Processes placeholder content tags.
-     * @deprecated 2007-09-17 To be removed in 1.0 - use modParser :: processElementTags().
+     * @deprecated 2007-09-17 To be removed in 2.1 - use modParser::processElementTags().
      */
     function mergePlaceholderContent($content) {
         $this->getParser();
@@ -2210,19 +2083,23 @@ class modX extends xPDO {
     }
 
     /**
-     * Remove a specific event from the eventMap.
+     * Remove an event from the eventMap so it will not be invoked.
      *
      * @param string $event
-     * @return boolean|void false if the event parameter is not specified.
+     * @return boolean false if the event parameter is not specified or is not
+     * present in the eventMap.
      */
-    function removeEventListener($evtName) {
-        if (!$evtName)
-            return false;
-        unset ($this->eventMap[$evtName]);
+    function removeEventListener($event) {
+        $removed = false;
+        if (!empty($event) && isset($this->eventMap[$event])) {
+            unset ($this->eventMap[$event]);
+            $removed = true;
+        }
+        return $removed;
     }
 
     /**
-     * Remove all registered plugins for the current request.
+     * Remove all registered events for the current request.
      */
     function removeAllEventListener() {
         unset ($this->eventMap);
@@ -2262,49 +2139,29 @@ class modX extends xPDO {
     /**
      * Add a plugin to the eventMap within the current execution cycle.
      *
-     * @param string $evtName Name of the event.
+     * @param string $event Name of the event.
      * @param integer $pluginId Plugin identifier to add to the event.
-     * @return integer 1 if the event is successfully added, otherwise 0.
+     * @return boolean true if the event is successfully added, otherwise false.
      */
-    function addEventListener($evtName, $pluginId) {
-        if (!$evtName || !$pluginId)
-            return false;
-        $el= $this->eventMap[$evtName];
-        if (empty ($el))
-            $el= $this->eventMap[$evtName]= array ();
-        return array_push($el, $pluginId); // return index
+    function addEventListener($event, $pluginId) {
+        $added = false;
+        if ($event && $pluginId) {
+            if (!isset($this->eventMap[$event]) || empty ($this->eventMap[$event])) {
+                $this->eventMap[$event]= array();
+            }
+            $this->eventMap[$event][]= $pluginId;
+            $added= true;
+        }
+        return $added; 
     }
 
     /**
      * Alias of getChunk.
      *
-     * @deprecated 9/15/2007 Use getChunk instead.
+     * @deprecated 9/15/2007 Use getChunk instead; to be removed in 2.1.
      */
     function putChunk($chunkName) {
         return $this->getChunk($chunkName);
-    }
-
-    /**
-     * Displays a javascript alert in the browser.
-     *
-     * @deprecated 9/15/2007
-     * @param string $msg The alert message.
-     * @param string $url An optional URL to redirect to when the alert is cleared.
-     */
-    function webAlert($msg, $url= "") {
-        $msg= addslashes(mysql_escape_string($msg));
-        if (substr(strtolower($url), 0, 11) == "javascript:") {
-            $act= "__WebAlert();";
-            $fnc= "function __WebAlert(){" . substr($url, 11) . "};";
-        } else {
-            $act= ($url ? "window.location.href='" . addslashes($url) . "';" : "");
-        }
-        $html= "<script>$fnc window.setTimeout(\"alert('$msg');$act\",100);</script>";
-        if ($this->isFrontend($html))
-            $this->regClientScript($html);
-        else {
-            echo $html;
-        }
     }
 
     /**
@@ -2377,7 +2234,7 @@ class modX extends xPDO {
     /**
      * Loads a specified Context.
      *
-     * Merges any context settings with the modX :: config, and performs any
+     * Merges any context settings with the modX::$config, and performs any
      * other context specific initialization tasks.
      *
      * @access protected
@@ -2412,6 +2269,18 @@ class modX extends xPDO {
         return $initialized;
     }
 
+    /**
+     * Retrieve a context by name without initializing it.
+     * 
+     * Within a request, contexts retrieved using this function will cache the
+     * context data into the modX::$contexts array to avoid loading the same
+     * context multiple times.
+     * 
+     * @access public
+     * @param string $contextKey The context to retrieve.
+     * @return &$modContext A modContext object retrieved from cache or
+     * database.
+     */
     function getContext($contextKey) {
         if (!isset($this->contexts[$contextKey])) {
             $this->contexts[$contextKey]= $this->getObject('modContext', $contextKey);
@@ -2480,7 +2349,6 @@ class modX extends xPDO {
             @ini_set('session.cookie_path', $cookiePath);
             $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
             session_name($site_sessionname);
-
             session_start();
             $this->_sessionState = MODX_SESSION_STATE_INITIALIZED;
             $this->getUser($contextKey);
@@ -2580,6 +2448,18 @@ class modX extends xPDO {
         }
     }
 
+    /**
+     * Returns the state of the SESSION being used by modX.
+     * 
+     * The possible values for session state are:
+     * 
+     * MODX_SESSION_STATE_UNINITIALIZED
+     * MODX_SESSION_STATE_UNAVAILABLE
+     * MODX_SESSION_STATE_EXTERNAL
+     * MODX_SESSION_STATE_INITIALIZED
+     * 
+     * @return integer Returns an integer representing the session state.
+     */
     function getSessionState() {
         if ($this->_sessionState == MODX_SESSION_STATE_UNINITIALIZED) {
             if (XPDO_CLI_MODE) {
@@ -2597,10 +2477,7 @@ class modX extends xPDO {
      *
      * @access protected
      */
-    function _beforeRequest() {
-        $this->documentIdentifier= & $this->resourceIdentifier;
-        $this->documentMethod= & $this->resourceMethod;
-    }
+    function _beforeRequest() {}
 
     /**
      * Executed before parser processing of an element.
@@ -2608,6 +2485,8 @@ class modX extends xPDO {
      * @access protected
      */
     function _beforeProcessing() {
+        $this->documentIdentifier= & $this->resourceIdentifier;
+        $this->documentMethod= & $this->resourceMethod;
         $this->documentContent= & $this->resource->_content;
         $this->documentGenerated= & $this->resourceGenerated;
         $this->dbConfig= & $this->db->config;
@@ -2628,10 +2507,8 @@ class modX extends xPDO {
      * @access protected
      */
     function _postProcess() {
-        // if the current resource was a generated modResource, cache it!
         if (isset ($this->config['cache_resource']) && $this->config['cache_resource']) {
             if ($this->cacheManager && $this->documentGenerated && is_a($this->resource, 'modResource') && $this->resource->get('cacheable')) {
-                // invoke OnBeforeSaveWebPageCache event
                 $this->invokeEvent('OnBeforeSaveWebPageCache');
                 if (!$this->cacheManager->generateResource($this->resource)) {
                     $this->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
@@ -2652,10 +2529,15 @@ class modX extends xPDO {
         $args = array_pop($args);
         if (is_array($args) && count($args) > 0) extract($args,EXTR_PREFIX_ALL,'modx');
 
-        $modx= & $this; // allows ability to access $modx
+        $modx= & $this;
         require_once (MODX_PROCESSORS_PATH . $file);
     }
 
+    /**
+     * Provides modX the ability to use modRegister instances as log targets.
+     * 
+     * {@inheritdoc}
+     */
     function _log($level, $msg, $target= '', $def= '', $file= '', $line= '') {
         if (empty($target)) {
             $target = $this->logTarget;
@@ -2679,6 +2561,11 @@ class modX extends xPDO {
         }
     }
 
+    /**
+     * Provides custom logging functionality for modRegister targets.
+     * 
+     * @access protected
+     */
     function _logInRegister($register, $level, $msg, $def, $file, $line) {
         $timestamp = strftime('%Y-%m-%d %H:%M:%S');
         $messageKey = (string) time();

@@ -121,6 +121,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'boolean',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'pub_date' => 
     array (
@@ -129,6 +130,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'timestamp',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'unpub_date' => 
     array (
@@ -137,6 +139,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'timestamp',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'parent' => 
     array (
@@ -155,6 +158,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'boolean',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'introtext' => 
     array (
@@ -186,6 +190,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'integer',
       'null' => 'false',
       'default' => '1',
+      'index' => 'index',
     ),
     'menuindex' => 
     array (
@@ -194,6 +199,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'integer',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'searchable' => 
     array (
@@ -203,6 +209,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'boolean',
       'null' => 'false',
       'default' => '1',
+      'index' => 'index',
     ),
     'cacheable' => 
     array (
@@ -212,6 +219,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'boolean',
       'null' => 'false',
       'default' => '1',
+      'index' => 'index',
     ),
     'createdby' => 
     array (
@@ -354,6 +362,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'integer',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'class_key' => 
     array (
@@ -371,6 +380,7 @@ $xpdo_meta_map['modResource']= array (
       'phptype' => 'string',
       'null' => 'false',
       'default' => '',
+      'index' => 'index',
     ),
     'content_type' => 
     array (

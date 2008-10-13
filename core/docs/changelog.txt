@@ -4,6 +4,14 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added numerous foreign key and sorting indexes to site_content table (modResource) to improve performance of common queries.
+- Changed modX::changePassword() implementation to call modUser::changePassword().
+- Added getResourceGroups() and getUserGroups() to modUser class to retrieve those things and cache in session.
+- Renamed and moved modX::_checkPublishStatus() to modRequest::checkPublishStatus() and renabled this functionality.
+- Deprecated and moved modX::checkPreview() implementation to modResponse.
+- Added view_offline attribute to default Context access policy.
+- Removed deprecated and invalid modX::makeFriendlyURL().
+- Removed deprecated modX::webAlert() function.
 - [#MODX-364] Results of regClient*() functions are now cached into the Resource cache files to solve error on cached pages with cached snippets.
 - Removed deprecated modX::mergeDocumentMETATags() and moved feature to modResource::mergeMetatags() and modResource::mergeKeywords().
 - Removed deprecated modX::makeList() function.

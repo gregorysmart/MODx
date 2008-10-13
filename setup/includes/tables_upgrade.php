@@ -69,6 +69,46 @@ if ($connected) {
         $description = 'Added new `content_ft_idx` full-text index on the fields `pagetitle`, `longtitle`, `description`, `introtext`, `content`.';
         processResults($this->xpdo,$results,$class,$description,$sql);
     }
+    
+    $sql = "ALTER TABLE {$table} ADD INDEX `published` (`published`)";
+    $description = 'Added new index on `published`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `pub_date` (`pub_date`)";
+    $description = 'Added new index on `pub_date`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `unpub_date` (`unpub_date`)";
+    $description = 'Added new index on `unpub_date`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `menuindex` (`menuindex`)";
+    $description = 'Added new index on `menuindex`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `isfolder` (`isfolder`)";
+    $description = 'Added new index on `isfolder`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `template` (`template`)";
+    $description = 'Added new index on `published`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `searchable` (`searchable`)";
+    $description = 'Added new index on `searchable`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `cacheable` (`cacheable`)";
+    $description = 'Added new index on `cacheable`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `hidemenu` (`hidemenu`)";
+    $description = 'Added new index on `hidemenu`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
+
+    $sql = "ALTER TABLE {$table} ADD INDEX `context_key` (`context_key`)";
+    $description = 'Added new index on `context_key`.';
+    processResults($this->xpdo, $results, $class, $description, $sql);
 
     $class = 'modUserGroup';
     $table = $this->xpdo->getTableName($class);

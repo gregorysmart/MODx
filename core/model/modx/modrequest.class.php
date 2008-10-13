@@ -63,8 +63,7 @@ class modRequest {
                 $this->modx->resourceIdentifier = $this->modx->config['site_unavailable_page'];
             }
         } else {
-            //FIXME: Fix timed publishing; currently disabled.
-            //            $this->modx->_checkPublishStatus();
+            $this->checkPublishStatus();
             $this->modx->resourceMethod = $this->getResourceMethod();
             $this->modx->resourceIdentifier = $this->getResourceIdentifier($this->modx->resourceMethod);
         }
@@ -83,11 +82,10 @@ class modRequest {
         $this->modx->_beforeRequest();
         $this->modx->invokeEvent("OnWebPageInit");
 
-        // set configuration variable placeholders
         if (is_array($this->modx->config)) {
             $this->modx->setPlaceholders($this->modx->config, '+');
         }
-        // retrieve the resource object
+
         if (!is_object($this->modx->resource)) {
             if (!$this->modx->resource = $this->getResource($this->modx->resourceMethod, $this->modx->resourceIdentifier)) {
                 $this->modx->sendErrorPage();
@@ -105,18 +103,11 @@ class modRequest {
      */
     function prepareResponse() {
         $this->modx->_beforeProcessing();
-
-        // invoke OnLoadWebDocument event
         $this->modx->invokeEvent("OnLoadWebDocument");
-
-        // process the resource
         $this->modx->resource->process();
-
         if (!$this->modx->getResponse()) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
         }
-
-        // prepare the content for output and/or caching
         $this->modx->response->outputContent();
     }
 
@@ -159,7 +150,7 @@ class modRequest {
         $cacheFile = "{$this->modx->cachePath}" . $this->modx->context->get('key') . "/resources/{$resourceId}.cache.php";
         $included = false;
         if (file_exists($cacheFile)) {
-            $included = @ include ($cacheFile);
+            $included = include ($cacheFile);
         }
         $this->modx->resourceGenerated = (boolean) !$included;
         if (!$included || !is_object($resource)) {
@@ -270,7 +261,6 @@ class modRequest {
         }
         modX :: sanitize($_COOKIE, $modxtags);
         modX :: sanitize($_REQUEST, $modxtags);
-        // sanitize aliases being requested
         if (isset ($_GET[$this->modx->config['request_param_alias']])) {
             $_GET[$this->modx->config['request_param_alias']] = preg_replace("/[^A-Za-z0-9_\-\.\/]/", "", $_GET[$this->modx->config['request_param_alias']]);
         }
@@ -337,6 +327,62 @@ class modRequest {
             $this->headers = $headers;
         }
         return $this->headers;
+    }
+
+    /**
+     * Checks the current status of timed publishing events.
+     * @todo refactor checkPublishStatus...offload to cachemanager?
+     */
+    function checkPublishStatus() {
+        $cacheRefreshTime= 0;
+        include ($this->modx->cachePath . "sitePublishing.idx.php");
+        $timeNow= time() + $this->modx->config['server_offset_time'];
+        if ($cacheRefreshTime != 0 && $cacheRefreshTime <= strtotime($timeNow)) {
+            /* FIXME: want to find a better way to handle this publishing check without mass updates to the database! */
+            $tblResource= $this->modx->getTableName('modResource');
+            if (!$result= $this->modx->exec("UPDATE {$tblResource} SET published=1,publishedon={$timeNow} WHERE pub_date < {$timeNow} AND pub_date > 0")) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->modx->errorInfo(), true));
+            }
+            if (!$result= $this->modx->exec("UPDATE $tblResource SET published=0,publishedon={$timeNow} WHERE unpub_date < {$timeNow} AND unpub_date IS NOT NULL AND unpub_date > 0")) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->modx->errorInfo(), true));
+            }
+            if ($this->modx->getCacheManager()) {
+                $this->modx->cacheManager->clearCache();
+            }
+            $timesArr= array ();
+            $sql= "SELECT MIN(pub_date) AS minpub FROM $tblResource WHERE pub_date>$timeNow AND pub_date IS NOT NULL";
+            if (!$result= $this->modx->query($sql)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+            } else {
+                $result= $result->fetchAll(PDO_FETCH_ASSOC);
+                $minpub= $result[0]['minpub'];
+                if ($minpub != NULL) {
+                    $timesArr[]= $minpub;
+                }
+            }
+            $sql= "SELECT MIN(unpub_date) AS minunpub FROM $tblResource WHERE unpub_date>$timeNow AND unpub_date IS NOT NULL";
+            if (!$result= $this->modx->query($sql)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+            } else {
+                $result= $result->fetchAll(PDO_FETCH_ASSOC);
+                $minunpub= $result[0]['minunpub'];
+                if ($minunpub != NULL) {
+                    $timesArr[]= $minunpub;
+                }
+            }
+            if (count($timesArr) > 0) {
+                $nextevent= min($timesArr);
+            } else {
+                $nextevent= 0;
+            }
+            $fp= @ fopen($this->modx->cachePath . "sitePublishing.idx.php", "wb");
+            if ($fp) {
+                @ flock($fp, LOCK_EX);
+                @ fwrite($fp, "<?php \$cacheRefreshTime=$nextevent; ?>");
+                @ flock($fp, LOCK_UN);
+                @ fclose($fp);
+            }
+        }
     }
 
     function getAllActionIDs($ctx = '') {

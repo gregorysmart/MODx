@@ -292,18 +292,18 @@
         <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="fulltext" indexgrp="content_ft_idx" />
         <field key="alias" dbtype="varchar" precision="255" phptype="string" null="true" default="" index="index" />
         <field key="link_attributes" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
-        <field key="published" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="pub_date" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" />
-        <field key="unpub_date" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" />
+        <field key="published" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
+        <field key="pub_date" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" index="index" />
+        <field key="unpub_date" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" index="index" />
         <field key="parent" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index" />
-        <field key="isfolder" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
+        <field key="isfolder" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
         <field key="introtext" dbtype="text" phptype="string" index="fulltext" indexgrp="content_ft_idx" />
         <field key="content" dbtype="mediumtext" phptype="string" index="fulltext" indexgrp="content_ft_idx" />
         <field key="richtext" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
-        <field key="template" dbtype="int" precision="10" phptype="integer" null="false" default="1" />
-        <field key="menuindex" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
-        <field key="searchable" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
-        <field key="cacheable" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
+        <field key="template" dbtype="int" precision="10" phptype="integer" null="false" default="1" index="index" />
+        <field key="menuindex" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index" />
+        <field key="searchable" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index" />
+        <field key="cacheable" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index" />
         <field key="createdby" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
         <field key="createdon" dbtype="int" precision="20" phptype="timestamp" null="false" default="0" />
         <field key="editedby" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
@@ -320,9 +320,9 @@
         <field key="privateweb" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
         <field key="privatemgr" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
         <field key="content_dispo" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
-        <field key="hidemenu" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
+        <field key="hidemenu" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" index="index" />
         <field key="class_key" dbtype="varchar" precision="100" phptype="string" null="false" default="modDocument" index="index" />
-        <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
+        <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="index" />
         <field key="content_type" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="false" default="1" />
         <aggregate alias="Parent" class="modResource" key="parent" local="parent" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Children" class="modResource" key="id" local="id" foreign="parent" cardinality="many" owner="local" />

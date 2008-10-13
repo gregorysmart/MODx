@@ -219,4 +219,18 @@ class modResponse {
         exit();
     }
 
+    /**
+     * Checks to see if the preview parameter is set.
+     *
+     * @return boolean
+     */
+    function checkPreview() {
+        $preview= false;
+        if ($this->modx->checkSession('mgr') === true) {
+            if (isset ($_REQUEST['z']) && $_REQUEST['z'] == 'manprev') {
+                $preview= true;
+            }
+        }
+        return $preview;
+    }
 }
