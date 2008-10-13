@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.workspace.lexicon
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
@@ -20,7 +19,7 @@ $topic = $modx->getObject('modLexiconTopic',$_POST['focus']);
 if ($topic == null) $modx->error->failure($modx->lexicon('topic_err_nf'));
 
 
-$old_namespace = $entry->namespace;
+$old_namespace = $entry->get('namespace');
 $old_topic = $entry->getOne('modLexiconTopic');
 
 if (!isset($_POST['name']) || $_POST['name'] == '') {

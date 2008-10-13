@@ -14,9 +14,10 @@ $c = $modx->newQuery('modResource');
 $c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
 
 if (isset($_REQUEST['limit'])) {
-    $c = $c->limit($_REQUEST['limit'],$_REQUEST['start']);
+    $c->limit($_REQUEST['limit'],$_REQUEST['start']);
 }
 $resources = $modx->getCollection('modResource',$c);
+
 $cs = array();
 foreach ($resources as $resource) {
     if ($resource->checkPolicy('list')) {

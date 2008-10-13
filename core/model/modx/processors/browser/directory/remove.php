@@ -17,7 +17,7 @@ $d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $directory = $d.$_POST['dir'];
 
-// in case rootVisible is true
+/* in case rootVisible is true */
 $directory = str_replace('root/','',$directory);
 $directory = str_replace('undefined/','',$directory);
 
@@ -55,4 +55,4 @@ function rmdirr($dr) {
 	return true;
 }
 
-$error->success();
+$modx->error->success();

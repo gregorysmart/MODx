@@ -17,7 +17,7 @@ $d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $file = $d.$_POST['file'];
 
-// in case rootVisible is true
+/* in case rootVisible is true */
 $file = str_replace('root/','',$file);
 $file = str_replace('undefined/','',$file);
 

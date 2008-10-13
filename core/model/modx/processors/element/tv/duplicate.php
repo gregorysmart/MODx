@@ -3,73 +3,55 @@
  * @package modx
  * @subpackage processors.element.tv
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv');
 
 if (!$modx->hasPermission('new_template')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// get TV
+/* get TV */
 $old_tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
 if ($old_tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
 $old_tv->templates = $old_tv->getMany('modTemplateVarTemplate');
-$old_tv->documents = $old_tv->getMany('modTemplateVarResource');
-$old_tv->docgroups = $old_tv->getMany('modTemplateVarResourceGroup');
+$old_tv->resources = $old_tv->getMany('modTemplateVarResource');
+$old_tv->resource_groups = $old_tv->getMany('modTemplateVarResourceGroup');
 
-$newname = isset($_POST['name']) 
+$newname = isset($_POST['name'])
     ? $_POST['name']
-    : $modx->lexicon('duplicate_of').$old_tv->name;
+    : $modx->lexicon('duplicate_of').$old_tv->get('name');
 
-// duplicate TV
+/* duplicate TV */
 $tv = $modx->newObject('modTemplateVar');
-$tv->set('type',$old_tv->type);
 $tv->set('name',$newname);
-$tv->set('caption',$old_tv->caption);
-$tv->set('description',$old_tv->description);
-$tv->set('editor_type',$old_tv->editor_type);
-$tv->set('category',$old_tv->category);
-$tv->set('locked',$old_tv->locked);
-$tv->set('elements',$old_tv->elements);
-$tv->set('rank',$old_tv->rank);
-$tv->set('display',$old_tv->display);
-$tv->set('display_params',$old_tv->display_params);
-$tv->set('default_text',$old_tv->default_text);
+$tv->fromArray($old_tv->toArray());
 
 if ($tv->save() === false) {
 	$modx->error->failure($modx->lexicon('tv_err_duplicate'));
 }
 
 
-foreach ($old_tv->templates as $old_template) {
+foreach ($old_tv->templates as $old_tvt) {
 	$new_template = $modx->newObject('modTemplateVarTemplate');
-	$new_template->set('tmplvarid',$tv->id);
-	$new_template->set('templateid',$old_template->templateid);
-	$new_template->set('rank',$old_template->rank);
-	if ($new_template->save() === false) {
-		$error->failure($modx->lexicon('tv_err_duplicate_templates'));
-	}
+	$new_template->set('tmplvarid',$tv->get('id'));
+	$new_template->set('templateid',$old_tvt->get('templateid'));
+	$new_template->set('rank',$old_tvt->get('rank'));
+	$new_template->save();
 }
-foreach ($old_tv->documents as $old_document) {
-	$new_document = $modx->newObject('modTemplateVarResource');
-	$new_document->set('tmplvarid',$tv->id);
-	$new_document->set('contentid',$old_document->contentid);
-	$new_document->set('value',$old_document->value);
-	if ($new_document->save() === false) {
-		$error->failure($modx->lexicon('tv_err_duplicate_documents'));
-	}
+foreach ($old_tv->resources as $old_tvr) {
+	$new_resource = $modx->newObject('modTemplateVarResource');
+	$new_resource->set('tmplvarid',$tv->get('id'));
+	$new_resource->set('contentid',$old_tvr->get('contentid'));
+	$new_resource->set('value',$old_tvr->get('value'));
+	$new_resource->save();
 }
-foreach ($old_tv->docgroups as $old_docgroup) {
-	$new_docgroup = $modx->newObject('modTemplateVarResourceGroup');
-	$new_docgroup->set('tmplvarid',$tv->id);
-	$new_docgroup->set('documentgroup',$old_docgroup->documentgroup);
-	if ($new_docgroup->save() === false) {
-		$modx->error->failure($modx->lexicon('tv_err_duplicate_documentgroups'));
-	}
+foreach ($old_tv->resource_groups as $old_tvrg) {
+	$new_rgroup = $modx->newObject('modTemplateVarResourceGroup');
+	$new_rgroup->set('tmplvarid',$tv->get('id'));
+	$new_rgroup->set('documentgroup',$old_tvrg->get('documentgroup'));
+	$new_rgroup->save();
 }
 
-
-// log manager action
-$modx->logManagerAction('tv_duplicate','modTemplateVar',$tv->id);
+/* log manager action */
+$modx->logManagerAction('tv_duplicate','modTemplateVar',$tv->get('id'));
 
 $modx->error->success('',$tv->get(array('id')));

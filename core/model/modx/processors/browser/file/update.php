@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ *
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
@@ -13,12 +13,12 @@ $newname = $_POST['name'];
 
 if (!file_exists($file)) $modx->error->failure($modx->lexicon('file_err_nf'));
 
-// write file
+/* write file */
 $f = @fopen($file,'w+');
 fwrite($f,$_POST['content']);
 fclose($f);
 
-// rename if necessary
+/* rename if necessary */
 $filename = ltrim(strrchr($file,'/'),'/');
 $path = str_replace(strrchr($file,'/'),'',$file);
 

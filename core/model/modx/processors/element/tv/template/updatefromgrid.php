@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.template.tv
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv');
 
@@ -16,21 +15,26 @@ $tvt = $modx->getObject('modTemplateVarTemplate',array(
 ));
 
 if ($_DATA['access']) {
-    // adding access or updating rank
+    /* adding access or updating rank */
     if ($tvt == null) {
         $tvt = $modx->newObject('modTemplateVarTemplate');
     }
     $tvt->set('templateid',$_DATA['id']);
     $tvt->set('tmplvarid',$_DATA['tv']);
     $tvt->set('rank',$_DATA['rank']);
-    
-    if (!$tvt->save()) $modx->error->failure($modx->lexicon('tvt_err_save'));
-} else {
-    // removing access
-    
-    if ($tvt == null) $modx->error->failure($modx->lexicon('tvt_err_nf'));
 
-    if (!$tvt->remove()) $modx->error->failure($modx->lexicon('tvt_err_remove'));
+    if ($tvt->save() == false) {
+        $modx->error->failure($modx->lexicon('tvt_err_save'));
+    }
+} else {
+    /* removing access */
+    if ($tvt == null) {
+        $modx->error->failure($modx->lexicon('tvt_err_nf'));
+    }
+
+    if ($tvt->remove() == false) {
+        $modx->error->failure($modx->lexicon('tvt_err_remove'));
+    }
 }
 
 $modx->error->success();

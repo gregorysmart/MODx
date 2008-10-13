@@ -3,33 +3,36 @@
  * @package modx
  * @subpackage processors.element.snippet
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet','category');
 
-if (!$modx->hasPermission('save_snippet')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_snippet')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// get snippet
+/* get snippet */
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
-if ($snippet == null) $error->failure($modx->lexicon('snippet_err_not_found'));
+if ($snippet == null) $modx->error->failure($modx->lexicon('snippet_err_not_found'));
 
-if ($snippet->locked && !$modx->hasPermission('edit_locked')) $error->failure($modx->lexicon('snippet_err_locked'));
+/* check if locked, if so, prevent access */
+if ($snippet->get('locked') && $modx->hasPermission('edit_locked') == false) {
+    $modx->error->failure($modx->lexicon('snippet_err_locked'));
+}
 
-// validation
-if ($_POST['name'] == '') $error->addField('name',$modx->lexicon('snippet_err_not_specified_name'));
-// get rid of invalid chars
+/* validation */
+if ($_POST['name'] == '') $modx->error->addField('name',$modx->lexicon('snippet_err_not_specified_name'));
+
+/* sanity check on name */
 $_POST['name'] = str_replace('>','',$_POST['name']);
 $_POST['name'] = str_replace('<','',$_POST['name']);
 
 $name_exists = $modx->getObject('modSnippet',array(
-	'id:!=' => $snippet->id,
+	'id:!=' => $snippet->get('id'),
 	'name' => $_POST['name']
 ));
-if ($name_exists != null) $error->addField('name',$modx->lexicon('snippet_err_exists_name'));
+if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('snippet_err_exists_name'));
 
-if ($error->hasError()) $error->failure();
+if ($modx->error->hasError()) $modx->error->failure();
 
-// category
+/* category */
 if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
 } else {
@@ -38,38 +41,40 @@ if (is_numeric($_POST['category'])) {
 if ($category == null) {
 	$category = $modx->newObject('modCategory');
 	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->id = 0;
+		$category->set('id',0);
 	} else {
 		$category->set('category',$_POST['category']);
-		if (!$category->save()) $error->failure($modx->lexicon('category_err_save'));
+		if ($category->save() == false) {
+            $modx->error->failure($modx->lexicon('category_err_save'));
+        }
 	}
 }
 
-// invoke OnBeforeSnipFormSave event
+/* invoke OnBeforeSnipFormSave event */
 $modx->invokeEvent('OnBeforeSnipFormSave',array(
 	'mode' => 'new',
-	'id' => $snippet->id,
+	'id' => $snippet->get('id'),
 ));
 
 $snippet->fromArray($_POST);
 $snippet->set('locked',isset($_POST['locked']));
-$snippet->set('category',$category->id);
+$snippet->set('category',$category->get('id'));
 
-if (!$snippet->save()) $error->failure($modx->lexicon('snippet_err_save'));
+if ($snippet->save() == false) {
+    $modx->error->failure($modx->lexicon('snippet_err_save'));
+}
 
-// invoke OnSnipFormSave event
+/* invoke OnSnipFormSave event */
 $modx->invokeEvent('OnSnipFormSave',array(
 	'mode' => 'new',
-	'id' => $snippet->id,
+	'id' => $snippet->get('id'),
 ));
 
-// log manager action
-$modx->logManagerAction('snippet_update','modSnippet',$snippet->id);
+/* log manager action */
+$modx->logManagerAction('snippet_update','modSnippet',$snippet->get('id'));
 
-// empty cache
+/* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-//if ($_POST['runsnippet']) run_snippet($_POST['snippet']);
-
-$error->success();
+$modx->error->success();

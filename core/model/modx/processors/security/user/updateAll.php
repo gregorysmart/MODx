@@ -21,7 +21,7 @@ foreach ($_DATA as $userdata) {
 	$up->set('blocked',$userdata['blocked']);
 	$up->set('email',$userdata['email']);
 
-	if (!$up->save()) $error->failure($modx->lexicon('user_err_save'));
+	if (!$up->save()) $modx->error->failure($modx->lexicon('user_err_save'));
 }
 
-$error->success();
+$modx->error->success();

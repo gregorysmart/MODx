@@ -25,7 +25,7 @@ if ($policy = $modx->getObject('modAccessPolicy', $id)) {
 }
 
 
-// log manager action
-$modx->logManagerAction('save_access_policy','modAccessPolicy',$policy->id);
+/* log manager action */
+$modx->logManagerAction('save_access_policy','modAccessPolicy',$policy->get('id'));
 
 $modx->error->success();

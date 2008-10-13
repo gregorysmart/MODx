@@ -20,7 +20,7 @@ if (!isset($_POST['id'])) $modx->error->failure($modx->lexicon('provider_err_ns'
 $provider = $modx->getObject('transport.modTransportProvider',$_POST['id']);
 if ($provider == null) $modx->error->failure(sprintf($modx->lexicon('provider_err_nfs'),$_POST['id']));
 
-// TODO: Check for a valid connection to the provisioner.
+/* TODO: Check for a valid connection to the provisioner. */
 
 $provider->set('name',$_POST['name']);
 $provider->set('description',$_POST['description']);

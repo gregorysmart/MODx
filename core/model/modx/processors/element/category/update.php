@@ -20,4 +20,4 @@ if ($category->save() === false) {
 	$modx->error->failure($modx->lexicon('category_err_save'));
 }
 
-$modx->error->success('',$category->toArray());
+$modx->error->success('',$category);

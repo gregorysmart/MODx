@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.action
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
@@ -16,16 +15,16 @@ $type = $ar[1];
 $id = $ar[2];
 
 
-// contexts
+/* contexts */
 if ($type == 'root') {
     $contexts = $modx->getCollection('modContext');
-        
+
     $cs = array();
     foreach ($contexts as $context) {
         $cs[] = array(
             'text' => $context->get('key'),
             'id' => 'n_context_'.$context->get('key'),
-            'leaf' => 0,
+            'leaf' => false,
             'cls' => 'folder',
             'type' => 'context',
             'menu' => array(
@@ -36,11 +35,11 @@ if ($type == 'root') {
             ),
         );
     }
-    
+
     echo $modx->toJSON($cs);
     die();
-    
-// root actions
+
+/* root actions */
 } else if ($type == 'context') {
     $c = $modx->newQuery('modAction');
     $c->where(array(
@@ -49,22 +48,22 @@ if ($type == 'root') {
     ));
     $c->sortby('controller','ASC');
     $c->limit($_REQUEST['limit'],$_REQUEST['start']);
-    
+
     $actions = $modx->getCollection('modAction',$c);
-    
+
     $cc = $modx->newQuery('modAction');
     $cc->where(array(
         'parent' => 0,
         'context_key' => $id,
     ));
     $count = $modx->getCount('modAction',$cc);
-    
+
     $as = array();
     foreach ($actions as $action) {
         $as[] = array(
-            'text' => $action->controller.' ('.$action->id.')',
-            'id' => 'n_action_'.$action->id,
-            'leaf' => 0,
+            'text' => $action->get('controller').' ('.$action->get('id').')',
+            'id' => 'n_action_'.$action->get('id'),
+            'leaf' => false,
             'cls' => 'action',
             'type' => 'action',
             'menu' => array(
@@ -81,11 +80,11 @@ if ($type == 'root') {
             ),
         );
     }
-    
+
     echo $modx->toJSON($as);
     die();
 
-// subactions
+/* subactions */
 } else {
     $c = $modx->newQuery('modAction');
     $c->where(array(
@@ -93,19 +92,19 @@ if ($type == 'root') {
     ));
     $c->sortby('controller','ASC');
     $c->limit($_REQUEST['limit'],$_REQUEST['start']);
-    
+
     $actions = $modx->getCollection('modAction',$c);
     $cc = $modx->newQuery('modAction');
     $cc->where(array(
         'parent' => $id,
     ));
     $count = $modx->getCount('modAction',$cc);
-    
+
     $as = array();
     foreach ($actions as $action) {
         $as[] = array(
-            'text' => $action->controller.' ('.$action->id.')',
-            'id' => 'n_action_'.$action->id,
+            'text' => $action->get('controller').' ('.$action->get('id').')',
+            'id' => 'n_action_'.$action->get('id'),
             'leaf' => 0,
             'cls' => 'action',
             'type' => 'action',
@@ -123,7 +122,7 @@ if ($type == 'root') {
             ),
         );
     }
-    
+
     echo $modx->toJSON($as);
     die();
 }

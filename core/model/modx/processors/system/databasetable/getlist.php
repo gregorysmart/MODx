@@ -3,17 +3,16 @@
  * @package modx
  * @subpackage processors.system.databasetable
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_info');
 
-if (!$modx->hasPermission('database')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('database')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $c = new xPDOCriteria($modx, 'SHOW TABLE STATUS FROM `'.$modx->config['dbname'].'`');
 $c->stmt->execute();
 $dt = array();
 while ($row= $c->stmt->fetch(PDO_FETCH_ASSOC)) {
-	// calculations first
+	/* calculations first */
 	if ($modx->hasPermission('settings') && $row['Name'] == $modx->config['table_prefix'].'event_log' && $row['Data_length'] + $row['Data_free']>0) {
 		$row['Data_size'] = '<a href="#" onclick="truncate(\''.$row['Name'].'\');" title="'.$modx->lexicon('truncate_table').'">'. nicesize($row['Data_length'] + $row['Data_free']).'</a>';
 	} else {
@@ -22,7 +21,7 @@ while ($row= $c->stmt->fetch(PDO_FETCH_ASSOC)) {
 	$row['Effective_size'] = nicesize($row['Data_length'] - $row['Data_free']);
 	$row['Total_size'] = nicesize($row['Index_length'] + $row['Data_length'] + $row['Data_free']);
 
-	// now the non-calculated fields
+	/* now the non-calculated fields */
 	$row['Data_length'] = nicesize($row['Data_length']);
 	if ($modx->hasPermission('settings') && $row['Data_free']>0) {
 		$row['Data_free'] = '<a href="#" onclick="optimize(\''.$row['Name'].'\');" title="'.$modx->lexicon('optimize_table').'">'.nicesize($row['Data_free']).'</a>';

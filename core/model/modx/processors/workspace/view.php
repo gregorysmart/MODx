@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.workspace
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
@@ -15,4 +14,4 @@ if (isset($_REQUEST['id']) && $nodeId= intval($_REQUEST['id'])) {
         $object= $workspace->toArray();
     }
 }
-$error->success('', array ($object));
+$modx->error->success('', array ($object));

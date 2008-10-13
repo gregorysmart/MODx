@@ -29,14 +29,14 @@ $ts = array();
 foreach ($templates as $template) {
     if (isset($_REQUEST['tv'])) {
         $tvt = $modx->getObject('modTemplateVarTemplate',array(
-            'tmplvarid' => $tv->id,
-            'templateid' => $template->id,
+            'tmplvarid' => $tv->get('id'),
+            'templateid' => $template->get('id'),
         ));
     } else $tvt = null;
-    
+
     if ($tvt != null) {
         $template->set('access',true);
-        $template->set('rank',$tvt->rank);
+        $template->set('rank',$tvt->get('rank'));
     } else {
         $template->set('access',false);
         $template->set('rank','');

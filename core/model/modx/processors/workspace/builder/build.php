@@ -8,26 +8,24 @@ $modx->lexicon->load('workspace','package_builder');
 
 if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-//$modx->error->failure(print_r($_SESSION['modx.pb'],true));
-
 $_PACKAGE =& $_SESSION['modx.pb'];
 
-// load the modPackageBuilder class and get an instance
+/* load the modPackageBuilder class and get an instance */
 $modx->log(MODX_LOG_LEVEL_INFO,'Loading package builder.');
 $modx->loadClass('transport.modPackageBuilder','',false, true);
 $builder = new modPackageBuilder($modx);
 
-// create a new package
+/* create a new package */
 $modx->log(MODX_LOG_LEVEL_INFO,'Creating a new package: '.$_PACKAGE['name'].'-'.$_PACKAGE['version'].'-'.$_PACKAGE['release']);
 $builder->createPackage($_PACKAGE['name'], $_PACKAGE['version'], $_PACKAGE['release']);
 $builder->registerNamespace($_PACKAGE['namespace'],$_PACKAGE['autoselects']);
 
-// define some locations for file resources
+/* define some locations for file resources */
 $sources= array (
     'root' => dirname(dirname(__FILE__)) . '/',
     'assets' => dirname(dirname(__FILE__)) . '/assets/'
 );
-// set up some default attributes that define install behavior
+/* set up some default attributes that define install behavior */
 $attributes= array(
     XPDO_TRANSPORT_UNIQUE_KEY => 'name',
     XPDO_TRANSPORT_PRESERVE_KEYS => false,
@@ -53,7 +51,7 @@ foreach ($_PACKAGE['vehicles'] as $vehicle) {
     $builder->putVehicle($v);
 }
 
-// zip up the package
+/* zip up the package */
 $modx->log(MODX_LOG_LEVEL_INFO,'Attempting to pack package.');
 $builder->pack();
 

@@ -3,8 +3,8 @@
  * @package modx
  * @subpackage processors.resource.resourcegroup
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -21,12 +21,12 @@ $count = $modx->getCount('modResourceGroup');
 $rs = array();
 foreach ($rgs as $rg) {
     $ra = $rg->toArray();
-    
+
     $rgr = $rg->getOne('modResourceGroupResource',array(
         'document' => $_REQUEST['resource'],
     ));
     $ra['access'] = $rgr != null;
-    
+
     $rs[] = $ra;
 }
 

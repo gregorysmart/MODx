@@ -3,10 +3,12 @@
  * @package modx
  * @subpackage processors.security.role
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
-if (!$modx->hasPermission(array('access_permissions' => true, 'edit_role' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
+
+if (!$modx->hasPermission(array('access_permissions' => true, 'edit_role' => true))) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -28,7 +30,7 @@ if (isset($_REQUEST['addNone']) && $_REQUEST['addNone']) {
 
 foreach ($roles as $r) {
 	$rr = $r->toArray();
-	$rr['rolename_link'] = '<a href="index.php?a='.$actions['security/role/update'].'&id='.$r->id.'" title="'.$modx->lexicon('click_to_edit_title').'">'.$r->name.'</a>';
+	$rr['rolename_link'] = '<a href="index.php?a='.$actions['security/role/update'].'&id='.$r->get('id').'" title="'.$modx->lexicon('click_to_edit_title').'">'.$r->get('name').'</a>';
 	$rs[] = $rr;
 }
 $this->outputArray($rs);

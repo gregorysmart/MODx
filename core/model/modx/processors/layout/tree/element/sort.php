@@ -3,13 +3,13 @@
  * @package modx
  * @subpackage processors.layout.tree.element
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('category');
 
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
 
-// setup uncategorized category
+/* setup uncategorized category */
 $uncategorized = $modx->newObject('modCategory');
 $uncategorized->set('category',$modx->lexicon('uncategorized'));
 
@@ -31,9 +31,9 @@ function sortNodes($xname,$type,$data,&$error) {
 	foreach ($s as $id => $objs) {
 		$car = split('_',$id);
 
-		// $car: [1]: template   [2]: element/category    [3]: catID/elID    [4]: *catID
+		/* $car: [1]: template   [2]: element/category    [3]: catID/elID    [4]: *catID */
 
-		if ($car[1] != $type) die($error->process('Invalid drag!'));
+		if ($car[1] != $type) $modx->error->failure('Invalid drag!');
 
 		if ($car[2] == 'category') {
 			$category = $modx->getObject('modCategory',$car[3]);
@@ -42,10 +42,10 @@ function sortNodes($xname,$type,$data,&$error) {
 			foreach ($objs as $objar => $kids) {
 				$oar = split('_',$objar);
 
-				if ($oar[1] != $type) die($error->process('Invalid drag type!'));
+				if ($oar[1] != $type) $modx->error->failure('Invalid drag type!');
 
 				$obj = $modx->getObject($xname,$oar[3]);
-				$obj->set('category',$category->id != null ? $category->id : 0);
+				$obj->set('category',$category->get('id') != null ? $category->get('id') : 0);
 				$obj->save();
 			}
 		} elseif ($car[2] == 'element') {
@@ -59,4 +59,4 @@ function sortNodes($xname,$type,$data,&$error) {
 	}
 }
 
-echo $error->process('',true);
+$modx->error->success();

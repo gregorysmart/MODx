@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.menu
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
@@ -32,13 +31,13 @@ function getSubMenus($menu) {
     $av = array();
     foreach ($menus as $menu) {
 
-        // if 3rd party menu item, load proper text
+        /* if 3rd party menu item, load proper text */
         $action = $menu->getOne('Action');
         if ($action) {
             $ctx = $action->getOne('Context');
             if ($ctx->get('key') != 'mgr' && !$modx->lexicon->exists($menu->get('text'))) {
                 $modx->lexicon->load($ctx->get('key').':default');
-                $menu->set('text',$modx->lexicon($menu->text));
+                $menu->set('text',$modx->lexicon($menu->get('text')));
             }
         }
         $ma = $menu->toArray();

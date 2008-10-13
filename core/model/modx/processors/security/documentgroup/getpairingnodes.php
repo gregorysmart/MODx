@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.documentgroup
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
@@ -18,8 +17,8 @@ $da = array();
 if ($g == null) {
 	foreach ($groups as $group) {
 		$da[] = array(
-			'text' => $group->name,
-			'id' => 'n_dg_'.$group->id,
+			'text' => $group->get('name'),
+			'id' => 'n_dg_'.$group->get('id'),
 			'leaf' => 0,
 			'type' => 'documentgroup',
 			'cls' => 'folder',
@@ -29,8 +28,8 @@ if ($g == null) {
 	$ugs = $g->getUserGroupsIn();
 	foreach ($ugs as $ug) {
 		$da[] = array(
-			'text' => $ug->name,
-			'id' => 'n_ug_'.$ug->id,
+			'text' => $ug->get('name'),
+			'id' => 'n_ug_'.$ug->get('id'),
 			'leaf' => 1,
 			'type' => 'usergroup',
 			'cls' => '',

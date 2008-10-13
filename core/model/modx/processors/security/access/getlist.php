@@ -3,19 +3,21 @@
  * @package modx
  * @subpackage processors.security.access
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('access');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['type'])) {
-    $error->failure($modx->lexicon('access_type_err_ns'));
+    $modx->error->failure($modx->lexicon('access_type_err_ns'));
 }
 $accessClass = $_REQUEST['type'];
+
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = '';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
+
 $targetClass = str_replace('Access', '', $accessClass);
 $targetId = isset($_REQUEST['target']) ? $_REQUEST['target'] : 0;
 $principalClass = isset($_REQUEST['principal_class']) ? $_REQUEST['principal_class'] : 'modUserGroup';
@@ -42,22 +44,22 @@ $collection = $modx->getCollectionGraph($accessClass, $objectGraph, $c);
 
 $data = array();
 foreach ($collection as $key => $object) {
-    $principal = $modx->getObject($object->principal_class, $object->principal);
+    $principal = $modx->getObject($object->get('principal_class'), $object->get('principal'));
     $objdata= array(
-        'id' => $object->id,
-        'target' => $object->target,
-        'target_name' => $accessClass == 'modAccessContext' ? $object->Target->key : $object->Target->name,
-        'principal_class' => $object->principal_class,
-        'principal' => $object->principal,
-        'principal_name' => $principal->name,
-        'authority' => $object->authority,
-        'policy' => $object->policy,
-        'policy_name' => $object->Policy->name,
+        'id' => $object->get('id'),
+        'target' => $object->get('target'),
+        'target_name' => $accessClass == 'modAccessContext' ? $object->Target->get('key') : $object->Target->get('name'),
+        'principal_class' => $object->get('principal_class'),
+        'principal' => $object->get('principal'),
+        'principal_name' => $principal->get('name'),
+        'authority' => $object->get('authority'),
+        'policy' => $object->get('policy'),
+        'policy_name' => $object->Policy->get('name'),
     );
     if (isset($object->_fieldMeta['context_key'])) {
-        $objdata['context_key']= $object->context_key;
+        $objdata['context_key']= $object->get('context_key');
     }
-    
+
     $objdata['menu'] = array(
         array(
             'text' => $modx->lexicon('edit'),

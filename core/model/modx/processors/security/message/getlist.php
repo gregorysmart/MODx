@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.message
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
 
@@ -17,7 +16,7 @@ if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'DESC';
 $c = $modx->newQuery('modUserMessage');
 $c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
-$c->where(array('recipient' => $modx->user->id));
+$c->where(array('recipient' => $modx->user->get('id')));
 $messages = $modx->getCollection('modUserMessage', $c);
 
 $cc = $modx->newQuery('modUserMessage');
@@ -26,22 +25,22 @@ $count = $modx->getCount('modUserMessage',$cc);
 $ms = array();
 foreach ($messages as $message) {
 	$ma = $message->toArray();
-    $sender = $modx->getObject('modUser',$message->sender);
-    $ma['sender_name'] = $sender->username;
-    $ma['read'] = $message->read ? true : false;
+    $sender = $modx->getObject('modUser',$message->get('sender'));
+    $ma['sender_name'] = $sender->get('username');
+    $ma['read'] = $message->get('read') ? true : false;
     $ma['menu'] = array(
         array(
             'text' => $modx->lexicon('reply'),
             'handler' => array(
                 'xtype' => 'window-message-reply'
-                ,'id' => $message->id, 
+                ,'id' => $message->get('id'),
             ),
         ),
         array(
             'text' => $modx->lexicon('forward'),
             'handler' => array(
                 'xtype' => 'window-message-forward'
-                ,'id' => $message->id, 
+                ,'id' => $message->get('id'),
             ),
         ),
         array(

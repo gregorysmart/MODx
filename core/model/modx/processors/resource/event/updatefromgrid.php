@@ -1,10 +1,10 @@
 <?php
 /**
  * @package modx
- * @subpackage processors.resource
+ * @subpackage processors.resource.event
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 $_DATA = $modx->fromJSON($_POST['data']);
 

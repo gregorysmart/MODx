@@ -12,41 +12,39 @@ if (!$modx->hasPermission(array('access_permissions' => true, 'new_user' => true
 $user = $modx->newObject('modUser');
 
 if ($_POST['newusername'] == '')
-	$error->addField('new_user_name',$modx->lexicon('user_err_not_specified_username'));
+	$modx->error->addField('new_user_name',$modx->lexicon('user_err_not_specified_username'));
 
 $newPassword= '';
 
-//$modx->loadProcessor('security/user/_validation.php',array('error' => $error));
 require_once MODX_PROCESSORS_PATH.'security/user/_validation.php';
 
 if ($_POST['passwordnotifymethod'] == 'e') {
 	sendMailMessage($_POST['email'], $_POST['newusername'],$newPassword,$_POST['fullname']);
 }
 
-// invoke OnBeforeUserFormSave event
+/* invoke OnBeforeUserFormSave event */
 $modx->invokeEvent('OnBeforeUserFormSave',array(
 	'mode' => 'new',
 	'id' => $_POST['id'],
 ));
 
 
-// update user
-if (!$user->save()) $error->failure($modx->lexicon('user_err_save'));
+/* update user */
+if ($user->save() == false) {
+    $modx->error->failure($modx->lexicon('user_err_save'));
+}
 
 
 $user->profile = $modx->newObject('modUserProfile');
 $user->profile->fromArray($_POST);
-$user->profile->set('internalKey',$user->id);
+$user->profile->set('internalKey',$user->get('id'));
 $user->profile->set('blocked', isset($_POST['blocked']) && $_POST['blocked'] ? true : false);
 
-if (!$user->profile->save())
-	$error->failure($modx->lexicon('user_err_save_attributes'));
+if ($user->profile->save() == false) {
+	$modx->error->failure($modx->lexicon('user_err_save_attributes'));
+}
 
-// Save user settings
-//$modx->loadProcessor('security/user/setting/updateAll.php',array('error' => $error));
-
-
-// invoke OnManagerSaveUser event
+/* invoke OnManagerSaveUser event */
 $modx->invokeEvent('OnManagerSaveUser',array(
 	'mode' => 'new',
 	'userid' => $_POST['id'],
@@ -59,25 +57,26 @@ $modx->invokeEvent('OnManagerSaveUser',array(
 	'olduseremail' => (($_POST['oldemail'] != $_POST['email']) ? $_POST['oldemail'] : '')
 ));
 
-// invoke OnUserFormSave event
+/* invoke OnUserFormSave event */
 $modx->invokeEvent('OnUserFormSave',array(
 	'mode' => 'new',
-	'id' => $user->id,
+	'id' => $user->get('id'),
 ));
 
-// manage user group memberships
-//TODO: add modUserGroupRole and sub-group handling
+/*
+ * manage user group memberships
+ * :TODO: add modUserGroupRole and sub-group handling
+ */
 if (isset($_POST['user_groups']) && count($_POST['user_groups']) > 0) {
     foreach ($_POST['user_groups'] as $group_id) {
         $ug = $modx->newObject('modUserGroupMember');
         $ug->set('user_group',$group_id);
-        $ug->set('member',$user->id);
-        if (!$ug->save())
-            $error->failure($modx->lexicon('user_err_add_to_group'));
+        $ug->set('member',$user->get('id'));
+        $ug->save();
     }
 }
 
-// converts date format dd-mm-yyyy to php date
+/* converts date format dd-mm-yyyy to php date */
 function convertDate($date) {
 	if ($date == '')
 		return false;
@@ -88,7 +87,7 @@ function convertDate($date) {
 		return strtotime("$m/$d/$Y $H:$M:$S");
 }
 
-// Send an email to the user
+/* Send an email to the user */
 function sendMailMessage($email, $uid, $pwd, $ufn) {
 	global $modx;
 
@@ -111,17 +110,17 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
     $modx->mail->address('to', $email, $ufn);
     $modx->mail->address('reply-to', $modx->config['emailsender']);
     if (!$modx->mail->send()) {
-        die($modx->lexicon('error_sending_email_to').$email);
+        $modx->error->failure($modx->lexicon('error_sending_email_to').$email);
         exit;
     }
     $modx->mail->reset();
 }
 
-// log manager action
-$modx->logManagerAction('user_create','modUser',$user->id);
+/* log manager action */
+$modx->logManagerAction('user_create','modUser',$user->get('id'));
 
 if ($_POST['passwordnotifymethod'] == 's') {
-	$error->success($modx->lexicon('user_created_password_message').$newPassword);
+	$modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
 } else {
-	$error->success();
+	$modx->error->success();
 }

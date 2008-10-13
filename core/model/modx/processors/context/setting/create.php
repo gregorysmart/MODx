@@ -6,6 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
+
 if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_POST['context_key'] = isset($_POST['fk']) ? $_POST['fk'] : 0;
@@ -21,7 +22,7 @@ if ($ae != null) $modx->error->failure($modx->lexicon('setting_err_ae'));
 $setting= $modx->newObject('modContextSetting');
 $setting->fromArray($_POST,'',true);
 
-// set lexicon name/description
+/* set lexicon name/description */
 $topic = $modx->getObject('modLexiconTopic',array(
     'name' => 'default',
     'namespace' => $setting->namespace,

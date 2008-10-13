@@ -13,16 +13,16 @@ if (!$modx->hasPermission('publish_document')) {
     $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
-// check permissions on the resource
+/* check permissions on the resource */
 if (!$resource->checkPolicy(array('save'=>1, 'unpublish'=>1))) {
     $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
-// update the resource
+/* update the resource */
 $resource->set('published',0);
 $resource->set('pub_date',0);
 $resource->set('unpub_date',0);
-$resource->set('editedby',$user_id);
+$resource->set('editedby',$modx->user->get('id'));
 $resource->set('editedon',time());
 $resource->set('publishedby',0);
 $resource->set('publishedon',0);
@@ -30,13 +30,13 @@ if ($resource->save() == false) {
 	$modx->error->failure($modx->lexicon('resource_err_unpublish'));
 }
 
-// invoke OnDocUnpublished event
-$modx->invokeEvent('OnDocUnpublished',array('docid' => $resource->id));
+/* invoke OnDocUnpublished event */
+$modx->invokeEvent('OnDocUnpublished',array('docid' => $resource->get('id')));
 
-// log manager action
-$modx->logManagerAction('unpublish_resource','modResource',$resource->id);
+/* log manager action */
+$modx->logManagerAction('unpublish_resource','modResource',$resource->get('id'));
 
-// empty the cache
+/* empty the cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 

@@ -3,13 +3,13 @@
  * @package modx
  * @subpackage processors.security.access.policy
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('policy');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['id'])) {
-    $error->failure('Policy id not specified!');
+    $modx->error->failure('Policy id not specified!');
 }
 $objId = $_REQUEST['id'];
 
@@ -29,5 +29,4 @@ if ($obj = $modx->getObject('modAccessPolicy', $objId)) {
     }
     $data['policy_data'] = $policyData;
 }
-$error->success('', $data);
-?>
+$modx->error->success('', $data);

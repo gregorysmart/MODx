@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.module
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('module');
 
@@ -20,22 +19,22 @@ if (!isset($_REQUEST['id'])) processError($modx->lexicon('module_err_run'));
 
 $module = $modx->getObject('modModule',$_REQUEST['id']);
 
-if($module->disabled == 1) processError($modx->lexicon('module_disabled'));
+if ($module->get('disabled') == 1) processError($modx->lexicon('module_disabled'));
 
 if ($module->getMany('modModuleUserGroup')) {
 	$memberships= $modx->user->getMany('modUserGroupMember');
 	foreach($module->modModuleUserGroup as $usergroup) {
 		foreach ($memberships as $membership) {
-			if ($usergroup->usergroup == $membership->user_group) $has_access = true;
+			if ($usergroup->get('usergroup') == $membership->get('user_group')) $has_access = true;
 		}
 	}
 	if (!isset($has_access)) processError($modx->lexicon('permission_denied'));
 }
 
-// load module configuration
+/* load module configuration */
 $parameter = array();
-if (!empty($module->properties)) {
-	$tmpParams = explode("&",$module->properties);
+if (!empty($module->get('properties'))) {
+	$tmpParams = explode("&",$module->get('properties'));
 	for ($x=0; $x<count($tmpParams); $x++) {
 		$pTmp = explode("=", $tmpParams[$x]);
 		$pvTmp = explode(";", trim($pTmp[1]));
@@ -44,17 +43,17 @@ if (!empty($module->properties)) {
 	}
 }
 
-// store params inside event object
+/* store params inside event object */
 $modx->event->params = &$parameter;
 if(is_array($parameter)) {
 	extract($parameter, EXTR_SKIP);
 }
 ob_start();
-	$mod = eval($module->modulecode);
+	$mod = eval($module->get('modulecode'));
 	$msg = ob_get_contents();
 ob_end_clean();
 if ($php_errormsg) {
-	// ignore php5 strict errors
+	/* ignore php5 strict errors */
 	if(!strpos($php_errormsg,'Deprecated')) processError($modx->lexicon('module_err_run'));
 }
 unset($modx->event->params);

@@ -7,7 +7,7 @@ if ($resourceClass != 'modStaticResource') $error->failure('Resource class is in
 
 $resource = $modx->newObject($resourceClass);
 
-// specific data escaping
+/* specific data escaping */
 $_POST['pagetitle'] = trim($_POST['pagetitle']);
 if (empty($_POST['menuindex'])) $_POST['menuindex'] = 0;
 $_POST['variablesmodified'] = isset($_POST['variablesmodified'])
@@ -24,14 +24,14 @@ $_POST['cacheable'] = !isset($_POST['cacheable']) ? 0 : 1;
 $_POST['searchable'] = !isset($_POST['searchable']) ? 0 : 1;
 $_POST['syncsite'] = !isset($_POST['syncsite']) ? 0 : 1;
 
-// default pagetitle
+/* default pagetitle */
 if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_document');
 
 $_POST['context_key']= !isset($_POST['context_key']) ? 'web' : $_POST['context_key'];
 
-// friendly url alias checks
+/* friendly url alias checks */
 if ($modx->config['friendly_alias_urls']) {
-    // auto assign alias
+    /* auto assign alias */
     if ($_POST['alias'] == '' && $modx->config['automatic_alias']) {
         $_POST['alias'] = strtolower(trim($resource->cleanAlias($_POST['pagetitle'])));
     } else {
@@ -78,7 +78,7 @@ if ($modx->config['friendly_alias_urls']) {
 if ($modx->error->hasError()) $modx->error->failure();
 
 
-// publish and unpublish dates
+/* publish and unpublish dates */
 $now = time();
 if (empty($_POST['pub_date'])) {
     $_POST['pub_date'] = 0;
@@ -118,20 +118,19 @@ $tvs = $modx->getCollection('modTemplateVar',$c);
 
 foreach ($tvs as $tv) {
     $tmplvar = '';
-    if ($tv->type == 'url') {
-        $tmplvar = $_POST['tv'.$tv->id];
+    if ($tv->get('type') == 'url') {
+        $tmplvar = $_POST['tv'.$tv->get('id')];
         if ($_POST["tv" . $row['name'] . '_prefix'] != '--') {
             $tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
-            $tmplvar = $_POST['tv'.$tv->id.'_prefix'].$tmplvar;
+            $tmplvar = $_POST['tv'.$tv->get('id').'_prefix'].$tmplvar;
         }
-    } elseif ($tv->type == 'file') {
-        /* Modified by Timon for use with resource browser */
-        $tmplvar = $_POST['tv'.$tv->id];
+    } elseif ($tv->get('type') == 'file') {
+        $tmplvar = $_POST['tv'.$tv->get('id')];
     } else {
-        if (is_array($_POST['tv'.$tv->id])) {
-            // handles checkboxes & multiple selects elements
+        if (is_array($_POST['tv'.$tv->get('id')])) {
+            /* handles checkboxes & multiple selects elements */
             $feature_insert = array ();
-            $lst = $_POST['tv'.$tv->id];
+            $lst = $_POST['tv'.$tv->get('id')];
             while (list($featureValue, $feature_item) = each($lst)) {
                 $feature_insert[count($feature_insert)] = $feature_item;
             }
@@ -140,24 +139,24 @@ foreach ($tvs as $tv) {
             $tmplvar = $_POST['tv'.$tv->id];
         }
     }
-    // save value if it was mopdified
-    if (in_array($tv->id, $_POST['variablesmodified'])) {
-        if (strlen($tmplvar) > 0 && $tmplvar != $tv->default_text) {
-            $tmplvars[$tv->id] = array (
-                $tv->id,
+    /* save value if it was mopdified */
+    if (in_array($tv->get('id'), $_POST['variablesmodified'])) {
+        if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
+            $tmplvars[$tv->get('id')] = array (
+                $tv->get('id'),
                 $tmplvar,
             );
-        } else $tmplvars[$tv->id] = $tv->id;
+        } else $tmplvars[$tv->get('id')] = $tv->get('id');
     }
 }
 
-// invoke OnBeforeDocFormSave event
+/* invoke OnBeforeDocFormSave event */
 $modx->invokeEvent('OnBeforeDocFormSave',array(
 	'mode' => 'new',
 	'id' => 0,
 ));
 
-// Deny publishing if not permitted
+/* deny publishing if not permitted */
 if (!$modx->hasPermission('publish_document')) {
 	$_POST['pub_date'] = 0;
 	$_POST['unpub_date'] = 0;
@@ -165,71 +164,79 @@ if (!$modx->hasPermission('publish_document')) {
 }
 
 $_POST['publishedon'] = $_POST['published'] ? time() : 0;
-$_POST['publishedby'] = $_POST['published'] ? $modx->getLoginUserID() : 0;
+$_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 
-// Now save data
+/* set fields */
 $resource->fromArray($_POST);
-if (!$resource->class_key) {
+
+/* increase menu index if this is a new resource */
+if (!isset($modx->config['auto_menuindex']) || $modx->config['auto_menuindex']) {
+    $menuindex = $modx->getCount('modResource',array('parent' => $resource->get('parent')));
+}
+$resource->set('menuindex',isset($menuindex) ? $menuindex : 0);
+
+/* handle class key */
+if (!$resource->get('class_key')) {
     $resource->set('class_key', $resourceClass);
 }
 
-if (!$resource->save()) $modx->error->failure($modx->lexicon('resource_err_save'));
+/* save data */
+if ($resource->save() == false) {
+    $modx->error->failure($modx->lexicon('resource_err_save'));
+}
 
-// Modified by Raymond for TV - Orig Added by Apodigm for DocVars
+
+/* handle tmplvars */
 foreach ($tmplvars as $field => $value) {
 	if (is_array($value)) {
 		$tvId = $value[0];
 		$tvVal = $value[1];
 		$tvc = $modx->newObject('modTemplateVarResource');
 		$tvc->set('tmplvarid',$value[0]);
-		$tvc->set('contentid',$resource->id);
+		$tvc->set('contentid',$resource->get('id'));
 		$tvc->set('value',$value[1]);
 		$tvc->save();
 	}
 }
-//End Modification
 
 if (is_array($_POST['docgroups'])) {
     foreach ($_POST['docgroups'] as $dgkey => $value) {
         $dgd = $modx->newObject('modResourceGroupResource');
         $dgd->set('document_group',$value);
-        $dgd->set('document',$resource->id);
+        $dgd->set('document',$resource->get('id'));
         $dgd->save();
     }
 }
 
-/*******************************************************************************/
 if ($_POST['parent'] != 0) {
 	$parent = $modx->getObject('modResource', $_POST['parent']);
 	$parent->set('isfolder', 1);
 	$parent->save();
 }
-// end of the parent stuff
-/*******************************************************************************/
 
-// Save META Keywords
+/* Save META Keywords */
 if ($modx->hasPermission('edit_doc_metatags')) {
-	// keywords - remove old keywords first
-	$okws = $modx->getCollection('modResourceKeyword',array('content_id' => $resource->id));
+	/* keywords - remove old keywords first */
+	$okws = $modx->getCollection('modResourceKeyword',array('content_id' => $resource->get('id')));
 	foreach ($okws as $kw) $kw->remove();
 
 	if (is_array($keywords)) {
 		foreach ($keywords as $keyword) {
 			$kw = $modx->newObject('modResourceKeyword');
-			$kw->set('content_id',$resource->id);
+			$kw->set('content_id',$resource->get('id'));
 			$kw->set('keyword_id',$keyword);
 			$kw->save();
 		}
 	}
 
-	// meta tags - remove old tags first
-	$omts = $modx->getCollection('modResourceMetatag',array('content_id' => $resource->id));
+	/* meta tags - remove old tags first */
+	$omts = $modx->getCollection('modResourceMetatag',array('content_id' => $resource->get('id')));
 	foreach ($omts as $mt) $mt->remove();
 
 	if (is_array($metatags)) {
 		foreach ($metatags as $metatag) {
 			$mt = $modx->newObject('modResourceMetatag');
-			$mt->set('content_id',$resource->id);
+			$mt->set('content_id',$resource->get('id'));
 			$mt->set('metatag_id',$metatag);
 			$mt->save();
 		}
@@ -242,15 +249,15 @@ if ($modx->hasPermission('edit_doc_metatags')) {
 	}
 }
 
-// invoke OnDocFormSave event
+/* invoke OnDocFormSave event */
 $modx->invokeEvent('OnDocFormSave',array(
 	'mode' => 'new',
-	'id' => $resource->id,
+	'id' => $resource->get('id'),
     'resource' => & $resource
 ));
 
 if ($_POST['syncsite'] == 1) {
-	// empty cache
+	/* empty cache */
     $cacheManager= $modx->getCacheManager();
     $cacheManager->clearCache(array (
             "{$resource->context_key}/resources/",
@@ -263,4 +270,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$modx->error->success('', array('id' => $resource->id));
+$modx->error->success('', array('id' => $resource->get('id')));

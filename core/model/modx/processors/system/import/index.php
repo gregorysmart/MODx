@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.import
  */
-
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('import');
 
@@ -55,10 +54,10 @@ $filesfound= 0;
 
 $files= $modx->import->getFiles($filesfound, $filepath);
 
-// no. of files to import
+/* no. of files to import */
 $results .= sprintf($modx->lexicon('import_files_found'), $filesfound) . '<br />';
 
-// import files
+/* import files */
 @ini_set('max_execution_time', 0);
 if (count($files) > 0) {
     $modx->import->importFiles($allowedfiles, $parent, $filepath, $files, $context, $class, $basefilepath);
@@ -69,4 +68,4 @@ $importend= $modx->getMicroTime();
 $totaltime= ($importend - $importstart);
 $results .= sprintf("<br />" . $modx->lexicon('import_site_time'), round($totaltime, 3));
 
-$error->success($results);
+$modx->error->success($results);

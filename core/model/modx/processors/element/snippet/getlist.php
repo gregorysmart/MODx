@@ -11,7 +11,7 @@ if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'name';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
 $c = $modx->newQuery('modSnippet');
-$c = $c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
+$c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
 
 if (isset($_REQUEST['limit'])) {
     $c = $c->limit($_REQUEST['limit'],$_REQUEST['start']);

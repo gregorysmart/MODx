@@ -20,7 +20,7 @@ $c = array(
     'version' => $modx->version['full_version'],
 );
 
-// if custom context, load into MODx.config
+/* if custom context, load into MODx.config */
 if (isset($_REQUEST['action']) && isset($_REQUEST['ctx'])
     && $_REQUEST['ctx'] != 'mgr' && $_REQUEST['ctx'] != ''
     && $_REQUEST['action'] != '' && isset($modx->actionMap[$_REQUEST['action']])) {

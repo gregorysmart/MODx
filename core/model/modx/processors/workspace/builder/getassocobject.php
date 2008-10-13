@@ -25,7 +25,7 @@ $os = array();
 foreach ($objects as $object) {
     $oa = $object->toArray();
     $pk = 'id';
-    // needs to be dynamic
+    /* needs to be dynamic */
     switch ($class_key) {
         case 'modDocument':
         case 'modResource':

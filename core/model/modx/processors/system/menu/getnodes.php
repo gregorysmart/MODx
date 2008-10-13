@@ -13,11 +13,10 @@ if (!isset($_REQUEST['id'])) $_REQUEST['id'] = 'n_0';
 
 $id = str_replace('n_','',$_REQUEST['id']);
 
-
 $c = $modx->newQuery('modMenu');
 $c->where(array('parent' => $id));
 $c->sortby('menuindex','ASC');
-//$c->limit($_REQUEST['limit'],$_REQUEST['start']);
+/* $c->limit($_REQUEST['limit'],$_REQUEST['start']); */
 
 $menus = $modx->getCollection('modMenu',$c);
 
@@ -28,7 +27,7 @@ $count = $modx->getCount('modMenu',$cc);
 $as = array();
 foreach ($menus as $menu) {
 	$action = $menu->getOne('Action');
-	$controller = $action != NULL && $action->controller != '' ? $action->controller : '';
+	$controller = $action != NULL && $action->get('controller') != '' ? $action->get('controller') : '';
 	if (strlen($controller) > 1 && substr($controller,strlen($controller)-4,strlen($controller)) != '.php') {
 		if (!file_exists($modx->config['manager_path'].'controllers/'.$controller.'.php')) {
 			$controller .= '/index.php';
@@ -37,11 +36,11 @@ foreach ($menus as $menu) {
 			$controller .= '.php';
 		}
 	}
-	$text = $modx->lexicon($menu->text);
+	$text = $modx->lexicon($menu->get('text'));
 
 	$as[] = array(
 		'text' => $text.($controller != '' ? ' <i>('.$controller.')</i>' : ''),
-		'id' => 'n_'.$menu->id,
+		'id' => 'n_'.$menu->get('id'),
 		'leaf' => 0,
 		'cls' => 'folder',
 		'type' => 'menu',

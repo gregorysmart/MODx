@@ -1,13 +1,14 @@
 <?php
 /**
- * Gets a dynamic toolbar for the Resource tree. TODO: Implement security for
- * emptying recycle bin and creating resources.
+ * Gets a dynamic toolbar for the Resource tree.
+ * TODO: Implement security for emptying recycle bin and creating resources.
+ *
  * @package modx
  * @subpackage processors.layout.tree.resource
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
+
 $p = $modx->config['manager_url'].'templates/'.$modx->config['manager_theme'].'/';
 
 $actions = $modx->request->getAllActionIDs();

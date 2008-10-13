@@ -3,35 +3,35 @@
  * @package modx
  * @subpackage processors.layout.tree.resource
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
 $nodes = array();
 getNodesFormatted($nodes,$data);
 
-// readjust cache
+/* readjust cache */
 foreach ($nodes as $ar_node) {
 	$node = $modx->getObject('modResource',$ar_node['id']);
 	if ($node == null) continue;
-	$old_parent_id = $node->parent;
+	$old_parent_id = $node->get('parent');
 
 	if ($old_parent_id != $ar_node['parent']) {
-		// get new parent, if invalid, skip, unless is root
+		/* get new parent, if invalid, skip, unless is root */
 		if ($ar_node['parent'] != 0) {
 			$parent = $modx->getObject('modResource',$ar_node['parent']);
 			if ($parent == null) continue;
 		}
 
-		// save new parent
+		/* save new parent */
 		$node->set('parent',$ar_node['parent']);
 
-		// check if old parent has children left
+		/* check if old parent has children left */
 		$old_parent = $modx->getObject('modResource',$old_parent_id);
 		if ($old_parent != null) $old_parent->checkChildren();
 
-		// change new parent to folder
+		/* change new parent to folder */
 		if ($ar_node['parent'] != 0) {
 			$parent->set('isfolder',1);
 			$parent->save();

@@ -8,7 +8,7 @@ $modx->lexicon->load('workspace','package_builder');
 
 if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// load the modPackageBuilder class and get an instance
+/* load the modXMLPackageBuilder class and get an instance */
 $modx->log(MODX_LOG_LEVEL_INFO,'Loading package builder.');
 $modx->loadClass('transport.modXMLPackageBuilder','',false, true);
 $builder = new modXMLPackageBuilder($modx);
@@ -23,7 +23,7 @@ if (!isset($_FILE['error']) || $_FILE['error'] != '0') {
 	$modx->error->failure($modx->lexicon('xml_file_err_upload'));
 }
 
-// build the package
+/* build the package */
 $modx->log(MODX_LOG_LEVEL_INFO,'Attempting to build the package.');
 if ($builder->build($_FILE['tmp_name']) === false) {
     $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('package_build_err'));

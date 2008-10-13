@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.security.access.policy
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('policy');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['id'])) $error->failure('Id not specified in request!');
@@ -20,7 +20,7 @@ if ($policy == null) {
     $da[] = array(
         'text' => 'Policies',
         'id' => 'n_0',
-        'leaf' => 0,
+        'leaf' => false,
         'type' => 'policy',
         'cls' => 'folder',
     );
@@ -28,7 +28,7 @@ if ($policy == null) {
     $da[] = array(
         'text' => $policy->get('name'),
         'id' => 'n_'.$policy->get('id'),
-        'leaf' => 1,
+        'leaf' => true,
         'type' => 'policy',
         'cls' => 'file',
     );

@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('context');
 
-if (!$modx->hasPermission('edit_context')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('edit_context')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $context= $modx->getObject('modContext', $_REQUEST['key']);
 if ($context == null) $modx->error->failure($modx->lexicon('context_err_nf'));
@@ -18,7 +18,7 @@ if ($context->save() === false) {
 	$modx->error->failure($modx->lexicon('context_err_save'));
 }
 
-// update context settings
+/* update context settings */
 if (isset($_POST['settings'])) {
     $_SETTINGS = $modx->fromJSON($_POST['settings']);
     foreach ($_SETTINGS as $id => $st) {
@@ -28,7 +28,7 @@ if (isset($_POST['settings'])) {
         ));
         $setting->set('value',$st['value']);
 
-        // if name changed, change lexicon string
+        /* if name changed, change lexicon string */
         $entry = $modx->getObject('modLexiconEntry',array(
             'namespace' => 'core',
             'name' => 'setting_'.$st['key'],
@@ -36,8 +36,7 @@ if (isset($_POST['settings'])) {
         if ($entry != null) {
             $entry->set('value',$st['name']);
             $entry->save();
-
-            $r = $modx->lexicon->clearCache($entry->get('language').'/'.$entry->get('namespace').'/'.$entry->get('focus').'.cache.php');
+            $entry->clearCache();
         }
 
         if ($setting->save() == false) {
@@ -47,8 +46,7 @@ if (isset($_POST['settings'])) {
 }
 
 
+/* log manager action */
+$modx->logManagerAction('context_update','modContext',$context->get('id'));
 
-// log manager action
-$modx->logManagerAction('context_update','modContext',$context->id);
-
-$error->success('', $context);
+$modx->error->success('', $context);

@@ -14,7 +14,6 @@ if (!isset($_POST['module'])) $modx->error->failure($modx->lexicon('module_err_n
 $module = $modx->getObject('modModule',$_POST['module']);
 if ($module == null) $modx->error->failure($modx->lexicon('module_err_nf'));
 
-
 $typemap = array(
     'modChunk' => 10,
     'modDocument' => 20,
@@ -30,19 +29,19 @@ if (!isset($typemap[$_POST['classKey']])) {
 }
 
 $moduleDep = $modx->newObject('modModuleDepobj');
-$moduleDep->set('module',$module->id);
+$moduleDep->set('module',$module->get('id'));
 $moduleDep->set('resource',$_POST['object']);
 $moduleDep->set('type',$typemap[$_POST['classKey']]);
 
-if (!$moduleDep->save()) {
+if ($moduleDep->save() == false) {
     $modx->error->failure($modx->lexicon('module_err_dep_save'));
 }
 
-// empty cache
+/* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-// log manager action
-$modx->logManagerAction('module_depobj_create','modModuleDepobj',$moduleDep->id);
+/* log manager action */
+$modx->logManagerAction('module_depobj_create','modModuleDepobj',$moduleDep->get('id'));
 
 $modx->error->success();

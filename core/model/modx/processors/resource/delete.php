@@ -3,15 +3,14 @@
  * @package modx
  * @subpackage processors.resource
  */
-
 require_once MODX_PROCESSORS_PATH . 'index.php';
-// get user id for deletedby, and deleted time
-$user_id = $modx->getLoginUserID();
+$modx->lexicon->load('resource');
+
 $deltime = time();
 
 if (!$modx->hasPermission('delete_document')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// get resource
+/* get resource */
 $resource = $modx->getObject('modResource', $_REQUEST['id']);
 if ($resource == null) {
     $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
@@ -20,10 +19,10 @@ if ($resource == null) {
 if (!$resource->checkPolicy(array('save'=>1, 'delete'=>1)))
     $modx->error->failure($modx->lexicon('permission_denied'));
 
-if ($modx->config['site_start'] == $resource->id) {
+if ($modx->config['site_start'] == $resource->get('id')) {
     $modx->error->failure($modx->lexicon('resource_err_delete_sitestart'));
 }
-if ($modx->config['site_unavailable_page'] == $resource->id) {
+if ($modx->config['site_unavailable_page'] == $resource->get('id')) {
     $modx->error->failure($modx->lexicon('resource_err_delete_siteunavailable'));
 }
 
@@ -36,39 +35,39 @@ function getChildren($parent, & $modx, & $ar_children) {
     $parent->children = $parent->getMany('Children');
     if (count($parent->children) > 0) {
         foreach ($parent->children as $child) {
-            if ($child->id == $modx->config['site_start']) {
-                $modx->error->failure($modx->lexicon('resource_err_delete_container_sitestart',array('id' => $child->id)));
+            if ($child->get('id') == $modx->config['site_start']) {
+                $modx->error->failure($modx->lexicon('resource_err_delete_container_sitestart',array('id' => $child->get('id'))));
             }
-            if ($child->id == $modx->config['site_unavailable_page']) {
-                $modx->error->failure($modx->lexicon('document_err_delete_container_siteunavailable',array('id' => $child->id)));
+            if ($child->get('id') == $modx->config['site_unavailable_page']) {
+                $modx->error->failure($modx->lexicon('document_err_delete_container_siteunavailable',array('id' => $child->get('id'))));
             }
 
             $ar_children[] = $child;
 
-            // recursively loop through tree
+            /* recursively loop through tree */
             getChildren($child, $modx, $ar_children);
         }
     }
 }
 
-// prepare children ids for invokeEvents
+/* prepare children ids for invokeEvents */
 $ar_children_ids = array ();
 foreach ($ar_children as $child) {
-    $ar_children_ids[] = $child->id;
+    $ar_children_ids[] = $child->get('id');
 }
 
-// invoke OnBeforeDocFormDelete event
+/* invoke OnBeforeDocFormDelete event */
 $modx->invokeEvent('OnBeforeDocFormDelete', array (
-    'id' => $resource->id,
+    'id' => $resource->get('id'),
     'children' => $ar_children_ids,
 
 ));
 
-// delete children
+/* delete children */
 if (count($ar_children) > 0) {
     foreach ($ar_children as $child) {
         $child->set('deleted', 1);
-        $child->set('deletedby', $user_id);
+        $child->set('deletedby', $modx->user->get('id'));
         $child->set('deletedon', $deltime);
         if ($child->save() == false) {
             $modx->error->failure($modx->lexicon('resource_err_delete_children'));
@@ -76,25 +75,25 @@ if (count($ar_children) > 0) {
     }
 }
 
-// delete the document.
+/* delete the document. */
 $resource->set('deleted', 1);
-$resource->set('deletedby', $user_id);
+$resource->set('deletedby', $modx->user->get('id'));
 $resource->set('deletedon', $deltime);
 if ($resource->save() == false) {
     $modx->error->failure($modx->lexicon('resource_err_delete'));
 }
 
-// invoke OnDocFormDelete event
+/* invoke OnDocFormDelete event */
 $modx->invokeEvent('OnDocFormDelete', array (
-    'id' => $resource->id,
+    'id' => $resource->get('id'),
     'children' => $ar_children_ids,
 
 ));
 
-// log manager action
-$modx->logManagerAction('delete_resource','modDocument',$resource->id);
+/* log manager action */
+$modx->logManagerAction('delete_resource','modDocument',$resource->get('id'));
 
-// empty cache
+/* empty cache */
 $cacheManager = $modx->getCacheManager();
 $cacheManager->clearCache();
 

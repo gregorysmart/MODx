@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.resource.resourcegroup
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
 
@@ -18,8 +17,8 @@ $rg = $modx->getObject('modResourceGroup',$_DATA['id']);
 if ($rg == null) $modx->error->failure($modx->lexicon('resource_group_err_nf'));
 
 $rgr = $modx->getObject('modResourceGroupResource',array(
-    'document' => $resource->id,
-    'document_group' => $rg->id,
+    'document' => $resource->get('id'),
+    'document_group' => $rg->get('id'),
 ));
 
 if ($_DATA['access'] == true && $rgr != null) {
@@ -30,8 +29,8 @@ if ($_DATA['access'] == false && $rgr == null) {
 }
 if ($_DATA['access'] == true) {
     $rgr = $modx->newObject('modResourceGroupResource');
-    $rgr->set('document',$resource->id);
-    $rgr->set('document_group',$rg->id);
+    $rgr->set('document',$resource->get('id'));
+    $rgr->set('document_group',$rg->get('id'));
     $rgr->save();
 } else {
     $rgr->remove();

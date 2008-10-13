@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.workspace.packages
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
@@ -20,7 +19,7 @@ foreach ($packages as $package) {
     if ($package->installed == '0000-00-00 00:00:00') $package->set('installed',null);
     $pa = $package->toArray();
 
-    // format timestamps
+    /* format timestamps */
     if ($package->get('updated') != '0000-00-00 00:00:00' && $package->get('updated') != null) {
         $pa['updated'] = strftime('%b %e, %Y %I:%M %p',$package->get('updated'));
     } else {

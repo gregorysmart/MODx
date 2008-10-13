@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.template
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('template','category');
 
@@ -11,7 +10,7 @@ if (!$modx->hasPermission('new_template')) $modx->error->failure($modx->lexicon(
 
 if ($_POST['templatename'] == '') $_POST['templatename'] = $modx->lexicon('template_untitled');
 
-// get rid of invalid chars
+/* sanity check on name */
 $_POST['templatename'] = str_replace('>','',$_POST['templatename']);
 $_POST['templatename'] = str_replace('<','',$_POST['templatename']);
 
@@ -20,7 +19,7 @@ if ($name_exists != null) $modx->error->addField('templatename',$modx->lexicon('
 
 if ($modx->error->hasError()) $modx->error->failure();
 
-// category
+/* category */
 if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
 } else {
@@ -29,17 +28,16 @@ if (is_numeric($_POST['category'])) {
 if ($category == null) {
     $category = $modx->newObject('modCategory');
 	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->id = 0;
+		$category->set('id',0);
 	} else {
 		$category->set('category',$_POST['category']);
-		if ($category->save() === false) {
+		if ($category->save() == false) {
 		    $modx->error->failure($modx->lexicon('category_err_save'));
         }
 	}
 }
 
-
-// invoke OnBeforeTempFormSave event
+/* invoke OnBeforeTempFormSave event */
 $modx->invokeEvent('OnBeforeTempFormSave',array(
 	'mode' => 'new',
 	'id' => 0,
@@ -48,33 +46,33 @@ $modx->invokeEvent('OnBeforeTempFormSave',array(
 $template = $modx->newObject('modTemplate');
 $template->fromArray($_POST);
 $template->set('locked', isset($_POST['locked']));
-$template->set('category',$category->id);
+$template->set('category',$category->get('id'));
 
 if ($template->save() === false) {
     $modx->error->failure($modx->lexicon('template_err_save'));
 }
 
 
-// change template access to tvs
+/* change template access to tvs */
 if (isset($_POST['tvs'])) {
     $_TVS = $modx->fromJSON($_POST['tvs']);
     foreach ($_TVS as $id => $tv) {
         if ($tv['access']) {
             $tvt = $modx->getObject('modTemplateVarTemplate',array(
                 'tmplvarid' => $tv['id'],
-                'templateid' => $template->id,
+                'templateid' => $template->get('id'),
             ));
             if ($tvt == null) {
                 $tvt = $modx->newObject('modTemplateVarTemplate');
             }
             $tvt->set('tmplvarid',$tv['id']);
-            $tvt->set('templateid',$template->id);
+            $tvt->set('templateid',$template->get('id'));
             $tvt->set('rank',$tv['rank']);
             $tvt->save();
         } else {
             $tvt = $modx->getObject('modTemplateVarTemplate',array(
                 'tmplvarid' => $tv['id'],
-                'templateid' => $template->id,
+                'templateid' => $template->get('id'),
             ));
             if ($tvt == null) continue;
             $tvt->remove();
@@ -82,16 +80,16 @@ if (isset($_POST['tvs'])) {
     }
 }
 
-// invoke OnTempFormSave event
+/* invoke OnTempFormSave event */
 $modx->invokeEvent('OnTempFormSave',array(
 	'mode' => 'new',
-	'id' => $template->id,
+	'id' => $template->get('id'),
 ));
 
-// log manager action
-$modx->logManagerAction('template_create','modTemplate',$template->id);
+/* log manager action */
+$modx->logManagerAction('template_create','modTemplate',$template->get('id'));
 
-// empty cache
+/* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 

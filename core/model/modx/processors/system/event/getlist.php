@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.event
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_event');
 
@@ -24,7 +23,7 @@ $count = $modx->getCount('modEvent');
 $ss = array();
 foreach ($events as $event) {
     $sa = $event->toArray();
-    
+
     $ss[] = $sa;
 }
 $this->outputArray($ss,$count);

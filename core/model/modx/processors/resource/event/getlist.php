@@ -1,10 +1,10 @@
 <?php
 /**
  * @package modx
- * @subpackage processors.resource
+ * @subpackage processors.resource.event
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -29,12 +29,12 @@ $ps = array();
 $time_format = '%a %b %d, %Y';
 foreach ($publish as $resource) {
     $pa = $resource->toArray();
-    
+
     if ($resource->get('pub_date') != '') {
         $pd = $resource->get('pub_date')+$modx->config['server_offset_time'];
         $pa['pub_date'] = strftime($time_format,$pd);
     }
-    
+
     if ($resource->get('unpub_date') != '') {
         $pd = $resource->get('unpub_date')+$modx->config['server_offset_time'];
         $pa['unpub_date'] = strftime($time_format,$pd);

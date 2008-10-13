@@ -3,13 +3,12 @@
  * @package modx
  * @subpackage processors.resource
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
 
 if (!$modx->hasPermission('purge_deleted')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// get documents
+/* get resources */
 $resources = $modx->getCollection('modResource',array('deleted' => 1));
 
 foreach ($resources as $resource) {
@@ -28,10 +27,10 @@ foreach ($resources as $resource) {
 		$modx->error->failure($modx->lexicon('resource_err_delete'));
     }
 
-	// see if document's parent has any children left
+	/* see if resource's parent has any children left */
 	$parent = $modx->getObject('modResource',$resource->parent);
-	if ($parent->id != null) {
-		$num_children = $modx->getCount('modResource',array('parent' => $parent->id));
+	if ($parent->get('id') != null) {
+		$num_children = $modx->getCount('modResource',array('parent' => $parent->get('id')));
 		if ($num_children <= 0) {
 			$parent->set('isfolder',false);
 			$parent->save();
@@ -39,7 +38,7 @@ foreach ($resources as $resource) {
 	}
 }
 
-// empty cache
+/* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 

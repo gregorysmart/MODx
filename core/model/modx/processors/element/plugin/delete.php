@@ -7,25 +7,25 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
-if (!$modx->hasPermission('delete_plugin')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_plugin')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// get plugin
+/* get plugin */
 $plugin = $modx->getObject('modPlugin', $_REQUEST['id']);
-if ($plugin == null) $error->failure($modx->lexicon('plugin_err_not_found'));
+if ($plugin == null) $modx->error->failure($modx->lexicon('plugin_err_not_found'));
 
-// remove plugin
+/* remove plugin */
 $plugin->remove();
 
-// invoke OnPluginFormDelete event
-$modx->invokeEvent('OnPluginFormDelete', array (
-	'id' => $plugin->id
+/* invoke OnPluginFormDelete event */
+$modx->invokeEvent('OnPluginFormDelete',array(
+	'id' => $plugin->get('id'),
 ));
 
-// log manager action
-$modx->logManagerAction('plugin_delete','modPlugin',$plugin->id);
+/* log manager action */
+$modx->logManagerAction('plugin_delete','modPlugin',$plugin->get('id'));
 
-// empty cache
+/* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$error->success();
+$modx->error->success();

@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.system.contenttype
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('content_type');
+
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'name';

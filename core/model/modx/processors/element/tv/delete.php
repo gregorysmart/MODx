@@ -3,78 +3,74 @@
  * @package modx
  * @subpackage processors.element.tv
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv');
 
-if (!$modx->hasPermission('delete_template')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_template')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-$forced = isset($_REQUEST['force'])? $_REQUEST['force']:0;
+$forced = isset($_REQUEST['force'])? $_REQUEST['force'] : false;
 
-// get tv
+/* get tv */
 $tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
 if ($tv == null) $error->failure($modx->lexicon('tv_err_not_found'));
 
-// get tv relational tables
+/* get tv relational tables */
 $tv->templates = $tv->getMany('modTemplateVarTemplate');
-$tv->documents = $tv->getMany('modTemplateVarResource');
-$tv->docgroups = $tv->getMany('modTemplateVarResourceGroup');
+$tv->resources = $tv->getMany('modTemplateVarResource');
+$tv->resource_groups = $tv->getMany('modTemplateVarResourceGroup');
 
-// check for relations
+/* check for relations */
 if (!$forced) {
 	$c = $modx->newQuery('modTemplateVarResource');
-	$c->where(array('tmplvarid' => $tv->id));
+	$c->where(array('tmplvarid' => $tv->get('id')));
+    $tvds = $modx->getCollection('modTemplateVarResource');
 
-	if (count($tv->documents) > 0) {
-		ob_start();
-		?><p><?php echo $modx->lexicon('tmplvar_inuse'); ?></p>
-		<ul>
-		<?php
+	if (count($tvds) > 0) {
+        $o = '<p>'.$modx->lexicon('tmplvar_inuse').'</p><ul>';
 		foreach ($tvds as $tvd) {
-			?><li>
-				<span style="width: 200px">
-					<a href="index.php?id=<?php echo $tvd->id; ?>&a=27"><?php echo $tvd->pagetitle; ?></a>
-				</span>
-				<?php echo $tvd->description != '' ? ' - '.$tvd->description : ''; ?>
-			</li><?php
+			$o .= '<li><span style="width: 200px"><a href="index.php?id='.$tvd->get('id').'&a=27">';
+            $o .= $tvd->get('pagetitle').'</a></span>';
+            $o .= $tvd->get('description') != '' ? ' - '.$tvd->get('description') : '';
+            $o .= '</li>';
 		}
-		?></ul><?php
-		$buffer = ob_get_contents();
-		ob_clean();
-		$error->failure($buffer);
+        $o .= '</ul>';
+		$modx->error->failure($o);
 	}
 }
 
-// invoke OnBeforeTVFormDelete event
-$modx->invokeEvent('OnBeforeTVFormDelete',array('id' => $tv->id));
+/* invoke OnBeforeTVFormDelete event */
+$modx->invokeEvent('OnBeforeTVFormDelete',array('id' => $tv->get('id')));
 
-// delete variable's content values
-foreach ($tv->documents as $tvd) {
-	if (!$tvd->remove()) $error->failure($modx->lexicon('tvd_err_remove'));
+/* delete variable's content values */
+foreach ($tv->resources as $tvd) {
+	if ($tvd->remove() == false) {
+        $modx->error->failure($modx->lexicon('tvd_err_remove'));
+    }
 }
 
-// delete variable's template access
-foreach ($tv->docgroups as $tvdg) {
-	if ($tvdg->remove()) $error->failure($modx->lexicon('tvdg_err_remove'));
+/* delete variable's template access */
+foreach ($tv->resource_groups as $tvdg) {
+	if ($tvdg->remove() == false) {
+        $modx->error->failure($modx->lexicon('tvdg_err_remove'));
+    }
 }
 
-// delete variable's access permissions
+/* delete variable's access permissions */
 foreach ($tv->templates as $tvt) {
-	if ($tvt->remove()) $error->failure($modx->lexicon('tvt_err_remove'));
+	if ($tvt->remove() == false) {
+        $modx->error->failure($modx->lexicon('tvt_err_remove'));
+    }
 }
 
-
-// delete variable
-if (!$tv->remove()) {
-	$error->failure($modx->lexicon('tv_err_delete'));
+/* delete tv */
+if ($tv->remove() == false) {
+	$modx->error->failure($modx->lexicon('tv_err_delete'));
 }
 
+/* invoke OnTVFormDelete event */
+$modx->invokeEvent('OnTVFormDelete',array('id' => $tv->get('id')));
 
-// invoke OnTVFormDelete event
-$modx->invokeEvent('OnTVFormDelete',array('id' => $tv->id));
+/* log manager action */
+$modx->logManagerAction('tv_delete','modTemplateVar',$tv->get('id'));
 
-
-// log manager action
-$modx->logManagerAction('tv_delete','modTemplateVar',$tv->id);
-
-$error->success();
+$modx->error->success();

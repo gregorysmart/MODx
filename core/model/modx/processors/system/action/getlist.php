@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.system.action
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
+
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'controller';
@@ -13,7 +13,7 @@ if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
 $c = $modx->newQuery('modAction');
 $c->sortby('context_key,'.$_REQUEST['sort'],$_REQUEST['dir']);
-//$c->limit($_REQUEST['limit'],$_REQUEST['start']);
+/* $c->limit($_REQUEST['limit'],$_REQUEST['start']); */
 $actions = $modx->getCollection('modAction',$c);
 
 $count = $modx->getCount('modAction');
@@ -32,7 +32,7 @@ foreach ($actions as $action) {
 			$aa['controller'] .= '.php';
 		}
 	}
-    
+
     $aa['controller'] = $aa['context_key'].' - '.$aa['controller'];
 
 	$as[] = $aa;

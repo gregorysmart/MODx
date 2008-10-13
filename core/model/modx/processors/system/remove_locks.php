@@ -6,12 +6,12 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('remove_locks')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('remove_locks')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-// Remove locks
+/* remove locks */
 $locks = $modx->getCollection('modActiveUser');
 foreach ($locks as $lock) {
-	if (!$lock->remove()) $error->failure($modx->lexicon('remove_locks_error'));
+	if (!$lock->remove()) $modx->error->failure($modx->lexicon('remove_locks_error'));
 }
 
-$error->success();
+$modx->error->success();

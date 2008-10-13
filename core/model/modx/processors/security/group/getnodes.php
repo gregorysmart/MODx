@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.security.group
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : str_replace('n_ug_','',$_REQUEST['id']);
@@ -16,8 +16,8 @@ $groups = $modx->getCollection('modUserGroup',array('parent' => $_REQUEST['id'])
 $da = array();
 foreach ($groups as $group) {
 	$da[] = array(
-		'text' => $group->name,
-		'id' => 'n_ug_'.$group->id,
+		'text' => $group->get('name'),
+		'id' => 'n_ug_'.$group->get('id'),
 		'leaf' => 0,
 		'type' => 'usergroup',
 		'cls' => 'folder',
@@ -47,8 +47,8 @@ if ($g != null) {
 	$users = $g->getUsersIn();
 	foreach ($users as $user) {
 		$da[] = array(
-			'text' => $user->username,
-			'id' => 'n_user_'.$user->id,
+			'text' => $user->get('username'),
+			'id' => 'n_user_'.$user->get('id'),
 			'leaf' => 1,
 			'type' => 'user',
 			'cls' => '',

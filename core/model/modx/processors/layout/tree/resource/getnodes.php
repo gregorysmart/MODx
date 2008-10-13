@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.layout.tree.resource
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource','context');
 
@@ -21,7 +20,7 @@ if (!isset($_REQUEST['id'])) {
 $docgrp = '';
 $orderby = 'context, '.$_REQUEST['sortBy'].' ASC, isfolder, pagetitle';
 
-// grab documents
+/* grab resources */
 if (empty($context) || $context == 'root') {
     $itemClass= 'modContext';
     $c= '`key` NOT IN (\'mgr\', \'connector\')';
@@ -35,7 +34,7 @@ if (empty($context) || $context == 'root') {
     $c->sortby($_REQUEST['sortBy'],'ASC');
 }
 
-// grab actions
+/* grab actions */
 $actions = $modx->request->getAllActionIDs();
 
 $collection = $modx->getCollection($itemClass, $c);
@@ -99,27 +98,27 @@ foreach ($collection as $item) {
             );
 
             $items[] = array(
-                'text' => $item->key,
-                'id' => $item->key . '_0',
+                'text' => $item->get('key'),
+                'id' => $item->get('key') . '_0',
                 'leaf' => 0,
                 'cls' => $class,
-                'qtip' => $item->description,
+                'qtip' => $item->get('description'),
                 'type' => 'context',
-                'href' => 'index.php?a='.$actions['context/view'].'&key='.$item->key,
+                'href' => 'index.php?a='.$actions['context/view'].'&key='.$item->get('key'),
                 'menu' => $menu,
             );
         } else {
             $class = '';
-            if ($item->class_key == 'modWebLink') {
+            if ($item->get('class_key') == 'modWebLink') {
                 $class = 'weblink';
             } else {
-                $class = $item->isfolder ? 'folder' : 'file';
+                $class = $item->get('isfolder') ? 'folder' : 'file';
             }
-            $class .= ($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '').($item->hidemenu == 1 ? ' hidemenu' : '');
+            $class .= ($item->get('published') ? '' : ' unpublished').($item->get('deleted') ? ' deleted' : '').($item->get('hidemenu') == 1 ? ' hidemenu' : '');
             $menu = array(
                 array(
                     'id' => 'doc_header',
-                    'text' => '<b>'.$item->pagetitle.'</b> <i>('.$item->id.')</i>',
+                    'text' => '<b>'.$item->get('pagetitle').'</b> <i>('.$item->get('id').')</i>',
                     'params' => '',
                     'handler' => 'new Function("return false");',
                     'header' => true,
@@ -138,14 +137,14 @@ foreach ($collection as $item) {
                 ),
                 array(
                     'text' => $modx->lexicon('resource_refresh'),
-                    'handler' => 'this.refreshNode.createDelegate(this,["'.$item->context_key . '_'.$item->id.'",false])',
+                    'handler' => 'this.refreshNode.createDelegate(this,["'.$item->get('context_key') . '_'.$item->get('id').'",false])',
                 ),
                 '-',
                 array(
                     'text' => $modx->lexicon('resource_create_here'),
                     'params' => array(
                         'a' => $actions['resource/create'],
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),
@@ -154,7 +153,7 @@ foreach ($collection as $item) {
                     'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modWebLink',
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),
@@ -163,7 +162,7 @@ foreach ($collection as $item) {
                     'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modSymLink',
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),
@@ -172,7 +171,7 @@ foreach ($collection as $item) {
                     'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modStaticResource',
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),'-',
@@ -207,16 +206,16 @@ foreach ($collection as $item) {
                 'handler' => 'this.preview',
             );
 
-            $qtip = ($item->longtitle != '' ? '<b>'.$item->longtitle.'</b><br />' : '').'<i>'.$item->description.'</i>';
+            $qtip = ($item->get('longtitle') != '' ? '<b>'.$item->get('longtitle').'</b><br />' : '').'<i>'.$item->get('description').'</i>';
 
             $items[] = array(
-                'text' => $item->pagetitle.' ('.$item->id.')',
-                'id' => $item->context_key . '_'.$item->id,
-                'leaf' => $item->isfolder ? 0 : 1,
+                'text' => $item->get('pagetitle').' ('.$item->get('id').')',
+                'id' => $item->get('context_key') . '_'.$item->get('id'),
+                'leaf' => $item->get('isfolder') ? 0 : 1,
                 'cls' => $class,
                 'type' => 'modResource',
                 'qtip' => $qtip,
-                'href' => 'index.php?a='.$actions['resource/data'].'&id='.$item->id,
+                'href' => 'index.php?a='.$actions['resource/data'].'&id='.$item->get('id'),
                 'menu' => $menu,
             );
         }

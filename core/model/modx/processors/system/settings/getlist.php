@@ -3,10 +3,10 @@
  * @package modx
  * @subpackage processors.system.settings
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
-if (!$modx->hasPermission('settings')) $error->failure($modx->lexicon('permission_denied'));
+
+if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -47,8 +47,8 @@ foreach ($settings as $setting) {
     $k = 'setting_'.$sa['key'];
 
 
-    // if 3rd party setting, load proper text
-    $modx->lexicon->load($setting->namespace.':default');
+    /* if 3rd party setting, load proper text */
+    $modx->lexicon->load($setting->get('namespace').':default');
 
     if ($modx->lexicon->exists('area_'.$setting->get('area'))) {
         $sa['area_text'] = $modx->lexicon('area_'.$setting->get('area'));
@@ -63,7 +63,7 @@ foreach ($settings as $setting) {
     $sa['oldkey'] = $sa['key'];
     $sa['editedon'] = $sa['editedon'] == '0000-00-00 00:00:00' || $sa['editedon'] == null
         ? ''
-        : strftime('%D %I:%M %p',strtotime($setting->editedon));
+        : strftime('%D %I:%M %p',strtotime($setting->get('editedon')));
 
     $sa['menu'] = array(
         array(

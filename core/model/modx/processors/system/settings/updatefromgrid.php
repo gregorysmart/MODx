@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.system.settings
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
+
 if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
@@ -14,11 +14,11 @@ $setting = $modx->getObject('modSystemSetting',array(
     'key' => $_DATA['key'],
 ));
 
-// set new value
+/* set new value */
 $setting->set('value',$_DATA['value']);
 $setting->set('area',$_DATA['area']);
 
-// if name changed, change lexicon string
+/* if name changed, change lexicon string */
 $entry = $modx->getObject('modLexiconEntry',array(
     'namespace' => $setting->get('namespace'),
     'name' => 'setting_'.$_DATA['oldkey'],

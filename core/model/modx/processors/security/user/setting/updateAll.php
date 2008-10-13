@@ -2,6 +2,7 @@
 /**
  * @package modx
  * @subpackage processors.security.user.setting
+ * @deprecated
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
@@ -9,7 +10,7 @@ $modx->lexicon->load('user');
 
 if (!$modx->hasPermission('save_user')) $error->failure($modx->lexicon('permission_denied'));
 
-// array of post values to ignore in this function
+/* array of post values to ignore in this function */
 $ignore = array (
 	'id',
 	'oldusername',

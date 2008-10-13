@@ -39,7 +39,7 @@ foreach ($settings as $setting) {
 
     $k = 'setting_'.$sa['key'];
 
-    // if 3rd party setting, load proper text
+    /* if 3rd party setting, load proper text */
     $modx->lexicon->load($setting->namespace.':default');
 
     if ($modx->lexicon->exists('area_'.$setting->get('area'))) {

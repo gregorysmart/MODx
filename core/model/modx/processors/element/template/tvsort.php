@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.template
  */
-
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('template');
 
@@ -32,22 +31,22 @@ if (isset ($_POST['sortableVals'])) {
 		$orderArray = getOrderArray($listValue, $listName);
 		foreach ($orderArray as $item) {
 			$c = $modx->newQuery('modTemplateVarTemplate');
-			$c = $c->where(array (
+			$c->where(array (
 				'templateid' => $_POST['templateId'],
-				'tmplvarid' => $item['id']
+				'tmplvarid' => $item['id'],
 			));
 			$tv = $modx->getObject('modTemplateVarTemplate', $c);
 			$tv->set('rank', $item['order']);
-			if (!$tv->save()) $error->failure($modx->lexicon('tvt_err_save'));
+			if (!$tv->save()) $modx->error->failure($modx->lexicon('tvt_err_save'));
 		}
 	}
 
-	// empty cache
+	/* empty cache */
     $cacheManager= $modx->getCacheManager();
     $cacheManager->clearCache();
 
-	// return response as this processor is run via an ajax request
+	/* return response as this processor is run via an ajax request */
 	print $updateMsg;
 }
 
-$error->success();
+$modx->error->success();

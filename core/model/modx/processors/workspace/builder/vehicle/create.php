@@ -12,7 +12,7 @@ $class_key = isset($_POST['classKeyOther']) && $_POST['classKeyOther'] != ''
     ? $_POST['classKeyOther']
     : $_POST['classKey'];
 
-// needs to be dynamic
+/* needs to be dynamic */
 $pk = $_POST['object'];
 switch ($class_key) {
     case 'modDocument':

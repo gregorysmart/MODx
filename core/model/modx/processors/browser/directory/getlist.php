@@ -29,7 +29,7 @@ while(false !== ($name = $odir->read())) {
 	$fullname = $fullpath.'/'.$name;
 	if(!is_readable($fullname)) continue;
 
-	// handle dirs
+	/* handle dirs */
 	if(is_dir($fullname)) {
 		$directories[] = array(
 			'id' => $dir.'/'.$name,
@@ -56,7 +56,7 @@ while(false !== ($name = $odir->read())) {
 		);
 	}
 
-    // get files in current dir
+    /* get files in current dir */
     if (!is_dir($fullname) && $_POST['hideFiles'] != true) {
         $directories[] = array(
             'id' => $dir.'/'.$name,

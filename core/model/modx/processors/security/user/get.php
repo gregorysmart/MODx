@@ -3,14 +3,16 @@
  * @package modx
  * @subpackage processors.security.user
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
-if (!$modx->hasPermission(array('access_permissions' => true, 'edit_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
+
+if (!$modx->hasPermission(array('access_permissions' => true, 'edit_user' => true))) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
 if (!isset($_POST['id'])) $modx->error->failure($modx->lexicon('user_err_ns'));
 $user = $modx->getObject('modUser',$_POST['id']);
-if ($user == null) $error->failure($modx->lexicon('user_err_not_found'));
+if ($user == null) $modx->error->failure($modx->lexicon('user_err_not_found'));
 
 $user->profile = $user->getOne('modUserProfile');
 $ua = $user->toArray();

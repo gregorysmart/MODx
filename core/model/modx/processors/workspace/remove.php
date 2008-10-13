@@ -9,4 +9,4 @@ $modx->lexicon->load('workspace');
 
 if (!$modx->hasPermission('workspaces')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-$error->failure('Not yet implemented.');
+$modx->error->failure('Not yet implemented.');

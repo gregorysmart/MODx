@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.security.access.policy
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('policy');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;

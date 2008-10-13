@@ -3,12 +3,12 @@
  * @package modx
  * @subpackage processors.security.access.target
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('access');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_REQUEST['id'])) $error->failure($modx->lexicon('access_type_err_ns'));
+if (!isset($_REQUEST['id'])) $modx->error->failure($modx->lexicon('access_type_err_ns'));
 
 $targetAttr = explode('_', $_REQUEST['id']);
 $targetClass = count($targetAttr) == 3 ? $targetAttr[1] : '';
@@ -48,7 +48,7 @@ if (empty($targetClass)) {
     	$da[] = array(
     		'text' => $nodeText,
     		'id' => 'n_'.$targetClass.'_'.$targetKey,
-    		'leaf' => 1,
+    		'leaf' => true,
     		'type' => 'modAccess' . substr($targetClass, 3),
     		'cls' => 'file',
     	);

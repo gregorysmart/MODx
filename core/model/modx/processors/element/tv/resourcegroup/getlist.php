@@ -28,18 +28,18 @@ $ts = array();
 foreach ($groups as $group) {
     if (isset($_REQUEST['tv'])) {
         $rgtv = $modx->getObject('modTemplateVarResourceGroup',array(
-            'tmplvarid' => $tv->id,
-            'documentgroup' => $group->id,
+            'tmplvarid' => $tv->get('id'),
+            'documentgroup' => $group->get('id'),
         ));
     } else $rgtv = null;
-    
+
     if ($rgtv != null) {
         $group->set('access',true);
     } else {
         $group->set('access',false);
     }
     $ta = $group->toArray();
-    $ta['menu'] = array(    
+    $ta['menu'] = array(
     );
     $ts[] = $ta;
 }

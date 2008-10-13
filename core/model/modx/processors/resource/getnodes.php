@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.layout.tree.document
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource','context');
 
@@ -21,7 +20,7 @@ if (!isset($_REQUEST['id'])) {
 $docgrp = '';
 $orderby = 'context, '.$_REQUEST['sortBy'].' ASC, isfolder, pagetitle';
 
-// grab documents
+/* grab resources */
 if (empty($context) || $context == 'root') {
     $itemClass= 'modContext';
     $c= '`key` NOT IN (\'mgr\', \'connector\')';
@@ -35,15 +34,13 @@ if (empty($context) || $context == 'root') {
     $c->sortby($_REQUEST['sortBy'],'ASC');
 }
 
-// grab actions
+/* grab actions */
 $actions = $modx->request->getAllActionIDs();
 
 $collection = $modx->getCollection($itemClass, $c);
 $items = array();
 foreach ($collection as $item) {
-    $debug=$modx->setDebug(true);
     $canList = $item->checkPolicy('list');
-    $modx->setDebug($debug);
     if ($canList) {
         if ($itemClass == 'modContext') {
 
@@ -65,7 +62,7 @@ foreach ($collection as $item) {
                 ),
                 '-',
                 array(
-                    'id' => 'create_document',
+                    'id' => 'create_resource',
                     'text' => $modx->lexicon('resource_create_here'),
                     'params' => array(
                         'a' => $actions['resource/create'],
@@ -84,7 +81,7 @@ foreach ($collection as $item) {
                 array(
                     'id' => 'create_symlink',
                     'text' => $modx->lexicon('create_symlink_here'),
-                    'params' => array( 
+                    'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modSymLink',
                         'context_key' => $item->get('key'),
@@ -106,19 +103,19 @@ foreach ($collection as $item) {
                 'id' => $item->key . '_0',
                 'leaf' => 0,
                 'cls' => $class,
-                'qtip' => $item->description,
+                'qtip' => $item->get('description'),
                 'type' => 'context',
-                'href' => 'index.php?a='.$actions['context/view'].'&key='.$item->key,
+                'href' => 'index.php?a='.$actions['context/view'].'&key='.$item->get('key'),
                 'menu' => $menu,
             );
         } else {
 
-            $class = ($item->isfolder ? 'folder' : 'file').($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '');
+            $class = ($item->get('isfolder') ? 'folder' : 'file').($item->get('published') ? '' : ' unpublished').($item->get('deleted') ? ' deleted' : '');
 
             $menu = array(
                 array(
                     'id' => 'doc_header',
-                    'text' => '<b>'.$item->pagetitle.'</b> <i>('.$item->id.')</i>',
+                    'text' => '<b>'.$item->get('pagetitle').'</b> <i>('.$item->get('id').')</i>',
                     'params' => '',
                     'handler' => 'new Function("return false");',
                     'header' => true,
@@ -140,7 +137,7 @@ foreach ($collection as $item) {
                 ),
                 array(
                     'text' => $modx->lexicon('resource_refresh'),
-                    'handler' => 'this.refreshNode.createDelegate(this,["'.$item->context_key . '_'.$item->id.'",false])',
+                    'handler' => 'this.refreshNode.createDelegate(this,["'.$item->get('context_key') . '_'.$item->get('id').'",false])',
                 ),
                 '-',
                 array(
@@ -148,7 +145,7 @@ foreach ($collection as $item) {
                     'text' => $modx->lexicon('resource_create_here'),
                     'params' => array(
                         'a' => $actions['resource/create'],
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),
@@ -158,7 +155,7 @@ foreach ($collection as $item) {
                     'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modWebLink',
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),
@@ -168,7 +165,7 @@ foreach ($collection as $item) {
                     'params' => array(
                         'a' => $actions['resource/create'],
                         'class_key' => 'modStaticResource',
-                        'parent' => $item->id,
+                        'parent' => $item->get('id'),
                         'context_key' => $item->get('context_key'),
                     ),
                 ),'-',
@@ -208,12 +205,12 @@ foreach ($collection as $item) {
                 'handler' => 'this.preview',
             );
 
-            $qtip = ($item->longtitle != '' ? '<b>'.$item->longtitle.'</b><br />' : '').'<i>'.$item->description.'</i>';
+            $qtip = ($item->get('longtitle') != '' ? '<b>'.$item->get('longtitle').'</b><br />' : '').'<i>'.$item->get('description').'</i>';
 
             $items[] = array(
-                'text' => $item->pagetitle.' ('.$item->id.')',
-                'id' => $item->context_key . '_'.$item->id,
-                'leaf' => $item->isfolder ? 0 : 1,
+                'text' => $item->get('pagetitle').' ('.$item->get('id').')',
+                'id' => $item->get('context_key') . '_'.$item->get('id'),
+                'leaf' => $item->get('isfolder') ? false : true,
                 'cls' => $class,
                 'type' => 'modResource',
                 'qtip' => $qtip,

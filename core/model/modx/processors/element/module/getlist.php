@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.module
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('module');
 
@@ -12,6 +11,7 @@ if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'name';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'DESC';
 if ($_REQUEST['sort'] == 'module_link') $_REQUEST['sort'] = 'name';
+
 $c = $modx->newQuery('modModule');
 $c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
@@ -24,8 +24,7 @@ $md = array();
 foreach ($modules as $m) {
 	$ma = $m->toArray();
 	$ma['name'] = '<a href="index.php?a='.$actions['element/module/update'].'&id='.$ma['id'].'">'.$ma['name'].'</a>';
-	//$ma['icon'] = $ma['icon'] !='' ? '<a href="index.php?a=112&id='.$ma['id'].'"><img src="'.$ma['icon'].' alt="" /></a>' : '<a href="index.php?a=112&id='.$ma['id'].'"><img src="media/style/'.$modx->config['manager_theme'].'/images/icons/module.gif" alt="" /></a>';
-    
+
     $ma['menu'] = array(
         array(
             'text' => $modx->lexicon('module_run'),

@@ -20,7 +20,7 @@ $d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['
     : $modx->config['base_path'].$modx->config['rb_base_dir'];
 $parentdir = $d.$_POST['parent'].'/';
 
-if (!is_dir($parentdir)) $error->failure($modx->lexicon('file_folder_err_parent_invalid'));
+if (!is_dir($parentdir)) $modx->error->failure($modx->lexicon('file_folder_err_parent_invalid'));
 if (!is_readable($parentdir) || !is_writable($parentdir)) {
 	$modx->error->failure($modx->lexicon('file_folder_err_perms_parent'));
 }

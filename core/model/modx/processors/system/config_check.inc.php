@@ -3,7 +3,7 @@ $warningspresent = false;
 $warnings = array();
 
 if (is_writable(MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php')) {
-    // Warn if world writable
+    /* Warn if world writable */
     if (@ fileperms(MODX_CORE_PATH.'config/'.MODX_CONFIG_KEY.'.inc.php') & 0x0002) {
         $warningspresent = true;
         $warnings[] = array($modx->lexicon('configcheck_configinc'));
@@ -31,7 +31,7 @@ if (@ ini_get('register_globals') == true) {
 }
 
 $unapage = $modx->getObject('modResource',$modx->config['unauthorized_page']);
-if ($unapage == null || $unapage->published == 0) {
+if ($unapage == null || $unapage->get('published') == 0) {
     $warningspresent = true;
     $warnings[] = array (
         $modx->lexicon('configcheck_unauthorizedpage_unpublished')
@@ -39,28 +39,28 @@ if ($unapage == null || $unapage->published == 0) {
 }
 
 $errpage = $modx->getObject('modResource',$modx->config['error_page']);
-if ($errpage == null || $errpage->published == 0) {
+if ($errpage == null || $errpage->get('published') == 0) {
     $warningspresent = true;
     $warnings[] = array (
         $modx->lexicon('configcheck_errorpage_unpublished')
     );
 }
 
-if ($unapage == null || $unapage->privateweb == 1) {
+if ($unapage == null || $unapage->get('privateweb') == 1) {
     $warningspresent = true;
     $warnings[] = array (
         $modx->lexicon('configcheck_unauthorizedpage_unavailable')
     );
 }
 
-if ($errpage == null || $errpage->privateweb == 1) {
+if ($errpage == null || $errpage->get('privateweb') == 1) {
     $warningspresent = true;
     $warnings[] = array (
         $modx->lexicon('configcheck_errorpage_unavailable')
     );
 }
 
-// clear file info cache
+/* clear file info cache */
 clearstatcache();
 if ($warningspresent === true) {
 

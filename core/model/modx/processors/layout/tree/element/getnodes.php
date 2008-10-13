@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.layout.tree.element
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('category');
 
@@ -30,28 +29,28 @@ $ar_actionmap = array(
     'module' => $actions['element/module/update'],
 );
 
-// split the array
+/* split the array */
 $g = split('_',$grab);
 $resources = array();
 
 switch ($g[0]) {
-	case 'type': // if in the element, but not in a category
+	case 'type': /* if in the element, but not in a category */
         $elementType = ucfirst($g[1]);
-		// 1: type - eg. category_templates
+		/* 1: type - eg. category_templates */
 		$categories = $modx->getCollection('modCategory');
 		foreach ($categories as $category) {
 		    $els = $category->getMany($ar_typemap[$g[1]]);
             if (count($els) <= 0) continue;
 			$resources[] = array(
-				'text' => $category->category,
-				'id' => 'n_'.$g[1].'_category_'.($category->id != null ? $category->id : 0),
-				'leaf' => 0,
+				'text' => $category->get('category'),
+				'id' => 'n_'.$g[1].'_category_'.($category->get('id') != null ? $category->get('id') : 0),
+				'leaf' => false,
 				'cls' => 'folder',
 				'href' => '',
                 'type' => $g[1],
                 'menu' => array(
                     array(
-                        'text' => '<b>'.$category->category.'</b>',
+                        'text' => '<b>'.$category->get('category').'</b>',
                         'params' => '',
                         'handler' => 'new Function("return false");',
                         'header' => true,
@@ -72,16 +71,16 @@ switch ($g[0]) {
 
 		$elements = $modx->getCollection($ar_typemap[$g[1]],array('category' => 0));
 		foreach ($elements as $element) {
-			$name = $g[1] == 'template' ? $element->templatename : $element->name;
+			$name = $g[1] == 'template' ? $element->get('templatename') : $element->get('name');
 			$resources[] = array(
 				'text' => $name,
-				'id' => 'n_'.$g[1].'_element_'.$element->id.'_0',
-				'leaf' => 1,
+				'id' => 'n_'.$g[1].'_element_'.$element->get('id').'_0',
+				'leaf' => true,
 				'cls' => 'file',
-				'href' => 'index.php?a='.$ar_actionmap[$g[1]].'&id='.$element->id,
+				'href' => 'index.php?a='.$ar_actionmap[$g[1]].'&id='.$element->get('id'),
 				'hrefTarget' => 'modx_content',
                 'type' => $g[1],
-                'qtip' => $element->description,
+                'qtip' => $element->get('description'),
                 'menu' => array(
                     array(
                         'text' => '<b>'.$name.'</b>',
@@ -92,11 +91,11 @@ switch ($g[0]) {
                     ,'-',
                     array(
                         'text' => $modx->lexicon('edit').' '.$elementType,
-                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->id, ),
+                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->get('id'), ),
                     ),
                     array(
                         'text' => $modx->lexicon('duplicate').' '.$elementType,
-                        'handler' => 'this.duplicateElement.createDelegate(this,['.$element->id.',"'.strtolower($elementType).'"],true)',
+                        'handler' => 'this.duplicateElement.createDelegate(this,['.$element->get('id').',"'.strtolower($elementType).'"],true)',
                     ),
                     array(
                         'text' => $modx->lexicon('remove').' '.$elementType,
@@ -117,13 +116,13 @@ switch ($g[0]) {
 
 
 		break;
-	case 'root': // if clicking one of the root nodes
+	case 'root': /* if clicking one of the root nodes */
         $elementType = ucfirst($g[0]);
 		$resources = array(
 			array(
 				'text' => $modx->lexicon('templates'),
 				'id' => 'n_type_template',
-				'leaf' => 0,
+				'leaf' => false,
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'template',
@@ -142,7 +141,7 @@ switch ($g[0]) {
 			array(
 				'text' => $modx->lexicon('tmplvars'),
 				'id' => 'n_type_tv',
-				'leaf' => 0,
+				'leaf' => false,
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'tv',
@@ -161,7 +160,7 @@ switch ($g[0]) {
 			array(
 				'text' => $modx->lexicon('chunks'),
 				'id' => 'n_type_chunk',
-				'leaf' => 0,
+				'leaf' => false,
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'chunk',
@@ -180,7 +179,7 @@ switch ($g[0]) {
 			array(
 				'text' => $modx->lexicon('snippets'),
 				'id' => 'n_type_snippet',
-				'leaf' => 0,
+				'leaf' => false,
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'snippet',
@@ -199,7 +198,7 @@ switch ($g[0]) {
 			array(
 				'text' => $modx->lexicon('plugins'),
 				'id' => 'n_type_plugin',
-				'leaf' => 0,
+				'leaf' => false,
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'plugin',
@@ -218,7 +217,7 @@ switch ($g[0]) {
             array(
                 'text' => $modx->lexicon('modules'),
                 'id' => 'n_type_module',
-                'leaf' => 0,
+                'leaf' => false,
                 'cls' => 'folder',
                 'href' => '',
                 'type' => 'module',
@@ -250,13 +249,13 @@ switch ($g[0]) {
             ),
 		);
 		break;
-    case 'category':
+    case 'category': /* if trying to grab all categories */
         $categories = $modx->getCollection('modCategory');
         foreach ($categories as $category) {
         	$resources[] = array(
                 'text' => $category->get('category'),
                 'id' => 'n_category_'.$category->get('id'),
-                'leaf' => 1,
+                'leaf' => true,
                 'cls' => 'file',
                 'href' => '',
                 'type' => 'category',
@@ -278,25 +277,22 @@ switch ($g[0]) {
             );
         }
         break;
-    case 'category':
-
-        break;
-	default: // if clicking a node in a category
-		// 0: type,  1: element/category  2: elID  3: catID
+	default: /* if clicking a node in a category */
+		/* 0: type,  1: element/category  2: elID  3: catID */
 		$cat_id = isset($g[3]) ? $g[3] : ($g[1] == 'category' ? $g[2] : 0);
 
 		$elements = $modx->getCollection($ar_typemap[$g[0]],array('category' => $cat_id));
         $elementType = ucfirst($g[0]);
 		foreach ($elements as $element) {
-			$name = $g[0] == 'template' ? $element->templatename : $element->name;
+			$name = $g[0] == 'template' ? $element->get('templatename') : $element->get('name');
 
 			$resources[] = array(
 				'text' => $name,
 				// setup g[], 1: 'element', 2: type of el, 3: el ID, 4: cat ID
-				'id' => 'n_'.$g[0].'_element_'.$element->id.'_'.$element->category,
+				'id' => 'n_'.$g[0].'_element_'.$element->get('id').'_'.$element->get('category'),
 				'leaf' => 1,
 				'cls' => 'file',
-				'href' => 'index.php?a='.$ar_actionmap[$g[0]].'&id='.$element->id,
+				'href' => 'index.php?a='.$ar_actionmap[$g[0]].'&id='.$element->get('id'),
 				'hrefTarget' => 'modx_content',
                 'type' => $g[0],
                 'menu' => array(
@@ -308,7 +304,7 @@ switch ($g[0]) {
                     ),'-',
                     array(
                         'text' => $modx->lexicon('edit').' '.$elementType,
-                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->id, ),
+                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->get('id'), ),
                     ),
                     array(
                         'text' => $modx->lexicon('duplicate').' '.$elementType,

@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
-// get plugin
+/* get plugin */
 $plugin = $modx->getObject('modPlugin', $_REQUEST['id']);
 if ($plugin == null) $modx->error->failure($modx->lexicon('plugin_err_not_found'));
 

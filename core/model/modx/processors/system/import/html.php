@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.import
  */
-
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('import');
 
@@ -49,7 +48,7 @@ if (!function_exists('importFiles')) {
         }
         foreach ($files as $id => $value) {
             if (is_array($value)) {
-                // create folder
+                /* create folder */
                 $resource= $modx->newObject('modDocument');
                 $resource->set('context_key', $context);
                 $resource->set('content_type', 1);
@@ -77,7 +76,7 @@ if (!function_exists('importFiles')) {
                     importFiles($modx, $results, $allowedfiles, $resource->get('id'), $filepath . "/{$id}/", $value, $context);
                 }
             } else {
-                // create dcoument
+                /* create resource */
                 $filename= $value;
                 $fparts= explode(".", $value);
                 $value= $fparts[0];
@@ -128,7 +127,7 @@ if (!function_exists('importFiles')) {
 }
 if (!function_exists('getFileContent')) {
     function getFileContent(& $modx, & $results, $file) {
-        // get the file
+        /* get the file */
         if (@ $handle= fopen($file, "r")) {
             $buffer= "";
             while (!feof($handle)) {
@@ -143,7 +142,7 @@ if (!function_exists('getFileContent')) {
 }
 if (!function_exists('aliasCheck')) {
     function getResourceAlias(& $modx, & $resource, & $results, $alias, $parent, $context= 'web') {
-        // auto assign alias
+        /* auto assign alias */
         if ($alias == '' && $modx->config['automatic_alias']) {
             $alias= strtolower(trim($resource->cleanAlias($resource->get('pagetitle'))));
         } else {
@@ -215,10 +214,10 @@ $filesfound= 0;
 
 $files= getFiles($modx, $results, $filesfound, $filepath);
 
-// no. of files to import
+/* no. of files to import */
 $results .= sprintf($modx->lexicon('import_files_found'), $filesfound);
 
-// import files
+/* import files */
 if (count($files) > 0) {
     importFiles($modx, $results, $allowedfiles, $parent, $filepath, $files, $context);
 }
@@ -227,4 +226,4 @@ $importend= $modx->getMicroTime();
 $totaltime= ($importend - $importstart);
 $results .= sprintf("<p />" . $modx->lexicon('import_site_time'), round($totaltime, 3));
 
-$error->success($results);
+$modx->error->success($results);

@@ -23,6 +23,8 @@ if (!is_readable($old_file) || !is_writable($old_file))
 
 $new_file = strtr(dirname($old_file).'/'.$_POST['new_name'],'\\','/');
 
-if (!@rename($old_file,$new_file)) $modx->error->failure($modx->lexicon('file_err_rename'));
+if (!@rename($old_file,$new_file)) {
+    $modx->error->failure($modx->lexicon('file_err_rename'));
+}
 
 $modx->error->success();

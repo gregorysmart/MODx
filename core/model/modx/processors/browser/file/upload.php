@@ -5,8 +5,9 @@ $modx->lexicon->load('file');
 
 if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_REQUEST['path']) || $_REQUEST['path'] == '')
-    $error->failure($modx->lexicon('file_folder_err_ns'));
+if (!isset($_REQUEST['path']) || $_REQUEST['path'] == '') {
+    $modx->error->failure($modx->lexicon('file_folder_err_ns'));
+}
 
 $d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['prependPath'] != null
     ? $_POST['prependPath']

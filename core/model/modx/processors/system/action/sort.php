@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.action
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
@@ -14,26 +13,26 @@ $data = $modx->fromJSON($data);
 $nodes = array();
 getNodesFormatted($nodes,$data);
 
-// readjust cache
+/* readjust cache */
 foreach ($nodes as $ar_node) {
 	$node = $modx->getObject('modAction',$ar_node['id']);
-	if ($node == NULL) continue;
-	$old_parent_id = $node->parent;
+	if ($node == null) continue;
+	$old_parent_id = $node->get('parent');
 
 	if ($old_parent_id != $ar_node['parent']) {
-		// get new parent, if invalid, skip, unless is root
+		/* get new parent, if invalid, skip, unless is root */
 		if ($ar_node['parent'] != 0) {
 			$parent = $modx->getObject('modAction',$ar_node['parent']);
-			if ($parent == NULL) continue;
+			if ($parent == null) continue;
 		}
 
-		// save new parent
+		/* save new parent */
 		$node->set('parent',$ar_node['parent']);
 	}
 	$node->save();
 }
 
-$error->success();
+$modx->error->success();
 
 function getNodesFormatted(&$ar_nodes,$cur_level,$parent = 0) {
 	$order = 0;

@@ -3,8 +3,8 @@
  * @package modx
  * @subpackage processors.system.activeresource
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
+$modx->lexicon->load('resource');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -21,10 +21,10 @@ $total = $modx->getCount('modResource',$cc);
 
 $rs = array();
 foreach ($resources as $resource) {
-	$editor = $modx->getObject('modUser',$resource->editedby);
+	$editor = $modx->getObject('modUser',$resource->get('editedby'));
 	$r = $resource->get(array_diff(array_keys($resource->_fields), array('content')));
 	$r['editedon'] = strftime('%x %X',$r['editedon']);
-	$r['user'] = $editor->username;
+	$r['user'] = $editor->get('username');
 	$rs[] = $r;
 }
 

@@ -1,10 +1,10 @@
 <?php
 /**
- * Scans for local packages
+ * Scans for local packages to add to the workspace.
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
@@ -22,14 +22,14 @@ while(false !== ($name = $odir->read())) {
 	if(in_array($name,array('.','..','.svn','_notes'))) continue;
 
 	$fullname = $fullpath.'/'.$name;
-	// dont add in unreadable files or directories
+	/* dont add in unreadable files or directories */
 	if(!is_readable($fullname) || is_dir($fullname)) continue;
 
-	// must be a .transport.zip file
+	/* must be a .transport.zip file */
 	if (strlen($name) < 14 || substr($name,strlen($name)-14,strlen($name)) != '.transport.zip') continue;
 	$pname = substr($name,0,strlen($name)-14);
 
-	// must have a name and version at least
+	/* must have a name and version at least */
 	$p = split('-',$pname);
 	if (count($p) < 2) continue;
 
@@ -46,7 +46,7 @@ foreach ($packages as $signature) {
 	$package->set('signature',$signature);
 	$package->set('state',1);
 	$package->set('installed',0);
-	$package->set('workspace',$workspace->id);
+	$package->set('workspace',$workspace->get('id'));
 
 	if ($package->save() === false) {
         $modx->error->failure($modx->lexicon('package_err_create'));

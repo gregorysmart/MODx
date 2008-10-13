@@ -3,9 +3,9 @@
  * @package modx
  * @subpackage processors.security.group
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
+
 if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['id'])) {
@@ -20,7 +20,7 @@ if ($ug->save() === false) {
     $modx->error->failure($modx->lexicon('user_group_err_save'));
 }
 
-// log manager action
-$modx->logManagerAction('save_user_group','modUserGroup',$ug->id);
+/* log manager action */
+$modx->logManagerAction('save_user_group','modUserGroup',$ug->get('id'));
 
 $modx->error->success();

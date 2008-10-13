@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.plugin.event
  */
-
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
@@ -17,7 +16,7 @@ $pe = $modx->getObject('modPluginEvent',array(
 ));
 
 if ($_POST['enabled']) {
-    // enabling system event or editing priority
+    /* enabling system event or editing priority */
     if ($pe == null) {
         $pe = $modx->newObject('modPluginEvent');
     }
@@ -25,12 +24,18 @@ if ($_POST['enabled']) {
     $pe->set('evtid',$_POST['id']);
     $pe->set('priority',$_POST['priority']);
 
-    if (!$pe->save()) $modx->error->failure($modx->lexicon('plugin_event_err_save'));
+    if ($pe->save() == false) {
+        $modx->error->failure($modx->lexicon('plugin_event_err_save'));
+    }
 } else {
-    // removing access
-    if ($pe == null) $modx->error->failure($modx->lexicon('plugin_event_err_nf'));
+    /* removing access */
+    if ($pe == null) {
+        $modx->error->failure($modx->lexicon('plugin_event_err_nf'));
+    }
 
-    if (!$pe->remove()) $modx->error->failure($modx->lexicon('plugin_event_err_remove'));
+    if ($pe->remove() == false) {
+        $modx->error->failure($modx->lexicon('plugin_event_err_remove'));
+    }
 }
 
 $modx->error->success();

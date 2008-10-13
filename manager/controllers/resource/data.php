@@ -1,7 +1,7 @@
 <?php
 /**
- * Loads the resource data page 
- * 
+ * Loads the resource data page
+ *
  * @package modx
  * @subpackage manager.resource
  */
@@ -27,23 +27,21 @@ $resource->getOne('CreatedBy');
 $resource->getOne('EditedBy');
 $resource->getOne('modTemplate');
 
-$_SESSION['itemname'] = $resource->pagetitle;
-
 $dkws = $resource->getMany('modResourceKeyword');
 $resource->keywords = array();
 foreach ($dkws as $dkw) {
-	$resource->keywords[$dkw->keyword_id] = $dkw->getOne('modKeyword');
+	$resource->keywords[$dkw->get('keyword_id')] = $dkw->getOne('modKeyword');
 }
 $keywords = array();
 foreach ($resource->keywords as $kw) {
-	$keywords[] = $kw->keyword;
+	$keywords[] = $kw->get('keyword');
 }
 $keywords = join($keywords,',');
 $modx->smarty->assign('keywords',$keywords);
 
 $server_offset_time= intval($modx->config['server_offset_time']);
-$resource->set('createdon_adjusted',strftime('%c', $resource->createdon + $server_offset_time));
-$resource->set('editedon_adjusted',strftime('%c', $resource->editedon + $server_offset_time));
+$resource->set('createdon_adjusted',strftime('%c', $resource->get('createdon') + $server_offset_time));
+$resource->set('editedon_adjusted',strftime('%c', $resource->get('editedon') + $server_offset_time));
 
 $buffer = '';
 $resource->_contextKey= $resource->get('context_key');
