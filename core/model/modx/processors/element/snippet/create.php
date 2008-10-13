@@ -18,7 +18,7 @@ $_POST['name'] = str_replace('<','',$_POST['name']);
 $name_exists = $modx->getObject('modSnippet',array('name' => $_POST['name']));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('snippet_err_exists_name'));
 
-if ($modx-error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
