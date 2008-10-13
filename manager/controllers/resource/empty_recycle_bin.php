@@ -1,7 +1,7 @@
 <?php
 /**
  * Empties the recycle bin
- * 
+ *
  * @package modx
  * @subpackage manager.resource
  */
@@ -9,6 +9,5 @@ if(!$modx->hasPermission('purge_deleted')) $modx->error->failure($modx->lexicon(
 
 $modx->loadProcessor('resource/empty_recycle_bin.php');
 
-// redirect
 header('Location: index.php?a=welcome');
 exit();

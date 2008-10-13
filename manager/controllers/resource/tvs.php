@@ -1,15 +1,12 @@
 <?php
 /**
  * Loads the TV panel for the resource page.
- * 
+ *
  * Note: This page is not to be accessed directly.
- * 
+ *
  * @package modx
  * @subpackage manager
  */
-// check permissions
-//if (!$modx->hasPermission('new_document')) $error->failure($modx->lexicon('access_denied'));
-
 $resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modDocument';
 $resourceDir= strtolower(substr($resourceClass, 3));
 

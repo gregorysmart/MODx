@@ -19,7 +19,7 @@ MODx.page.ResourceData = function(config) {
             process: 'edit'
             ,text: _('edit')
             ,params: { a: MODx.action['resource/update'] }
-        },'-',{
+        },'-',/*{
             process: 'duplicate'
             ,text: _('duplicate')
             ,method: 'remote'
@@ -33,7 +33,7 @@ MODx.page.ResourceData = function(config) {
             	tree: 'modx_resource_tree'
             	,node: config.ctx+'_'+config.id
             }
-        },'-',{
+        },'-',*/{
             process: 'cancel'
             ,text: _('cancel')
             ,params: { a: MODx.action['welcome'] }

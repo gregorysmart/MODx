@@ -58,8 +58,8 @@ MODx.page.UpdateWebLink = function(config) {
         ,{
             process: 'duplicate'
             ,text: _('duplicate')
-            ,confirm: _('resource_duplicate_confirm')
-            ,method: 'remote'
+            ,handler: this.duplicate
+            ,scope: this
         }
         ,'-'
         ,{
@@ -79,6 +79,22 @@ Ext.extend(MODx.page.UpdateWebLink,MODx.Component,{
     preview: function(id) {
         window.open(MODx.config.base_url+'index.php?id='+id);
         return false;
+    }
+    
+    ,duplicate: function(btn,e) {
+        MODx.msg.confirm({
+            text: _('resource_duplicate_confirm')
+            ,url: MODx.config.connectors_url+'resource/index.php'
+            ,params: {
+                action: 'duplicate'
+                ,id: this.config.id
+            }
+            ,listeners: {
+                success: {fn:function(r) {
+                    location.href = '?a='+MODx.action['resource/update']+'&id='+r.object.id;
+                },scope:this}
+            }
+        });
     }
 });
 Ext.reg('page-weblink-update',MODx.page.UpdateWebLink);
