@@ -9,6 +9,7 @@ $modx->lexicon->load('tv');
 if (!$modx->hasPermission('delete_template')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $forced = isset($_REQUEST['force'])? $_REQUEST['force'] : false;
+$forced = true;
 
 /* get tv */
 $tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
@@ -23,14 +24,19 @@ $tv->resource_groups = $tv->getMany('modTemplateVarResourceGroup');
 if (!$forced) {
 	$c = $modx->newQuery('modTemplateVarResource');
 	$c->where(array('tmplvarid' => $tv->get('id')));
-    $tvds = $modx->getCollection('modTemplateVarResource');
+    $tvds = $modx->getCollection('modTemplateVarResource',$c);
 
-	if (count($tvds) > 0) {
+	if (count($tv->resources) > 0) {
         $o = '<p>'.$modx->lexicon('tmplvar_inuse').'</p><ul>';
-		foreach ($tvds as $tvd) {
-			$o .= '<li><span style="width: 200px"><a href="index.php?id='.$tvd->get('id').'&a=27">';
-            $o .= $tvd->get('pagetitle').'</a></span>';
-            $o .= $tvd->get('description') != '' ? ' - '.$tvd->get('description') : '';
+		foreach ($tv->resources as $tvd) {
+            $tvi = $tvd->getOne('modTemplateVar');
+            if ($tvi == null) {
+                $tvd->remove();
+                continue;
+            }
+			$o .= '<li><span style="width: 200px"><a href="index.php?id='.$tvi->get('id').'&a=27">';
+            $o .= $tvi->get('pagetitle').'</a></span>';
+            $o .= $tvi->get('description') != '' ? ' - '.$tvi->get('description') : '';
             $o .= '</li>';
 		}
         $o .= '</ul>';

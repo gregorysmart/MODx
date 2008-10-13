@@ -22,8 +22,8 @@ $newname = isset($_POST['name'])
 
 /* duplicate TV */
 $tv = $modx->newObject('modTemplateVar');
-$tv->set('name',$newname);
 $tv->fromArray($old_tv->toArray());
+$tv->set('name',$newname);
 
 if ($tv->save() === false) {
 	$modx->error->failure($modx->lexicon('tv_err_duplicate'));
