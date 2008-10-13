@@ -1,9 +1,11 @@
 <?php
 /**
  * Loads the help page
- * 
+ *
  * @package modx
  * @subpackage manager
  */
-if (!$modx->hasPermission('help')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('help')) {
+    $modx->error->failure($modx->lexicon('permission_denied'));
+}
 $modx->smarty->display('help.tpl');

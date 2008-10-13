@@ -1,21 +1,21 @@
 <?php
 /**
  * Refreshes the site cache
- * 
+ *
  * @package modx
  * @subpackage manager.system
  */
-if (!$modx->hasPermission('empty_cache')) $error->failure($modx->lexicon('permission_denied'));
- 
-// clear cache
+if (!$modx->hasPermission('empty_cache')) $modx->error->failure($modx->lexicon('permission_denied'));
+
+/* clear cache */
 $cacheManager= $modx->getCacheManager();
 
-// invoke OnBeforeCacheUpdate event
+/* invoke OnBeforeCacheUpdate event */
 $modx->invokeEvent("OnBeforeCacheUpdate");
 
 $results= $cacheManager->clearCache(array(), array('objects' => '*', 'publishing' => 1));
 
-// invoke OnSiteRefresh event
+/* invoke OnSiteRefresh event */
 $modx->invokeEvent('OnSiteRefresh');
 
 $num_rows_pub = isset($results['publishing']['published']) ? $results['publishing']['published'] : 0;

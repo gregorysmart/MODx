@@ -5,12 +5,12 @@
  * @package modx
  * @subpackage manager
  */
-if (!$modx->hasPermission('home')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('home')) $modx->error->failure($modx->lexicon('permission_denied'));
 
 $modx->smarty->assign('site_name',$modx->config['site_name']);
 
 
-// do some config checks
+/* do some config checks */
 include_once MODX_PROCESSORS_PATH . 'system/config_check.inc.php';
 if ($config_check_results != $modx->lexicon('configcheck_ok')) {
 	$modx->smarty->assign('config_display',true);
@@ -19,7 +19,7 @@ if ($config_check_results != $modx->lexicon('configcheck_ok')) {
 	$modx->smarty->assign('config_display',false);
 }
 
-// user info
+/* user info : TODO: convert to revo */
 if (isset($_SESSION['mgrLastlogin']) && !empty($_SESSION['mgrLastLogin'])) {
     $previous_login = strftime('%c', $_SESSION['mgrLastlogin']+$modx->config['server_offset_time']);
 } else {
@@ -27,25 +27,24 @@ if (isset($_SESSION['mgrLastlogin']) && !empty($_SESSION['mgrLastLogin'])) {
 }
 $modx->smarty->assign('previous_login',$previous_login);
 
-// online users
+/* online users
+ * :TODO: convert this to revo/modext */
 $modx->smarty->assign('cur_time',strftime('%X', time()+$modx->config['server_offset_time']));
-
 $timetocheck = (time()-(60*20))+$modx->config['server_offset_time'];
-
 $c = $modx->newQuery('modActiveUser');
 $c->where(array('lasthit:>' => $timetocheck));
 $c->sortby('username','ASC');
 $ausers = $modx->getCollection('modActiveUser',$c);
-include_once(MODX_PROCESSORS_PATH . 'system/actionlist.inc.php');
+include_once MODX_PROCESSORS_PATH . 'system/actionlist.inc.php';
 foreach ($ausers as $user) {
-	$currentaction = getAction($user->action, $user->id);
+	$currentaction = getAction($user->get('action'), $user->get('id'));
 	$user->set('currentaction',$currentaction);
 	$user->set('lastseen',strftime('%X',$user->lasthit+$modx->config['server_offset_time']));
 }
 $modx->smarty->assign('ausers',$ausers);
 
 
-// grab rss feeds
+/* grab rss feeds */
 $modx->loadClass('xmlrss.modRSSParser','',false,true);
 $rssparser = new modRSSParser($modx);
 

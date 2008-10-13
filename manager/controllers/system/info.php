@@ -1,19 +1,21 @@
 <?php
 if (!$modx->hasPermission('logs')) $modx->error->failure($modx->lexicon('access_denied'));
 
-// general
+/* general */
 $modx->smarty->assign('version',$modx->version['full_appname']);
 $modx->smarty->assign('code_name',$modx->version['code_name']);
 $modx->smarty->assign('servertime',strftime('%I:%M:%S %p', time()));
 $modx->smarty->assign('localtime',strftime('%I:%M:%S %p', time()+$modx->config['server_offset_time']));
 $modx->smarty->assign('serveroffset',$modx->config['server_offset_time'] / (60*60));
 
-// database info
+/* database info */
 $modx->smarty->assign('database_type',$modx->config['dbtype']);
-// TODO: Make database-agnostic version call
-$stmt= $modx->query("SELECT VERSION()"); // will need modification for other database types
+/* TODO: Make database-agnostic version call
+/* will need modification for other database types
+ */
+$stmt= $modx->query("SELECT VERSION()");
 if ($stmt) {
-    $result= $stmt->fetch(PDO_FETCH_COLUMN); 
+    $result= $stmt->fetch(PDO_FETCH_COLUMN);
     $stmt->closeCursor();
 } else {
     $result='-';

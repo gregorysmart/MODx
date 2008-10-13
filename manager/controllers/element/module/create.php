@@ -1,7 +1,7 @@
 <?php
 /**
  * Loads the create module page
- * 
+ *
  * @package modx
  * @subpackage manager.element.module
  */
@@ -12,7 +12,7 @@ if (isset($_REQUEST['category'])) {
 	if ($category != null) $modx->smarty->assign('category',$category);
 }
 
-// create globally unique identifiers (guid)
+/* create globally unique identifiers (guid) */
 function createGUID() {
     srand((double)microtime()*1000000);
     $r = rand() ;
@@ -24,7 +24,7 @@ function createGUID() {
 $_SESSION['itemname'] = 'New Module';
 $wrap = 1;
 
-// invoke OnModFormPrerender event
+/* invoke OnModFormPrerender event */
 $onModFormPrerender = $modx->invokeEvent('OnModFormPrerender',array('id' => 0));
 if(is_array($onModFormPrerender)) $onModFormPrerender = implode('',$onModFormPrerender);
 $modx->smarty->assign('onModFormPrerender',$onModFormPrerender);
@@ -35,7 +35,7 @@ $modx->smarty->assign('guid',$guid);
 $usergroups = $modx->getCollection('modUserGroup');
 $modx->smarty->assign('usergroups',$usergroups);
 
-// invoke OnModFormRender event
+/* invoke OnModFormRender event */
 $onModFormRender = $modx->invokeEvent('OnModFormRender',array('id' => 0));
 if (is_array($onModFormRender)) $onModFormRender = implode('',$onModFormRender);
 $modx->smarty->assign('onModFormRender',$onModFormRender);

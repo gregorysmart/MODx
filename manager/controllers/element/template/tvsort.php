@@ -1,7 +1,7 @@
 <?php
 /**
  * Sorts a TV
- * 
+ *
  * @deprecated
  * @package modx
  * @subpackage manager.element.template
@@ -13,11 +13,11 @@ if (!is_numeric($_REQUEST['id'])) {
 	exit;
 }
 
-// get template
+/* get template */
 $template = $modx->getObject('modTemplate',$_REQUEST['id']);
 if ($template == null) $modx->error->failure($modx->lexicon('template_err_nf'));
 
-// get TVs for template
+/* get TVs for template */
 $tvs = $template->getTVs();
 $modx->smarty->assign('tvs',$tvs);
 

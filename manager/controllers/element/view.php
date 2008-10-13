@@ -1,7 +1,10 @@
 <?php
+/**
+ * Old. Do not use.
+ * @deprecated 2.0.0
+ */
 $categories = $modx->getCollection('modCategory');
 
-// add in uncategorized
 $emptycat = $modx->newObject('modCategory');
 $emptycat->set('category','uncategorized');
 $categories[0] = $emptycat;
@@ -33,15 +36,6 @@ foreach ($plugins as $key => $object) {
     $categories[$object->category]->plugins[$key]= $object;
 }
 
-//foreach ($categories as $catKey => $category) {
-//	if ($category->id == '') $category->id = 0; // hack for uncategorized
-//	$categories[$catKey]->templates = $modx->getCollection('modTemplate',array('category' => $category->id));
-//	$categories[$catKey]->tvs = $modx->getCollection('modTemplateVar',array('category' => $category->id));
-//	$categories[$catKey]->chunks = $modx->getCollection('modChunk',array('category' => $category->id));
-//	$categories[$catKey]->snippets = $modx->getCollection('modSnippet',array('category' => $category->id));
-//	$categories[$catKey]->plugins = $modx->getCollection('modPlugin',array('category' => $category->id));
-//}
-
 if ($modx->hasPermission('save_plugin') ||
 	$modx->hasPermission('save_snippet') ||
 	$modx->hasPermission('save_chunk') ||
@@ -54,4 +48,3 @@ $modx->smarty->assign('categories',$categories);
 
 
 $modx->smarty->display('element/view.tpl');
-?>
