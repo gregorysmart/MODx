@@ -157,11 +157,10 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     }
     
     ,install: function(btn,e) {
-    	var r = this.menu.record;
         this.loadWindow(btn,e,{
             xtype: 'window-package-installer'
             ,listeners: {
-                'finish': {fn: function() { this._install(r); },scope:this}
+                'finish': {fn: function() { this._install(this.menu.record); },scope:this}
             }
         });
     }
