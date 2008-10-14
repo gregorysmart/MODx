@@ -29,22 +29,22 @@
  *
  */
 class modPackageBuilder {
-	/**
+    /**
     * @var string The directory in which the package file is located.
     */
-	var $directory;
-	/**
+    var $directory;
+    /**
     * @var string The unique signature for the package.
     */
-	var $signature;
-	/**
+    var $signature;
+    /**
     * @var string The filename of the actual package.
     */
-	var $filename;
-	/**
+    var $filename;
+    /**
     * @var string The xPDOTransport package object.
     */
-	var $package;
+    var $package;
     /**
      * @var string The modNamespace that the package is associated with.
      */
@@ -54,36 +54,36 @@ class modPackageBuilder {
      */
     var $autoselects;
 
-	function modPackageBuilder(&$modx) {
+    function modPackageBuilder(&$modx) {
         $this->__construct($modx);
     }
     function __construct(&$modx) {
-		$this->modx = $modx;
-		$this->modx->loadClass('transport.modTransportVehicle','',false, true);
-		$this->modx->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
+        $this->modx = $modx;
+        $this->modx->loadClass('transport.modTransportVehicle','',false, true);
+        $this->modx->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 
-		if (!$workspace= $this->modx->getObject('modWorkspace', array('active' => 1))) {
-			$this->modx->log(MODX_LOG_LEVEL_FATAL,"\nYou must have a valid core installation with an active workspace to run the build.\n");
-			exit();
-		}
-		$this->directory = $workspace->get('path') . 'packages/';
+        if (!$workspace= $this->modx->getObject('modWorkspace', array('active' => 1))) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL,"\nYou must have a valid core installation with an active workspace to run the build.\n");
+            exit();
+        }
+        $this->directory = $workspace->get('path') . 'packages/';
         $this->autoselects = array();
     }
 
-	/**
+    /**
     * Allows for customization of the package workspace.
-	*
-	* @param integer $workspace_id The ID of the workspace to select.
-	* @returns modWorkspace The workspace set, false if invalid.
+    *
+    * @param integer $workspace_id The ID of the workspace to select.
+    * @returns modWorkspace The workspace set, false if invalid.
     */
-	function setWorkspace($workspace_id) {
-		if (!is_numeric($workspace_id)) return false;
-		$workspace = $this->modx->getObject('modWorkspace',$workspace_id);
-		if ($workspace == null) return false;
+    function setWorkspace($workspace_id) {
+        if (!is_numeric($workspace_id)) return false;
+        $workspace = $this->modx->getObject('modWorkspace',$workspace_id);
+        if ($workspace == null) return false;
 
-		$this->directory = $workspace->get('path') . 'packages/';
-		return $workspace;
-	}
+        $this->directory = $workspace->get('path') . 'packages/';
+        return $workspace;
+    }
 
     /**
      * @deprecated
@@ -92,39 +92,41 @@ class modPackageBuilder {
         $this->createPackage($name,$version,$release);
     }
 
-	/**
+    /**
     * Creates a new xPDOTransport package.
-	*
+    *
     * @param string $name The name of the component the package represents.
     * @param string $version A string representing the version of the package.
     * @param string $release A string describing the specific release of this version of the
     * package.
-	* @returns xPDOTransport The xPDOTransport package object.
+    * @returns xPDOTransport The xPDOTransport package object.
     */
-	function createPackage($name, $version, $release= '') {
+    function createPackage($name, $version, $release= '') {
         /* setup the signature and filename */
         $s['name']= $name;
         $s['version']= $version;
-        if (!empty($release)) $s['release']= $release;
-		$this->signature = $s['name'].'-'.$s['version'].'-'.$s['release'];
-		$this->filename = $this->signature . '.transport.zip';
+        $s['release']= $release;
+        $this->signature = $s['name'];
+        if (!empty($s['version'])) $this->signature .= '-'.$s['version'];
+        if (!empty($s['release'])) $this->signature .= '-'.$s['release'];
+        $this->filename = $this->signature . '.transport.zip';
 
         /* remove the package if it's already been made */
-		if (file_exists($this->directory . $this->filename)) {
-			unlink($this->directory . $this->filename);
-		}
-		if (file_exists($this->directory . $this->signature) && is_dir($this->directory . $this->signature)) {
-			if ($cacheManager= $this->modx->getCacheManager()) {
-				$cacheManager->deleteTree($this->directory . $this->signature);
-			}
-		}
+        if (file_exists($this->directory . $this->filename)) {
+            unlink($this->directory . $this->filename);
+        }
+        if (file_exists($this->directory . $this->signature) && is_dir($this->directory . $this->signature)) {
+            if ($cacheManager= $this->modx->getCacheManager()) {
+                $cacheManager->deleteTree($this->directory . $this->signature);
+            }
+        }
 
         /* create the transport package */
-		$this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
+        $this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
         $this->modx->log(MODX_LOG_LEVEL_INFO,'Created new transport package with signature: '.$this->signature);
 
-		return $this->package;
-	}
+        return $this->package;
+    }
 
     /**
      * Sets the classes that are to automatically be included and built into the
@@ -133,24 +135,24 @@ class modPackageBuilder {
      * @param array An array of class names to build in
      */
     function setAutoSelects($classes = array()) {
-    	$this->autoselects = $classes;
+        $this->autoselects = $classes;
     }
 
-	/**
+    /**
     * Creates the modTransportVehicle for the specified object.
-	*
-	* @param xPDOObject $obj The xPDOObject being abstracted as a vehicle.
-	* @param array $attr Attributes for the vehicle.
-	* @returns modTransportVehicle The createed modTransportVehicle instance.
+    *
+    * @param xPDOObject $obj The xPDOObject being abstracted as a vehicle.
+    * @param array $attr Attributes for the vehicle.
+    * @returns modTransportVehicle The createed modTransportVehicle instance.
     */
-	function createVehicle($obj, $attr) {
-		if ($this->namespace) {
+    function createVehicle($obj, $attr) {
+        if ($this->namespace) {
 			$attr['namespace'] = $this->namespace; /* package the namespace into the metadata */
         }
         $vehicle = new modTransportVehicle($obj, $attr);
 
         return $vehicle;
-	}
+    }
 
     /**
      * Registers a namespace to the transport package. If no namespace is found,
@@ -166,13 +168,13 @@ class modPackageBuilder {
      * @return boolean True if successful.
      */
     function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true) {
-    	if (!is_a($ns, 'modNamespace')) {
-    		$namespace = $this->modx->getObject('modNamespace',$ns);
+        if (!is_a($ns, 'modNamespace')) {
+            $namespace = $this->modx->getObject('modNamespace',$ns);
             if ($namespace == null) {
-            	$namespace = $this->modx->newObject('modNamespace');
+                $namespace = $this->modx->newObject('modNamespace');
                 $namespace->set('name',$ns);
             }
-    	} else $namespace = $ns;
+        } else $namespace = $ns;
         $this->namespace = $namespace;
 
         $this->modx->log(MODX_LOG_LEVEL_INFO,'Registered package namespace as: '.$this->namespace->get('name'));
@@ -216,26 +218,26 @@ class modPackageBuilder {
         return true;
     }
 
-	/**
+    /**
     * Puts the vehicle into the package.
-	*
-	* @param modTransportVehicle $vehicle The vehicle to insert into the package.
-	* @return boolean True if successful.
+    *
+    * @param modTransportVehicle $vehicle The vehicle to insert into the package.
+    * @return boolean True if successful.
     */
     function putVehicle($vehicle) {
-		$attr = $vehicle->compile();
-		$obj = $vehicle->fetch();
-		return $this->package->put($obj,$attr);
-	}
+        $attr = $vehicle->compile();
+        $obj = $vehicle->fetch();
+        return $this->package->put($obj,$attr);
+    }
 
-	/**
+    /**
     * Packs the package.
-	*
-	* @return boolean True if successful.
+    *
+    * @return boolean True if successful.
     */
-	function pack() {
-		return $this->package->pack();
-	}
+    function pack() {
+        return $this->package->pack();
+    }
 
     /**
      * Retrieves the package signature.
@@ -244,7 +246,7 @@ class modPackageBuilder {
      * @return string The signature of the included package.
      */
     function getSignature() {
-    	return $this->package->signature;
+        return $this->package->signature;
     }
 
     /**
@@ -375,5 +377,19 @@ class modPackageBuilder {
 
 
         return true;
+    }
+    
+    /**
+     * Set an array of attributes into the xPDOTransport manifest.
+     * 
+     * @param array $attributes An array of attributes to set in the
+     * manifest of the package being built.
+     */
+    function setPackageAttributes($attributes = array()) {
+        if ($this->package !== null) {
+            foreach ($attributes as $k => $v) $this->package->setAttribute($k, $v);
+        } else {
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, 'You must create a package with createPackage() before you can call setPackageAttributes()');
+        }
     }
 }

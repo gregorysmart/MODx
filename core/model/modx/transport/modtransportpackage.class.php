@@ -119,7 +119,8 @@ class modTransportPackage extends xPDOObject {
                                     $this->set('state', XPDO_TRANSPORT_STATE_UNPACKED);
                                 }
                                 $this->set('source', $sourceFile);
-                                $this->set('manifest',$this->package->vehicles);
+                                $this->set('manifest', array(XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes, XPDO_TRANSPORT_MANIFEST_VEHICLES => $this->package->vehicles));
+                                $this->set('attributes', $this->package->attributes);
                                 $this->save();
                             }
                         }
@@ -143,7 +144,11 @@ class modTransportPackage extends xPDOObject {
                     $packageDir = $workspace->get('path') . 'packages/';
                     if ($sourceFile = $this->get('source')) {
                         $instance= new xPDOTransport($this->xpdo, $this->get('signature'), $packageDir);
-                        $instance->vehicles= $this->get('manifest');
+                        $manifest= $this->get('manifest');
+                        $instance->attributes= isset($manifest[XPDO_TRANSPORT_MANIFEST_ATTRIBUTES]) ? $manifest[XPDO_TRANSPORT_MANIFEST_ATTRIBUTES] : array();
+                        $attributes = $this->get('attributes');
+                        if ($attributes) $instance->attributes = array_merge($instance->attributes, $attributes); 
+                        $instance->vehicles= isset($manifest[XPDO_TRANSPORT_MANIFEST_VEHICLES]) ? $manifest[XPDO_TRANSPORT_MANIFEST_VEHICLES] : $manifest;
                         $this->package = $instance;
                     } else {
                         $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");

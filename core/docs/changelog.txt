@@ -4,6 +4,8 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added modPackageBuilder->setPackageAttributes() function for easily adding transport-level attributes to a package.
+- Updated xPDO to rev 252 to get new features allowing transport packages to carry transport attributes.
 - Added numerous foreign key and sorting indexes to site_content table (modResource) to improve performance of common queries.
 - Changed modX::changePassword() implementation to call modUser::changePassword().
 - Added getResourceGroups() and getUserGroups() to modUser class to retrieve those things and cache in session.
