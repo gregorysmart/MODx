@@ -22,7 +22,7 @@ $modx->initialize('mgr');
 
 $cacheManager= $modx->getCacheManager();
 $modx->setLogLevel(MODX_LOG_LEVEL_ERROR);
-$modx->setLogTarget('FILE');
+$modx->setLogTarget('ECHO');
 
 
 // Get all Actions
@@ -76,6 +76,7 @@ unset($content, $collection, $key, $c);
 // Get all System Settings
 $content= "<?php\n";
 $query= $modx->newQuery('modSystemSetting');
+$query->select($modx->getSelectColumns('modSystemSetting', '', '', array('editedon'), true));
 $query->sortby('`key`');
 $collection= $modx->getCollection('modSystemSetting', $query);
 foreach ($collection as $key => $c) {
@@ -88,6 +89,7 @@ unset($content, $collection, $key, $c);
 // Get all Context Settings
 $content= "<?php\n";
 $query= $modx->newQuery('modContextSetting');
+$query->select($modx->getSelectColumns('modContextSetting', '', '', array('editedon'), true));
 $query->sortby('`context_key`');
 $query->sortby('`key`');
 $collection= $modx->getCollection('modContextSetting', $query);
