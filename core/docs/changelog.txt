@@ -2,7 +2,7 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
-MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
+MODx Revolution 2.0.0-alpha-6 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
 - Updated xPDO to rev 256 for bug fix in xPDO::getSelectColumns() and new xPDOObject::_setRaw() implementation to resolve issues with native php types when using fromArray().
 - Added modPackageBuilder->setPackageAttributes() function for easily adding transport-level attributes to a package.
@@ -18,6 +18,9 @@ MODx Revolution 2.0.0-alpha-5 ($LastChangedRevision$, $LastChangedDate$)
 - [#MODX-364] Results of regClient*() functions are now cached into the Resource cache files to solve error on cached pages with cached snippets.
 - Removed deprecated modX::mergeDocumentMETATags() and moved feature to modResource::mergeMetatags() and modResource::mergeKeywords().
 - Removed deprecated modX::makeList() function.
+
+MODx Revolution 2.0.0-alpha-5 (LastChangedRevision: 4273 , LastChangedDate: 2008-10-09 12:42:42 -0500 (Thu, 09 Oct 2008))
+====================================
 - [#MODX-88] Move version checking to setup script and add notifications.
 - [#MODX-66] Change the way properties work within the scope of a chunk; placeholders set by the chunks properties are now removed after the chunk is processed.
 - Added modX::unsetPlaceholder() and modX::unsetPlaceholders() functions.
