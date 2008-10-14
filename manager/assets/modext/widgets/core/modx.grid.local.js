@@ -54,9 +54,11 @@ MODx.grid.LocalGrid = function(config) {
             ,scope: this
         }]
     });
+    
     this.menu = new Ext.menu.Menu({ defaultAlign: 'tl-b?' });
-    MODx.grid.LocalGrid.superclass.constructor.call(this,config);
     this.config = config;
+    this._loadColumnModel();
+    MODx.grid.LocalGrid.superclass.constructor.call(this,config);
     this.addEvents({
         beforeRemoveRow: true
         ,afterRemoveRow: true
@@ -83,6 +85,35 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
             this.windows[win.xtype].setValues(r);
         }
         this.windows[win.xtype].show(e.target);
+    }
+    
+    ,_loadColumnModel: function() {
+        if (this.config.columns) {
+            var c = this.config.columns;
+            for (var i=0;i<c.length;i++) {
+                // if specifying custom editor/renderer
+                if (typeof(c[i].editor) == 'string') {
+                    c[i].editor = eval(c[i].editor);
+                }
+                if (typeof(c[i].renderer) == 'string') {
+                    c[i].renderer = eval(c[i].renderer);
+                }
+                if (typeof(c[i].editor) == 'object' && c[i].editor.xtype) {
+                    var r = c[i].editor.renderer;
+                    c[i].editor = Ext.ComponentMgr.create(c[i].editor);
+                    if (r === true) {
+                        c[i].renderer = MODx.combo.Renderer(c[i].editor);
+                    } else if (c[i].editor.initialConfig.xtype === 'datefield') {
+                        c[i].renderer = Ext.util.Format.dateRenderer(c[i].editor.initialConfig.format || 'Y-m-d');
+                    } else if (r === 'boolean') {
+                        c[i].renderer = this.rendYesNo;
+                    } else if (r === 'local' && typeof(c[i].renderer) == 'string') {
+                        c[i].renderer = eval(c[i].renderer);
+                    }
+                }
+            }
+            this.cm = new Ext.grid.ColumnModel(c);
+        }
     }
     
     ,_showMenu: function(g,ri,e) {

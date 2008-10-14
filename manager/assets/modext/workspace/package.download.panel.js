@@ -10,17 +10,18 @@ MODx.panel.PackageDownload = function(config) {
         border: false
         ,layout: 'column'
         ,height: 400
+        ,width: Ext.isIE ? 650 : '95%'
         ,items: [{
             xtype: 'tree-package-download'
             ,id: 'tree-package-download'
             ,columnWidth: 0.7
-            ,width: '60%'
+            ,width: Ext.isIE ? 400 : '60%'
             ,height: 400
             ,autoHeight: false
         },{
             columnWidth: 0.3
             ,height: 400
-            ,width: '35%'
+            ,width: Ext.isIE ? 250 : '35%'
             ,border: false
             ,autoScroll: true
             ,items: [{

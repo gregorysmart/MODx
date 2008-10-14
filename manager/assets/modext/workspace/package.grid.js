@@ -219,7 +219,7 @@ MODx.window.PackageDownloader = function(config) {
         ,firstPanel: 'pd-start'
         ,lastPanel: 'pd-selpackage'
         ,defaults: { border: false }
-        ,modal: true
+        ,modal: Ext.isIE ? false : true
         ,bbar: [{
             id: 'pd-btn-bck'
             ,text: _('back')

@@ -20,7 +20,7 @@ MODx.Console = function(config) {
 	    	,format: 'html_log'
 	    	,remove_read: 0
 	    }
-	    ,modal: true
+	    ,modal: Ext.isIE ? false : true
         ,shadow: true
         ,resizable: false
         ,collapsible: false
