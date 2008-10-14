@@ -16,7 +16,7 @@ MODx.Wizard = function(config) {
         ,autoHeight: true
         ,width: '90%'
         ,defaults: { border: false }
-        ,modal: true
+        ,modal: false
         ,bbar: [{
             id: 'pi-btn-bck'
             ,text: _('back')
@@ -229,8 +229,7 @@ MODx.panel.PIInstall = function(config) {
 Ext.extend(MODx.panel.PIInstall,Ext.FormPanel,{
     submit: function() {
         var va = this.getForm().getValues();
-        Ext.getCmp('window-package-installer').fireEvent('finish');
-        
+        Ext.getCmp('window-package-installer').fireEvent('finish');        
     }
 });
 Ext.reg('panel-pi-install',MODx.panel.PIInstall);

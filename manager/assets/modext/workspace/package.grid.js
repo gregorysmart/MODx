@@ -167,10 +167,8 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     }
     
     ,_install: function(r) {
-        alert('installing: '+r.toSource());
-        return;
         var topic = '/workspace/package/install/'+r.signature+'/';
-        this.loadConsole(btn,topic);
+        this.loadConsole(Ext.getBody(),topic);
         
         MODx.Ajax.request({
             url: this.config.url
@@ -182,6 +180,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
             }
             ,listeners: {
                 'success': {fn:function() {
+                    Ext.getCmp('window-package-installer').hide();
                     this.console.complete();
                     this.refresh();
                 },scope:this}
