@@ -11,6 +11,7 @@ MODx.grid.Package = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('packages')
+        ,id: 'grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
         ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','menu']
         ,columns: [

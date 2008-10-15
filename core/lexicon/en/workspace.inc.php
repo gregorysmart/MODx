@@ -1,4 +1,8 @@
 <?php
+$_lang['license_agree'] = 'I Agree';
+$_lang['license_agreement'] = 'License Agreement';
+$_lang['license_agreement_desc'] = 'Please review the license agreement for this package.';
+$_lang['license_disagree'] = 'I Disagree';
 $_lang['not_installed'] = 'Not Installed';
 $_lang['package'] = 'Package';
 $_lang['package_add'] = 'Add New Package';
@@ -69,6 +73,10 @@ $_lang['provider_url'] = 'Service URL';
 $_lang['providers_desc'] = 'Provisioners are repositories for MODx component packages. They are remote URLs that contain lists of MODx packages that you can download and install components from.';
 $_lang['provisioner'] = 'Provisioner';
 $_lang['provisioners'] = 'Provisioners';
+$_lang['readme'] = 'Readme';
+$_lang['readme_desc'] = 'Please review the README for this package.';
+$_lang['setup_options'] = 'Setup Options';
+$_lang['setup_options_desc'] = 'Please choose the appropriate options (if applicable) and click Finish to install the package.';
 $_lang['workspace'] = 'Workspace';
 $_lang['workspace_err_nf'] = 'Workspace not found.';
 $_lang['workspace_management'] = 'MODx Workspace Management';
