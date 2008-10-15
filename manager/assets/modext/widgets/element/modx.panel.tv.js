@@ -67,6 +67,7 @@ MODx.panel.TV = function(config) {
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
+                    ,id: 'category'
                     ,width: 250
                     ,value: config.category || null
                 },{
@@ -149,6 +150,8 @@ MODx.panel.TV = function(config) {
         }
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
+            ,'success': {fn:this.success,scope:this}
+            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
         }
     });
     MODx.panel.TV.superclass.constructor.call(this,config);
@@ -176,6 +179,23 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
                 },scope:this}
             }
         });
+    }
+    ,beforeSubmit: function(o) {
+        var g = Ext.getCmp('grid-tv-templates');
+        var rg = Ext.getCmp('grid-tv-security');
+        Ext.apply(o.form.baseParams,{
+            templates: g.encodeModified()
+            ,resource_groups: rg.encodeModified()
+        });
+    }
+    ,success: function(o) {
+        Ext.getCmp('grid-tv-templates').getStore().commitChanges();
+        Ext.getCmp('grid-tv-security').getStore().commitChanges();
+        
+        var t = parent.Ext.getCmp('modx_element_tree');
+        var c = Ext.getCmp('category').getValue();
+        var u = c != '' && c != null ? 'n_tv_category_'+c : 'n_type_tv'; 
+        t.refreshNode(u,true);
     }
     
     ,showParameters: function(cb,rc,i) {

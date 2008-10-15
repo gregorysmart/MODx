@@ -48,10 +48,12 @@ MODx.FormPanel = function(config) {
         setup: true
         ,fieldChange: true
         ,ready: true
+        ,beforeSubmit: true
+        ,success: true
+        ,failure: true
     });
     this.getForm().addEvents({
-        beforeSubmit: true
-        ,success: true
+        success: true
         ,failure: true
     });
     this.on('ready',this.onReady);
@@ -66,38 +68,39 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
         var fm = this.getForm();
         if (this.config.checkDirty && this.isDirty() === false) { return false; }
         if (fm.isValid()) {
-        	this.fireEvent('beforeSubmit',{
+        	if (this.fireEvent('beforeSubmit',{
         	   form: fm
         	   ,options: o
         	   ,config: this.config
-        	});
-            fm.submit({
-                waitMsg: _('saving')
-                ,scope: this
-                ,failure: function(f,a) {
-                	if (this.fireEvent('failure',{
-                	   form: f
-                	   ,result: a.result
-                	   ,options: o
-                	   ,config: this.config
-                	})) {
-                        MODx.form.Handler.errorExt(a.result,f);
-                	}
-                }
-                ,success: function(f,a) {
-                    if (this.config.success) {
-                        Ext.callback(this.config.success,this.config.scope || this,[f,a]);
+        	})) {
+                fm.submit({
+                    waitMsg: _('saving')
+                    ,scope: this
+                    ,failure: function(f,a) {
+                    	if (this.fireEvent('failure',{
+                    	   form: f
+                    	   ,result: a.result
+                    	   ,options: o
+                    	   ,config: this.config
+                    	})) {
+                            MODx.form.Handler.errorExt(a.result,f);
+                    	}
                     }
-                    this.fireEvent('success',{
-                        form:f
-                        ,result:a.result
-                        ,options:o
-                        ,config:this.config
-                    });
-                    this.clearDirty();
-                    this.fireEvent('setup',this.config);
-                }
-            });
+                    ,success: function(f,a) {
+                        if (this.config.success) {
+                            Ext.callback(this.config.success,this.config.scope || this,[f,a]);
+                        }
+                        this.fireEvent('success',{
+                            form:f
+                            ,result:a.result
+                            ,options:o
+                            ,config:this.config
+                        });
+                        this.getForm().clearDirty();
+                        this.fireEvent('setup',this.config);
+                    }
+                });
+            }
         }
     }
     
@@ -167,7 +170,7 @@ Ext.override(Ext.form.BasicForm,{
             } else if(f.originalValue != f.getValue()){
                 f.originalValue = f.getValue();
             }
-        });
+        },this);
     }
 });
 

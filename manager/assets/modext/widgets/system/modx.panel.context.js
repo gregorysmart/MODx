@@ -97,5 +97,17 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
             }
         });
     }
+    ,beforeSubmit: function(o) {
+        var g = Ext.getCmp('grid-context-setting');
+        Ext.apply(o.form.baseParams,{
+            settings: g.encodeModified()
+        });
+    }
+    ,success: function(o) {
+        Ext.getCmp('grid-context-setting').getStore().commitChanges();
+        
+        var t = parent.Ext.getCmp('modx_element_tree');        
+        t.refreshNode(this.config.context+'_0',true);
+    }
 });
 Ext.reg('panel-context',MODx.panel.Context);

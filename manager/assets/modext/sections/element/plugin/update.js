@@ -20,22 +20,6 @@ MODx.page.UpdatePlugin = function(config) {
             ,text: _('save')
             ,method: 'remote'
             ,checkDirty: true
-            ,refresh: {
-            	tree: 'modx_element_tree'
-            	,node: (config.category != '' ? 'n_plugin_category_'+config.category : 'n_type_plugin')
-            	,self: true
-            }
-            ,listeners: {
-                'click': {fn:function(btn,e) {
-                    var g = Ext.getCmp('grid-plugin-event');
-                    Ext.apply(this.ab.config.params,{
-                        events: g.encodeModified()
-                    });
-                },scope:this}
-                ,'success': function(o,i,r) {
-                    Ext.getCmp('grid-plugin-event').getStore().commitChanges();
-                }
-            }
             ,keys: [{
                 key: "s"
                 ,alt: true

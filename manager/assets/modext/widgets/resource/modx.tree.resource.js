@@ -60,7 +60,7 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
             ,resource: id
             ,is_folder: node.getUI().hasClass('folder')
             ,listeners: {
-            	'success': {fn:this.refreshParentNode,scope:this}
+            	'success': {fn:function() { this.refreshNode(node.id); },scope:this}
             }
         });
 		this.windows.duplicate.setValues(r);
@@ -85,7 +85,7 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
 				,id: id
 			}
 			,listeners: {
-				'success': {fn:this.refreshParentNode,scope:this}
+				'success': {fn:function() { this.refreshNode(node.id); },scope:this}
 			}
 		});
 	}
@@ -100,7 +100,7 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
 				,id: id
 			}
 			,listeners: {
-				'success': {fn:this.refreshParentNode,scope:this}
+				'success': {fn:function() { this.refreshNode(node.id); },scope:this}
 			}
 		});
 	}
@@ -117,7 +117,7 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
 				,id: id
 			}
 			,listeners: {
-				'success': {fn:this.refreshParentNode,scope:this}
+				'success': {fn:function() { this.refreshNode(node.id); },scope:this}
 			}
 		});
 	}
@@ -134,7 +134,7 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
 				,id: id
 			}
 			,listeners: {
-				'success': {fn:this.refreshParentNode,scope:this}
+				'success': {fn:function() { this.refreshNode(node.id); },scope:this}
 			}
 		});
 	}

@@ -181,10 +181,12 @@ MODx.panel.WebLink = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'parent'
+                    ,id: 'resource-parent'
                     ,value: config.parent || 0
                 },{
                     xtype: 'hidden'
                     ,name: 'class_key'
+                    ,id: 'class_key'
                     ,value: config.class_key || 'modDocument'
                     
                 },{
@@ -195,6 +197,7 @@ MODx.panel.WebLink = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'context_key'
+                    ,id: 'context_key'
                     ,value: config.context_key || 'web'
                 }]
             },{
@@ -211,6 +214,8 @@ MODx.panel.WebLink = function(config) {
         }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
+            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
+            ,'success': {fn:this.success,scope:this}
         }
     });
     MODx.panel.WebLink.superclass.constructor.call(this,config);
@@ -239,6 +244,20 @@ Ext.extend(MODx.panel.WebLink,MODx.FormPanel,{
                 } else { MODx.form.Handler.errorJSON(r); }
             }
         });
+    }
+    ,beforeSubmit: function(o) {        
+        var g = Ext.getCmp('grid-resource-security');
+        Ext.apply(o.form.baseParams,{
+            resource_groups: g.encodeModified()
+        });
+    }
+
+    ,success: function(o) {
+        Ext.getCmp('grid-resource-security').getStore().commitChanges();
+        var t = parent.Ext.getCmp('modx_resource_tree');
+        var ctx = Ext.getCmp('context_key').getValue();
+        var pa = Ext.getCmp('resource-parent').getValue();
+        t.refreshNode(ctx+'_'+pa,true);
     }
     
     ,templateWarning: function() {

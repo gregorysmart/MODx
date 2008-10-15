@@ -225,7 +225,7 @@ MODx.window.PackageDownloader = function(config) {
             ,text: _('back')
             ,handler: this.navHandler.createDelegate(this,[-1])
             ,scope: this
-            ,disabled: true         
+            ,disabled: true
         },{
             id: 'pd-btn-fwd'
             ,text: _('next')

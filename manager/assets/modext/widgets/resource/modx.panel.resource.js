@@ -210,6 +210,7 @@ MODx.panel.Resource = function(config) {
                 }:{}),{
                     xtype: 'hidden'
                     ,name: 'parent'
+                    ,id: 'resource-parent'
                     ,value: config.parent || 0
                 },{
                     xtype: 'hidden'
@@ -224,6 +225,7 @@ MODx.panel.Resource = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'context_key'
+                    ,id: 'context_key'
                     ,value: config.context_key || 'web'
                 },{
                     xtype: 'hidden'
@@ -288,13 +290,11 @@ MODx.panel.Resource = function(config) {
         }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
+            ,'success': {fn:this.success,scope:this}
+            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
         }
     });
     MODx.panel.Resource.superclass.constructor.call(this,config);
-    this.getForm().on('beforeaction',function(f) {
-        var v = Ext.get('ta').dom.value;
-        Ext.getCmp('hiddenContent').setValue(v);
-    },this);
     Ext.get('ta').on('keydown',this.fieldChangeEvent,this);
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
@@ -325,6 +325,24 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             	},scope:this}
             }
         });
+    }
+    
+    ,beforeSubmit: function(o) {
+        var v = Ext.get('ta').dom.value;
+        Ext.getCmp('hiddenContent').setValue(v);
+        
+        var g = Ext.getCmp('grid-resource-security');
+        Ext.apply(o.form.baseParams,{
+            resource_groups: g.encodeModified()
+        });
+    }
+
+    ,success: function(o) {
+        Ext.getCmp('grid-resource-security').getStore().commitChanges();
+        var t = parent.Ext.getCmp('modx_resource_tree');
+        var ctx = Ext.getCmp('context_key').getValue();
+        var pa = Ext.getCmp('resource-parent').getValue();
+        t.refreshNode(ctx+'_'+pa,true);
     }
     
     ,templateWarning: function() {

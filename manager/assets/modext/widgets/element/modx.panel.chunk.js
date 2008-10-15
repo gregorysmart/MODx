@@ -52,6 +52,7 @@ MODx.panel.Chunk = function(config) {
                 xtype: 'combo-category'
                 ,fieldLabel: _('category')
                 ,name: 'category'
+                ,id: 'combo-category'
                 ,width: 250
                 ,value: config.category || null
             },{
@@ -93,6 +94,7 @@ MODx.panel.Chunk = function(config) {
             }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
+            ,'success': {fn:this.success,scope:this}
         }
     });
     MODx.panel.Chunk.superclass.constructor.call(this,config);
@@ -119,6 +121,14 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
             	},scope:this}
             }
         });
+    }
+    ,success: function(r) {
+        var c = Ext.getCmp('combo-category').getValue();
+        var n = c !== '' && c !== null ? 'n_chunk_category_'+c : 'n_type_chunk';
+        var t = parent.Ext.getCmp('modx_element_tree');
+        if (t) {
+            t.refreshNode(n,true);
+        }
     }
 });
 Ext.reg('panel-chunk',MODx.panel.Chunk);

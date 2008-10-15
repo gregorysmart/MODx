@@ -5,63 +5,63 @@
 <tr>
 	<th style="width: 11em;"><label for="fullname">{$_lang.user_full_name}</label></th>
 	<td class="x-form-element">
-		<input name="fullname" id="fullname" type="text" value="{$user->profile->fullname}" />
+		<input name="fullname" id="fullname2" type="text" value="{$user->profile->fullname}" />
 		<span id="fullname_error" class="error"></span>
 	</td>
 </tr>
 <tr class="odd">
 	<th><label for="email">{$_lang.user_email}</label></th>
 	<td class="x-form-element">
-		<input name="email" id="email" type="text" value="{$user->profile->email}" />
+		<input name="email" id="email2" type="text" value="{$user->profile->email}" />
 		<span id="email_error" class="error"></span>
 	</td>
 </tr>
 <tr>
 	<th><label for="role">{$_lang.user_role}</label></th>
 	<td class="x-form-element">
-	    <div id="role" name="role"></div>
+	    <div id="role2" name="role2"></div>
 		<span id="role_error" class="error"></span>
 	</td>
 </tr>
 <tr class="odd">
 	<th><label for="phone">{$_lang.user_phone}</label></th>
 	<td class="x-form-element">
-		<input name="phone" id="phone" type="text" value="{$user->profile->phone}" />
+		<input name="phone" id="phone2" type="text" value="{$user->profile->phone}" />
 		<br /><span id="phone_error" class="error"></span>
 	</td>
 </tr>
 <tr>
 	<th><label for="mobilephone">{$_lang.user_mobile}</label></th>
 	<td class="x-form-element">
-		<input name="mobilephone" id="mobilephone" type="text" value="{$user->profile->mobilephone}" />
+		<input name="mobilephone" id="mobilephone2" type="text" value="{$user->profile->mobilephone}" />
 		<br /><span id="mobilephone_error" class="error"></span>
 	</td>
 </tr>		  
 <tr class="odd">	  
 	<th><label for="fax">{$_lang.user_fax}</label></th>
 	<td class="x-form-element">
-		<input name="fax" id="fax" type="text" value="{$user->profile->fax}" />
+		<input name="fax" id="fax2" type="text" value="{$user->profile->fax}" />
 		<br /><span id="fax_error" class="error"></span>
 	</td>
 </tr>
 <tr>
 	<th><label for="state">{$_lang.user_state}</label></th>
 	<td class="x-form-element">
-		<input name="state" id="state" type="text" value="{$user->profile->state}" />
+		<input name="state" id="state2" type="text" value="{$user->profile->state}" />
 		<br /><span id="state_error" class="error"></span>
 	</td>
 </tr>
 <tr class="odd">
 	<th><label for="zip">{$_lang.user_zip}</label></th>
 	<td class="x-form-element">
-		<input type="text" name="zip" id="zip" class="textfield" modx:width="300" value="{$user->profile->zip}" onchange="documentDirty=true;" />
+		<input type="text" name="zip" id="zip2" class="textfield" modx:width="300" value="{$user->profile->zip}" onchange="documentDirty=true;" />
 		<br /><span id="zip_error" class="error"></span>
 	</td>
 </tr>
 <tr>
 	<th><label for="country">{$_lang.user_country}</label></th>
 	<td class="x-form-element">
-		<select name="country" id="country">
+		<select name="country" id="country2">
 			<option value=""></option>
 			{foreach from=$_country_lang key=key item=country}
 				<option value="{$key}" {if $user->profile->country EQ $key}selected="selected"{/if}>{$country}</option>
@@ -73,7 +73,7 @@
 <tr class="odd">
 	<th><label for="dob">{$_lang.user_dob}</label></th>
 	<td class="x-form-element">
-		<input name="dob" id="dob" type="text"
+		<input name="dob" id="dob2" type="text"
 		 value="{if $user->profile->dob}{$user->profile->dob|date_format:'%m-%d-%Y'}{/if}" />
 		<span id="dob_error" class="error"></span>
 	</td>
@@ -81,7 +81,7 @@
 <tr>
 	<th><label for="gender">{$_lang.user_gender}</label></th>
 	<td class="x-form-element">
-		<select name="gender" id="gender">
+		<select name="gender" id="gender2">
 			<option value=""></option>
 			<option value="1" {if $user->profile->gender EQ 1}selected="selected"{/if}>{$_lang.user_male}</option>
 			<option value="2" {if $user->profile->gender EQ 2}selected="selected"{/if}>{$_lang.user_female}</option>
@@ -92,7 +92,7 @@
 <tr class="odd">
 	<th><label for="comment">{$_lang.comment}</label></th>
 	<td class="x-form-element">
-		<textarea name="comment" id="comment" rows="5">{$user->comment}</textarea>
+		<textarea name="comment" id="comment2" rows="5">{$user->comment}</textarea>
 		<br /><span id="comment_error" class="error"></span>
 	</td>
 </tr>

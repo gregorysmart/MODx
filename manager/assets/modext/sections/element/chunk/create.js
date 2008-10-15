@@ -16,12 +16,9 @@ MODx.page.CreateChunk = function(config) {
             ,cancel: MODx.action['welcome']
         }
         ,buttons: [{
-            process: 'create', text: _('save'), method: 'remote'
-            ,refresh: {
-            	tree: 'modx_element_tree'
-            	,node: (config.category != '' ? 'n_chunk_category_'+config.category : 'n_type_chunk')
-            	,self: true
-            }
+            process: 'create'
+            ,text: _('save')
+            ,method: 'remote'
             ,keys: [{
                 key: "s"
                 ,alt: true

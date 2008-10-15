@@ -25,22 +25,6 @@ MODx.page.UpdateContext = function(config) {
             process: 'update'
             ,text: _('save')
             ,method: 'remote'
-            ,refresh: {
-                tree: 'modx_resource_tree'
-                ,node: 'n_'+config.context
-                ,self: true
-            }
-            ,listeners: {
-                'click': {fn:function(btn,e) {
-                    var g = Ext.getCmp('grid-context-setting');
-                    Ext.apply(this.ab.config.params,{
-                        settings: g.encodeModified()
-                    });
-                },scope:this}
-                ,'success': function(o,i,r) {
-                    Ext.getCmp('grid-context-setting').getStore().commitChanges();
-                }
-            }
             ,keys: [{
                 key: "s"
                 ,alt: true

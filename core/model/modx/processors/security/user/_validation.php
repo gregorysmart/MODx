@@ -6,18 +6,16 @@
 /* BEGIN VALIDATION */
 
 /* new username */
-if (isset($_POST['newusername']) && $_POST['newusername'] != '') {
+if (isset($_POST['username']) && $_POST['username'] != '' && $_POST['username'] != $user->get('username')) {
 	$user_name = $modx->getObject('modUser',array('username' => $_POST['newusername']));
 	if ($user_name != null) {
-		if ($user_name->get('id') != $_POST['id']) {
-			$modx->error->addField('new_user_name',$modx->lexicon('user_err_already_exists'));
-		}
+		$modx->error->addField('new_user_name',$modx->lexicon('user_err_already_exists'));
 	}
-	$user->set('username',$_POST['newusername']);
+	$user->set('username',$_POST['username']);
 }
 
 /* password */
-if (isset($_POST['newpassword'])) {
+if (isset($_POST['newpassword']) && $_POST['newpassword'] != 'false') {
 	if (!isset($_POST['passwordnotifymethod'])) {
 		$modx->error->addField('password_notify_method',$modx->lexicon('user_err_not_specified_notification_method'));
 	}

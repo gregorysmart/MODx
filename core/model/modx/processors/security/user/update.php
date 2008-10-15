@@ -8,6 +8,9 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
+
+//$modx->error->failure(print_r($_POST,true));
+
 if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) {
     $modx->error->failure($modx->lexicon('permission_denied'));
 }
@@ -15,8 +18,7 @@ if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => tru
 $user = $modx->getObject('modUser',$_POST['id']);
 if ($user == null) $modx->error->failure($modx->lexicon('user_err_not_found'));
 
-$newPassword= '';
-
+$newPassword= false;
 require_once MODX_PROCESSORS_PATH.'security/user/_validation.php';
 
 if ($_POST['passwordnotifymethod'] == 'e') {
@@ -74,7 +76,7 @@ $modx->invokeEvent('OnManagerSaveUser',array(
 /* invoke OnUserFormSave event */
 $modx->invokeEvent('OnUserFormSave',array(
 	'mode' => 'upd',
-	'id' => $_POST['id'],
+	'id' => $user->get('id'),
 ));
 
 $ugs = $modx->getCollection('modUserGroupMember',array('member' => $user->get('id')));
@@ -137,7 +139,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 /* log manager action */
 $modx->logManagerAction('user_update','modUser',$user->get('id'));
 
-if (isset($_POST['newpassword']) && $_POST['passwordnotifymethod'] == 's') {
+if ($newPassword && $_POST['passwordnotifymethod'] == 's') {
 	$modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
 } else {
 	$modx->error->success();

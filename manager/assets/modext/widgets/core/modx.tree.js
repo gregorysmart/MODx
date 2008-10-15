@@ -407,7 +407,9 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	,refreshNode: function(id,self) {
 		var node = this.getNodeById(id);
 		if (node) {
-			self ? node.reload() : node.parentNode.reload(); 
+            var n = self ? node : node.parentNode;
+            var l = this.getLoader().load(n);
+            n.expand();
 		}
 	}
 	
@@ -416,7 +418,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	 * @access public
 	 */
 	,refreshActiveNode: function() {
-        this.cm.activeNode.reload();
+        this.getLoader().load(this.cm.activeNode);
         this.cm.activeNode.expand();
     }
     
@@ -425,7 +427,8 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
      * @access public
      */
     ,refreshParentNode: function() {
-        this.cm.activeNode.parentNode.reload();
+        this.getLoader().load(this.cm.activeNode.parentNode);
+        this.cm.activeNode.parentNode.expand();
     }
     
     /**

@@ -23,19 +23,6 @@ MODx.page.CreateResource = function(config) {
             ,method: 'remote'
             ,checkDirty: true
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
-            ,listeners: {
-                'click': {fn:function(btn,e) {
-                    var g = Ext.getCmp('grid-resource-security');
-                    Ext.apply(this.ab.config.params,{
-                        resource_groups: g.encodeModified()
-                    });
-                },scope:this}
-                ,'success': function(o,i,r) {
-                    Ext.getCmp('grid-resource-security').getStore().commitChanges();
-                    var t = parent.Ext.getCmp('modx_resource_tree');
-                    t.refresh();
-                }
-            }
             ,keys: [{
                 key: "s"
                 ,alt: true

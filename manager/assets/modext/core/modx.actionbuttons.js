@@ -182,24 +182,13 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 * @param {Object} res XHR responseText
 	 */
 	,checkOnComplete: function(o,itm,res) {
-		// fire onComplete if it has been defined
+        if (itm.onComplete) {
+            itm.onComplete(o,itm,res);
+        }
         if (itm.hasListener('success') && res.success) {
             itm.fireEvent('success',{r:res});
         }
-		if (itm.onComplete) {
-			// need to redirect first, since there's a JS bug
-			// that prevents the tree from refreshing fully whenever 
-			// a location.href is called in the iframe
-			Ext.callback(itm.onComplete,itm.onCompleteScope || this,[o,itm,res]);
-			if (itm.reload) {
-				Ext.callback(this.reloadPage,this,[],1000);
-			}
-			Ext.Msg.hide();
-			Ext.callback(this.redirectStay,this,[o,itm,res],1000);
-			return false;
-		} else {
-			this.redirectStay(o,itm,res);
-		}
+        Ext.callback(this.redirectStay,this,[o,itm,res],1000);
 	}
 	
 	/**
@@ -219,68 +208,45 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 		// action buttons handlers, abstracted to all get-out
         if (itm.method === 'remote') { // if using connectors		
 			MODx.util.Progress.reset(); // reset the Progress Bar
-			Ext.Msg.show({
-				title: _('please_wait')
-				,msg: _('saving')
-				,width: 240
-				,progress: true // make it a progress bar
-				,closable: false
-			});
-			
+            
             // if using formpanel
             if (o.formpanel !== undefined && o.formpanel !== '' && o.formpanel !== null) {
-                o.form = Ext.getCmp(o.formpanel).getForm();
+                o.form = Ext.getCmp(o.formpanel);
             }
             
 			// if using Ext.form
             if (o.form !== undefined) {
-				if (o.form.isValid()) { // client-side validation with modHExt
+                var f = o.form.getForm ? o.form.getForm() : o.form;
+				if (f.isValid()) { // client-side validation with modHExt
                     Ext.applyIf(o.params,{
                         action: itm.process
                        ,'modx-ab-stay': MODx.config.stay
                     });
                     
                     if (itm.checkDirty) {
-                    	if (!o.form.isDirty()) {
+                    	if (!f.isDirty()) {
                     		Ext.Msg.hide();
                     		return false;
                     	}
                     }
+                    Ext.apply(f.baseParams,o.params);
                     
-					o.form.submit({
-						params: o.params
-						,reset: false
-						,scope: this
-						,failure: function(f,a) {
-							MODx.form.Handler.errorExt(a.result,f);				
-						}
-						,success: function(f,a) {
-							// update the progress bar
-							MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
-							
-							// allow for success messages
-							if (a.result.message !== '' && !itm.onComplete) {
-								Ext.Msg.alert(_('success'),a.result.message,function() {
-									if (this.checkOnComplete(o,itm,a.result)) {
-									  if (o.refreshTree) {
-                                        o.refreshTree.refresh();
-                                      } else {
-                                        parent.Ext.get('modx_resource_tree').refresh();
-                                      }
-									}
-								 },this);
-							} else {
-								// refresh the tree, then pass the handling onto the checkOnComplete func									
-								if (this.checkOnComplete(o,itm,a.result)) {
-								   if (o.refreshTree) {
-                                    o.refreshTree.refresh();
-                                   } else {
-                                    parent.Ext.get('modx_resource_tree').refresh();
-                                   }
-								}
-							}
-						}
-					});
+                    o.form.on('success',function(r) {
+                        // update the progress bar
+                       // MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
+                        
+                        // allow for success messages
+                        if (r.result.message != '') {
+                            Ext.Msg.alert(_('success'),r.result.message,function() {
+                                this.checkOnComplete(o,itm,r.result);
+                             },this);
+                        } else {
+                            // pass the handling onto the checkOnComplete func                                   
+                            this.checkOnComplete(o,itm,r.result);
+                        }
+                        if (o.form.clearDirty) o.form.clearDirty();
+                    },this);
+					o.form.submit();
 				} else {
 					Ext.Msg.alert(_('error'),_('correct_errors'));	
 				}
@@ -291,7 +257,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 					
 					if (r.success) {
 						// update the progress bar
-						MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
+						//MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
 						
 						// refresh the tree, then pass the handling onto the checkOnComplete func
 						if (o.refreshTree) {

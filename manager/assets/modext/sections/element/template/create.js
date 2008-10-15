@@ -20,22 +20,6 @@ MODx.page.CreateTemplate = function(config) {
             ,text: _('save')
             ,method: 'remote'
             ,checkDirty: true
-            ,refresh: {
-            	tree: 'modx_element_tree'
-            	,node: (config.category != '' ? 'n_template_category_'+config.category : 'n_type_template')
-            	,self: true
-            }
-            ,listeners: {
-                'click': {fn:function(btn,e) {
-                    var g = Ext.getCmp('grid-template-tv');
-                    Ext.apply(this.ab.config.params,{
-                        tvs: g.encodeModified()
-                    });
-                },scope:this}
-                ,'success': function(o,i,r) {
-                    Ext.getCmp('grid-template-tv').getStore().commitChanges();
-                }
-            }
             ,keys: [{
                 key: "s"
                 ,alt: true

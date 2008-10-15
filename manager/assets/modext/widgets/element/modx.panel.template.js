@@ -62,6 +62,7 @@ MODx.panel.Template = function(config) {
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
+                    ,id: 'category'
                     ,width: 250
                     ,value: config.category || null
                 },{
@@ -94,6 +95,8 @@ MODx.panel.Template = function(config) {
         }
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
+            ,'success': {fn:this.success,scope:this}
+            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
         }
     });
     MODx.panel.Template.superclass.constructor.call(this,config);
@@ -119,6 +122,20 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
                 },scope:this}
             }
         });
+    }
+    ,beforeSubmit: function(o) {
+        var g = Ext.getCmp('grid-template-tv');
+        Ext.apply(o.form.baseParams,{
+            tvs: g.encodeModified()
+        });
+    }
+    ,success: function(o) {
+        Ext.getCmp('grid-template-tv').getStore().commitChanges();
+        
+        var t = parent.Ext.getCmp('modx_element_tree');
+        var c = Ext.getCmp('category').getValue();
+        var u = c != '' && c != null ? 'n_template_category_'+c : 'n_type_template'; 
+        t.refreshNode(u,true);
     }
 });
 Ext.reg('panel-template',MODx.panel.Template);

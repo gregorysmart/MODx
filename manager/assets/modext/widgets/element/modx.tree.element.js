@@ -30,7 +30,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 			this.windows.createCategory = MODx.load({
 				xtype: 'window-category-create'
 				,listeners: {
-					'success': {fn:this.refresh,scope:this}
+					'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
 				}
 			});
 		}
@@ -48,7 +48,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
                     ,name: this.cm.activeNode.text
                 }
                 ,listeners: {
-                	'success':{fn:this.refresh,scope:this}
+                	'success':{fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
                 }
             });
         }
@@ -67,7 +67,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 				,id: id
 			}
 			,listeners: {
-				'success': {fn:this.refresh,scope:this}
+				'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
 			}
 		});
 	}
@@ -84,7 +84,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
                 xtype: 'window-element-duplicate'
                 ,record: r
                 ,listeners: {
-                	'success': {fn:this.refresh,scope:this}
+                	'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
                 }
             });
         } else {
@@ -107,7 +107,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 				,id: oar[2]
 			}
 			,listeners: {
-				'success': {fn:this.refresh,scope:this}
+				'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
 			}
 		});
 	}

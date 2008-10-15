@@ -102,9 +102,11 @@ MODx.panel.UpdateProfile = function(config) {
             ,scope: this
             ,handler: this.submit
         }]
+        ,listeners: {
+            'setup': {fn:this.setup,scope:this}
+        }
     });
     MODx.panel.UpdateProfile.superclass.constructor.call(this,config);
-    this.setup();
 };
 Ext.extend(MODx.panel.UpdateProfile,MODx.FormPanel,{
     setup: function() {

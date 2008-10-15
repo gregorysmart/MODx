@@ -20,5 +20,11 @@ $ua = array_merge($ua,$user->profile->toArray());
 $ua['dob'] = $ua['dob'] != '0'
     ? strftime('%m/%d/%Y',$ua['dob'])
     : '';
+$ua['blockeduntil'] = $ua['blockeduntil'] != '0'
+    ? strftime('%m/%d/%Y %I:%M %p',$ua['blockeduntil'])
+    : '';
+$ua['blockedafter'] = $ua['blockedafter'] != '0'
+    ? strftime('%m/%d/%Y %I:%M %p',$ua['blockedafter'])
+    : '';
 
 $modx->error->success('',$ua);

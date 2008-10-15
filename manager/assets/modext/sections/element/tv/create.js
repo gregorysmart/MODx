@@ -20,25 +20,6 @@ MODx.page.CreateTV = function(config) {
             ,text: _('save')
             ,method: 'remote'
             ,checkDirty: true
-            ,refresh: {
-            	tree: 'modx_element_tree'
-            	,node: (config.category != '' ? 'n_tv_category_'+config.category : 'n_type_tv')
-            	,self: true
-            }
-            ,listeners: {
-                'click': {fn:function(btn,e) {
-                    var g = Ext.getCmp('grid-tv-templates');
-                    var rg = Ext.getCmp('grid-tv-security');
-                    Ext.apply(this.ab.config.params,{
-                        templates: g.encodeModified()
-                        ,resource_groups: rg.encodeModified()
-                    });
-                },scope:this}
-                ,'success': function(o,i,r) {
-                    Ext.getCmp('grid-tv-templates').getStore().commitChanges();
-                    Ext.getCmp('grid-tv-security').getStore().commitChanges();
-                }
-            }
             ,keys: [{
                 key: "s"
                 ,alt: true

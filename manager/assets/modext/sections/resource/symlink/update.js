@@ -40,19 +40,6 @@ MODx.page.UpdateSymLink = function(config) {
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
             ,text: _('save')
             ,method: 'remote'
-            ,listeners: {
-                'click': {fn:function(btn,e) {
-                    var g = Ext.getCmp('grid-resource-security');
-                    Ext.apply(this.ab.config.params,{
-                        resource_groups: g.encodeModified()
-                    });
-                },scope:this}
-                ,'success': function(o,i,r) {
-                    Ext.getCmp('grid-resource-security').getStore().commitChanges();
-                    var t = parent.Ext.getCmp('modx_document_tree');
-                    t.refreshNode(config.ctx+'_'+config.id);
-                }
-            }
         }
         ,'-'
         ,{

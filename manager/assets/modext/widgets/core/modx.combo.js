@@ -23,6 +23,7 @@ MODx.combo.ComboBox = function(config,getStore) {
         ,editable: true
         ,resizable: true
         ,typeAhead: true
+        ,forceSelection: false
         ,minChars: 3
     });
     Ext.applyIf(config,{
@@ -41,6 +42,7 @@ MODx.combo.ComboBox = function(config,getStore) {
 	   return config.store;
 	}
 	MODx.combo.ComboBox.superclass.constructor.call(this,config);
+    this.config = config;
 };
 Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
 	/**
@@ -53,7 +55,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
      * @param {boolean} b True to bypass check
 	 */
 	,setValue: function(v,b) {
-        if (this.isLoaded || b === true || this.mode == 'local') {
+        if (this.isLoaded || b === true || this.mode == 'local' || v === '') {
             MODx.combo.ComboBox.superclass.setValue.call(this,v);
         } else {
             this.store.load({
@@ -68,6 +70,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
         }
     }
 });
+Ext.reg('modx-combo',MODx.combo.ComboBox);
 
 /**
  * Helps with rendering of comboboxes in grids.
@@ -631,3 +634,29 @@ Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
     }
 });
 Ext.reg('combo-browser',MODx.combo.Browser);
+
+
+/**
+ * Displays a dropdown list of available countries.
+ * 
+ * @class MODx.combo.Country
+ * @extends MODx.combo.ComboBox
+ * @param {Object} config An object of configuration properties
+ * @xtype combo-country
+ */
+MODx.combo.Country = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        name: 'country'
+        ,hiddenName: 'country'
+        ,url: MODx.config.connectors_url+'system/country.php'
+        ,displayField: 'value'
+        ,valueField: 'value'
+        ,fields: ['value']
+        ,editable: false
+        ,value: 0
+    });
+    MODx.combo.Country.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.Country,MODx.combo.ComboBox);
+Ext.reg('combo-country',MODx.combo.Country);
