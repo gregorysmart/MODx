@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-6 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Updated xPDO to rev 258 for bug fix in new xPDOObject::_setRaw() function with array and json phptype fields.
 - Updated xPDO to rev 256 for bug fix in xPDO::getSelectColumns() and new xPDOObject::_setRaw() implementation to resolve issues with native php types when using fromArray().
 - Added modPackageBuilder->setPackageAttributes() function for easily adding transport-level attributes to a package.
 - Updated xPDO to rev 252 to get new features allowing transport packages to carry transport attributes.
