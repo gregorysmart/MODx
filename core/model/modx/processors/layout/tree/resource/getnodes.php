@@ -104,7 +104,7 @@ foreach ($collection as $item) {
                 'cls' => $class,
                 'qtip' => $item->get('description'),
                 'type' => 'context',
-                'href' => 'index.php?a='.$actions['context/view'].'&key='.$item->get('key'),
+                'href' => 'index.php?a='.$actions['context/update'].'&key='.$item->get('key'),
                 'menu' => $menu,
             );
         } else {
