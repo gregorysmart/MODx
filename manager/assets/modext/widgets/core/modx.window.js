@@ -20,11 +20,11 @@ MODx.Window = function(config) {
 		,autoHeight: true
 		,width: 450
 		,buttons: [{
-			text: _('cancel')
+			text: config.cancelBtnText || _('cancel')
 			,scope: this
 			,handler: function() { this.hide(); }
 		},{
-			text: _('save')
+			text: config.saveBtnText || _('save')
 			,scope: this
 			,handler: this.submit
 		}]

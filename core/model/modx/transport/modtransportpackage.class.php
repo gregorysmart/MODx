@@ -147,7 +147,7 @@ class modTransportPackage extends xPDOObject {
                         $manifest= $this->get('manifest');
                         $instance->attributes= isset($manifest[XPDO_TRANSPORT_MANIFEST_ATTRIBUTES]) ? $manifest[XPDO_TRANSPORT_MANIFEST_ATTRIBUTES] : array();
                         $attributes = $this->get('attributes');
-                        if ($attributes) $instance->attributes = array_merge($instance->attributes, $attributes); 
+                        if ($attributes) $instance->attributes = array_merge($instance->attributes, $attributes);
                         $instance->vehicles= isset($manifest[XPDO_TRANSPORT_MANIFEST_VEHICLES]) ? $manifest[XPDO_TRANSPORT_MANIFEST_VEHICLES] : $manifest;
                         $this->package = $instance;
                     } else {
@@ -164,7 +164,7 @@ class modTransportPackage extends xPDOObject {
 	 *
 	 * {@inheritdoc}
 	 */
-	function remove($ancestors = array()) {
+	function remove($force = false,$ancestors = array()) {
 		$removed = false;
         if ($this->get('installed') == null || $this->get('installed') == '0000-00-00 00:00:00') {
         	$uninstalled = true;
@@ -172,7 +172,7 @@ class modTransportPackage extends xPDOObject {
             $uninstalled = $this->uninstall();
         }
 
-		if ($uninstalled) {
+		if ($uninstalled || $force) {
 			$removed= parent::remove($ancestors);
 		}
 

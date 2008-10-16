@@ -287,7 +287,11 @@ MODx.panel.WizardPanel = function(config) {
 	});
 	MODx.panel.WizardPanel.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.panel.WizardPanel,MODx.FormPanel,{
-
-});
+Ext.extend(MODx.panel.WizardPanel,MODx.FormPanel);
 Ext.reg('modx-wizard-panel',MODx.panel.WizardPanel);
+
+
+MODx.PanelSpacer = {
+    html: '<br />'
+    ,border: false
+};
