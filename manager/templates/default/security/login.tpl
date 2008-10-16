@@ -36,7 +36,7 @@
     <meta name="robots" content="noindex, nofollow" />
 
 <script type="text/javascript">
-var SITE_NAME = '{$_config.site_name}';
+var SITE_NAME = '{$_config.site_name|escape}';
 var CONNECTORS_URL = '{$_config.connectors_url}';
 var onManagerLoginFormRender = '{$onManagerLoginFormRender}';
 </script>
