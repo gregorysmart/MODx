@@ -164,6 +164,9 @@ MODx.panel.PIInstall = function(config) {
         },{
             html: '<p>'+_('setup_options_desc')+'</p>'   
             ,style: 'padding-bottom: 2em'
+        },{
+            html: ''
+            ,id: 'setup-options'
         }]
     });
     MODx.panel.PIInstall.superclass.constructor.call(this,config);
@@ -172,6 +175,28 @@ Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
     submit: function() {
         var va = this.getForm().getValues();
         Ext.getCmp('window-package-installer').fireEvent('finish');        
+    }
+    ,fetch: function() {
+        var sig = Ext.getCmp('grid-package').menu.record.signature;
+        MODx.Ajax.request({
+            url: MODx.config.connectors_url+'workspace/packages.php'
+            ,params: {
+                action: 'getAttribute'
+                ,signature: sig
+                ,attr: 'setup-options'
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    var a = r.object.attr;
+                    var el = Ext.getCmp('setup-options').getEl();
+                    if (a !== null && a !== 'null') {
+                        el.update(a);
+                    } else {
+                        el.update('');
+                    }
+                },scope:this}
+            }
+        });
     }
 });
 Ext.reg('panel-pi-install',MODx.panel.PIInstall);
