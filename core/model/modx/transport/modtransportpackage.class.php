@@ -11,10 +11,10 @@
  * @subpackage transport
  */
 class modTransportPackage extends xPDOObject {
-	/**
-	 * @var string The unique identifier of a package.
-	 * @access public
-	 */
+    /**
+     * @var string The unique identifier of a package.
+     * @access public
+     */
     var $identifier = null;
     /**
      * @var string The version number of a package.
@@ -39,11 +39,11 @@ class modTransportPackage extends xPDOObject {
         parent :: __construct($xpdo);
     }
 
-	/**
-	 * Overrides xPDOObject::save to set a default created time if new.
-	 *
-	 * {@inheritdoc}
-	 */
+    /**
+     * Overrides xPDOObject::save to set a default created time if new.
+     *
+     * {@inheritdoc}
+     */
     function save($cacheFlag= null) {
         if ($this->_new && !$this->get('created')) {
             $this->set('created', strftime('%Y-%m-%d %H:%M:%S'));
@@ -52,12 +52,12 @@ class modTransportPackage extends xPDOObject {
         return $saved;
     }
 
-	/**
-	 * Overrides xPDOObject::set. Checks if signature is set, and if so,
-	 * parses it and sets the source if is a new package.
-	 *
-	 * {@inheritdoc}
-	 */
+    /**
+     * Overrides xPDOObject::set. Checks if signature is set, and if so,
+     * parses it and sets the source if is a new package.
+     *
+     * {@inheritdoc}
+     */
     function set($k, $v, $vType = '') {
         $set = parent :: set($k, $v, $vType);
         if ($k == 'signature') {
@@ -69,31 +69,31 @@ class modTransportPackage extends xPDOObject {
         return $set;
     }
 
-	/**
-	 * Parses the signature.
-	 *
-	 * @return boolean True if successful.
-	 */
+    /**
+     * Parses the signature.
+     *
+     * @return boolean True if successful.
+     */
     function parseSignature() {
-    	$parsed = false;
-    	$sig = $this->get('signature');
-    	if ($sig != NULL) {
-        	$parsed = explode('-',$sig);
-        	if (count($parsed) == 3) {
-	            $this->identifier = next($parsed);
-    	        $this->version = next($parsed);
-        	    $this->release = next($parsed);
-        	    $parsed = true;
-        	}
-    	}
-    	return $parsed;
+        $parsed = false;
+        $sig = $this->get('signature');
+        if ($sig != NULL) {
+            $parsed = explode('-',$sig);
+            if (count($parsed) == 3) {
+                $this->identifier = next($parsed);
+                $this->version = next($parsed);
+                $this->release = next($parsed);
+                $parsed = true;
+            }
+        }
+        return $parsed;
     }
 
-	/**
-	 * Gets the package's transport mechanism.
-	 * @param integer $state The state of the package.
-	 * @return mixed The package.
-	 */
+    /**
+     * Gets the package's transport mechanism.
+     * @param integer $state The state of the package.
+     * @return mixed The package.
+     */
     function getTransport($state = -1) {
         if (!is_object($this->package) || !is_a($this->package, 'xPDOTransport')) {
             if ($this->xpdo->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true)) {
@@ -119,7 +119,11 @@ class modTransportPackage extends xPDOObject {
                                     $this->set('state', XPDO_TRANSPORT_STATE_UNPACKED);
                                 }
                                 $this->set('source', $sourceFile);
-                                $this->set('manifest', array(XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes, XPDO_TRANSPORT_MANIFEST_VEHICLES => $this->package->vehicles));
+                                $this->set('manifest', array(
+                                    XPDO_TRANSPORT_MANIFEST_VERSION => $this->package->manifestVersion,
+                                    XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes, 
+                                    XPDO_TRANSPORT_MANIFEST_VEHICLES => $this->package->vehicles
+                                ));
                                 $this->set('attributes', $this->package->attributes);
                                 $this->save();
                             }
@@ -134,59 +138,33 @@ class modTransportPackage extends xPDOObject {
     }
 
     /**
-     * Gets the package's transport mechanism, loaded from the database manifest.
-     * @return mixed The package.
+     * Overrides xPDOObject::remove. Removes and uninstalls the package.
+     *
+     * {@inheritdoc}
      */
-    function loadTransport() {
-        if (!is_object($this->package) || !is_a($this->package, 'xPDOTransport')) {
-            if ($this->xpdo->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true)) {
-                if ($workspace = $this->getOne('Workspace')) {
-                    $packageDir = $workspace->get('path') . 'packages/';
-                    if ($sourceFile = $this->get('source')) {
-                        $instance= new xPDOTransport($this->xpdo, $this->get('signature'), $packageDir);
-                        $manifest= $this->get('manifest');
-                        $instance->attributes= isset($manifest[XPDO_TRANSPORT_MANIFEST_ATTRIBUTES]) ? $manifest[XPDO_TRANSPORT_MANIFEST_ATTRIBUTES] : array();
-                        $attributes = $this->get('attributes');
-                        if ($attributes) $instance->attributes = array_merge($instance->attributes, $attributes);
-                        $instance->vehicles= isset($manifest[XPDO_TRANSPORT_MANIFEST_VEHICLES]) ? $manifest[XPDO_TRANSPORT_MANIFEST_VEHICLES] : $manifest;
-                        $this->package = $instance;
-                    } else {
-                        $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");
-                    }
-                }
-            }
-        }
-        return $this->package;
-    }
-
-	/**
-	 * Overrides xPDOObject::remove. Removes and uninstalls the package.
-	 *
-	 * {@inheritdoc}
-	 */
-	function remove($force = false,$ancestors = array()) {
-		$removed = false;
+    function remove($force = false,$ancestors = array()) {
+        $removed = false;
         if ($this->get('installed') == null || $this->get('installed') == '0000-00-00 00:00:00') {
-        	$uninstalled = true;
+            $uninstalled = true;
         } else {
             $uninstalled = $this->uninstall();
         }
 
-		if ($uninstalled || $force) {
-			$removed= parent::remove($ancestors);
-		}
+        if ($uninstalled || $force) {
+            $removed= parent::remove($ancestors);
+        }
 
         return $removed;
     }
 
 
-	/**
-	 * Installs the package.
-	 *
-	 * @return boolean True if successful.
-	 */
+    /**
+     * Installs the package.
+     *
+     * @return boolean True if successful.
+     */
     function install() {
-    	$installed = false;
+        $installed = false;
         if ($this->getTransport()) {
             $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Grabbing package workspace...');
             $this->getOne('Workspace');
@@ -196,7 +174,7 @@ class modTransportPackage extends xPDOObject {
             @ini_set('max_execution_time', 0);
             $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Workspace environment initiated, now installing package...');
             if ($this->package->install($attributes)) {
-            	$installed = true;
+                $installed = true;
                 $this->set('installed', strftime('%Y-%m-%d %H:%M:%S'));
                 $this->set('attributes', $attributes);
                 $this->save();
@@ -206,39 +184,39 @@ class modTransportPackage extends xPDOObject {
     }
 
     /**
-	 * Uninstalls the package.
-	 *
-	 * @return boolean True if successful.
-	 */
-	function uninstall() {
-		$uninstalled = false;
-        if ($this->loadTransport()) {
+     * Uninstalls the package.
+     *
+     * @return boolean True if successful.
+     */
+    function uninstall() {
+        $uninstalled = false;
+        if ($this->getTransport()) {
             $this->getOne('Workspace');
             $wc = is_array($this->Workspace->config) ? $this->Workspace->config : array();
             $at = is_array($this->get('attributes')) ? $this->get('attributes') : array();
             $attributes = array_merge($wc,$at);
             @ini_set('max_execution_time', 0);
             if ($this->package->uninstall($attributes)) {
-            	$uninstalled = true;
+                $uninstalled = true;
                 $this->set('installed',NULL);
                 $this->set('attributes',$attributes);
                 $this->save();
             } else {
-            	$this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Error occurred during uninstall.");
+                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Error occurred during uninstall.");
             }
         } else {
             $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not load transport package.");
         }
         return $uninstalled;
-	}
+    }
 
-	/**
-	 * Transfers the package from one directory to another.
-	 *
-	 * @param string $sourceFile The file to transfer.
-	 * @param string $targetDir The directory to transfer into.
-	 * @return boolean True if successful.
-	 */
+    /**
+     * Transfers the package from one directory to another.
+     *
+     * @param string $sourceFile The file to transfer.
+     * @param string $targetDir The directory to transfer into.
+     * @return boolean True if successful.
+     */
     function transferPackage($sourceFile, $targetDir) {
         $transferred= false;
         $content= '';
