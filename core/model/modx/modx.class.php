@@ -2152,7 +2152,7 @@ class modX extends xPDO {
             $this->eventMap[$event][]= $pluginId;
             $added= true;
         }
-        return $added; 
+        return $added;
     }
 
     /**
@@ -2170,7 +2170,7 @@ class modX extends xPDO {
      * @param string $key The key identifying the culture of the file.
      * @param string $path Full filesystem path to the directory containing the file.
      */
-    function loadLexicon($key, $path= '') {
+    function loadLexicon($key = false, $path= '') {
         if (!$key) {
             if (!$key= $this->cultureKey) {
                 $this->cultureKey= 'en';
@@ -2271,11 +2271,11 @@ class modX extends xPDO {
 
     /**
      * Retrieve a context by name without initializing it.
-     * 
+     *
      * Within a request, contexts retrieved using this function will cache the
      * context data into the modX::$contexts array to avoid loading the same
      * context multiple times.
-     * 
+     *
      * @access public
      * @param string $contextKey The context to retrieve.
      * @return &$modContext A modContext object retrieved from cache or
@@ -2450,14 +2450,14 @@ class modX extends xPDO {
 
     /**
      * Returns the state of the SESSION being used by modX.
-     * 
+     *
      * The possible values for session state are:
-     * 
+     *
      * MODX_SESSION_STATE_UNINITIALIZED
      * MODX_SESSION_STATE_UNAVAILABLE
      * MODX_SESSION_STATE_EXTERNAL
      * MODX_SESSION_STATE_INITIALIZED
-     * 
+     *
      * @return integer Returns an integer representing the session state.
      */
     function getSessionState() {
@@ -2535,7 +2535,7 @@ class modX extends xPDO {
 
     /**
      * Provides modX the ability to use modRegister instances as log targets.
-     * 
+     *
      * {@inheritdoc}
      */
     function _log($level, $msg, $target= '', $def= '', $file= '', $line= '') {
@@ -2563,7 +2563,7 @@ class modX extends xPDO {
 
     /**
      * Provides custom logging functionality for modRegister targets.
-     * 
+     *
      * @access protected
      */
     function _logInRegister($register, $level, $msg, $def, $file, $line) {
