@@ -8,8 +8,6 @@ $modx->lexicon->load('snippet','category');
 
 if (!$modx->hasPermission('save_snippet')) $modx->error->failure($modx->lexicon('permission_denied'));
 
-$modx->error->failure(print_r($_POST,true));
-
 /* get snippet */
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
 if ($snippet == null) $modx->error->failure($modx->lexicon('snippet_err_not_found'));
