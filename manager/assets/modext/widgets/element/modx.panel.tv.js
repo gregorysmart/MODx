@@ -151,7 +151,7 @@ MODx.panel.TV = function(config) {
                     'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
                 }
             },{
-                title: _('plugin_properties')
+                title: _('properties')
                 ,xtype: 'panel'
                 ,layout: 'form'
                 ,border: false

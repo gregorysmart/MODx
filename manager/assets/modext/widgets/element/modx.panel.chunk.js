@@ -107,7 +107,7 @@ MODx.panel.Chunk = function(config) {
                         }
                     }]
             },{
-                title: _('chunk_properties')
+                title: _('properties')
                 ,xtype: 'panel'
                 ,layout: 'form'
                 ,border: false

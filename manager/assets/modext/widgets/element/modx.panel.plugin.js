@@ -109,7 +109,7 @@ MODx.panel.Plugin = function(config) {
                     }
                 }]             
             },{
-                title: _('plugin_properties')
+                title: _('properties')
                 ,xtype: 'panel'
                 ,layout: 'form'
                 ,border: false

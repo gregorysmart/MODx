@@ -90,7 +90,7 @@ MODx.panel.Snippet = function(config) {
                     
                 }]
             },{
-                title: _('snippet_properties')
+                title: _('properties')
                 ,xtype: 'panel'
                 ,layout: 'form'
                 ,border: false
