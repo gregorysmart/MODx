@@ -16,6 +16,7 @@ $_lang['chunk_lock'] = 'Lock chunk for editing';
 $_lang['chunk_lock_msg'] = 'Users must have the edit_locked attribute in order to edit this chunk.';
 $_lang['chunk_msg'] = 'Here you can add/edit chunks. Remember; chunks are \'raw\' HTML code; so any PHP code won\'t be processed.';
 $_lang['chunk_name'] = 'Chunk name';
+$_lang['chunk_properties'] = 'Default Properties';
 $_lang['chunk_title'] = 'Create/edit chunk';
 $_lang['chunk_untitled'] = 'Untitled Chunk';
 $_lang['chunks'] = 'Chunks';

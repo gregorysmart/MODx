@@ -345,7 +345,7 @@ MODx.combo.xType = function(config) {
     MODx.combo.xType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
-Ext.reg('combo-xtype',MODx.combo.xType);
+Ext.reg('combo-xtype-spec',MODx.combo.xType);
 
 
 
@@ -380,7 +380,7 @@ MODx.window.UpdateSetting = function(config) {
             ,name: 'name'
             ,allowBlank: false
         },{
-            xtype: 'combo-xtype'
+            xtype: 'combo-xtype-spec'
             ,name: 'xtype'
             ,hiddenName: 'xtype'
             ,fieldLabel: _('xtype')

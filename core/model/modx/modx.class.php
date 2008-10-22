@@ -1360,28 +1360,45 @@ class modX extends xPDO {
     /**
      * Process and return the output from a PHP snippet by name.
      *
-     * @param string $snippetName
-     * @param array $params
-     * @return string
+     * @param string $snippetName The name of the snippet.
+     * @param array $params An associative array of properties to pass to the
+     * snippet.
+     * @return string The processed output of the snippet.
      */
     function runSnippet($snippetName, $params= array ()) {
         $output= '';
         if ($snippet= $this->getObject('modSnippet', array ('name' => $snippetName), true)) {
+            $snippet->setCacheable(false);
             $output= $snippet->process($params);
         }
         return $output;
     }
 
+    /**
+     * Process and return the output from an HTML chunk by name.
+     * 
+     * @param string $chunkName The name of the chunk.
+     * @param array $properties An associative array of properties to process
+     * the chunk with.
+     * @return string The processed output of the chunk.
+     */
     function getChunk($chunkName, $properties= array ()) {
         $output= '';
         if ($chunk= $this->getObject('modChunk', array ('name' => $chunkName), true)) {
+            $chunk->setCacheable(false);
             $output= $chunk->process($properties);
         }
         return $output;
     }
 
     /**
-     * Parse a chunk element using an associate array of replacement variables.
+     * Parse a chunk using an associative array of replacement variables.
+     * 
+     * @param string $chunkName The name of the chunk.
+     * @param array $chunkArr An array of properties to replace in the chunk.
+     * @param string $prefix The placeholder prefix, defaults to [[+.
+     * @param string $suffix The placeholder suffix, defaults to ]].
+     * @return string The processed chunk with the placeholders replaced.
      */
     function parseChunk($chunkName, $chunkArr, $prefix='[[+', $suffix=']]') {
         $chunk= '';

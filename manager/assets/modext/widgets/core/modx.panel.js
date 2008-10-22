@@ -163,7 +163,6 @@ Ext.reg('modx-formpanel',MODx.FormPanel);
 Ext.override(Ext.form.BasicForm,{
     clearDirty : function(nodeToRecurse){
         nodeToRecurse = nodeToRecurse || this;
-        var div = Ext.get('snippet-name');
         nodeToRecurse.items.each(function(f){
             if(f.items){
                 this.clearDirty(f);

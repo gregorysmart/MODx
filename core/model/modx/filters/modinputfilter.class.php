@@ -45,7 +45,7 @@ class modInputFilter {
      * @param modElement &$element The element to apply filtering to.
      */
     function filter(& $element) {
-        // split commands and modifiers and store them as properties for the output filtering
+        /* split commands and modifiers and store them as properties for the output filtering */
         $output= $element->get('name');
         $name= $output;
         $splitPos= strpos($output, ':');
@@ -54,8 +54,8 @@ class modInputFilter {
             $name= substr($output, 0, $splitPos);
             $modifiers= substr($output, $splitPos);
             if (preg_match_all('~:([^:=]+)(?:=`(.*?)`(?=:[^:=]+|$))?~s', $modifiers, $matches)) {
-                $element->_properties['filter_commands'] = $matches[1]; // modifier commands
-                $element->_properties['filter_modifiers'] = $matches[2]; // modifier values
+                $element->_properties['filter_commands'] = $matches[1]; /* modifier commands */
+                $element->_properties['filter_modifiers'] = $matches[2]; /* modifier values */
             }
         }
         $element->set('name', $name);

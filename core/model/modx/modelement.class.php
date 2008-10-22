@@ -67,6 +67,11 @@ class modElement extends modAccessibleSimpleObject {
         parent :: __construct($xpdo);
     }
 
+    /**
+     * Constructs a valid tag representation of the element.
+     * 
+     * @return string A tag representation of the element.
+     */
     function getTag() {
         if (empty($this->_tag)) {
             $propTemp = array();
@@ -110,22 +115,16 @@ class modElement extends modAccessibleSimpleObject {
      */
     function process($properties= null, $content= null) {
         $this->xpdo->getParser();
-        if ($properties !== null && !empty ($properties)) {
-            if (is_string($properties)) {
-                $this->_properties= array_merge($this->xpdo->parser->parseProperties($this->get('properties')), $this->xpdo->parser->parseProperties($properties));
-            }
-            elseif (is_array($properties)) {
-                $this->_properties= array_merge($this->xpdo->parser->parseProperties($this->get('properties')), $properties);
-            }
-        } else {
-            $this->_properties= $this->xpdo->parser->parseProperties($this->get('properties'));
-        }
+        $this->getProperties($properties);
         $this->getTag();
-        $this->filterInput();
-        if (is_string($content) && !empty($content)) {
-            $this->_content= $content;
-        }
         if ($this->xpdo->getDebug() === true) $this->xpdo->log(XPDO_LOG_LEVEL_DEBUG, "Processing Element: " . $this->get('name') . ($this->_tag ? "\nTag: {$this->_tag}" : "\n") . "\nProperties: " . print_r($this->_properties, true));
+        if ($this->isCacheable() && isset ($this->xpdo->elementCache[$this->_tag])) {
+            $this->_output = $this->xpdo->elementCache[$this->_tag];
+            $this->_processed = true;
+        } else {
+	        $this->filterInput();
+            $this->getContent(is_string($content) ? array('content' => $content) : array());
+        }
         return $this->_result;
     }
 
@@ -133,7 +132,7 @@ class modElement extends modAccessibleSimpleObject {
      * Cache the current output of this element instance by tag signature.
      */
     function cache() {
-        if ($this->_cacheable) {
+        if ($this->isCacheable()) {
             $this->xpdo->elementCache[$this->_tag]= $this->_output;
         }
     }
@@ -224,6 +223,147 @@ class modElement extends modAccessibleSimpleObject {
             $policy = $this->_policies[$context];
         }
         return $policy;
+    }
+
+    /**
+     * Gets the raw, unprocessed source content for this element.
+     * 
+     * @param array $options An array of options implementations can use to
+     * accept language, revision identifiers, or other information to alter the
+     * behavior of the method.
+     * @return string The raw source content for the element.
+     */
+    function getContent($options = array()) {
+        if (!is_string($this->_content) || $this->_content === '') {
+            if (isset($options['content'])) {
+                $this->_content = $options['content'];
+            } else {
+                $this->_content = $this->get('content');
+            }
+        }
+        return $this->_content;
+    }
+    
+    /**
+     * Set the raw source content for this element.
+     * 
+     * @param mixed $content The source content; implementations can decide if
+     * it can only be a string, or some other source from which to retrieve it.
+     * @param array $options An array of options implementations can use to
+     * accept language, revision identifiers, or other information to alter the
+     * behavior of the method.
+     * @return boolean True indicates the content was set.
+     */
+    function setContent($content, $options = array()) {
+        return $this->set('content', $content);
+    }
+    
+    /**
+     * Get the properties for this element instance for processing.
+     * 
+     * @param array|string $properties An array or string of properties to
+     * apply.
+     * @return array A simple array of properties ready to use for processing.
+     */
+    function getProperties($properties = null) {
+        $this->_properties= $this->xpdo->parser->parseProperties($this->get('properties'));
+        if ($properties !== null && !empty($properties)) {
+            $this->_properties= array_merge($this->_properties, $this->xpdo->parser->parseProperties($properties));
+        }
+        return $this->_properties;
+    }
+
+    /**
+     * Set default properties for this element instance.
+     * 
+     * @param array|string $properties A property array or property string.
+     * @param boolean $merge Indicates if properties should be merged with
+     * existing ones.
+     * @return boolean true if the properties are set.
+     */
+    function setProperties($properties, $merge = false) {
+        $set = false;
+        $propertyArray = array();
+        if (is_string($properties)) {
+            $properties = $this->xpdo->parser->parsePropertyString($properties);
+        }
+        if (is_array($properties)) {
+            foreach ($properties as $propKey => $property) {
+                if (is_array($property) && isset($property[5])) {
+                    $propertyArray[$property[0]] = array(
+                        'name' => $property[0],
+                        'desc' => $property[1],
+                        'type' => $property[2],
+                        'options' => $property[3],
+                        'value' => $property[4],
+                    );
+                } elseif (is_array($property) && isset($property['value'])) {
+                    $propertyArray[$property['name']] = array(
+                        'name' => $property['name'],
+                        'desc' => isset($property['description']) ? $property['description'] : (isset($property['desc']) ? $property['desc'] : ''),
+                        'type' => isset($property['xtype']) ? $property['xtype'] : (isset($property['type']) ? $property['type'] : 'textfield'),
+                        'options' => isset($property['options']) ? $property['options'] : array(),
+                        'value' => $property['value'],
+                    );
+                } else {
+                    $propertyArray[$propKey] = array(
+                        'name' => $propKey,
+                        'desc' => '',
+                        'type' => 'textfield',
+                        'options' => array(), 
+                        'value' => $property
+                    );
+                }
+            }
+            if ($merge && !empty($propertyArray)) {
+                $existing = $this->get('properties');
+                if (is_array($existing) && !empty($existing)) {
+                    $propertyArray = array_merge($existing, $propertyArray);
+                }
+            }
+            $set = $this->set('properties', $propertyArray);
+        }
+        return $set;
+    }
+    
+    /**
+     * Indicates if the element is cacheable.
+     * 
+     * @return boolean True if the element can be stored to or retrieved from
+     * the element cache.
+     */
+    function isCacheable() {
+        return $this->_cacheable;
+    }
+    
+    /**
+     * Sets the runtime cacheability of the element.
+     * 
+     * @param boolean $cacheable Indicates the value to set for cacheability of
+     * this element.
+     */
+    function setCacheable($cacheable = true) {
+        $this->_cacheable = (boolean) $cacheable;
+    }
+
+    /**
+     * Turns associative arrays into placeholders in the scope of this element.
+     * 
+     * @param array $placeholders An associative array of placeholders to set.
+     * @return array An array of placeholders overwritten from the containing
+     * scope you can use to restore values from, or an empty array if no
+     * placeholders were overwritten.
+     */
+    function toPlaceholders($placeholders) {
+        $restore = array();
+        if (is_array($placeholders) && !empty($placeholders)) {
+            $restoreKeys = array_keys($placeholders);
+            foreach ($restoreKeys as $phKey) {
+                if (isset($this->xpdo->placeholders[$phKey])) $restore[$phKey]= $this->xpdo->getPlaceholder($phKey);
+            }
+            $this->xpdo->toPlaceholders($placeholders);
+        }
+        return $restore;
     }
 }
 ?>

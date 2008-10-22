@@ -18,21 +18,21 @@ if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
 }
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() == false) {
+    $category = $modx->newObject('modCategory');
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() == false) {
             $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeTVFormSave event */
 $modx->invokeEvent('OnBeforeTVFormSave',array(
-	'mode' => 'new',
-	'id' => 0,
+    'mode' => 'new',
+    'id' => 0,
 ));
 
 $name_exists = $modx->getObject('modTemplateVar',array('name' => $_POST['name']));
@@ -61,6 +61,12 @@ $tv->set('display_params',$display_params);
 $tv->set('rank',isset($_POST['rank']) ? $_POST['rank'] : 0);
 $tv->set('locked',isset($_POST['locked']));
 $tv->set('category', $category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $tv->setProperties($properties);
 
 if ($tv->save() == false) {
     $modx->error->failure($modx->lexicon('tv_err_save'));
@@ -99,7 +105,7 @@ if (isset($_POST['templates'])) {
  * check for permission update access
  */
 if ($modx->hasPermission('tv_access_permissions')) {
-	if (isset($_POST['resource_groups'])) {
+    if (isset($_POST['resource_groups'])) {
         $docgroups = $modx->fromJSON($_POST['resource_groups']);
         foreach ($docgroups as $id => $group) {
             $tvdg = $modx->getObject('modTemplateVarResourceGroup',array(
@@ -126,8 +132,8 @@ if ($modx->hasPermission('tv_access_permissions')) {
 
 /* invoke OnTVFormSave event */
 $modx->invokeEvent('OnTVFormSave',array(
-	'mode' => 'new',
-	'id' => $tv->get('id'),
+    'mode' => 'new',
+    'id' => $tv->get('id'),
 ));
 
 /* log manager action */

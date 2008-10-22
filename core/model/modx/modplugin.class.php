@@ -14,5 +14,26 @@ class modPlugin extends modScript {
         parent :: __construct($xpdo);
         $this->_cacheable= false;
     }
+
+    /**
+     * Get the source content of this plugin.
+     */
+    function getContent($options = array()) {
+        if (!is_string($this->_content) || $this->_content === '') {
+            if (isset($options['content'])) {
+                $this->_content = $options['content'];
+            } else {
+                $this->_content = $this->get('plugincode');
+            }
+        }
+        return $this->_content;
+    }
+
+    /**
+     * Set the source content of this plugin.
+     */
+    function setContent($content, $options = array()) {
+        return $this->set('plugincode', $content);
+    }
 }
 ?>

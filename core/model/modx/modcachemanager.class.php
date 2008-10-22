@@ -262,7 +262,7 @@ class modCacheManager extends xPDOCacheManager {
                 $content .= "\$resource->fromArray(" . var_export($objArray, true) . ", '', true, true);\n";
                 $content .= "\$resource->_content= " . var_export($obj->_content, true) . ";\n";
                 $content .= "\$resource->_processed= " . ($obj->_processed ? 'true' : 'false') . ";\n";
-                //TODO: remove legacy docGroups and cache ABAC policies instead
+                /* TODO: remove legacy docGroups and cache ABAC policies instead */
                 if ($docGroups= $obj->getMany('modResourceGroupResource')) {
                     $content.= "\$docGroups= array ();\n";
                     foreach ($docGroups as $docGroup) {
@@ -393,21 +393,7 @@ class modCacheManager extends xPDOCacheManager {
     function generateScriptFile($objElement, $objContent= null, $returnFunction= false) {
         $written= false;
         if (is_object($objElement) && is_a($objElement, 'modScript')) {
-            $className= strtolower($objElement->_class);
-            switch ($className) {
-                case 'modsnippet':
-                    $scriptContent= $objElement->_fields['snippet'];
-                    break;
-                case 'modplugin':
-                    $scriptContent= $objElement->_fields['plugincode'];
-                    break;
-                case 'modmodule':
-                    $scriptContent= $objElement->_fields['modulecode'];
-                    break;
-                default:
-                    return false;
-                    break;
-            }
+            $scriptContent= $objElement->getContent(is_string($objContent) ? array('content' => $objContent) : array());
             $fileName= $objElement->getScriptFileName();
             $scriptName= $objElement->getScriptName();
 

@@ -53,21 +53,21 @@ class modResponse {
         }
 
         if (!$contentType->get('binary')) {
-            // collect any uncached element tags in the content and process them
+            /* collect any uncached element tags in the content and process them */
             $this->modx->getParser();
             $maxIterations= isset ($this->modx->config['parser_max_iterations']) ? intval($this->modx->config['parser_max_iterations']) : 10;
             $this->modx->parser->processElementTags('', $this->modx->resource->_output, true, false, '[[', ']]', array(), $maxIterations);
             $this->modx->parser->processElementTags('', $this->modx->resource->_output, true, true, '[[', ']]', array(), $maxIterations);
 
-            //FIXME: only do this for HTML content ?
+            /*FIXME: only do this for HTML content ?*/
             if (strpos($contentType->get('mime_type'), 'text/html') !== false) {
-                // Insert Startup jscripts & CSS scripts into template - template must have a </head> tag
+                /* Insert Startup jscripts & CSS scripts into template - template must have a </head> tag */
                 if (($js= $this->modx->getRegisteredClientStartupScripts()) && (strpos($this->modx->resource->_output, '</head>') !== false)) {
-                    // change to just before closing </head>
+                    /* change to just before closing </head> */
                     $this->modx->resource->_output= preg_replace("/(<\/head>)/i", $js . "\n\\1", $this->modx->resource->_output);
                 }
 
-                // Insert jscripts & html block into template - template must have a </body> tag
+                /* Insert jscripts & html block into template - template must have a </body> tag */
                 if ((strpos($this->modx->resource->_output, '</body>') !== false) && ($js= $this->modx->getRegisteredClientScripts())) {
                     $this->modx->resource->_output= preg_replace("/(<\/body>)/i", $js . "\n\\1", $this->modx->resource->_output);
                 }
@@ -75,7 +75,7 @@ class modResponse {
 
             $this->modx->_beforeRender();
 
-            // invoke OnWebPagePrerender event
+            /* invoke OnWebPagePrerender event */
             if (!$noEvent) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
@@ -103,13 +103,13 @@ class modResponse {
         } else {
             $this->modx->_beforeRender();
 
-            // invoke OnWebPagePrerender event
+            /* invoke OnWebPagePrerender event */
             if (!$noEvent) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
         }
 
-        // send out content-type, content-disposition, and custom headers from the content type
+        /* send out content-type, content-disposition, and custom headers from the content type */
         if (isset ($this->modx->config['set_header']) && $this->modx->config['set_header']) {
             $type= $contentType->get('mime_type') ? $contentType->get('mime_type') : 'text/html';
             $header= 'Content-Type: ' . $type;
@@ -153,7 +153,7 @@ class modResponse {
             }
         }
 
-        // tell PHP to call _postProcess after returning the response (for caching)
+        /* tell PHP to call _postProcess after returning the response (for caching) */
         register_shutdown_function(array (
             & $this->modx,
             "_postProcess"
@@ -188,7 +188,7 @@ class modResponse {
         }
         $this->modx->request->preserveRequest('referrer.redirected');
         if ($count_attempts == 1) {
-            // append the redirect count string to the url
+            /* append the redirect count string to the url */
             $currentNumberOfRedirects= isset ($_REQUEST['err']) ? $_REQUEST['err'] : 0;
             if ($currentNumberOfRedirects > 3) {
                 $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Redirection attempt failed - please ensure the resource you\'re trying to redirect to exists. <p>Redirection URL: <i>' . $url . '</i></p>');

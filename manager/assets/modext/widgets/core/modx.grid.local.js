@@ -119,6 +119,7 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
     ,_showMenu: function(g,ri,e) {
         e.stopEvent();
         e.preventDefault();
+        this.menu.recordIndex = ri;
         this.menu.record = this.getStore().getAt(ri).data;
         if (!this.getSelectionModel().isSelected(ri)) {
             this.getSelectionModel().selectRow(ri);

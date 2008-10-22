@@ -21,35 +21,49 @@ class modChunk extends modElement {
 	 */
     function process($properties= null, $content= null) {
         parent :: process($properties, $content);
-        if ($this->_cacheable && isset ($this->xpdo->elementCache[$this->_tag])) {
-            $this->_output= $this->xpdo->elementCache[$this->_tag];
-        } else {
-            // turn the processed properties into placeholders
-            $this->xpdo->toPlaceholder($this->get('name'), $this->_properties);
-
-            // get chunk content
-            if (!is_string($this->_content) || empty($this->_content))
-                $this->_content= $this->get('snippet');
-            if (is_string($this->_content) && !empty ($this->_content)) {
-                // collect element tags in the content and process them
-                $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
-                $this->xpdo->parser->processElementTags($this->_tag, $this->_content, false, false, '[[', ']]', array(), $maxIterations);
-            }
-
-            $this->filterOutput();
-
-            // copy the instance content source to the output buffer
+        if (!$this->_processed) {
+            /* copy the content into the output buffer */
             $this->_output= $this->_content;
+            if (is_string($this->_output) && !empty ($this->_output)) {
+                /* turn the processed properties into placeholders */
+                $restore = $this->toPlaceholders($this->_properties);
 
+                /* collect element tags in the output and process them */
+                $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
+                $this->xpdo->parser->processElementTags($this->_tag, $this->_output, false, false, '[[', ']]', array(), $maxIterations);
+                
+                /* remove the placeholders set from the properties of this element and restore global values */
+                $this->xpdo->unsetPlaceholders(array_keys($this->_properties));
+                if ($restore) $this->xpdo->toPlaceholders($restore);
+            }
+            $this->filterOutput();
             $this->cache();
-            
-            // remove the placeholders set from the properties of this element
-            $this->xpdo->unsetPlaceholders($this->get('name') . '.');
+            $this->_processed= true;
         }
-        $this->_processed= true;
 
-        // finally, return the processed element content
+        /* finally, return the processed element content */
         return $this->_output;
+    }
+
+    /**
+     * Get the source content of this chunk.
+     */
+    function getContent($options = array()) {
+        if (!is_string($this->_content) || $this->_content === '') {
+            if (isset($options['content'])) {
+                $this->_content = $options['content'];
+            } else {
+                $this->_content = $this->get('snippet');
+            }
+        }
+        return $this->_content;
+    }
+
+    /**
+     * Set the source content of this chunk.
+     */
+    function setContent($content, $options = array()) {
+        return $this->set('snippet', $content);
     }
 }
 ?>

@@ -4,6 +4,26 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-6 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added element property panel to all Element panels for managing default properties (except Modules).
+- Added modElement->setPlaceholders() to set placeholders and return any global placeholders that might need to be restored after an element is processed.
+- modChunk and modTemplateVar now restore any placeholders from the global scope after processing any local properties with the same name.
+- Added properties as local placeholders when processing modTemplateVar instances to match behavior of modChunk/modTemplate.
+- Updates to snippet property editor.
+- Added properties to modTemplateVar to make them consistent with all other elements.
+- Modify modX::getChunk() and runSnippet() to process those elements as non-cacheable instances. 
+- Added modResource::getContent() and setContent() functions for extensible control of accessing raw source content.
+- Modify modElement::setProperties() and modTag::setProperties() to handle various property data formats.
+- Updated modParser::parsePropertyString() to handle local property xtypes from UI and convert legacy types.
+- Added isCacheable() and setCacheable() to modElement and modTag classes for direct, extensible control of caching.
+- Modified behavior of modTemplate/modChunk not to prefix properties turned into placeholders with the name of the element.
+- Added getContent(), setContent(), getProperties(), and setProperties() to modTag and derivatives.
+- Added modParser::parsePropertyString() to parse element properties from string or array representations.
+- Updated modElement::process() behavior to check cache sooner and avoid unnecessary source content access and other processing.
+- Additional foreign key and sorting indexes added to modElement classes.
+- Added properties to all modElement classes except modTemplateVar.
+- Added setProperties() to modElement for setting a set of default properties that will be used by the element.
+- Added getProperties() to modElement for getting the properties to be used when processing the element.
+- Added getContent() and setContent() function to modElement and provided overrides in the appropriate subclasses.
 - Removed modTransportPackage::loadTransport(); the manifest should always be loaded from the file.
 - Updated xPDO to rev 262 for improvements in the xPDOTransport manifest format.
 - Updated xPDO to rev 258 for bug fix in new xPDOObject::_setRaw() function with array and json phptype fields.

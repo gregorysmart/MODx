@@ -135,6 +135,72 @@ if ($connected) {
     $description = 'Added disabled field missing in early Revolution releases';
     $sql = "ALTER TABLE {$table} ADD COLUMN `disabled` TINYINT(1) unsigned NOT NULL DEFAULT 0 AFTER `category`";
     processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `category` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modPlugin';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Added index on `locked` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `locked` (`locked`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `disabled` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `disabled` (`disabled`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `moduleguid` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `moduleguid` (`moduleguid`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `category` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modSnippet';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Added index on `locked` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `locked` (`locked`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `category` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `moduleguid` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `moduleguid` (`moduleguid`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modTemplate';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Added properties field missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `properties` TEXT AFTER `locked`";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `category` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `locked` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `locked` (`locked`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modTemplateVar';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Added properties field missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `properties` TEXT AFTER `default_text`";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `category` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Added index on `locked` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `locked` (`locked`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+
+    $class = 'modChunk';
+    $table = $this->xpdo->getTableName($class);
+    $description = 'Added properties field missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD COLUMN `properties` TEXT AFTER `locked`";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Add FK index on `category` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
+    $description = 'Add index on `locked` missing in early Revolution releases';
+    $sql = "ALTER TABLE {$table} ADD INDEX `locked` (`locked`)";
+    processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modUser';
     $table = $this->xpdo->getTableName($class);
@@ -237,6 +303,7 @@ if ($connected) {
     $sql = "ALTER TABLE {$table} CHANGE COLUMN `messageread` `read` TINYINT(1) NOT NULL";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
+
     $class = 'modLexiconFocus';
     $table = $this->config['table_prefix'].'lexicon_foci';
     $description = 'Dropped modLexiconFocus PRIMARY KEY';
@@ -269,7 +336,6 @@ if ($connected) {
     $description = 'Renamed modLexiconEntry `focus` to `topic`';
     $sql = "ALTER TABLE {$table} CHANGE `focus` `topic` INT( 10 ) UNSIGNED NOT NULL DEFAULT '1'";
     processResults($this->xpdo,$results,$class,$description,$sql);
-
 
     $description = 'Renamed modx_lexicon_foci to modx_lexicon_topics';
     $topicTable = $this->xpdo->getTableName('modLexiconTopic');

@@ -39,6 +39,10 @@ MODx.panel.Plugin = function(config) {
                     ,name: 'id'
                     ,value: config.plugin
                 },{
+                    xtype: 'hidden'
+                    ,name: 'props'
+                    ,value: null
+                },{
                     xtype: 'textfield'
                     ,fieldLabel: _('plugin_name')
                     ,name: 'name'
@@ -88,10 +92,6 @@ MODx.panel.Plugin = function(config) {
                     
                 }]
             },{
-                title: _('plugin_properties')
-                ,contentEl: 'tab_configuration'
-                
-            },{
                 title: _('system_events')
                 ,items: [{
                     html: '<h2>'+_('system_events')+'</h2>'
@@ -108,6 +108,15 @@ MODx.panel.Plugin = function(config) {
                         'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
                     }
                 }]             
+            },{
+                title: _('plugin_properties')
+                ,xtype: 'panel'
+                ,layout: 'form'
+                ,border: false
+                ,items: [{
+                    xtype: 'grid-element-properties'
+                    ,panel: 'panel-plugin'
+                }]
             }]
         }
         ,listeners: {
@@ -135,17 +144,23 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
                     this.getForm().setValues(r.object);
                     Ext.getCmp('plugin-name').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready',r.object);
+                    
+                    var d = Ext.decode(r.object.data);
+                    Ext.getCmp('grid-element-properties').getStore().loadData(d);
             	},scope:this}
             }
         });
     }
     ,beforeSubmit: function(o) {
         var g = Ext.getCmp('grid-plugin-event');
+        var h = Ext.getCmp('grid-element-properties');
         Ext.apply(o.form.baseParams,{
             events: g.encodeModified()
+            ,propdata: h.encode()
         });
     }
     ,success: function(o) {
+        Ext.getCmp('grid-element-properties').getStore().commitChanges();
         Ext.getCmp('grid-plugin-event').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');

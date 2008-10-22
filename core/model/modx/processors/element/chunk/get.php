@@ -12,4 +12,20 @@ if ($chunk == null) {
     $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_POST['id']));
 }
 
+$properties = $chunk->get('properties');
+if (!is_array($properties)) $properties = array();
+
+$data = array();
+foreach ($properties as $property) {
+    $data[] = array(
+        $property['name'],
+        $property['desc'],
+        $property['type'],
+        $property['options'],
+        $property['value'],
+    );
+}
+
+$chunk->set('data','(' . $modx->toJSON($data) . ')');
+
 $modx->error->success('',$chunk->toArray());

@@ -20,6 +20,7 @@ $xpdo_meta_map['modTemplateVar']= array (
     'display' => '',
     'display_params' => NULL,
     'default_text' => NULL,
+    'properties' => NULL,
   ),
   'fieldMeta' => 
   array (
@@ -71,6 +72,7 @@ $xpdo_meta_map['modTemplateVar']= array (
       'phptype' => 'integer',
       'null' => 'false',
       'default' => '0',
+      'index' => 'fk',
     ),
     'locked' => 
     array (
@@ -80,6 +82,7 @@ $xpdo_meta_map['modTemplateVar']= array (
       'phptype' => 'boolean',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'elements' => 
     array (
@@ -112,6 +115,12 @@ $xpdo_meta_map['modTemplateVar']= array (
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
+    ),
+    'properties' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'array',
+      'null' => 'true',
     ),
   ),
   'aggregates' => 

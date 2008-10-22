@@ -47,6 +47,7 @@ $xpdo_meta_map['modScript']= array (
       'phptype' => 'integer',
       'null' => 'false',
       'default' => '0',
+      'index' => 'fk',
     ),
   ),
   'aggregates' => 

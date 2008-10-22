@@ -34,9 +34,7 @@ class modScript extends modElement {
 
     function process($properties= null, $content= null) {
         parent :: process($properties, $content);
-        if ($this->_cacheable && isset ($this->xpdo->elementCache[$this->_tag])) {
-            $this->_output= $this->xpdo->elementCache[$this->_tag];
-        } else {
+        if (!$this->_processed) {
             $scriptName= $this->getScriptName();
             if (!$this->_result= function_exists($scriptName)) {
                 if (!file_exists($this->getScriptFileName())) {
@@ -49,25 +47,24 @@ class modScript extends modElement {
                 }
             }
             if ($this->_result) {
-                $this->xpdo->event->params= $this->_properties; // store params inside event object
+                $this->xpdo->event->params= $this->_properties; /* store params inside event object */
                 ob_start();
-                $this->_content= $scriptName($this->_properties);
-                $this->_content= ob_get_contents() . $this->_content;
+                $this->_output= $scriptName($this->_properties);
+                $this->_output= ob_get_contents() . $this->_output;
                 ob_end_clean();
-                if ($this->_content && is_string($this->_content)) {
-                    // collect element tags in the evaluated content and process them
+                if ($this->_output && is_string($this->_output)) {
+                    /* collect element tags in the evaluated content and process them */
                     $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
-                    $this->xpdo->parser->processElementTags($this->_tag, $this->_content, false, false, '[[', ']]', array(), $maxIterations);
+                    $this->xpdo->parser->processElementTags($this->_tag, $this->_output, false, false, '[[', ']]', array(), $maxIterations);
                 }
                 $this->filterOutput();
                 unset ($this->xpdo->event->params);
-                $this->_output= $this->_content;
                 $this->cache();
             }
         }
         $this->_processed= true;
 
-        // finally, return the processed element content
+        /* finally, return the processed element content */
         return $this->_output;
     }
 

@@ -8,9 +8,9 @@
  */
 class modTemplateVar extends modElement {
     /**
-	 * @var array Supported bindings for MODx
-	 */
-	var $bindings= array (
+     * @var array Supported bindings for MODx
+     */
+    var $bindings= array (
         'FILE',
         'CHUNK',
         'DOCUMENT',
@@ -35,30 +35,56 @@ class modTemplateVar extends modElement {
      */
     function process($properties= null, $content= null) {
         parent :: process($properties, $content);
-        if ($this->_cacheable && isset ($this->xpdo->elementCache[$this->_tag])) {
-            $this->_output= $this->xpdo->elementCache[$this->_tag];
-        } else {
-            if (!is_string($this->_content) || empty($this->_content)) {
-                $this->_content= $this->renderOutput($this->xpdo->resourceIdentifier);
-            }
-            if (is_string($this->_content) && !empty ($this->_content)) {
-                // collect element tags in the content and process them
+        if (!$this->_processed) {
+            $this->_content= $this->renderOutput($this->xpdo->resourceIdentifier);
+
+            /* copy the content source to the output buffer */
+            $this->_output= $this->_content;
+            
+            if (is_string($this->_output) && !empty ($this->_output)) {
+                /* turn the processed properties into placeholders */
+                $restore = $this->toPlaceholders($this->_properties);
+                
+                /* collect element tags in the content and process them */
                 $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
-                $this->xpdo->parser->processElementTags($this->_tag, $this->_content, false, false, '[[', ']]', array(), $maxIterations);
+                $this->xpdo->parser->processElementTags($this->_tag, $this->_output, false, false, '[[', ']]', array(), $maxIterations);
+                
+                /* remove the placeholders set from the properties of this element and restore global values */
+                $this->xpdo->unsetPlaceholders(array_keys($this->_properties));
+                if ($restore) $this->xpdo->toPlaceholders($restore);
             }
 
-            // apply output filtering
+            /* apply output filtering */
             $this->filterOutput();
 
-            // copy the content source to the output buffer
-            $this->_output= $this->_content;
-
-            // cache the content
+            /* cache the content */
             $this->cache();
+
+            $this->_processed= true;
         }
-        $this->_processed= true;
-        // finally, return the processed element content
+        /* finally, return the processed element content */
         return $this->_output;
+    }
+    
+    /**
+     * Get the source content of this template variable.
+     */
+    function getContent($options = array()) {
+        if (!is_string($this->_content) || $this->_content === '') {
+            if (isset($options['content'])) {
+                $this->_content = $options['content'];
+            } else {
+                $this->_content = $this->get('default_text');
+            }
+        }
+        return $this->_content;
+    }
+
+    /**
+     * Set the source content of this template variable.
+     */
+    function setContent($content, $options = array()) {
+        return $this->set('default_text', $content);
     }
 
     /**
@@ -133,14 +159,14 @@ class modTemplateVar extends modElement {
     function renderOutput($resourceId= 0) {
         $value= $this->getValue($resourceId);
 
-        // process any TV commands in value
+        /* process any TV commands in value */
         $value= $this->processBindings($value, $resourceId);
 
         $param= array ();
         if ($paramstring= $this->get('display_params')) {
             $cp= split("&", $paramstring);
             foreach ($cp as $p => $v) {
-                $v= trim($v); // trim
+                $v= trim($v);
                 $ar= split("=", $v);
                 if (is_array($ar) && count($ar) == 2) {
                     $params[$ar[0]]= $this->decodeParamValue($ar[1]);
@@ -160,17 +186,17 @@ class modTemplateVar extends modElement {
         if (!file_exists($outputRenderFile)) {
             $o = include $outputRenderPath.'default.php';
         } else {
-        	$o = include $outputRenderFile;
+            $o = include $outputRenderFile;
         }
         return $o;
     }
 
-	/**
+    /**
      * Renders input forms for the template variable.
      *
      * @param integer $resourceId The id of the resource; 0 defaults to the
      * current resource.
-	 * @param string $style Extra style parameters.
+     * @param string $style Extra style parameters.
      * @return mixed The rendered input for the template variable.
      */
     function renderInput($resourceId= 0, $style= '') {
@@ -180,14 +206,14 @@ class modTemplateVar extends modElement {
             ));
         }
         $field_html= '';
-		$this->xpdo->smarty->assign('style',$style);
-		$value = $this->get('value');
-		if (!$value || $value == '') {
-			$this->set('value',$this->getValue($resourceId));
-		}
-		$this->xpdo->smarty->assign('tv',$this);
+        $this->xpdo->smarty->assign('style',$style);
+        $value = $this->get('value');
+        if (!$value || $value == '') {
+            $this->set('value',$this->getValue($resourceId));
+        }
+        $this->xpdo->smarty->assign('tv',$this);
 
-        // find the correct renderer for the TV, if not one, render a textbox
+        /* find the correct renderer for the TV, if not one, render a textbox */
         $inputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/input/';
         $inputRenderFile = $inputRenderPath.$this->get('type').'.php';
         if (!file_exists($inputRenderFile)) {
@@ -199,32 +225,31 @@ class modTemplateVar extends modElement {
         return $field_html;
     }
 
-	/**
-	 * Decodes special function-based chars from a parameter value.
-	 *
-	 * @param string $s The string to decode.
-	 * @return string The decoded string.
-	 */
+    /**
+     * Decodes special function-based chars from a parameter value.
+     *
+     * @param string $s The string to decode.
+     * @return string The decoded string.
+     */
     function decodeParamValue($s) {
-        $s= str_replace("%3D", '=', $s); // =
-        $s= str_replace("%26", '&', $s); // &
+        $s= str_replace("%3D", '=', $s);
+        $s= str_replace("%26", '&', $s);
         return $s;
     }
 
     /**
-	 * Returns an string if a delimiter is present. Returns array if is a recordset is present.
-	 *
-	 * @param mixed $src Source object, either a recordset, PDO object, array or string.
-	 * @param string $delim Delimiter for string parsing.
-	 * @param string $type Type to return, either 'string' or 'array'.
-	 *
-	 * @return string|array If delimiter present, returns string, otherwise array.
-	 */
-    function parseInput($src, $delim= "||", $type= "string") { // type can be: string, array
+     * Returns an string if a delimiter is present. Returns array if is a recordset is present.
+     *
+     * @param mixed $src Source object, either a recordset, PDO object, array or string.
+     * @param string $delim Delimiter for string parsing.
+     * @param string $type Type to return, either 'string' or 'array'.
+     *
+     * @return string|array If delimiter present, returns string, otherwise array.
+     */
+    function parseInput($src, $delim= "||", $type= "string") {
         if (is_resource($src)) {
-            // must be a recordset
+            /* must be a recordset */
             $rows= array ();
-//            $nc= mysql_num_fields($src);
             while ($cols= mysql_fetch_row($src))
                 $rows[]= ($type == "array") ? $cols : implode(" ", $cols);
             return ($type == "array") ? $rows : implode($delim, $rows);
@@ -241,7 +266,7 @@ class modTemplateVar extends modElement {
         } elseif (is_array($src) && $type == "array") {
             return ($type == "array" ? $src : implode($delim, $src));
         } else {
-            // must be a text
+            /* must be a text */
             if ($type == "array")
                 return explode($delim, $src);
             else
@@ -249,12 +274,12 @@ class modTemplateVar extends modElement {
         }
     }
 
-	/**
-	 * Parses input options sent through postback.
-	 *
-	 * @param mixed $v The options to parse, either a resource, array or string.
-	 * @return mixed The parsed options.
-	 */
+    /**
+     * Parses input options sent through postback.
+     *
+     * @param mixed $v The options to parse, either a resource, array or string.
+     * @return mixed The parsed options.
+     */
     function parseInputOptions($v) {
         $a = array();
         if(is_array($v)) return $v;
@@ -265,15 +290,14 @@ class modTemplateVar extends modElement {
         return $a;
     }
 
-	/**
-	 * Process bindings assigned to a template variable.
-	 *
-	 * @param string $value The value specified from the binding.
-	 * @param integer $resourceId The resource in which the TV is assigned.
-	 * @return string The processed value.
-	 */
+    /**
+     * Process bindings assigned to a template variable.
+     *
+     * @param string $value The value specified from the binding.
+     * @param integer $resourceId The resource in which the TV is assigned.
+     * @return string The processed value.
+     */
     function processBindings($value= '', $resourceId= 0) {
-		$etomite =& $this->xpdo; // backward compat for eval/snippets
         $modx =& $this->xpdo;
         $nvalue= trim($value);
         if (substr($nvalue,0,1)!='@') return $value;
@@ -285,18 +309,18 @@ class modTemplateVar extends modElement {
                     $output = $this->processFileBinding($param);
                     break;
 
-                case 'CHUNK':       // retrieve a chunk and process it's content
+                case 'CHUNK':       /* retrieve a chunk and process it's content */
                     $chunk = $this->xpdo->getChunk($param);
                     $output = $chunk;
                     break;
 
-                case 'DOCUMENT':    // retrieve a document and process it's content
+                case 'DOCUMENT':    /* retrieve a document and process it's content */
                     $rs = $this->xpdo->getDocument($param);
                     if (is_array($rs)) $output = $rs['content'];
                     else $output = 'Unable to locate resource '.$param;
                     break;
 
-                case 'SELECT': // selects a record from the cms database
+                case 'SELECT': /* selects a record from the cms database */
                     $dbtags['DBASE'] = $this->xpdo->db->config['dbase'];
                     $dbtags['PREFIX'] = $this->xpdo->db->config['table_prefix'];
                     foreach($dbtags as $key => $pValue)
@@ -305,17 +329,17 @@ class modTemplateVar extends modElement {
                     $output = $rs;
                     break;
 
-                case 'EVAL':        // evaluates text as php codes return the results
+                case 'EVAL':        /* evaluates text as php codes return the results */
                     $output = eval($param);
                     break;
 
                 case 'INHERIT':
-                    $output = $param; // Default to param value if no content from parents
+                    $output = $param; /* Default to param value if no content from parents */
                     $doc = array('id' => $this->xpdo->resourceIdentifier, 'parent' => $this->xpdo->resource->get('parent'));
                     while($doc['parent'] != 0) {
                         $parent_id = $doc['parent'];
                         if(!$doc = $this->xpdo->getDocument($parent_id, 'id,parent')) {
-                            // Get unpublished document
+                            /* Get unpublished document */
                             $doc = $this->xpdo->getDocument($parent_id, 'id,parent',0);
                         }
                         if ($doc) {
@@ -337,9 +361,9 @@ class modTemplateVar extends modElement {
                     if(!is_dir($path)) { die($path); break;}
                     $dir = dir($path);
                     while(($file = $dir->read())!==false) {
-						if(substr($file,0,1)!='.') {
-							$files[] = "{$file}=={$param}{$file}";
-						}
+                        if(substr($file,0,1)!='.') {
+                            $files[] = "{$file}=={$param}{$file}";
+                        }
                     }
                     asort($files);
                     $output = implode('||',$files);
@@ -350,39 +374,38 @@ class modTemplateVar extends modElement {
                     break;
 
             }
-            // support for nested bindings
+            /* support for nested bindings */
             return is_string($output) && ($output!=$value) ? $this->processBindings($output) : $output;
         }
     }
 
-	/**
-	 * Parses bindings to an appropriate format.
-	 *
-	 * @param string $binding_string The binding to parse.
-	 * @return array The parsed binding, now in array format.
-	 */
+    /**
+     * Parses bindings to an appropriate format.
+     *
+     * @param string $binding_string The binding to parse.
+     * @return array The parsed binding, now in array format.
+     */
     function parseBinding($binding_string) {
         $match= array ();
         $binding_string= trim($binding_string);
-        $regexp= '/@(' . implode('|', $this->bindings) . ')\s*(.*)/is'; // Split binding on whitespace
+        $regexp= '/@(' . implode('|', $this->bindings) . ')\s*(.*)/is'; /* Split binding on whitespace */
         if (preg_match($regexp, $binding_string, $match)) {
-            // We can't return the match array directly because the first element is the whole string
+            /* We can't return the match array directly because the first element is the whole string */
             $binding_array= array (
                 strtoupper($match[1]),
                 trim($match[2])
-            ); // Make command uppercase
+            ); /* Make command uppercase */
             return $binding_array;
         }
     }
 
-	/**
-	 * Special parsing for file bindings.
-	 *
-	 * @param string $file The absolute location of the file in the binding.
-	 * @return string The file buffer from the read file.
-	 */
+    /**
+     * Special parsing for file bindings.
+     *
+     * @param string $file The absolute location of the file in the binding.
+     * @return string The file buffer from the read file.
+     */
     function processFileBinding($file) {
-        // get the file
         if (file_exists($file) && @ $handle= fopen($file,'r')) {
             $buffer= "";
             while (!feof($handle)) {

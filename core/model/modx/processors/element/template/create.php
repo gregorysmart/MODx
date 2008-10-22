@@ -27,26 +27,32 @@ if (is_numeric($_POST['category'])) {
 }
 if ($category == null) {
     $category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() == false) {
-		    $modx->error->failure($modx->lexicon('category_err_save'));
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() == false) {
+            $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeTempFormSave event */
 $modx->invokeEvent('OnBeforeTempFormSave',array(
-	'mode' => 'new',
-	'id' => 0,
+    'mode' => 'new',
+    'id' => 0,
 ));
 
 $template = $modx->newObject('modTemplate');
 $template->fromArray($_POST);
 $template->set('locked', isset($_POST['locked']));
 $template->set('category',$category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $template->setProperties($properties);
 
 if ($template->save() === false) {
     $modx->error->failure($modx->lexicon('template_err_save'));
@@ -82,8 +88,8 @@ if (isset($_POST['tvs'])) {
 
 /* invoke OnTempFormSave event */
 $modx->invokeEvent('OnTempFormSave',array(
-	'mode' => 'new',
-	'id' => $template->get('id'),
+    'mode' => 'new',
+    'id' => $template->get('id'),
 ));
 
 /* log manager action */

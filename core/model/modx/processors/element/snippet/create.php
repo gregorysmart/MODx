@@ -27,21 +27,21 @@ if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
 }
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() == false) {
+    $category = $modx->newObject('modCategory');
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() == false) {
             $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeSnipFormSave event */
 $modx->invokeEvent('OnBeforeSnipFormSave',array(
-	'mode' => 'new',
-	'id' => 0,
+    'mode' => 'new',
+    'id' => 0,
 ));
 
 /* create new snippet */
@@ -49,6 +49,13 @@ $snippet = $modx->newObject('modSnippet');
 $snippet->fromArray($_POST);
 $snippet->set('locked',isset($_POST['locked']));
 $snippet->set('category',$category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $snippet->setProperties($properties);
+
 
 if ($snippet->save() == false) {
     $modx->error->failure($modx->lexicon('snippet_err_create'));
@@ -56,8 +63,8 @@ if ($snippet->save() == false) {
 
 /* invoke OnSnipFormSave event */
 $modx->invokeEvent('OnSnipFormSave',array(
-	'mode' => 'new',
-	'id' => $snippet->get('id'),
+    'mode' => 'new',
+    'id' => $snippet->get('id'),
 ));
 
 /* log manager action */

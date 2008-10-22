@@ -25,8 +25,8 @@ $_POST['name'] = str_replace('>','',$_POST['name']);
 $_POST['name'] = str_replace('<','',$_POST['name']);
 
 $name_exists = $modx->getObject('modSnippet',array(
-	'id:!=' => $snippet->get('id'),
-	'name' => $_POST['name']
+    'id:!=' => $snippet->get('id'),
+    'name' => $_POST['name']
 ));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('snippet_err_exists_name'));
 
@@ -39,26 +39,32 @@ if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
 }
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() == false) {
+    $category = $modx->newObject('modCategory');
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() == false) {
             $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeSnipFormSave event */
 $modx->invokeEvent('OnBeforeSnipFormSave',array(
-	'mode' => 'new',
-	'id' => $snippet->get('id'),
+    'mode' => 'new',
+    'id' => $snippet->get('id'),
 ));
 
 $snippet->fromArray($_POST);
 $snippet->set('locked',isset($_POST['locked']));
 $snippet->set('category',$category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $snippet->setProperties($properties);
 
 if ($snippet->save() == false) {
     $modx->error->failure($modx->lexicon('snippet_err_save'));
@@ -66,8 +72,8 @@ if ($snippet->save() == false) {
 
 /* invoke OnSnipFormSave event */
 $modx->invokeEvent('OnSnipFormSave',array(
-	'mode' => 'new',
-	'id' => $snippet->get('id'),
+    'mode' => 'new',
+    'id' => $snippet->get('id'),
 ));
 
 /* log manager action */

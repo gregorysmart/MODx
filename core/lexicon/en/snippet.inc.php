@@ -1,7 +1,4 @@
 <?php
-$_lang['property_create'] = 'Create Snippet Property';
-$_lang['property_remove'] = 'Remove Snippet Property';
-$_lang['property_remove_confirm'] = 'Are you sure you want to remove this snippet property?';
 $_lang['snippet'] = 'Snippet';
 $_lang['snippets_available'] = 'Snippets available for you to include in your page';
 $_lang['snippet_code'] = 'Snippet code (php)';

@@ -7,6 +7,9 @@
 class modResource extends modAccessibleSimpleObject {
     /**
      * Represents the cacheable content for a resource.
+     * 
+     * Note that this is not the raw source content, but the content that is the
+     * result of processing cacheable tags within the raw source content.
      * @var string
      */
     var $_content= '';
@@ -51,7 +54,7 @@ class modResource extends modAccessibleSimpleObject {
     /**
      * Process a resource, transforming source content to output.
      *
-     * @return string The raw, cacheable content of a resource.
+     * @return string The processed cacheable content of a resource.
      */
     function process() {
         if (!$this->get('cacheable') || !$this->_processed || !$this->_content) {
@@ -64,7 +67,7 @@ class modResource extends modAccessibleSimpleObject {
                     $this->_processed= true;
                 }
             } else {
-                $this->_content= '[[*content]]';
+                $this->_content= $this->getContent();
                 $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
                 $this->xpdo->parser->processElementTags('', $this->_content, false, false, '[[', ']]', array(), $maxIterations);
                 $this->_processed= true;
@@ -74,7 +77,39 @@ class modResource extends modAccessibleSimpleObject {
         $this->mergeMetatags();
         return $this->_content;
     }
-    
+
+    /**
+     * Gets the raw, unprocessed source content for a resource.
+     * 
+     * @param array $options An array of options implementations can use to
+     * accept language, revision identifiers, or other information to alter the
+     * behavior of the method.
+     * @return string The raw source content for the resource.
+     */
+    function getContent($options = array()) {
+        $content = '';
+        if (isset($options['content'])) {
+            $content = $options['content'];
+        } else {
+            $content = $this->get('content');
+        }
+        return $content;
+    }
+
+    /**
+     * Set the raw source content for this element.
+     * 
+     * @param mixed $content The source content; implementations can decide if
+     * it can only be a string, or some other source from which to retrieve it.
+     * @param array $options An array of options implementations can use to
+     * accept language, revision identifiers, or other information to alter the
+     * behavior of the method.
+     * @return boolean True indicates the content was set.
+     */
+    function setContent($content, $options = array()) {
+        return $this->set('content', $content);
+    }
+
     function mergeKeywords() {
         if ($this->get('haskeywords')) {
             $keywords = implode(", ",$this->xpdo->getKeywords());
@@ -82,7 +117,7 @@ class modResource extends modAccessibleSimpleObject {
             $this->_content = preg_replace("/(<head>)/i", "\\1\n".$metas, $this->_content);
         }
     }
-    
+
     function mergeMetaTags() {
         if ($this->get('hasmetatags')) {
             if ($tags = $this->xpdo->getMETATags()) {
@@ -103,7 +138,7 @@ class modResource extends modAccessibleSimpleObject {
      * @return string The cache filename.
      */
     function getCacheFileName() {
-        if ($this->get('id') && strpos($this->_cacheFileName, '[') !== false) {
+        if ($this->get('id') && $this->_contextKey && strpos($this->_cacheFileName, '[') !== false) {
             $this->_cacheFileName= str_replace('[contextKey]', $this->_contextKey, $this->_cacheFileName);
             $this->_cacheFileName= str_replace('[id]', $this->get('id'), $this->_cacheFileName);
         }

@@ -38,6 +38,10 @@ MODx.panel.Snippet = function(config) {
                     ,name: 'id'
                     ,value: config.snippet
                 },{
+                    xtype: 'hidden'
+                    ,name: 'props'
+                    ,value: null
+                },{
                     xtype: 'textfield'
                     ,fieldLabel: _('snippet_name')
                     ,name: 'name'
@@ -91,8 +95,8 @@ MODx.panel.Snippet = function(config) {
                 ,layout: 'form'
                 ,border: false
                 ,items: [{
-                    xtype: 'grid-snippet-properties'
-                    ,snippet: config.snippet
+                    xtype: 'grid-element-properties'
+                    ,panel: 'panel-snippet'
                 }]
             }]
         }
@@ -117,7 +121,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                 ,id: this.config.snippet
             }
             ,listeners: {
-            	'success': {fn:function(r) {
+                'success': {fn:function(r) {
                     if (r.object.category == '0') { r.object.category = null; }
                     r.object.snippet = "<?php\n"+r.object.snippet+"\n?>";
                     this.getForm().setValues(r.object);
@@ -126,136 +130,20 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    Ext.getCmp('grid-snippet-properties').getStore().loadData(d);
+                    Ext.getCmp('grid-element-properties').getStore().loadData(d);
                 },scope:this}
             }
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-snippet-properties');
+        var g = Ext.getCmp('grid-element-properties');
         Ext.apply(o.form.baseParams,{
-            properties: g.encode()
+            propdata: g.encode()
         });
         return true;
     }
     ,success: function(r) {
-        Ext.getCmp('grid-snippet-properties').getStore().commitChanges();
+        Ext.getCmp('grid-element-properties').getStore().commitChanges();
     }
 });
 Ext.reg('panel-snippet',MODx.panel.Snippet);
-
-
-/**
- * @class MODx.grid.SnippetProperties
- * @extends MODx.grid.LocalGrid
- * @param {Object} config An object of configuration properties
- * @xtype grid-snippet-properties
- */
-MODx.grid.SnippetProperties = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        title: _('properties')
-        ,id: 'grid-snippet-properties'
-        ,autoHeight: true
-        ,maxHeight: 300
-        ,width: '90%'
-        ,fields: ['name','description','xtype','options','value']
-        ,columns: [{
-            header: _('name')
-            ,dataIndex: 'name'
-            ,width: 150
-            ,editor: { xtype: 'textfield' ,allowBlank: false }
-        },{
-            header: _('description')
-            ,dataIndex: 'description'
-            ,width: 200
-            ,editor: { xtype: 'textfield' ,allowBlank: false }
-        },{
-            header: _('value')
-            ,dataIndex: 'value'
-            ,id: 'value'
-            ,width: 250
-            ,renderer: this.renderDynField.createDelegate(this,[this],true)
-        },{
-            header: _('type')
-            ,dataIndex: 'xtype'
-            ,width: 100
-        }]
-        ,tbar: [{
-            text: _('property_create')
-            ,handler: this.create
-            ,scope: this
-        }]
-    });
-    MODx.grid.SnippetProperties.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.grid.SnippetProperties,MODx.grid.LocalProperty,{
-    create: function(btn,e) {
-        this.loadWindow(btn,e,{
-            xtype: 'window-snippet-property-create'
-            ,listeners: {
-                'success': {fn:function(r) {
-                    var rec = new this.propRecord({
-                        name: r.name
-                        ,value: r.value
-                    });
-                    this.getStore().add(rec);
-                },scope:this}
-            }
-        });
-    }    
-    
-    ,getMenu: function() {
-        return [{
-            text: _('property_remove')
-            ,scope: this
-            ,handler: this.remove.createDelegate(this,[{
-                title: _('warning')
-                ,text: _('property_remove_confirm')
-            }])
-        }];
-    }
-});
-Ext.reg('grid-snippet-properties',MODx.grid.SnippetProperties);
-
-
-
-/**
- * @class MODx.window.CreateSnippetProperty
- * @extends MODx.Window
- * @param {Object} config An object of configuration properties
- * @xtype window-snippet-property-create
- */
-MODx.window.CreateSnippetProperty = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        title: _('property_create')
-        ,height: 150
-        ,width: 375
-        ,fields: [{
-            fieldLabel: _('name')
-            ,name: 'name'
-            ,xtype: 'textfield'
-            ,width: 150
-        },{
-            fieldLabel: _('value')
-            ,name: 'value'
-            ,xtype: 'textfield'
-            ,width: 150
-        }]
-    });
-    MODx.window.CreateSnippetProperty.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.window.CreateSnippetProperty,MODx.Window,{
-    submit: function() {
-        if (this.fp.getForm().isValid()) {
-            if (this.fireEvent('success',this.fp.getForm().getValues())) {
-                this.fp.getForm().reset();
-                this.hide();
-                return true;
-            }
-        }
-        return false;
-    }
-});
-Ext.reg('window-snippet-property-create',MODx.window.CreateSnippetProperty);

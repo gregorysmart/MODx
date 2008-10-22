@@ -31,49 +31,41 @@ class modStaticResource extends modResource {
     }
 
     /**
+     * Treats the local content as a filename to load the raw content from.
+     * 
      * {@inheritdoc}
-     *
-     * Special handling to allow getter for content field to retrieve content
-     * from a physical file.  MODx element tags can be used in the content to
-     * specify a dynamic file path and are processed prior to looking up the
-     * content.
      */
-    function get($k, $format= '', $formatTemplate= '') {
-        $return= false;
-        switch ($k) {
-            case 'content' :
-                if (!file_exists($this->_fields['content'])) {
-                    if (empty($this->_sourcePath) && isset ($this->xpdo->config['resource_static_path'])) {
-                        $this->_sourcePath= $this->xpdo->config['resource_static_path'];
-                    }
-                    if (empty ($this->_sourceFile)) {
-                        $this->_sourceFile= $this->_sourcePath . $this->_fields['content'];
-                    }
-                } else {
-                    $this->_sourceFile= $this->_fields['content'];
-                }
-                if (!empty ($this->_sourceFile)) {
-                    if ($this->xpdo->getParser() && $this->xpdo->parser->collectElementTags($this->_sourceFile, array())) {
-                        $this->xpdo->parser->processElementTags('', $this->_sourceFile);
-                    }
-
-                    if (file_exists($this->_sourceFile)) {
-                        $return= $this->getFileContent($this->_sourceFile);
-                        if ($return === false) {
-                            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
-                        }
-                    } else {
-                        $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not locate source file: {$this->_sourceFile}");
-                    }
-                } else {
-                    $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No source file specified.");
-                }
-                break;
-            default :
-                $return= parent :: get($k, $format, $formatTemplate);
-                break;
+    function getContent($options = array()) {
+        $content = '';
+        $filename = parent :: getContent($options);
+        if (!file_exists($filename)) {
+            if (empty($this->_sourcePath) && isset ($this->xpdo->config['resource_static_path'])) {
+                $this->_sourcePath= $this->xpdo->config['resource_static_path'];
+            }
+            if (empty ($this->_sourceFile)) {
+                $this->_sourceFile= $this->_sourcePath . $filename;
+            }
+        } else {
+            $this->_sourceFile= $filename;
         }
-        return $return;
+        if (!empty ($this->_sourceFile)) {
+            if ($this->xpdo->getParser() && $this->xpdo->parser->collectElementTags($this->_sourceFile, array())) {
+                $this->xpdo->parser->processElementTags('', $this->_sourceFile);
+            }
+
+            if (file_exists($this->_sourceFile)) {
+                $content= $this->getFileContent($this->_sourceFile);
+                if ($content === false) {
+                    $content = '';
+                    $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
+                }
+            } else {
+                $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not locate source file: {$this->_sourceFile}");
+            }
+        } else {
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No source file specified.");
+        }
+        return $content;
     }
 
     /**

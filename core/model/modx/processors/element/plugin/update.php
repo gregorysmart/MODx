@@ -19,8 +19,8 @@ if ($plugin->get('locked') && $modx->hasPermission('edit_locked') == false) {
 if ($_POST['name'] == '') $modx->error->addField('name',$modx->lexicon('plugin_err_not_specified_name'));
 
 $name_exists = $modx->getObject('modPlugin',array(
-	'id:!=' => $plugin->get('id'),
-	'name' => $_POST['name']
+    'id:!=' => $plugin->get('id'),
+    'name' => $_POST['name']
 ));
 
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('plugin_err_exists_name'));
@@ -34,27 +34,33 @@ if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
 }
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() == false) {
+    $category = $modx->newObject('modCategory');
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() == false) {
             $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeTempFormSave event */
 $modx->invokeEvent('OnBeforePluginFormSave',array(
-	'mode' => 'new',
-	'id' => $plugin->get('id')
+    'mode' => 'new',
+    'id' => $plugin->get('id')
 ));
 
 $plugin->fromArray($_POST);
 $plugin->set('locked', isset($_POST['locked']));
 $plugin->set('category',$category->get('id'));
 $plugin->set('disabled',isset($_POST['disabled']));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $plugin->setProperties($properties);
 
 if ($plugin->save() == false) {
     $modx->error->failure($modx->lexicon('plugin_err_save'));
@@ -89,8 +95,8 @@ if (isset($_POST['events'])) {
 
 /* invoke OnPluginFormSave event */
 $modx->invokeEvent('OnPluginFormSave',array(
-	'mode' => 'new',
-	'id' => $plugin->get('id'),
+    'mode' => 'new',
+    'id' => $plugin->get('id'),
 ));
 
 /* log manager action */

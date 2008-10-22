@@ -32,6 +32,7 @@ $_lang['tv_name'] = 'Variable Name';
 $_lang['tv_novars'] = 'No Template Variables found';
 $_lang['tv_output_type'] = 'Output Type';
 $_lang['tv_output_type_properties'] = 'Output Type Properties';
+$_lang['tv_properties'] = 'Default Properties';
 $_lang['tv_rank'] = 'Sort Order';
 $_lang['tv_reset_params'] = 'Reset parameters';
 $_lang['tv_tmpl_access'] = 'Template Access';

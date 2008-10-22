@@ -40,6 +40,10 @@ MODx.panel.Template = function(config) {
                     ,name: 'id'
                     ,value: config.template
                 },{
+                    xtype: 'hidden'
+                    ,name: 'props'
+                    ,value: null
+                },{
                     xtype: 'textfield'
                     ,fieldLabel: _('template_name')
                     ,name: 'templatename'
@@ -91,6 +95,15 @@ MODx.panel.Template = function(config) {
                 ,listeners: {
                     'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
                 }
+            },{
+                title: _('plugin_properties')
+                ,xtype: 'panel'
+                ,layout: 'form'
+                ,border: false
+                ,items: [{
+                    xtype: 'grid-element-properties'
+                    ,panel: 'panel-template'
+                }]
             }]
         }
         ,listeners: {
@@ -119,17 +132,23 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
                     this.getForm().setValues(r.object);
                     Ext.getCmp('template-name').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
                     this.fireEvent('ready',r.object);
+
+                    var d = Ext.decode(r.object.data);
+                    Ext.getCmp('grid-element-properties').getStore().loadData(d);
                 },scope:this}
             }
         });
     }
     ,beforeSubmit: function(o) {
         var g = Ext.getCmp('grid-template-tv');
+        var h = Ext.getCmp('grid-element-properties');
         Ext.apply(o.form.baseParams,{
             tvs: g.encodeModified()
+            ,propdata: h.encode()
         });
     }
     ,success: function(o) {
+        Ext.getCmp('grid-element-properties').getStore().commitChanges();
         Ext.getCmp('grid-template-tv').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');

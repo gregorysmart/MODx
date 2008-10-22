@@ -22,8 +22,8 @@ if ($chunk->get('locked') && $modx->hasPermission('edit_locked') == false) {
 }
 
 $name_exists = $modx->getObject('modChunk',array(
-	'id:!=' => $chunk->get('id'),
-	'name' => $_POST['name'],
+    'id:!=' => $chunk->get('id'),
+    'name' => $_POST['name'],
 ));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('chunk_err_exists_name'));
 
@@ -36,21 +36,21 @@ if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
 }
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() == false) {
+    $category = $modx->newObject('modCategory');
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() == false) {
             $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeChunkFormSave event */
 $modx->invokeEvent('OnBeforeChunkFormSave',array(
-	'mode' => 'upd',
-	'id' => $_POST['id'],
+    'mode' => 'upd',
+    'id' => $_POST['id'],
 ));
 
 /* save the edited chunk */
@@ -58,6 +58,12 @@ $chunk->fromArray($_POST);
 $chunk->set('snippet',$_POST['snippet']);
 $chunk->set('locked',isset($_POST['locked']));
 $chunk->set('category',$category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $chunk->setProperties($properties);
 
 if ($chunk->save() == false) {
     $modx->error->failure($modx->lexicon('chunk_err_save'));
@@ -65,8 +71,8 @@ if ($chunk->save() == false) {
 
 /* invoke OnChunkFormSave event */
 $modx->invokeEvent('OnChunkFormSave',array(
-	'mode'	=> 'upd',
-	'id'	=> $chunk->get('id'),
+    'mode'  => 'upd',
+    'id'    => $chunk->get('id'),
 ));
 
 /* log manager action */

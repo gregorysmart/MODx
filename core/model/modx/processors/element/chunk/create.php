@@ -48,6 +48,13 @@ $chunk = $modx->newObject('modChunk', $_POST);
 $chunk->set('locked',isset($_POST['locked']));
 $chunk->set('snippet',$_POST['snippet']);
 $chunk->set('category',$category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $chunk->setProperties($properties);
+
 if ($chunk->save() == false) {
 	$modx->error->failure($modx->lexicon('chunk_err_save'));
 }
@@ -62,7 +69,7 @@ $modx->invokeEvent('OnChunkFormSave',
 /* log manager action */
 $modx->logManagerAction('chunk_create','modChunk',$chunk->get('id'));
 
-/* empty cache */
+/* empty cache [TODO: make this optional] */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 

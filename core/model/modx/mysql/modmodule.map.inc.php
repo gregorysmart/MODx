@@ -111,7 +111,8 @@ $xpdo_meta_map['modModule']= array (
     'properties' => 
     array (
       'dbtype' => 'text',
-      'phptype' => 'string',
+      'phptype' => 'array',
+      'null' => 'true',
     ),
     'modulecode' => 
     array (

@@ -43,7 +43,7 @@ class modOutputFilter {
 
     function filter(& $element) {
 
-    	$output= & $element->_content;
+        $output= & $element->_output;
         if (isset ($element->_properties['filter_commands'])) {
             $modifier_cmd = & $element->_properties['filter_commands'];
             $modifier_value = & $element->_properties['filter_modifiers'];

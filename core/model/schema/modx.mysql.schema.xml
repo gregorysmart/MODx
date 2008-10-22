@@ -106,10 +106,11 @@
         <field key="name" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
         <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="Chunk" />
         <field key="editor_type" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
-        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
         <field key="cache_type" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
         <field key="snippet" dbtype="mediumtext" phptype="string" />
-        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
         <aggregate alias="modCategory" class="modCategory" key="id" local="category" foreign="id" cardinality="one" owner="foreign" />
     </object>
     <object class="modContentType" table="content_type" extends="xPDOSimpleObject">
@@ -138,7 +139,7 @@
         <field key="value" dbtype="mediumtext" phptype="string" />
         <field key="xtype" dbtype="varchar" precision="75" phptype="string" null="false" default="textfield" />
         <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
-		<field key="area" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="area" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
         <aggregate alias="modContext" class="modContext" key="context_key" local="context_key" foreign="key" cardinality="one" owner="foreign" />
         <aggregate alias="modSystemSetting" class="modSystemSetting" key="key" local="key" foreign="key" cardinality="one" owner="foreign" />
@@ -174,22 +175,22 @@
         <field key="keyword" dbtype="varchar" precision="40" phptype="string" null="false" default="" index="unique" />
         <composite alias="modResourceKeyword" class="modResourceKeyword" key="id" local="id" foreign="keyword_id" cardinality="many" owner="local" />
     </object>
-	<object class="modLexiconEntry" table="lexicon_entries" extends="xPDOSimpleObject">
-	    <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
-	    <field key="value" dbtype="text" phptype="string" null="false" default="" />
-	    <field key="topic" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="1" />
-		<field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
-	    <field key="language" dbtype="varchar" precision="20" phptype="string" null="false" default="en" />
-	    <field key="createdon" dbtype="datetime" phptype="datetime" />
-	    <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
-		<aggregate alias="modNamespace" class="modNamespace" local="namespace" foreign="name" cardinality="one" owner="foreign" />
-	    <aggregate alias="modLexiconTopic" class="modLexiconTopic" local="topic" foreign="id" cardinality="one" owner="foreign" />
-	    <aggregate alias="modLexiconLanguage" class="modLexiconLanguage" local="language" foreign="name" cardinality="one" owner="foreign" />
-	</object>
-	<object class="modLexiconLanguage" table="lexicon_languages" extends="xPDOObject">
-	    <field key="name" dbtype="varchar" precision="20" phptype="string" null="false" default="" index="pk" />
-	    <composite alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
-	</object>
+    <object class="modLexiconEntry" table="lexicon_entries" extends="xPDOSimpleObject">
+        <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="value" dbtype="text" phptype="string" null="false" default="" />
+        <field key="topic" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="1" />
+        <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
+        <field key="language" dbtype="varchar" precision="20" phptype="string" null="false" default="en" />
+        <field key="createdon" dbtype="datetime" phptype="datetime" />
+        <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
+        <aggregate alias="modNamespace" class="modNamespace" local="namespace" foreign="name" cardinality="one" owner="foreign" />
+        <aggregate alias="modLexiconTopic" class="modLexiconTopic" local="topic" foreign="id" cardinality="one" owner="foreign" />
+        <aggregate alias="modLexiconLanguage" class="modLexiconLanguage" local="language" foreign="name" cardinality="one" owner="foreign" />
+    </object>
+    <object class="modLexiconLanguage" table="lexicon_languages" extends="xPDOObject">
+        <field key="name" dbtype="varchar" precision="20" phptype="string" null="false" default="" index="pk" />
+        <composite alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
+    </object>
     <object class="modLexiconTopic" table="lexicon_topics" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="unique" indexgrp="foci" />
         <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" index="unique" indexgrp="foci" />
@@ -237,7 +238,7 @@
         <field key="editedon" dbtype="int" precision="10" phptype="timestamp" null="false" default="0" />
         <field key="guid" dbtype="varchar" precision="32" phptype="string" null="false" default="" />
         <field key="enable_sharedparams" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="properties" dbtype="text" phptype="string" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
         <field key="modulecode" dbtype="mediumtext" phptype="string" />
         <composite alias="modModuleDepobj" class="modModuleDepobj" key="id" local="id" foreign="module" cardinality="many" owner="local" />
         <composite alias="modModuleUserGroup" class="modModuleUserGroup" key="id" local="id" foreign="module" cardinality="many" owner="local" />
@@ -267,10 +268,10 @@
     <object class="modPlugin" table="site_plugins" extends="modScript">
         <field key="cache_type" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
         <field key="plugincode" dbtype="mediumtext" phptype="string" null="false" default="" />
-        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="properties" dbtype="text" phptype="string" null="true" />
-        <field key="disabled" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="moduleguid" dbtype="varchar" precision="32" phptype="string" null="false" default="" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
+        <field key="disabled" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
+        <field key="moduleguid" dbtype="varchar" precision="32" phptype="string" null="false" default="" index="fk" />
         <aggregate alias="modModule" class="modModule" key="guid" local="moduleguid" foreign="guid" cardinality="one" owner="foreign" />
         <composite alias="modPluginEvent" class="modPluginEvent" local="id" foreign="pluginid" cardinality="many" owner="local" />
     </object>
@@ -370,7 +371,7 @@
         <field key="name" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
         <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="editor_type" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
-        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
         <aggregate alias="modCategory" class="modCategory" key="id" local="category" foreign="id" cardinality="one" owner="foreign" />
     </object>
     <object class="modSession" table="session" extends="xPDOObject">
@@ -381,9 +382,9 @@
     <object class="modSnippet" table="site_snippets" extends="modScript">
         <field key="cache_type" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
         <field key="snippet" dbtype="mediumtext" phptype="string" />
-        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="properties" dbtype="text" phptype="string" null="true" />
-        <field key="moduleguid" dbtype="varchar" precision="32" phptype="string" null="false" default="" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
+        <field key="moduleguid" dbtype="varchar" precision="32" phptype="string" null="false" default="" index="fk" />
         <aggregate alias="modModule" class="modModule" key="guid" local="moduleguid" foreign="guid" cardinality="one" owner="foreign" />
     </object>
     <object class="modStaticResource" extends="modResource" />
@@ -393,18 +394,19 @@
         <field key="value" dbtype="text" phptype="string" null="false" default="" />
         <field key="xtype" dbtype="varchar" precision="75" phptype="string" null="false" default="textfield" />
         <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
-		<field key="area" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="area" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
     </object>
     <object class="modTemplate" table="site_templates" extends="modElement">
         <field key="templatename" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
         <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="Template" />
         <field key="editor_type" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
-        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
         <field key="icon" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="template_type" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
         <field key="content" dbtype="mediumtext" phptype="string" null="false" default="" />
-        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
         <aggregate alias="modCategory" class="modCategory" key="id" local="category" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="modTemplateVarTemplate" class="modTemplateVarTemplate" key="tmplvarid" local="id" foreign="tmplvarid" cardinality="many" owner="local" />
     </object>
@@ -414,13 +416,14 @@
         <field key="caption" dbtype="varchar" precision="80" phptype="string" null="false" default="" />
         <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="editor_type" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
-        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" />
-        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
+        <field key="category" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
+        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
         <field key="elements" dbtype="text" phptype="string" />
         <field key="rank" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="index" />
         <field key="display" dbtype="varchar" precision="20" phptype="string" null="false" default="" />
         <field key="display_params" dbtype="text" phptype="string" />
         <field key="default_text" dbtype="text" phptype="string" />
+        <field key="properties" dbtype="text" phptype="array" null="true" />
         <aggregate alias="modCategory" class="modCategory" key="id" local="category" foreign="id" cardinality="one" owner="foreign" />
         <composite alias="modTemplateVarTemplate" class="modTemplateVarTemplate" key="id" local="id" foreign="tmplvarid" cardinality="many" owner="foreign" />
         <composite alias="modTemplateVarResource" class="modTemplateVarResource" key="id" local="id" foreign="tmplvarid" cardinality="many" owner="foreign" />
@@ -526,7 +529,7 @@
         <field key="value" dbtype="text" phptype="string" />
         <field key="xtype" dbtype="varchar" precision="75" phptype="string" null="false" default="textfield" />
         <field key="namespace" dbtype="varchar" precision="40" phptype="string" null="false" default="core" />
-		<field key="area" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="area" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="editedon" dbtype="timestamp" phptype="timestamp" null="false" attributes="ON UPDATE CURRENT_TIMESTAMP" />
         <aggregate alias="modUser" class="modUser" key="id" local="user" foreign="id" cardinality="one" owner="foreign" />
     </object>

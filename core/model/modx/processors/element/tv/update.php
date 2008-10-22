@@ -22,21 +22,21 @@ if (is_numeric($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
 }
 if ($category == null) {
-	$category = $modx->newObject('modCategory');
-	if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-		$category->set('id',0);
-	} else {
-		$category->set('category',$_POST['category']);
-		if ($category->save() === false) {
+    $category = $modx->newObject('modCategory');
+    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
+        $category->set('id',0);
+    } else {
+        $category->set('category',$_POST['category']);
+        if ($category->save() === false) {
             $modx->error->failure($modx->lexicon('category_err_save'));
         }
-	}
+    }
 }
 
 /* invoke OnBeforeTVFormSave event */
 $modx->invokeEvent('OnBeforeTVFormSave',array(
-	'mode' => 'upd',
-	'id' => $tv->get('id'),
+    'mode' => 'upd',
+    'id' => $tv->get('id'),
 ));
 
 /* check to make sure name doesn't already exist */
@@ -52,9 +52,9 @@ if ($_POST['caption'] == '') $_POST['caption'] = $_POST['name'];
 /* extract widget properties */
 $display_params = '';
 foreach ($_POST as $key => $value) {
-	$res = strstr($key,'prop_');
+    $res = strstr($key,'prop_');
     if ($res !== false) {
-    	$key = str_replace('prop_','',$key);
+        $key = str_replace('prop_','',$key);
         $display_params .= '&'.$key.'='.$value;
     }
 }
@@ -65,6 +65,12 @@ $tv->set('display_params',$display_params);
 $tv->set('rank', isset($_POST['rank']) ? $_POST['rank'] : 0);
 $tv->set('locked', isset($_POST['locked']));
 $tv->set('category',$category->get('id'));
+$properties = null;
+if (isset($_POST['propdata'])) {
+    $properties = $_POST['propdata'];
+    $properties = $modx->fromJSON($properties);
+}
+if (is_array($properties)) $tv->setProperties($properties);
 
 if ($tv->save() === false) {
     $modx->error->failure($modx->lexicon('tv_err_save'));
@@ -105,14 +111,14 @@ if (isset($_POST['templates'])) {
 if ($modx->hasPermission('tv_access_permissions')) {
     if (isset($_POST['resource_groups'])) {
         $docgroups = $modx->fromJSON($_POST['resource_groups']);
-		foreach ($docgroups as $id => $group) {
-			$tvdg = $modx->getObject('modTemplateVarResourceGroup',array(
+        foreach ($docgroups as $id => $group) {
+            $tvdg = $modx->getObject('modTemplateVarResourceGroup',array(
                 'tmplvarid' => $tv->get('id'),
                 'documentgroup' => $group['id'],
             ));
 
             if ($group['access'] == true) {
-			    if ($tvdg != null) continue;
+                if ($tvdg != null) continue;
                 $tvdg = $modx->newObject('modTemplateVarResourceGroup');
                 $tvdg->set('tmplvarid',$tv->get('id'));
                 $tvdg->set('documentgroup',$group['id']);
@@ -120,14 +126,14 @@ if ($modx->hasPermission('tv_access_permissions')) {
             } else {
                 $tvdg->remove();
             }
-		}
-	}
+        }
+    }
 }
 
 /* invoke OnTVFormSave event */
 $modx->invokeEvent('OnTVFormSave',array(
-	'mode' => 'upd',
-	'id' => $tv->get('id'),
+    'mode' => 'upd',
+    'id' => $tv->get('id'),
 ));
 
 /* log manager action */

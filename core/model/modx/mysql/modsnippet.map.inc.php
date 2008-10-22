@@ -37,11 +37,12 @@ $xpdo_meta_map['modSnippet']= array (
       'phptype' => 'boolean',
       'null' => 'false',
       'default' => '0',
+      'index' => 'index',
     ),
     'properties' => 
     array (
       'dbtype' => 'text',
-      'phptype' => 'string',
+      'phptype' => 'array',
       'null' => 'true',
     ),
     'moduleguid' => 
@@ -51,6 +52,7 @@ $xpdo_meta_map['modSnippet']= array (
       'phptype' => 'string',
       'null' => 'false',
       'default' => '',
+      'index' => 'fk',
     ),
   ),
   'aggregates' => 
