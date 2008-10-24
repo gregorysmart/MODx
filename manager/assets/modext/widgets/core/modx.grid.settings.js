@@ -269,7 +269,7 @@ MODx.window.CreateSetting = function(config) {
             ,name: 'name'
             ,allowBlank: false
         },{
-            xtype: 'combo-xtype'
+            xtype: 'combo-xtype-spec'
             ,fieldLabel: _('xtype')
             ,description: _('xtype_desc')
         },{
