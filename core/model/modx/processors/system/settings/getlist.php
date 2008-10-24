@@ -35,6 +35,12 @@ if (isset($_REQUEST['key']) && $_REQUEST['key'] != '') {
     $c->orCondition($va);
     $cc->orCondition($va);
 }
+
+if (isset($_REQUEST['namespace'])) {
+    $c->where(array('namespace' => $_REQUEST['namespace']));
+    $cc->where(array('namespace' => $_REQUEST['namespace']));
+}
+
 $c->sortby('`modSystemSetting`.`area`,`modSystemSetting`.`'.$_REQUEST['sort'].'`',$_REQUEST['dir']);
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
 
