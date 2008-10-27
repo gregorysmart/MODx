@@ -176,10 +176,51 @@ class modError {
      */
     function getFields() {
         $f = array ();
-        foreach ($this->errors as $fi)
+        $errors = array_values(array_filter($errors, array($this, 'isFieldError')));
+        foreach ($errors as $fi) {
             $f[] = $fi['msg'];
-
+        }
         return $f;
+    }
+
+    /**
+     * Add an error to the error queue.
+     * 
+     * @param string|array $msg An error message string or custom error array.
+     */
+    function addError($msg) {
+        $this->errors[] = $msg;
+    }
+
+    /**
+     * Return all of the errors in the error queue.
+     */
+    function getErrors($includeFields = false) {
+        $errors = $this->errors;
+        if (!$includeFields) {
+            $errors = array_values(array_filter($errors, array($this, 'isNotFieldError')));
+        }
+        return $errors;
+    }
+
+    /**
+     * Returns true if the error passed to it represents a field error.
+     * 
+     * @param mixed $error An element of modError::errors.
+     * @return boolean True if the error is a field error.
+     */
+    function isFieldError($error) {
+        return (is_array($error) && isset($error['msg']) && isset($error['id']) && count($error) == 2);
+    }
+
+    /**
+     * Returns true if the error passed to it does not represent a field error.
+     * 
+     * @param mixed $error An element of modError::errors.
+     * @return boolean True if the error is not a field error.
+     */
+    function isNotFieldError($error) {
+        return (!is_array($error) || !(isset($error['msg']) && isset($error['id']) && count($error) == 2));
     }
 
     /**
@@ -240,7 +281,7 @@ class modError {
             }
         }
         if ($this->modx->getDebug() === true)
-            $this->modx->log(XPDO_LOG_LEVEL_DEBUG, "modJSONError::toArray() -- " . print_r($array, true));
+            $this->modx->log(XPDO_LOG_LEVEL_DEBUG, "modError::toArray() -- " . print_r($array, true));
         return $array;
     }
 }

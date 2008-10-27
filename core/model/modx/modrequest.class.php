@@ -50,6 +50,8 @@ class modRequest {
      * @return boolean True if a request is handled without interruption.
      */
     function handleRequest() {
+        $this->loadErrorHandler();
+
         $this->sanitizeRequest();
         $this->modx->invokeEvent('OnHandleRequest');
         if (!$this->modx->_checkSiteStatus()) {
@@ -274,18 +276,37 @@ class modRequest {
     function loadErrorHandler($class = 'modArrayError') {
         if ($this->modx->loadClass('error.'.strtolower($class),'',false,true)) {
             $this->modx->error = new $class($this->modx);
-            if (isset($_POST['register']) && isset($_POST['topic'])) {
-                if ($this->modx->getService('registry','registry.modRegistry')) {
-                    $register_class = isset($_POST['register_class']) ? $_POST['register_class'] : 'registry.modFileRegister';
-                    $register = $this->modx->registry->getRegister($_POST['register'], $register_class);
-                    if ($register) {
-                        $level = isset($_POST['log_level']) ? $_POST['log_level'] : MODX_LOG_LEVEL_INFO;
-                        $this->modx->registry->setLogging($register, $_POST['topic'], $level);
-                    }
-                }
-            }
         } else {
             $this->modx->log(XPDO_LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
+        }
+    }
+
+    /**
+     * Provides an easy way to initiate register logging.
+     * 
+     * Through an array of options, you can have all calls to modX::log()
+     * recorded in a topic of a modRegister instance. The options include:
+     * 
+     * <ul>
+     * <li>register: the name of the register (required)</li>
+     * <li>topic: the topic to record to (required)</li>
+     * <li>register_class: the modRegister class (defaults to modFileRegister)</li>
+     * <li>log_level: the logging level (defaults to MODX_LOG_LEVEL_INFO)</li>
+     * </ul>
+     * 
+     * @param array $options An array containing all the options required to
+     * initiate and configure logging to a modRegister instance.
+     */
+    function registerLogging($options = array()) {
+        if (isset($options['register']) && isset($options['topic'])) {
+            if ($this->modx->getService('registry','registry.modRegistry')) {
+                $register_class = isset($options['register_class']) ? $options['register_class'] : 'registry.modFileRegister';
+                $register = $this->modx->registry->getRegister($options['register'], $register_class);
+                if ($register) {
+                    $level = isset($options['log_level']) ? $options['log_level'] : MODX_LOG_LEVEL_INFO;
+                    $this->modx->registry->setLogging($register, $options['topic'], $level);
+                }
+            }
         }
     }
 

@@ -9,10 +9,10 @@
  * @package modx
  */
 class modManagerRequest extends modRequest {
-	/**
-	 * @var string The action to load.
-	 * @access public
-	 */
+    /**
+     * @var string The action to load.
+     * @access public
+     */
     var $action= null;
     /**
      * @deprecated 2.0.0 Use $modx->error instead.
@@ -36,9 +36,9 @@ class modManagerRequest extends modRequest {
     }
     function __construct(& $modx) {
         parent :: __construct($modx);
-		if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
-			$this->loadActionMap();
-		}
+        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
+            $this->loadActionMap();
+        }
     }
 
     /**
@@ -127,7 +127,7 @@ class modManagerRequest extends modRequest {
      */
     function handleRequest() {
         /* Load error handling class */
-        $this->loadErrorHandler('modArrayError');
+        $this->loadErrorHandler('modSmartyError');
 
         /* save page to manager object. allow custom actionVar choice for extending classes. */
         $this->action = isset($_REQUEST[$this->actionVar]) ? $_REQUEST[$this->actionVar] : $this->defaultAction;
@@ -137,41 +137,52 @@ class modManagerRequest extends modRequest {
         $this->prepareResponse();
     }
 
-	/**
-	 * Loads the actionMap, and generates a cache file if necessary.
-	 *
-	 * @access public
-	 * @return boolean True if successful.
-	 */
-	function loadActionMap() {
-		$loaded = false;
-		$fileName= $this->modx->cachePath . 'mgr/actions.cache.php';
-		if (file_exists($fileName)) { /* if action map cache found, load it */
-			include_once $fileName;
-			$loaded = true;
-		} else { /* otherwise, generate map to cache from DB */
-			if ($cacheManager = $this->modx->getCacheManager()) {
-				$cacheManager->generateActionMap($fileName);
-				@include_once $fileName;
-				$loaded = true;
-			}
-		}
-		return $loaded;
-	}
+    /**
+     * {@inheritdoc}
+     * 
+     * This implementation adds register logging capabilities via $_POST vars
+     * when the error handler is loaded.
+     */
+    function loadErrorHandler($class = 'modArrayError') {
+        parent :: loadErrorHandler($class);
+        $this->registerLogging($_POST);
+    }
+
+    /**
+     * Loads the actionMap, and generates a cache file if necessary.
+     *
+     * @access public
+     * @return boolean True if successful.
+     */
+    function loadActionMap() {
+        $loaded = false;
+        $fileName= $this->modx->cachePath . 'mgr/actions.cache.php';
+        if (file_exists($fileName)) { /* if action map cache found, load it */
+            include_once $fileName;
+            $loaded = true;
+        } else { /* otherwise, generate map to cache from DB */
+            if ($cacheManager = $this->modx->getCacheManager()) {
+                $cacheManager->generateActionMap($fileName);
+                include_once $fileName;
+                $loaded = true;
+            }
+        }
+        return $loaded;
+    }
 
     /**
      * Prepares the MODx response to a mgr request that is being handled.
      *
      * @todo Redo the error message when a modAction is not found.
-	 * @access public
+     * @access public
      * @return boolean True if the response is properly prepared.
      */
     function prepareResponse() {
         $modx= & $this->modx;
-		$error= & $this->modx->error;
-		if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
-			$this->loadActionMap();
-		}
+        $error= & $this->modx->error;
+        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
+            $this->loadActionMap();
+        }
 
         /* backwards compatibility */
         $_lang = $this->modx->lexicon->fetch();
@@ -181,8 +192,8 @@ class modManagerRequest extends modRequest {
             $this->modx->smarty->assign('_lang',$_lang);
             include_once $this->modx->config['manager_path'] . 'controllers/header.php';
         } else {
-			if (isset($this->modx->actionMap[$this->action])) {
-				$action = $this->modx->actionMap[$this->action];
+            if (isset($this->modx->actionMap[$this->action])) {
+                $action = $this->modx->actionMap[$this->action];
 
                 /* assign custom action topics to smarty, so can load custom topics for each page */
                 $topics = explode(',',$action['lang_topics']);
@@ -209,28 +220,28 @@ class modManagerRequest extends modRequest {
                 $this->modx->config['context_url'] = $action['context_url'];
                 $this->modx->config['context_path'] = $action['context_path'];
 
-				/* if action is a directory, load base index.php */
-				if (substr($f,strlen($f)-1,1) == '/') {
-					$f .= 'index';
-				}
-				/* append .php */
-				if (file_exists($f.'.php')) {
-					$f = $f.'.php';
-					include_once $f;
-				/* for actions that don't have trailing / but reference index */
-				} elseif (file_exists($f.'/index.php')) {
-					$f = $f.'/index.php';
-					include_once $f;
-				}
-				if ($action['haslayout']) {
-					/* reset path to core modx path for header/footer */
+                /* if action is a directory, load base index.php */
+                if (substr($f,strlen($f)-1,1) == '/') {
+                    $f .= 'index';
+                }
+                /* append .php */
+                if (file_exists($f.'.php')) {
+                    $f = $f.'.php';
+                    include_once $f;
+                /* for actions that don't have trailing / but reference index */
+                } elseif (file_exists($f.'/index.php')) {
+                    $f = $f.'/index.php';
+                    include_once $f;
+                }
+                if ($action['haslayout']) {
+                    /* reset path to core modx path for header/footer */
                     $this->modx->smarty->setTemplatePath($modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/');
                     include_once $this->modx->config['manager_path'].'controllers/footer.php';
-				}
-			} else {
-				/* no action found. TODO: redo no action found eventually. */
-				die('No action with ID '.$this->action.' found.');
-			}
+                }
+            } else {
+                /* no action found. TODO: redo no action found eventually. */
+                die('No action with ID '.$this->action.' found.');
+            }
         }
         exit();
     }
