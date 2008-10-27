@@ -47,7 +47,7 @@ Ext.extend(MODx.grid.LocalProperty,MODx.grid.LocalGrid,{
     ,initEditor: function(cm,ci,ri,r) {
         cm.setEditable(ci,true);
         var xtype = this.config.dynProperty;
-        if (r[xtype].substr(0,5) == 'combo' || r[xtype] == 'list') {
+        if (r[xtype] == 'list') {
             var o = this.createCombo(r);
         } else {
             var z = {};

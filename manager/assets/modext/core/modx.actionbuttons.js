@@ -21,9 +21,8 @@ MODx.toolbar.ActionButtons = function(config) {
 	}
 	if (config.formpanel) {
 		this.setupDirtyButtons(config.formpanel);
-	}
-	
-	this.config = config; // assign global options
+	}	
+	this.config = config;
 	this.render('modAB');
 };
 Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
@@ -53,7 +52,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 		var a = arguments, l = a.length;
         for(var i=0;i<l;i=i+1) {
 			var options = a[i];
-			// if - sent, create a toolbar delimiter
+			/* if - sent, create a toolbar delimiter */
 			if (options === '-') {
 				this.add(this,'-');
 				continue;
@@ -70,12 +69,12 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
             }
 			Ext.applyIf(options,{
 				cls: 'x-btn-text bmenu' 
-				,scope: this // reference self for inline functions to have accurate scope
+				,scope: this /* reference self for inline functions to have accurate scope */
 			});
-			// if handler is specified for a button, execute that instead
-			// this can be used for doing document-specific actions
-			// such as using a Ext.menu.DateMenu in the action buttons
-			// or some other item that opens up more options...you get the idea
+			/* if handler is specified for a button, execute that instead
+			   this can be used for doing document-specific actions
+			   such as using a Ext.menu.DateMenu in the action buttons
+			   or some other item that opens up more options...you get the idea */
 			if (options.handler === null && options.menu === null) {
 				options.handler = this.checkConfirm;
 			} else if (options.handler) {
@@ -93,22 +92,22 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 				}
 			} else { options.handler = this.handleClick; }
 						      			
-			// create the button	
+			/* create the button */	
 			var b = new Ext.Toolbar.Button(options);
             
 			
-            // if checkDirty, disable until field change
+            /* if checkDirty, disable until field change */
             if (options.checkDirty) {
                 b.setDisabled(true);
                 this.checkDirtyBtns.push(b);
             }
 			
-			// if javascript is specified, run it when button is click, before this.checkConfirm is run
+			/* if javascript is specified, run it when button is click, before this.checkConfirm is run */
 			if (options.javascript) {
     			b.addListener('click',this.evalJS,this);
 			}
 			
-			// add button to toolbar
+			/* add button to toolbar */
 			this.add(this,b);
             
             
@@ -160,14 +159,14 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 * @param {Object} scope The scope to execute the function in.
 	 */
 	,confirm: function(itm,callback,scope) {
-		// if no message go ahead and redirect...we dont like blank questions
+		/* if no message go ahead and redirect...we dont like blank questions */
 		if (itm.confirm === null) { return true; }
 		
 		Ext.Msg.confirm('',itm.confirm,function(e) {
-			// if the user is okay with the action
+			/* if the user is okay with the action */
 			if (e === 'yes') {
 				if (callback === null) { return true; }
-				if (typeof(callback) === 'function') { // if callback is a function, run it, and pass Button
+				if (typeof(callback) === 'function') { /* if callback is a function, run it, and pass Button */
 					Ext.callback(callback,scope || this,[itm]);
 				} else { location.href = callback; }
 			}
@@ -205,43 +204,34 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 */
 	,handleClick: function(itm,e) {
         var o = this.config;
-		// action buttons handlers, abstracted to all get-out
-        if (itm.method === 'remote') { // if using connectors		
-			MODx.util.Progress.reset(); // reset the Progress Bar
+		/* action buttons handlers, abstracted to all get-out */
+        if (itm.method === 'remote') { /* if using connectors */
+			MODx.util.Progress.reset(); /* reset the Progress Bar */
             
-            // if using formpanel
+            /* if using formpanel */
             if (o.formpanel !== undefined && o.formpanel !== '' && o.formpanel !== null) {
                 o.form = Ext.getCmp(o.formpanel);
             }
             
-			// if using Ext.form
+			/* if using Ext.form */
             if (o.form !== undefined) {
                 var f = o.form.getForm ? o.form.getForm() : o.form;
-				if (f.isValid()) { // client-side validation with modHExt
+				if (f.isValid()) { /* client-side validation with modHExt */
                     Ext.applyIf(o.params,{
                         action: itm.process
                        ,'modx-ab-stay': MODx.config.stay
                     });
                     
-                    if (itm.checkDirty) {
-                    	if (!f.isDirty()) {
-                    		Ext.Msg.hide();
-                    		return false;
-                    	}
-                    }
                     Ext.apply(f.baseParams,o.params);
                     
-                    o.form.on('success',function(r) {
-                        // update the progress bar
-                       // MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
-                        
-                        // allow for success messages
+                    o.form.on('success',function(r) {                        
+                        /* allow for success messages */
                         if (r.result.message != '') {
                             Ext.Msg.alert(_('success'),r.result.message,function() {
                                 this.checkOnComplete(o,itm,r.result);
                              },this);
                         } else {
-                            // pass the handling onto the checkOnComplete func                                   
+                            /* pass the handling onto the checkOnComplete func */                                   
                             this.checkOnComplete(o,itm,r.result);
                         }
                         if (o.form.clearDirty) o.form.clearDirty();
@@ -251,15 +241,12 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 					Ext.Msg.alert(_('error'),_('correct_errors'));	
 				}
 			} else {
-				// now send form data through MODx.form.Handler to the connector
+				/* now send form data through MODx.form.Handler to the connector */
 				MODx.form.Handler.send(o.form_id,itm.process,function(opt,s,r) {
 					r = Ext.decode(r.responseText);
 					
-					if (r.success) {
-						// update the progress bar
-						//MODx.util.Progress.time(5,MODx.util.Progress.id,_('refreshing_tree'));
-						
-						// refresh the tree, then pass the handling onto the checkOnComplete func
+					if (r.success) {						
+						/* refresh the tree, then pass the handling onto the checkOnComplete func */
 						if (o.refreshTree) {
                             o.refreshTree.refresh();
                         } else {
@@ -267,15 +254,14 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
                         }
 						this.checkOnComplete(o,itm,r);
 					} else {
-						// if error, pass handling to MODx.form.Handler.js
+						/* if error, pass handling to MODx.form.Handler.js */
 						MODx.form.Handler.errorJSON(r);
 					}
 				},this);
 				
 			}
-        } else {	// this is any other action besides remote
-			var id = o.id || 0; // append the ID of the element if specified
-			//var loc = 'index.php?a='+o.actions[itm.type]+'&id='+id;
+        } else {	/* this is any other action besides remote */
+			var id = o.id || 0; /* append the ID of the element if specified */
 			Ext.applyIf(itm.params || {},o.baseParams || {});
 			var loc = 'index.php?id='+id+'&'+Ext.urlEncode(itm.params);
 			location.href = loc;
@@ -303,20 +289,20 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 		Ext.applyIf(itm.params || {},o.baseParams);
 		var a = Ext.urlEncode(itm.params);
 		switch (MODx.config.stay) {
-			case 'new': // if user selected 'new', then always redirect
+			case 'new': /* if user selected 'new', then always redirect */
 				location.href = 'index.php?a='+o.actions['new']+'&'+a;
 				break;
 			case 'stay':
-				// if Continue Editing, then don't reload the page - just hide the Progress bar
-				// unless the user is on a 'Create' page...if so, then redirect
-				// to the proper Edit page
+				/* if Continue Editing, then don't reload the page - just hide the Progress bar
+				   unless the user is on a 'Create' page...if so, then redirect
+				   to the proper Edit page */
 				if ((itm.process === 'create' || itm.process === 'duplicate' || itm.reload) && res.object.id !== null) {
 					location.href = 'index.php?a='+o.actions.edit+'&id='+res.object.id+'&'+a;
 				} else if (itm.process === 'delete') {
 					location.href = 'index.php?a='+o.actions.cancel+'&'+a;
 				} else { Ext.Msg.hide(); }
 				break;
-			case 'close': // redirect to the cancel action
+			case 'close': /* redirect to the cancel action */
 				location.href = 'index.php?a='+o.actions.cancel+'&'+a;
 				break;
 		}
@@ -358,7 +344,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
                     MODx.config.stay = itm.value;
                 }
                 ,scope: this
-                ,delay: 10 // delay gives user instant click feedback before filtering tasks
+                ,delay: 10
             }
         };
 	}

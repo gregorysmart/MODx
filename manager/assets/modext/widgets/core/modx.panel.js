@@ -66,7 +66,6 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
      */
     ,submit: function(o) {
         var fm = this.getForm();
-        if (this.config.checkDirty && this.isDirty() === false) { return false; }
         if (fm.isValid()) {
         	if (this.fireEvent('beforeSubmit',{
         	   form: fm

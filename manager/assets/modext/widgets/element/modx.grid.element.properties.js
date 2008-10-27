@@ -43,9 +43,14 @@ MODx.grid.ElementProperties = function(config) {
     MODx.grid.ElementProperties.superclass.constructor.call(this,config);
     this.on('afteredit', this.propertyChanged, this);
     this.on('afterRemoveRow', this.propertyChanged, this);
+    this.on('celldblclick',this.onDirty,this);
 };
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
-    create: function(btn,e) {
+    onDirty: function() {
+        Ext.getCmp(this.config.panel).fireEvent('fieldChange');
+    }
+    
+    ,create: function(btn,e) {
         this.loadWindow(btn,e,{
             xtype: 'window-element-property-create'
             ,listeners: {
@@ -59,6 +64,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                     });
                     this.getStore().add(rec);
                     this.propertyChanged();
+                    this.onDirty();
                 },scope:this}
             }
         });
@@ -78,6 +84,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                     rec.set('options',r.options);
                     rec.set('value',r.value);
                     rec.commit();
+                    this.onDirty();
                 },scope:this}
             }
         });
