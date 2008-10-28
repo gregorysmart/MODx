@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.system
  */
-if (!$modx->hasPermission('empty_cache')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('empty_cache')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* clear cache */
 $cacheManager= $modx->getCacheManager();

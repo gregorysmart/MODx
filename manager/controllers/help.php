@@ -6,6 +6,6 @@
  * @subpackage manager
  */
 if (!$modx->hasPermission('help')) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 $modx->smarty->display('help.tpl');

@@ -47,4 +47,4 @@ foreach ($modules as $m) {
     );
 	$md[] = $ma;
 }
-$this->outputArray($md,$count);
+return $this->outputArray($md,$count);

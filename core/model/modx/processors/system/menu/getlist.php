@@ -25,4 +25,4 @@ foreach ($menus as $menu) {
     $ma['text'] = $modx->lexicon($ma['text']);
     $ms[] = $ma;
 }
-$this->outputArray($ms,$count);
+return $this->outputArray($ms,$count);

@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('module','category','user');
 
-if (!$modx->hasPermission('new_module')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_module')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -44,7 +44,7 @@ $module->set('enable_sharedparams',isset($_POST['enable_sharedparams']));
 $module->set('modulecode',$_POST['post']);
 
 if ($module->save() == false) {
-    $modx->error->failure($modx->lexicon('module_err_save'));
+    return $modx->error->failure($modx->lexicon('module_err_save'));
 }
 
 /* save user group access permissions
@@ -62,7 +62,7 @@ if (is_array($_POST['usrgroups'])) {
 		$ug->set('module',$module->get('id'));
 		$ug->set('usergroup',$value);
 		if ($ug->save() == false) {
-			$modx->error->failure($modx->lexicon('user_err_save_access_permissions'));
+			return $modx->error->failure($modx->lexicon('user_err_save_access_permissions'));
         }
 	}
 }
@@ -80,4 +80,4 @@ $modx->logManagerAction('module_create','modModule',$module->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('',$module->get(array_diff(array_keys($module->_fields), array('modulecode'))));
+return $modx->error->success('',$module->get(array_diff(array_keys($module->_fields), array('modulecode'))));

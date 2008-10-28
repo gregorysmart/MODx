@@ -5,7 +5,7 @@
  */
 
 require_once MODX_PROCESSORS_PATH.'index.php';
-if (!$modx->hasPermission('logs')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('logs')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -47,4 +47,4 @@ foreach ($logs as $log) {
     
     $ls[] = $la;
 }
-$this->outputArray($ls,$count);
+return $this->outputArray($ls,$count);

@@ -8,9 +8,9 @@ $modx->lexicon->load('resource');
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
-if (!isset($_DATA['id'])) $modx->error->failure($modx->lexicon('resource_err_ns'));
+if (!isset($_DATA['id'])) return $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject($_DATA['class_key'],$_DATA['id']);
-if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nf'));
+if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nf'));
 
 if ($_DATA['pub_date'] != '')
     $_DATA['pub_date'] = strftime('%Y-%m-%d',strtotime($_DATA['pub_date']));
@@ -21,7 +21,7 @@ if ($_DATA['unpub_date'] != '')
 $resource->fromArray($_DATA);
 
 if ($resource->save() === false) {
-    $modx->error->failure($modx->lexicon('resource_err_save'));
+    return $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
-$modx->error->success();
+return $modx->error->success();

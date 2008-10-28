@@ -8,7 +8,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission('save_user')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_user')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* array of post values to ignore in this function */
 $ignore = array (
@@ -72,7 +72,7 @@ foreach ($allowBlanks as $k) {
 
 $usersettings = $modx->getCollection('modUserSetting',array('user' => $user->id));
 foreach ($usersettings as $us) {
-	if (!$us->remove()) $error->failure($modx->lexicon('user_setting_err_remove'));
+	if (!$us->remove()) return $modx->error->failure($modx->lexicon('user_setting_err_remove'));
 }
 
 for ($i = 0; $i < count($settings); $i++) {
@@ -86,9 +86,9 @@ for ($i = 0; $i < count($settings); $i++) {
 		$us->set('user',$user->id);
 		$us->set('setting_name',$name);
 		$us->set('setting_value',$value);
-		if (!$us->save()) $error->failure($modx->lexicon('user_setting_err_save'));
+		if (!$us->save()) return $modx->error->failure($modx->lexicon('user_setting_err_save'));
 
 	}
 }
 
-$error->success();
+return $modx->error->success();

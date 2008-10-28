@@ -6,9 +6,9 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
-if (!isset($_REQUEST['id'])) $modx->error->failure($modx->lexicon('action_err_ns'));
+if (!isset($_REQUEST['id'])) return $modx->error->failure($modx->lexicon('action_err_ns'));
 $action = $modx->getObject('modAction',$_REQUEST['id']);
-if ($action == null) $modx->error->failure($modx->lexicon('action_err_nf'));
+if ($action == null) return $modx->error->failure($modx->lexicon('action_err_nf'));
 
 $parent = $action->getOne('Parent');
 if ($parent != null) {
@@ -16,4 +16,4 @@ if ($parent != null) {
     $action->set('parent_controller',$parent->get('controller'));
 }
 
-$modx->error->success('',$action);
+return $modx->error->success('',$action);

@@ -6,10 +6,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('access');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['type'])) {
-    $modx->error->failure($modx->lexicon('access_type_err_ns'));
+    return $modx->error->failure($modx->lexicon('access_type_err_ns'));
 }
 $accessClass = $_REQUEST['type'];
 
@@ -73,4 +73,4 @@ foreach ($collection as $key => $object) {
     );
     $data[] = $objdata;
 }
-$this->outputArray($data);
+return $this->outputArray($data);

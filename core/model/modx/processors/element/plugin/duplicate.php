@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
-if (!$modx->hasPermission('new_plugin')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_plugin')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get old snippet */
 $old_plugin = $modx->getObject('modPlugin',$_REQUEST['id']);
-if ($old_plugin == null) $modx->error->failure($modx->lexicon('plugin_err_not_found'));
+if ($old_plugin == null) return $modx->error->failure($modx->lexicon('plugin_err_not_found'));
 
 $newname = isset($_POST['name'])
     ? $_POST['name']
@@ -22,7 +22,7 @@ $plugin->fromArray($old_plugin->toArray());
 $plugin->set('name',$newname);
 
 if ($plugin->save() === false) {
-    $modx->error->failure($modx->lexicon('plugin_err_save'));
+    return $modx->error->failure($modx->lexicon('plugin_err_save'));
 }
 
 /* duplicate events */
@@ -33,11 +33,11 @@ foreach($old_plugin->events as $old_event) {
 	$new_event->set('evtid',$old_event->get('evtid'));
 	$new_event->set('priority',$old_event->get('priority'));
 	if ($new_event->save() == false) {
-		$modx->error->failure($modx->lexicon('plugin_event_err_duplicate'));
+		return $modx->error->failure($modx->lexicon('plugin_event_err_duplicate'));
     }
 }
 
 /* log manager action */
 $modx->logManagerAction('duplicate_plugin','modPlugin',$plugin->get('id'));
 
-$modx->error->success('',$plugin->get(array_diff(array_keys($plugin->_fields), array('plugincode'))));
+return $modx->error->success('',$plugin->get(array_diff(array_keys($plugin->_fields), array('plugincode'))));

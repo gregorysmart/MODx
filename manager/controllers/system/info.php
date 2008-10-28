@@ -1,5 +1,5 @@
 <?php
-if (!$modx->hasPermission('logs')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('logs')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* general */
 $modx->smarty->assign('version',$modx->version['full_appname']);

@@ -8,11 +8,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
-if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('packages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['workspace'])) $_POST['workspace'] = 1;
 $workspace = $modx->getObject('modWorkspace',$_POST['workspace']);
-if ($workspace == null) $modx->error->failure($modx->lexicon('workspace_err_nf'));
+if ($workspace == null) return $modx->error->failure($modx->lexicon('workspace_err_nf'));
 
 $packages = array();
 
@@ -49,8 +49,8 @@ foreach ($packages as $signature) {
 	$package->set('workspace',$workspace->get('id'));
 
 	if ($package->save() === false) {
-        $modx->error->failure($modx->lexicon('package_err_create'));
+        return $modx->error->failure($modx->lexicon('package_err_create'));
     }
 }
 
-$modx->error->success();
+return $modx->error->success();

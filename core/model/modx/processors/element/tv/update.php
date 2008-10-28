@@ -6,13 +6,13 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv','category');
 
-if (!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $tv = $modx->getObject('modTemplateVar',$_POST['id']);
-if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
+if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
 if ($tv->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('tv_err_locked'));
+    return $modx->error->failure($modx->lexicon('tv_err_locked'));
 }
 
 /* category */
@@ -28,7 +28,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() === false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -73,7 +73,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $tv->setProperties($properties);
 
 if ($tv->save() === false) {
-    $modx->error->failure($modx->lexicon('tv_err_save'));
+    return $modx->error->failure($modx->lexicon('tv_err_save'));
 }
 
 
@@ -143,4 +143,4 @@ $modx->logManagerAction('tv_update','modTemplateVar',$tv->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.security.user
  */
-if (!$modx->hasPermission('delete_user')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('delete_user')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $modx->loadProcessor('security/user/delete.php');
 

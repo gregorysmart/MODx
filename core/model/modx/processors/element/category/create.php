@@ -12,10 +12,10 @@ $category->fromArray($_POST);
 
 if ($category->save() == false) {
     $modx->error->checkValidation($category);
-    $modx->error->failure($modx->lexicon('category_err_create'));
+    return $modx->error->failure($modx->lexicon('category_err_create'));
 }
 
 /* log manager action */
 $modx->logManagerAction('category_create','modCategory',$category->get('id'));
 
-$modx->error->success();
+return $modx->error->success();

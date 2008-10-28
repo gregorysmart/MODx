@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
 
-if (!$modx->hasPermission('messages')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('messages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -55,4 +55,4 @@ foreach ($messages as $message) {
     );
 	$ms[] = $ma;
 }
-$this->outputArray($ms,$count);
+return $this->outputArray($ms,$count);

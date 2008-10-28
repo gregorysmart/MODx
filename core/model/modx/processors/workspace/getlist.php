@@ -20,4 +20,4 @@ foreach ($workspaces as $workspace) {
     $wa = $workspace->toArray();
     $ws[] = $wa;
 }
-$this->outputArray($ws,$count);
+return $this->outputArray($ws,$count);

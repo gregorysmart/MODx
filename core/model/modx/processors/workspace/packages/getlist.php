@@ -63,4 +63,4 @@ foreach ($packages as $package) {
     $ps[] = $pa;
 }
 
-$this->outputArray($ps);
+return $this->outputArray($ps);

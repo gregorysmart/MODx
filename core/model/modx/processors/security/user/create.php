@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission(array('access_permissions' => true, 'new_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'new_user' => true))) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $user = $modx->newObject('modUser');
 
@@ -31,7 +31,7 @@ $modx->invokeEvent('OnBeforeUserFormSave',array(
 
 /* update user */
 if ($user->save() == false) {
-    $modx->error->failure($modx->lexicon('user_err_save'));
+    return $modx->error->failure($modx->lexicon('user_err_save'));
 }
 
 
@@ -41,7 +41,7 @@ $user->profile->set('internalKey',$user->get('id'));
 $user->profile->set('blocked', isset($_POST['blocked']) && $_POST['blocked'] ? true : false);
 
 if ($user->profile->save() == false) {
-	$modx->error->failure($modx->lexicon('user_err_save_attributes'));
+	return $modx->error->failure($modx->lexicon('user_err_save_attributes'));
 }
 
 /* invoke OnManagerSaveUser event */
@@ -110,7 +110,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
     $modx->mail->address('to', $email, $ufn);
     $modx->mail->address('reply-to', $modx->config['emailsender']);
     if (!$modx->mail->send()) {
-        $modx->error->failure($modx->lexicon('error_sending_email_to').$email);
+        return $modx->error->failure($modx->lexicon('error_sending_email_to').$email);
         exit;
     }
     $modx->mail->reset();
@@ -120,7 +120,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 $modx->logManagerAction('user_create','modUser',$user->get('id'));
 
 if ($_POST['passwordnotifymethod'] == 's') {
-	$modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
+	return $modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
 } else {
-	$modx->error->success();
+	return $modx->error->success();
 }

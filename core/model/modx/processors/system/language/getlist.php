@@ -32,4 +32,4 @@ foreach ($languages as $language) {
     $ps[] = $pa;
 }
 
-$this->outputArray($ps,$count);
+return $this->outputArray($ps,$count);

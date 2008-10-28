@@ -6,10 +6,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('policy');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['id'])) {
-    $modx->error->failure('Policy id not specified!');
+    return $modx->error->failure('Policy id not specified!');
 }
 $objId = $_REQUEST['id'];
 
@@ -29,4 +29,4 @@ if ($obj = $modx->getObject('modAccessPolicy', $objId)) {
     }
     $data['policy_data'] = $policyData;
 }
-$modx->error->success('', $data);
+return $modx->error->success('', $data);

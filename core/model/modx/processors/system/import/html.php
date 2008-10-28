@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('import');
 
-if (!$modx->hasPermission('import_static')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('import_static')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!function_exists('getFiles')) {
     function getFiles(& $modx, & $results, & $filesfound, $directory, $listing= array (), $count= 0) {
@@ -226,4 +226,4 @@ $importend= $modx->getMicroTime();
 $totaltime= ($importend - $importstart);
 $results .= sprintf("<p />" . $modx->lexicon('import_site_time'), round($totaltime, 3));
 
-$modx->error->success($results);
+return $modx->error->success($results);

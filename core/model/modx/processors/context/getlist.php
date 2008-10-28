@@ -45,4 +45,4 @@ foreach ($collection as $key => $object) {
     }
     $list[]= $la;
 }
-$this->outputArray($list);
+return $this->outputArray($list);

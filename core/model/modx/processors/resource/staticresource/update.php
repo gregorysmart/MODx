@@ -71,7 +71,7 @@ if ($modx->config['friendly_alias_urls']) {
 	}
 }
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 
 /* publish and unpublish dates */
@@ -162,10 +162,10 @@ $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 $oldparent = $modx->getObject('modResource',$resource->get('parent'));
 
 if ($resource->get('id') == $modx->config['site_start'] && $_POST['published'] == 0) {
-	$modx->error->failure($modx->lexicon('document_err_unpublish_sitestart'));
+	return $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart'));
 }
 if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != '0' || $_POST['unpub_date'] != '0')) {
-	$modx->error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
+	return $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
 }
 
 $count_children = $modx->getCount('modResource',array('parent' => $resource->get('id')));
@@ -191,7 +191,7 @@ $resource->set('editedby', $modx->user->get('id'));
 $resource->set('editedon', time());
 
 if ($resource->save() == false) {
-    $modx->error->failure($modx->lexicon('document_err_save'));
+    return $modx->error->failure($modx->lexicon('document_err_save'));
 }
 
 foreach ($tmplvars as $field => $value) {
@@ -306,4 +306,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$modx->error->success();
+return $modx->error->success();

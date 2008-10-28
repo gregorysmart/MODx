@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('module','category','user');
 
-if (!$modx->hasPermission('save_module')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_module')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -35,11 +35,11 @@ $modx->invokeEvent('OnBeforeModFormSave',array(
 
 /* get module */
 $module = $modx->getObject('modModule',$_POST['id']);
-if ($module == null) $modx->error->failure($modx->lexicon('module_err_not_found'));
+if ($module == null) return $modx->error->failure($modx->lexicon('module_err_not_found'));
 
 /* if module locked, prevent access */
 if ($module->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('lock_module_msg'));
+    return $modx->error->failure($modx->lexicon('lock_module_msg'));
 }
 
 /* update module */
@@ -53,7 +53,7 @@ $module->set('enable_sharedparams',isset($_POST['enable_sharedparams']));
 $module->set('modulecode',$_POST['post']);
 
 if ($module->save() == false) {
-    $modx->error->failure($modx->lexicon('module_err_save'));
+    return $modx->error->failure($modx->lexicon('module_err_save'));
 }
 
 /*
@@ -72,7 +72,7 @@ if (is_array($_POST['usrgroups'])) {
         $ug->set('module',$module->id);
         $ug->set('usergroup',$value);
         if ($ug->save() == false) {
-            $modx->error->failure($modx->lexicon('user_err_save_access_permissions'));
+            return $modx->error->failure($modx->lexicon('user_err_save_access_permissions'));
         }
     }
 }
@@ -90,4 +90,4 @@ $modx->logManagerAction('module_update','modModule',$module->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

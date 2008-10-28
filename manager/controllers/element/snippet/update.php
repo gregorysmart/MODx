@@ -5,13 +5,13 @@
  * @package modx
  * @subpackage manager.element.snippet
  */
-if(!$modx->hasPermission('edit_snippet')) $modx->error->failure($modx->lexicon('access_denied'));
+if(!$modx->hasPermission('edit_snippet')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* get snippet */
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
-if ($snippet == null) $modx->error->failure($modx->lexicon('snippet_err_not_found'));
+if ($snippet == null) return $modx->error->failure($modx->lexicon('snippet_err_not_found'));
 if ($snippet->get('locked') && !$modx->hasPermission('edit_locked')) {
-    $modx->error->failure($modx->lexicon('snippet_err_locked'));
+    return $modx->error->failure($modx->lexicon('snippet_err_locked'));
 }
 
 $snippet->category = $snippet->getOne('modCategory');

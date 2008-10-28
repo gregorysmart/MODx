@@ -338,4 +338,4 @@ $charsets = array(
 	),
 );
 
-$this->outputArray($charsets);
+return $this->outputArray($charsets);

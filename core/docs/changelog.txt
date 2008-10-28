@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-6 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Refactored modError completely, removing all derivative classes and introducing modManagerResponse and modConnectorResponse to handle formatting modError responses appropriately.
 - Added modRequest::registerLogging() and relocated logic for detecting and taking action on register logging parameters out of loadErrorHandler().
 - Refactored modArrayError to remove Smarty dependencies, moving them to a new derivative, modSmartyError which the manager UI can utilize explicitly.
 - Added element property panel to all Element panels for managing default properties (except Modules).

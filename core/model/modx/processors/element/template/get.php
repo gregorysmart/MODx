@@ -7,7 +7,7 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('template');
 
 $template = $modx->getObject('modTemplate',$_REQUEST['id']);
-if ($template == null) $modx->error->failure($modx->lexicon('template_err_not_found'));
+if ($template == null) return $modx->error->failure($modx->lexicon('template_err_not_found'));
 
 $properties = $template->get('properties');
 if (!is_array($properties)) $properties = array();
@@ -25,4 +25,4 @@ foreach ($properties as $property) {
 
 $template->set('data','(' . $modx->toJSON($data) . ')');
 
-$modx->error->success('',$template);
+return $modx->error->success('',$template);

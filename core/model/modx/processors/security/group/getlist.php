@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -30,4 +30,4 @@ if (isset($_REQUEST['combo'])) {
 foreach ($groups as $g) {
 	$gs[] = $g->toArray();
 }
-$this->outputArray($gs,$count);
+return $this->outputArray($gs,$count);

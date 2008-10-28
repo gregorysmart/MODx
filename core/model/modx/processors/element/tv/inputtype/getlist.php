@@ -20,4 +20,4 @@ foreach ($types as $type) {
     );
 }
 
-$this->outputArray($ar);
+return $this->outputArray($ar);

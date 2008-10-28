@@ -1025,12 +1025,12 @@ class modX extends xPDO {
      * loaded on this or any previous call to the function, false otherwise.
      */
     function getResponse($class= 'modResponse', $path= '') {
-        if ($this->response === null || !is_a($this->response, 'modResponse')) {
-            $responseClass= isset ($this->config['modResponse.class']) ? $this->config['modResponse.class'] : $class;
-            if ($className= $this->loadClass($responseClass, $path, !empty($path), true))
-                $this->response= new $className ($this);
+        $responseClass= isset ($this->config['modResponse.class']) ? $this->config['modResponse.class'] : $class;
+        $className= $this->loadClass($responseClass, $path, !empty($path), true);
+        if ($this->response === null || !is_a($this->response, $className)) {
+            if ($className) $this->response= new $className ($this);
         }
-        return is_a($this->response, 'modResponse');
+        return is_a($this->response, $className);
     }
 
     /**
@@ -2540,14 +2540,12 @@ class modX extends xPDO {
      *
      * @param string $file Relative path to the processor.
      */
-    function loadProcessor($file) {
+    function loadProcessor($file, $options = array()) {
         if ($file == '') return false;
-        $args = func_get_args();
-        $args = array_pop($args);
-        if (is_array($args) && count($args) > 0) extract($args,EXTR_PREFIX_ALL,'modx');
+        if (is_array($options) && count($options) > 0) extract($options, EXTR_PREFIX_ALL, 'modx_');
 
         $modx= & $this;
-        require_once (MODX_PROCESSORS_PATH . $file);
+        include(MODX_PROCESSORS_PATH . $file);
     }
 
     /**

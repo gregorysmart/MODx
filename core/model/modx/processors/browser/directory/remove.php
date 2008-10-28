@@ -7,10 +7,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
-if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['dir']) || $_POST['dir'] == '')
-	$modx->error->failure($modx->lexicon('file_folder_err_ns'));
+	return $modx->error->failure($modx->lexicon('file_folder_err_ns'));
 
 $d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['prependPath'] != null
     ? $_POST['prependPath']
@@ -21,14 +21,14 @@ $directory = $d.$_POST['dir'];
 $directory = str_replace('root/','',$directory);
 $directory = str_replace('undefined/','',$directory);
 
-if (!is_dir($directory)) $modx->error->failure($modx->lexicon('file_folder_err_invalid'));
+if (!is_dir($directory)) return $modx->error->failure($modx->lexicon('file_folder_err_invalid'));
 
 if (!is_readable($directory) || !is_writable($directory))
-	$modx->error->failure($modx->lexicon('file_folder_err_perms_remove'));
+	return $modx->error->failure($modx->lexicon('file_folder_err_perms_remove'));
 
-if (!rmdirr($directory)) $modx->error->failure($modx->lexicon('file_folder_err_remove'));
+if (!rmdirr($directory)) return $modx->error->failure($modx->lexicon('file_folder_err_remove'));
 
-$modx->error->success();
+return $modx->error->success();
 
 function rmdirr($dr) {
 	if (!is_writable($dr)) {
@@ -55,4 +55,4 @@ function rmdirr($dr) {
 	return true;
 }
 
-$modx->error->success();
+return $modx->error->success();

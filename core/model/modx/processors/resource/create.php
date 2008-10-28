@@ -7,7 +7,7 @@ global $resource;
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
 
-if (!$modx->hasPermission('new_document')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $resourceClass = isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modDocument';
 $resourceDir= strtolower(substr($resourceClass, 3));
@@ -16,7 +16,7 @@ $delegateProcessor= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FI
 if (file_exists($delegateProcessor)) {
     $overridden= include ($delegateProcessor);
     if ($overridden !== false) {
-        $modx->error->failure('Warning! Delegate processor did not provide appropriate response.');
+        return $modx->error->failure('Warning! Delegate processor did not provide appropriate response.');
     }
 }
 
@@ -91,7 +91,7 @@ if ($modx->config['friendly_alias_urls']) {
     }
 }
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 
 
@@ -188,7 +188,7 @@ $resource->set('menuindex',isset($menuindex) ? $menuindex : 0);
 
 /* save data */
 if ($resource->save() == false) {
-    $modx->error->failure($modx->lexicon('resource_err_save'));
+    return $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
 
@@ -233,7 +233,7 @@ foreach ($tmplvars as $field => $value) {
 if ($_POST['parent'] != 0) {
 	$parent = $modx->getObject('modResource', $_POST['parent']);
 	$parent->set('isfolder', 1);
-	if (!$parent->save()) $modx->error->failure($modx->lexicon('resource_err_change_parent_to_folder'));
+	if (!$parent->save()) return $modx->error->failure($modx->lexicon('resource_err_change_parent_to_folder'));
 }
 
 /* Save META Keywords
@@ -305,4 +305,4 @@ if ($resource->get('id') == $modx->config['site_start']) {
     $resource->save();
 }
 
-$modx->error->success('', array('id' => $resource->get('id')));
+return $modx->error->success('', array('id' => $resource->get('id')));

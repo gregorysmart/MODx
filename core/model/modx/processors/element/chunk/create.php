@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('chunk');
 
-if (!$modx->hasPermission('new_chunk')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* default values */
 if ($_POST['name'] == '') $_POST['name'] = $modx->lexicon('chunk_untitled');
@@ -17,9 +17,9 @@ $_POST['name'] = str_replace('>','',$_POST['name']);
 $_POST['name'] = str_replace('<','',$_POST['name']);
 
 $name_exists = $modx->getObject('modChunk',array('name' => $_POST['name']));
-if ($name_exists != null) $modx->error->failure($modx->lexicon('chunk_err_exists_name'));
+if ($name_exists != null) return $modx->error->failure($modx->lexicon('chunk_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -56,7 +56,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $chunk->setProperties($properties);
 
 if ($chunk->save() == false) {
-	$modx->error->failure($modx->lexicon('chunk_err_save'));
+	return $modx->error->failure($modx->lexicon('chunk_err_save'));
 }
 
 /* invoke OnChunkFormSave event */
@@ -73,4 +73,4 @@ $modx->logManagerAction('chunk_create','modChunk',$chunk->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('',$chunk->get(array('id', 'name', 'description', 'locked', 'category')));
+return $modx->error->success('',$chunk->get(array('id', 'name', 'description', 'locked', 'category')));

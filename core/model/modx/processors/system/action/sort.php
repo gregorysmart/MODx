@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
-if (!$modx->hasPermission('actions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('actions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
@@ -32,7 +32,7 @@ foreach ($nodes as $ar_node) {
 	$node->save();
 }
 
-$modx->error->success();
+return $modx->error->success();
 
 function getNodesFormatted(&$ar_nodes,$cur_level,$parent = 0) {
 	$order = 0;

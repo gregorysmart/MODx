@@ -33,7 +33,7 @@ function sortNodes($xname,$type,$data,&$error) {
 
 		/* $car: [1]: template   [2]: element/category    [3]: catID/elID    [4]: *catID */
 
-		if ($car[1] != $type) $modx->error->failure('Invalid drag!');
+		if ($car[1] != $type) return $modx->error->failure('Invalid drag!');
 
 		if ($car[2] == 'category') {
 			$category = $modx->getObject('modCategory',$car[3]);
@@ -42,7 +42,7 @@ function sortNodes($xname,$type,$data,&$error) {
 			foreach ($objs as $objar => $kids) {
 				$oar = split('_',$objar);
 
-				if ($oar[1] != $type) $modx->error->failure('Invalid drag type!');
+				if ($oar[1] != $type) return $modx->error->failure('Invalid drag type!');
 
 				$obj = $modx->getObject($xname,$oar[3]);
 				$obj->set('category',$category->get('id') != null ? $category->get('id') : 0);
@@ -59,4 +59,4 @@ function sortNodes($xname,$type,$data,&$error) {
 	}
 }
 
-$modx->error->success();
+return $modx->error->success();

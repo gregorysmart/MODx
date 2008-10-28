@@ -6,16 +6,16 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','lexicon');
 
-if (!$modx->hasPermission('namespaces')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('namespaces')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['name']) || $_POST['name'] == '') {
-    $modx->error->failure($modx->lexicon('namespace_err_ns'));
+    return $modx->error->failure($modx->lexicon('namespace_err_ns'));
 }
 $namespace = $modx->getObject('modNamespace',$_POST['name']);
-if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
+if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 if ($namespace->remove() === false) {
-    $modx->error->failure($modx->lexicon('namespace_err_remove'));
+    return $modx->error->failure($modx->lexicon('namespace_err_remove'));
 }
 
-$modx->error->success();
+return $modx->error->success();

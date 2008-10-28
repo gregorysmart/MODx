@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.element.plugin
  */
-if (!$modx->hasPermission('new_plugin')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('new_plugin')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* grab category if preset */
 if (isset($_REQUEST['category'])) {

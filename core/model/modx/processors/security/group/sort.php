@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
@@ -29,7 +29,7 @@ foreach ($groups as $ar_group) {
 	}
 
 	if ($ar_group['parent'] == $group->get('id')) {
-        $modx->error->failure($modx->lexicon('err_self_parent'));
+        return $modx->error->failure($modx->lexicon('err_self_parent'));
     }
 
 

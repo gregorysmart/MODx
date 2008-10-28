@@ -10,12 +10,12 @@ $modx->lexicon->load('workspace');
 /* set proper force value from checkbox */
 if (!isset($_POST['force']) || $_POST['force'] !== 'true') $_POST['force'] = false;
 
-if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('packages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get package */
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_remove_info_gpack'));
 $package = $modx->getObject('transport.modTransportPackage', $_REQUEST['signature']);
-if ($package == null) $modx->error->failure($modx->lexicon('package_err_nfs',array('signature' => $_REQUEST['signature'])));
+if ($package == null) return $modx->error->failure($modx->lexicon('package_err_nfs',array('signature' => $_REQUEST['signature'])));
 
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_remove_info_tzip_start'));
 
@@ -45,8 +45,8 @@ if (!file_exists($f)) {
 /* remove transport package */
 if ($package->remove($_POST['force']) == false) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_remove'));
-    $modx->error->failure($modx->lexicon('package_err_remove',array('signature' => $package->getPrimaryKey())));
+    return $modx->error->failure($modx->lexicon('package_err_remove',array('signature' => $package->getPrimaryKey())));
 }
 
 $modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_remove_info_success'));
-$modx->error->success();
+return $modx->error->success();

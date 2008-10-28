@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
 
-if (!$modx->hasPermission('purge_deleted')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('purge_deleted')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get resources */
 $resources = $modx->getCollection('modResource',array('deleted' => 1));
@@ -24,7 +24,7 @@ foreach ($resources as $resource) {
     }
 
 	if ($resource->remove() == false) {
-		$modx->error->failure($modx->lexicon('resource_err_delete'));
+		return $modx->error->failure($modx->lexicon('resource_err_delete'));
     }
 
 	/* see if resource's parent has any children left */
@@ -42,4 +42,4 @@ foreach ($resources as $resource) {
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

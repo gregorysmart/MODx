@@ -6,16 +6,16 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting','namespace');
 
-if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('settings')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_POST['namespace'])) $modx->error->failure($modx->lexicon('namespace_err_ns'));
+if (!isset($_POST['namespace'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
 $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
-if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
+if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 $ae = $modx->getObject('modSystemSetting',array(
     'key' => $_POST['key'],
 ));
-if ($ae != null) $modx->error->failure($modx->lexicon('setting_err_ae'));
+if ($ae != null) return $modx->error->failure($modx->lexicon('setting_err_ae'));
 
 /* value parsing */
 if ($_POST['xtype'] == 'combo-boolean' && !is_numeric($_POST['value'])) {
@@ -73,10 +73,10 @@ if ($description == null) {
 
 if ($setting->save() === false) {
     $modx->error->checkValidation($setting);
-    $modx->error->failure($modx->lexicon('setting_err_save'));
+    return $modx->error->failure($modx->lexicon('setting_err_save'));
 }
 
 
 $modx->reloadConfig();
 
-$modx->error->success();
+return $modx->error->success();

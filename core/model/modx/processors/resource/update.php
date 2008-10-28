@@ -6,12 +6,12 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!isset($_REQUEST['id'])) $modx->error->failure($modx->lexicon('resource_err_ns'));
+if (!isset($_REQUEST['id'])) return $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
+if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
 if (!$modx->hasPermission('save_document') || !$resource->checkPolicy('save')) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 $resourceClass = isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
@@ -21,7 +21,7 @@ $delegateProcessor= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FI
 if (file_exists($delegateProcessor)) {
     $overridden= include ($delegateProcessor);
     if ($overridden !== false) {
-        $modx->error->failure('Warning! Delegate processor did not provide appropriate response.');
+        return $modx->error->failure('Warning! Delegate processor did not provide appropriate response.');
     }
 }
 
@@ -92,7 +92,7 @@ if ($modx->config['friendly_alias_urls']) {
     }
 }
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* publish and unpublish dates */
 $now = time();
@@ -182,10 +182,10 @@ $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 $oldparent = $modx->getObject('modResource',$resource->get('parent'));
 
 if ($resource->get('id') == $modx->config['site_start'] && $_POST['published'] == 0) {
-    $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart'));
+    return $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart'));
 }
 if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != '0' || $_POST['unpub_date'] != '0')) {
-    $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
+    return $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
 }
 
 $count_children = $modx->getCount('modResource',array('parent' => $resource->get('id')));
@@ -212,7 +212,7 @@ $resource->set('editedby', $modx->user->get('id'));
 $resource->set('editedon', time());
 
 if ($resource->save() == false) {
-    $modx->error->failure($modx->lexicon('resource_err_save'));
+    return $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
 foreach ($tmplvars as $field => $value) {
@@ -325,4 +325,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$modx->error->success('', $resource->get(array('id')));
+return $modx->error->success('', $resource->get(array('id')));

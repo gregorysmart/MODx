@@ -7,15 +7,15 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
-if (!isset($_POST['key'],$_POST['context_key'])) $modx->error->failure($modx->lexicon('setting_err_ns'));
-if (!$context = $modx->getObject('modContext', $_POST['context_key'])) $modx->error->failure($modx->lexicon('setting_err_nf'));
-if (!$context->checkPolicy('save')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!isset($_POST['key'],$_POST['context_key'])) return $modx->error->failure($modx->lexicon('setting_err_ns'));
+if (!$context = $modx->getObject('modContext', $_POST['context_key'])) return $modx->error->failure($modx->lexicon('setting_err_nf'));
+if (!$context->checkPolicy('save')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $setting = $modx->getObject('modContextSetting',array(
     'key' => $_POST['key'],
     'context_key' => $_POST['context_key'],
 ));
-if ($setting == null) $modx->error->failure($modx->lexicon('setting_err_nf'));
+if ($setting == null) return $modx->error->failure($modx->lexicon('setting_err_nf'));
 
 
 /* remove relative lexicon strings */
@@ -33,9 +33,9 @@ if ($description != null) $description->remove();
 
 
 if ($setting->remove() == null) {
-    $modx->error->failure($modx->lexicon('setting_err_remove'));
+    return $modx->error->failure($modx->lexicon('setting_err_remove'));
 }
 
 $modx->reloadConfig();
 
-$modx->error->success();
+return $modx->error->success();

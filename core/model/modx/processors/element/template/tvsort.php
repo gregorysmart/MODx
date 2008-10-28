@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('template');
 
-if (!$modx->hasPermission('save_template')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 function getOrderArray($sortableString, $listName) {
 	$listName = str_replace('Vals','',$listName);
@@ -37,7 +37,7 @@ if (isset ($_POST['sortableVals'])) {
 			));
 			$tv = $modx->getObject('modTemplateVarTemplate', $c);
 			$tv->set('rank', $item['order']);
-			if (!$tv->save()) $modx->error->failure($modx->lexicon('tvt_err_save'));
+			if (!$tv->save()) return $modx->error->failure($modx->lexicon('tvt_err_save'));
 		}
 	}
 
@@ -49,4 +49,4 @@ if (isset ($_POST['sortableVals'])) {
 	print $updateMsg;
 }
 
-$modx->error->success();
+return $modx->error->success();

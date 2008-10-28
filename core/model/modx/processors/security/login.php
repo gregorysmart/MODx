@@ -33,7 +33,7 @@ if ($loginContext == 'mgr' || $loginContext == 'connector') {
 if (is_array($rt)) {
     foreach ($rt as $key => $value) {   /* php4 compatible */
         if ($value !== true) {
-            $modx->error->failure($value);
+            return $modx->error->failure($value);
         }
     }
     unset($key,$value);
@@ -51,7 +51,7 @@ if (!$user) {
         )
     ));
     if (!is_object($user) || !is_a($user, 'modUser')) {
-        $modx->error->failure($modx->lexicon('login_cannot_locate_account'));
+        return $modx->error->failure($modx->lexicon('login_cannot_locate_account'));
     }
 }
 
@@ -62,7 +62,7 @@ foreach ($us as $settingPK => $setting) {
     $$sname= $setting->get('value');
 }
 if ($up->get('failed_logins') >= $modx->config['failed_login_attempts'] && $up->get('blockeduntil') > time()) {
-    $modx->error->failure($modx->lexicon('login_blocked_too_many_attempts'));
+    return $modx->error->failure($modx->lexicon('login_blocked_too_many_attempts'));
 }
 if ($up->get('failedlogincount') >= $modx->config['failed_login_attempts'] && $up->get('blockeduntil') < time()) {
     $up->set('failedlogincount', 0);
@@ -70,29 +70,29 @@ if ($up->get('failedlogincount') >= $modx->config['failed_login_attempts'] && $u
     $up->save();
 }
 if ($up->get('blocked')) {
-    $modx->error->failure($modx->lexicon('login_blocked_admin'));
+    return $modx->error->failure($modx->lexicon('login_blocked_admin'));
 }
 if ($up->get('blockeduntil') > time()) {
-    $modx->error->failure($modx->lexicon('login_blocked_error'));
+    return $modx->error->failure($modx->lexicon('login_blocked_error'));
 }
 if ($up->get('blockedafter') > 0 && $up->get('blockedafter') < time()) {
-    $modx->error->failure($modx->lexicon('login_blocked_error'));
+    return $modx->error->failure($modx->lexicon('login_blocked_error'));
 }
 if (isset ($allowed_ip) && $allowed_ip) {
     if (($hostname = gethostbyaddr($_SERVER['REMOTE_ADDR'])) && ($hostname != $_SERVER['REMOTE_ADDR'])) {
         if (gethostbyname($hostname) != $_SERVER['REMOTE_ADDR']) {
-            $modx->error->failure($modx->lexicon('login_hostname_error'));
+            return $modx->error->failure($modx->lexicon('login_hostname_error'));
         }
     }
     if (!in_array($_SERVER['REMOTE_ADDR'], explode(',', str_replace(' ', '', $allowed_ip)))) {
-        $modx->error->failure($modx->lexicon('login_blocked_ip'));
+        return $modx->error->failure($modx->lexicon('login_blocked_ip'));
     }
 }
 if (isset ($allowed_days) && $allowed_days) {
     $date = getdate();
     $day = $date['wday'] + 1;
     if (strpos($allowed_days, "{$day}") === false) {
-        $modx->error->failure($modx->lexicon('login_blocked_time'));
+        return $modx->error->failure($modx->lexicon('login_blocked_time'));
     }
 }
 
@@ -110,7 +110,7 @@ if ($loginContext == 'mgr') {
 if (!$rt || (is_array($rt) && !in_array(true, $rt))) {
     /* check user password - local authentication */
     if($user->get('password') != md5($givenPassword)) {
-        $modx->error->failure($modx->lexicon('login_username_password_incorrect'));
+        return $modx->error->failure($modx->lexicon('login_username_password_incorrect'));
     }
 }
 
@@ -145,4 +145,4 @@ else {
 }
 $response= $manager_login_startup;
 
-$modx->error->success('',array('id' => $response));
+return $modx->error->success('',array('id' => $response));

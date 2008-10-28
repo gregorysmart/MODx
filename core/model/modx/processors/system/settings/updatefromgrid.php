@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
-if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('settings')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
@@ -30,10 +30,10 @@ if ($entry != null) {
 }
 
 if ($setting->save() == false) {
-    $modx->error->failure($modx->lexicon('setting_err_save'));
+    return $modx->error->failure($modx->lexicon('setting_err_save'));
 }
 
 
 $modx->reloadConfig();
 
-$modx->error->success();
+return $modx->error->success();

@@ -57,4 +57,4 @@ foreach ($settings as $setting) {
     );
     $ss[] = $sa;
 }
-$this->outputArray($ss,$count);
+return $this->outputArray($ss,$count);

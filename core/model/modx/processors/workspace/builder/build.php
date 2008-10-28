@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
-if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('package_builder')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_PACKAGE =& $_SESSION['modx.pb'];
 
@@ -58,4 +58,4 @@ $builder->pack();
 $filename = $modx->config['core_path'].'packages/'.$_PACKAGE['name'].'-'.$_PACKAGE['version'].'-'.$_PACKAGE['release'].'.transport.zip';
 
 $modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_built').' - '.$filename);
-$modx->error->success($modx->lexicon('package_built').' - '.$filename);
+return $modx->error->success($modx->lexicon('package_built').' - '.$filename);

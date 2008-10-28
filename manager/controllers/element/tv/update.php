@@ -6,13 +6,13 @@
  * @subpackage manager.element.tv
  */
 
-if (!$modx->hasPermission('edit_template')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_template')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* get tv */
 $tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
-if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
+if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_not_found'));
 if ($tv->get('locked') && !$modx->hasPermission('edit_locked')) {
-    $modx->error->failure($modx->lexicon('tv_err_locked'));
+    return $modx->error->failure($modx->lexicon('tv_err_locked'));
 }
 
 $tv->category = $tv->getOne('modCategory');

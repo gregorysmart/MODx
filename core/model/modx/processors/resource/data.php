@@ -8,13 +8,13 @@ $modx->lexicon->load('resource');
 
 /* get resource */
 if (!isset($_REQUEST['id'])) {
-    $modx->error->failure($modx->lexicon('resource_err_ns'));
+    return $modx->error->failure($modx->lexicon('resource_err_ns'));
 }
 $resource = $modx->getObject('modResource', $_REQUEST['id']);
 if ($resource == null) {
-    $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
+    return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 }
-if (!$resource->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$resource->checkPolicy('view')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $resource->getOne('CreatedBy');
 $resource->getOne('EditedBy');
@@ -67,4 +67,4 @@ if (file_exists($cache_file)) {
 }
 $ra['buffer'] = $buffer ? $buffer : $modx->lexicon('resource_notcached');
 
-$modx->error->success('',$ra);
+return $modx->error->success('',$ra);

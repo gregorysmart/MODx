@@ -8,7 +8,7 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('category');
 
 $category = $modx->getObject('modCategory',$_REQUEST['id']);
-if ($category == null) $modx->error->failure($modx->lexicon('category_err_not_found'));
+if ($category == null) return $modx->error->failure($modx->lexicon('category_err_not_found'));
 
 /* Hey friends! It's reset time! */
 $plugins = $modx->getCollection('modPlugin',array('category' => $category->get('id')));
@@ -48,10 +48,10 @@ foreach ($modules as $module) {
 }
 
 if ($category->remove() == false) {
-    $modx->error->failure($modx->lexicon('category_err_remove'));
+    return $modx->error->failure($modx->lexicon('category_err_remove'));
 }
 
 /* log manager action */
 $modx->logManagerAction('category_delete','modCategory',$category->get('id'));
 
-$modx->error->success();
+return $modx->error->success();

@@ -7,15 +7,15 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
 
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
+if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
 if (!$modx->hasPermission('publish_document')) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 /* check permissions on the resource */
 if (!$resource->checkPolicy(array('save'=>1, 'unpublish'=>1))) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 /* update the resource */
@@ -27,7 +27,7 @@ $resource->set('editedon',time());
 $resource->set('publishedby',0);
 $resource->set('publishedon',0);
 if ($resource->save() == false) {
-	$modx->error->failure($modx->lexicon('resource_err_unpublish'));
+	return $modx->error->failure($modx->lexicon('resource_err_unpublish'));
 }
 
 /* invoke OnDocUnpublished event */
@@ -40,4 +40,4 @@ $modx->logManagerAction('unpublish_resource','modResource',$resource->get('id'))
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('',$resource->get(array('id')));
+return $modx->error->success('',$resource->get(array('id')));

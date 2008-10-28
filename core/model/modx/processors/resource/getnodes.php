@@ -220,4 +220,4 @@ foreach ($collection as $item) {
     }
 }
 
-echo $modx->toJSON($items);
+return $modx->toJSON($items);

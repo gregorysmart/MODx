@@ -28,4 +28,4 @@ foreach ($categories as $category) {
 	$cs[] = $category->toArray();
 }
 
-$this->outputArray($cs,$count);
+return $this->outputArray($cs,$count);

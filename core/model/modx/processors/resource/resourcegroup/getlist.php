@@ -30,4 +30,4 @@ foreach ($rgs as $rg) {
     $rs[] = $ra;
 }
 
-$this->outputArray($rs,$count);
+return $this->outputArray($rs,$count);

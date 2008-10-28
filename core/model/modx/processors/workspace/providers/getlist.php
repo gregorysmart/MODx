@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
-if (!$modx->hasPermission('providers')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('providers')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -36,4 +36,4 @@ foreach ($providers as $provider) {
     $ps[] = $pa;
 }
 
-$this->outputArray($ps,$count);
+return $this->outputArray($ps,$count);

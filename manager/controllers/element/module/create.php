@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.element.module
  */
-if (!$modx->hasPermission('new_module')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('new_module')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 if (isset($_REQUEST['category'])) {
 	$category = $modx->getObject('modCategory',$_REQUEST['category']);

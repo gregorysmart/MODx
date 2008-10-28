@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
-if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('package_builder')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $keys = array(
     array('key' => 'modAction'),
@@ -23,4 +23,4 @@ $keys = array(
     array('key' => 'modTemplateVar'),
 );
 
-$this->outputArray($keys);
+return $this->outputArray($keys);

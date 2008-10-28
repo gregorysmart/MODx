@@ -21,7 +21,7 @@
  */
 
 /**
- * Abstract error handler for request processing.
+ * Error handler for request/response processing.
  *
  * @package modx
  * @subpackage error
@@ -153,7 +153,13 @@ class modError {
             unset ($obj);
         }
         $objarray = $this->toArray($object);
-        return $objarray;
+        return array (
+            'success' => $status,
+            'message' => $this->message,
+            'total' => isset ($this->total) && $this->total != 0 ? $this->total : count($this->errors),
+            'errors' => $this->errors,
+            'object' => $objarray,
+        );
     }
 
     /**
@@ -235,21 +241,22 @@ class modError {
     /**
      * Send a failure error message.
      *
-     * @abstract Redeclare in your modError implementation.
      * @param string $message The error message to send.
      * @param object|array|string $object An object to send back to the output.
      */
-    function failure($message = '', $object = null) {}
+    function failure($message = '', $object = null) {
+        return $this->process($message, false, $object);
+    }
 
     /**
      * Send a success error message.
      *
-     * @abstract Redeclare in your modError implementation.
      * @param string $message The error message to send.
      * @param object|array|string $object An object to send back to the output.
-     * @param boolean $notxpdo If $object is not an xPDOObject, then set to true.
      */
-    function success($message = '', $object = null, $notxpdo = false) {}
+    function success($message = '', $object = null) {
+        return $this->process($message, true, $object);
+    }
 
     /**
      * Converts an object or objects embedded in an array, to arrays.

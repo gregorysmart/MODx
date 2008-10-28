@@ -6,9 +6,9 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('access');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_REQUEST['id'])) $modx->error->failure($modx->lexicon('access_type_err_ns'));
+if (!isset($_REQUEST['id'])) return $modx->error->failure($modx->lexicon('access_type_err_ns'));
 
 $targetAttr = explode('_', $_REQUEST['id']);
 $targetClass = count($targetAttr) == 3 ? $targetAttr[1] : '';
@@ -54,4 +54,4 @@ if (empty($targetClass)) {
     	);
     }
 }
-echo $modx->toJSON($da);
+return $modx->toJSON($da);

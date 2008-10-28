@@ -16,9 +16,9 @@ $setting = $modx->getObject('modUserSetting',array(
 $setting->set('value',$_DATA['value']);
 
 if ($setting->save() == false) {
-    $modx->error->failure($modx->lexicon('setting_err_save'));
+    return $modx->error->failure($modx->lexicon('setting_err_save'));
 }
 
 $modx->reloadConfig();
 
-$modx->error->success();
+return $modx->error->success();

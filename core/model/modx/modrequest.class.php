@@ -273,9 +273,9 @@ class modRequest {
      *
      * @param string $class The class to use as the error handler.
      */
-    function loadErrorHandler($class = 'modArrayError') {
-        if ($this->modx->loadClass('error.'.strtolower($class),'',false,true)) {
-            $this->modx->error = new $class($this->modx);
+    function loadErrorHandler($class = 'modError') {
+        if ($className = $this->modx->loadClass('error.'.$class,'',false,true)) {
+            $this->modx->error = new $className($this->modx);
         } else {
             $this->modx->log(XPDO_LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
         }
@@ -356,7 +356,8 @@ class modRequest {
      */
     function checkPublishStatus() {
         $cacheRefreshTime= 0;
-        include ($this->modx->cachePath . "sitePublishing.idx.php");
+        if (file_exists($this->modx->cachePath . "sitePublishing.idx.php")) 
+            include ($this->modx->cachePath . "sitePublishing.idx.php");
         $timeNow= time() + $this->modx->config['server_offset_time'];
         if ($cacheRefreshTime != 0 && $cacheRefreshTime <= strtotime($timeNow)) {
             /* FIXME: want to find a better way to handle this publishing check without mass updates to the database! */

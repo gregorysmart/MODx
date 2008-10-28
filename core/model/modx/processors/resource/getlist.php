@@ -24,4 +24,4 @@ foreach ($resources as $resource) {
         $cs[] = $resource->toArray();
     }
 }
-$this->outputArray($cs);
+return $this->outputArray($cs);

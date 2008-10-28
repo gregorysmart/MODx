@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('template','category');
 
-if (!$modx->hasPermission('new_template')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if ($_POST['templatename'] == '') $_POST['templatename'] = $modx->lexicon('template_untitled');
 
@@ -17,7 +17,7 @@ $_POST['templatename'] = str_replace('<','',$_POST['templatename']);
 $name_exists = $modx->getObject('modTemplate',array('templatename' => $_POST['templatename']));
 if ($name_exists != null) $modx->error->addField('templatename',$modx->lexicon('template_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -32,7 +32,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -55,7 +55,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $template->setProperties($properties);
 
 if ($template->save() === false) {
-    $modx->error->failure($modx->lexicon('template_err_save'));
+    return $modx->error->failure($modx->lexicon('template_err_save'));
 }
 
 
@@ -99,4 +99,4 @@ $modx->logManagerAction('template_create','modTemplate',$template->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('',$template->get(array_diff(array_keys($template->_fields), array('content'))));
+return $modx->error->success('',$template->get(array_diff(array_keys($template->_fields), array('content'))));

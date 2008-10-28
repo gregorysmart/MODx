@@ -36,7 +36,7 @@ if ($type == 'root') {
         );
     }
 
-    echo $modx->toJSON($cs);
+    return $modx->toJSON($cs);
     die();
 
 /* root actions */
@@ -81,7 +81,7 @@ if ($type == 'root') {
         );
     }
 
-    echo $modx->toJSON($as);
+    return $modx->toJSON($as);
     die();
 
 /* subactions */
@@ -123,6 +123,6 @@ if ($type == 'root') {
         );
     }
 
-    echo $modx->toJSON($as);
+    return $modx->toJSON($as);
     die();
 }

@@ -9,7 +9,7 @@ $modx->lexicon->load('module');
 /* get module */
 $module = $modx->getObject('modModule',$_REQUEST['module']);
 if ($module->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 /* get dependencies */
@@ -62,4 +62,4 @@ if (count($deps) > 0) {
 		$processedDeps[] = $d;
 	}
 }
-$this->outputArray($processedDeps);
+return $this->outputArray($processedDeps);

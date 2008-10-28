@@ -6,13 +6,13 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('template','category');
 
-if (!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $template = $modx->getObject('modTemplate',$_REQUEST['id']);
-if ($template == null) $modx->error->failure($modx->lexicon('template_not_found'));
+if ($template == null) return $modx->error->failure($modx->lexicon('template_not_found'));
 
 if ($template->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('template_err_locked'));
+    return $modx->error->failure($modx->lexicon('template_err_locked'));
 }
 
 /* Validation and data escaping */
@@ -30,7 +30,7 @@ $name_exists = $modx->getObject('modTemplate',array(
 ));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('template_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -45,7 +45,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -68,7 +68,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $template->setProperties($properties);
 
 if ($template->save() === false) {
-    $modx->error->failure($modx->lexicon('template_err_save'));
+    return $modx->error->failure($modx->lexicon('template_err_save'));
 }
 
 
@@ -113,4 +113,4 @@ $modx->logManagerAction('template_update','modTemplate',$template->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

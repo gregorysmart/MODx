@@ -16,4 +16,4 @@ if (is_array($rs)) {
 	   $rtes[] = array('value' => $r);
     }
 }
-$this->outputArray($rtes,$count);
+return $this->outputArray($rtes,$count);

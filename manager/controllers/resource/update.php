@@ -5,10 +5,10 @@
  * @package modx
  * @subpackage manager.resource
  */
-if (!$modx->hasPermission('edit_document')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_document')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($resource == null) $modx->error->failure(sprintf($modx->lexicon('resource_with_id_not_found'), $_REQUEST['id']));
+if ($resource == null) return $modx->error->failure(sprintf($modx->lexicon('resource_with_id_not_found'), $_REQUEST['id']));
 
 $resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
 $resourceDir= strtolower(substr($resourceClass, 3));

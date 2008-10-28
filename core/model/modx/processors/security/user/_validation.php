@@ -106,7 +106,7 @@ foreach ($fs as $f) {
 $fields .= '</ul>';
 
 if ($modx->error->hasError()) {
-	$modx->error->failure(sprintf($modx->lexicon('check_fields_error').$fields));
+	return $modx->error->failure(sprintf($modx->lexicon('check_fields_error').$fields));
 }
 
 /* END VALIDATION */

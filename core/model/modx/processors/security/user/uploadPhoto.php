@@ -6,13 +6,13 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
-if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $files = array();
 foreach($_FILES as $k => $v) {
 	if ($v['tmp_name'] != '') $files[$k] = $v;
 }
-if (count($files) > 1) $error->failure('You may only upload one photo!');
+if (count($files) > 1) return $modx->error->failure('You may only upload one photo!');
 
 $file = $files[0];
 
@@ -43,7 +43,7 @@ if ($file['error']) {
 			$e = 'Unknown file upload error.';
 			break;
 	} // end of error switch
-	$error->failure($e);
+	return $modx->error->failure($e);
 }
 
 /** Decided to axe the user photo part.
@@ -51,6 +51,6 @@ $path = '/';
 $name = $file['name'];
 $tmp_name = $file['tmp_name'];
 if (!@move_uploaded_file($file['tmp_name'], $path.'/'.$file['name'])) {
-	$error->failure('Move uploaded file error. Permissions problem or disk full.');
+	return $modx->error->failure('Move uploaded file error. Permissions problem or disk full.');
 }
 **/

@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
-if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $file = rawurldecode($_POST['file']);
 
-if (!file_exists($file)) $modx->error->failure($modx->lexicon('file_err_nf'));
+if (!file_exists($file)) return $modx->error->failure($modx->lexicon('file_err_nf'));
 
 $filename = ltrim(strrchr($file,'/'),'/');
 
@@ -25,4 +25,4 @@ $fa = array(
     'content' => $fbuffer,
 );
 
-$modx->error->success('',$fa);
+return $modx->error->success('',$fa);

@@ -11,9 +11,9 @@ if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'editedon';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'DESC';
 
-if (!isset($_REQUEST['user'])) $modx->error->failure($modx->lexicon('user_err_ns'));
+if (!isset($_REQUEST['user'])) return $modx->error->failure($modx->lexicon('user_err_ns'));
 $user = $modx->getObject('modUser',$_REQUEST['user']);
-if ($user == null) $modx->error->failure($modx->lexicon('user_err_not_found'));
+if ($user == null) return $modx->error->failure($modx->lexicon('user_err_not_found'));
 
 $c = $modx->newQuery('modResource');
 $c->where(array('editedby' => $user->get('id')));
@@ -55,4 +55,4 @@ foreach ($resources as $resource) {
     );
     $rs[] = $ra;
 }
-$this->outputArray($rs,$count);
+return $this->outputArray($rs,$count);

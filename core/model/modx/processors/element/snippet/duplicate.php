@@ -6,12 +6,12 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet');
 
-if (!$modx->hasPermission('new_snippet')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_snippet')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get old snippet */
 $old_snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
 if ($old_snippet == null) {
-    $modx->error->failure($modx->lexicon('snippet_err_not_found'));
+    return $modx->error->failure($modx->lexicon('snippet_err_not_found'));
 }
 
 $newname = isset($_POST['name'])
@@ -24,7 +24,7 @@ $ae = $modx->getObject('modSnippet',array(
     'name' => $newname,
 ));
 if ($ae != null) {
-    $modx->error->failure($modx->lexicon('snippet_err_exists_name'));
+    return $modx->error->failure($modx->lexicon('snippet_err_exists_name'));
 }
 
 /* duplicate snippet */
@@ -33,10 +33,10 @@ $snippet->fromArray($old_snippet->toArray());
 $snippet->set('name',$newname);
 
 if ($snippet->save() === false) {
-	$modx->error->failure($modx->lexicon('snippet_err_duplicate'));
+	return $modx->error->failure($modx->lexicon('snippet_err_duplicate'));
 }
 
 /* log manager action */
 $modx->logManagerAction('snippet_duplicate','modSnippet',$snippet->get('id'));
 
-$modx->error->success('',$snippet->get(array_diff(array_keys($snippet->_fields), array('snippet'))));
+return $modx->error->success('',$snippet->get(array_diff(array_keys($snippet->_fields), array('snippet'))));

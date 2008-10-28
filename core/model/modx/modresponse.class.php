@@ -45,7 +45,7 @@ class modResponse {
      *
      * @param boolean $noEvent Indicates if no events should be triggered.
      */
-    function outputContent($noEvent= false) {
+    function outputContent($options = array()) {
         $this->modx->resource->_output= $this->modx->resource->_content;
 
         if (!$contentType= $this->modx->resource->getOne('ContentType')) {
@@ -76,7 +76,7 @@ class modResponse {
             $this->modx->_beforeRender();
 
             /* invoke OnWebPagePrerender event */
-            if (!$noEvent) {
+            if (isset($options['noEvent']) && !empty($options['noEvent'])) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
 
@@ -104,7 +104,7 @@ class modResponse {
             $this->modx->_beforeRender();
 
             /* invoke OnWebPagePrerender event */
-            if (!$noEvent) {
+            if (isset($options['noEvent']) && !empty($options['noEvent'])) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
         }

@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
-if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('package_builder')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -59,4 +59,4 @@ foreach ($objects as $object) {
 
     $os[] = $oa;
 }
-$this->outputArray($os,$count);
+return $this->outputArray($os,$count);

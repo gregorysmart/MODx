@@ -18,7 +18,7 @@ if (!isset($_POST['topic']) || $_POST['topic'] == '') {
     ));
 } else {
     $topic = $modx->getObject('modLexiconTopic',$_POST['topic']);
-    if ($topic == null) $modx->error->failure($modx->lexicon('topic_err_nf'));
+    if ($topic == null) return $modx->error->failure($modx->lexicon('topic_err_nf'));
 }
 
 $wa = array(
@@ -61,4 +61,4 @@ foreach ($entries as $entry) {
     $ps[] = $pa;
 }
 
-$this->outputArray($ps,$count);
+return $this->outputArray($ps,$count);

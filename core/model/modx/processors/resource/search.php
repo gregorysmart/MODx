@@ -59,4 +59,4 @@ foreach ($resources as $resource) {
     }
 }
 
-$this->outputArray($rs);
+return $this->outputArray($rs);

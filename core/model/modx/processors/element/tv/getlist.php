@@ -24,4 +24,4 @@ foreach ($tvs as $tv) {
     $cs[] = $tv->toArray();
 }
 
-$this->outputArray($cs,$count);
+return $this->outputArray($cs,$count);

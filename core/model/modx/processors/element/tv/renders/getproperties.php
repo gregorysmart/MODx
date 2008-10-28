@@ -35,7 +35,7 @@ $renderFile = $renderPath.$_REQUEST['type'].'.php';
 if (file_exists($renderFile)) {
     $o = require_once $renderFile;
 } else {
-	$modx->error->failure($modx->lexicon('error'));
+	return $modx->error->failure($modx->lexicon('error'));
 }
 
 echo $o;

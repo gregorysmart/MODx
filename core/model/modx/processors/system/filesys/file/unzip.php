@@ -6,22 +6,22 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('file_manager')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $amode = isset($modx->config['new_folder_permissions']) ? octdec($modx->config['new_folder_permissions']) : 0777;
 
 $file = $_POST['path'].$_POST['file'];
 
 if (!is_writable($_POST['path']))
-	$error->failure($modx->lexicon('file_err_unzip_invalid_path'));
+	return $modx->error->failure($modx->lexicon('file_err_unzip_invalid_path'));
 
 if (!file_exists($file))
-	$error->failure($modx->lexicon('file_err_nf'));
+	return $modx->error->failure($modx->lexicon('file_err_nf'));
 
 
 
 if(!$err = @unzip(realpath($file),realpath($_POST['path']))) {
-	$error->failure($modx->lexicon('file_err_unzip').($err === 0 ? $modx->lexicon('file_err_unzip_missing_lib') : ''));
+	return $modx->error->failure($modx->lexicon('file_err_unzip').($err === 0 ? $modx->lexicon('file_err_unzip_missing_lib') : ''));
 }
 
 
@@ -72,4 +72,4 @@ function unzip($file, $path) {
 	zip_close($zip);
 }
 
-$error->success();
+return $modx->error->success();

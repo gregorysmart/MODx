@@ -7,7 +7,7 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'edit_role' => true))) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
@@ -33,4 +33,4 @@ foreach ($roles as $r) {
 	$rr['rolename_link'] = '<a href="index.php?a='.$actions['security/role/update'].'&id='.$r->get('id').'" title="'.$modx->lexicon('click_to_edit_title').'">'.$r->get('name').'</a>';
 	$rs[] = $rr;
 }
-$this->outputArray($rs);
+return $this->outputArray($rs);

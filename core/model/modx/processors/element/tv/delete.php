@@ -6,14 +6,14 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv');
 
-if (!$modx->hasPermission('delete_template')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $forced = isset($_REQUEST['force'])? $_REQUEST['force'] : false;
 $forced = true;
 
 /* get tv */
 $tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
-if ($tv == null) $error->failure($modx->lexicon('tv_err_not_found'));
+if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
 /* get tv relational tables */
 $tv->templates = $tv->getMany('modTemplateVarTemplate');
@@ -40,7 +40,7 @@ if (!$forced) {
             $o .= '</li>';
 		}
         $o .= '</ul>';
-		$modx->error->failure($o);
+		return $modx->error->failure($o);
 	}
 }
 
@@ -50,27 +50,27 @@ $modx->invokeEvent('OnBeforeTVFormDelete',array('id' => $tv->get('id')));
 /* delete variable's content values */
 foreach ($tv->resources as $tvd) {
 	if ($tvd->remove() == false) {
-        $modx->error->failure($modx->lexicon('tvd_err_remove'));
+        return $modx->error->failure($modx->lexicon('tvd_err_remove'));
     }
 }
 
 /* delete variable's template access */
 foreach ($tv->resource_groups as $tvdg) {
 	if ($tvdg->remove() == false) {
-        $modx->error->failure($modx->lexicon('tvdg_err_remove'));
+        return $modx->error->failure($modx->lexicon('tvdg_err_remove'));
     }
 }
 
 /* delete variable's access permissions */
 foreach ($tv->templates as $tvt) {
 	if ($tvt->remove() == false) {
-        $modx->error->failure($modx->lexicon('tvt_err_remove'));
+        return $modx->error->failure($modx->lexicon('tvt_err_remove'));
     }
 }
 
 /* delete tv */
 if ($tv->remove() == false) {
-	$modx->error->failure($modx->lexicon('tv_err_delete'));
+	return $modx->error->failure($modx->lexicon('tv_err_delete'));
 }
 
 /* invoke OnTVFormDelete event */
@@ -79,4 +79,4 @@ $modx->invokeEvent('OnTVFormDelete',array('id' => $tv->get('id')));
 /* log manager action */
 $modx->logManagerAction('tv_delete','modTemplateVar',$tv->get('id'));
 
-$modx->error->success();
+return $modx->error->success();

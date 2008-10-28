@@ -3,7 +3,7 @@
  * @package modx
  * @subpackage processors.resource.staticresource
  */
-if ($resourceClass != 'modStaticResource') $error->failure('Resource class is incorrect.');
+if ($resourceClass != 'modStaticResource') return $modx->error->failure('Resource class is incorrect.');
 
 $resource = $modx->newObject($resourceClass);
 
@@ -75,7 +75,7 @@ if ($modx->config['friendly_alias_urls']) {
     }
 }
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 
 /* publish and unpublish dates */
@@ -182,7 +182,7 @@ if (!$resource->get('class_key')) {
 
 /* save data */
 if ($resource->save() == false) {
-    $modx->error->failure($modx->lexicon('resource_err_save'));
+    return $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
 
@@ -270,4 +270,4 @@ if ($_POST['syncsite'] == 1) {
     );
 }
 
-$modx->error->success('', array('id' => $resource->get('id')));
+return $modx->error->success('', array('id' => $resource->get('id')));

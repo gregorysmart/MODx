@@ -37,4 +37,4 @@ foreach ($actions as $action) {
 
 	$as[] = $aa;
 }
-$this->outputArray($as,$count);
+return $this->outputArray($as,$count);

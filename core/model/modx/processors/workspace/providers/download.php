@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
-if (!$modx->hasPermission('providers')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('providers')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_POST['provider'])) $modx->error->failure($modx->lexicon('provider_err_ns'));
+if (!isset($_POST['provider'])) return $modx->error->failure($modx->lexicon('provider_err_ns'));
 $provider = $modx->getObject('transport.modTransportProvider',$_POST['provider']);
-if ($provider == null) $modx->error->failure($modx->lexicon('provider_err_nf'));
+if ($provider == null) return $modx->error->failure($modx->lexicon('provider_err_nf'));
 
 $_package_cache = $modx->config['core_path'].'packages/';
 $pkgs = $modx->fromJSON($_POST['packages']);
@@ -19,7 +19,7 @@ $packages = array();
 getNodesFormatted($packages,$pkgs);
 
 if (count($packages) == 0) {
-    $modx->error->failure($modx->lexicon('package_download_err_ns'));
+    return $modx->error->failure($modx->lexicon('package_download_err_ns'));
 }
 
 foreach ($packages as $package) {
@@ -36,7 +36,7 @@ foreach ($packages as $package) {
     }
 }
 
-$modx->error->success();
+return $modx->error->success();
 
 
 

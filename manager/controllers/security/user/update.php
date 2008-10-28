@@ -5,10 +5,10 @@
  * @package modx
  * @subpackage manager.security.user
  */
-if(!$modx->hasPermission('edit_user')) $modx->error->failure($modx->lexicon('access_denied'));
+if(!$modx->hasPermission('edit_user')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $user = $modx->getObject('modUser',$_REQUEST['id']);
-if ($user == null) $modx->error->failure($modx->lexicon('user_err_nf'));
+if ($user == null) return $modx->error->failure($modx->lexicon('user_err_nf'));
 
 $user->profile = $user->getOne('modUserProfile',array('internalKey' => $user->get('id')));
 $user->getSettings();

@@ -8,22 +8,22 @@ $modx->lexicon->load('resource');
 
 $deltime = time();
 
-if (!$modx->hasPermission('delete_document')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get resource */
 $resource = $modx->getObject('modResource', $_REQUEST['id']);
 if ($resource == null) {
-    $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
+    return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 }
 
 if (!$resource->checkPolicy(array('save'=>1, 'delete'=>1)))
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if ($modx->config['site_start'] == $resource->get('id')) {
-    $modx->error->failure($modx->lexicon('resource_err_delete_sitestart'));
+    return $modx->error->failure($modx->lexicon('resource_err_delete_sitestart'));
 }
 if ($modx->config['site_unavailable_page'] == $resource->get('id')) {
-    $modx->error->failure($modx->lexicon('resource_err_delete_siteunavailable'));
+    return $modx->error->failure($modx->lexicon('resource_err_delete_siteunavailable'));
 }
 
 $ar_children = array ();
@@ -36,10 +36,10 @@ function getChildren($parent, & $modx, & $ar_children) {
     if (count($parent->children) > 0) {
         foreach ($parent->children as $child) {
             if ($child->get('id') == $modx->config['site_start']) {
-                $modx->error->failure($modx->lexicon('resource_err_delete_container_sitestart',array('id' => $child->get('id'))));
+                return $modx->error->failure($modx->lexicon('resource_err_delete_container_sitestart',array('id' => $child->get('id'))));
             }
             if ($child->get('id') == $modx->config['site_unavailable_page']) {
-                $modx->error->failure($modx->lexicon('document_err_delete_container_siteunavailable',array('id' => $child->get('id'))));
+                return $modx->error->failure($modx->lexicon('document_err_delete_container_siteunavailable',array('id' => $child->get('id'))));
             }
 
             $ar_children[] = $child;
@@ -70,7 +70,7 @@ if (count($ar_children) > 0) {
         $child->set('deletedby', $modx->user->get('id'));
         $child->set('deletedon', $deltime);
         if ($child->save() == false) {
-            $modx->error->failure($modx->lexicon('resource_err_delete_children'));
+            return $modx->error->failure($modx->lexicon('resource_err_delete_children'));
         }
     }
 }
@@ -80,7 +80,7 @@ $resource->set('deleted', 1);
 $resource->set('deletedby', $modx->user->get('id'));
 $resource->set('deletedon', $deltime);
 if ($resource->save() == false) {
-    $modx->error->failure($modx->lexicon('resource_err_delete'));
+    return $modx->error->failure($modx->lexicon('resource_err_delete'));
 }
 
 /* invoke OnDocFormDelete event */
@@ -97,7 +97,7 @@ $modx->logManagerAction('delete_resource','modDocument',$resource->get('id'));
 $cacheManager = $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('', $resource->get(array (
+return $modx->error->success('', $resource->get(array (
     'id',
     'deleted',
     'deletedby',

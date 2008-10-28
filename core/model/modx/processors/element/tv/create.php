@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv','category');
 
-if (!$modx->hasPermission('new_template')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['template'])) $_POST['template'] = array();
 
@@ -24,7 +24,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -42,7 +42,7 @@ if (!isset($_POST['name']) || $_POST['name'] == '') $_POST['name'] = $modx->lexi
 if ($_POST['caption'] == '')
     $_POST['caption'] = $_POST['name'];
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* extract widget properties */
 $display_params = '';
@@ -69,7 +69,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $tv->setProperties($properties);
 
 if ($tv->save() == false) {
-    $modx->error->failure($modx->lexicon('tv_err_save'));
+    return $modx->error->failure($modx->lexicon('tv_err_save'));
 }
 
 
@@ -119,11 +119,11 @@ if ($modx->hasPermission('tv_access_permissions')) {
                 $tvdg->set('tmplvarid',$tv->get('id'));
                 $tvdg->set('documentgroup',$group['id']);
                 if ($tvdg->save() == false) {
-                    $modx->error->failure($modx->lexicon('tvdg_err_save'));
+                    return $modx->error->failure($modx->lexicon('tvdg_err_save'));
                 }
             } else {
                 if ($tvdg->remove() == false) {
-                    $modx->error->failure($modx->lexicon('tvdg_err_remove'));
+                    return $modx->error->failure($modx->lexicon('tvdg_err_remove'));
                 }
             }
         }
@@ -144,4 +144,4 @@ $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
 
-$modx->error->success('',$tv->get(array('id')));
+return $modx->error->success('',$tv->get(array('id')));

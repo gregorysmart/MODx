@@ -29,4 +29,4 @@ foreach ($types as $type) {
     );
     $cts[] = $cta;
 }
-$this->outputArray($cts,$count);
+return $this->outputArray($cts,$count);

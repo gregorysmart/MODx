@@ -14,7 +14,7 @@ foreach ($menus as $menu) {
     $as[] = $menu;
 }
 
-$modx->error->success('',$as);
+return $modx->error->success('',$as);
 
 
 function getSubMenus($menu) {

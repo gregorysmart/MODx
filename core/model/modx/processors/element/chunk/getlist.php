@@ -25,4 +25,4 @@ foreach ($chunks as $chunk) {
     $cs[] = $chunk->toArray();
 }
 
-$this->outputArray($cs,$count);
+return $this->outputArray($cs,$count);

@@ -8,7 +8,7 @@ $modx->lexicon->load('plugin');
 
 if ($_POST['priority'] == '') $_POST['priority'] = 0;
 if (!isset($_POST['plugin']) || !isset($_POST['event'])) {
-    $modx->error->failure($modx->lexicon('plugin_event_err_ns'));
+    return $modx->error->failure($modx->lexicon('plugin_event_err_ns'));
 }
 $pe = $modx->getObject('modPluginEvent',array(
     'pluginid' => $_POST['plugin'],
@@ -25,17 +25,17 @@ if ($_POST['enabled']) {
     $pe->set('priority',$_POST['priority']);
 
     if ($pe->save() == false) {
-        $modx->error->failure($modx->lexicon('plugin_event_err_save'));
+        return $modx->error->failure($modx->lexicon('plugin_event_err_save'));
     }
 } else {
     /* removing access */
     if ($pe == null) {
-        $modx->error->failure($modx->lexicon('plugin_event_err_nf'));
+        return $modx->error->failure($modx->lexicon('plugin_event_err_nf'));
     }
 
     if ($pe->remove() == false) {
-        $modx->error->failure($modx->lexicon('plugin_event_err_remove'));
+        return $modx->error->failure($modx->lexicon('plugin_event_err_remove'));
     }
 }
 
-$modx->error->success();
+return $modx->error->success();

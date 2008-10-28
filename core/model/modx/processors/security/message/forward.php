@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
 
-if (!$modx->hasPermission('messages')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('messages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* validation */
 if (!isset($_POST['subject']) || $_POST['subject'] == '') {
@@ -19,14 +19,14 @@ foreach ($fs as $f)
 	$fields .= '<li>'.ucwords(str_replace('_',' ',$f)).'</li>';
 $fields .= '</ul>';
 
-if ($modx->error->hasError()) $modx->error->failure($modx->lexicon('validation_system_settings').$fields);
+if ($modx->error->hasError()) return $modx->error->failure($modx->lexicon('validation_system_settings').$fields);
 
 /* process message */
 switch ($_POST['type']) {
 
 	case 'user':
 		$user = $modx->getObject('modUser',$_POST['user']);
-		if ($user == null) $modx->error->failure($modx->lexicon('user_err_not_found'));
+		if ($user == null) return $modx->error->failure($modx->lexicon('user_err_not_found'));
 
 		$message = $modx->newObject('modUserMessage');
 		$message->set('type','Message');
@@ -38,12 +38,12 @@ switch ($_POST['type']) {
 		$message->set('postdate',time());
 		$message->set('messageread',false);
 
-		if (!$message->save()) $modx->error->failure($modx->lexicon('message_err_save'));
+		if (!$message->save()) return $modx->error->failure($modx->lexicon('message_err_save'));
 		break;
 
 	case 'role':
 		$role = $modx->getObject('modUserRole',$_POST['role']);
-		if ($role == null) $modx->error->failure($modx->lexicon('role_no_exist'));
+		if ($role == null) return $modx->error->failure($modx->lexicon('role_no_exist'));
 
 		$users = $modx->getCollection('modUserProfile',array('role' => $_POST['role']));
 
@@ -57,7 +57,7 @@ switch ($_POST['type']) {
 				$message->set('postdate',time());
 				$message->set('type','Message');
 				$message->set('private',false);
-				if (!$message->save()) $modx->error->failure($modx->lexicon('message_err_save'));
+				if (!$message->save()) return $modx->error->failure($modx->lexicon('message_err_save'));
 			}
 		}
 		break;
@@ -73,10 +73,10 @@ switch ($_POST['type']) {
 				$message->set('postdate',time());
 				$message->set('type','Message');
 				$message->set('private',false);
-				if (!$message->save()) $modx->error->failure($modx->lexicon('message_err_save'));
+				if (!$message->save()) return $modx->error->failure($modx->lexicon('message_err_save'));
 			}
 		}
 		break;
 }
 
-$modx->error->success();
+return $modx->error->success();

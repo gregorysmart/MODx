@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.resource
  */
-if(!$modx->hasPermission('purge_deleted')) $modx->error->failure($modx->lexicon('access_denied'));
+if(!$modx->hasPermission('purge_deleted')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $modx->loadProcessor('resource/empty_recycle_bin.php');
 

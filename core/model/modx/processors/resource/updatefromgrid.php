@@ -6,17 +6,17 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('save_document')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
-if (!isset($_DATA['id'])) $modx->error->failure($modx->lexicon('resource_err_ns'));
+if (!isset($_DATA['id'])) return $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_DATA['id']);
-if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_DATA['id'])));
+if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_DATA['id'])));
 
 $resource->fromArray($_DATA);
 if ($resource->save() === false) {
-    $modx->error->failure($modx->lexicon('resource_err_save'));
+    return $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
 $cacheManager= $modx->getCacheManager();
@@ -30,4 +30,4 @@ $cacheManager->clearCache(array (
     )
 );
 
-$modx->error->success();
+return $modx->error->success();

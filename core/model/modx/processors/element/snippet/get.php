@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet');
 
-if (!$modx->hasPermission('delete_snippet')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_snippet')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get snippet */
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
-if ($snippet == null) $modx->error->failure($modx->lexicon('snippet_err_not_found'));
+if ($snippet == null) return $modx->error->failure($modx->lexicon('snippet_err_not_found'));
 
 $properties = $snippet->get('properties');
 if (!is_array($properties)) $properties = array();
@@ -28,4 +28,4 @@ foreach ($properties as $property) {
 
 $snippet->set('data','(' . $modx->toJSON($data) . ')');
 
-$modx->error->success('',$snippet);
+return $modx->error->success('',$snippet);

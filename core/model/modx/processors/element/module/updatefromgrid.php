@@ -6,17 +6,17 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('module','category','user');
 
-if (!$modx->hasPermission('save_module')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_module')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
 /* get module */
 $module = $modx->getObject('modModule',$_DATA['id']);
-if ($module == null) $modx->error->failure($modx->lexicon('module_err_not_found'));
+if ($module == null) return $modx->error->failure($modx->lexicon('module_err_not_found'));
 
 /* if locked, deny access */
 if ($module->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('lock_module_msg'));
+    return $modx->error->failure($modx->lexicon('lock_module_msg'));
 }
 
 /* save module */
@@ -25,11 +25,11 @@ $module->set('locked',$_DATA['locked']);
 $module->set('disabled',$_DATA['disabled']);
 
 if ($module->save() == false) {
-    $modx->error->failure($modx->lexicon('module_err_save'));
+    return $modx->error->failure($modx->lexicon('module_err_save'));
 }
 
 /* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

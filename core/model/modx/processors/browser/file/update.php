@@ -6,12 +6,12 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
-if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $file = rawurldecode($_REQUEST['file']);
 $newname = $_POST['name'];
 
-if (!file_exists($file)) $modx->error->failure($modx->lexicon('file_err_nf'));
+if (!file_exists($file)) return $modx->error->failure($modx->lexicon('file_err_nf'));
 
 /* write file */
 $f = @fopen($file,'w+');
@@ -24,7 +24,7 @@ $path = str_replace(strrchr($file,'/'),'',$file);
 
 if ($filename != $newname) {
     if (!@rename($path.$filename,$path.$newname)) {
-        $modx->error->failure($modx->lexicon('file_err_rename'));
+        return $modx->error->failure($modx->lexicon('file_err_rename'));
     }
     $fullname = $path.$newname;
 } else {
@@ -32,6 +32,6 @@ if ($filename != $newname) {
 }
 
 
-$modx->error->success('',array(
+return $modx->error->success('',array(
     'file' => rawurlencode($fullname),
 ));

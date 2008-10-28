@@ -6,15 +6,15 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet','category');
 
-if (!$modx->hasPermission('save_snippet')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_snippet')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get snippet */
 $snippet = $modx->getObject('modSnippet',$_REQUEST['id']);
-if ($snippet == null) $modx->error->failure($modx->lexicon('snippet_err_not_found'));
+if ($snippet == null) return $modx->error->failure($modx->lexicon('snippet_err_not_found'));
 
 /* check if locked, if so, prevent access */
 if ($snippet->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('snippet_err_locked'));
+    return $modx->error->failure($modx->lexicon('snippet_err_locked'));
 }
 
 /* validation */
@@ -30,7 +30,7 @@ $name_exists = $modx->getObject('modSnippet',array(
 ));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('snippet_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -45,7 +45,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -67,7 +67,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $snippet->setProperties($properties);
 
 if ($snippet->save() == false) {
-    $modx->error->failure($modx->lexicon('snippet_err_save'));
+    return $modx->error->failure($modx->lexicon('snippet_err_save'));
 }
 
 /* invoke OnSnipFormSave event */
@@ -83,4 +83,4 @@ $modx->logManagerAction('snippet_update','modSnippet',$snippet->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

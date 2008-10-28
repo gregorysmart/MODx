@@ -4,7 +4,7 @@
  * @subpackage processors.security.documentgroup
  */
 require_once MODX_PROCESSORS_PATH.'index.php';
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
@@ -23,24 +23,24 @@ foreach ($ugs as $ugKey => $ar) {
 	if ($ar['dg_id'] == 0 || $ar['ug_id'] == 0) continue;
 
 	$ug = $modx->getObject('modUserGroup',$ar['ug_id']);
-	if ($ug == null) $modx->error->failure($modx->lexicon('user_group_err_not_found'));
+	if ($ug == null) return $modx->error->failure($modx->lexicon('user_group_err_not_found'));
 
 	$dg = $modx->getObject('modResourceGroup',$ar['dg_id']);
-	if ($dg == null) $modx->error->failure($modx->lexicon('document_group_err_not_found'));
+	if ($dg == null) return $modx->error->failure($modx->lexicon('document_group_err_not_found'));
 
 	$ugdg = $modx->getObject('modAccessResourceGroup',array(
 		'membergroup' => $ug->get('id'),
 		'documentgroup' => $dg->get('id'),
 	));
-	if ($ugdg != NULL) $modx->error->failure($modx->lexicon('user_group_document_group_err_already_exists'));
+	if ($ugdg != NULL) return $modx->error->failure($modx->lexicon('user_group_document_group_err_already_exists'));
 
 	$ugdg = $modx->newObject('modUserGroupResourceGroup');
 	$ugdg->set('membergroup',$ug->get('id'));
 	$ugdg->set('documentgroup',$dg->get('id'));
-	if (!$ugdg->save()) $modx->error->failure($modx->lexicon('user_group_document_group_err_create'));
+	if (!$ugdg->save()) return $modx->error->failure($modx->lexicon('user_group_document_group_err_create'));
 }
 
-$modx->error->success();
+return $modx->error->success();
 
 
 function getUGDGFormatted(&$ar_nodes,$cur_level,$parent = 0) {

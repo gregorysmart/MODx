@@ -7,17 +7,17 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('chunk');
 
-if (!$modx->hasPermission('delete_chunk')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $chunk = $modx->getObject('modChunk',$_REQUEST['id']);
-if ($chunk == null) $modx->error->failure($modx->lexicon('chunk_err_not_found'));
+if ($chunk == null) return $modx->error->failure($modx->lexicon('chunk_err_not_found'));
 
 /* invoke OnBeforeChunkFormDelete event */
 $modx->invokeEvent('OnBeforeChunkFormDelete',array('id' => $chunk->get('id')));
 
 /* remove chunk */
 if ($chunk->remove() == false) {
-    $modx->error->failure($modx->lexicon('chunk_err_remove'));
+    return $modx->error->failure($modx->lexicon('chunk_err_remove'));
 }
 
 /* invoke OnChunkFormDelete event */
@@ -30,4 +30,4 @@ $modx->logManagerAction('chunk_delete','modChunk',$chunk->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

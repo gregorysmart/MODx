@@ -5,16 +5,16 @@
  * @package modx
  * @subpackage manager.element.chunk
  */
-if (!$modx->hasPermission('edit_chunk')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_chunk')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* grab chunk */
 $chunk = $modx->getObject('modChunk',$_REQUEST['id']);
 if ($chunk == null) {
-        $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_REQUEST['id']));
+        return $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_REQUEST['id']));
 }
 
 if ($chunk->get('locked') && !$modx->hasPermission('edit_locked')) {
-    $modx->error->failure($modx->lexicon('chunk_err_locked'));
+    return $modx->error->failure($modx->lexicon('chunk_err_locked'));
 }
 
 

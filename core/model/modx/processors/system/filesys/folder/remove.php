@@ -6,15 +6,15 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 
-if (!$modx->hasPermission('file_manager')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $dir = $_POST['path'].$_POST['folder'];
 
 if (!file_exists($dir))
-	$error->failure($modx->lexicon('file_folder_err_nf'));
+	return $modx->error->failure($modx->lexicon('file_folder_err_nf'));
 
 if (!@rmdirr($dir))
-	$error->failure($modx->lexicon('file_folder_err_remove'));
+	return $modx->error->failure($modx->lexicon('file_folder_err_remove'));
 
 
 
@@ -47,4 +47,4 @@ function rmdirr($dirname) {
     return !is_dir($dirname);
 }
 
-$error->success();
+return $modx->error->success();

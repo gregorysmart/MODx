@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','package_builder');
 
-if (!$modx->hasPermission('package_builder')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('package_builder')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $class_key = isset($_POST['classKeyOther']) && $_POST['classKeyOther'] != ''
     ? $_POST['classKeyOther']
@@ -36,7 +36,7 @@ switch ($class_key) {
 }
 
 $c = $modx->getObject($class_key,$pk);
-if ($c == null) $modx->error->failure('Object not found!');
+if ($c == null) return $modx->error->failure('Object not found!');
 
 $resolvers = array();
 if (isset($_POST['resolvers'])) {
@@ -62,4 +62,4 @@ $vehicle = array(
 
 array_push($_SESSION['modx.pb']['vehicles'],$vehicle);
 
-$modx->error->success();
+return $modx->error->success();

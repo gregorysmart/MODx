@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
-if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_POST['hideFiles'] = isset($_POST['hideFiles']) &&
     ($_POST['hideFiles'] === true || $_POST['hideFiles'] === 'true') ? true : false;
@@ -83,4 +83,4 @@ while(false !== ($name = $odir->read())) {
     }
 }
 
-echo $modx->toJSON($directories);
+return $modx->toJSON($directories);

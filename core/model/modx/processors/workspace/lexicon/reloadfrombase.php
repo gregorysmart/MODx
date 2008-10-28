@@ -7,7 +7,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
-if (!$modx->hasPermission('lexicons')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('lexicons')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $modx->lexicon->clearCache();
 $invdirs = array('.','..','.svn','country');
@@ -94,4 +94,4 @@ while (false !== ($culture = $dir->read())) {
 $dir->close();
 
 $modx->log(MODX_LOG_LEVEL_WARN,'Successfully reloaded '.$i.' strings.');
-$modx->error->success(intval($i));
+return $modx->error->success(intval($i));

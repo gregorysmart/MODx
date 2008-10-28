@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.system.event
  */
-if (!$modx->hasPermission('delete_eventlog')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('delete_eventlog')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $modx->loadProcessor('system/event/delete.php');
 

@@ -6,13 +6,13 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin','category');
 
-if (!$modx->hasPermission('save_plugin')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_plugin')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $plugin = $modx->getObject('modPlugin',$_REQUEST['id']);
-if ($plugin == null) $modx->error->failure($modx->lexicon('plugin_err_not_found'));
+if ($plugin == null) return $modx->error->failure($modx->lexicon('plugin_err_not_found'));
 
 if ($plugin->get('locked') && $modx->hasPermission('edit_locked') == false) {
-    $modx->error->failure($modx->lexicon('plugin_err_locked'));
+    return $modx->error->failure($modx->lexicon('plugin_err_locked'));
 }
 
 /* Validation and data escaping */
@@ -25,7 +25,7 @@ $name_exists = $modx->getObject('modPlugin',array(
 
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('plugin_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -40,7 +40,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -63,7 +63,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $plugin->setProperties($properties);
 
 if ($plugin->save() == false) {
-    $modx->error->failure($modx->lexicon('plugin_err_save'));
+    return $modx->error->failure($modx->lexicon('plugin_err_save'));
 }
 
 /* change system events */
@@ -106,4 +106,4 @@ $modx->logManagerAction('plugin_update','modPlugin',$plugin->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('', $plugin->get(array('id', 'name')));
+return $modx->error->success('', $plugin->get(array('id', 'name')));

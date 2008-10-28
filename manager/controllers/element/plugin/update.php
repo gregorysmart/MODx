@@ -5,11 +5,11 @@
  * @package modx
  * @subpackage manager.element.plugin
  */
-if (!$modx->hasPermission('edit_plugin')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_plugin')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* load plugin */
 $plugin = $modx->getObject('modPlugin',$_REQUEST['id']);
-if ($plugin == null) $modx->error->failure($modx->lexicon('plugin_not_found'));
+if ($plugin == null) return $modx->error->failure($modx->lexicon('plugin_not_found'));
 $plugin->category = $plugin->getOne('modCategory');
 
 /* invoke OnPluginFormPrerender event */

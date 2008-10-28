@@ -24,4 +24,4 @@ foreach ($plugins as $plugin) {
     $cs[] = $plugin->toArray();
 }
 
-$this->outputArray($cs,$count);
+return $this->outputArray($cs,$count);

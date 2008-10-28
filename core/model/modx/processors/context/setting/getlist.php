@@ -6,7 +6,7 @@
 
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
-if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('settings')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -16,8 +16,8 @@ if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 $wa = array(
     'context_key' => $_REQUEST['context_key'],
 );
-if (!$context = $modx->getObject('modContext', $_POST['context_key'])) $modx->error->failure($modx->lexicon('setting_err_nf'));
-if (!$context->checkPolicy('view')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$context = $modx->getObject('modContext', $_POST['context_key'])) return $modx->error->failure($modx->lexicon('setting_err_nf'));
+if (!$context->checkPolicy('view')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (isset($_POST['key']) && $_POST['key'] != '') {
     $wa['key:LIKE'] = '%'.$_POST['key'].'%';
@@ -68,4 +68,4 @@ foreach ($settings as $setting) {
     );
     $ss[] = $sa;
 }
-$this->outputArray($ss,$count);
+return $this->outputArray($ss,$count);

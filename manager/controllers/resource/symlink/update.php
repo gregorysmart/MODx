@@ -2,10 +2,10 @@
 /**
  *
  */
-if (!$modx->hasPermission('edit_document')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_document')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $resource = $modx->getObject('modSymLink',$_REQUEST['id']);
-if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nf'));
+if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nf'));
 
 $resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
 $resourceDir= strtolower(substr($resourceClass, 3));

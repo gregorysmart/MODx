@@ -6,22 +6,22 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
-if (!$modx->hasPermission('lexicons')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('lexicons')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* verify file exists */
-if (!isset($_FILES['lexicon'])) $modx->error->failure($modx->lexicon('lexicon_import_err_ns'));
+if (!isset($_FILES['lexicon'])) return $modx->error->failure($modx->lexicon('lexicon_import_err_ns'));
 $_FILE = $_FILES['lexicon'];
-if ($_FILE['error'] != 0) $modx->error->failure($modx->lexicon('lexicon_import_err_upload'));
+if ($_FILE['error'] != 0) return $modx->error->failure($modx->lexicon('lexicon_import_err_upload'));
 
 
 /* get namespace */
-if (!isset($_POST['namespace'])) $modx->error->failure($modx->lexicon('namespace_err_ns'));
+if (!isset($_POST['namespace'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
 $namespace = $modx->getObject('modNamespace',$_POST['namespace']);
-if ($namespace == null) $modx->error->failure($modx->lexicon('namespace_err_nf'));
+if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 /* get topic */
 if (!isset($_POST['topic']) || $_POST['topic'] == '') {
-    $modx->error->failure($modx->lexicon('topic_err_ns'));
+    return $modx->error->failure($modx->lexicon('topic_err_ns'));
 }
 $topic = $modx->getObject('modLexiconTopic',array(
     'name' => $_POST['topic'],
@@ -36,7 +36,7 @@ if ($topic == null) {
 }
 
 /* get language */
-if (!isset($_POST['language'])) $modx->error->failure($modx->lexicon('language_err_nf'));
+if (!isset($_POST['language'])) return $modx->error->failure($modx->lexicon('language_err_nf'));
 $language = $modx->getObject('modLexiconLanguage',$_POST['language']);
 /* if new language, create */
 if ($language == null) {

@@ -7,7 +7,7 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'edit_user' => true))) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
@@ -53,4 +53,4 @@ foreach ($users as $u) {
     );
 	$us[] = $ua;
 }
-$this->outputArray($us,$count);
+return $this->outputArray($us,$count);

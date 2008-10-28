@@ -6,7 +6,7 @@
  * @package modx
  * @subpackage manager.element.template
  */
-if(!$modx->hasPermission('save_template')) $modx->error->failure($modx->lexicon('access_denied'));
+if(!$modx->hasPermission('save_template')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 if (!is_numeric($_REQUEST['id'])) {
 	echo 'Template ID is NaN';
@@ -15,7 +15,7 @@ if (!is_numeric($_REQUEST['id'])) {
 
 /* get template */
 $template = $modx->getObject('modTemplate',$_REQUEST['id']);
-if ($template == null) $modx->error->failure($modx->lexicon('template_err_nf'));
+if ($template == null) return $modx->error->failure($modx->lexicon('template_err_nf'));
 
 /* get TVs for template */
 $tvs = $template->getTVs();

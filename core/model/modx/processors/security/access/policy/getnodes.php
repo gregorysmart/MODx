@@ -6,9 +6,9 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('policy');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_REQUEST['id'])) $error->failure('Id not specified in request!');
+if (!isset($_REQUEST['id'])) return $modx->error->failure('Id not specified in request!');
 
 $policyAttr = explode('_', $_REQUEST['id']);
 $policyId = count($policyAttr) == 2 ? $policyAttr[1] : '';
@@ -33,4 +33,4 @@ if ($policy == null) {
         'cls' => 'file',
     );
 }
-echo $modx->toJSON($da);
+return $modx->toJSON($da);

@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.element.snippet
  */
-if (!$modx->hasPermission('new_snippet')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('new_snippet')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* preset category if specified */
 if (isset($_REQUEST['category'])) {

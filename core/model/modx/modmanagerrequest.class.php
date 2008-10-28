@@ -1,5 +1,5 @@
 <?php
-@require_once(MODX_CORE_PATH . 'model/modx/modrequest.class.php');
+require_once(MODX_CORE_PATH . 'model/modx/modrequest.class.php');
 
 /**
  * Encapsulates the interaction of MODx manager with an HTTP request.
@@ -127,7 +127,7 @@ class modManagerRequest extends modRequest {
      */
     function handleRequest() {
         /* Load error handling class */
-        $this->loadErrorHandler('modSmartyError');
+        $this->loadErrorHandler();
 
         /* save page to manager object. allow custom actionVar choice for extending classes. */
         $this->action = isset($_REQUEST[$this->actionVar]) ? $_REQUEST[$this->actionVar] : $this->defaultAction;
@@ -143,7 +143,7 @@ class modManagerRequest extends modRequest {
      * This implementation adds register logging capabilities via $_POST vars
      * when the error handler is loaded.
      */
-    function loadErrorHandler($class = 'modArrayError') {
+    function loadErrorHandler($class = 'modError') {
         parent :: loadErrorHandler($class);
         $this->registerLogging($_POST);
     }
@@ -173,76 +173,16 @@ class modManagerRequest extends modRequest {
     /**
      * Prepares the MODx response to a mgr request that is being handled.
      *
-     * @todo Redo the error message when a modAction is not found.
      * @access public
      * @return boolean True if the response is properly prepared.
      */
     function prepareResponse() {
-        $modx= & $this->modx;
-        $error= & $this->modx->error;
         if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
             $this->loadActionMap();
         }
-
-        /* backwards compatibility */
-        $_lang = $this->modx->lexicon->fetch();
-
-        if ($this->action === null || $this->action == '') {
-            /* this looks to be a top-level frameset request, so let's serve up the header */
-            $this->modx->smarty->assign('_lang',$_lang);
-            include_once $this->modx->config['manager_path'] . 'controllers/header.php';
-        } else {
-            if (isset($this->modx->actionMap[$this->action])) {
-                $action = $this->modx->actionMap[$this->action];
-
-                /* assign custom action topics to smarty, so can load custom topics for each page */
-                $topics = explode(',',$action['lang_topics']);
-                foreach ($topics as $topic) { $this->modx->lexicon->load($topic); }
-                $this->modx->smarty->assign('_lang_topics',$action['lang_topics']);
-                $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
-                $this->modx->smarty->assign('_ctx',$action['context']);
-
-                /* if wants the header/footer */
-                if ($action['haslayout']) {
-                    include_once $this->modx->config['manager_path'].'controllers/frame-header.php';
-                }
-
-                /* find context path */
-                if (!isset($action['context']) || $action['context'] == 'mgr') {
-                    $f = $action['context_path'].'controllers/'.$action['controller'];
-
-                } else { /* if a custom 3rd party path */
-                     $this->modx->smarty->setTemplatePath($action['context_path'].'core/templates/');
-                     $f = $action['context_path'].'core/controllers/'.$action['controller'];
-                }
-
-                /* set context url and path */
-                $this->modx->config['context_url'] = $action['context_url'];
-                $this->modx->config['context_path'] = $action['context_path'];
-
-                /* if action is a directory, load base index.php */
-                if (substr($f,strlen($f)-1,1) == '/') {
-                    $f .= 'index';
-                }
-                /* append .php */
-                if (file_exists($f.'.php')) {
-                    $f = $f.'.php';
-                    include_once $f;
-                /* for actions that don't have trailing / but reference index */
-                } elseif (file_exists($f.'/index.php')) {
-                    $f = $f.'/index.php';
-                    include_once $f;
-                }
-                if ($action['haslayout']) {
-                    /* reset path to core modx path for header/footer */
-                    $this->modx->smarty->setTemplatePath($modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/');
-                    include_once $this->modx->config['manager_path'].'controllers/footer.php';
-                }
-            } else {
-                /* no action found. TODO: redo no action found eventually. */
-                die('No action with ID '.$this->action.' found.');
-            }
+        if (!$this->modx->getResponse('modManagerResponse')) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
         }
-        exit();
+        $this->modx->response->outputContent();
     }
 }

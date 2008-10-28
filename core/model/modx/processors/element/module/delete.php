@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('module');
 
-if (!$modx->hasPermission('delete_module')) $error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_module')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get module and related tables */
 $module = $modx->getObject('modModule',$_REQUEST['id']);
-if ($module == null) $modx->error->failure($modx->lexicon('module_err_not_found'));
+if ($module == null) return $modx->error->failure($modx->lexicon('module_err_not_found'));
 
 $module->dependencies = $module->getMany('modModuleDepobj');
 $module->usergroups = $module->getMany('modModuleUserGroup');
@@ -32,7 +32,7 @@ foreach ($module->usergroups as $ug) {
 
 /* delete module */
 if ($module->remove() == false) {
-    $modx->error->failure($modx->lexicon('module_err_delete'));
+    return $modx->error->failure($modx->lexicon('module_err_delete'));
 }
 
 /* invoke OnModFormDelete event */
@@ -47,4 +47,4 @@ $modx->logManagerAction('module_delete','modModule',$module->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();

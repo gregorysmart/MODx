@@ -8,13 +8,13 @@ $modx->lexicon->load('resource');
 
 $_DATA = $modx->fromJSON($_POST['data']);
 
-if (!isset($_DATA['resource'])) $modx->error->failure($modx->lexicon('resource_err_ns'));
+if (!isset($_DATA['resource'])) return $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_DATA['resource']);
-if ($resource == null) $modx->error->failure($modx->lexicon('resource_err_nf'));
+if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nf'));
 
-if (!isset($_DATA['id'])) $modx->error->failure($modx->lexicon('resource_group_err_ns'));
+if (!isset($_DATA['id'])) return $modx->error->failure($modx->lexicon('resource_group_err_ns'));
 $rg = $modx->getObject('modResourceGroup',$_DATA['id']);
-if ($rg == null) $modx->error->failure($modx->lexicon('resource_group_err_nf'));
+if ($rg == null) return $modx->error->failure($modx->lexicon('resource_group_err_nf'));
 
 $rgr = $modx->getObject('modResourceGroupResource',array(
     'document' => $resource->get('id'),
@@ -22,10 +22,10 @@ $rgr = $modx->getObject('modResourceGroupResource',array(
 ));
 
 if ($_DATA['access'] == true && $rgr != null) {
-    $modx->error->failure($modx->lexicon('resource_group_resource_err_ae'));
+    return $modx->error->failure($modx->lexicon('resource_group_resource_err_ae'));
 }
 if ($_DATA['access'] == false && $rgr == null) {
-    $modx->error->failure($modx->lexicon('resource_group_resource_err_nf'));
+    return $modx->error->failure($modx->lexicon('resource_group_resource_err_nf'));
 }
 if ($_DATA['access'] == true) {
     $rgr = $modx->newObject('modResourceGroupResource');
@@ -36,4 +36,4 @@ if ($_DATA['access'] == true) {
     $rgr->remove();
 }
 
-$modx->error->success();
+return $modx->error->success();

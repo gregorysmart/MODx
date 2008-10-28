@@ -6,32 +6,32 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
-if (!$modx->hasPermission('packages')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('packages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-$modx->error->failure('Not yet implemented.');
+return $modx->error->failure('Not yet implemented.');
 
 $package = $modx->getObject('transport.modTransportPackage',$_REQUEST['signature']);
 if ($package == null) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_nf'));
-    $modx->error->failure();
+    return $modx->error->failure();
 }
 
 if ($package->provider != 0) {
     $provider = $package->getOne('Provider');
     if ($provider == null) {
         $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('provider_err_nf'));
-        $modx->error->failure();
+        return $modx->error->failure();
     }
 } else {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_update_err_provider_nf'));
-    $modx->error->failure();
+    return $modx->error->failure();
 }
 
 $modx->log(MODX_LOG_LEVEL_INFO,$modx->lexicon('package_update_info_provider_scan',array('provider' => $provider->get('name'))));
 $downloadedPackages = $provider->scanForPackages();
 if (empty($downloadedPackages)) {
     $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('package_update_err_provider_empty'));
-    $modx->error->failure();
+    return $modx->error->failure();
 }
 
 $packageSignature = explode('-',$package->get('signature'));
@@ -63,14 +63,14 @@ foreach ($downloadedPackages as $p) {
 }
 if ($found === false) {
     $modx->log(MODX_LOG_LEVEL_ERROR,'The package could not be found at the provider: '.$provider->get('name'));
-    $modx->error->failure();
+    return $modx->error->failure();
 }
 if ($updatable === false) {
     $modx->log(MODX_LOG_LEVEL_ERROR,'Your package is already up-to-date at: '.$package->get('signature'));
-    $modx->error->failure();
+    return $modx->error->failure();
 }
 
 
 $modx->log(MODX_LOG_LEVEL_ERROR,print_r($updatePackage,true));
 
-$modx->error->success();
+return $modx->error->success();

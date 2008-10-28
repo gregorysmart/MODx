@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_event');
 
-if (!$modx->hasPermission('view_eventlog')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('view_eventlog')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -26,4 +26,4 @@ foreach ($events as $event) {
 
     $ss[] = $sa;
 }
-$this->outputArray($ss,$count);
+return $this->outputArray($ss,$count);

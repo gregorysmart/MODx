@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv');
 
-if (!$modx->hasPermission('new_template')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get TV */
 $old_tv = $modx->getObject('modTemplateVar',$_REQUEST['id']);
-if ($old_tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
+if ($old_tv == null) return $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
 $old_tv->templates = $old_tv->getMany('modTemplateVarTemplate');
 $old_tv->resources = $old_tv->getMany('modTemplateVarResource');
@@ -26,7 +26,7 @@ $tv->fromArray($old_tv->toArray());
 $tv->set('name',$newname);
 
 if ($tv->save() === false) {
-	$modx->error->failure($modx->lexicon('tv_err_duplicate'));
+	return $modx->error->failure($modx->lexicon('tv_err_duplicate'));
 }
 
 
@@ -54,4 +54,4 @@ foreach ($old_tv->resource_groups as $old_tvrg) {
 /* log manager action */
 $modx->logManagerAction('tv_duplicate','modTemplateVar',$tv->get('id'));
 
-$modx->error->success('',$tv->get(array('id')));
+return $modx->error->success('',$tv->get(array('id')));

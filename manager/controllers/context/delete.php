@@ -7,6 +7,6 @@
  * @subpackage manager.context
  * @deprecated
  */
-if (!$modx->hasPermission('delete_context')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('delete_context')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $modx->loadProcessor('context/remove.php');

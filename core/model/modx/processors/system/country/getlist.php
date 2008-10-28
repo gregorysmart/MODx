@@ -18,4 +18,4 @@ foreach ($_country_lang as $country) {
     );
 }
 
-$this->outputArray($countries);
+return $this->outputArray($countries);

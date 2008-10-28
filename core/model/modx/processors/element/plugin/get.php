@@ -8,7 +8,7 @@ $modx->lexicon->load('plugin');
 
 /* get plugin */
 $plugin = $modx->getObject('modPlugin', $_REQUEST['id']);
-if ($plugin == null) $modx->error->failure($modx->lexicon('plugin_err_not_found'));
+if ($plugin == null) return $modx->error->failure($modx->lexicon('plugin_err_not_found'));
 
 $properties = $plugin->get('properties');
 if (!is_array($properties)) $properties = array();
@@ -26,4 +26,4 @@ foreach ($properties as $property) {
 
 $plugin->set('data','(' . $modx->toJSON($data) . ')');
 
-$modx->error->success('',$plugin);
+return $modx->error->success('',$plugin);

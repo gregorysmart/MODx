@@ -45,4 +45,4 @@ foreach ($events as $event) {
     
     $es[] = $ea;
 }
-$this->outputArray($es,$count);
+return $this->outputArray($es,$count);

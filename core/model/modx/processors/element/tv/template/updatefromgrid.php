@@ -24,17 +24,17 @@ if ($_DATA['access']) {
     $tvt->set('rank',$_DATA['rank']);
 
     if ($tvt->save() == false) {
-        $modx->error->failure($modx->lexicon('tvt_err_save'));
+        return $modx->error->failure($modx->lexicon('tvt_err_save'));
     }
 } else {
     /* removing access */
     if ($tvt == null) {
-        $modx->error->failure($modx->lexicon('tvt_err_nf'));
+        return $modx->error->failure($modx->lexicon('tvt_err_nf'));
     }
 
     if ($tvt->remove() == false) {
-        $modx->error->failure($modx->lexicon('tvt_err_remove'));
+        return $modx->error->failure($modx->lexicon('tvt_err_remove'));
     }
 }
 
-$modx->error->success();
+return $modx->error->success();

@@ -6,10 +6,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('access');
 
-if (!$modx->hasPermission('access_permissions')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['type'])) {
-    $modx->error->failure($modx->lexicon('access_type_err_ns'));
+    return $modx->error->failure($modx->lexicon('access_type_err_ns'));
 }
 $accessClass = $_REQUEST['type'];
 $targetClass = str_replace('Access', '', $accessClass);
@@ -24,7 +24,7 @@ $context = isset($_REQUEST['context_key']) ? $_REQUEST['context_key'] : null;
 
 
 if (!$targetId || !$principalClass || !$principalId) {
-    $modx->error->failure($modx->lexicon('access_err_create_md'));
+    return $modx->error->failure($modx->lexicon('access_err_create_md'));
 }
 $c = array(
     'target' => $targetId,
@@ -40,10 +40,10 @@ if ($acl === null) {
     $acl = $modx->newObject($accessClass);
     $acl->fromArray($_REQUEST);
     if ($acl->save() == false) {
-        $modx->error->failure($modx->lexicon('access_err_save'));
+        return $modx->error->failure($modx->lexicon('access_err_save'));
     }
 } else {
-    $modx->error->failure($modx->lexicon('access_err_ae'));
+    return $modx->error->failure($modx->lexicon('access_err_ae'));
 }
 
-$modx->error->success();
+return $modx->error->success();

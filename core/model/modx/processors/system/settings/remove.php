@@ -7,11 +7,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
-if (!$modx->hasPermission('settings')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('settings')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_POST['key'])) $modx->error->failure($modx->lexicon('setting_err_ns'));
+if (!isset($_POST['key'])) return $modx->error->failure($modx->lexicon('setting_err_ns'));
 $setting = $modx->getObject('modSystemSetting',$_POST['key']);
-if ($setting == null) $modx->error->failure($modx->lexicon('setting_err_nf'));
+if ($setting == null) return $modx->error->failure($modx->lexicon('setting_err_nf'));
 
 /* remove relative lexicon strings */
 $entry = $modx->getObject('modLexiconEntry',array(
@@ -27,9 +27,9 @@ $description = $modx->getObject('modLexiconEntry',array(
 if ($description != null) $description->remove();
 
 if ($setting->remove() == null) {
-    $modx->error->failure($modx->lexicon('setting_err_remove'));
+    return $modx->error->failure($modx->lexicon('setting_err_remove'));
 }
 
 $modx->reloadConfig();
 
-$modx->error->success();
+return $modx->error->success();

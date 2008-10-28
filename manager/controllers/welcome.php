@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager
  */
-if (!$modx->hasPermission('home')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('home')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $modx->smarty->assign('site_name',$modx->config['site_name']);
 

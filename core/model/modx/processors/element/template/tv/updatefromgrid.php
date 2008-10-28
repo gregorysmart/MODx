@@ -9,7 +9,7 @@ $modx->lexicon->load('tv','category');
 $_DATA = $modx->fromJSON($_POST['data']);
 
 $tv = $modx->getObject('modTemplateVar',$_DATA['id']);
-if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_not_found'));
+if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_not_found'));
 
 $tvt = $modx->getObject('modTemplateVarTemplate',array(
     'templateid' => $_DATA['template'],
@@ -22,16 +22,16 @@ if ($tvt == null && $_DATA['access'] == true) {
     $tvt->set('tmplvarid',$_DATA['id']);
     $tvt->set('rank',$_DATA['rank']);
     if ($tvt->save() === false) {
-        $modx->error->failure($modx->lexicon('tvt_err_save'));
+        return $modx->error->failure($modx->lexicon('tvt_err_save'));
     }
 } elseif ($tvt != null && $_DATA['access'] == false) {
     if ($tvt->remove() === false) {
-        $modx->error->failure($modx->lexicon('tvt_err_remove'));
+        return $modx->error->failure($modx->lexicon('tvt_err_remove'));
     }
 } elseif ($tvt != null) {
     $tvt->set('rank',$_DATA['rank']);
     if ($tvt->save() === false) {
-        $modx->error->failure($modx->lexicon('tvt_err_save'));
+        return $modx->error->failure($modx->lexicon('tvt_err_save'));
     }
 }
 
@@ -39,4 +39,4 @@ $tv->set('name',$_DATA['name']);
 $tv->set('description',$_DATA['description']);
 $tv->save();
 
-$modx->error->success();
+return $modx->error->success();

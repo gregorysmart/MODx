@@ -6,7 +6,7 @@
  * @subpackage manager
  */
 
-if (!$modx->hasPermission('edit_module')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('edit_module')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* create globally unique identifiers (guid) */
 function createGUID() {
@@ -20,10 +20,10 @@ function createGUID() {
 $module = $modx->getObject('modModule',$_REQUEST['id']);
 
 if ($module->get('locked') && !$modx->hasPermission('edit_locked')) {
-    $modx->error->failure($modx->lexicon('lock_module_msg'));
+    return $modx->error->failure($modx->lexicon('lock_module_msg'));
 }
 
-if ($module == null) $modx->error->failure('No record found for id "'.$_REQUEST['id'].'".');
+if ($module == null) return $modx->error->failure('No record found for id "'.$_REQUEST['id'].'".');
 
 $wrap = $module->get('wrap');
 $modx->smarty->assign('module',$module);

@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.resource
  */
-if (!$modx->hasPermission('new_document')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('new_document')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modDocument';
 $resourceDir= strtolower(substr($resourceClass, 3));

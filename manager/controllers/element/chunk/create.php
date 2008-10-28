@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.element.module
  */
-if (!$modx->hasPermission('new_chunk')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('new_chunk')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 /* grab default category if specified */
 if (isset($_REQUEST['category'])) {

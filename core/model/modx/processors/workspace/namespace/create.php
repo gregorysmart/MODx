@@ -6,10 +6,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','lexicon');
 
-if (!$modx->hasPermission('namespaces')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('namespaces')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_POST['name']) || $_POST['name'] == '') {
-	$modx->error->failure($modx->lexicon('namespace_err_ns_name'));
+	return $modx->error->failure($modx->lexicon('namespace_err_ns_name'));
 }
 
 $namespace = $modx->newObject('modNamespace');
@@ -17,7 +17,7 @@ $namespace->set('name',$_POST['name']);
 $namespace->set('path',$_POST['path']);
 
 if ($namespace->save() === false) {
-	$modx->error->failure($modx->lexicon('namespace_err_create'));
+	return $modx->error->failure($modx->lexicon('namespace_err_create'));
 }
 
-$modx->error->success();
+return $modx->error->success();

@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage manager.security.user
  */
-if (!$modx->hasPermission('new_user')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('new_user')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $user = $modx->newObject('modUser');
 

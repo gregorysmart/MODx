@@ -11,18 +11,18 @@ $newname = isset($_POST['name']) && $_POST['name'] != '' ? $_POST['name'] : '';
 
 /* get resource */
 $old_resource = $modx->getObject('modResource',$_REQUEST['id']);
-if ($old_resource == null) $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
+if ($old_resource == null) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
 
 if (!$modx->hasPermission('new_document')) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 if (!$old_resource->checkPolicy('copy'))
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get parent */
 $parent = $old_resource->getOne('Parent');
 if ($parent && !$parent->checkPolicy('add_children')) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 /* get resource's children */
@@ -54,7 +54,7 @@ function duplicateResource($resource,$newname = '',$duplicate_children = true,$_
 	$new_resource->set('publishedby',0);
 	$new_resource->set('published',false);
 	if (!$new_resource->save()) {
-		$modx->error->failure($modx->lexicon('resource_err_duplicate'));
+		return $modx->error->failure($modx->lexicon('resource_err_duplicate'));
     }
 
 	if($_toplevel==0) {
@@ -124,4 +124,4 @@ function getChildren($parent) {
 /* log manager action */
 $modx->logManagerAction('delete_resource','modResource',$new_resource->get('id'));
 
-$modx->error->success('', array ('id' => $new_resource->get('id')));
+return $modx->error->success('', array ('id' => $new_resource->get('id')));

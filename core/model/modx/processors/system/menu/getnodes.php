@@ -63,4 +63,4 @@ foreach ($menus as $menu) {
 	);
 }
 
-echo $modx->toJSON($as);
+return $modx->toJSON($as);

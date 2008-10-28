@@ -42,7 +42,7 @@ foreach ($nodes as $ar_node) {
 	$node->save();
 }
 
-$modx->error->success();
+return $modx->error->success();
 
 function getNodesFormatted(&$ar_nodes,$cur_level,$parent = 0) {
 	$order = 0;

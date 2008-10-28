@@ -42,4 +42,4 @@ foreach ($namespaces as $namespace) {
     $ps[] = $pa;
 }
 
-$this->outputArray($ps,$count);
+return $this->outputArray($ps,$count);

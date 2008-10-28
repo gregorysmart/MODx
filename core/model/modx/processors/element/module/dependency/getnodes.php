@@ -108,4 +108,4 @@ switch ($g[0]) {
 		break;
 }
 
-echo $modx->toJSON($resources);
+return $modx->toJSON($resources);

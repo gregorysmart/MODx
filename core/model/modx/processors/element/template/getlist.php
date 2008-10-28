@@ -43,4 +43,4 @@ foreach ($templates as $template) {
 	$cs[] = $ca;
 }
 
-$this->outputArray($cs,$count);
+return $this->outputArray($cs,$count);

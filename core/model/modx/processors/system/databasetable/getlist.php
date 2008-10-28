@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_info');
 
-if (!$modx->hasPermission('database')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('database')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $c = new xPDOCriteria($modx, 'SHOW TABLE STATUS FROM `'.$modx->config['dbname'].'`');
 $c->stmt->execute();
@@ -32,7 +32,7 @@ while ($row= $c->stmt->fetch(PDO_FETCH_ASSOC)) {
 	$dt[] = $row;
 }
 
-$this->outputArray($dt);
+return $this->outputArray($dt);
 
 function nicesize($size) {
 	if (!isset($size) || !is_numeric($size) || $size == 0) return '0 B';

@@ -6,7 +6,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet','category');
 
-if (!$modx->hasPermission('new_snippet')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_snippet')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* data escaping */
 if ($_POST['name'] == '') $_POST['name'] = $modx->lexicon('snippet_untitled');
@@ -18,7 +18,7 @@ $_POST['name'] = str_replace('<','',$_POST['name']);
 $name_exists = $modx->getObject('modSnippet',array('name' => $_POST['name']));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('snippet_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -33,7 +33,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -58,7 +58,7 @@ if (is_array($properties)) $snippet->setProperties($properties);
 
 
 if ($snippet->save() == false) {
-    $modx->error->failure($modx->lexicon('snippet_err_create'));
+    return $modx->error->failure($modx->lexicon('snippet_err_create'));
 }
 
 /* invoke OnSnipFormSave event */
@@ -74,4 +74,4 @@ $modx->logManagerAction('snippet_create','modSnippet',$snippet->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('',$snippet->get(array_diff(array_keys($snippet->_fields), array('snippet'))));
+return $modx->error->success('',$snippet->get(array_diff(array_keys($snippet->_fields), array('snippet'))));

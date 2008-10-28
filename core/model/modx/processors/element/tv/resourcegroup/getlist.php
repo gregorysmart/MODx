@@ -13,7 +13,7 @@ if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
 if (isset($_REQUEST['tv'])) {
     $tv = $modx->getObject('modTemplateVar',$_REQUEST['tv']);
-    if ($tv == null) $modx->error->failure($modx->lexicon('tv_err_nf'));
+    if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_nf'));
 }
 
 $c = $modx->newQuery('modResourceGroup');
@@ -44,4 +44,4 @@ foreach ($groups as $group) {
     $ts[] = $ta;
 }
 
-$this->outputArray($ts,$count);
+return $this->outputArray($ts,$count);

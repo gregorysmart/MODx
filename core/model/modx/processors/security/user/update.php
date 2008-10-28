@@ -9,14 +9,14 @@ require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
 
-//$modx->error->failure(print_r($_POST,true));
+//return $modx->error->failure(print_r($_POST,true));
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 $user = $modx->getObject('modUser',$_POST['id']);
-if ($user == null) $modx->error->failure($modx->lexicon('user_err_not_found'));
+if ($user == null) return $modx->error->failure($modx->lexicon('user_err_not_found'));
 
 $newPassword= false;
 require_once MODX_PROCESSORS_PATH.'security/user/_validation.php';
@@ -34,7 +34,7 @@ $modx->invokeEvent('OnBeforeUserFormSave',array(
 
 /* update user */
 if ($user->save() == false) {
-    $modx->error->failure($modx->lexicon('user_err_save'));
+    return $modx->error->failure($modx->lexicon('user_err_save'));
 }
 
 $user->profile = $user->getOne('modUserProfile');
@@ -57,7 +57,7 @@ $user->profile->set('blockeduntil',$_POST['blockeduntil']);
 $user->profile->set('blockedafter',$_POST['blockedafter']);
 
 if ($user->profile->save() == false) {
-	$modx->error->failure($modx->lexicon('user_profile_err_save'));
+	return $modx->error->failure($modx->lexicon('user_profile_err_save'));
 }
 
 /* invoke OnManagerSaveUser event */
@@ -131,7 +131,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
     $modx->mail->address('to', $email, $ufn);
     $modx->mail->address('reply-to', $modx->config['emailsender']);
     if ($modx->mail->send() == false) {
-        $modx->error->failure($modx->lexicon('error_sending_email_to').$email);
+        return $modx->error->failure($modx->lexicon('error_sending_email_to').$email);
     }
     $modx->mail->reset();
 }
@@ -140,7 +140,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 $modx->logManagerAction('user_update','modUser',$user->get('id'));
 
 if ($newPassword && $_POST['passwordnotifymethod'] == 's') {
-	$modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
+	return $modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
 } else {
-	$modx->error->success();
+	return $modx->error->success();
 }

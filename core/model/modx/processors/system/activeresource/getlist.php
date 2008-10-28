@@ -28,4 +28,4 @@ foreach ($resources as $resource) {
 	$rs[] = $r;
 }
 
-$this->outputArray($rs,$total);
+return $this->outputArray($rs,$total);

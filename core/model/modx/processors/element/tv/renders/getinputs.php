@@ -24,4 +24,4 @@ if ($handle = opendir($renderdir)) {
     closedir($handle);
 }
 
-$this->outputArray($types);
+return $this->outputArray($types);

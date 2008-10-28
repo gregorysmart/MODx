@@ -3,10 +3,10 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
-if (!$modx->hasPermission('file_manager')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['path']) || $_REQUEST['path'] == '') {
-    $modx->error->failure($modx->lexicon('file_folder_err_ns'));
+    return $modx->error->failure($modx->lexicon('file_folder_err_ns'));
 }
 
 $d = isset($_POST['prependPath']) && $_POST['prependPath'] != 'null' && $_POST['prependPath'] != null
@@ -40,4 +40,4 @@ $o = array(
     'success' => empty($errors),
     'errors' => $errors,
 );
-echo $modx->toJSON($o);
+return $modx->toJSON($o);

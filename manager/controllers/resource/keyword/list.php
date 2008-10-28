@@ -1,5 +1,5 @@
 <?php
-if (!$modx->hasPermission('manage_metatags')) $modx->error->failure($modx->lexicon('access_denied'));
+if (!$modx->hasPermission('manage_metatags')) return $modx->error->failure($modx->lexicon('access_denied'));
 
 $keywords = $modx->getCollection('modKeyword');
 $modx->smarty->assign('keywords',$keywords);

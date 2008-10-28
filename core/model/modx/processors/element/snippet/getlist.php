@@ -24,4 +24,4 @@ foreach ($snippets as $snippet) {
     $cs[] = $snippet->toArray();
 }
 
-$this->outputArray($cs,$count);
+return $this->outputArray($cs,$count);

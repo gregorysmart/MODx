@@ -8,7 +8,7 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('login');
 
-if (!$user= $modx->getUser()) $modx->error->failure($modx->lexicon('not_logged_in'));
+if (!$user= $modx->getUser()) return $modx->error->failure($modx->lexicon('not_logged_in'));
 
 /* invoke OnBeforeManagerLogout event */
 $modx->invokeEvent('OnBeforeManagerLogout',array(
@@ -25,4 +25,4 @@ $modx->invokeEvent('OnManagerLogout',array(
 ));
 
 /* show login screen */
-$modx->error->success();
+return $modx->error->success();

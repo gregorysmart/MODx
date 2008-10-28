@@ -6,14 +6,14 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin','category');
 
-if (!$modx->hasPermission('new_plugin')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_plugin')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if ($_POST['name'] == '') $_POST['name'] = $modx->lexicon('plugin_untitled');
 
 $name_exists = $modx->getObject('modPlugin',array('name' => $_POST['name']));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('plugin_err_exists_name'));
 
-if ($modx->error->hasError()) $modx->error->failure();
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -28,7 +28,7 @@ if ($category == null) {
     } else {
         $category->set('category',$_POST['category']);
         if ($category->save() == false) {
-            $modx->error->failure($modx->lexicon('category_err_save'));
+            return $modx->error->failure($modx->lexicon('category_err_save'));
         }
     }
 }
@@ -51,7 +51,7 @@ if (isset($_POST['propdata'])) {
 if (is_array($properties)) $plugin->setProperties($properties);
 
 if ($plugin->save() == false) {
-    $modx->error->failure($modx->lexicon('plugin_err_create'));
+    return $modx->error->failure($modx->lexicon('plugin_err_create'));
 }
 
 /* change system events */
@@ -94,4 +94,4 @@ $modx->logManagerAction('new_plugin','modPlugin',$plugin->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success('',$plugin->get(array_diff(array_keys($plugin->_fields), array('plugincode'))));
+return $modx->error->success('',$plugin->get(array_diff(array_keys($plugin->_fields), array('plugincode'))));

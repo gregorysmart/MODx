@@ -35,4 +35,4 @@ foreach ($types as $type) {
     );
     $ts[] = $ta;
 }
-$this->outputArray($ts);
+return $this->outputArray($ts);

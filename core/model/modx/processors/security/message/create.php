@@ -6,11 +6,11 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
 
-if (!$modx->hasPermission('messages')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('messages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* validation */
 if (!isset($_POST['subject']) || $_POST['subject'] == '') {
-	$modx->error->failure($modx->lexicon('message_err_not_specified_subject'));
+	return $modx->error->failure($modx->lexicon('message_err_not_specified_subject'));
 }
 
 /* process message */
@@ -18,7 +18,7 @@ switch ($_POST['type']) {
 	case 'user':
 		$user = $modx->getObject('modUser',$_POST['user']);
 		if ($user == null) {
-		    $modx->error->failure($modx->lexicon('user_err_not_found'));
+		    return $modx->error->failure($modx->lexicon('user_err_not_found'));
         }
 
 		$message = $modx->newObject('modUserMessage');
@@ -31,14 +31,14 @@ switch ($_POST['type']) {
 		$message->set('read',false);
 
 		if ($message->save() === false) {
-		    $modx->error->failure($modx->lexicon('message_err_save'));
+		    return $modx->error->failure($modx->lexicon('message_err_save'));
         }
 		break;
 
 	case 'role':
 		$role = $modx->getObject('modUserGroupRole',$_POST['role']);
 		if ($role == null) {
-		    $modx->error->failure($modx->lexicon('role_err_not_found'));
+		    return $modx->error->failure($modx->lexicon('role_err_not_found'));
         }
 
 		$users = $modx->getCollection('modUserGroupMember',array(
@@ -55,7 +55,7 @@ switch ($_POST['type']) {
 				$message->set('date_sent',time());
 				$message->set('private',false);
 				if ($message->save() === false) {
-				    $modx->error->failure($modx->lexicon('message_err_save'));
+				    return $modx->error->failure($modx->lexicon('message_err_save'));
                 }
 			}
 		}
@@ -63,7 +63,7 @@ switch ($_POST['type']) {
     case 'usergroup':
         $group = $modx->getObject('modUserGroup',$_POST['group']);
         if ($group == null) {
-            $modx->error->failure($modx->lexicon('group_err_not_found'));
+            return $modx->error->failure($modx->lexicon('group_err_not_found'));
         }
 
         $users = $modx->getCollection('modUserGroupMember',array(
@@ -80,7 +80,7 @@ switch ($_POST['type']) {
                 $message->set('date_sent',time());
                 $message->set('private',false);
                 if ($message->save() === false) {
-                    $modx->error->failure($modx->lexicon('message_err_save'));
+                    return $modx->error->failure($modx->lexicon('message_err_save'));
                 }
             }
         }
@@ -97,11 +97,11 @@ switch ($_POST['type']) {
 				$message->set('date_sent',time());
 				$message->set('private',false);
 				if ($message->save() === false) {
-				    $modx->error->failure($modx->lexicon('message_err_save'));
+				    return $modx->error->failure($modx->lexicon('message_err_save'));
                 }
 			}
 		}
 		break;
 }
 
-$modx->error->success('',$message);
+return $modx->error->success('',$message);

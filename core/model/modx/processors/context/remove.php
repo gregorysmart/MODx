@@ -7,16 +7,16 @@
 require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('context');
 
-if (!$modx->hasPermission('delete_context')) $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_context')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $context= $modx->getObject('modContext', $_REQUEST['key']);
-if ($context == null) $modx->error->failure($modx->lexicon('context_err_nf'));
+if ($context == null) return $modx->error->failure($modx->lexicon('context_err_nf'));
 if ($context->get('key') == 'web' || $context->get('key') == 'mgr' || $context->get('key') == 'connector') {
-    $modx->error->failure($modx->lexicon('permission_denied'));
+    return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 if ($context->remove() == false) {
-    $modx->error->failure($modx->lexicon('context_err_remove'));
+    return $modx->error->failure($modx->lexicon('context_err_remove'));
 }
 
 /* log manager action */
@@ -26,4 +26,4 @@ $modx->logManagerAction('context_delete','modContext',$context->get('id'));
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
-$modx->error->success();
+return $modx->error->success();
