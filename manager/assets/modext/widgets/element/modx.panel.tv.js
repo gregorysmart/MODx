@@ -71,7 +71,7 @@ MODx.panel.TV = function(config) {
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
-                    ,id: 'category'
+                    ,id: 'fld-category'
                     ,width: 250
                     ,value: config.category || null
                 },{
@@ -212,7 +212,7 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
         Ext.getCmp('grid-element-properties').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('category').getValue();
+        var c = Ext.getCmp('fld-category').getValue();
         var u = c != '' && c != null ? 'n_tv_category_'+c : 'n_type_tv'; 
         t.refreshNode(u,true);
     }

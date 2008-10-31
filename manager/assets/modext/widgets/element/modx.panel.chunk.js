@@ -66,7 +66,7 @@ MODx.panel.Chunk = function(config) {
                         xtype: 'combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
-                        ,id: 'combo-category'
+                        ,id: 'fld-category'
                         ,width: 250
                         ,value: config.category || null
                     },{
@@ -160,7 +160,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
     }
     ,success: function(r) {
         Ext.getCmp('grid-element-properties').getStore().commitChanges();
-        var c = Ext.getCmp('combo-category').getValue();
+        var c = Ext.getCmp('fld-category').getValue();
         var n = c !== '' && c !== null ? 'n_chunk_category_'+c : 'n_type_chunk';
         var t = parent.Ext.getCmp('modx_element_tree');
         if (t) {

@@ -60,13 +60,14 @@ MODx.panel.Template = function(config) {
                     xtype: 'textfield'
                     ,fieldLabel: _('template_desc')
                     ,name: 'description'
+                    ,id: 'fld-description'
                     ,width: 300
                     ,maxLength: 255
                 },{
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
-                    ,id: 'category'
+                    ,id: 'fld-category'
                     ,width: 250
                     ,value: config.category || null
                 },{
@@ -152,7 +153,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
         Ext.getCmp('grid-template-tv').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('category').getValue();
+        var c = Ext.getCmp('fld-category').getValue();
         var u = c != '' && c != null ? 'n_template_category_'+c : 'n_type_template'; 
         t.refreshNode(u,true);
     }

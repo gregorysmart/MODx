@@ -65,7 +65,7 @@ MODx.panel.Plugin = function(config) {
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
-                    ,id: 'category'
+                    ,id: 'fld-category'
                     ,width: 250
                     ,value: config.category || null
                 },{
@@ -164,7 +164,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         Ext.getCmp('grid-plugin-event').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('category').getValue();
+        var c = Ext.getCmp('fld-category').getValue();
         var u = c != '' && c != null ? 'n_plugin_category_'+c : 'n_type_plugin'; 
         t.refreshNode(u,true);
     }
