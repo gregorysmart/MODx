@@ -151,6 +151,7 @@ MODx.panel.Static = function(config) {
                     ,format: 'd-m-Y H:i:s'
                     ,allowBlank: true
                     ,width: 200
+                    ,anchor: '30%'
                     
                 }:{}),(config.publish_document ? {
                     xtype: 'datefield'
@@ -160,6 +161,7 @@ MODx.panel.Static = function(config) {
                     ,format: 'd-m-Y H:i:s'
                     ,allowBlank: true
                     ,width: 200
+                    ,anchor: '30%'
                     
                 }:{}),{
                     xtype: 'checkbox'

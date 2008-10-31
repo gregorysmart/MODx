@@ -159,6 +159,7 @@ MODx.panel.Resource = function(config) {
                     ,format: 'Y-m-d'
                     ,allowBlank: true
                     ,width: 200
+                    ,anchor: '30%'
                     
                 }:{}),(config.publish_document ? {
                     xtype: 'datefield'
@@ -168,6 +169,7 @@ MODx.panel.Resource = function(config) {
                     ,format: 'Y-m-d'
                     ,allowBlank: true
                     ,width: 200
+                    ,anchor: '30%'
                     
                 }:{}),{
                     xtype: 'checkbox'
@@ -200,12 +202,14 @@ MODx.panel.Resource = function(config) {
                     ,name: 'content_type'
                     ,width: 200
                     ,value: 1
+                    ,anchor: '30%'
                     
                 }:{}),(config.class_key != 'modWebLink' ? {
                     xtype: 'combo-content-disposition'
                     ,fieldLabel: _('resource_contentdispo')
                     ,description: _('resource_contentdispo_help')
                     ,name: 'content_dispo'
+                    ,anchor: '30%'
                     
                 }:{}),{
                     xtype: 'hidden'
