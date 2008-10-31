@@ -35,9 +35,6 @@ MODx.grid.Grid = function(config) {
             ,handler: this.help
             ,scope: this
         }]
-        ,listeners: {
-            'rowcontextmenu': {fn:this._showMenu,scope:this}
-        }
 	});
 	if (config.paging) {
 		Ext.applyIf(config,{
@@ -75,6 +72,8 @@ MODx.grid.Grid = function(config) {
     });
 	if (!config.preventRender) { this.render(); }
 	
+    this.on('rowcontextmenu',this._showMenu,this);
+    
 	if (config.autosave) {
 		this.on('afteredit',this.saveRecord,this);
 	}
