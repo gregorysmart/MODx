@@ -39,7 +39,7 @@ MODx.grid.Grid = function(config) {
 	if (config.paging) {
 		Ext.applyIf(config,{
 			bbar: new Ext.PagingToolbar({
-				pageSize: 20
+				pageSize: config.pageSize || 20
 				,store: this.getStore()
 				,displayInfo: true
 				,items: config.pagingItems || []
@@ -83,7 +83,10 @@ MODx.grid.Grid = function(config) {
     }
     
 	this.getStore().load({
-		params: {start: 0,limit: 20}
+		params: {
+            start: config.pageStart || 0
+            ,limit: config.pageSize || 20
+        }
 		,scope: this
 		,callback: function() { this.getStore().reload(); } // fixes comboeditor bug
 	});
