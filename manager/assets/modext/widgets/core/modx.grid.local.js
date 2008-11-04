@@ -230,6 +230,7 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
         var r;
         for (var j=0;j<ct;j++) {
             r = s.getAt(j).data;
+            r.menu = null;
             if (this.config.encodeAssoc) {
                rs[r[this.config.encodeByPk || 'id']] = r;
             } else {
