@@ -123,7 +123,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
                         Ext.callback(this.config.save_callback,this.config.scope || this,[r]);
                     }
                     e.record.commit();
-                    this.refresh();
+                    if (!this.config.preventSaveRefresh) this.refresh();
 				},scope:this}
 			}
 		});
