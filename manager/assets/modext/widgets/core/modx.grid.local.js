@@ -31,10 +31,7 @@ MODx.grid.LocalGrid = function(config) {
     }
     Ext.applyIf(config,{
         title: ''
-        ,store: new Ext.data.SimpleStore({
-            fields: config.fields
-            ,data: config.data || []
-        })
+        ,store: this._loadStore(config)
         ,sm: new Ext.grid.RowSelectionModel({singleSelect:false})
         ,loadMask: true
         ,loadMask: true
@@ -67,6 +64,26 @@ MODx.grid.LocalGrid = function(config) {
 };
 Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
     windows: {}
+    
+    ,_loadStore: function(config) {
+        if (config.grouping) {
+            this.store = new Ext.data.GroupingStore({
+                data: config.data || []
+                ,reader: new Ext.data.ArrayReader({},config.fields || [])
+                ,sortInfo:{
+                    field: config.sortBy || 'name'
+                    ,direction: config.sortDir || 'ASC'
+                }
+                ,groupField: config.groupBy || 'name'
+            });
+        } else {
+            this.store = new Ext.data.SimpleStore({
+                fields: config.fields
+                ,data: config.data || []
+            })
+        }
+        return this.store;
+    }
     
     ,loadWindow: function(btn,e,win,or) {
         var r = this.menu.record;
@@ -212,12 +229,12 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
         var rs = this.config.encodeByPk ? {} : [];
         var r;
         for (var j=0;j<ct;j++) {
-        	r = s.getAt(j).data;
-        	if (this.config.encodeAssoc) {
-        	   rs[r[this.config.encodeByPk || 'id']] = r;
-        	} else {
-        	   rs.push(r);
-        	}
+            r = s.getAt(j).data;
+            if (this.config.encodeAssoc) {
+               rs[r[this.config.encodeByPk || 'id']] = r;
+            } else {
+               rs.push(r);
+            }
         }
         
         return Ext.encode(rs);
