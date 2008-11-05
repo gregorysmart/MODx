@@ -280,6 +280,7 @@ $_lang['insert'] = 'Insert';
 $_lang['insert_snippet'] = 'Insert snippet into document';
 $_lang['install'] = 'Install';
 $_lang['installed'] = 'Installed';
+$_lang['integer'] = 'Integer';
 $_lang['jira'] = 'JIRA';
 $_lang['key'] = 'Key';
 $_lang['key_delete'] = 'Delete Key';

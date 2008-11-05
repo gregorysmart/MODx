@@ -45,6 +45,7 @@ MODx.Window = function(config) {
         ,failure: true
     });
 	this._loadForm();
+    this.on('show',this._onShow,this);
 };
 Ext.extend(MODx.Window,Ext.Window,{
 	/**
@@ -98,6 +99,10 @@ Ext.extend(MODx.Window,Ext.Window,{
 			});
 		}
 	}
+    
+    ,_onShow: function() {
+        this.center();
+    }
 	
 	/**
 	 * Creates the FormPanel with preset options

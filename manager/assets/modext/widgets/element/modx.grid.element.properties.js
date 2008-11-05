@@ -18,21 +18,26 @@ MODx.grid.ElementProperties = function(config) {
             ,dataIndex: 'name'
             ,width: 150
             ,editor: { xtype: 'textfield' ,allowBlank: false }
+            ,sortable: true
         },{
             header: _('description')
             ,dataIndex: 'description'
             ,width: 200
             ,editor: { xtype: 'textfield' ,allowBlank: true }
+            ,sortable: true
         },{
             header: _('type')
             ,dataIndex: 'xtype'
             ,width: 100
+            ,renderer: this._renderType
+            ,sortable: true
         },{
             header: _('value')
             ,dataIndex: 'value'
             ,id: 'value'
             ,width: 250
             ,renderer: this.renderDynField.createDelegate(this,[this],true)
+            ,sortable: true
         }]
         ,tbar: [{
             text: _('property_create')
@@ -48,6 +53,15 @@ MODx.grid.ElementProperties = function(config) {
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     onDirty: function() {
         Ext.getCmp(this.config.panel).fireEvent('fieldChange');
+    }
+    
+    ,_renderType: function(v,md,rec,ri) {
+        switch (v) {
+            case 'combo-boolean': return _('yesno'); break;
+            case 'datefield': return _('date'); break;
+            case 'numberfield': return _('integer'); break;
+        }
+        return _(v);
     }
     
     ,create: function(btn,e) {
@@ -179,7 +193,6 @@ Ext.extend(MODx.grid.ElementPropertyOption,MODx.grid.LocalGrid,{
 });
 Ext.reg('grid-element-property-options',MODx.grid.ElementPropertyOption);
 
-
 /**
  * @class MODx.window.CreateElementProperty
  * @extends MODx.Window
@@ -220,10 +233,8 @@ MODx.window.CreateElementProperty = function(config) {
                 },scope:this}
             }
         },{
-            fieldLabel: _('value')
-            ,name: 'value'
-            ,xtype: 'textfield'
-            ,width: 150
+            xtype: 'element-value-field'
+            ,xtypeField: 'cep-xtype'
         },{
             id: 'grid-element-property-options'
             ,xtype: 'grid-element-property-options'
@@ -256,6 +267,7 @@ Ext.extend(MODx.window.CreateElementProperty,MODx.Window,{
         g.getStore().removeAll();
         g.hide();
         this.syncSize();
+        this.center();
     }
 });
 Ext.reg('window-element-property-create',MODx.window.CreateElementProperty);
@@ -293,19 +305,18 @@ MODx.window.UpdateElementProperty = function(config) {
             ,listeners: {
                 'select': {fn:function(cb,r,i) {
                     var g = Ext.getCmp('uep-grid-element-property-options');
-                    if (cb.getValue() == 'list') {
-                       g.show();
-                    } else {
-                       g.hide();
+                    var v = cb.getValue();
+                    if (v == 'list') {
+                        g.show();
+                    } else {                    
+                        g.hide();
                     }
                     this.syncSize();         
                 },scope:this}
             }
         },{
-            fieldLabel: _('value')
-            ,name: 'value'
-            ,xtype: 'textfield'
-            ,width: 150
+            xtype: 'element-value-field'
+            ,xtypeField: 'uep-xtype'
         },{
             id: 'uep-grid-element-property-options'
             ,xtype: 'grid-element-property-options'
@@ -350,10 +361,10 @@ Ext.extend(MODx.window.UpdateElementProperty,MODx.Window,{
             g.hide();
         }
         this.syncSize();
+        this.center();
     }
 });
 Ext.reg('window-element-property-update',MODx.window.UpdateElementProperty);
-
 
 /**
  * @class MODx.window.CreateElementPropertyOption
@@ -416,6 +427,7 @@ MODx.combo.xType = function(config) {
                 ,[_('yesno'),'combo-boolean']
                 ,[_('date'),'datefield']
                 ,[_('list'),'list']
+                ,[_('integer'),'numberfield']
             ]
         })
         ,displayField: 'd'
@@ -432,3 +444,30 @@ MODx.combo.xType = function(config) {
 };
 Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
 Ext.reg('combo-xtype',MODx.combo.xType);
+
+
+
+
+MODx.form.ElementValueField = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        fieldLabel: _('value')
+        ,name: 'value'
+        ,xtype: 'textfield'
+        ,width: 150
+    });
+    MODx.form.ElementValueField.superclass.constructor.call(this,config);
+    this.config = config;
+    this.on('change',this.checkValue,this);
+};
+Ext.extend(MODx.form.ElementValueField,Ext.form.TextField,{
+    checkValue: function(fld,nv,ov) {
+        var t = Ext.getCmp(this.config.xtypeField).getValue();
+        var v = fld.getValue();
+        if (t == 'combo-boolean') {
+            v = (v == '1' || v == 'true' || v == 1 || v == true || v == _('yes') || v == 'yes') ? 1 : 0;
+            fld.setValue(v);
+        }
+    }
+});
+Ext.reg('element-value-field',MODx.form.ElementValueField);
