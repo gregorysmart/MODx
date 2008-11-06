@@ -6,6 +6,11 @@
  */
 MODx.grid.ElementProperties = function(config) {
     config = config || {};
+    var exp = new Ext.grid.RowExpander({
+        tpl : new Ext.Template(
+            '<p style="padding: .7em 1em .3em;"><i>{description}</i></p>'
+        )
+    });
     Ext.applyIf(config,{
         title: _('properties')
         ,id: 'grid-element-properties'
@@ -13,17 +18,12 @@ MODx.grid.ElementProperties = function(config) {
         ,maxHeight: 300
         ,width: '90%'
         ,fields: ['name','description','xtype','options','value']
-        ,columns: [{
+        ,plugins: [exp]
+        ,columns: [exp,{
             header: _('name')
             ,dataIndex: 'name'
-            ,width: 150
+            ,width: 250
             ,editor: { xtype: 'textfield' ,allowBlank: false }
-            ,sortable: true
-        },{
-            header: _('description')
-            ,dataIndex: 'description'
-            ,width: 200
-            ,editor: { xtype: 'textfield' ,allowBlank: true }
             ,sortable: true
         },{
             header: _('type')
@@ -205,6 +205,7 @@ MODx.window.CreateElementProperty = function(config) {
         title: _('property_create')
         ,height: 250
         ,width: 450
+        ,saveBtnText: _('done')
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
@@ -286,6 +287,7 @@ MODx.window.UpdateElementProperty = function(config) {
         title: _('property_update')
         ,height: 250
         ,width: 450
+        ,saveBtnText: _('done')
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
@@ -378,6 +380,7 @@ MODx.window.CreateElementPropertyOption = function(config) {
         title: _('property_option_create')
         ,height: 250
         ,width: 450
+        ,saveBtnText: _('done')
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
