@@ -33,9 +33,9 @@ if (!empty($msgs)) {
     if ($format == 'html_log') {
         $message = '';
         foreach ($msgs as $msgKey => $msg) {
-            if (!empty ($msg['def'])) $msg['def']= "{$def} ";
-            if (!empty ($msg['file'])) $msg['file']= "@ {$file} ";
-            if (!empty ($msg['line'])) $msg['line']= "line {$line} ";
+            if (!empty ($msg['def'])) $msg['def']= $msg['def'].' ';
+            if (!empty ($msg['file'])) $msg['file']= '@ '.$msg['file'].' ';
+            if (!empty ($msg['line'])) $msg['line']= 'line '.$msg['line'].' ';
             $message .= '<span class="' . strtolower($msg['level']) . '">';
             if ($options['show_filename']) {
                 $message .= '<small>(' . trim($msg['def'] . $msg['file'] . $msg['line']) . ')</small>';

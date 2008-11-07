@@ -121,7 +121,7 @@ class modTransportPackage extends xPDOObject {
                                 $this->set('source', $sourceFile);
                                 $this->set('manifest', array(
                                     XPDO_TRANSPORT_MANIFEST_VERSION => $this->package->manifestVersion,
-                                    XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes, 
+                                    XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes,
                                     XPDO_TRANSPORT_MANIFEST_VEHICLES => $this->package->vehicles
                                 ));
                                 $this->set('attributes', $this->package->attributes);
@@ -168,7 +168,7 @@ class modTransportPackage extends xPDOObject {
         if ($this->getTransport()) {
             $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Grabbing package workspace...');
             $this->getOne('Workspace');
-            $wc = is_array($this->Workspace->config) ? $this->Workspace->config : array();
+            $wc = isset($this->Workspace->config) && is_array($this->Workspace->config) ? $this->Workspace->config : array();
             $at = is_array($this->get('attributes')) ? $this->get('attributes') : array();
             $attributes = array_merge($wc, $at);
             @ini_set('max_execution_time', 0);
@@ -192,7 +192,7 @@ class modTransportPackage extends xPDOObject {
         $uninstalled = false;
         if ($this->getTransport()) {
             $this->getOne('Workspace');
-            $wc = is_array($this->Workspace->config) ? $this->Workspace->config : array();
+            $wc = isset($this->Workspace->config) && is_array($this->Workspace->config) ? $this->Workspace->config : array();
             $at = is_array($this->get('attributes')) ? $this->get('attributes') : array();
             $attributes = array_merge($wc,$at);
             @ini_set('max_execution_time', 0);
