@@ -16,7 +16,6 @@ $ar_typemap = array(
 	'chunk' => 'modChunk',
 	'snippet' => 'modSnippet',
 	'plugin' => 'modPlugin',
-    'module' => 'modModule',
     'category' => 'modCategory',
 );
 $actions = $modx->request->getAllActionIDs();
@@ -26,7 +25,6 @@ $ar_actionmap = array(
 	'chunk' => $actions['element/chunk/update'],
 	'snippet' => $actions['element/snippet/update'],
 	'plugin' => $actions['element/plugin/update'],
-    'module' => $actions['element/module/update'],
 );
 
 /* split the array */
@@ -214,25 +212,6 @@ switch ($g[0]) {
                     )
                 ),
 			),
-            array(
-                'text' => $modx->lexicon('modules'),
-                'id' => 'n_type_module',
-                'leaf' => false,
-                'cls' => 'folder',
-                'href' => '',
-                'type' => 'module',
-                'menu' => array(
-                    array(
-                        'text' => $modx->lexicon('new').' '.$modx->lexicon('module'),
-                        'handler' => 'this._createElement',
-                    ),
-                    '-',
-                    array(
-                        'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
-                    )
-                ),
-            ),
             array(
                 'text' => $modx->lexicon('categories'),
                 'id' => 'n_category',

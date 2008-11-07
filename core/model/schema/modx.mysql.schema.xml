@@ -227,35 +227,6 @@
         <field key="http_equiv" dbtype="tinyint" precision="4" phptype="integer" null="false" default="0" />
         <composite alias="modResourceMetatag" class="modResourceMetatag" key="id" local="id" foreign="metatag_id" cardinality="many" owner="local" />
     </object>
-    <object class="modModule" table="site_modules" extends="modScript">
-        <field key="disabled" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="wrap" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="icon" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
-        <field key="enable_resource" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="resourcefile" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
-        <field key="createdon" dbtype="int" precision="10" phptype="timestamp" null="false" default="0" />
-        <field key="editedon" dbtype="int" precision="10" phptype="timestamp" null="false" default="0" />
-        <field key="guid" dbtype="varchar" precision="32" phptype="string" null="false" default="" />
-        <field key="enable_sharedparams" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" />
-        <field key="properties" dbtype="text" phptype="array" null="true" />
-        <field key="modulecode" dbtype="mediumtext" phptype="string" />
-        <composite alias="modModuleDepobj" class="modModuleDepobj" key="id" local="id" foreign="module" cardinality="many" owner="local" />
-        <composite alias="modModuleUserGroup" class="modModuleUserGroup" key="id" local="id" foreign="module" cardinality="many" owner="local" />
-        <aggregate alias="modPlugin" class="modPlugin" key="guid" local="guid" foreign="moduleguid" cardinality="many" owner="local" />
-    </object>
-    <object class="modModuleDepobj" table="site_module_depobj" extends="xPDOSimpleObject">
-        <field key="module" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
-        <field key="resource" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
-        <field key="type" dbtype="int" precision="2" phptype="integer" null="false" default="0" index="index" />
-        <aggregate alias="Module" class="modModule" local="module" foreign="id" cardinality="one" owner="foreign" />
-    </object>
-    <object class="modModuleUserGroup" table="site_module_access" extends="xPDOSimpleObject">
-        <field key="module" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
-        <field key="usergroup" dbtype="int" precision="11" phptype="integer" null="false" default="0" index="fk" />
-        <aggregate alias="modModule" class="modModule" key="id" local="module" foreign="id" cardinality="one" owner="foreign" />
-        <aggregate alias="modUserGroup" class="modUserGroup" key="id" local="usergroup" foreign="id" cardinality="one" owner="foreign" />
-    </object>
     <object class="modNamespace" table="namespaces" extends="xPDOObject">
         <field key="name" dbtype="varchar" precision="40" phptype="string" null="false" default="" index="pk" />
         <field key="path" dbtype="text" phptype="string" default="" />

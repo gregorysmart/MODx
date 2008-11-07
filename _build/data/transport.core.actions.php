@@ -139,56 +139,6 @@ $collection['14']->fromArray(array (
   'lang_topics' => 'manager_log',
   'assets' => '',
 ), '', true, true);
-$collection['15']= $xpdo->newObject('modAction');
-$collection['15']->fromArray(array (
-  'id' => 15,
-  'context_key' => 'mgr',
-  'parent' => 10,
-  'controller' => 'element/module',
-  'haslayout' => 1,
-  'lang_topics' => 'module',
-  'assets' => '',
-), '', true, true);
-$collection['16']= $xpdo->newObject('modAction');
-$collection['16']->fromArray(array (
-  'id' => 16,
-  'context_key' => 'mgr',
-  'parent' => 15,
-  'controller' => 'element/module/create',
-  'haslayout' => 1,
-  'lang_topics' => 'module,category,user',
-  'assets' => '',
-), '', true, true);
-$collection['17']= $xpdo->newObject('modAction');
-$collection['17']->fromArray(array (
-  'id' => 17,
-  'context_key' => 'mgr',
-  'parent' => 15,
-  'controller' => 'element/module/update',
-  'haslayout' => 1,
-  'lang_topics' => 'module,category,user',
-  'assets' => '',
-), '', true, true);
-$collection['18']= $xpdo->newObject('modAction');
-$collection['18']->fromArray(array (
-  'id' => 18,
-  'context_key' => 'mgr',
-  'parent' => 15,
-  'controller' => 'element/module/dependencies',
-  'haslayout' => 1,
-  'lang_topics' => 'module,user',
-  'assets' => '',
-), '', true, true);
-$collection['19']= $xpdo->newObject('modAction');
-$collection['19']->fromArray(array (
-  'id' => 19,
-  'context_key' => 'mgr',
-  'parent' => 15,
-  'controller' => 'element/module/run',
-  'haslayout' => 1,
-  'lang_topics' => 'module',
-  'assets' => '',
-), '', true, true);
 $collection['20']= $xpdo->newObject('modAction');
 $collection['20']->fromArray(array (
   'id' => 20,
