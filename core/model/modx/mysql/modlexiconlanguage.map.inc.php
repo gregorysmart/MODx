@@ -22,7 +22,7 @@ $xpdo_meta_map['modLexiconLanguage']= array (
       'index' => 'pk',
     ),
   ),
-  'composites' => 
+  'aggregates' => 
   array (
     'modLexiconEntry' => 
     array (
@@ -34,5 +34,5 @@ $xpdo_meta_map['modLexiconLanguage']= array (
     ),
   ),
 );
-if (XPDO_PHP4_MODE) $xpdo_meta_map['modLexiconLanguage']['composites']= array_merge($xpdo_meta_map['modLexiconLanguage']['composites'], array_change_key_case($xpdo_meta_map['modLexiconLanguage']['composites']));
+if (XPDO_PHP4_MODE) $xpdo_meta_map['modLexiconLanguage']['aggregates']= array_merge($xpdo_meta_map['modLexiconLanguage']['aggregates'], array_change_key_case($xpdo_meta_map['modLexiconLanguage']['aggregates']));
 $xpdo_meta_map['modlexiconlanguage']= & $xpdo_meta_map['modLexiconLanguage'];

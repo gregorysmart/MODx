@@ -189,7 +189,7 @@
     </object>
     <object class="modLexiconLanguage" table="lexicon_languages" extends="xPDOObject">
         <field key="name" dbtype="varchar" precision="20" phptype="string" null="false" default="" index="pk" />
-        <composite alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
+        <aggregate alias="modLexiconEntry" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
     </object>
     <object class="modLexiconTopic" table="lexicon_topics" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="100" phptype="string" null="false" default="" index="unique" indexgrp="foci" />
