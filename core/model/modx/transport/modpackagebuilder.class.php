@@ -273,7 +273,7 @@ class modPackageBuilder {
      */
     function buildLexicon($path) {
         $invdirs = array('.','..','.svn');
-        $i = 0;
+        $i = 0; $ti = 0;
         $topics = array();
         $languages = array();
         $entries = array();
@@ -283,17 +283,6 @@ class modPackageBuilder {
         }
 
         $this->modx->log(MODX_LOG_LEVEL_INFO,'Auto-building in lexicon from path: '.$path);
-
-        /* package in languages */
-        $attributes= array(
-            XPDO_TRANSPORT_UNIQUE_KEY => 'name',
-            XPDO_TRANSPORT_PRESERVE_KEYS => true,
-            XPDO_TRANSPORT_UPDATE_OBJECT => true,
-        );
-        foreach ($languages as $language) {
-            $vehicle = $this->createVehicle($language,$attributes);
-            $this->putVehicle($vehicle);
-        }
 
         /* loop through cultures */
         $dir = dir($path);
@@ -307,7 +296,6 @@ class modPackageBuilder {
                 $language->fromArray(array(
                     'name' => $culture,
                 ),'',true,true);
-                $language->save();
             }
             $languages[$culture]= $language;
 
@@ -327,10 +315,11 @@ class modPackageBuilder {
                 if ($topic == null) {
                     $topic= $this->modx->newObject('modLexiconTopic');
                     $topic->fromArray(array (
+                      'id' => $ti,
                       'name' => $top,
                       'namespace' => $this->namespace->get('name'),
-                    ));
-                    $topic->save();
+                    ),'',true,true);
+                    $ti++;
                 }
 
                 $f = $fdir.$entry;
@@ -343,17 +332,18 @@ class modPackageBuilder {
                     foreach ($_lang as $key => $value) {
                         $entry = $this->modx->newObject('modLexiconEntry');
                         $entry->fromArray(array (
+                          'id' => $i,
                           'name' => $key,
                           'value' => $value,
                           'topic' => $topic->get('id'),
                           'namespace' => $this->namespace->get('name'),
                           'language' => $culture,
-                        ));
+                        ),'',true,true);
                         $entries[] = $entry;
+                        $i++;
                     }
                 }
                 $topic->addMany($entries);
-                $topic->save();
 
                 $vehicle = $this->createVehicle($topic,array (
                     XPDO_TRANSPORT_PRESERVE_KEYS => false,
@@ -369,19 +359,27 @@ class modPackageBuilder {
                     ),
                 ));
                 $this->putVehicle($vehicle);
-
-                $topic->remove();
             }
         }
         $dir->close();
 
+        /* package in languages */
+        $attributes= array(
+            XPDO_TRANSPORT_UNIQUE_KEY => 'name',
+            XPDO_TRANSPORT_PRESERVE_KEYS => true,
+            XPDO_TRANSPORT_UPDATE_OBJECT => true,
+        );
+        foreach ($languages as $language) {
+            $vehicle = $this->createVehicle($language,$attributes);
+            $this->putVehicle($vehicle);
+        }
 
         return true;
     }
-    
+
     /**
      * Set an array of attributes into the xPDOTransport manifest.
-     * 
+     *
      * @param array $attributes An array of attributes to set in the
      * manifest of the package being built.
      */
