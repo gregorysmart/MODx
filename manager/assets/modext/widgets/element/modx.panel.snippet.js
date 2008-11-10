@@ -15,19 +15,17 @@ MODx.panel.Snippet = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: {
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,deferredRender: false
-            ,border: false
+            xtype: 'modx-tabs'
+            ,resizeTabs: false
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
                 ,labelWidth: 150
             }
             ,items: [{
                 title: _('snippet_title')
                 ,defaults: { border: false ,msgTarget: 'side' }
+                ,bodyStyle: 'padding: 1.5em;'
                 ,items: [{
                     html: '<h2>'+_('snippet')+': '+config.name+'</h2>'
                     ,id: 'snippet-name'
@@ -91,14 +89,8 @@ MODx.panel.Snippet = function(config) {
                     
                 }]
             },{
-                title: _('properties')
-                ,xtype: 'panel'
-                ,layout: 'form'
-                ,border: false
-                ,items: [{
-                    xtype: 'grid-element-properties'
-                    ,panel: 'panel-snippet'
-                }]
+                xtype: 'grid-element-properties'
+                ,panel: 'panel-snippet'
             }]
         }
         ,listeners: {

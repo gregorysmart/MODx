@@ -15,18 +15,16 @@ MODx.panel.Chunk = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: {
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,deferredRender: false
-            ,border: false
+            xtype: 'modx-tabs'
+            ,resizeTabs: false
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
                 ,labelWidth: 150
             }
             ,items: [{
                 title: _('chunk_title')
+                ,bodyStyle: 'padding: 1.5em;'
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                         html: '<h2>'+_('chunk')+': '+config.name+'</h2>'
@@ -107,14 +105,8 @@ MODx.panel.Chunk = function(config) {
                         }
                     }]
             },{
-                title: _('properties')
-                ,xtype: 'panel'
-                ,layout: 'form'
-                ,border: false
-                ,items: [{
-                    xtype: 'grid-element-properties'
-                    ,panel: 'panel-chunk'
-                }]
+                xtype: 'grid-element-properties'
+                ,panel: 'panel-chunk'
             }]
         }
         ,listeners: {

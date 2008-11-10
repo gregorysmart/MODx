@@ -16,18 +16,16 @@ MODx.panel.Plugin = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: {
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,deferredRender: false
-            ,border: false
+            xtype: 'modx-tabs'
+            ,resizeTabs: false
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
                 ,labelWidth: 150
             }
             ,items: [{
                 title: _('plugin_title')
+                ,bodyStyle: 'padding: 1.5em;'
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                     html: '<h2>'+_('plugin')+': '+config.name+'</h2>'
@@ -93,6 +91,7 @@ MODx.panel.Plugin = function(config) {
                 }]
             },{
                 title: _('system_events')
+                ,bodyStyle: 'padding: 1.5em;'
                 ,items: [{
                     html: '<h2>'+_('system_events')+'</h2>'
                     ,border: false
@@ -109,14 +108,8 @@ MODx.panel.Plugin = function(config) {
                     }
                 }]             
             },{
-                title: _('properties')
-                ,xtype: 'panel'
-                ,layout: 'form'
-                ,border: false
-                ,items: [{
-                    xtype: 'grid-element-properties'
-                    ,panel: 'panel-plugin'
-                }]
+                xtype: 'grid-element-properties'
+                ,panel: 'panel-plugin'
             }]
         }
         ,listeners: {

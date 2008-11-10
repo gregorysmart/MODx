@@ -9,9 +9,10 @@
  */
 MODx.Tabs = function(config) {
 	config = config || {};
-	Ext.apply(config,{
+	Ext.applyIf(config,{
 		enableTabScroll: true
 		,resizeTabs: true
+        ,layoutOnTabChange: true
 		,defaults: {
 			autoScroll: true
 			,autoHeight: true

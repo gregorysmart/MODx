@@ -34,10 +34,9 @@ MODx.grid.LocalGrid = function(config) {
         ,store: this._loadStore(config)
         ,sm: new Ext.grid.RowSelectionModel({singleSelect:false})
         ,loadMask: true
-        ,loadMask: true
-        ,autoHeight: true
         ,collapsible: true
         ,stripeRows: true
+        ,enableColumnMove: true
         ,viewConfig: {
             forceFit: true
             ,enableRowBody: true

@@ -17,10 +17,9 @@ MODx.panel.TV = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: {
-            xtype: 'tabpanel'
-            ,activeTab: 0
+            xtype: 'modx-tabs'
+            ,resizeTabs: false
             ,deferredRender: false
-            ,border: false
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
@@ -151,14 +150,8 @@ MODx.panel.TV = function(config) {
                     'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
                 }
             },{
-                title: _('properties')
-                ,xtype: 'panel'
-                ,layout: 'form'
-                ,border: false
-                ,items: [{
-                    xtype: 'grid-element-properties'
-                    ,panel: 'panel-tv'
-                }]
+                xtype: 'grid-element-properties'
+                ,panel: 'panel-tv'
             }]
         }
         ,listeners: {

@@ -17,18 +17,16 @@ MODx.panel.Template = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: {
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,deferredRender: false
-            ,border: false
+            xtype: 'modx-tabs'
+            ,resizeTabs: false
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
                 ,labelWidth: 150
             }
             ,items: [{
                 title: _('template_title')
+                ,bodyStyle: 'padding: 1.5em;'
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                     html: '<h2>'+_('template')+': </h2>'
@@ -93,18 +91,12 @@ MODx.panel.Template = function(config) {
                ,preventRender: true
                ,template: config.template
                ,bodyStyle: ''
-                ,listeners: {
+               ,listeners: {
                     'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
-                }
+               }
             },{
-                title: _('properties')
-                ,xtype: 'panel'
-                ,layout: 'form'
-                ,border: false
-                ,items: [{
-                    xtype: 'grid-element-properties'
-                    ,panel: 'panel-template'
-                }]
+                xtype: 'grid-element-properties'
+                ,panel: 'panel-template'
             }]
         }
         ,listeners: {

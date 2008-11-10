@@ -14,10 +14,10 @@ MODx.grid.ElementProperties = function(config) {
     Ext.applyIf(config,{
         title: _('properties')
         ,id: 'grid-element-properties'
-        ,autoHeight: true
         ,maxHeight: 300
-        ,width: '90%'
         ,fields: ['name','description','xtype','options','value']
+        ,autoExpandColumn: 'value'
+        ,width: '100%'
         ,plugins: [exp]
         ,columns: [exp,{
             header: _('name')
