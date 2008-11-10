@@ -69,7 +69,7 @@ foreach ($settings as $setting) {
     $sa['oldkey'] = $sa['key'];
     $sa['editedon'] = $sa['editedon'] == '0000-00-00 00:00:00' || $sa['editedon'] == null
         ? ''
-        : strftime('%D %I:%M %p',strtotime($setting->get('editedon')));
+        : strftime('%b %d, %Y %I:%M %p',$setting->get('editedon'));
 
     $sa['menu'] = array(
         array(
