@@ -319,6 +319,7 @@ MODx.window.UpdateElementProperty = function(config) {
         },{
             xtype: 'element-value-field'
             ,xtypeField: 'uep-xtype'
+            ,name: 'value'
         },{
             id: 'uep-grid-element-property-options'
             ,xtype: 'grid-element-property-options'
