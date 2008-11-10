@@ -43,9 +43,9 @@ $ps = array();
 foreach ($entries as $entry) {
     $pa = $entry->toArray();
 
-    $pa['editedon'] = $entry->get('editedon') == '0000-00-00 00:00:00'
+    $pa['editedon'] = $entry->get('editedon') == '0000-00-00 00:00:00' || $entry->get('editedon') == null
         ? ''
-        : strftime('%D %I:%M %p',strtotime($entry->get('editedon')));
+        : strftime('%b %d, %Y %I:%M %p',$entry->get('editedon'));
 
     $pa['menu'] = array(
         array(

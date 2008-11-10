@@ -34,7 +34,7 @@ MODx.grid.Lexicon = function(config) {
         },{
             header: _('last_modified')
             ,dataIndex: 'editedon'
-            ,width: 100
+            ,width: 125
             
         }]
         ,tbar: [{
