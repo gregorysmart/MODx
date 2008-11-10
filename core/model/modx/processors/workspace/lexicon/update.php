@@ -15,7 +15,7 @@ if ($entry == null) {
 }
 
 if (!isset($_POST['topic'])) return $modx->error->failure($modx->lexicon('topic_err_ns'));
-$topic = $modx->getObject('modLexiconTopic',$_POST['focus']);
+$topic = $modx->getObject('modLexiconTopic',$_POST['topic']);
 if ($topic == null) return $modx->error->failure($modx->lexicon('topic_err_nf'));
 
 

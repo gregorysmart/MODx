@@ -256,8 +256,21 @@ MODx.window.CreateLexiconEntry = function(config) {
         }]
     });
     MODx.window.CreateLexiconEntry.superclass.constructor.call(this,config);
+    this.on('show',this.preFillTopic,this);
 };
-Ext.extend(MODx.window.CreateLexiconEntry,MODx.Window);
+Ext.extend(MODx.window.CreateLexiconEntry,MODx.Window,{
+    preFillTopic: function() {
+        var ns = this.fp.getForm().findField('namespace').getValue();        
+        var fld = this.fp.getForm().findField('topic');
+        fld.store.baseParams.namespace = ns;
+        var v = fld.getValue();
+        fld.store.load({
+            callback: function(r,o,s) {
+                fld.setValue(v);
+            }
+        });
+    }
+});
 Ext.reg('window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
 
 
@@ -297,6 +310,7 @@ MODx.window.UpdateLexiconEntry = function(config) {
             xtype: 'combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
+            ,id: 'ule-namespace'
             ,value: r.namespace
             ,listeners: {
                 'select': {fn: function(cb,r,i) {
@@ -321,8 +335,21 @@ MODx.window.UpdateLexiconEntry = function(config) {
         }]
     });
     MODx.window.UpdateLexiconEntry.superclass.constructor.call(this,config);
+    this.on('show',this.preFillTopic,this);
 };
-Ext.extend(MODx.window.UpdateLexiconEntry,MODx.Window);
+Ext.extend(MODx.window.UpdateLexiconEntry,MODx.Window,{
+    preFillTopic: function() {
+        var ns = this.fp.getForm().findField('namespace').getValue();        
+        var fld = this.fp.getForm().findField('topic');
+        fld.store.baseParams.namespace = ns;
+        var v = fld.getValue();
+        fld.store.load({
+            callback: function(r,o,s) {
+                fld.setValue(v);
+            }
+        });
+    }
+});
 Ext.reg('window-lexicon-entry-update',MODx.window.UpdateLexiconEntry);
 
 /**
