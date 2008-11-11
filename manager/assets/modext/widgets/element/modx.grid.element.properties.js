@@ -19,6 +19,7 @@ MODx.grid.ElementProperties = function(config) {
         ,autoExpandColumn: 'value'
         ,sortBy: 'name'
         ,width: '100%'
+        ,sm: new Ext.grid.RowSelectionModel({singleSelect:false})
         ,plugins: [exp]
         ,columns: [exp,{
             header: _('name')
@@ -102,6 +103,38 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                 },scope:this}
             }
         });
+    }
+    
+    ,removeMultiple: function(btn,e) {
+        var rows = this.getSelectionModel().getSelections();
+        var rids = [];
+        for (var i=0;i<rows.length;i=i+1) {
+            rids.push(rows[i].data.id);
+        }
+        Ext.Msg.confirm(_('warning'),_('properties_remove_confirm'),function(e) {
+            if (e == 'yes') {
+                for (var f=0;f<rows.length;f=f+1) {
+                    this.store.remove(rows[f]);
+                }
+            }
+        },this);
+    }
+    
+    ,_showMenu: function(g,ri,e) {
+        var sm = this.getSelectionModel();
+        if (sm.getSelections().length > 1) {
+            e.stopEvent();
+            e.preventDefault();
+            this.menu.removeAll();
+            this.addContextMenuItem([{
+                text: _('properties_remove')
+                ,handler: this.removeMultiple
+                ,scope: this
+            }]);
+            this.menu.show(e.target);
+        } else {
+            MODx.grid.ElementProperties.superclass._showMenu.call(this,g,ri,e);
+        }
     }
     
     ,getMenu: function() {
