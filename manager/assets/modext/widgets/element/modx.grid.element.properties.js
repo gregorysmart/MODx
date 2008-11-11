@@ -17,13 +17,13 @@ MODx.grid.ElementProperties = function(config) {
         ,maxHeight: 300
         ,fields: ['name','description','xtype','options','value']
         ,autoExpandColumn: 'value'
+        ,sortBy: 'name'
         ,width: '100%'
         ,plugins: [exp]
         ,columns: [exp,{
             header: _('name')
             ,dataIndex: 'name'
             ,width: 250
-            ,editor: { xtype: 'textfield' ,allowBlank: false }
             ,sortable: true
         },{
             header: _('type')
