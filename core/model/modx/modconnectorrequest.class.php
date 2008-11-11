@@ -20,6 +20,7 @@ class modConnectorRequest extends modManagerRequest {
     /**
      * The base subdirectory location of the requested action.
      * @var string
+     * @access public
      */
     var $location;
 
@@ -33,6 +34,7 @@ class modConnectorRequest extends modManagerRequest {
      */
     function __construct(&$modx) {
         parent::__construct($modx);
+        $this->getResponseHandler();
     }
 
     /**
@@ -55,18 +57,36 @@ class modConnectorRequest extends modManagerRequest {
         } */
 
         /* Cleanup action and store. */
-        $this->action = strtolower($action);
-        $this->location = $location;
-        $this->prepareResponse();
+        $this->prepareResponse(array(
+            'action' => strtolower($action),
+            'location' => $location,
+        ));
     }
 
     /**
      * Prepares the output with the specified processor.
+     *
+     * @param array $options An array of options
      */
-    function prepareResponse() {
-        if (!$this->modx->getResponse('modConnectorResponse')) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
+    function prepareResponse($options = array()) {
+        $this->modx->response->outputContent($options);
+    }
+
+    /**
+     * Sets the directory to load the processors from
+     *
+     * @param string $dir The directory to load from
+     */
+    function setDirectory($dir = '') {
+        $this->modx->response->setDirectory($dir);
+    }
+
+    /**
+     *
+     */
+    function getResponseHandler($class = 'modConnectorResponse') {
+        if (!$this->modx->getResponse($class)) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class: '.$class);
         }
-        $this->modx->response->outputContent();
     }
 }

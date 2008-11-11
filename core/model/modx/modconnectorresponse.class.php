@@ -31,21 +31,16 @@ class modConnectorResponse extends modResponse {
         $_lang =& $this->modx->lexicon;
         $error =& $this->modx->error;
 
-        /* get the location and action */
-        $location = '';
-        $action = '';
-        if (!isset($this->modx->request) || !isset($this->modx->request->location) || !isset($this->modx->request->action)) {
+        /* verify the location and action */
+        if (!isset($options['location']) || !isset($options['action'])) {
             $this->body = $this->modx->error->failure($modx->lexicon('action_err_ns'));
-        } else {
-            $location =& $this->modx->request->location;
-            $action =& $this->modx->request->action;
         }
-        
+
         /* execute a processor and format the response */
-        if (empty($action)) {
+        if (empty($options['action'])) {
             $this->body = $this->modx->error->failure($modx->lexicon('action_err_ns'));
         } else {
-            $file = $this->_directory.str_replace('\\', '/', $location . '/' . $action).'.php';
+            $file = $this->_directory.str_replace('\\', '/', $options['location'] . '/' . $options['action']).'.php';
 
             /* verify processor exists */
             if (!file_exists($file)) {
@@ -55,7 +50,7 @@ class modConnectorResponse extends modResponse {
                 $this->body = include $file;
             }
         }
-        header("Content-Type: text/json; charset=UTF-8");
+        //header("Content-Type: text/json; charset=UTF-8");
         if (is_array($this->header)) {
             foreach ($this->header as $header) header($header);
         }
@@ -63,9 +58,9 @@ class modConnectorResponse extends modResponse {
             die($this->modx->toJSON(array(
                 'success' => isset($this->body['success']) ? $this->body['success'] : 0,
                 'message' => isset($this->body['message']) ? $this->body['message'] : $this->modx->lexicon('error'),
-                'total' => (isset($this->body['total']) && $this->body['total'] > 0) 
-                        ? intval($this->body['total']) 
-                        : (isset($this->body['errors']) 
+                'total' => (isset($this->body['total']) && $this->body['total'] > 0)
+                        ? intval($this->body['total'])
+                        : (isset($this->body['errors'])
                                 ? count($this->body['errors'])
                                 : 1),
                 'data' => isset($this->body['errors']) ? $this->body['errors'] : array(),
