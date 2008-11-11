@@ -1172,6 +1172,7 @@ class modX extends xPDO {
                 $this->event->name= $eventName;
                 if (isset ($this->pluginCache[$pluginId])) {
                     $plugin= $this->pluginCache[$pluginId];
+                    $plugin->_processed = false;
                     if ($plugin->get('disabled')) {
                         $plugin= null;
                     }
@@ -1376,7 +1377,7 @@ class modX extends xPDO {
 
     /**
      * Process and return the output from an HTML chunk by name.
-     * 
+     *
      * @param string $chunkName The name of the chunk.
      * @param array $properties An associative array of properties to process
      * the chunk with.
@@ -1393,7 +1394,7 @@ class modX extends xPDO {
 
     /**
      * Parse a chunk using an associative array of replacement variables.
-     * 
+     *
      * @param string $chunkName The name of the chunk.
      * @param array $chunkArr An array of properties to replace in the chunk.
      * @param string $prefix The placeholder prefix, defaults to [[+.
