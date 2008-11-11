@@ -20,3 +20,8 @@
 .x-grid3-row-expanded .x-grid3-row-expander {
     background-position:-21px 4px;
 }
+
+/* form : checkboxes : cursor point */
+.x-form-check:hover {
+    cursor: pointer;
+}
