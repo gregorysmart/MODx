@@ -9,13 +9,19 @@
  */
 MODx.grid.Package = function(config) {
     config = config || {};
+    var exp = new Ext.grid.RowExpander({
+        tpl : new Ext.Template(
+            '<p style="padding: .7em 1em .3em;"><i>{readme}</i></p>'
+        )
+    });
     Ext.applyIf(config,{
         title: _('packages')
         ,id: 'grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
-        ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','menu']
-        ,columns: [
-            { header: _('package_signature') ,dataIndex: 'signature' }
+        ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','readme','menu']
+        ,plugins: [exp]
+        ,columns: [exp,{
+               header: _('package_signature') ,dataIndex: 'signature' }
             ,{ header: _('created') ,dataIndex: 'created' }
             ,{ header: _('updated') ,dataIndex: 'updated' }
             ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }

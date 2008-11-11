@@ -49,6 +49,12 @@ foreach ($packages as $package) {
                 : 'this.install',
         ),
     );
+    $transport = $package->getTransport();
+    if ($transport) {
+        $pa['readme'] = $transport->getAttribute('readme');
+        $pa['readme'] = nl2br($pa['readme']);
+    }
+
     if ($not_installed == false) {
         $pa['menu'][] = array(
             'text' => $modx->lexicon('package_uninstall'),
