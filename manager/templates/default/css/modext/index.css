@@ -1,0 +1,39 @@
+@import url(./extensions.css);
+@import url(./style.css);
+
+textarea.x-form-field {
+    font-family: "Courier New", Courier, monospace;
+    font-weight: normal;
+}
+
+th.x-form-element, td.x-form-element {
+    padding-left: 0;    
+}
+
+.x-menu a {
+    text-decoration: none !important;
+}
+.unpublished { font-style: italic; }
+.bold { font-weight: bold; }
+.deleted {
+    font-style: italic;
+    color: red !important;
+}
+.deleted a span {
+    color: #CC3333 !important;
+    text-decoration: line-through !important;
+}
+.hidemenu a span { color: gray !important; }
+
+.error { color: red !important; }
+
+.folder .x-tree-node-icon {
+    background-image:url(../../../assets/ext2/resources/images/default/tree/folder.gif) !important; 
+}
+.weblink .x-tree-node-icon {
+    background-image:url(../images/icons/weblink.gif) !important;   
+}
+
+.tree ul, .tree ul li { 
+    list-style: none;
+}

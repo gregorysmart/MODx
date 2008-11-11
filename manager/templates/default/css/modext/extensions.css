@@ -1,0 +1,9 @@
+
+input.x-static-text-field {
+    background: transparent;
+    border: none;
+    color: inherit;
+    -moz-opacity: 1;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
