@@ -28,10 +28,10 @@ th.x-form-element, td.x-form-element {
 .error { color: red !important; }
 
 .folder .x-tree-node-icon {
-    background-image:url(../../../assets/ext2/resources/images/default/tree/folder.gif) !important; 
+    background-image:url(../../../../assets/ext2/resources/images/default/tree/folder.gif) !important; 
 }
 .weblink .x-tree-node-icon {
-    background-image:url(../images/icons/weblink.gif) !important;   
+    background-image:url(../../images/icons/weblink.gif) !important;   
 }
 
 .tree ul, .tree ul li { 
