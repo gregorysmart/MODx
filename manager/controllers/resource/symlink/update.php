@@ -14,7 +14,7 @@ $delegateView= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__)
 if (file_exists($delegateView)) {
     $overridden= include_once ($delegateView);
     if ($overridden !== false) {
-        return;
+        return true;
     }
 }
 

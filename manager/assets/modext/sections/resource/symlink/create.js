@@ -9,7 +9,7 @@
 MODx.page.CreateSymLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'resource/document.php'
+        url: MODx.config.connectors_url+'resource/index.php'
         ,formpanel: 'panel-symlink'
         ,which_editor: 'none'
         ,actions: {
