@@ -40,15 +40,15 @@ class modTemplateVar extends modElement {
 
             /* copy the content source to the output buffer */
             $this->_output= $this->_content;
-            
+
             if (is_string($this->_output) && !empty ($this->_output)) {
                 /* turn the processed properties into placeholders */
                 $restore = $this->toPlaceholders($this->_properties);
-                
+
                 /* collect element tags in the content and process them */
                 $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
                 $this->xpdo->parser->processElementTags($this->_tag, $this->_output, false, false, '[[', ']]', array(), $maxIterations);
-                
+
                 /* remove the placeholders set from the properties of this element and restore global values */
                 $this->xpdo->unsetPlaceholders(array_keys($this->_properties));
                 if ($restore) $this->xpdo->toPlaceholders($restore);
@@ -65,7 +65,7 @@ class modTemplateVar extends modElement {
         /* finally, return the processed element content */
         return $this->_output;
     }
-    
+
     /**
      * Get the source content of this template variable.
      */
@@ -181,6 +181,10 @@ class modTemplateVar extends modElement {
         $tvtype= $this->get('type');
 
         $outputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/output/';
+        if (!file_exists($outputRenderPath) || !is_dir($outputRenderPath)) {
+            $outputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/web/output/';
+        }
+
         $outputRenderFile = $outputRenderPath.$this->get('display').'.php';
 
         if (!file_exists($outputRenderFile)) {
@@ -215,6 +219,10 @@ class modTemplateVar extends modElement {
 
         /* find the correct renderer for the TV, if not one, render a textbox */
         $inputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/input/';
+        if (!file_exists($inputRenderPath) || !is_dir($inputRenderPath)) {
+            $outputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/web/input/';
+        }
+
         $inputRenderFile = $inputRenderPath.$this->get('type').'.php';
         if (!file_exists($inputRenderFile)) {
             $field_html .= include $inputRenderPath.'textbox.php';
