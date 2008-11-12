@@ -43,7 +43,7 @@ class modResponse {
     /**
      * Prepare the final response after the resource has been processed.
      *
-     * @param boolean $noEvent Indicates if no events should be triggered.
+     * @param array $options Various options that can be set.
      */
     function outputContent($options = array()) {
         $this->modx->resource->_output= $this->modx->resource->_content;
@@ -76,7 +76,7 @@ class modResponse {
             $this->modx->_beforeRender();
 
             /* invoke OnWebPagePrerender event */
-            if (isset($options['noEvent']) && !empty($options['noEvent'])) {
+            if (!empty($options['noEvent'])) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
 
@@ -104,7 +104,7 @@ class modResponse {
             $this->modx->_beforeRender();
 
             /* invoke OnWebPagePrerender event */
-            if (isset($options['noEvent']) && !empty($options['noEvent'])) {
+            if (!empty($options['noEvent'])) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
         }

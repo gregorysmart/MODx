@@ -114,27 +114,15 @@ class modLexicon {
     }
 
     /**
-     * Initializes the lexicon with the default strings.
+     * Initializes the lexicon.
      *
      * @access protected
      */
     function init() {
-        $_lang= array ();
         $this->_paths = array(
              'core' => $this->modx->config['core_path'] . 'cache/lexicon/',
         );
-        if ($this->modx->isBackend()) {
-            /* include the language file */
-            if(!isset($this->modx->config['manager_language'])) {
-                $this->modx->cultureKey= 'en';
-                /* if not set, get the english language file. */
-            } else {
-                $this->modx->cultureKey = $this->modx->config['manager_language'];
-            }
-            /* load default core cache file of lexicon strings */
-            $_lang = $this->loadCache('core','default',$this->modx->cultureKey);
-        }
-        $this->_lexicon = & $_lang;
+        $this->_lexicon = array();
     }
 
     /**
@@ -148,7 +136,7 @@ class modLexicon {
      * @return array The loaded lexicon array.
      */
     function loadCache($namespace = 'core',$topic = 'default',$language = '') {
-        if ($language == '') $language = $this->modx->config['manager_language'];
+        if ($language == '') $language = $this->modx->cultureKey;
 
         $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$topic.'.cache.php';
 
@@ -196,7 +184,7 @@ class modLexicon {
             } else { /* if namespace, search specified lexicon */
                 $params = explode(':',$topic);
                 if (count($params) <= 2) {
-                    $language = $this->modx->config['manager_language'];
+                    $language = $this->modx->cultureKey;
                     $namespace = $params[0];
                     $topc = $params[1];
                 } else {
@@ -238,7 +226,7 @@ class modLexicon {
      * @return string The results of the cache clearing.
      */
     function clearCache($path = '') {
-    	$path = 'lexicon/'.$path;
+        $path = 'lexicon/'.$path;
         $cacheManager = $this->modx->getCacheManager();
         return $cacheManager->clearCache(array($path));
     }

@@ -36,13 +36,11 @@ class modManagerRequest extends modRequest {
     }
     function __construct(& $modx) {
         parent :: __construct($modx);
-        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
-            $this->loadActionMap();
-        }
+        $this->initialize();
     }
 
     /**
-     * Initializes the manager context.
+     * Initializes the manager request.
      *
      * @access public
      * @return boolean True if successful.
@@ -111,9 +109,16 @@ class modManagerRequest extends modRequest {
                 }
             }
         }
-        /* if manager_language not set, set it to current culture */
-        if (!isset($this->modx->config['manager_language'])) {
-            $this->modx->config['manager_language'] = $this->modx->cultureKey;
+
+        if (isset($this->modx->config['manager_language'])) {
+            $this->modx->cultureKey= $this->modx->config['manager_language'];
+        }
+
+        /* load default core cache file of lexicon strings */
+        $this->modx->lexicon->load('core:default');
+
+        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
+            $this->loadActionMap();
         }
 
         return true;
@@ -174,15 +179,13 @@ class modManagerRequest extends modRequest {
      * Prepares the MODx response to a mgr request that is being handled.
      *
      * @access public
+     * @param array $options An array of options
      * @return boolean True if the response is properly prepared.
      */
-    function prepareResponse() {
-        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
-            $this->loadActionMap();
-        }
+    function prepareResponse($options = array()) {
         if (!$this->modx->getResponse('modManagerResponse')) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
         }
-        $this->modx->response->outputContent();
+        $this->modx->response->outputContent($options);
     }
 }

@@ -101,16 +101,17 @@ class modRequest {
     /**
      * Prepares the MODx response to a web request that is being handled.
      *
+     * @param array $options An array of options
      * @return boolean True if the response is properly prepared.
      */
-    function prepareResponse() {
+    function prepareResponse($options = array()) {
         $this->modx->_beforeProcessing();
         $this->modx->invokeEvent("OnLoadWebDocument");
         $this->modx->resource->process();
         if (!$this->modx->getResponse()) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
         }
-        $this->modx->response->outputContent();
+        $this->modx->response->outputContent($options);
     }
 
     /**

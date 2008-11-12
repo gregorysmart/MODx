@@ -95,7 +95,7 @@ class modConnectorResponse extends modResponse {
      */
     function setDirectory($dir = '') {
         if ($dir == '') {
-            $this->_directory = $this->modx->config['core_path'].'model/modx/processors/';
+            $this->_directory = $this->modx->config['processors_path'];
         } else {
             $this->_directory = $dir;
         }

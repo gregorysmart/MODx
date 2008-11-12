@@ -953,6 +953,8 @@ class modX extends xPDO {
                 $this->config['connectors_path']= MODX_CONNECTORS_PATH;
             if (!isset ($this->config['connectors_url']))
                 $this->config['connectors_url']= MODX_CONNECTORS_URL;
+            if (!isset ($this->config['processors_path']))
+                $this->config['processors_path']= MODX_PROCESSORS_PATH;
             if (!isset ($this->config['request_param_id']))
                 $this->config['request_param_id']= 'id';
             if (!isset ($this->config['request_param_alias']))
@@ -2183,26 +2185,6 @@ class modX extends xPDO {
     }
 
     /**
-     * Loads a specified lexicon (i.e. a word/phrase dictionary).
-     *
-     * @param string $key The key identifying the culture of the file.
-     * @param string $path Full filesystem path to the directory containing the file.
-     */
-    function loadLexicon($key = false, $path= '') {
-        if (!$key) {
-            if (!$key= $this->cultureKey) {
-                $this->cultureKey= 'en';
-                $key= 'en';
-            }
-        }
-        if (!$path) {
-            $path= MODX_MANAGER_PATH . 'includes/lang/';
-        }
-        $_lang= & $this->lexicon;
-        @include_once ($path . $this->cultureKey. '.inc.php');
-    }
-
-    /**
      * Loads the modX system configuration settings.
      *
      * @access protected
@@ -2534,19 +2516,6 @@ class modX extends xPDO {
             }
         }
         $this->invokeEvent('OnWebPageComplete');
-    }
-
-    /**
-     * Load a processor and give it access to $modx.
-     *
-     * @param string $file Relative path to the processor.
-     */
-    function loadProcessor($file, $options = array()) {
-        if ($file == '') return false;
-        if (is_array($options) && count($options) > 0) extract($options, EXTR_PREFIX_ALL, 'modx_');
-
-        $modx= & $this;
-        include(MODX_PROCESSORS_PATH . $file);
     }
 
     /**

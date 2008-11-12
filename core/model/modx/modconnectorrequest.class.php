@@ -34,7 +34,21 @@ class modConnectorRequest extends modManagerRequest {
      */
     function __construct(&$modx) {
         parent::__construct($modx);
-        $this->getResponseHandler();
+    }
+
+    function initialize() {
+        if (!empty($this->modx->config['manager_language'])) {
+            $this->modx->cultureKey= $this->modx->config['manager_language'];
+        }
+
+        /* load default core cache file of lexicon strings */
+        $this->modx->lexicon->load('core:default');
+
+        if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
+            $this->loadActionMap();
+        }
+
+        return true;
     }
 
     /**
@@ -69,6 +83,8 @@ class modConnectorRequest extends modManagerRequest {
      * @param array $options An array of options
      */
     function prepareResponse($options = array()) {
+        $procDir = !empty($options['processors_path']) ? $options['processors_path'] : '';
+        $this->setDirectory($procDir);
         $this->modx->response->outputContent($options);
     }
 
@@ -78,15 +94,9 @@ class modConnectorRequest extends modManagerRequest {
      * @param string $dir The directory to load from
      */
     function setDirectory($dir = '') {
-        $this->modx->response->setDirectory($dir);
-    }
-
-    /**
-     *
-     */
-    function getResponseHandler($class = 'modConnectorResponse') {
-        if (!$this->modx->getResponse($class)) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class: '.$class);
+        if (!$this->modx->getResponse('modConnectorResponse')) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class: modConnectorResponse');
         }
+        $this->modx->response->setDirectory($dir);
     }
 }
