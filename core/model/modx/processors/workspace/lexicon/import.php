@@ -67,4 +67,4 @@ foreach ($_lang as $key => $str) {
     $entry->save();
 }
 
-$modx->lexicon->success();
+return $modx->error->success();

@@ -36,4 +36,4 @@ $fileName = $modx->config['core_path'].'export/lexicon/'.$namespace->get('name')
 $cacheManager = $modx->getCacheManager();
 $s = $cacheManager->writeFile($fileName,$o);
 
-$modx->lexicon->success();
+return $modx->error->success();
