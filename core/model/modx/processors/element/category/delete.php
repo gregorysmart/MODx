@@ -1,5 +1,10 @@
 <?php
 /**
+ * Deletes a category. Resets all elements with that category to 0.
+ *
+ * TODO: Move this logic to the modCategory class. Possibly also change grabbing
+ * each element class to just modElement.
+ *
  * @package modx
  * @subpackage processors.element.category
  */

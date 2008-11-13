@@ -1,5 +1,12 @@
 <?php
 /**
+ * Assign or unassigns a resource group to a resource.
+ *
+ * @param integer $id The resource group to assign to.
+ * @param integer $resource The modResource ID to associate with.
+ * @param boolean $access Either true or false whether the resource has access
+ * to the group specified.
+ *
  * @package modx
  * @subpackage processors.resource.resourcegroup
  */

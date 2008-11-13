@@ -1,5 +1,9 @@
 <?php
 /**
+ * Deletes a chunk.
+ *
+ * @param integer $id The ID of the chunk
+ *
  * @package modx
  * @subpackage processors.element.chunk
  */

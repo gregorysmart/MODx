@@ -1,5 +1,10 @@
 <?php
 /**
+ * Update a category.
+ *
+ * @param integer $id The ID of the category.
+ * @param string $category The new name of the category.
+ *
  * @package modx
  * @subpackage processors.element.category
  */

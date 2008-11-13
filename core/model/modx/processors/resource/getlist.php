@@ -2,10 +2,11 @@
 /**
  * Gets a list of resources.
  *
- * @param integer $start The page to start on
- * @param integer $limit (optional) The number of results to limit by
- * @param string $sort The column to sort by
- * @param string $dir The direction to sort
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 10.
+ * @param string $sort (optional) The column to sort by. Defaults to name.
+ * @param string $dir (optional) The direction of the sort. Defaults to ASC.
  * @return array An array of modResources
  *
  * @package modx

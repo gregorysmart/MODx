@@ -1,5 +1,9 @@
 <?php
 /**
+ * Creates a category.
+ *
+ * @param string $category The new name of the category.
+ *
  * @package modx
  * @subpackage processors.element.category
  */

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Gets a category.
+ *
+ * @param integer $id The ID of the category.
+ *
  * @package modx
  * @subpackage processors.element.category
  */

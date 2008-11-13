@@ -1,5 +1,9 @@
 <?php
 /**
+ * Update a resource from the site schedule grid.
+ *
+ * @param json $data A JSON array of data to update with.
+ *
  * @package modx
  * @subpackage processors.resource.event
  */

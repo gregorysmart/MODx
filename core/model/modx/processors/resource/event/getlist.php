@@ -1,5 +1,14 @@
 <?php
 /**
+ * Grabs the site schedule data.
+ *
+ * @param string $mode pub_date|unpub_date (optional) The mode to grab, either
+ * to-publish or to-unpublish. Defaults to pub_date.
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 10.
+ * @param string $dir (optional) The direction of the sort. Defaults to ASC.
+ *
  * @package modx
  * @subpackage processors.resource.event
  */
