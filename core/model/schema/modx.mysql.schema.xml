@@ -94,7 +94,6 @@
         <field key="category" dbtype="varchar" precision="45" phptype="string" null="false" default="" index="unique" />
         <aggregate alias="modChunk" class="modChunk" key="id" local="id" foreign="category" cardinality="many" owner="local" />
         <aggregate alias="modSnippet" class="modSnippet" key="id" local="id" foreign="category" cardinality="many" owner="local" />
-        <aggregate alias="modModule" class="modModule" key="id" local="id" foreign="category" cardinality="many" owner="local" />
         <aggregate alias="modPlugin" class="modPlugin" key="id" local="id" foreign="category" cardinality="many" owner="local" />
         <aggregate alias="modTemplate" class="modTemplate" key="id" local="id" foreign="category" cardinality="many" owner="local" />
         <aggregate alias="modTemplateVar" class="modTemplateVar" key="id" local="id" foreign="category" cardinality="many" owner="local" />
@@ -243,7 +242,6 @@
         <field key="properties" dbtype="text" phptype="array" null="true" />
         <field key="disabled" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
         <field key="moduleguid" dbtype="varchar" precision="32" phptype="string" null="false" default="" index="fk" />
-        <aggregate alias="modModule" class="modModule" key="guid" local="moduleguid" foreign="guid" cardinality="one" owner="foreign" />
         <composite alias="modPluginEvent" class="modPluginEvent" local="id" foreign="pluginid" cardinality="many" owner="local" />
     </object>
     <object class="modPluginEvent" table="site_plugin_events" extends="xPDOObject">
@@ -356,7 +354,6 @@
         <field key="locked" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
         <field key="properties" dbtype="text" phptype="array" null="true" />
         <field key="moduleguid" dbtype="varchar" precision="32" phptype="string" null="false" default="" index="fk" />
-        <aggregate alias="modModule" class="modModule" key="guid" local="moduleguid" foreign="guid" cardinality="one" owner="foreign" />
     </object>
     <object class="modStaticResource" extends="modResource" />
     <object class="modSymLink" extends="modResource" />

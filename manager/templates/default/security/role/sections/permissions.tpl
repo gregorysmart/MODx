@@ -185,33 +185,6 @@
 </div>
 <br /><br />
 
-<span class="fakefieldsettitle">{$_lang.role_module_management}</span><br />
-<div class="fakefieldset">
-<ul class="no_list">
-<li>
-	<input name="new_module" id="r_new_module" type="checkbox" {if $role->new_module EQ 1}checked="checked"{/if} />
-	<label for="r_new_module">{$_lang.role_new_module}</label>
-</li>
-<li>
-	<input name="edit_module" id="r_edit_module" type="checkbox" {if $role->edit_module EQ 1}checked="checked"{/if} />
-	<label for="r_edit_module">{$_lang.role_edit_module}</label>
-</li>
-<li>
-	<input name="save_module" id="r_save_module" type="checkbox" {if $role->save_module EQ 1}checked="checked"{/if} />
-	<label for="r_save_module">{$_lang.role_save_module}</label>
-</li>
-<li>
-	<input name="delete_module" id="r_delete_module" type="checkbox" {if $role->delete_module EQ 1}checked="checked"{/if} />
-	<label for="r_delete_module">{$_lang.role_delete_module}</label>
-</li>
-<li>
-	<input name="exec_module" id="r_exec_module" type="checkbox" {if $role->exec_module EQ 1}checked="checked"{/if} />
-	<label for="r_exec_module">{$_lang.role_run_module}</label>
-</li>
-</ul>
-</div>
-<br /><br />
-
 <span class="fakefieldsettitle">{$_lang.role_eventlog_management}</span><br />
 <div class="fakefieldset">
 <ul class="no_list">

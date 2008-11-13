@@ -69,7 +69,7 @@ if ($connected) {
         $description = 'Added new `content_ft_idx` full-text index on the fields `pagetitle`, `longtitle`, `description`, `introtext`, `content`.';
         processResults($this->xpdo,$results,$class,$description,$sql);
     }
-    
+
     $sql = "ALTER TABLE {$table} ADD INDEX `published` (`published`)";
     $description = 'Added new index on `published`.';
     processResults($this->xpdo, $results, $class, $description, $sql);
@@ -128,15 +128,6 @@ if ($connected) {
 
     $description = 'Added new index on `role`.';
     $sql = "ALTER TABLE {$table} ADD INDEX `role` (`role`)";
-    processResults($this->xpdo,$results,$class,$description,$sql);
-
-    $class = 'modModule';
-    $table = $this->xpdo->getTableName($class);
-    $description = 'Added disabled field missing in early Revolution releases';
-    $sql = "ALTER TABLE {$table} ADD COLUMN `disabled` TINYINT(1) unsigned NOT NULL DEFAULT 0 AFTER `category`";
-    processResults($this->xpdo,$results,$class,$description,$sql);
-    $description = 'Added index on `category` missing in early Revolution releases';
-    $sql = "ALTER TABLE {$table} ADD INDEX `category` (`category`)";
     processResults($this->xpdo,$results,$class,$description,$sql);
 
     $class = 'modPlugin';

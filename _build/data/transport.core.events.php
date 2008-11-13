@@ -496,48 +496,6 @@ $collection['71']->fromArray(array (
   'service' => 1,
   'groupname' => '',
 ), '', true, true);
-$collection['72']= $xpdo->newObject('modEvent');
-$collection['72']->fromArray(array (
-  'id' => 72,
-  'name' => 'OnModFormPrerender',
-  'service' => 1,
-  'groupname' => 'Modules',
-), '', true, true);
-$collection['73']= $xpdo->newObject('modEvent');
-$collection['73']->fromArray(array (
-  'id' => 73,
-  'name' => 'OnModFormRender',
-  'service' => 1,
-  'groupname' => 'Modules',
-), '', true, true);
-$collection['74']= $xpdo->newObject('modEvent');
-$collection['74']->fromArray(array (
-  'id' => 74,
-  'name' => 'OnBeforeModFormDelete',
-  'service' => 1,
-  'groupname' => 'Modules',
-), '', true, true);
-$collection['75']= $xpdo->newObject('modEvent');
-$collection['75']->fromArray(array (
-  'id' => 75,
-  'name' => 'OnModFormDelete',
-  'service' => 1,
-  'groupname' => 'Modules',
-), '', true, true);
-$collection['76']= $xpdo->newObject('modEvent');
-$collection['76']->fromArray(array (
-  'id' => 76,
-  'name' => 'OnBeforeModFormSave',
-  'service' => 1,
-  'groupname' => 'Modules',
-), '', true, true);
-$collection['77']= $xpdo->newObject('modEvent');
-$collection['77']->fromArray(array (
-  'id' => 77,
-  'name' => 'OnModFormSave',
-  'service' => 1,
-  'groupname' => 'Modules',
-), '', true, true);
 $collection['78']= $xpdo->newObject('modEvent');
 $collection['78']->fromArray(array (
   'id' => 78,

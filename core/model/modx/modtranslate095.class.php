@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -52,7 +52,6 @@ class modTranslate095 {
                 'modChunk' => array ('snippet'),
                 'modSnippet' => array ('snippet'),
                 'modPlugin' => array ('plugincode'),
-                'modModule' => array ('modulecode'),
                 'modTemplateVar' => array ('default_text'),
                 'modTemplateVarResource' => array ('value'),
                 'modSystemSetting' => array ('value')

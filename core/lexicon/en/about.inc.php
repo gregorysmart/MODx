@@ -33,8 +33,8 @@ $_lang['credits_shouts_msg'] = '
     <li>Garry Nutting (garryn)</li>
 </ul>
 
-<h3>Modules & Plugins</h3>
-<p>Creating all the cool stuff that work with MODx.</p>
+<h3>Components & Plugins</h3>
+<p>Creating all the cool stuff that works with MODx.</p>
 <ul>
     <li>Mark Kaplan (Mark)</li>
     <li>Jeff Whitfield (Bravado)</li>

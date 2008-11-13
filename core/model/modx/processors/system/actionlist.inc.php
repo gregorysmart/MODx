@@ -106,24 +106,16 @@ if (!function_exists('getAction')) {
             case "103" : return "Saving plugin $itemid"; break;
             case "104" : return "Delete plugin $itemid"; break;
             case "105" : return "Duplicate plugin $itemid"; break;
-            case "106" : return "Viewing Modules $itemid"; break;
-            case "107" : return "Create new module $itemid"; break;
-            case "108" : return "Edit module $itemid"; break;
-            case "109" : return "Saving module $itemid"; break;
-            case "110" : return "Delete module $itemid"; break;
-            case "111" : return "Duplicate module $itemid"; break;
-            case "112" : return "Execute module $itemid"; break;
-            case "113" : return "Manage module dependencies $itemid"; break;
             case "114" : return "View event log"; break;
             case "115" : return "View event log details $itemid"; break;
             case "116" : return "Delete event log $itemid"; break;
-    
+
             case "300" : return "Create Template Variable"; break;
             case "301" : return "Edit Template Variable"; break;
             case "302" : return "Save Template Variable"; break;
             case "303" : return "Delete Template Variable"; break;
             case "304" : return "Duplicate Template Variable $itemid"; break;
-    
+
             case "200" : return "Viewing phpInfo()"; break;
             case "998" : return "Viewing web page $itemid"; break;
             case "999" : return "Viewing test page"; break;

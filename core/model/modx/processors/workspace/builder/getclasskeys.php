@@ -14,7 +14,6 @@ $keys = array(
     array('key' => 'modContext'),
     array('key' => 'modDocument'),
     array('key' => 'modMenu'),
-    array('key' => 'modModule'),
     array('key' => 'modPlugin'),
     array('key' => 'modResource'),
     array('key' => 'modSnippet'),

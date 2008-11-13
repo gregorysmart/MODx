@@ -1184,19 +1184,7 @@ class modX extends xPDO {
                 if ($plugin) {
                     $this->event->activated= true;
                     $this->event->activePlugin= $plugin->get('name');
-                    $properties= null;
-                    if ($module= $plugin->getOne('modModule')) {
-                        if ($moduleProps= $module->get('properties')) {
-                            $this->getParser();
-                            $properties= $this->parser->parseProperties($module->get('properties'));
-                        }
-                    }
-                    if (is_array ($properties)) {
-                        $properties= array_merge($properties, $params);
-                    } else {
-                        $properties= $params;
-                    }
-                    $msg= $plugin->process($properties);
+                    $msg= $plugin->process($params);
                     $results[]= $this->event->_output;
                     if ($msg && is_string($msg)) {
                         $this->log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . ']' . $msg);

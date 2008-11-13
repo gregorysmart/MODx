@@ -44,12 +44,6 @@ foreach ($tvs as $tv) {
 	$tv->save();
 }
 
-$modules = $modx->getCollection('modModule',array('category' => $category->get('id')));
-foreach ($modules as $module) {
-	$module->set('category',0);
-	$module->save();
-}
-
 if ($category->remove() == false) {
     return $modx->error->failure($modx->lexicon('category_err_remove'));
 }

@@ -39,8 +39,7 @@ foreach ($plugins as $key => $object) {
 if ($modx->hasPermission('save_plugin') ||
 	$modx->hasPermission('save_snippet') ||
 	$modx->hasPermission('save_chunk') ||
-	$modx->hasPermission('save_template') ||
-	$modx->hasPermission('save_module')) {
+	$modx->hasPermission('save_template')) {
 	$modx->smarty->assign('delPerm',1);
 } else $modx->smarty->assign('delPerm',0);
 

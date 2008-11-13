@@ -3,7 +3,7 @@
  * Load create chunk page
  *
  * @package modx
- * @subpackage manager.element.module
+ * @subpackage manager.element.chunk
  */
 if (!$modx->hasPermission('new_chunk')) return $modx->error->failure($modx->lexicon('access_denied'));
 

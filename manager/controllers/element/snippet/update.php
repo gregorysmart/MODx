@@ -25,26 +25,6 @@ $onSnipFormPrerender = $modx->invokeEvent('OnSnipFormPrerender',array('id' => 0)
 if (is_array($onSnipFormPrerender)) $onSnipFormPrerender = implode('',$onSnipFormPrerender);
 $modx->smarty->assign('onSnipFormPrerender',$onSnipFormPrerender);
 
-/* get any module params for the snippet */
-$c = new xPDOCriteria($modx,'
-	SELECT
-		sm.id,sm.name,sm.guid
-	FROM '.$modx->getTableName('modModule').' AS sm
-		INNER JOIN '.$modx->getTableName('modModuleDepobj').' AS smd
-		ON smd.module = sm.id AND smd.type = 40
-
-		INNER JOIN '.$modx->getTableName('modSnippet').' AS ss
-		ON ss.id = smd.resource
-
-	WHERE smd.resource = :resource AND sm.enable_sharedparams = 1
-	ORDER BY sm.name
-',array(
-	':resource' => $snippet->get('id'),
-));
-$params = $modx->getCollection('modModule',$c);
-$modx->smarty->assign('params',$params);
-
-
 /* invoke onSnipFormRender event */
 $onSnipFormRender = $modx->invokeEvent('OnSnipFormRender',array('id' => 0));
 if (is_array($onSnipFormRender)) $onSnipFormRender = implode('',$onSnipFormRender);

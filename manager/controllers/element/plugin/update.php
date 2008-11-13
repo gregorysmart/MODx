@@ -22,25 +22,6 @@ $onPluginFormRender = $modx->invokeEvent('OnPluginFormRender',array('id' => $_RE
 if (is_array($onPluginFormRender)) $onPluginFormRender = implode('',$onPluginFormRender);
 $modx->smarty->assign('onPluginFormRender',$onPluginFormRender);
 
-/* get any module params for the snippet */
-$c = new xPDOCriteria($modx,'
-    SELECT
-        sm.id,sm.name,sm.guid
-    FROM '.$modx->getTableName('modModule').' AS sm
-        INNER JOIN '.$modx->getTableName('modModuleDepobj').' AS smd
-        ON smd.module = sm.id AND smd.type = 30
-
-        INNER JOIN '.$modx->getTableName('modPlugin').' AS ss
-        ON ss.id = smd.resource
-
-    WHERE smd.resource = :resource AND sm.enable_sharedparams = 1
-    ORDER BY sm.name
-',array(
-    ':resource' => $plugin->get('id'),
-));
-$params = $modx->getCollection('modModule',$c);
-$modx->smarty->assign('params',$params);
-
 /* load plugin into parser and display */
 $modx->smarty->assign('plugin',$plugin);
 $modx->smarty->display('element/plugin/update.tpl');
