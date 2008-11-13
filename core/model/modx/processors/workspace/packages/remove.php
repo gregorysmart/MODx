@@ -21,6 +21,12 @@ $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_remove_info_tzip_start'))
 
 $cacheManager = $modx->getCacheManager();
 
+/* remove transport package */
+if ($package->remove($_POST['force']) == false) {
+    $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_remove'));
+    return $modx->error->failure($modx->lexicon('package_err_remove',array('signature' => $package->getPrimaryKey())));
+}
+
 /* remove transport zip */
 $f = $modx->config['core_path'].'packages/'.$package->signature.'.transport.zip';
 if (!file_exists($f)) {
@@ -42,11 +48,6 @@ if (!file_exists($f)) {
     $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_remove_info_tdir'));
 }
 
-/* remove transport package */
-if ($package->remove($_POST['force']) == false) {
-    $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_remove'));
-    return $modx->error->failure($modx->lexicon('package_err_remove',array('signature' => $package->getPrimaryKey())));
-}
 
 $modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_remove_info_success'));
 return $modx->error->success();
