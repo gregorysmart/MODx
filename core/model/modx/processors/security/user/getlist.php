@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.user
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'edit_user' => true))) {

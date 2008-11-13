@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.import
  */
-require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('import');
 
 if (!$modx->hasPermission('import_static')) return $modx->error->failure($modx->lexicon('permission_denied'));

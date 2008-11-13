@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.system.log
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 if (!$modx->hasPermission('logs')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
@@ -42,9 +40,9 @@ $ls = array();
 foreach ($logs as $log) {
     $la = $log->toArray();
     $la['occurred'] = strftime('%a %b %d, %Y %H:%I:%S %p',strtotime($la['occurred']));
-    
-    
-    
+
+
+
     $ls[] = $la;
 }
 return $this->outputArray($ls,$count);

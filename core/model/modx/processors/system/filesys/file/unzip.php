@@ -4,8 +4,6 @@
  * @subpackage processors.system.filesys.file
  */
 
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $amode = isset($modx->config['new_folder_permissions']) ? octdec($modx->config['new_folder_permissions']) : 0777;

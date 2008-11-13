@@ -4,8 +4,6 @@
  * @subpackage processors.security.user.setting
  * @deprecated
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
 if (!$modx->hasPermission('save_user')) return $modx->error->failure($modx->lexicon('permission_denied'));

@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.context
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('context');
 
 if (!$modx->hasPermission('delete_context')) return $modx->error->failure($modx->lexicon('permission_denied'));

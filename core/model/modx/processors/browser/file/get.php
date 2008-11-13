@@ -1,9 +1,8 @@
 <?php
 /**
- * 
+ * @package modx
+ * @subpackage processors.browser.file
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
 if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
@@ -21,7 +20,7 @@ $fa = array(
     'name' => $filename,
     'size' => filesize($file),
     'last_accessed' => strftime($time_format,fileatime($file)),
-    'last_modified' => strftime($time_format,filemtime($file)), 
+    'last_modified' => strftime($time_format,filemtime($file)),
     'content' => $fbuffer,
 );
 

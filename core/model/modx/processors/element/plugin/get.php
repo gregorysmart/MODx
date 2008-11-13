@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.plugin
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
 /* get plugin */

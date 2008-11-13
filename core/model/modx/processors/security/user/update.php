@@ -5,7 +5,6 @@
  * @package modx
  * @subpackage processors.security.user
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
 

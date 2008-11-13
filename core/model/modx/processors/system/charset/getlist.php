@@ -3,10 +3,6 @@
  * @package modx
  * @subpackage processors.system.charset
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
-
-
 $charsets = array(
 	array(
 		'value' => 'ASMO-708',

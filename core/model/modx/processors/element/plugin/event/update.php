@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.plugin.event
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
 if ($_POST['priority'] == '') $_POST['priority'] = 0;

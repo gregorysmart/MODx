@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.resource
  */
-require_once MODX_PROCESSORS_PATH . 'index.php';
 $modx->lexicon->load('resource');
 
 $deltime = time();

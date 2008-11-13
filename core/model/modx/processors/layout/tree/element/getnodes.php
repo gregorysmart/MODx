@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.layout.tree.element
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('category');
 
 $_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : (substr($_REQUEST['id'],0,2) == 'n_' ? substr($_REQUEST['id'],2) : $_REQUEST['id']);

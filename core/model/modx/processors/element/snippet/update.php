@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.snippet
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet','category');
 
 if (!$modx->hasPermission('save_snippet')) return $modx->error->failure($modx->lexicon('permission_denied'));

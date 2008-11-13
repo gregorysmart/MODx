@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.workspace.lexicon
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;

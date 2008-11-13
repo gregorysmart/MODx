@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.message
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('messages','user');
 
 if (!$modx->hasPermission('messages')) return $modx->error->failure($modx->lexicon('permission_denied'));

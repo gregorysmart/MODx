@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.template.tv.inputtype
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv_input_types');
 
 $types = array(

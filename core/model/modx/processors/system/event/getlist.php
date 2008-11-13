@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.event
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_event');
 
 if (!$modx->hasPermission('view_eventlog')) return $modx->error->failure($modx->lexicon('permission_denied'));

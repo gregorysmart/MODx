@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.element.plugin.event
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin','system_events');
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
 if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 10;
@@ -33,7 +31,7 @@ $count = $modx->getCount('modEvent',$cc);
 $es = array();
 foreach ($events as $event) {
     $ea = $event->toArray();
-    
+
     if (isset($_REQUEST['id'])) {
         $pe = $modx->getObject('modPluginEvent',array(
             'pluginid' => $_REQUEST['id'],
@@ -42,7 +40,7 @@ foreach ($events as $event) {
     } else $pe = null;
     $ea['enabled'] = $pe != null;
     $ea['priority'] = $pe == null ? '' : $pe->get('priority');
-    
+
     $es[] = $ea;
 }
 return $this->outputArray($es,$count);

@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.context.setting
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
 if (!$modx->hasPermission('settings')) return $modx->error->failure($modx->lexicon('permission_denied'));

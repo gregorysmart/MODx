@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.language
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('lexicon');
 
 if (!$modx->hasPermission('languages')) return $modx->error->failure($modx->lexicon('permission_denied'));

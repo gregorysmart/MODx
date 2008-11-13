@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.snippet
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('snippet');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;

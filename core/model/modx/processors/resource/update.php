@@ -4,8 +4,6 @@
  * @subpackage processors.resource
  */
 
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 if (!isset($_REQUEST['id'])) return $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
 if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));

@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.role
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'save_role' => true))) {

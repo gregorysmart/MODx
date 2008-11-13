@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.workspace.namespace
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace','namespace');
 
 if (isset($_REQUEST['limit'])) $limit = true;

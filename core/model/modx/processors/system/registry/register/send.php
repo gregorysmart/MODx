@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.registry.register
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 
 if (!isset($_POST['register']) || empty($_POST['register']) || !preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $_POST['register'])) return $modx->error->failure($modx->lexicon('error'));
 if (!isset($_POST['topic']) || empty($_POST['topic'])) return $modx->error->failure($modx->lexicon('error'));

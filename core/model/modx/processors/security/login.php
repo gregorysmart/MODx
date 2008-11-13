@@ -5,7 +5,6 @@
  * @package modx
  * @subpackage processors.security
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('login');
 
 $username = $_POST['username'];

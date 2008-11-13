@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.chunk
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('chunk','category');
 
 if (!isset($_POST['id'])) return $modx->error->failure($modx->lexicon('chunk_err_ns'));

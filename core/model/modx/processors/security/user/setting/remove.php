@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.user.setting
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
 if (!isset($_POST['key'],$_POST['user'])) return $modx->error->failure($modx->lexicon('setting_err_ns'));

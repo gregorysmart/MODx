@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.contenttype
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('content_type');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;

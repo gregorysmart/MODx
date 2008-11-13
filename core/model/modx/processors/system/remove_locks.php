@@ -3,9 +3,6 @@
  * @package modx
  * @subpackage processors.system
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 if (!$modx->hasPermission('remove_locks')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* remove locks */

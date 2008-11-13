@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.element.category
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('category');
 
 $category = $modx->newObject('modCategory');

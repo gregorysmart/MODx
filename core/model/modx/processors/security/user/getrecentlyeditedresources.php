@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.user
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource','user');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;

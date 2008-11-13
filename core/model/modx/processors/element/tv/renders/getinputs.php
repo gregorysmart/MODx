@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.tv.renders
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv_widget');
 
 if (!isset($_REQUEST['ctx'])) $_REQUEST['ctx'] = 'mgr';

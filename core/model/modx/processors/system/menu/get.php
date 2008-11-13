@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.menu
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('action','menu');
 
 if (!isset($_REQUEST['id'])) return $modx->error->failure($modx->lexicon('menu_err_ns'));

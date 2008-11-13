@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.databasetable
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('system_info');
 
 if (!($modx->hasPermission('database_truncate'))) {

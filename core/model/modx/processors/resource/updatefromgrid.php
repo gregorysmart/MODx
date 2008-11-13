@@ -3,9 +3,6 @@
  * @package modx
  * @subpackage processors.resource
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 if (!$modx->hasPermission('save_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);

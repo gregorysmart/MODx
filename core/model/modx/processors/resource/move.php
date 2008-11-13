@@ -4,7 +4,6 @@
  * @subpackage processors.resource
  * @deprecated
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource');
 
 if ($_REQUEST['id'] == $_REQUEST['new_parent']) {

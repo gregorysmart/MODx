@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.element.plugin.event
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
 $_DATA = $modx->fromJSON($_POST['data']);

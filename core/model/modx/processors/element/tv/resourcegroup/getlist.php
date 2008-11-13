@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.template.tv.resourcegroup
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv');
 
 if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;

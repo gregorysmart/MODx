@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.layout.tree.resource
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('resource','context');
 
 if (!isset($_REQUEST['sortBy'])) $_REQUEST['sortBy'] = 'menuindex';

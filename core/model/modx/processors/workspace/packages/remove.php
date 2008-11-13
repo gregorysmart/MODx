@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.workspace.packages
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('workspace');
 
 /* set proper force value from checkbox */

@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.system.event
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 if (!$modx->hasPermission('delete_eventlog')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $clearall = $_REQUEST['cls'] == 1 ? true : false;

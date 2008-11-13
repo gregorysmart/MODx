@@ -3,9 +3,6 @@
  * @package modx
  * @subpackage processors.system.filesys.folder
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $dir = $_POST['path'].$_POST['folder'];

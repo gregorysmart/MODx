@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.documentgroup
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 

@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.user.setting
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
 $_DATA = $modx->fromJSON($_POST['data']);

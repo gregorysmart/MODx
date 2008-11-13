@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.layout.tree.element
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('category');
 
 $data = urldecode($_POST['data']);

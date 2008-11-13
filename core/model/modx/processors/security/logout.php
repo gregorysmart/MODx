@@ -5,7 +5,6 @@
  * @package modx
  * @subpackage processors.security
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('login');
 
 if (!$user= $modx->getUser()) return $modx->error->failure($modx->lexicon('not_logged_in'));

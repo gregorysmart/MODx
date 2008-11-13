@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.template
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('template','tv');
 
 if (!$modx->hasPermission('delete_template')) return $modx->error->failure($modx->lexicon('permission_denied'));

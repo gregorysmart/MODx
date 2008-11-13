@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.element.chunk
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('chunk');
 
 if (!$modx->hasPermission('delete_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));

@@ -1,10 +1,8 @@
 <?php
 /**
  * @package modx
- * @subpackage processors.security.user.setting
+ * @subpackage processors.context.setting
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
 $context = $modx->getObject('modContext', $_POST['context_key']);

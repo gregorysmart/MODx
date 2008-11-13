@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.context.setting
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('setting');
 
 if (!isset($_POST['key'],$_POST['context_key'])) return $modx->error->failure($modx->lexicon('setting_err_ns'));

@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.plugin.event
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('plugin');
 
 if (!isset($_POST['plugin']) || !isset($_POST['event'])) {

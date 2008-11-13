@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.system.rte
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 
 /* invoke OnRichTextEditorRegister event */
 $rs = $modx->invokeEvent('OnRichTextEditorRegister');

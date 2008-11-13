@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.element.tv
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('tv','category');
 
 if (!$modx->hasPermission('save_template')) return $modx->error->failure($modx->lexicon('permission_denied'));

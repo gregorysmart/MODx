@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.role
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('role');
 
 if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));

@@ -3,7 +3,6 @@
  * @package modx
  * @subpackage processors.security.profile
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('user');
 
 if (!$modx->hasPermission('change_password')) return $modx->error->failure($modx->lexicon('permission_denied'));

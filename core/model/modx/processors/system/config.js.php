@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.system
  */
-require_once MODX_PROCESSORS_PATH.'index.php';
-
 $stay = isset($_SESSION['modx.stay']) ? $_SESSION['modx.stay'] : 'stay';
 $modx->getVersionData();
 

@@ -3,8 +3,6 @@
  * @package modx
  * @subpackage processors.browser.directory
  */
-
-require_once MODX_PROCESSORS_PATH.'index.php';
 $modx->lexicon->load('file');
 
 if (!$modx->hasPermission('file_manager')) return $modx->error->failure($modx->lexicon('permission_denied'));
