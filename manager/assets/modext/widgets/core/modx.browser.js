@@ -291,7 +291,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         var detailEl = Ext.getCmp(this.config.ident+'-img-detail-panel').body;
         if(selNode && selNode.length > 0){
             selNode = selNode[0];
-            Ext.getCmp('ok-btn').enable();
+            Ext.getCmp(this.ident+'-ok-btn').enable();
             var data = this.lookup[selNode.id];
             detailEl.hide();
             this.templates.details.overwrite(detailEl, data);
