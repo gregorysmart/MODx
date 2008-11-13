@@ -2,6 +2,9 @@
 /**
  * @package modx
  * @subpackage processors.resource
+ *
+ * @param integer $id The ID of the resource to grab
+ * @return modResource
  */
 $modx->lexicon->load('resource');
 

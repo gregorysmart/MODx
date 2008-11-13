@@ -2,6 +2,9 @@
 /**
  * @package modx
  * @subpackage processors.resource
+ *
+ * @param integer $id The ID of the resource to grab
+ * @return array An array with the ID of the unpublished resource
  */
 $modx->lexicon->load('resource');
 
