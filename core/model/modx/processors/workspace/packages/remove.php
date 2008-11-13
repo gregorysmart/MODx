@@ -17,13 +17,15 @@ if ($package == null) return $modx->error->failure($modx->lexicon('package_err_n
 
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_remove_info_tzip_start'));
 
-$cacheManager = $modx->getCacheManager();
-
 /* remove transport package */
 if ($package->remove($_POST['force']) == false) {
     $modx->log(XPDO_LOG_LEVEL_ERROR,$modx->lexicon('package_err_remove'));
     return $modx->error->failure($modx->lexicon('package_err_remove',array('signature' => $package->getPrimaryKey())));
 }
+
+/* empty cache */
+$cacheManager= $modx->getCacheManager();
+$cacheManager->clearCache();
 
 /* remove transport zip */
 $f = $modx->config['core_path'].'packages/'.$package->signature.'.transport.zip';

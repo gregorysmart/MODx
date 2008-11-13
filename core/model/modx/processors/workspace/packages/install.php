@@ -9,7 +9,7 @@ if (!$modx->hasPermission('packages')) return $modx->error->failure($modx->lexic
 
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_info_start',array('signature' => $_REQUEST['signature'] )));
 
-// find package
+/* find package */
 if (!isset($_REQUEST['signature'])) {
     return $modx->error->failure($modx->lexicon('package_err_ns'));
 }
@@ -20,8 +20,12 @@ if ($package == null) {
 
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_info_found'));
 
-// install package
+/* install package */
 $installed = $package->install();
+
+/* empty cache */
+$cacheManager= $modx->getCacheManager();
+$cacheManager->clearCache();
 
 if (!$installed) {
     $msg = $modx->lexicon('package_err_install',array('signature' => $package->get('signature')));

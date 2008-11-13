@@ -23,5 +23,9 @@ if ($package->uninstall() == false) {
     return $modx->error->failure(sprintf($modx->lexicon('package_err_uninstall'),$package->getPrimaryKey()));
 }
 
+/* empty cache */
+$cacheManager= $modx->getCacheManager();
+$cacheManager->clearCache();
+
 $modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_uninstall_info_success',array('signature' => $package->get('signature'))));
 return $modx->error->success();
