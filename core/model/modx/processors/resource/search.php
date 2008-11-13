@@ -1,5 +1,13 @@
 <?php
 /**
+ * Searches for specific resources and returns them in an array.
+ *
+ * @param integer $start The page to start on
+ * @param integer $limit (optional) The number of results to limit by
+ * @param string $sort The column to sort by
+ * @param string $dir The direction to sort
+ * @return array An array of modResources
+ *
  * @package modx
  * @subpackage processors.resource
  */

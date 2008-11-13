@@ -1,5 +1,8 @@
 <?php
 /**
+ *
+ * @param $data A JSON array of data to update from.
+ *
  * @package modx
  * @subpackage processors.resource
  */

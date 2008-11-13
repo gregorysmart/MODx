@@ -1,5 +1,13 @@
 <?php
 /**
+ * Duplicates a resource, and optionally, all of its children.
+ *
+ * @param integer $id The ID of the resource.
+ * @param string $name The new name of the resource that will be created.
+ * @param boolean $duplicate_children (optional) If true, will duplicate the
+ * resource's children as well. Defaults to false.
+ * @return array An array of values of the new resource.
+ *
  * @package modx
  * @subpackage processors.resource
  */

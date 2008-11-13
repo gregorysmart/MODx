@@ -1,5 +1,10 @@
 <?php
 /**
+ * Deletes a resource.
+ *
+ * @param integer $id The ID of the resource
+ * @return array
+ *
  * @package modx
  * @subpackage processors.resource
  */

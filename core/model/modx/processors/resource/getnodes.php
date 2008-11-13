@@ -1,7 +1,13 @@
 <?php
 /**
+ * Grabs resources in the form of tree nodes for the Resource Tree.
+ *
+ * @param integer $id (optional) The parent to grab nodes from. Defaults to 0.
+ * @param string $sortBy (optional) The column to sort by. Defaults to
+ * menuindex.
+ *
  * @package modx
- * @subpackage processors.layout.tree.document
+ * @subpackage processors.resource
  */
 $modx->lexicon->load('resource','context');
 

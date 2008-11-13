@@ -1,5 +1,9 @@
 <?php
 /**
+ * Empties the recycle bin.
+ *
+ * @return boolean
+ *
  * @package modx
  * @subpackage processors.resource
  */
@@ -8,7 +12,7 @@ $modx->lexicon->load('resource');
 if (!$modx->hasPermission('purge_deleted')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get resources */
-$resources = $modx->getCollection('modResource',array('deleted' => 1));
+$resources = $modx->getCollection('modResource',array('deleted' => true));
 
 foreach ($resources as $resource) {
 	$resource->groups = $resource->getMany('modResourceGroupResource');

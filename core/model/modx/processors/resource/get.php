@@ -1,10 +1,12 @@
 <?php
 /**
- * @package modx
- * @subpackage processors.resource
+ * Retrieves a resource by its ID.
  *
  * @param integer $id The ID of the resource to grab
  * @return modResource
+ *
+ * @package modx
+ * @subpackage processors.resource
  */
 $modx->lexicon->load('resource');
 
@@ -40,7 +42,7 @@ if ($modx->config['use_editor'] == 1) {
         }
         /* escape / in path */
         $image_prefix = str_replace('/', '\/', $image_prefix);
-        $newcontent = preg_replace("/(<img[^>]+src=['\"])($image_prefix)([^'\"]+['\"][^>]*>)/", "\${1}$im_base_url\${3}", $resource->content);
+        $newcontent = preg_replace("/(<img[^>]+src=['\"])($image_prefix)([^'\"]+['\"][^>]*>)/", "\${1}$im_base_url\${3}", $resource->get('content'));
         $htmlcontent = $newcontent;
     }
     $resource->set('content',$htmlcontent);

@@ -1,5 +1,49 @@
 <?php
 /**
+ * Creates a resource.
+ *
+ * @param string $pagetitle The page title.
+ * @param string $content The HTML content. Used in conjunction with $ta.
+ * @param integer $template (optional) The modTemplate to use with this
+ * resource. Defaults to 0, or a blank template.
+ * @param integer $parent (optional) The parent resource ID. Defaults to 0.
+ * @param string $class_key (optional) The class key. Defaults to modDocument.
+ * @param integer $menuindex (optional) The menu order. Defaults to 0.
+ * @param string $variablesmodified (optional) A collection of modified TVs.
+ * Along with $tv1, $tv2, etc.
+ * @param string $context_key (optional) The context in which this resource is
+ * located. Defaults to web.
+ * @param string $alias (optional) The alias for FURLs that this resource is
+ * designated to.
+ * @param integer $content_type (optional) The content type. Defaults to
+ * text/html.
+ * @param boolean $published (optional) The published status.
+ * @param string $pub_date (optional) The date on which this resource should
+ * become published.
+ * @param string $unpub_date (optional) The date on which this resource should
+ * become unpublished.
+ * @param string $publishedon (optional) The date this resource was published.
+ * Defaults to time()
+ * @param integer $publishedby (optional) The modUser who published this
+ * resource. Defaults to the current user.
+ * @param json $resource_groups (optional) A JSON array of resource groups to
+ * assign this resource to.
+ * @param boolean $hidemenu (optional) If true, The resource will not show up in
+ * menu builders.
+ * @param boolean $isfolder (optional) Whether or not the resource is a
+ * container of resources.
+ * @param boolean $richtext (optional) If true, MODx will render the available
+ * RTE for editing this resource.
+ * @param boolean $donthit (optional) (deprecated) If true, MODx will not log
+ * visits on this resource.
+ * @param boolean $cacheable (optional) If false, the resource will not be
+ * cached.
+ * @param boolean $searchable (optional) If false, the resource will not appear
+ * in searches.
+ * @param boolean $syncsite (optional) If false, will not empty the cache on
+ * save.
+ * @return array
+ *
  * @package modx
  * @subpackage processors.resource
  */

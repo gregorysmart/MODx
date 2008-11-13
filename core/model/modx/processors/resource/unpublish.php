@@ -1,10 +1,12 @@
 <?php
 /**
+ * Unpublishes a resource.
+ *
+ * @param integer $id The ID of the resource
+ * @return array An array with the ID of the unpublished resource
+ *
  * @package modx
  * @subpackage processors.resource
- *
- * @param integer $id The ID of the resource to grab
- * @return array An array with the ID of the unpublished resource
  */
 $modx->lexicon->load('resource');
 
@@ -16,18 +18,18 @@ if (!$modx->hasPermission('publish_document')) {
 }
 
 /* check permissions on the resource */
-if (!$resource->checkPolicy(array('save'=>1, 'unpublish'=>1))) {
+if (!$resource->checkPolicy(array('save'=>true, 'unpublish'=>true))) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 /* update the resource */
-$resource->set('published',0);
-$resource->set('pub_date',0);
-$resource->set('unpub_date',0);
+$resource->set('published',false);
+$resource->set('pub_date',false);
+$resource->set('unpub_date',false);
 $resource->set('editedby',$modx->user->get('id'));
 $resource->set('editedon',time());
-$resource->set('publishedby',0);
-$resource->set('publishedon',0);
+$resource->set('publishedby',false);
+$resource->set('publishedon',false);
 if ($resource->save() == false) {
 	return $modx->error->failure($modx->lexicon('resource_err_unpublish'));
 }

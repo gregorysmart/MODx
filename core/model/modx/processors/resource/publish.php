@@ -1,5 +1,10 @@
 <?php
 /**
+ * Publishes a resource.
+ *
+ * @param integer $id The ID of the resource
+ * @return array
+ *
  * @package modx
  * @subpackage processors.resource
  */
@@ -14,14 +19,14 @@ if (!$modx->hasPermission('publish_document')) {
 }
 
 /* check permissions on the resource */
-if (!$resource->checkPolicy(array('save'=>1, 'publish'=>1))) {
+if (!$resource->checkPolicy(array('save'=>true, 'publish'=>true))) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
 /* publish resource */
-$resource->set('published',1);
-$resource->set('pub_date',0);
-$resource->set('unpub_date',0);
+$resource->set('published',true);
+$resource->set('pub_date',false);
+$resource->set('unpub_date',false);
 $resource->set('editedby',$modx->user->get('id'));
 $resource->set('editedon',time());
 $resource->set('publishedby',$modx->user->get('id'));
