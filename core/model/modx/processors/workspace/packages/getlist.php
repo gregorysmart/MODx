@@ -34,27 +34,19 @@ foreach ($packages as $package) {
         $pa['installed'] = strftime('%b %e, %Y %I:%M %p',strtotime($package->get('installed')));
     }
 
+    /* setup menu */
     $not_installed = $package->get('installed') == null || $package->get('installed') == '0000-00-00 00:00:00';
-    $pa['menu'] = array(
-        array(
+    $pa['menu'] = array();
+    if ($package->get('provider') != 0) {
+        $pa['menu'][] = array(
             'text' => $modx->lexicon('package_update'),
             'handler' => 'this.update',
-        ),
-        array(
-            'text' => ($not_installed)
-                ? $modx->lexicon('package_install')
-                : $modx->lexicon('package_reinstall'),
-            'handler' => ($not_installed)
-                ? 'this.install'
-                : 'this.install',
-        ),
-    );
-    $transport = $package->getTransport();
-    if ($transport) {
-        $pa['readme'] = $transport->getAttribute('readme');
-        $pa['readme'] = nl2br($pa['readme']);
+        );
     }
-
+    $pa['menu'][] = array(
+        'text' => ($not_installed) ? $modx->lexicon('package_install') : $modx->lexicon('package_reinstall'),
+        'handler' => ($not_installed) ? 'this.install' : 'this.install',
+    );
     if ($not_installed == false) {
         $pa['menu'][] = array(
             'text' => $modx->lexicon('package_uninstall'),
@@ -66,6 +58,14 @@ foreach ($packages as $package) {
         'text' => $modx->lexicon('package_remove'),
         'handler' => 'this.remove',
     );
+
+
+    /* setup readme */
+    $transport = $package->getTransport();
+    if ($transport) {
+        $pa['readme'] = $transport->getAttribute('readme');
+        $pa['readme'] = nl2br($pa['readme']);
+    }
     $ps[] = $pa;
 }
 
