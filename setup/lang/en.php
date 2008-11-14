@@ -99,6 +99,7 @@ $_lang['license_agree'] = 'I agree to the terms set out in this license.';
 $_lang['license_agreement']= 'License Agreement';
 $_lang['license_agreement_error']= 'You must agree to the License before continuing installation.';
 $_lang['login'] = 'Login';
+$_lang['modx_configuration_file'] = 'MODx configuration file';
 $_lang['modx_install']= 'MODx Installation';
 $_lang['modx_install_complete'] = 'MODx Installation Complete';
 $_lang['modx_footer1']= '&copy; 2005-2008 the <a href="http://www.modxcms.com/" onclick="window.open(this.href); return false;" onkeypress="window.open(this.href); return false;"  style="color: green; text-decoration:underline">MODx</a> Content Management Framework (CMF) project. All rights reserved. MODx is licensed under the GNU GPL.';
@@ -135,3 +136,26 @@ $_lang['welcome_message']= '<p>This program will guide you through the rest of t
 	<p>Please select the `Next` button to continue:</p>
 ';
 $_lang['version']= 'version';
+
+$_lang['failed'] = 'Failed!';
+$_lang['security_notice'] ='Security Notice';
+$_lang['success'] = 'Success';
+$_lang['ok'] = 'OK!';
+
+$_lang['test_config_file'] = 'Checking if <span class="mono">%s</span> exists and is writable: ';
+$_lang['test_config_file_nw'] = 'For new Linux/Unix installs, please create a blank file named <span class="mono">%s.inc.php</span> in your MODx core <span class="mono">config/</span> directory with permissions set to be writable by PHP.';
+$_lang['test_db_check'] = 'Creating connection to the database: ';
+$_lang['test_db_check_conn'] = 'Check the connection details and try again.';
+$_lang['test_db_failed'] = 'Database connection failed!';
+$_lang['test_db_setup_create'] = 'Setup will attempt to create the database.';
+$_lang['test_directory_exists'] = 'Checking if <span class="mono">%s</span> directory exists: ';
+$_lang['test_directory_writable'] = '<p>Checking if <span class="mono">%s</span> directory is writable: ';
+$_lang['test_php_version_fail'] = 'You are running on PHP %s, and MODx Revolution requires PHP 4.3.0 or later';
+$_lang['test_php_version_sn'] = 'While MODx will work on your PHP version (%s), usage of MODx on this version is not recommended. Your version of PHP is vulnerable to numerous security holes. Please upgrade to PHP version is 4.3.11 or higher, which patches these holes. It is recommended you upgrade to this version for the security of your own website.';
+$_lang['test_php_version_start'] = 'Checking PHP version:';
+$_lang['test_sessions_start'] = 'Checking if sessions are properly configured:';
+$_lang['test_table_prefix'] = 'Checking table prefix `%s`: ';
+$_lang['test_table_prefix_inuse'] = 'Table prefix is already in use in this database!';
+$_lang['test_table_prefix_inuse_desc'] = 'Setup couldn\'t install into the selected database, as it already contains tables with the prefix you specified. Please choose a new table_prefix, and run Setup again.';
+$_lang['test_table_prefix_nf'] = 'Table prefix does not exist in this database!';
+$_lang['test_table_prefix_nf_desc'] = 'Setup couldn\'t install into the selected database, as it does not contain existing tables with the prefix you specified to be upgraded. Please choose an existing table_prefix, and run Setup again.';

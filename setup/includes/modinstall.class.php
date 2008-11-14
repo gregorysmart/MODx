@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -36,6 +36,7 @@ class modInstall {
     var $options = array ();
     var $config = array ();
     var $action = '';
+    var $lexicon = array ();
 
     /**#@+
      * The constructor for the modInstall object.
@@ -76,7 +77,7 @@ class modInstall {
      */
     function loadLang() {
         $_lang= array ();
-        include (MODX_SETUP_PATH . "lang/en.php");
+        include MODX_SETUP_PATH . 'lang/en.php';
 
         $language= 'en';
         if (isset ($_COOKIE['modx_setup_language'])) {
@@ -84,7 +85,7 @@ class modInstall {
         }
         $language= isset ($_REQUEST['language']) ? $_REQUEST['language'] : $language;
         if ($language && $language != 'en') {
-            include (MODX_SETUP_PATH . "lang/{$language}.php");
+            include MODX_SETUP_PATH . 'lang/'.$language.'.php';
         }
         $this->lexicon = $_lang;
     }
@@ -245,287 +246,27 @@ class modInstall {
         return $this->config;
     }
 
+    function loadTestHandler($class = 'modInstallTest') {
+        $included = @include dirname(__FILE__).'/'.strtolower($class).'.class.php';
+        if ($included) {
+            $this->test = new $class($this);
+            return $this->test;
+        } else {
+            die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all the necessary files.</p></body></html>');
+        }
+    }
+
     /**
      * Perform a series of pre-installation tests.
      *
      * @todo Internationalization of error messages.
      * @param integer $mode The install mode.
+     * @param string $test_class The class to run tests with
      * @return array An array of result messages collected during the process.
      */
-    function test($mode = 0) {
-        $results = array ();
-
-        // check PHP version
-        $results['php_version']['msg'] = "<p>Checking PHP version: ";
-        $php_ver_comp = version_compare(phpversion(), "4.3.0");
-        $php_ver_comp2 = version_compare(phpversion(), "4.3.11");
-        // -1 if left is less, 0 if equal, +1 if left is higher
-        if ($php_ver_comp < 0) {
-            $results['php_version']['msg'] .= "<span class=\"notok\">Failed!</span> - You are running on PHP " . phpversion() . ", and MODx Revolution requires PHP 4.3.0 or later</p>";
-            $results['php_version']['class'] = 'testFailed';
-        } else {
-            $results['php_version']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            if ($php_ver_comp2 < 0) {
-                $results['php_version']['msg'] .= "<fieldset><legend>Security notice</legend><p>While MODx will work on your PHP version (" . phpversion() . "), usage of MODx on this version is not recommended. Your version of PHP is vulnerable to numerous security holes. Please upgrade to PHP version is 4.3.11 or higher, which patches these holes. It is recommended you upgrade to this version for the security of your own website.</p></fieldset>";
-                $results['php_version']['class'] = 'testWarn';
-            } else {
-                $results['php_version']['class'] = 'testPassed';
-            }
-        }
-
-        // check sessions
-        $results['sessions']['msg'] = "<p>Checking if sessions are properly configured: ";
-        if ($_SESSION['session_test'] != 1) {
-            $results['sessions']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-            $results['sessions']['class'] = 'testFailed';
-        } else {
-            $results['sessions']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['sessions']['class'] = 'testPassed';
-        }
-
-        // check directories
-        // cache exists?
-        $results['cache_exists']['msg'] = "<p>Checking if <span class=\"mono\">core/cache</span> directory exists: ";
-        if (!file_exists(MODX_CORE_PATH . "cache")) {
-            $results['cache_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-            $results['cache_exists']['class'] = 'testFailed';
-        } else {
-            $results['cache_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['cache_exists']['class'] = 'testPassed';
-        }
-
-        // cache writable?
-        $results['cache_writable']['msg'] = "<p>Checking if <span class=\"mono\">core/cache</span> directory is writable: ";
-        if (!is_writable(MODX_CORE_PATH . "cache")) {
-            $results['cache_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-            $results['cache_writable']['class'] = 'testFailed';
-        } else {
-            $results['cache_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['cache_writable']['class'] = 'testPassed';
-        }
-
-        // images exists?
-        //        $results['assets_images_exists']['msg']= "<p>Checking if <span class=\"mono\">assets/images</span> directory exists: ";
-        //        if (!file_exists($this->config['web_path'] . "assets/images")) {
-        //            $results['assets_images_exists']['msg'].= "<span class=\"notok\">Failed!</span></p>";
-        //            $results['assets_images_exists']['class']= 'testFailed';
-        //        } else {
-        //            $results['assets_images_exists']['msg'].= "<span class=\"ok\">OK!</span></p>";
-        //            $results['assets_images_exists']['class']= 'testPassed';
-        //        }
-
-        // images writable?
-        //        $results['assets_images_writable']['msg']= "<p>Checking if <span class=\"mono\">assets/images</span> directory is writable: ";
-        //        if (!is_writable($this->config['web_path'] . "assets/images")) {
-        //            $results['assets_images_writable']['msg'].= "<span class=\"notok\">Failed!</span></p>";
-        //            $results['assets_images_writable']['class']= 'testFailed';
-        //        } else {
-        //            $results['assets_images_writable']['msg'].= "<span class=\"ok\">OK!</span></p>";
-        //            $results['assets_images_writable']['class']= 'testPassed';
-        //        }
-
-        // export exists?
-        $results['assets_export_exists']['msg'] = "<p>Checking if <span class=\"mono\">core/export</span> directory exists: ";
-        if (!file_exists(MODX_CORE_PATH . 'export')) {
-            $results['assets_export_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-            $results['assets_export_exists']['class'] = 'testFailed';
-        } else {
-            $results['assets_export_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['assets_export_exists']['class'] = 'testPassed';
-        }
-
-        // export writable?
-        $results['assets_export_writable']['msg'] = "<p>Checking if <span class=\"mono\">core/export</span> directory is writable: ";
-        if (!is_writable(MODX_CORE_PATH . 'export')) {
-            $results['assets_export_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-            $results['assets_export_writable']['class'] = 'testFailed';
-        } else {
-            $results['assets_export_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['assets_export_writable']['class'] = 'testPassed';
-        }
-
-        // packages exists?
-        $results['core_packages_exists']['msg'] = "<p>Checking if <span class=\"mono\">core/packages</span> directory exists: ";
-        if (!file_exists(MODX_CORE_PATH . 'packages')) {
-            $results['core_packages_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-            $results['core_packages_exists']['class'] = 'testFailed';
-        } else {
-            $results['core_packages_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['core_packages_exists']['class'] = 'testPassed';
-        }
-
-        // packages writable?
-        if (!$this->config['unpacked']) {
-            $results['core_packages_writable']['msg'] = "<p>Checking if <span class=\"mono\">core/packages</span> directory is writable: ";
-            if (!is_writable(MODX_CORE_PATH . 'packages')) {
-                $results['core_packages_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['core_packages_writable']['class'] = 'testFailed';
-            } else {
-                $results['core_packages_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['core_packages_writable']['class'] = 'testPassed';
-            }
-        }
-
-        // check context paths if inplace, else make sure paths can be written
-        $coreConfigsExist = false;
-        if ($this->config['inplace']) {
-            // web_path
-            $results['context_web_exists']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['web_path']}</span> directory exists: ";
-            if (!file_exists($this->config['web_path'])) {
-                $results['context_web_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['context_web_exists']['class'] = 'testFailed';
-            } else {
-                $results['context_web_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['context_web_exists']['class'] = 'testPassed';
-            }
-            // mgr_path
-            $results['context_mgr_exists']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['mgr_path']}</span> directory exists: ";
-            if (!file_exists($this->config['mgr_path'])) {
-                $results['context_mgr_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['context_mgr_exists']['class'] = 'testFailed';
-            } else {
-                $results['context_mgr_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['context_mgr_exists']['class'] = 'testPassed';
-            }
-            // connectors_path
-            $results['context_connectors_exists']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['connectors_path']}</span> directory exists: ";
-            if (!file_exists($this->config['connectors_path'])) {
-                $results['context_connectors_exists']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['context_connectors_exists']['class'] = 'testFailed';
-            } else {
-                $results['context_connectors_exists']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['context_connectors_exists']['class'] = 'testPassed';
-            }
-            if (file_exists($this->config['web_path'] . 'config.core.php') &&
-                file_exists($this->config['connectors_path'] . 'config.core.php') &&
-                file_exists($this->config['mgr_path'] . 'config.core.php')) {
-                $coreConfigsExist = true;
-            }
-        }
-        if ($mode == 0 || !$coreConfigsExist) {
-            // web_path
-            $results['context_web_writable']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['web_path']}</span> directory is writable: ";
-            if (!$this->_inWritableContainer($this->config['web_path'])) {
-                $results['context_web_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['context_web_writable']['class'] = 'testFailed';
-            } else {
-                $results['context_web_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['context_web_writable']['class'] = 'testPassed';
-            }
-            // mgr_path
-            $results['context_mgr_writable']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['mgr_path']}</span> directory is writable: ";
-            if (!$this->_inWritableContainer($this->config['mgr_path'])) {
-                $results['context_mgr_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['context_mgr_writable']['class'] = 'testFailed';
-            } else {
-                $results['context_mgr_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['context_mgr_writable']['class'] = 'testPassed';
-            }
-            // connectors_path
-            $results['context_connectors_writable']['msg'] = "<p>Checking if <span class=\"mono\">{$this->config['connectors_path']}</span> directory is writable: ";
-            if (!$this->_inWritableContainer($this->config['connectors_path'])) {
-                $results['context_connectors_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p>";
-                $results['context_connectors_writable']['class'] = 'testFailed';
-            } else {
-                $results['context_connectors_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                $results['context_connectors_writable']['class'] = 'testPassed';
-            }
-        }
-
-        // config file writable?
-        $configFileDisplay= 'config/' . MODX_CONFIG_KEY . '.inc.php';
-        $configFilePath= MODX_CORE_PATH . $configFileDisplay;
-        $results['config_writable']['msg'] = '<p>Checking if <span class="mono">' . $configFileDisplay . '</span> exists and is writable: ';
-        if (!file_exists($configFilePath)) {
-            // make an attempt to create the file
-            @ $hnd = fopen($configFilePath, 'w');
-            @ fwrite($hnd, "<?php //MODx configuration file ?>");
-            @ fclose($hnd);
-        }
-        $isWriteable = is_writable($configFilePath);
-        if (!$isWriteable) {
-            $results['config_writable']['msg'] .= "<span class=\"notok\">Failed!</span></p><p><strong>For new Linux/Unix installs, please create a blank file named <span class=\"mono\">" . MODX_CONFIG_KEY . ".inc.php</span> in your MODx core <span class=\"mono\">config/</span> directory with permissions set to be writable by PHP.</strong></p>";
-            $results['config_writable']['class'] = 'testFailed';
-        } else {
-            $results['config_writable']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['config_writable']['class'] = 'testPassed';
-        }
-
-        // connect to the database
-        $results['dbase_connection']['msg'] = "<p>Creating connection to the database: ";
-        $xpdo = $this->getConnection();
-        if (!$xpdo || !$xpdo->connect()) {
-            if ($mode > 0) {
-                $results['dbase_connection']['msg'] .= "<span class=\"notok\">Database connection failed!</span><p />Check the connection details and try again.</p>";
-                $results['dbase_connection']['class'] = 'testFailed';
-            } else {
-                $results['dbase_connection']['msg'] .= "<span class=\"notok\">Database connection failed!</span><p />Setup will attempt to create the database.</p>";
-                $results['dbase_connection']['class'] = 'testWarn';
-            }
-        } else {
-            $results['dbase_connection']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-            $results['dbase_connection']['class'] = 'testPassed';
-        }
-
-        //        // check the database collation if not specified in the configuration
-        //        if (!isset ($database_connection_charset) || empty ($database_connection_charset)) {
-        //            if (!$rs = @ mysql_query("show session variables like 'collation_database'")) {
-        //                $rs = @ mysql_query("show session variables like 'collation_server'");
-        //            }
-        //            if ($rs && $collation = mysql_fetch_row($rs)) {
-        //                $database_collation = $collation[1];
-        //            }
-        //            if (empty ($database_collation)) {
-        //                $database_collation = 'utf8_unicode_ci';
-        //            }
-        //            $database_charset = substr($database_collation, 0, strpos($database_collation, '_') - 1);
-        //            $database_connection_charset = $database_charset;
-        //        }
-
-        // check table prefix
-        if ($xpdo && $xpdo->connect()) {
-            $results['table_prefix']['msg'] = "<p>Checking table prefix `" . $this->config['table_prefix'] . "`: ";
-            $count = 0;
-            if ($stmt = $this->xpdo->query("SELECT COUNT(*) FROM `" . $this->config['table_prefix'] . "system_settings`")) {
-                $count = $stmt->fetchColumn();
-                $stmt->closeCursor();
-            }
-            if ($mode == 0) {
-                if ($count > 0) {
-                    $results['table_prefix']['msg'] .= "<span class=\"notok\">Failed!</span></b> - Table prefix is already in use in this database!</p>";
-                    $results['table_prefix']['class'] = 'testFailed';
-                    $results['table_prefix']['msg'] .= "<p>Setup couldn't install into the selected database, as it already contains tables with the prefix you specified. Please choose a new table_prefix, and run Setup again.</p>";
-                } else {
-                    $results['table_prefix']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                    $results['table_prefix']['class'] = 'testPassed';
-                }
-            } else {
-                if ($count < 1) {
-                    $results['table_prefix']['msg'] .= "<span class=\"notok\">Failed!</span></b> - Table prefix does not exist in this database!</p>";
-                    $results['table_prefix']['class'] = 'testFailed';
-                    $results['table_prefix']['msg'] .= "<p>Setup couldn't install into the selected database, as it does not contain existing tables with the prefix you specified to be upgraded. Please choose an existing table_prefix, and run Setup again.</p>";
-                } else {
-                    $results['table_prefix']['msg'] .= "<span class=\"ok\">OK!</span></p>";
-                    $results['table_prefix']['class'] = 'testPassed';
-                }
-            }
-        }
-
-        // andrazk 20070416 - add install flag and disable manager login
-        // assets/cache writable?
-        /*
-        if (is_writable(MODX_CORE_PATH . "cache")) {
-            if (file_exists('../core/cache/installProc.inc.php')) {
-                @chmod('../core/cache/installProc.inc.php', 0755);
-                unlink('../core/cache/installProc.inc.php');
-            }
-
-            // make an attempt to create the file
-            @ $hnd = fopen(MODX_CORE_PATH . "cache/installProc.inc.php", 'w');
-            @ fwrite($hnd, '<?php $installStartTime = '.time().'; ?>');
-            @ fclose($hnd);
-        }
-        */
+    function test($mode = 0,$test_class = 'modInstallTest') {
+        $test = $this->loadTestHandler($test_class);
+        $results = $this->test->run($mode);
         return $results;
     }
 
@@ -657,7 +398,7 @@ class modInstall {
                     $managerTheme->set('value', 'default');
                     $managerTheme->save();
                 }
-                
+
                 // handle change of default language to proper IANA code (FIXME: just forcing en for now)
                 if ($managerLanguage = $this->xpdo->getObject('modSystemSetting', array(
                         'key' => 'manager_language',
@@ -666,7 +407,7 @@ class modInstall {
                     $managerLanguage->set('value', 'en');
                     $managerLanguage->save();
                 }
-                
+
                 // update settings_version
                 if ($settings_version = $this->xpdo->getObject('modSystemSetting', array(
                         'key' => 'settings_version'
@@ -675,7 +416,7 @@ class modInstall {
                     $settings_version->set('value', $currentVersion['full_version']);
                     $settings_version->save();
                 }
-                
+
                 // make sure admin user (1) has proper group and role
                 $adminUser = $this->xpdo->getObject('modUser', 1);
                 if ($adminUser) {
@@ -919,7 +660,7 @@ class modInstall {
             } else {
                 $modx->setDebug(E_ALL & ~E_STRICT);
                 $modx->setLogTarget('HTML');
-                
+
                 // try to initialize the mgr context
                 $modx->initialize('mgr');
                 if (!$modx->_initialized) {
@@ -931,26 +672,5 @@ class modInstall {
         }
 
         return $modx;
-    }
-
-    /**
-     * Checks to see if a given path is in a writable container.
-     *
-     * @param string $path The file path to test.
-     * @return boolean Returns true if the path is in a writable container.
-     */
-    function _inWritableContainer($path) {
-        $writable = false;
-        if (file_exists($path) && is_dir($path))
-            $writable = is_writable($path);
-        while (!file_exists($path)) {
-            $path = dirname($path);
-            if (!$path)
-                break;
-            if (!file_exists($path))
-                break;
-            $writable = is_writable($path);
-        }
-        return $writable;
     }
 }
