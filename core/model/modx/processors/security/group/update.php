@@ -1,5 +1,10 @@
 <?php
 /**
+ * Update a user group
+ *
+ * @param integer $id The ID of the user group
+ * @param string $name The new name of the user group
+ *
  * @package modx
  * @subpackage processors.security.group
  */

@@ -1,5 +1,15 @@
 <?php
 /**
+ * Updates an action
+ *
+ * @param string $controller The controller location
+ * @param boolean $loadheaders Whether or not to load header templates for the
+ * action
+ * @param string $context_key The context for the action
+ * @param string $lang_topics The lexicon topics for the action
+ * @param string $assets
+ * @param integer $parent (optional) The parent for the action. Defaults to 0.
+ *
  * @package modx
  * @subpackage processors.system.action
  */

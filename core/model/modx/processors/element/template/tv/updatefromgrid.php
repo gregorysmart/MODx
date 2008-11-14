@@ -1,5 +1,15 @@
 <?php
 /**
+ * Assigns or unassigns TVs to a template. Passed as JSON data.
+ *
+ * @param integer $id The ID of the TV.
+ * @param string $name (optional) The name of the TV.
+ * @param string $description (optional) The description of the TV.
+ * @param integer $template The ID of the template.
+ * @param integer $rank The rank of the TV for the template.
+ * @param boolean $access If true, give the TV access to the template. Else,
+ * remove access.
+ *
  * @package modx
  * @subpackage processors.element.template.tv
  */
@@ -34,8 +44,8 @@ if ($tvt == null && $_DATA['access'] == true) {
     }
 }
 
-$tv->set('name',$_DATA['name']);
-$tv->set('description',$_DATA['description']);
+if (isset($_DATA['name'])) $tv->set('name',$_DATA['name']);
+if (isset($_DATA['description'])) $tv->set('description',$_DATA['description']);
 $tv->save();
 
 return $modx->error->success();

@@ -1,5 +1,13 @@
 <?php
 /**
+ * Change a user's password
+ *
+ * @param boolean $password_reset If true, will reset the password to new
+ * parameters
+ * @param string $password_old The old password
+ * @param string $password_new The new password
+ * @param string $password_confirm A confirmed version of the new password
+ *
  * @package modx
  * @subpackage processors.security.profile
  */

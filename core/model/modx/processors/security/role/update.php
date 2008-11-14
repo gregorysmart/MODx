@@ -2,6 +2,8 @@
 /**
  * Update a role from a POST request
  *
+ * @param integer $id The ID of the role
+ *
  * @package modx
  * @subpackage processors.security.role
  */

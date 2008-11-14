@@ -1,5 +1,9 @@
 <?php
 /**
+ * Remove a lexicon topic
+ *
+ * @param integer $id The ID of the topic
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon.topic
  */

@@ -1,5 +1,10 @@
 <?php
 /**
+ * Sort users and user groups, effectively repositioning users into proper
+ * groups
+ *
+ * @param json $data The encoded tree data
+ *
  * @package modx
  * @subpackage processors.security.group
  */

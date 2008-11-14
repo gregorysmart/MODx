@@ -1,5 +1,11 @@
 <?php
 /**
+ * Update a policy attribute value
+ *
+ * @param integer $id The ID of the policy
+ * @param string $key The attribute key
+ * @param boolean $value The value of the attribute
+ *
  * @package modx
  * @subpackage processors.security.access.policy
  */

@@ -1,5 +1,12 @@
 <?php
 /**
+ * Get nodes for the resource tree
+ *
+ * @param string $id (optional) The parent ID from which to grab. Defaults to
+ * 0.
+ * @param string $sortBy (optional) The column to sort by. Defaults to
+ * menuindex.
+ *
  * @package modx
  * @subpackage processors.layout.tree.resource
  */

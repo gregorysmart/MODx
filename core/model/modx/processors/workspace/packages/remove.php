@@ -1,5 +1,11 @@
 <?php
 /**
+ * Remove a package
+ *
+ * @param string $signature The signature of the package.
+ * @param boolean $force (optional) If true, will remove the package even if
+ * uninstall fails. Defaults to false.
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

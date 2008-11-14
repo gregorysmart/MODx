@@ -1,5 +1,9 @@
 <?php
 /**
+ * Get a snippet.
+ *
+ * @param integer $id The ID of the snippet.
+ *
  * @package modx
  * @subpackage processors.element.snippet
  */

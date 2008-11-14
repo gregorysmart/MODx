@@ -1,5 +1,7 @@
 <?php
 /**
+ * Gets a list of charsets
+ *
  * @package modx
  * @subpackage processors.system.charset
  */

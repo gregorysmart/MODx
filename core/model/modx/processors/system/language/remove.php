@@ -1,5 +1,9 @@
 <?php
 /**
+ * Removes a language
+ *
+ * @param string $name The name of the language
+ *
  * @package modx
  * @subpackage processors.system.language
  */

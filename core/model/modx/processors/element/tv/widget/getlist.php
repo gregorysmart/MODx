@@ -1,5 +1,7 @@
 <?php
 /**
+ * Grabs a list of widget types for the tv.
+ *
  * @package modx
  * @subpackage processors.element.template.widget
  */

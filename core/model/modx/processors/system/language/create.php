@@ -1,5 +1,9 @@
 <?php
 /**
+ * Create a lexicon language
+ *
+ * @param string $name The name of the language, in IANA code format
+ *
  * @package modx
  * @subpackage processors.system.language
  */

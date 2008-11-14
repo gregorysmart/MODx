@@ -1,5 +1,9 @@
 <?php
 /**
+ * Delete a TV
+ *
+ * @param integer $id The TV to delete
+ *
  * @package modx
  * @subpackage processors.element.tv
  */
@@ -7,7 +11,6 @@ $modx->lexicon->load('tv');
 
 if (!$modx->hasPermission('delete_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-$forced = isset($_REQUEST['force'])? $_REQUEST['force'] : false;
 $forced = true;
 
 /* get tv */

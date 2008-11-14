@@ -1,5 +1,9 @@
 <?php
 /**
+ * Removes a policy
+ *
+ * @param integer $id The ID of the policy
+ *
  * @package modx
  * @subpackage processors.security.access.policy
  */

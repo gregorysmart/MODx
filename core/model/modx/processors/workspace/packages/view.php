@@ -1,5 +1,9 @@
 <?php
 /**
+ * View a package
+ *
+ * @param string $id The signature of the package.
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

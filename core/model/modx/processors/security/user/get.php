@@ -1,5 +1,9 @@
 <?php
 /**
+ * Get a user
+ *
+ * @param integer $id The ID of the user
+ *
  * @package modx
  * @subpackage processors.security.user
  */

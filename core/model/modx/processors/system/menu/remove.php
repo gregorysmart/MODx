@@ -1,5 +1,9 @@
 <?php
 /**
+ * Remove a menu item
+ *
+ * @param integer $id The ID of the menu item
+ *
  * @package modx
  * @subpackage processors.system.menu
  */

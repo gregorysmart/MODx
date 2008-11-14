@@ -1,5 +1,8 @@
 <?php
 /**
+ * Sorts TVs
+ *
+ * @deprecated
  * @package modx
  * @subpackage processors.element.template
  */

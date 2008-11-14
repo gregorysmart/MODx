@@ -2,13 +2,12 @@
 /**
  * Update a user.
  *
+ * @param integer $id The ID of the user
+ *
  * @package modx
  * @subpackage processors.security.user
  */
 $modx->lexicon->load('user');
-
-
-//return $modx->error->failure(print_r($_POST,true));
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => true))) {
     return $modx->error->failure($modx->lexicon('permission_denied'));

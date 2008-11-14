@@ -1,5 +1,15 @@
 <?php
 /**
+ * Grabs a list of context settings for a context
+ *
+ * @param string $context_key The context from which to grab
+ * @param string $key (optional) A filter key by which to search settings
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 20.
+ * @param string $sort (optional) The column to sort by. Defaults to name.
+ * @param string $dir (optional) The direction of the sort. Defaults to ASC.
+ *
  * @package modx
  * @subpackage processors.context.setting
  */

@@ -1,5 +1,11 @@
 <?php
 /**
+ * Chmod a directory
+ *
+ * @param string $mode The mode to chmod to
+ * @param string $dir The absolute path of the dir
+ * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
+ * the final path
  * @package modx
  * @subpackage processors.browser.directory
  */

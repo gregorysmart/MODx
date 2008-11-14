@@ -1,5 +1,12 @@
 <?php
 /**
+ * Get the menu items, in node format
+ *
+ * @param string $id The parent ID
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 10.
+ *
  * @package modx
  * @subpackage processors.system.menu
  */

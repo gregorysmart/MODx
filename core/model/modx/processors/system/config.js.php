@@ -1,5 +1,12 @@
 <?php
 /**
+ * Outputs the $modx->config to JSON
+ *
+ * @param string $action If set with context, will output the context info for a
+ * custom context by the action
+ * @param string $context If set with action, will output the context info for a
+ * custom context by its action
+ *
  * @package modx
  * @subpackage processors.system
  */

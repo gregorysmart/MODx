@@ -1,5 +1,10 @@
 <?php
 /**
+ * Creates a lexicon topic
+ *
+ * @param string $name The name of the topic
+ * @param string $namespace The namespace to associate with
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon.topic
  */

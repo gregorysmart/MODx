@@ -1,5 +1,7 @@
 <?php
 /**
+ * Removes locks on all objects
+ *
  * @package modx
  * @subpackage processors.system
  */

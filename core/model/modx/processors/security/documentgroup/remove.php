@@ -1,5 +1,9 @@
 <?php
 /**
+ * Remove a resource group
+ *
+ * @param integer $id The ID of the resource group
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Updates a lexicon entry from a grid
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon
  */

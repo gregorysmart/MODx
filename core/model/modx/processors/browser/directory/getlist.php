@@ -1,5 +1,13 @@
 <?php
 /**
+ * Get a list of directories and files
+ *
+ * @param string $id The path to grab a list from
+ * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
+ * the final path
+ * @param boolean $hideFiles (optional) If true, will not display files.
+ * Defaults to false.
+ *
  * @package modx
  * @subpackage processors.browser.directory
  */

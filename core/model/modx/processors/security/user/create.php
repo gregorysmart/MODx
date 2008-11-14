@@ -1,5 +1,10 @@
 <?php
 /**
+ * Create a user
+ *
+ * @param string $newusername The username for the user
+ * @param string $passwordnotifymethod The notification method for the user.
+ *
  * @package modx
  * @subpackage processors.security.user
  */
@@ -14,7 +19,7 @@ if ($_POST['newusername'] == '')
 
 $newPassword= '';
 
-require_once MODX_PROCESSORS_PATH.'security/user/_validation.php';
+require_once $modx->config['processors_path'].'security/user/_validation.php';
 
 if ($_POST['passwordnotifymethod'] == 'e') {
 	sendMailMessage($_POST['email'], $_POST['newusername'],$newPassword,$_POST['fullname']);

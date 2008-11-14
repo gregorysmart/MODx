@@ -1,5 +1,9 @@
 <?php
 /**
+ * Update all users from JSON data
+ *
+ * @param json $data The JSON-encoded data rows
+ *
  * @package modx
  * @subpackage processors.security.user
  */

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Grabs all elements for element tree
+ *
+ * @param string $id (optional) Parent ID of object to grab from. Defaults to 0.
+ *
  * @package modx
  * @subpackage processors.layout.tree.element
  */

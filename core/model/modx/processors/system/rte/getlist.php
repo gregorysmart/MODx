@@ -1,5 +1,7 @@
 <?php
 /**
+ * Get a list of registered RTEs
+ *
  * @package modx
  * @subpackage processors.system.rte
  */

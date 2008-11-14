@@ -1,5 +1,9 @@
 <?php
 /**
+ * Get a menu item
+ *
+ * @param integer $id The ID of the menu
+ *
  * @package modx
  * @subpackage processors.system.menu
  */

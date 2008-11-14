@@ -1,5 +1,7 @@
 <?php
 /**
+ * Removes a workspace
+ *
  * @package modx
  * @subpackage processors.workspace
  */

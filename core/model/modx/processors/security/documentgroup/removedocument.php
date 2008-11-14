@@ -1,5 +1,10 @@
 <?php
 /**
+ * Remove a resource-resourcegroup pairing
+ *
+ * @param integer $document_group The ID of the resource group
+ * @param integer $document The ID of the resource
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Sorts actions from a tree
+ *
  * @package modx
  * @subpackage processors.system.action
  */

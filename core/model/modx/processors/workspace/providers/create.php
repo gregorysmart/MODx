@@ -1,5 +1,11 @@
 <?php
 /**
+ * Create a provider
+ *
+ * @param string $name The name of the provider
+ * @param string $description A short description
+ * @param string $service_url The URL the provider is hosted under
+ *
  * @package modx
  * @subpackage processors.workspace.providers
  */

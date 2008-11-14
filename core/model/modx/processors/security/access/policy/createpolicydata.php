@@ -1,5 +1,10 @@
 <?php
 /**
+ * Create a policy data row, appending it to the JSON policy data
+ *
+ * @param string $id The ID of the policy
+ * @param string $key The new policy attribute
+ *
  * @package modx
  * @subpackage processors.security.access.policy
  */

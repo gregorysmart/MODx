@@ -1,5 +1,17 @@
 <?php
 /**
+ * Creates a context setting
+ *
+ * @param string $context_key/$fk The key of the context
+ * @param string $key The key of the setting
+ * @param string $value The value of the setting.
+ * @param string $xtype (optional) The rendering type for the setting. Defaults
+ * to textfield.
+ * @param string $namespace (optional) The namespace of the setting. Defaults to
+ * core.
+ * @param string $area (optional) The area of the setting. Defaults to a blank
+ * area.
+ *
  * @package modx
  * @subpackage processors.context.setting
  */

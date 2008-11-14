@@ -1,5 +1,8 @@
 <?php
 /**
+ * Get pairing nodes for document groups
+ *
+ * @deprecated
  * @package modx
  * @subpackage processors.security.documentgroup
  */

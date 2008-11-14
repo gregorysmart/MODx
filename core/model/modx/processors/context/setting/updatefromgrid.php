@@ -1,5 +1,11 @@
 <?php
 /**
+ * Updates a setting from a grid. Passed as JSON data.
+ *
+ * @param string $context_key The key of the context
+ * @param string $key The key of the setting
+ * @param string $value The value of the setting.
+ *
  * @package modx
  * @subpackage processors.context.setting
  */

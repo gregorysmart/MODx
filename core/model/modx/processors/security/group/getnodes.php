@@ -1,5 +1,9 @@
 <?php
 /**
+ * Get the user groups in tree node format
+ *
+ * @param string $id The parent ID
+ *
  * @package modx
  * @subpackage processors.security.group
  */

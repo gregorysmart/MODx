@@ -1,5 +1,9 @@
 <?php
 /**
+ * Removes a lexicon entry
+ *
+ * @param integer $id The ID of the entry
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon
  */

@@ -1,5 +1,11 @@
 <?php
 /**
+ * Removes a file.
+ *
+ * @param string $file The name of the file.
+ * @param boolean $prependPath If true, will prepend the rb_base_dir to the file
+ * name.
+ *
  * @package modx
  * @subpackage processors.browser.file
  */

@@ -1,5 +1,10 @@
 <?php
 /**
+ * Gets an attribute of a package
+ *
+ * @param string $signature The signature of the package
+ * @param string $attr The attribute to select
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

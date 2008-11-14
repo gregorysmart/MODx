@@ -1,5 +1,9 @@
 <?php
 /**
+ * Gets a node list of ACLs
+ *
+ * @param string $id The parent ID.
+ *
  * @package modx
  * @subpackage processors.security.access.target
  */

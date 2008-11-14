@@ -1,5 +1,18 @@
 <?php
 /**
+ * Update a template
+ *
+ * @param integer $id The ID of the template
+ * @param string $templatename The name of the template
+ * @param string $content The code of the template.
+ * @param string $description (optional) A brief description.
+ * @param integer $category (optional) The category to assign to. Defaults to no
+ * category.
+ * @param boolean $locked (optional) If true, can only be accessed by
+ * administrators. Defaults to false.
+ * @param json $propdata (optional) A json array of properties
+ * @param json $tvs (optional) A json array of TVs associated to the template
+ *
  * @package modx
  * @subpackage processors.element.template
  */

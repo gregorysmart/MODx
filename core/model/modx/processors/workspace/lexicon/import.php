@@ -1,5 +1,11 @@
 <?php
 /**
+ * Imports lexicon entries from a file
+ *
+ * @param string $language The IANA code for the language.
+ * @param integer $topic The topic associated with this entry.
+ * @param string $namespace The namespace associated with this entry.
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon.focus
  */

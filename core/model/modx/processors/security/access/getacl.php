@@ -1,5 +1,10 @@
 <?php
 /**
+ * Gets an ACL.
+ *
+ * @param string $type The class_key for the ACL.
+ * @param string $id The ID of the ACL.
+ *
  * @package modx
  * @subpackage processors.security.access
  */

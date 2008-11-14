@@ -1,5 +1,9 @@
 <?php
 /**
+ * Install a package
+ *
+ * @param string $signature The signature of the package.
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

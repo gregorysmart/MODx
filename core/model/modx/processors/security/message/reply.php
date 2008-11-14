@@ -1,5 +1,14 @@
 <?php
 /**
+ * Reply to a message
+ *
+ * @param string $subject The subject of the message
+ * @param string $message The body of the message
+ * @param string $type The target of the message. Either user/role/usergroup/all
+ * @param integer $role (optional)
+ * @param integer $user (optional)
+ * @param integer $group (optional)
+ *
  * @package modx
  * @subpackage processors.security.message
  */

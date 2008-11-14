@@ -1,5 +1,7 @@
 <?php
 /**
+ * Gets a list of database tables
+ *
  * @package modx
  * @subpackage processors.system.databasetable
  */

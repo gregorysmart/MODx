@@ -1,5 +1,7 @@
 <?php
 /**
+ * Flushes permissions for the logged in user.
+ *
  * @package modx
  * @subpackage processors.security.access
  */

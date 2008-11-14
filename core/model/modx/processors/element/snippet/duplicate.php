@@ -1,5 +1,11 @@
 <?php
 /**
+ * Duplicate a snippet.
+ *
+ * @param integer $id The ID of the snippet to duplicate.
+ * @param string $name (optional) The name of the new snippet. Defaults to
+ * Untitled Snippet.
+ *
  * @package modx
  * @subpackage processors.element.snippet
  */

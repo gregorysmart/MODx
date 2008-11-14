@@ -1,5 +1,10 @@
 <?php
 /**
+ * Gets a context setting
+ *
+ * @param string $context_key The key of the context
+ * @param string $key The key of the setting
+ *
  * @package modx
  * @subpackage processors.context.setting
  */

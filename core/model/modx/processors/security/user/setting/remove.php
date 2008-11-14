@@ -1,5 +1,10 @@
 <?php
 /**
+ * Remove a user setting and its lexicon strings
+ *
+ * @param integer $user The user associated to the setting
+ * @param string $key The setting key
+ *
  * @package modx
  * @subpackage processors.security.user.setting
  */
@@ -12,7 +17,7 @@ $setting = $modx->getObject('modUserSetting',array(
 ));
 if ($setting == null) return $modx->error->failure($modx->lexicon('setting_err_nf'));
 
-// remove relative lexicon strings
+/* remove relative lexicon strings */
 $entry = $modx->getObject('modLexiconEntry',array(
     'namespace' => $setting->get('namespace'),
     'name' => 'setting_'.$setting->get('key'),

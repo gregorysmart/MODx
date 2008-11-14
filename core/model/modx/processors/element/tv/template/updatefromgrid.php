@@ -1,5 +1,12 @@
 <?php
 /**
+ * Assigns or unassigns a template to a TV. Passed in JSON data.
+ *
+ * @param integer $id The ID of the template
+ * @param integer $tv The ID of the tv
+ * @param integer $rank The rank of the tv-template relationship
+ * @param boolean $access If true, the TV has access to the template.
+ *
  * @package modx
  * @subpackage processors.element.template.tv
  */

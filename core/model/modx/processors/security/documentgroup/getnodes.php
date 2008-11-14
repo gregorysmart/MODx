@@ -1,5 +1,9 @@
 <?php
 /**
+ * Get the resource groups as nodes
+ *
+ * @param string $id The ID of the parent node
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

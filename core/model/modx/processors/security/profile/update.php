@@ -1,5 +1,7 @@
 <?php
 /**
+ * Update a user profile
+ *
  * @package modx
  * @subpackage processors.security.profile
  */

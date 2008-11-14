@@ -1,4 +1,10 @@
 <?php
+/**
+ * Runs a config check
+ *
+ * @package modx
+ * @subpackage processors.system
+ */
 $warningspresent = false;
 $warnings = array();
 

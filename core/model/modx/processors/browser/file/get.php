@@ -1,5 +1,9 @@
 <?php
 /**
+ * Gets the contents of a file
+ *
+ * @param string $file The absolute path of the file
+ *
  * @package modx
  * @subpackage processors.browser.file
  */

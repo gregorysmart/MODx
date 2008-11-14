@@ -1,5 +1,9 @@
 <?php
 /**
+ * Removes a context
+ *
+ * @param string $key The key of the context. Cannot be mgr, web or connector.
+ *
  * @package modx
  * @subpackage processors.context
  */

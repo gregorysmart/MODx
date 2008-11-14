@@ -1,5 +1,7 @@
 <?php
 /**
+ * Update a pairing of user-resource groups
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

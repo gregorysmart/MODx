@@ -1,5 +1,15 @@
 <?php
 /**
+ * Update a system setting
+ *
+ * @param string $key The key of the setting
+ * @param string $value The value of the setting
+ * @param string $xtype The xtype for the setting, for rendering purposes
+ * @param string $area The area for the setting
+ * @param string $namespace The namespace for the setting
+ * @param string $name The lexicon name for the setting
+ * @param string $description The lexicon description for the setting
+ *
  * @package modx
  * @subpackage processors.system.settings
  */

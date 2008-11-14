@@ -1,5 +1,15 @@
 <?php
 /**
+ * Create a user setting
+ *
+ * @param integer $user/$fk The user to create the setting for
+ * @param string $key The setting key
+ * @param string $value The value of the setting
+ * @param string $name The lexicon name for the setting
+ * @param string $description The lexicon description for the setting
+ * @param string $area The area for the setting
+ * @param string $namespace The namespace for the setting
+ *
  * @package modx
  * @subpackage processors.context.setting
  */

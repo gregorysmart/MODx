@@ -1,5 +1,9 @@
 <?php
 /**
+ * Sorts the resource tree
+ *
+ * @param string $data The encoded tree data
+ *
  * @package modx
  * @subpackage processors.layout.tree.resource
  */

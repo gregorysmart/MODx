@@ -1,5 +1,10 @@
 <?php
 /**
+ * Removes a context setting.
+ *
+ * @param string $key The key of the setting
+ * @param string $context_key The key of the context
+ *
  * @package modx
  * @subpackage processors.context.setting
  */

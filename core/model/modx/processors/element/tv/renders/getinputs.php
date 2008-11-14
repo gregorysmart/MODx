@@ -1,5 +1,10 @@
 <?php
 /**
+ * Grabs a list of inputs for a TV.
+ *
+ * @param string $ctx (optional) The context by which to grab renders from.
+ * Defaults to mgr.
+ *
  * @package modx
  * @subpackage processors.element.tv.renders
  */

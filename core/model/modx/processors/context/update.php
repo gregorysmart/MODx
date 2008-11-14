@@ -1,5 +1,10 @@
 <?php
 /**
+ * Updates a context.
+ *
+ * @param string $key The key of the context
+ * @param json $settings A json array of context settings
+ *
  * @package modx
  * @subpackage processors.context
  */

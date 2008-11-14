@@ -1,5 +1,10 @@
 <?php
 /**
+ * Download packages from a provider
+ *
+ * @param integer $provider The ID of the provider
+ * @param json $packages A JSON array of packages to download
+ *
  * @package modx
  * @subpackage processors.workspace.providers
  */

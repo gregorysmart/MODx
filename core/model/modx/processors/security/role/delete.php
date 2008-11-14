@@ -2,6 +2,8 @@
 /**
  * Removes a role.
  *
+ * @param integer $id The ID of the role
+ *
  * @package modx
  * @subpackage processors.security.role
  */

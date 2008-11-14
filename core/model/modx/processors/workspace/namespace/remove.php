@@ -1,5 +1,9 @@
 <?php
 /**
+ * Removes a namespace.
+ *
+ * @param string $name The name of the namespace.
+ *
  * @package modx
  * @subpackage processors.workspace.namespace
  */

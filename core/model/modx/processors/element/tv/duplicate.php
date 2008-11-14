@@ -1,5 +1,10 @@
 <?php
 /**
+ * Duplicate a TV
+ *
+ * @param integer $id The ID of the TV to duplicate
+ * @param string $name The name of the new, duplicated TV
+ *
  * @package modx
  * @subpackage processors.element.tv
  */

@@ -1,5 +1,13 @@
 <?php
 /**
+ * Gets all files in a directory
+ *
+ * @param string $dir The directory to browse
+ * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
+ * the final path
+ * @param boolean $prependUrl (optional) If true, will prepend rb_base_url to
+ * the final url
+ *
  * @package modx
  * @subpackage processors.browser.directory
  */

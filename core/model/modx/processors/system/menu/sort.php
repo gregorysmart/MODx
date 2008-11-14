@@ -1,5 +1,9 @@
 <?php
 /**
+ * Sort menu items for a tree
+ *
+ * @param json $data
+ *
  * @package modx
  * @subpackage processors.system.menu
  */

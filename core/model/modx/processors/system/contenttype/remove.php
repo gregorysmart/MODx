@@ -1,5 +1,9 @@
 <?php
 /**
+ * Removes a content type
+ *
+ * @param integer $id The ID of the content type
+ *
  * @package modx
  * @subpackage processors.system.contenttype
  */

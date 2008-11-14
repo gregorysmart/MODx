@@ -1,5 +1,14 @@
 <?php
 /**
+ * Update a setting from a grid
+ *
+ * @param string $key The key of the setting
+ * @param string $oldkey The old key of the setting
+ * @param string $value The value of the setting
+ * @param string $area The area for the setting
+ * @param string $name The lexicon name for the setting
+ * @param string $description The lexicon description for the setting
+ *
  * @package modx
  * @subpackage processors.system.settings
  */

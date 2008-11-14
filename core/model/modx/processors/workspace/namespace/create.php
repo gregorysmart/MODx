@@ -1,5 +1,10 @@
 <?php
 /**
+ * Creates a namespace
+ *
+ * @param string $name The name of the namespace
+ * @param string $path The path of the namespace
+ *
  * @package modx
  * @subpackage processors.workspace.namespace
  */

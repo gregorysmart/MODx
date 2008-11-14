@@ -1,5 +1,17 @@
 <?php
 /**
+ * Creates a menu item
+ *
+ * @param string $text The text of the menu button.
+ * @param string $icon
+ * @param string $params (optional) Any parameters to be sent over GET when
+ * clicking the menu
+ * @param string $handler (optional) A custom javascript handler for the menu
+ * item
+ * @param integer $action_id (optional) The ID of the action. Defaults to 0.
+ * @param integer $parent (optional) The parent menu to create from. Defaults to
+ * 0.
+ *
  * @package modx
  * @subpackage processors.system.menu
  */

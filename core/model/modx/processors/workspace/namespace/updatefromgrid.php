@@ -1,5 +1,7 @@
 <?php
 /**
+ * Updates a namespace from a grid
+ *
  * @package modx
  * @subpackage processors.workspace.namespace
  */

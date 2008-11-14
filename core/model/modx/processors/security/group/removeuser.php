@@ -1,5 +1,10 @@
 <?php
 /**
+ * Remove a user from a user group
+ *
+ * @param integer $group_id The ID of the group
+ * @param integer $user_id The ID of the user
+ *
  * @package modx
  * @subpackage processors.security.group
  */

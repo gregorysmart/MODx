@@ -1,5 +1,9 @@
 <?php
 /**
+ * Gets a user group
+ *
+ * @param integer $id The ID of the user group
+ *
  * @package modx
  * @subpackage processors.security.group
  */

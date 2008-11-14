@@ -1,5 +1,8 @@
 <?php
 /**
+ * Update documents in a resource group
+ *
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

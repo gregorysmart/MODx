@@ -1,5 +1,12 @@
 <?php
 /**
+ * Create a user group
+ *
+ * @param string $name (optional) The name of the new user group. Defaults to
+ * Untitled User Group.
+ * @param integer $parent (optional) The ID of the parent user group. Defaults
+ * to 0.
+ *
  * @package modx
  * @subpackage processors.security.group
  */

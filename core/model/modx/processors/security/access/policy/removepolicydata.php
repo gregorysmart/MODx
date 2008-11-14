@@ -1,5 +1,10 @@
 <?php
 /**
+ * Removes a policy attribute
+ *
+ * @param $id The ID of the policy
+ * @param $key The key of the attribute data row
+ *
  * @package modx
  * @subpackage processors.security.access.policy
  */

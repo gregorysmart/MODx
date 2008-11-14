@@ -1,5 +1,20 @@
 <?php
 /**
+ * Update a plugin.
+ *
+ * @param integer $id The ID of the plugin.
+ * @param string $name The name of the plugin.
+ * @param string $plugincode The code of the plugin.
+ * @param string $description (optional) A description of the plugin.
+ * @param integer $category (optional) The category for the plugin. Defaults to
+ * no category.
+ * @param boolean $locked (optional) If true, can only be accessed by
+ * administrators. Defaults to false.
+ * @param boolean $disabled (optional) If true, the plugin does not execute.
+ * @param json $events (optional) A json array of system events to associate
+ * this plugin with.
+ * @param json $propdata (optional) A json array of properties
+ *
  * @package modx
  * @subpackage processors.element.plugin
  */

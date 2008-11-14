@@ -1,5 +1,10 @@
 <?php
 /**
+ * Add a user to a user group
+ *
+ * @param integer $user_group The ID of the user group
+ * @param intger $member The ID of the user
+ *
  * @package modx
  * @subpackage processors.security.group
  */

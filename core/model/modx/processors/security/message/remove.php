@@ -1,5 +1,9 @@
 <?php
 /**
+ * Remove a message
+ *
+ * @param integer $id The ID of the message
+ *
  * @package modx
  * @subpackage processors.security.message
  */

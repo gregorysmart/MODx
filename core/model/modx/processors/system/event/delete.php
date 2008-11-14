@@ -1,5 +1,10 @@
 <?php
 /**
+ * Deletes an event
+ *
+ * @param integer $id The ID of the event to delete
+ * @param boolean $cls If true, will clear all
+ *
  * @package modx
  * @subpackage processors.system.event
  */

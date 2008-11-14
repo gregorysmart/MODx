@@ -1,5 +1,9 @@
 <?php
 /**
+ * Sorts elements in the element tree
+ *
+ * @param json $data The JSON encoded data from the tree
+ *
  * @package modx
  * @subpackage processors.layout.tree.element
  */

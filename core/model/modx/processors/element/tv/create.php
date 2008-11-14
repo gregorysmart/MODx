@@ -1,5 +1,24 @@
 <?php
 /**
+ * Create a Template Variable.
+ *
+ * @param string $name The name of the TV
+ * @param string $caption (optional) A short caption for the TV.
+ * @param string $description (optional) A brief description.
+ * @param integer $category (optional) The category to assign to. Defaults to no
+ * category.
+ * @param boolean $locked (optional) If true, can only be accessed by
+ * administrators. Defaults to false.
+ * @param string $els (optional)
+ * @param integer $rank (optional) The rank of the TV
+ * @param string $display (optional) The type of output render
+ * @param string $display_params (optional) Any display rendering parameters
+ * @param string $default_text (optional) The default value for the TV
+ * @param json $templates (optional) Templates associated with the TV
+ * @param json $resource_groups (optional) Resource Groups associated with the
+ * TV.
+ * @param json $propdata (optional) A json array of properties
+ *
  * @package modx
  * @subpackage processors.element.tv
  */

@@ -1,5 +1,9 @@
 <?php
 /**
+ * Update a context from a grid. Passed as JSON data.
+ *
+ * @param string $key The key of the context
+ *
  * @package modx
  * @subpackage processors.context
  */

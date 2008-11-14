@@ -1,5 +1,10 @@
 <?php
 /**
+ * Remove a pairing of resource-user groups.
+ *
+ * @param integer $dg_id The ID of the resource group
+ * @param integer $ug_id The ID of the user group
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

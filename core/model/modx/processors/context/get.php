@@ -1,5 +1,9 @@
 <?php
 /**
+ * Grabs a context
+ *
+ * @param string $key The key of the context
+ *
  * @package modx
  * @subpackage processors.context
  */

@@ -1,5 +1,10 @@
 <?php
 /**
+ * Grabs a list of output renders for the tv.
+ *
+ * @param string $ctx (optional) The context by which to grab renders from.
+ * Defaults to web.
+ *
  * @package modx
  * @subpackage processors.element.tv.renders
  */

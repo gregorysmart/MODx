@@ -1,5 +1,7 @@
 <?php
 /**
+ * Gets a list of country codes
+ *
  * @package modx
  * @subpackage processors.system.country
  */

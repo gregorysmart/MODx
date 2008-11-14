@@ -1,5 +1,7 @@
 <?php
 /**
+ * Update a package information from the grid
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

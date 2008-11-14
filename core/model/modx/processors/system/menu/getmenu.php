@@ -1,5 +1,7 @@
 <?php
 /**
+ * Generate a menu
+ *
  * @package modx
  * @subpackage processors.system.menu
  */

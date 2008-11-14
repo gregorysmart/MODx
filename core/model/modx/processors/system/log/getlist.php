@@ -1,5 +1,16 @@
 <?php
 /**
+ * Gets a list of manager log actions
+ *
+ * @param string $action_type (optional) If set, will filter by action type
+ * @param integer $user (optional) If set, will filter by user
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 10.
+ * @param string $sort (optional) The column to sort by. Defaults to occurred.
+ * @param string $dir (optional) The direction of the sort. Defaults to ASC.
+ *
+ *
  * @package modx
  * @subpackage processors.system.log
  */

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Grabs a list of input types for TVs
+ *
  * @package modx
  * @subpackage processors.element.template.tv.inputtype
  */

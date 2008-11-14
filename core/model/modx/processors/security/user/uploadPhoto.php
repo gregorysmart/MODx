@@ -1,5 +1,8 @@
 <?php
 /**
+ * Upload a photo for the user
+ *
+ * @deprecated
  * @package modx
  * @subpackage processors.security.user
  */

@@ -1,5 +1,14 @@
 <?php
 /**
+ * Updates a policy
+ *
+ * @param integer $id The ID of the policy
+ * @param string $name The name of the policy.
+ * @param string $description (optional) A short description
+ * @param integer $parent (optional) A parent policy
+ * @param string $class
+ * @param json $data The JSON-encoded policy data
+ *
  * @package modx
  * @subpackage processors.security.access.policy
  */

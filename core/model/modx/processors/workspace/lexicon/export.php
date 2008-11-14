@@ -1,5 +1,11 @@
 <?php
 /**
+ * Exports lexicon entries for a topic and namespace to a file.
+ *
+ * @param string $language The IANA code for the language. Defaults to en.
+ * @param integer $topic The topic to export.
+ * @param string $namespace The namespace to export.
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon.focus
  */

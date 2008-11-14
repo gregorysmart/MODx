@@ -1,4 +1,9 @@
 <?php
+/**
+ * @deprecated
+ * @package modx
+ * @subpackage processors.system
+ */
 if (!function_exists('getAction')) {
     function getAction($lastaction, $itemid='') {
         switch($lastaction) {

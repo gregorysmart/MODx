@@ -1,5 +1,15 @@
 <?php
 /**
+ * Gets a list of resource groups associated to a TV.
+ *
+ * @param integer $tv The ID of the TV
+ *
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 20.
+ * @param string $sort (optional) The column to sort by. Defaults to name.
+ * @param string $dir (optional) The direction of the sort. Defaults to ASC.
+ *
  * @package modx
  * @subpackage processors.element.template.tv.resourcegroup
  */

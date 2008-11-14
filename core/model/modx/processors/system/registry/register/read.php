@@ -1,5 +1,25 @@
 <?php
 /**
+ * Read from the registry
+ *
+ * @param string $register The register to read from
+ * @param string $topic The topic in the register to read from
+ * @param string $format (optional) The format to output as. Defaults to json.
+ * @param string $register_class (optional) If set, will load a custom registry
+ * class.
+ * @param integer $poll_limit (optional) The number of polls to limit to.
+ * Defaults to 1.
+ * @param integer $poll_interval (optional) The interval of polls to grab from.
+ * Defaults to 1.
+ * @param integer $time_limit (optional) The time limit to sort by. Defaults to
+ * 10.
+ * @param integer $message_limit (optional) The max amount of messages to grab.
+ * Defaults to 200.
+ * @param boolean $remove_read (optional) If false, will not remove the message
+ * when read. Defaults to true.
+ * @param boolean $show_filename (optional) If true, will show the filename in
+ * the message. Defaults to false.
+ *
  * @package modx
  * @subpackage processors.system.registry.register
  */
@@ -17,7 +37,7 @@ $options = array();
 $options['poll_limit'] = (isset($_POST['poll_limit']) && intval($_POST['poll_limit'])) ? intval($_POST['poll_limit']) : 1;
 $options['poll_interval'] = (isset($_POST['poll_interval']) && intval($_POST['poll_interval'])) ? intval($_POST['poll_interval']) : 1;
 $options['time_limit'] = (isset($_POST['time_limit']) && intval($_POST['time_limit'])) ? intval($_POST['time_limit']) : 10;
-$options['msg_limit'] = (isset($_POST['message_limit']) && intval($_POST['message_limit'])) ? intval($_POST['message_limit']) : 100;
+$options['msg_limit'] = (isset($_POST['message_limit']) && intval($_POST['message_limit'])) ? intval($_POST['message_limit']) : 200;
 $options['remove_read'] = isset($_POST['remove_read']) ? (boolean) $_POST['remove_read'] : true;
 $options['show_filename'] = (isset($_POST['show_filename']) && !empty($_POST['show_filename'])) ? true : false;
 

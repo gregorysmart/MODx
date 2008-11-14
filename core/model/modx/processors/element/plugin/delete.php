@@ -1,5 +1,9 @@
 <?php
 /**
+ * Delete a plugin.
+ *
+ * @param integer $id The ID of the plugin
+ *
  * @package modx
  * @subpackage processors.element.plugin
  */

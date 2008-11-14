@@ -1,5 +1,7 @@
 <?php
 /**
+ * Update a provider from a grid
+ *
  * @package modx
  * @subpackage processors.workspace.providers
  */

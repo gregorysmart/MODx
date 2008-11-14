@@ -1,5 +1,8 @@
 <?php
 /**
+ * Gets policies in node format
+ *
+ * @deprecated
  * @package modx
  * @subpackage processors.security.access.policy
  */

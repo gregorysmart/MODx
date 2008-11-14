@@ -1,5 +1,9 @@
 <?php
 /**
+ * Disable a provider
+ *
+ * @param integer $id The ID of the provider
+ *
  * @package modx
  * @subpackage processors.workspace.providers
  */

@@ -1,5 +1,7 @@
 <?php
 /**
+ * Creates a transport package
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

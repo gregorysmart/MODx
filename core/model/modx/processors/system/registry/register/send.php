@@ -1,5 +1,20 @@
 <?php
 /**
+ * Send a message to the registry.
+ *
+ * @param string $register The register to read from
+ * @param string $register_class (optional) If set, will load a custom registry
+ * class.
+ * @param string $topic The topic in the register to read from
+ * @param string $message The message to send
+ * @param string $message_format (optional) The format of the message. Defaults
+ * to string.
+ * @param integer $delay (optional) The delay in seconds to send by. Defaults to
+ * 0.
+ * @param integer $ttl (optional) The time to live of the message. Defaults to
+ * 0, or forever.
+ * @param integer $kill (optional) Defaults to false.
+ *
  * @package modx
  * @subpackage processors.system.registry.register
  */

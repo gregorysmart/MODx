@@ -1,5 +1,11 @@
 <?php
 /**
+ * Remove a directory
+ *
+ * @param string $dir The directory to remove
+ * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
+ * the final path
+ *
  * @package modx
  * @subpackage processors.browser.directory
  */

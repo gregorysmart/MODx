@@ -1,5 +1,9 @@
 <?php
 /**
+ * Remove a system setting
+ *
+ * @param string $key The key of the setting
+ *
  * @package modx
  * @subpackage processors.system.settings
  */

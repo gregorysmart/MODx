@@ -1,5 +1,9 @@
 <?php
 /**
+ * Mark a message as unread
+ *
+ * @param integer $id The ID of the message
+ *
  * @package modx
  * @subpackage processors.security.message
  */

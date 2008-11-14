@@ -1,5 +1,9 @@
 <?php
 /**
+ * Deletes a template.
+ *
+ * @param integer $id The ID of the template
+ *
  * @package modx
  * @subpackage processors.element.template
  */

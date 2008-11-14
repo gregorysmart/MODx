@@ -1,5 +1,10 @@
 <?php
 /**
+ * Duplicate a plugin
+ *
+ * @param integer $id The ID of the plugin
+ * @param string $name The new name of the duplicated plugin
+ *
  * @package modx
  * @subpackage processors.element.plugin
  */

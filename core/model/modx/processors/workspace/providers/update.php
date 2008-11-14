@@ -1,5 +1,12 @@
 <?php
 /**
+ * Update a provider
+ *
+ * @param integer $id The ID of the provider
+ * @param string $name The new name for the provider
+ * @param string $description A short description
+ * @param string $service_url The URL which the provider is hosted under
+ *
  * @package modx
  * @subpackage processors.workspace.providers
  */

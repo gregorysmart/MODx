@@ -1,5 +1,9 @@
 <?php
 /**
+ * Create a resource group
+ *
+ * @param string $name The name of the new resource group
+ *
  * @package modx
  * @subpackage processors.security.documentgroup
  */

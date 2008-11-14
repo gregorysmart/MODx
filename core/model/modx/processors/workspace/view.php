@@ -1,5 +1,9 @@
 <?php
 /**
+ * Views a workspace
+ *
+ * @param integer $id The ID of the workspace
+ *
  * @package modx
  * @subpackage processors.workspace
  */

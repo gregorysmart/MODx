@@ -1,5 +1,19 @@
 <?php
 /**
+ * Gets a list of ACLs.
+ *
+ * @param string $type The type of ACL object
+ * @param string $target (optional) The target of the ACL. Defauls to 0.
+ * @param string $principal_class The class_key for the principal. Defaults to
+ * modUserGroup.
+ * @param string $principal (optional) The principal ID. Defaults to 0.
+ *
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 10.
+ * @param string $sort (optional) The column to sort by.
+ * @param string $dir (optional) The direction of the sort. Defaults to ASC.
+ *
  * @package modx
  * @subpackage processors.security.access
  */

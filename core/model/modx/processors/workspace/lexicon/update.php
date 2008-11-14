@@ -1,5 +1,14 @@
 <?php
 /**
+ * Updates a lexicon entry
+ *
+ * @param integer $id The ID of the entry.
+ * @param string $name The name of the entry.
+ * @param string $language The IANA code for the language.
+ * @param string $value The value of the entry.
+ * @param integer $topic The topic associated with this entry.
+ * @param string $namespace The namespace associated with this entry.
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon
  */

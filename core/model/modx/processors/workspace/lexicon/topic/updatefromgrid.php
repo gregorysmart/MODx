@@ -1,5 +1,7 @@
 <?php
 /**
+ * Updates a topic from a grid
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon.topic
  */

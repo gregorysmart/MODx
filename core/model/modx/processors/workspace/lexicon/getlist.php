@@ -1,5 +1,16 @@
 <?php
 /**
+ * Gets a list of lexicon entries
+ *
+ * @param string $namespace (optional) If set, will filter by namespace.
+ * Defaults to core.
+ * @param integer $topic (optional) If set, will filter by this topic
+ * @param string $language (optional) If set, will filter by language. Defaults
+ * to en.
+ * @param integer $start (optional) The record to start at. Defaults to 0.
+ * @param integer $limit (optional) The number of records to limit to. Defaults
+ * to 10.
+ *
  * @package modx
  * @subpackage processors.workspace.lexicon
  */

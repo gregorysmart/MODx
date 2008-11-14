@@ -2,6 +2,8 @@
 /**
  * Scans for local packages to add to the workspace.
  *
+ * @param integer $workspace The workspace to add to. Defaults to 1.
+ *
  * @package modx
  * @subpackage processors.workspace.packages
  */

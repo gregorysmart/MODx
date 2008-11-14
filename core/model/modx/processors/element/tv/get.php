@@ -1,5 +1,9 @@
 <?php
 /**
+ * Gets a TV
+ *
+ * @param integer $id The ID of the TV
+ *
  * @package modx
  * @subpackage processors.element.tv
  */

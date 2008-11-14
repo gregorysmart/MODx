@@ -1,5 +1,9 @@
 <?php
 /**
+ * Grabs the actions in node format
+ *
+ * @param string $id The parent node ID
+ *
  * @package modx
  * @subpackage processors.system.action
  */

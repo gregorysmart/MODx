@@ -1,5 +1,11 @@
 <?php
 /**
+ * Updates a setting from a grid
+ *
+ * @param integer $user The user to create the setting for
+ * @param string $key The setting key
+ * @param string $value The setting value
+ *
  * @package modx
  * @subpackage processors.security.user.setting
  */

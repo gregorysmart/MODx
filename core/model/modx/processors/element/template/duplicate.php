@@ -1,5 +1,12 @@
 <?php
 /**
+ * Duplicate a TV.
+ *
+ *
+ * @param integer $id The ID of the tv to duplicate.
+ * @param string $name (optional) The name of the new tv. Defaults to Untitled
+ * TV.
+ *
  * @package modx
  * @subpackage processors.element.template
  */

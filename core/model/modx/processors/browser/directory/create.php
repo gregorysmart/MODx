@@ -1,5 +1,12 @@
 <?php
 /**
+ * Create a directory.
+ *
+ * @param string $name The name of the directory to create
+ * @param string $parent The parent directory
+ * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
+ * the final path
+ *
  * @package modx
  * @subpackage processors.browser.directory
  */

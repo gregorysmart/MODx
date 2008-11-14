@@ -1,5 +1,10 @@
 <?php
 /**
+ * Renames a file
+ *
+ * @param string $file The file to rename
+ * @param string $new_name The new name for the file
+ *
  * @package modx
  * @subpackage processors.browser
  */
