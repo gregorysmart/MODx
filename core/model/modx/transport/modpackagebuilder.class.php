@@ -117,7 +117,7 @@ class modPackageBuilder {
         }
         if (file_exists($this->directory . $this->signature) && is_dir($this->directory . $this->signature)) {
             if ($cacheManager= $this->modx->getCacheManager()) {
-                $cacheManager->deleteTree($this->directory . $this->signature);
+                $cacheManager->deleteTree($this->directory . $this->signature, true, false, array());
             }
         }
 
