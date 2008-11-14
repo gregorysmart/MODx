@@ -25,7 +25,9 @@
  *
  * @package setup
  */
-
+define('MODX_INSTALL_MODE_NEW',0);
+define('MODX_INSTALL_MODE_UPGRADE_REVO',1);
+define('MODX_INSTALL_MODE_UPGRADE_EVO',2);
 /**
  * Provides common functionality and data for installation and provisioning.
  *
@@ -103,13 +105,13 @@ class modInstall {
             $config = array ();
         }
         switch ($mode) {
-            case 2 :
-                $included = @ include (MODX_INSTALL_PATH . 'manager/includes/config.inc.php');
+            case MODX_INSTALL_MODE_UPGRADE_EVO :
+                $included = @ include MODX_INSTALL_PATH . 'manager/includes/config.inc.php';
                 if ($included && isset ($dbase))
                     break;
 
-            case 1 :
-                $included = @ include (MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php');
+            case MODX_INSTALL_MODE_UPGRADE_REVO :
+                $included = @ include MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php';
                 if ($included && isset ($dbase))
                     break;
 
@@ -128,20 +130,22 @@ class modInstall {
                 $site_sessionname = 'SN' . uniqid('');
                 break;
         }
-        $config['database_type'] = 'mysql';
-        $config['database_server'] = $database_server;
-        $config['dbase'] = trim($dbase, '`');
-        $config['database_user'] = $database_user;
-        $config['database_password'] = $database_password;
-        $config['database_collation'] = isset ($database_collation) ? $database_collation : 'utf8_unicode_ci';
-        $config['database_charset'] = $database_charset;
-        $config['database_connection_charset'] = $database_connection_charset;
-        $config['table_prefix'] = $table_prefix;
-        $config['https_port'] = isset ($https_port) ? $https_port : '443';
-        $config['site_sessionname'] = isset ($site_sessionname) ? $site_sessionname : 'SN' . uniqid('');
-        $config['cache_disabled'] = isset ($cache_disabled) && $cache_disabled ? 'true' : 'false';
-        $config['inplace'] = isset ($_POST['inplace']) ? 1 : 0;
-        $config['unpacked'] = isset ($_POST['unpacked']) ? 1 : 0;
+        $config = array_merge($config,array(
+            'database_type' => 'mysql',
+            'database_server' => $database_server,
+            'dbase' => trim($dbase,'`'),
+            'database_user' => $database_user,
+            'database_password' => $database_password,
+            'database_collation' => isset ($database_collation) ? $database_collation : 'utf8_unicode_ci',
+            'database_charset' => $database_charset,
+            'database_connection_charset' => $database_connection_charset,
+            'table_prefix' => $table_prefix,
+            'https_port' => isset ($https_port) ? $https_port : '443',
+            'site_sessionname' => isset ($site_sessionname) ? $site_sessionname : 'SN' . uniqid(''),
+            'cache_disabled' => isset ($cache_disabled) && $cache_disabled ? 'true' : 'false',
+            'inplace' => isset ($_POST['inplace']) ? 1 : 0,
+            'unpacked' => isset ($_POST['unpacked']) ? 1 : 0,
+        ));
         $this->config = array_merge($this->config, $config);
         return $this->config;
     }
@@ -152,33 +156,23 @@ class modInstall {
      * @param integer $mode The install mode.
      */
     function setConfig($mode = 0) {
-        $database_type = 'mysql';
-        $database_server = isset ($_POST['databasehost']) ? $_POST['databasehost'] : 'localhost';
-        $database_user = isset ($_POST['databaseloginname']) ? $_POST['databaseloginname'] : '';
-        $database_password = isset ($_POST['databaseloginpassword']) ? $_POST['databaseloginpassword'] : '';
-        $database_collation = isset ($_POST['database_collation']) ? $_POST['database_collation'] : 'utf8_unicode_ci';
-        $database_charset = substr($database_collation, 0, strpos($database_collation, '_'));
-        $database_connection_charset = isset ($_POST['database_connection_charset']) ? $_POST['database_connection_charset'] : $database_charset;
-        $dbase = isset ($_POST['database_name']) ? $_POST['database_name'] : 'modx';
-        $table_prefix = isset ($_POST['tableprefix']) ? $_POST['tableprefix'] : 'modx_';
-        $https_port = isset ($_POST['httpsport']) ? $_POST['httpsport'] : '443';
-        $cache_disabled = isset ($_POST['cachedisabled']) ? $_POST['cachedisabled'] : 'false';
-        $site_sessionname = isset ($_POST['site_sessionname']) ? $_POST['site_sessionname'] : 'SN' . uniqid('');
-        $config['database_type'] = $database_type;
-        $config['database_server'] = $database_server;
-        $config['dbase'] = $dbase;
-        $config['database_user'] = $database_user;
-        $config['database_password'] = $database_password;
-        $config['database_collation'] = $database_collation;
-        $config['database_charset'] = $database_charset;
-        $config['database_connection_charset'] = $database_connection_charset;
-        $config['table_prefix'] = $table_prefix;
-        $config['install_mode'] = $mode;
-        $config['https_port'] = $https_port;
-        $config['site_sessionname'] = $site_sessionname;
-        $config['cache_disabled'] = $cache_disabled;
-        $config['inplace'] = isset ($_POST['inplace']) ? 1 : 0;
-        $config['unpacked'] = isset ($_POST['unpacked']) ? 1 : 0;
+        $config = array(
+            'database_type' => 'mysql',
+            'database_server' => isset ($_POST['databasehost']) ? $_POST['databasehost'] : 'localhost',
+            'database_user' => isset ($_POST['databaseloginname']) ? $_POST['databaseloginname'] : '',
+            'database_password' => isset ($_POST['databaseloginpassword']) ? $_POST['databaseloginpassword'] : '',
+            'database_collation' => isset ($_POST['database_collation']) ? $_POST['database_collation'] : 'utf8_unicode_ci',
+            'dbase' => isset ($_POST['database_name']) ? $_POST['database_name'] : 'modx',
+            'table_prefix' => isset ($_POST['tableprefix']) ? $_POST['tableprefix'] : 'modx_',
+            'https_port' => isset ($_POST['httpsport']) ? $_POST['httpsport'] : '443',
+            'cache_disabled' => isset ($_POST['cachedisabled']) ? $_POST['cachedisabled'] : 'false',
+            'site_sessionname' => isset ($_POST['site_sessionname']) ? $_POST['site_sessionname'] : 'SN' . uniqid(''),
+            'inplace' => isset ($_POST['inplace']) ? 1 : 0,
+            'unpacked' => isset ($_POST['unpacked']) ? 1 : 0,
+        );
+        $config['database_charset'] = substr($config['database_collation'], 0, strpos($config['database_collation'], '_'));
+        $config['database_connection_charset'] = isset($_POST['database_connection_charset']) ? $_POST['database_connection_charset'] : $config['database_charset'];
+
         $this->config = array_merge($this->config, $config);
     }
 
@@ -187,17 +181,15 @@ class modInstall {
      *
      * @return xPDO A copy of the xpdo object.
      */
-    function getConnection($mode = 0) {
-        if ($mode === 1) {
+    function getConnection($mode = MODX_INSTALL_MODE_NEW) {
+        if ($mode === MODX_INSTALL_MODE_UPGRADE_EVO) {
             $errors = array ();
             $this->xpdo = $this->_modx($errors);
-        }
-        elseif (!is_object($this->xpdo)) {
+        } else if (!is_object($this->xpdo)) {
             $this->xpdo = $this->_connect($this->config['database_type'] . ':host=' . $this->config['database_server'] . ';dbname=' . trim($this->config['dbase'], '`') . ';charset=' . $this->config['database_connection_charset'], $this->config['database_user'], $this->config['database_password'], $this->config['table_prefix']);
             $this->xpdo->config['cache_path'] = MODX_CORE_PATH . 'cache/';
         }
         if (is_object($this->xpdo)) {
-//            $this->xpdo->setLogLevel(XPDO_LOG_LEVEL_INFO);
             $this->xpdo->setLogTarget('HTML');
         }
         return $this->xpdo;
@@ -209,11 +201,12 @@ class modInstall {
      * @return array A copy of the install config array merged with the retrieved admin user attributes.
      */
     function getAdminUser() {
-        $config = array ();
-        $config['cmsadmin'] = $_POST['cmsadmin'];
-        $config['cmsadminemail'] = $_POST['cmsadminemail'];
-        $config['cmspassword'] = $_POST['cmspassword'];
-        $config['cmspasswordconfirm'] = $_POST['cmspasswordconfirm'];
+        $config = array (
+            'cmsadmin' => $_POST['cmsadmin'],
+            'cmsadminemail' => $_POST['cmsadminemail'],
+            'cmspassword' => $_POST['cmspassword'],
+            'cmspasswordconfirm' => $_POST['cmspasswordconfirm'],
+        );
         $this->config = array_merge($this->config, $config);
         return $this->config;
     }
@@ -264,7 +257,7 @@ class modInstall {
      * @param string $test_class The class to run tests with
      * @return array An array of result messages collected during the process.
      */
-    function test($mode = 0,$test_class = 'modInstallTest') {
+    function test($mode = MODX_INSTALL_MODE_NEW,$test_class = 'modInstallTest') {
         $test = $this->loadTestHandler($test_class);
         $results = $this->test->run($mode);
         return $results;
@@ -279,36 +272,36 @@ class modInstall {
      */
     function execute($mode) {
         $results = array ();
-
-        // set the time limit infinite in case it takes a bit
-        // TODO: fix this by allowing resume when it takes a long time
+        /* set the time limit infinite in case it takes a bit
+         * TODO: fix this by allowing resume when it takes a long time
+         */
         @ set_time_limit(0);
         @ ini_set('max_execution_time', 240);
 
-        // get connection
+        /* get connection */
         $this->getConnection($mode);
 
-        // run appropriate database routines
+        /* run appropriate database routines */
         switch ($mode) {
-            //TODO: MODx Evolution to Revolution migration
-            case 2 :
-                $results = include (MODX_SETUP_PATH . 'includes/tables_migrate.php');
+            /* TODO: MODx Evolution to Revolution migration */
+            case MODX_INSTALL_MODE_UPGRADE_EVO :
+                $results = include MODX_SETUP_PATH . 'includes/tables_migrate.php';
                 break;
-                // 0.9.7-alpha+ upgrades
-            case 1 :
-                $results = include (MODX_SETUP_PATH . 'includes/tables_upgrade.php');
+                /* revo-alpha+ upgrades */
+            case MODX_INSTALL_MODE_UPGRADE_REVO :
+                $results = include MODX_SETUP_PATH . 'includes/tables_upgrade.php';
                 break;
-                // create tables
+                /* new install, create tables */
             default :
-                $results = include (MODX_SETUP_PATH . 'includes/tables_create.php');
+                $results = include MODX_SETUP_PATH . 'includes/tables_create.php';
                 break;
         }
 
-        // write config file
+        /* write config file */
         $this->writeConfig($results);
 
         if ($this->xpdo) {
-            // add required core data
+            /* add required core data */
             $this->xpdo->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 
             $this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
@@ -330,7 +323,7 @@ class modInstall {
                 XPDO_TRANSPORT_RESOLVE_FILES => ($this->config['inplace'] == 0 ? 1 : 0)
             ));
 
-            // set default workspace path
+            /* set default workspace path */
             if ($workspace = $this->xpdo->getObject('modWorkspace', array (
                     'active' => 1
                 ))) {
@@ -358,8 +351,9 @@ class modInstall {
                 );
             }
 
-            if ($mode == 0) {
-                // add default admin user
+            /* if new install */
+            if ($mode == MODX_INSTALL_MODE_NEW) {
+                /* add default admin user */
                 $user = $this->xpdo->newObject('modUser');
                 $user->set('username', $this->config['cmsadmin']);
                 $user->set('password', md5($this->config['cmspassword']));
@@ -389,8 +383,9 @@ class modInstall {
                         'msg' => '<p class="ok">Created default admin user.</p>'
                     );
                 }
+            /* if upgrade */
             } else {
-                // handle change of manager_theme to default (FIXME: temp hack)
+                /* handle change of manager_theme to default (FIXME: temp hack) */
                 if ($managerTheme = $this->xpdo->getObject('modSystemSetting', array(
                         'key' => 'manager_theme',
                         'value:!=' => 'default'
@@ -399,7 +394,7 @@ class modInstall {
                     $managerTheme->save();
                 }
 
-                // handle change of default language to proper IANA code (FIXME: just forcing en for now)
+                /* handle change of default language to proper IANA code (FIXME: just forcing en for now) */
                 if ($managerLanguage = $this->xpdo->getObject('modSystemSetting', array(
                         'key' => 'manager_language',
                         'value:!=' => 'en'
@@ -408,16 +403,16 @@ class modInstall {
                     $managerLanguage->save();
                 }
 
-                // update settings_version
+                /* update settings_version */
                 if ($settings_version = $this->xpdo->getObject('modSystemSetting', array(
                         'key' => 'settings_version'
                     ))) {
-                    $currentVersion = include(MODX_CORE_PATH . 'config/version.inc.php');
+                    $currentVersion = include MODX_CORE_PATH . 'config/version.inc.php';
                     $settings_version->set('value', $currentVersion['full_version']);
                     $settings_version->save();
                 }
 
-                // make sure admin user (1) has proper group and role
+                /* make sure admin user (1) has proper group and role */
                 $adminUser = $this->xpdo->getObject('modUser', 1);
                 if ($adminUser) {
                     $userGroupMembership = $this->xpdo->getObject('modUserGroupMember', array('user_group' => 1, 'member' => 1));
@@ -457,14 +452,19 @@ class modInstall {
         return $errors;
     }
 
+    /**
+     *
+     * @param array $options
+     */
     function cleanup($options = array ()) {
-        //TODO: implement this function to cleanup any temporary files
+        /*
+         * TODO: implement this function to cleanup any temporary files
+         */
     }
 
     /**
      * Writes the config file.
      *
-     * @todo Internationalization of error messages.
      * @param array $results An array of result messages.
      * @return boolean Returns true if successful; false otherwise.
      */
@@ -490,8 +490,9 @@ class modInstall {
                 }
             }
         }
-        // try to chmod the config file go-rwx (for suexeced php)
-        // FIXME: need some way to configure the actual permissions to set
+        /* try to chmod the config file go-rwx (for suexeced php)
+         * FIXME: need some way to configure the actual permissions to set
+         */
         $chmodSuccess = @ chmod($configFile, 0600);
         if (!is_array($results)) {
             $results = array ();
@@ -499,23 +500,23 @@ class modInstall {
         if ($written) {
             $results[] = array (
                 'class' => 'success',
-                'msg' => '<p class="ok">Config file successfully written.</p>'
+                'msg' => '<p class="ok">'.$this->lexicon['config_file_written'].'</p>'
             );
         } else {
             $results[] = array (
                 'class' => 'failed',
-                'msg' => '<p class="notok">Error writing config file.</p>'
+                'msg' => '<p class="notok">'.$this->lexicon['config_file_err_w'].'</p>'
             );
         }
         if ($chmodSuccess) {
             $results[] = array (
                 'class' => 'success',
-                'msg' => '<p class="ok">Config file permissions successfully updated.</p>'
+                'msg' => '<p class="ok">'.$this->lexicon['config_file_perms_set'].'</p>'
             );
         } else {
             $results[] = array (
                 'class' => 'warning',
-                'msg' => '<p>Config file permissions were not updated. You may want to change the permissions on your config file to secure the file from tampering.</p>'
+                'msg' => '<p>'.$this->lexicon['config_file_perms_notset'].'</p>'
             );
         }
         return $written;
@@ -578,13 +579,13 @@ class modInstall {
     function getManagerLoginUrl() {
         $url = '';
 
-        // instantiate the modX class
+        /* instantiate the modX class */
         if (@ require_once (MODX_CORE_PATH . 'model/modx/modx.class.php')) {
             $modx = new modX(MODX_CORE_PATH . 'config/');
             if (is_object($modx) && is_a($modx, 'modX')) {
-                // try to initialize the mgr context
+                /* try to initialize the mgr context */
                 $modx->initialize('mgr');
-                $url = MODX_MANAGER_URL;
+                $url = $modx->config['manager_url'];
             }
         }
 
@@ -597,23 +598,23 @@ class modInstall {
      * @access public
      * @return integer One of three possible mode indicators:<ul>
      * <li>0 = new install only</li>
-     * <li>1 = new OR upgrade from MODx Evolution</li>
-     * <li>2 = new OR upgrade from older versions of MODx Revolution</li>
+     * <li>1 = new OR upgrade from older versions of MODx Revolution</li>
+     * <li>2 = new OR upgrade from MODx Evolution</li>
      * </ul>
      */
     function getInstallMode() {
-        $mode = 0;
+        $mode = MODX_INSTALL_MODE_NEW;
         if (isset ($_POST['installmode'])) {
             $mode = intval($_POST['installmode']);
         } else {
             if (file_exists(MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php')) {
-                // Include the file so we can test its validity
+                /* Include the file so we can test its validity */
                 $included = @ include (MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php');
-                $mode = ($included && isset ($dbase)) ? 1 : 0;
+                $mode = ($included && isset ($dbase)) ? MODX_INSTALL_MODE_UPGRADE_REVO : MODX_INSTALL_MODE_NEW;
             }
             if (!$mode && file_exists(MODX_INSTALL_PATH . "manager/includes/config.inc.php")) {
                 $included = @ include (MODX_INSTALL_PATH . "manager/includes/config.inc.php");
-                $mode = ($included && isset ($dbase)) ? 2 : 0;
+                $mode = ($included && isset ($dbase)) ? MODX_INSTALL_MODE_UPGRADE_EVO : MODX_INSTALL_MODE_NEW;
             }
         }
         return $mode;
@@ -652,7 +653,7 @@ class modInstall {
     function _modx(& $errors) {
         $modx = null;
 
-        // to validate installation, instantiate the modX class and run a few tests
+        /* to validate installation, instantiate the modX class and run a few tests */
         if (require_once (MODX_CORE_PATH . 'model/modx/modx.class.php')) {
             $modx = new modX(MODX_CORE_PATH . 'config/');
             if (!is_object($modx) || !is_a($modx, 'modX')) {
@@ -661,7 +662,7 @@ class modInstall {
                 $modx->setDebug(E_ALL & ~E_STRICT);
                 $modx->setLogTarget('HTML');
 
-                // try to initialize the mgr context
+                /* try to initialize the mgr context */
                 $modx->initialize('mgr');
                 if (!$modx->_initialized) {
                     $errors[] = '<p>Could not initialize the MODx manager context.</p>';

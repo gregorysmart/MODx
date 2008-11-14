@@ -16,7 +16,7 @@ class modInstallTest {
      * @param integer $mode The install mode.
      * @return array An array of result messages collected during the process.
      */
-    function run($mode = 0) {
+    function run($mode = MODX_INSTALL_MODE_NEW) {
         $this->results = array();
         $this->mode = $mode;
 
@@ -189,7 +189,7 @@ class modInstallTest {
         }
 
 
-        if ($this->mode == 0 || !$coreConfigsExist) {
+        if ($this->mode == MODX_INSTALL_MODE_NEW || !$coreConfigsExist) {
             /* web_path */
             $this->results['context_web_writable']['msg'] = '<p>'.sprintf($this->install->lexicon['test_directory_writable'],$this->install->config['web_path']);
             if (!$this->_inWritableContainer($this->install->config['web_path'])) {
@@ -253,7 +253,7 @@ class modInstallTest {
         $this->results['dbase_connection']['msg'] = '<p>'.$this->install->lexicon['test_db_check'];
         $xpdo = $this->install->getConnection();
         if (!$xpdo || !$xpdo->connect()) {
-            if ($this->mode > 0) {
+            if ($this->mode > MODX_INSTALL_MODE_NEW) {
                 $this->results['dbase_connection']['msg'] .= '<span class="notok">'.$this->install->lexicon['test_db_failed'].'</span><p />'.$this->install->lexicon['test_db_check_conn'].'</p>';
                 $this->results['dbase_connection']['class'] = 'testFailed';
             } else {
@@ -292,7 +292,7 @@ class modInstallTest {
                 $count = $stmt->fetchColumn();
                 $stmt->closeCursor();
             }
-            if ($this->mode == 0) {
+            if ($this->mode == MODX_INSTALL_MODE_NEW) { /* if new install */
                 if ($count > 0) {
                     $this->results['table_prefix']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></b> - '.$this->install->lexicon['test_table_prefix_inuse'].'</p>';
                     $this->results['table_prefix']['class'] = 'testFailed';
@@ -301,7 +301,7 @@ class modInstallTest {
                     $this->results['table_prefix']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
                     $this->results['table_prefix']['class'] = 'testPassed';
                 }
-            } else {
+            } else { /* if upgrade */
                 if ($count < 1) {
                     $this->results['table_prefix']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></b> - '.$this->install->lexicon['test_table_prefix_nf'].'</p>';
                     $this->results['table_prefix']['class'] = 'testFailed';
