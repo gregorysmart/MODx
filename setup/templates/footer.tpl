@@ -1,4 +1,4 @@
-            <div id="navbar">{$navbar}</div>
+            <div class="setup_navbar">{$navbar}</div>
         </div>
         </form>
         <!-- end content -->

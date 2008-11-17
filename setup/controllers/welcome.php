@@ -1,6 +1,9 @@
 <?php
+/**
+ * @package setup
+ */
 $navbar= '
-<input type="button" value="'.$install->lexicon['next'].'" name="cmdnext" style="float:right;width:100px;" onclick="return doAction(\'welcome\');" />
+<button name="cmdnext" onclick="return doAction(\'welcome\');" >'.$install->lexicon['next'].'</button>
 ';
 $this->parser->assign('navbar', $navbar);
 

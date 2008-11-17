@@ -1,6 +1,7 @@
 <?php
-require_once (MODX_SETUP_PATH . 'includes/modinstall.class.php');
-
+/**
+ * @package setup
+ */
 $installMode= $install->getInstallMode();
 $this->parser->assign('installmode', $installMode);
 
@@ -14,9 +15,8 @@ $this->parser->assign('config', $install->config);
 $action = MODX_SETUP_KEY == '@traditional' ? 'goAction(\'summary\')' : 'doAction(\'database\')';
 
 $navbar= '
-<input type="button" value="'.$install->lexicon['next'].'" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="return ' . $action . ';" />
-<span style="float:right">&nbsp;</span>
-<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'options\');"/>
+<button id="cmdnext" name="cmdnext" onclick="return ' . $action . ';" />'.$install->lexicon['next'].'</button>
+<button id="cmdback" name="cmdback" onclick="return goAction(\'options\');">'.$install->lexicon['back'].'</button>
 ';
 $this->parser->assign('navbar', $navbar);
 $this->parser->display('database.tpl');

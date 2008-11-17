@@ -1,4 +1,9 @@
 <?php
+/**
+ * English language files for Revolution 2.0.0 setup
+ *
+ * @package setup
+ */
 $_lang['additional_css']= '';
 $_lang['addons'] = 'Add-ons';
 $_lang['all'] = 'All';
@@ -43,10 +48,15 @@ $_lang['context_web_url'] = 'URL for web context';
 $_lang['continue'] = 'Continue';
 $_lang['dau_err_save'] = 'Error saving the default admin user.';
 $_lang['dau_saved'] = 'Created default admin user.';
+$_lang['db_connected'] = 'Database connection successful!';
 $_lang['db_created'] = 'Successfully created the database.';
+$_lang['db_err_connect'] = 'Could not connect to the database.';
+$_lang['db_err_connect_upgrade'] = 'Could not connect to the existing database for upgrade.  Check the connection properties and try again.';
 $_lang['db_err_create'] = 'Error while attempting to create the database.';
 $_lang['delete_setup_dir'] = 'Check this to DELETE the setup directory from the filesystem.';
 $_lang['dir']= 'ltr';
+$_lang['email_err_ns'] = 'Email address is invalid';
+$_lang['err_occ'] = 'Errors have occured!';
 $_lang['errors_occurred'] = 'Errors were encountered during core installation.  Please review the installation results below, correct the problems and proceed as directed.';
 $_lang['failed'] = 'Failed!';
 $_lang['img_banner']= 'assets/images/img_banner.gif';
@@ -136,6 +146,8 @@ $_lang['options_upgrade_existing_note'] = 'Upgrade your current files and databa
 $_lang['package_err_install'] = 'Could not install package %s.';
 $_lang['package_err_nf'] = 'Could not retrieve package %s installation.';
 $_lang['package_installed'] = 'Successfully installed package %s.';
+$_lang['password_err_nomatch'] = 'Does not match password';
+$_lang['password_err_ns'] = 'Password is empty';
 $_lang['please_select_login'] = 'Please select the `Login` button to access the management interface';
 $_lang['preinstall_failure'] = 'Problems were detected.  Please review the pre-installation test results below, correct the problems as directed, and then click Test again.';
 $_lang['preinstall_success'] = 'Pre-installation tests were successful.  Click Install below to continue.';
@@ -152,6 +164,8 @@ $_lang['transport_class_err_load'] = 'Error loading transport class.';
 $_lang['toggle'] = 'Toggle';
 $_lang['toggle_success'] = 'Toggle Success Messages';
 $_lang['toggle_warnings'] = 'Toggle Warnings';
+$_lang['username_err_ns'] =  'Username is invalid';
+$_lang['version']= 'version';
 $_lang['welcome']= 'Welcome to the MODx installation program.';
 $_lang['welcome_message']= '<p>This program will guide you through the rest of the installation.</p>
 	<p>Please select the `Next` button to continue:</p>
@@ -159,7 +173,7 @@ $_lang['welcome_message']= '<p>This program will guide you through the rest of t
 $_lang['workspace_err_nf'] = 'Could not find the active workspace.';
 $_lang['workspace_err_path'] = 'Error setting the active workspace path.';
 $_lang['workspace_path_update'] = 'Updated the active workspace path.';
-$_lang['version']= 'version';
+$_lang['xpdo_err_ins'] = 'Could not instantiate xPDO.';
 
 
 $_lang['test_config_file'] = 'Checking if <span class="mono">%s</span> exists and is writable: ';

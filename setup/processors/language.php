@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package setup
+ */
 $language= 'en';
 if (isset ($_REQUEST['language'])) {
     $language= $_REQUEST['language'];

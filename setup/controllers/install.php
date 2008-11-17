@@ -1,6 +1,7 @@
 <?php
-require_once MODX_SETUP_PATH . 'includes/modinstall.class.php';
-
+/**
+ * @package setup
+ */
 $installMode= $install->getInstallMode();
 $this->parser->assign('installmode', $installMode);
 
@@ -26,10 +27,9 @@ $this->parser->assign('itemClass', $failed ? 'error' : '');
 
 $nextButton= $failed ? $install->lexicon['retry'] : $install->lexicon['continue'];
 $nextAction= $failed ? 'return goAction(\'install\')' : 'return doAction(\'install\');';
-$backButton= $failed ? '<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'contexts\');"/>' : '';
+$backButton= $failed ? '<button id="cmdback" name="cmdback" onclick="return goAction(\'contexts\');">'.$install->lexicon['back'].'</button>' : '';
 $navbar= '
-<input type="button" value="' . $nextButton . '" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="' . $nextAction . '" />
-<span style="float:right">&nbsp;</span>
+<button id="cmdnext" name="cmdnext" onclick="' . $nextAction . '" >'.$nextButton.'</button>
 ';
 $this->parser->assign('navbar', $navbar);
 $this->parser->display('install.tpl');

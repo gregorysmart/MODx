@@ -6,7 +6,7 @@ Object.extend(FormHandler, {
         $('modx_error').setStyle('display', 'block');
         $('modx_error').effect('opacity',{
             duration: 500
-        }).start(1);
+        }).start(.9);
     }
     ,closeError: function() {
         $('modx_error').effect('opacity',{

@@ -1,5 +1,8 @@
 <?php
-//validate database settings
+/**
+ * @package setup
+ */
+/* validate database settings */
 $errors= $install->cleanup();
 if (!empty ($errors)) {
     $error->setType('error');

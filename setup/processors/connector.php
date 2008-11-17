@@ -1,12 +1,17 @@
 <?php
-// do a little bit of environment cleanup if possible
+/**
+ * Handles AJAX requests
+ *
+ * @package setup
+ */
+/* do a little bit of environment cleanup if possible */
 @ini_set('magic_quotes_runtime',0);
 @ini_set('magic_quotes_sybase',0);
 
-// start session
+/* start session */
 session_start();
 
-// set error reporting
+/* set error reporting */
 error_reporting(E_ALL & ~E_NOTICE);
 
 $setupPath= strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/';

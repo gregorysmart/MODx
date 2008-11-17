@@ -1,11 +1,12 @@
 <?php
-require_once (MODX_SETUP_PATH . 'includes/modinstall.class.php');
-
+/**
+ * @package setup
+ */
 $installMode= $install->getInstallMode();
 $this->parser->assign('installmode', $installMode);
 
 $install->setConfig($installMode);
-if ($installMode == 0) {
+if ($installMode == MODX_INSTALL_MODE_NEW) {
     $install->getAdminUser();
 }
 $install->getContextPaths();
@@ -30,9 +31,8 @@ $nextAction= $failed ? 'return goAction(\'summary\')' : 'return goAction(\'insta
 $prevAction= MODX_SETUP_KEY == '@traditional' ? 'return goAction(\'database\')' : 'return goAction(\'contexts\');';
 
 $navbar= '
-<input type="button" value="' . $nextButton . '" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="' . $nextAction . '" />
-<span style="float:right">&nbsp;</span>
-<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="' . $prevAction . '"/>
+<button id="cmdnext" name="cmdnext" onclick="' . $nextAction . '">' . $nextButton . '</button>
+<button id="cmdback" name="cmdback" onclick="' . $prevAction . '">'.$install->lexicon['back'].'</button>
 ';
 $this->parser->assign('navbar', $navbar);
 $this->parser->display('summary.tpl');

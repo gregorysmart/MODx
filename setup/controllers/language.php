@@ -1,6 +1,9 @@
 <?php
+/**
+ * @package setup
+ */
 $langs = array();
-if ($handle = opendir("lang/")) {
+if ($handle = opendir('lang/')) {
 	while (false !== ($file = readdir($handle))) {
 		if (!in_array($file, array('.', '..','.htaccess','.svn'))) {
 			if (strpos($file, '.php') === (strlen($file) - 4)) {
@@ -21,7 +24,7 @@ foreach ($langs as $language) {
     $navbar .= '<option value="'.$language.'">' . $language . '</option>' . "\n";
 }
 $navbar .= '</select></p>
-<input type="button" value="'.$install->lexicon['select'].'" name="cmdnext" style="float:right;width:100px;" onclick="return doAction(\'language\');" />
+<button name="cmdnext" onclick="return doAction(\'language\');">'.$install->lexicon['select'].'</button>
 ';
 $this->parser->assign('navbar', $navbar);
 

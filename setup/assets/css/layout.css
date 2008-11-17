@@ -64,28 +64,16 @@ table.options td {
 
 
 /* error */
-
 #modx_error {
     display: none;
-	margin: .1em;
-	padding: .4em;
+	position: fixed; bottom: 0; right: 0;
 	z-index: 999;
 	opacity: 0;
 	filter: alpha(opacity=0);
 }
 
-#modx_error h2 {
-	margin: 0;
-	padding-top: 0;
-	font-size: 1em;
-	font-weight: bold;
-	padding-left: .3em;
-	background-color: red;
-	color: #fff;
-}
-
 #modx_error a {
-	color: #fff;
+    color: black;
 	text-decoration: none;
 }
 
@@ -95,15 +83,20 @@ table.options td {
 
 #modx_error .close {
 	float: right;
+    color: black;
 	font-size: 10px;
 	vertical-align: middle;
 	height: 100%;
 }
 
 #modx_error .content {
-	clear: left;
-	padding-left: 2em;
+    padding: 0 2em;
+	clear: both;
+	float: left;
 	margin: 0 auto;
+}
+#modx_error br.clear {
+    clear: both;
 }
 
 .field_error {
@@ -121,6 +114,35 @@ table.options td {
     background-color: #f8c7c7;
 }
 .success {
-    background-color: #99cd00;
+	border: 1px solid green;
+    background-color: #CAFF9A;
+}
+.finalsuccess { border: 0 !important; }
+.right { float: right; }
+
+/* other stuff */
+.cleanup {
+    float:left;
+    cursor:pointer;
+    background-color: #EEE;
+    color: #444;
+}
+.cleanup label {
+    display:inline;
+    float:none;
+    padding: .5em;
 }
 
+/* setup navbar */
+.setup_navbar {
+	border-top: 1px solid #e0e0e0;
+    padding: 2em;
+}
+.setup_navbar button {
+    float:right;
+    width:100px;
+    cursor: pointer;
+    margin-right: 1em;
+}
+.setup_navbar input {
+}

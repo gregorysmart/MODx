@@ -1,6 +1,7 @@
 <?php
-require_once (MODX_SETUP_PATH . 'includes/modinstall.class.php');
-
+/**
+ * @package setup
+ */
 $this->parser->assign('installmode',$install->getInstallMode());
 
 $files_exist= 0;
@@ -30,9 +31,8 @@ $this->parser->assign('manifest', $manifest);
 $this->parser->assign('unpacked', $unpacked);
 
 $navbar= '
-<input type="button" value="'.$install->lexicon['next'].'" id="cmdnext" name="cmdnext" style="float:right;width:100px;" onclick="return doAction(\'options\');" />
-<span style="float:right">&nbsp;</span>
-<input type="button" value="'.$install->lexicon['back'].'" id="cmdback" name="cmdback" style="float:right;width:100px;" onclick="return goAction(\'welcome\');"/>
+<button id="cmdnext" name="cmdnext" onclick="return doAction(\'options\');">'.$install->lexicon['next'].'</button>
+<button id="cmdback" name="cmdback" onclick="return goAction(\'welcome\');">'.$install->lexicon['back'].'</button>
 ';
 $this->parser->assign('navbar', $navbar);
 $this->parser->display('options.tpl');

@@ -1,8 +1,11 @@
 <?php
+/**
+ * @package setup
+ */
 $output= '';
-$mode= isset ($_POST['installmode']) ? intval($_POST['installmode']) : 0;
-//validate database settings
-require_once (MODX_CORE_PATH . 'xpdo/xpdo.class.php');
+$mode= isset ($_POST['installmode']) ? intval($_POST['installmode']) : MODX_INSTALL_MODE_NEW;
+/* validate database settings */
+require_once MODX_CORE_PATH . 'xpdo/xpdo.class.php';
 if (isset ($_REQUEST['search']) && $_REQUEST['search']) {
     $id= 0;
     $results= array();
@@ -17,18 +20,16 @@ if (isset ($_REQUEST['search']) && $_REQUEST['search']) {
     $searchString= trim($searchString, '/');
     $docroot= $_SERVER['DOCUMENT_ROOT'];
     $dirname= $docroot . '/' . $searchString;
-//        echo '{"results":' . $dirname . '}';
 
     if ($handle= @ opendir($dirname)) {
         while (false !== ($file= @ readdir($handle))) {
-            if ($file != '.' && $file != '..') { //Ignore . and ..
+            if ($file != '.' && $file != '..') { /* Ignore . and .. */
                 $path= $dirname . '/' . $file;
                 $result= '/' . trim(str_replace($docroot, '', $path), '/') . '/';
                 if (is_dir($path) && (!$filepart || (strpos($file, $filepart) === 0))) {
                     $results[]= array (
                         'id' => $result,
                         'value' => $result
-//                            'info' => ''
                     );
                 }
             }
@@ -37,8 +38,6 @@ if (isset ($_REQUEST['search']) && $_REQUEST['search']) {
     }
 }
 if (empty ($output) || $output == '[]') {
-//        $output= xPDO :: toJSON(array ('id' => 1, 'value' => $dirname));
-//        $output= "[{$output}]";
     $output= "[]";
 }
 header('Content-Type:text/javascript');

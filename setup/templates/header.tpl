@@ -64,9 +64,9 @@
  
             <form id="install" action="processors/connector.php" method="post">
             <div id="modx_error">
-                <h2><span class="close">[&nbsp;<a href="javascript:;" onclick="FormHandler.closeError();">{$_lang.close}</a>&nbsp;]</span></h2>
+                <span class="close">[&nbsp;<a href="javascript:;" onclick="FormHandler.closeError();">{$_lang.close}</a>&nbsp;]</span>
                 <span id="modx_error_content" class="content"></span>
-                <br />
+                <br class="clear" />
             </div>
 
         
