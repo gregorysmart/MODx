@@ -155,7 +155,7 @@ class modInstall {
      *
      * @param integer $mode The install mode.
      */
-    function setConfig($mode = 0) {
+    function setConfig($mode = MODX_INSTALL_MODE_NEW) {
         $config = array(
             'database_type' => 'mysql',
             'database_server' => isset ($_POST['databasehost']) ? $_POST['databasehost'] : 'localhost',
@@ -182,7 +182,7 @@ class modInstall {
      * @return xPDO A copy of the xpdo object.
      */
     function getConnection($mode = MODX_INSTALL_MODE_NEW) {
-        if ($mode === MODX_INSTALL_MODE_UPGRADE_EVO) {
+        if ($mode === MODX_INSTALL_MODE_UPGRADE_REVO) {
             $errors = array ();
             $this->xpdo = $this->_modx($errors);
         } else if (!is_object($this->xpdo)) {
@@ -252,7 +252,6 @@ class modInstall {
     /**
      * Perform a series of pre-installation tests.
      *
-     * @todo Internationalization of error messages.
      * @param integer $mode The install mode.
      * @param string $test_class The class to run tests with
      * @return array An array of result messages collected during the process.
@@ -266,7 +265,6 @@ class modInstall {
     /**
      * Execute the installation process.
      *
-     * @todo Internationalization of error messages.
      * @param integer $mode The install mode.
      * @return array An array of result messages collected during execution.
      */
@@ -335,19 +333,19 @@ class modInstall {
                     if (!$workspace->save()) {
                         $results[] = array (
                             'class' => 'error',
-                            'msg' => '<p class="notok">Error setting the active workspace path.</p>'
+                            'msg' => '<p class="notok">'.$this->lexicon['workspace_err_path'].'</p>'
                         );
                     } else {
                         $results[] = array (
                             'class' => 'success',
-                            'msg' => '<p class="ok">Updated the active workspace path.</p>'
+                            'msg' => '<p class="ok">'.$this->lexicon['workspace_path_updated'].'</p>'
                         );
                     }
                 }
             } else {
                 $results[] = array (
                     'class' => 'error',
-                    'msg' => '<p class="notok">Could not find the active workspace.</p>'
+                    'msg' => '<p class="notok">'.$this->lexicon['workspace_err_nf'].'</p>'
                 );
             }
 
@@ -375,12 +373,12 @@ class modInstall {
                 if (!$saved) {
                     $results[] = array (
                         'class' => 'error',
-                        'msg' => '<p class="notok">Error saving the default admin user.<br />' . print_r($this->xpdo->errorInfo(), true) . '</p>'
+                        'msg' => '<p class="notok">'.$this->lexicon['dau_err_save'].'<br />' . print_r($this->xpdo->errorInfo(), true) . '</p>'
                     );
                 } else {
                     $results[] = array (
                         'class' => 'success',
-                        'msg' => '<p class="ok">Created default admin user.</p>'
+                        'msg' => '<p class="ok">'.$this->lexicon['dau_saved'].'</p>'
                     );
                 }
             /* if upgrade */
@@ -415,7 +413,7 @@ class modInstall {
                 /* make sure admin user (1) has proper group and role */
                 $adminUser = $this->xpdo->getObject('modUser', 1);
                 if ($adminUser) {
-                    $userGroupMembership = $this->xpdo->getObject('modUserGroupMember', array('user_group' => 1, 'member' => 1));
+                    $userGroupMembership = $this->xpdo->getObject('modUserGroupMember', array('user_group' => true, 'member' => true));
                     if (!$userGroupMembership) {
                         $userGroupMembership = $this->xpdo->newObject('modUserGroupMember');
                         $userGroupMembership->set('user_group', 1);
@@ -525,7 +523,6 @@ class modInstall {
     /**
      * Installs a transport package.
      *
-     * @todo Internationalization of error messages.
      * @param string The package signature.
      * @param array $attributes An array of installation attributes.
      * @return array An array of error messages collected during the process.
@@ -533,39 +530,39 @@ class modInstall {
     function installPackage($pkg, $attributes = array ()) {
         $errors = array ();
 
-        // instantiate the modX class
+        /* instantiate the modX class */
         if (@ require_once (MODX_CORE_PATH . 'model/modx/modx.class.php')) {
             $modx = new modX(MODX_CORE_PATH . 'config/');
             if (!is_object($modx) || !is_a($modx, 'modX')) {
-                $errors[] = '<p>Could not instantiate the MODx class.</p>';
+                $errors[] = '<p>'.$this->lexicon['modx_err_instantiate'].'</p>';
             } else {
                 $modx->setPackage('modx', MODX_CORE_PATH . 'model/');
 
-                // try to initialize the mgr context
+                /* try to initialize the mgr context */
                 $modx->initialize('mgr');
                 if (!$modx->_initialized) {
-                    $errors[] = '<p>Could not initialize the MODx manager context.</p>';
+                    $errors[] = '<p>'.$this->lexicon['modx_err_instantiate_mgr'].'</p>';
                 } else {
                     $loaded = $modx->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
                     if (!$loaded)
-                        $errors[] = '<p>Error loading transport class.</p>';
+                        $errors[] = '<p>'.$this->lexicon['transport_class_err_load'].'</p>';
 
                     $packageDirectory = MODX_CORE_PATH . 'packages/';
                     $packageState = (isset ($attributes[XPDO_TRANSPORT_PACKAGE_STATE]) ? $attributes[XPDO_TRANSPORT_PACKAGE_STATE] : XPDO_TRANSPORT_STATE_PACKED);
                     $package = xPDOTransport :: retrieve($modx, $packageDirectory . $pkg . '.transport.zip', $packageDirectory, $packageState);
                     if ($package) {
                         if (!$package->install($attributes)) {
-                            $errors[] = "<p>Could not install package {$pkg}.</p>";
+                            $errors[] = '<p>'.sprintf($this->lexicon['package_err_install'],$pkg).'</p>';
                         } else {
-                            $modx->log(XPDO_LOG_LEVEL_INFO, "Successfully installed package {$pkg}");
+                            $modx->log(XPDO_LOG_LEVEL_INFO,sprintf($this->lexicon['package_installed'],$pkg));
                         }
                     } else {
-                        $errors[] = "<p>Could not retrieve package {$pkg} for installation.</p>";
+                        $errors[] = '<p>'.sprintf($this->lexicon['package_err_nf'],$pkg).'</p>';
                     }
                 }
             }
         } else {
-            $errors[] = '<p>Could not include the MODx class file.</p>';
+            $errors[] = '<p>'.$this->lexicon['modx_class_err_nf'].'</p>';
         }
 
         return $errors;
@@ -612,8 +609,8 @@ class modInstall {
                 $included = @ include (MODX_CORE_PATH . 'config/' . MODX_CONFIG_KEY . '.inc.php');
                 $mode = ($included && isset ($dbase)) ? MODX_INSTALL_MODE_UPGRADE_REVO : MODX_INSTALL_MODE_NEW;
             }
-            if (!$mode && file_exists(MODX_INSTALL_PATH . "manager/includes/config.inc.php")) {
-                $included = @ include (MODX_INSTALL_PATH . "manager/includes/config.inc.php");
+            if (!$mode && file_exists(MODX_INSTALL_PATH . 'manager/includes/config.inc.php')) {
+                $included = @ include (MODX_INSTALL_PATH . 'manager/includes/config.inc.php');
                 $mode = ($included && isset ($dbase)) ? MODX_INSTALL_MODE_UPGRADE_EVO : MODX_INSTALL_MODE_NEW;
             }
         }
@@ -627,7 +624,7 @@ class modInstall {
      * @return xPDO The xPDO instance to be used by the installation.
      */
     function _connect($dsn, $user = '', $password = '', $prefix = '') {
-        require_once (MODX_CORE_PATH . "xpdo/xpdo.class.php");
+        require_once MODX_CORE_PATH . 'xpdo/xpdo.class.php';
         $xpdo = new xPDO($dsn, $user, $password, array(
                 XPDO_OPT_CACHE_PATH => MODX_CORE_PATH . 'cache/',
                 XPDO_OPT_TABLE_PREFIX => $prefix,
@@ -657,7 +654,7 @@ class modInstall {
         if (require_once (MODX_CORE_PATH . 'model/modx/modx.class.php')) {
             $modx = new modX(MODX_CORE_PATH . 'config/');
             if (!is_object($modx) || !is_a($modx, 'modX')) {
-                $errors[] = '<p>Could not instantiate the MODx class.</p>';
+                $errors[] = '<p>'.$this->lexicon['modx_err_instantiate'].'</p>';
             } else {
                 $modx->setDebug(E_ALL & ~E_STRICT);
                 $modx->setLogTarget('HTML');
@@ -665,11 +662,11 @@ class modInstall {
                 /* try to initialize the mgr context */
                 $modx->initialize('mgr');
                 if (!$modx->_initialized) {
-                    $errors[] = '<p>Could not initialize the MODx manager context.</p>';
+                    $errors[] = '<p>'.$this->lexicon['modx_err_instantiate_mgr'].'</p>';
                 }
             }
         } else {
-            $errors[] = '<p>Could not include the MODx class file.</p>';
+            $errors[] = '<p>'.$this->lexicon['modx_class_err_nf'].'</p>';
         }
 
         return $modx;

@@ -1,11 +1,11 @@
 <?php
-require_once (MODX_SETUP_PATH . 'includes/modinstall.class.php');
+require_once MODX_SETUP_PATH . 'includes/modinstall.class.php';
 
 $installMode= $install->getInstallMode();
 $this->parser->assign('installmode', $installMode);
 
 $install->setConfig($installMode);
-if ($installMode == 0) {
+if ($installMode == MODX_INSTALL_MODE_NEW) {
     $install->getAdminUser();
 }
 $install->getContextPaths();

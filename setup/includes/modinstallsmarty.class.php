@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -43,7 +43,7 @@ class modInstallSmarty extends Smarty {
     function __construct($params= array ()) {
         parent :: Smarty();
 
-        // Set up configuration variables for Smarty.
+        /* Set up configuration variables for Smarty. */
         $this->template_dir = MODX_SETUP_PATH . 'templates/';
         $this->compile_dir  = MODX_SETUP_PATH . 'templates/_compiled/';
         $this->config_dir   = MODX_CORE_PATH . 'model/smarty/configs';

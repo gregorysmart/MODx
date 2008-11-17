@@ -13,7 +13,7 @@
 
 $results = array ();
 
-// put new classes here to have tables created on upgrade (if they don't exist)
+/* put new classes here to have tables created on upgrade (if they don't exist) */
 $classes = array (
     'modAccessAction',
     'modAccessElement',
@@ -43,17 +43,17 @@ if ($connected) {
         if (!$dbcreated = $this->xpdo->manager->createObjectContainer($class)) {
             $results[] = array (
                 'class' => 'failed',
-                'msg' => '<p class="notok">Error creating table for class ' . $class . '</p>'
+                'msg' => '<p class="notok">' . sprintf($this->lexicon['table_err_create'],$class) . '</p>'
             );
         } else {
             $results[] = array (
                 'class' => 'success',
-                'msg' => '<p class="ok">Successfully created table for class ' . $class . '</p>'
+                'msg' => '<p class="ok">' . sprintf($this->lexicon['table_created'],$class) . '</p>'
             );
         }
     }
 
-    // add table structure changes here for upgrades to previous Revolution installations
+    /* add table structure changes here for upgrades to previous Revolution installations */
     $class = 'modResource';
     $table = $this->xpdo->getTableName($class);
     $sql = "ALTER TABLE {$table} DROP INDEX `content_ft_idx`";

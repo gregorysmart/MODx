@@ -62,7 +62,7 @@ $classes= array (
 
 $this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
 $this->xpdo->getManager();
-//$this->xpdo->setLogLevel(XPDO_LOG_LEVEL_INFO);
+/* $this->xpdo->setLogLevel(XPDO_LOG_LEVEL_INFO); */
 $connected= $this->xpdo->connect();
 $created= false;
 if (!$connected) {
@@ -71,13 +71,13 @@ if (!$connected) {
     $containerOptions['collation']= isset ($install->config['database_collation']) ? $install->config['database_collation'] : 'utf8_unicode_ci';
     $created= $this->xpdo->manager->createSourceContainer($dsnArray, $this->xpdo->config['username'], $this->xpdo->config['password'], $containerOptions);
     if (!$created) {
-        $results[]= array ('class' => 'failed', 'msg' => '<p class="notok">Error while attempting to create the database.</p>');
+        $results[]= array ('class' => 'failed', 'msg' => '<p class="notok">'.$this->lexicon['db_err_create'].'</p>');
     }
     else {
         $connected= $this->xpdo->connect();
     }
     if ($connected) {
-        $results[]= array ('class' => 'success', 'msg' => '<p class="ok">Successfully created the database.</p>');
+        $results[]= array ('class' => 'success', 'msg' => '<p class="ok">'.$this->lexicon['db_created'].'</p>');
     }
 }
 if ($connected) {
@@ -91,9 +91,9 @@ if ($connected) {
     $this->xpdo->loadClass('modUser');
     foreach ($classes as $class) {
         if (!$dbcreated= $this->xpdo->manager->createObjectContainer($class)) {
-            $results[]= array ('class' => 'failed', 'msg' => '<p class="notok">Error creating table for class ' . $class . '</p>');
+            $results[]= array ('class' => 'failed', 'msg' => '<p class="notok">' . sprintf($this->lexicon['table_err_create'],$class) . '</p>');
         } else {
-            $results[]= array ('class' => 'success', 'msg' => '<p class="ok">Successfully created table for class ' . $class . '</p>');
+            $results[]= array ('class' => 'success', 'msg' => '<p class="ok">' . sprintf($this->lexicon['table_created'],$class) . '</p>');
         }
     }
 }
