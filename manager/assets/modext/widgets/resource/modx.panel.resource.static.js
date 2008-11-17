@@ -128,7 +128,7 @@ MODx.panel.Static = function(config) {
                     ,description: _('document_opt_show_menu_help')
                     ,name: 'hidemenu'
                     ,inputValue: 1
-                    ,checked: true
+                    ,checked: false
                     
                 }]
             },{
@@ -143,7 +143,7 @@ MODx.panel.Static = function(config) {
                     ,name: 'isfolder'
                     ,inputValue: 1
                     
-                },(config.publish_document ? {
+                },{
                     xtype: 'checkbox'
                     ,fieldLabel: _('document_opt_published')
                     ,description: _('document_opt_published_help')
@@ -151,7 +151,7 @@ MODx.panel.Static = function(config) {
                     ,inputValue: 1
                     ,checked: MODx.config.publish_default == '1' ? true : false
                     
-                }:{}),(config.publish_document ? {
+                },(config.publish_document ? {
                     xtype: 'datefield'
                     ,fieldLabel: _('page_data_publishdate')
                     ,description: _('page_data_publishdate_help')

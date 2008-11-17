@@ -129,7 +129,7 @@ MODx.panel.SymLink = function(config) {
                     ,description: _('resource_hide_from_menus_help')
                     ,name: 'hidemenu'
                     ,inputValue: 1
-                    ,checked: true
+                    ,checked: false
                     
                 }]
             },{
@@ -144,7 +144,7 @@ MODx.panel.SymLink = function(config) {
                     ,name: 'isfolder'
                     ,inputValue: 1
                     
-                },(config.publish_document ? {
+                },{
                     xtype: 'checkbox'
                     ,fieldLabel: _('resource_published')
                     ,description: _('resource_published_help')
@@ -152,7 +152,7 @@ MODx.panel.SymLink = function(config) {
                     ,inputValue: 1
                     ,checked: MODx.config.publish_default == '1' ? true : false
                     
-                }:{}),(config.publish_document ? {
+                },(config.publish_document ? {
                     xtype: 'datefield'
                     ,fieldLabel: _('resource_publishdate')
                     ,description: _('resource_publishdate_help')
