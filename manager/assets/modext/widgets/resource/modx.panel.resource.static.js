@@ -108,6 +108,14 @@ MODx.panel.Static = function(config) {
                     ,value: config.template
                 },{
                     xtype: 'textfield'
+                    ,fieldLabel: _('resource_parent')
+                    ,description: _('resource_parent_help')
+                    ,name: 'parent'
+                    ,id: 'resource-parent'
+                    ,value: config.parent || 0
+                    ,width: 60
+                },{
+                    xtype: 'textfield'
                     ,fieldLabel: _('document_opt_menu_title')
                     ,description: _('document_opt_menu_title_help')
                     ,name: 'menutitle'
@@ -179,11 +187,6 @@ MODx.panel.Static = function(config) {
                     ,inputValue: 1
                     ,checked: true
                     
-                },{
-                    xtype: 'hidden'
-                    ,name: 'parent'
-                    ,id: 'resource-parent'
-                    ,value: config.parent || 0
                 },{
                     xtype: 'hidden'
                     ,name: 'class_key'

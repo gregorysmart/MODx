@@ -109,6 +109,14 @@ MODx.panel.Resource = function(config) {
                     ,value: config.template
                 },{
                     xtype: 'textfield'
+                    ,fieldLabel: _('resource_parent')
+                    ,description: _('resource_parent_help')
+                    ,name: 'parent'
+                    ,id: 'resource-parent'
+                    ,value: config.parent || 0
+                    ,width: 60
+                },{
+                    xtype: 'textfield'
                     ,fieldLabel: _('resource_menutitle')
                     ,description: _('resource_menutitle_help')
                     ,name: 'menutitle'
@@ -212,11 +220,6 @@ MODx.panel.Resource = function(config) {
                     ,anchor: '30%'
                     
                 }:{}),{
-                    xtype: 'hidden'
-                    ,name: 'parent'
-                    ,id: 'resource-parent'
-                    ,value: config.parent || 0
-                },{
                     xtype: 'hidden'
                     ,name: 'class_key'
                     ,value: config.class_key || 'modDocument'
