@@ -45,6 +45,10 @@ foreach ($nodes as $ar_node) {
 	$node->save();
 }
 
+/* clear cache */
+$cacheManager = $modx->getCacheManager();
+$cacheManager->clearCache();
+
 return $modx->error->success();
 
 function getNodesFormatted(&$ar_nodes,$cur_level,$parent = 0) {
