@@ -151,7 +151,7 @@ MODx.panel.Resource = function(config) {
                     ,name: 'richtext'
                     ,inputValue: 1
                     
-                } : {}),(config.publish_document ? {
+                } : {}),{
                     xtype: 'checkbox'
                     ,fieldLabel: _('resource_published')
                     ,description: _('resource_published_help')
@@ -159,7 +159,7 @@ MODx.panel.Resource = function(config) {
                     ,inputValue: 1
                     ,checked: MODx.config.publish_default == '1' ? true : false
                     
-                }:{}),(config.publish_document ? {
+                },(config.publish_document ? {
                     xtype: 'datefield'
                     ,fieldLabel: _('resource_publishdate')
                     ,description: _('resource_publishdate_help')

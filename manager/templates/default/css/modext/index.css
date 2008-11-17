@@ -1,5 +1,6 @@
 @import url(./extensions.css);
 @import url(./style.css);
+@import url(./patch.css);
 
 textarea.x-form-field {
     font-family: "Courier New", Courier, monospace;
