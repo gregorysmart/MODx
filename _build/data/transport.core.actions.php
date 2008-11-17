@@ -649,3 +649,66 @@ $collection['75']->fromArray(array (
   'lang_topics' => 'user,policy',
   'assets' => '',
 ), '', true, true);
+
+$collection['76']= $xpdo->newObject('modAction');
+$collection['76']->fromArray(array (
+  'id' => 76,
+  'context_key' => 'mgr',
+  'parent' => 36,
+  'controller' => 'resource/weblink/update',
+  'haslayout' => 1,
+  'lang_topics' => 'resource',
+  'assets' => '',
+), '', true, true);
+$collection['77']= $xpdo->newObject('modAction');
+$collection['77']->fromArray(array (
+  'id' => 77,
+  'context_key' => 'mgr',
+  'parent' => 36,
+  'controller' => 'resource/weblink/create',
+  'haslayout' => 1,
+  'lang_topics' => 'resource',
+  'assets' => '',
+), '', true, true);
+
+$collection['78']= $xpdo->newObject('modAction');
+$collection['78']->fromArray(array (
+  'id' => 78,
+  'context_key' => 'mgr',
+  'parent' => 36,
+  'controller' => 'resource/symlink/update',
+  'haslayout' => 1,
+  'lang_topics' => 'resource',
+  'assets' => '',
+), '', true, true);
+$collection['79']= $xpdo->newObject('modAction');
+$collection['79']->fromArray(array (
+  'id' => 79,
+  'context_key' => 'mgr',
+  'parent' => 36,
+  'controller' => 'resource/symlink/create',
+  'haslayout' => 1,
+  'lang_topics' => 'resource',
+  'assets' => '',
+), '', true, true);
+
+$collection['80']= $xpdo->newObject('modAction');
+$collection['80']->fromArray(array (
+  'id' => 80,
+  'context_key' => 'mgr',
+  'parent' => 36,
+  'controller' => 'resource/staticresource/update',
+  'haslayout' => 1,
+  'lang_topics' => 'resource',
+  'assets' => '',
+), '', true, true);
+$collection['81']= $xpdo->newObject('modAction');
+$collection['81']->fromArray(array (
+  'id' => 81,
+  'context_key' => 'mgr',
+  'parent' => 36,
+  'controller' => 'resource/staticresource/create',
+  'haslayout' => 1,
+  'lang_topics' => 'resource',
+  'assets' => '',
+), '', true, true);

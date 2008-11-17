@@ -31,8 +31,8 @@ foreach ($resources as $resource) {
     }
 
 	/* see if resource's parent has any children left */
-	$parent = $modx->getObject('modResource',$resource->parent);
-	if ($parent->get('id') != null) {
+	$parent = $modx->getObject('modResource',$resource->get('parent'));
+	if ($parent != null && $parent->get('id') != null) {
 		$num_children = $modx->getCount('modResource',array('parent' => $parent->get('id')));
 		if ($num_children <= 0) {
 			$parent->set('isfolder',false);

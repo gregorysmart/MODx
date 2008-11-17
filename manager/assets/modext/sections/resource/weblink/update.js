@@ -14,8 +14,8 @@ MODx.page.UpdateWebLink = function(config) {
         ,which_editor: 'none'
         ,formpanel: 'panel-weblink'
         ,actions: {
-            'new': MODx.action['resource/weblink/create']
-            ,edit: MODx.action['resource/weblink/update']
+            'new': MODx.action['resource/create']
+            ,edit: MODx.action['resource/update']
             ,preview: MODx.action['resource/preview']
             ,cancel: MODx.action['welcome']
         }

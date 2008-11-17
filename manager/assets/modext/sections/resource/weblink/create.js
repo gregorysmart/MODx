@@ -21,6 +21,9 @@ MODx.page.CreateWebLink = function(config) {
             process: 'create'
             ,text: _('save')
             ,method: 'remote'
+            ,params: {
+                class_key: 'modWebLink'
+            }
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
         },{
             process: 'cancel'
