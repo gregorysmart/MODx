@@ -42,7 +42,7 @@ $new_resource = duplicateResource($old_resource,$newname,$duplicate_children);
 function duplicateResource($resource,$newname = '',$duplicate_children = true,$_toplevel = 0) {
 	global $modx;
 
-	if ($newname == '') $newname = $modx->lexicon('duplicate_of').$resource->pagetitle;
+	if ($newname == '') $newname = $modx->lexicon('duplicate_of').$resource->get('pagetitle');
 	/* duplicate resource */
 	$new_resource = $modx->newObject($resource->_class);
 	$new_resource->fromArray($resource->toArray('', true), '', false, true);
@@ -54,7 +54,7 @@ function duplicateResource($resource,$newname = '',$duplicate_children = true,$_
 	$new_resource->set('createdon',time());
 	$new_resource->set('editedby',0);
 	$new_resource->set('editedon',0);
-	$new_resource->set('deleted',0);
+	$new_resource->set('deleted',false);
 	$new_resource->set('deletedon',0);
 	$new_resource->set('deletedby',0);
 	$new_resource->set('publishedon',0);
@@ -109,7 +109,7 @@ function duplicateResource($resource,$newname = '',$duplicate_children = true,$_
 	/* duplicate resource, recursively */
 	if ($duplicate_children && count($resource->children) > 0) {
 		foreach ($resource->children as $child) {
-			duplicateDocument($child,'',true,$new_resource->get('id'));
+			duplicateResource($child,'',true,$new_resource->get('id'));
 		}
 	}
 	return $new_resource;

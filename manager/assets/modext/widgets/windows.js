@@ -54,7 +54,7 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
         });
 		
 		this.fp = this.createForm({
-			url: this.config.url || MODx.config.connectors_url+'resource/document.php'
+			url: this.config.url || MODx.config.connectors_url+'resource/index.php'
 			,baseParams: this.config.baseParams || {
 				action: 'duplicate'
 				,id: this.config.resource
