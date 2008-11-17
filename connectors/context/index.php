@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/index.php';
-$modx->request->handleRequest('context');
+$modx->request->handleRequest(array('location' => 'context'));

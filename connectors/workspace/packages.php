@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/index.php';
-$modx->request->handleRequest('workspace/packages');
+$modx->request->handleRequest(array('location' => 'workspace/packages'));

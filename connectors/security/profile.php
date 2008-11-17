@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/index.php';
-$modx->request->handleRequest('security/profile');
+$modx->request->handleRequest(array('location' => 'security/profile'));

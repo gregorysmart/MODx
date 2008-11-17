@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(dirname(__FILE__))).'/index.php';
-$modx->request->handleRequest('workspace/builder/vehicle');
+$modx->request->handleRequest(array('location' => 'workspace/builder/vehicle'));

@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/index.php';
-$modx->request->handleRequest('system','remove_locks');
+$modx->request->handleRequest(array('location' => 'system','action' => 'remove_locks'));

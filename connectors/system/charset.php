@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/index.php';
-$modx->request->handleRequest('system/charset');
+$modx->request->handleRequest(array('location' => 'system/charset'));

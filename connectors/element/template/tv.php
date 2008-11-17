@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(dirname(__FILE__))).'/index.php';
-$modx->request->handleRequest('element/template/tv');
+$modx->request->handleRequest(array('location' => 'element/template/tv'));

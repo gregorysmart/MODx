@@ -1,3 +1,3 @@
 <?php
 require_once dirname(dirname(dirname(__FILE__))).'/index.php';
-$modx->request->handleRequest('security/access/policy');
+$modx->request->handleRequest(array('location' => 'security/access/policy'));

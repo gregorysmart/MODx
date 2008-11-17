@@ -58,9 +58,12 @@ class modConnectorRequest extends modManagerRequest {
      * @param string $location The base subdirectory in which to look for the processor.
      * @param string $action The requested processor to load.
      */
-    function handleRequest($location = '', $action = '') {
-        if (!is_string($action)) return false;
-        if ($action == '' && isset($_REQUEST['action'])) $action = $_REQUEST['action'];
+    function handleRequest($options = array()) {
+        if (isset($options['action']) && !is_string($options['action'])) return false;
+        if ((!isset($options['action']) || $options['action'] == '') && isset($_REQUEST['action'])) {
+            $options['action'] = $_REQUEST['action'];
+        }
+        $options['action'] = strtolower($options['action']);
 
         /* handle stay options */
         if (isset($_POST['modx-ab-stay'])) {
@@ -76,10 +79,7 @@ class modConnectorRequest extends modManagerRequest {
         } */
 
         /* Cleanup action and store. */
-        $this->prepareResponse(array(
-            'action' => strtolower($action),
-            'location' => $location,
-        ));
+        $this->prepareResponse($options);
     }
 
     /**

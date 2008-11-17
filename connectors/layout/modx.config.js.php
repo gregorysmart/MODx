@@ -1,4 +1,3 @@
 <?php
 require_once dirname(dirname(__FILE__)).'/index.php';
-
-$modx->request->handleRequest('system','config.js');
+$modx->request->handleRequest(array('location' => 'system','action' => 'config.js'));
