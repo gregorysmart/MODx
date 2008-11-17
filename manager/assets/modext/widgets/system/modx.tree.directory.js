@@ -26,20 +26,6 @@ MODx.tree.Directory = function(config) {
         ,primaryKey: 'dir'
 	});
 	MODx.tree.Directory.superclass.constructor.call(this,config);
-	this.treeEditor = new Ext.tree.TreeEditor(this, new Ext.form.Field({
-        cancelOnEsc: true
-        ,completeOnEnter: true
-        ,ignoreNoChange: true
-        ,allowBlank: false
-        ,stateEvents:[{
-          change:{scope:this, fn:this.renameNode}
-        }]
-    }));
-    this.treeEditor.on('beforestartedit',function(){
-        if(!this.treeEditor.editNode.attributes.allowEdit === false){
-            return false;
-        }
-    },this);
 };
 Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 	windows: {}
