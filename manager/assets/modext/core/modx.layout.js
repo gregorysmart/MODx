@@ -20,6 +20,7 @@ MODx.Layout = function(config){
     Ext.applyIf(config,{
         layout: 'border'
         ,renderTo: Ext.getBody()
+        ,id: 'modx-layout'
         ,items: [
             new Ext.BoxComponent({
                 region: 'north'
@@ -121,6 +122,12 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
             ,hideFiles: false
             ,title: ''
         });
+    }
+    
+    ,refreshTrees: function() {
+        this.rtree.refresh();
+        this.eltree.refresh();
+        this.ftree.refresh();
     }
 });
 Ext.reg('modx-layout',MODx.Layout);

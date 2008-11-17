@@ -129,6 +129,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                     this.console.complete();
                     Ext.Msg.hide();
                     this.refresh();
+                    parent.Ext.getCmp('modx-layout').refreshTrees();
                 },scope:this}
                 ,'failure': {fn:function(r) {
                     this.console.complete();
@@ -179,6 +180,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                     Ext.getCmp('window-package-installer').hide();
                     this.console.complete();
                     this.refresh();
+                    parent.Ext.getCmp('modx-layout').refreshTrees();
                 },scope:this}
                 ,'failure': {fn:function() {
                     this.console.complete();
