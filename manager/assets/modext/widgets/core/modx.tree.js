@@ -337,7 +337,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 				'success': {fn:function(r) {
                     MODx.util.Progress.reset();
     				Ext.Msg.hide();
-    				this.reloadNode(dropEvent.target);
+    				this.reloadNode(dropEvent.target.parentNode);
 				},scope:this}
 				,'failure': {fn:function(r) {
 					MODx.util.Progress.reset();
