@@ -55,7 +55,7 @@ class modInstallVersion {
             }
             return $dbcreated;
         } else {
-            if (!$dbcreated = $this->xpdo->manager->createObjectContainer($class)) {
+            if (!$dbcreated = $this->install->xpdo->manager->createObjectContainer($class)) {
                 $this->results[] = array (
                     'class' => 'failed',
                     'msg' => '<p class="notok">' . sprintf($this->install->lexicon['table_err_create'],$class) . '</p>'
