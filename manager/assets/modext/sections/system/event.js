@@ -13,8 +13,8 @@ MODx.page.SystemEvent = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'grid-system-event'
-            ,renderTo: 'grid-system-event'
+            xtype: 'panel-error-log'
+            ,renderTo: 'panel-error-log'
         }]
     });
     MODx.page.SystemEvent.superclass.constructor.call(this,config);

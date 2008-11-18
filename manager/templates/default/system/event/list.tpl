@@ -1,11 +1,6 @@
 <div class="padding">
-    <h2>{$_lang.system_events}</h2>
-    
-    <p>{$_lang.system_event_desc}</p>
-
-    <div id="grid-system-event"></div>
-    
+    <div id="panel-error-log"></div>    
 </div>
 
-<script type="text/javascript" src="assets/modext/widgets/system/modx.grid.system.event.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.panel.error.log.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/event.js"></script>
