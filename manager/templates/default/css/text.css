@@ -6,16 +6,17 @@ body {
     margin-bottom: 1.3em;
 }
 
+
 h2 {
     margin: 0 0 1em;
-    font: bold 1.6em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    font: normal 1.7em Helvetica, Tahoma, Arial, Helvetica, sans-serif;
     color: #535d6c;
     border-bottom: 1px solid #c1dad7;
 }
 
 h3 {
     margin: 0 0 .8em;
-    font: bold 1.3em "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+    font: bold 1.3em Helvetica, Tahoma, Arial, Helvetica, sans-serif;
 }
 
 .dashed {

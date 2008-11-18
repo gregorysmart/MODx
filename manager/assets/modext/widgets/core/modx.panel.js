@@ -36,6 +36,7 @@ MODx.FormPanel = function(config) {
         ,bodyStyle: 'padding: 1em'
         ,border: false
         ,method: 'POST'
+        ,cls: 'modx-form'
         ,errorReader: MODx.util.JSONReader
         ,checkDirty: true
     });

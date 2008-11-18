@@ -25,3 +25,39 @@
 .x-form-check:hover {
     cursor: pointer;
 }
+
+
+/* topmenu */
+.modx-topmenu .x-btn button {
+	font-size: 12px;
+	}
+	
+/* context menus */
+.x-menu a.x-menu-item {
+    font-size: 12px;
+    padding: 4px 21px 4px 3px;
+	}
+
+/* tabs */
+.x-tab-strip span.x-tab-strip-text {
+	font-size: 12px;
+    }
+
+/* form fields */
+.modx-form .x-form-text, .modx-form .x-form-textarea {
+    font-size: 14px;
+	}
+.modx-form .x-form-text {
+    height: 22px;
+    vertical-align: middle;
+    }
+.modx-form .x-form-item label {
+    font-size: 14px;
+    }
+.ext-gecko .modx-form .x-form-text {
+	padding-top: 4px; /* FF cant center text */
+	} 
+	
+.modx-form .x-form-field-wrap .x-form-trigger {
+    height: 28px;
+    }

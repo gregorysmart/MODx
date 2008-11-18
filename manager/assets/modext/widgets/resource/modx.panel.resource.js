@@ -27,13 +27,18 @@ MODx.panel.Resource = function(config) {
             }
             ,items: [{
                 title: _('resource_settings')
-                ,defaults: { border: false ,msgTarget: 'side' }
+                ,defaults: { 
+                    border: false 
+                    ,msgTarget: 'side'
+                }
                 ,items: [{
                     html: '<h2>'+_('general_settings')+'</h2>'
                 },{
-                    xtype: 'hidden'
+                    xtype: 'statictextfield'
+                    ,fieldLabel: _('id')
                     ,name: 'id'
                     ,value: config.resource
+                    ,submitValue: true
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('resource_pagetitle')
