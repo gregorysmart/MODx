@@ -25,6 +25,7 @@ class modTransportProvider extends xPDOSimpleObject {
     }
     function __construct(& $xpdo) {
         parent :: __construct($xpdo);
+        $this->set('created', strftime('%Y-%m-%d %H:%M:%S'));
     }
 
     /**

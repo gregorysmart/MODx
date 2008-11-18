@@ -23,7 +23,6 @@ if (!isset($_DATA['name']) || $_DATA['name'] == '') {
 
 $entry->set('name',$_DATA['name']);
 $entry->set('value',$_DATA['value']);
-$entry->set('editedon',date('Y-m-d h:i:s'));
 
 if (!$entry->save()) return $modx->error->failure($modx->lexicon('entry_err_save'));
 

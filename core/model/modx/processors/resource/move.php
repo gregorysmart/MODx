@@ -57,7 +57,7 @@ if ($parent != 0) {
 
 $resource->set('parent',$_REQUEST['new_parent']);
 $resource->set('editedby',$modx->user->get('id'));
-$resource->set('editedon',time());
+$resource->set('editedon',time(),'integer');
 $resource->save();
 
 /* finished moving the resource, now check to see if the old_parent should no longer be a folder. */

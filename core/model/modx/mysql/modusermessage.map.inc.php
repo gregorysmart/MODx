@@ -69,7 +69,7 @@ $xpdo_meta_map['modUserMessage']= array (
     'date_sent' => 
     array (
       'dbtype' => 'datetime',
-      'phptype' => 'date',
+      'phptype' => 'datetime',
       'null' => 'false',
       'default' => '0000-00-00 00:00:00',
     ),

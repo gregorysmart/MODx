@@ -6,13 +6,13 @@
 $xpdo_meta_map['modCategory']= array (
   'package' => 'modx',
   'table' => 'categories',
-  'fields' =>
+  'fields' => 
   array (
     'category' => '',
   ),
-  'fieldMeta' =>
+  'fieldMeta' => 
   array (
-    'category' =>
+    'category' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '45',
@@ -22,9 +22,9 @@ $xpdo_meta_map['modCategory']= array (
       'index' => 'unique',
     ),
   ),
-  'aggregates' =>
+  'aggregates' => 
   array (
-    'modChunk' =>
+    'modChunk' => 
     array (
       'class' => 'modChunk',
       'key' => 'id',
@@ -33,7 +33,7 @@ $xpdo_meta_map['modCategory']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'modSnippet' =>
+    'modSnippet' => 
     array (
       'class' => 'modSnippet',
       'key' => 'id',
@@ -42,7 +42,7 @@ $xpdo_meta_map['modCategory']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'modPlugin' =>
+    'modPlugin' => 
     array (
       'class' => 'modPlugin',
       'key' => 'id',
@@ -51,7 +51,7 @@ $xpdo_meta_map['modCategory']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'modTemplate' =>
+    'modTemplate' => 
     array (
       'class' => 'modTemplate',
       'key' => 'id',
@@ -60,7 +60,7 @@ $xpdo_meta_map['modCategory']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
-    'modTemplateVar' =>
+    'modTemplateVar' => 
     array (
       'class' => 'modTemplateVar',
       'key' => 'id',
@@ -70,13 +70,13 @@ $xpdo_meta_map['modCategory']= array (
       'owner' => 'local',
     ),
   ),
-  'validation' =>
+  'validation' => 
   array (
-    'rules' =>
+    'rules' => 
     array (
-      'category' =>
+      'category' => 
       array (
-        'preventBlank' =>
+        'preventBlank' => 
         array (
           'type' => 'xPDOValidationRule',
           'rule' => 'xPDOMinLengthValidationRule',

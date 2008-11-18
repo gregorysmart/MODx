@@ -27,7 +27,7 @@ $resource->set('published',false);
 $resource->set('pub_date',false);
 $resource->set('unpub_date',false);
 $resource->set('editedby',$modx->user->get('id'));
-$resource->set('editedon',time());
+$resource->set('editedon',time(),'integer');
 $resource->set('publishedby',false);
 $resource->set('publishedon',false);
 if ($resource->save() == false) {

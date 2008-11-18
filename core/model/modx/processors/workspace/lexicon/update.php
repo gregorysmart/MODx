@@ -36,7 +36,6 @@ if (!isset($_POST['name']) || $_POST['name'] == '') {
 
 $entry->set('name',$_POST['name']);
 $entry->set('value',$_POST['value']);
-$entry->set('editedon',date('Y-m-d h:i:s'));
 $entry->set('namespace',$_POST['namespace']);
 $entry->set('topic',$topic->get('id'));
 $entry->set('language',$_POST['language']);

@@ -6,7 +6,7 @@
 $xpdo_meta_map['modSnippet']= array (
   'package' => 'modx',
   'table' => 'site_snippets',
-  'fields' =>
+  'fields' => 
   array (
     'cache_type' => '0',
     'snippet' => NULL,
@@ -14,9 +14,9 @@ $xpdo_meta_map['modSnippet']= array (
     'properties' => NULL,
     'moduleguid' => '',
   ),
-  'fieldMeta' =>
+  'fieldMeta' => 
   array (
-    'cache_type' =>
+    'cache_type' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
@@ -24,12 +24,12 @@ $xpdo_meta_map['modSnippet']= array (
       'null' => 'false',
       'default' => '0',
     ),
-    'snippet' =>
+    'snippet' => 
     array (
       'dbtype' => 'mediumtext',
       'phptype' => 'string',
     ),
-    'locked' =>
+    'locked' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '1',
@@ -39,13 +39,13 @@ $xpdo_meta_map['modSnippet']= array (
       'default' => '0',
       'index' => 'index',
     ),
-    'properties' =>
+    'properties' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'array',
       'null' => 'true',
     ),
-    'moduleguid' =>
+    'moduleguid' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '32',
@@ -56,5 +56,4 @@ $xpdo_meta_map['modSnippet']= array (
     ),
   ),
 );
-if (XPDO_PHP4_MODE) $xpdo_meta_map['modSnippet']['aggregates']= array_merge($xpdo_meta_map['modSnippet']['aggregates'], array_change_key_case($xpdo_meta_map['modSnippet']['aggregates']));
 $xpdo_meta_map['modsnippet']= & $xpdo_meta_map['modSnippet'];

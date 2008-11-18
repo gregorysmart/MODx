@@ -8,6 +8,7 @@
 $results= array ();
 $classes= array (
     'modAccessAction',
+    'modAccessContext',
     'modAccessElement',
     'modAccessMenu',
     'modAccessPolicy',

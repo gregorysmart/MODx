@@ -251,7 +251,7 @@ unset($_POST['variablesmodified']);
 $resource->fromArray($_POST);
 
 $resource->set('editedby', $modx->user->get('id'));
-$resource->set('editedon', time());
+$resource->set('editedon', time(), 'integer');
 
 if ($resource->save() == false) {
     return $modx->error->failure($modx->lexicon('resource_err_save'));

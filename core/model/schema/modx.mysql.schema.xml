@@ -460,7 +460,7 @@
         <field key="sender" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
         <field key="recipient" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
         <field key="private" dbtype="tinyint" precision="4" phptype="integer" null="false" default="0" />
-        <field key="date_sent" dbtype="datetime" phptype="date" null="false" default="0000-00-00 00:00:00" />
+        <field key="date_sent" dbtype="datetime" phptype="datetime" null="false" default="0000-00-00 00:00:00" />
         <field key="read" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
         <aggregate alias="Sender" class="modUser" local="sender" foreign="id" cardinality="one" owner="foreign" />
         <aggregate alias="Recipient" class="modUser" local="recipient" foreign="id" cardinality="one" owner="foreign" />
@@ -505,7 +505,7 @@
     <object class="modWorkspace" table="workspaces" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="index" />
         <field key="path" dbtype="varchar" precision="255" phptype="string" null="false" default="" index="unique" />
-        <field key="created" dbtype="datetime" phptype="datetime" null="false" />
+        <field key="created" dbtype="datetime" phptype="timestamp" null="false" />
         <field key="active" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="0" index="index" />
         <field key="attributes" dbtype="mediumtext" phptype="array" />
         <composite alias="Packages" class="transport.modTransportPackage" local="id" foreign="workspace" cardinality="many" owner="local" /> 
