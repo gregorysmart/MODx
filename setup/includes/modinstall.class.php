@@ -262,6 +262,16 @@ class modInstall {
         return $results;
     }
 
+    function loadVersionInstaller($class = 'modInstallVersion') {
+        $included = @include dirname(__FILE__).'/'.strtolower($class).'.class.php';
+        if ($included) {
+            $this->versioner = new $class($this);
+            return $this->versioner;
+        } else {
+            die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all the necessary files.</p></body></html>');
+        }
+    }
+
     /**
      * Execute the installation process.
      *
@@ -287,7 +297,8 @@ class modInstall {
                 break;
                 /* revo-alpha+ upgrades */
             case MODX_INSTALL_MODE_UPGRADE_REVO :
-                $results = include MODX_SETUP_PATH . 'includes/tables_upgrade.php';
+                $this->loadVersionInstaller();
+                $results = $this->versioner->install();
                 break;
                 /* new install, create tables */
             default :
