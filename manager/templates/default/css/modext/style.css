@@ -55,7 +55,7 @@
     font-size: 14px;
     }
 .ext-gecko .modx-form .x-form-text {
-	padding-top: 4px; /* FF cant center text */
+	padding-top: 4px;
 	} 
 	
 .modx-form .x-form-field-wrap .x-form-trigger {

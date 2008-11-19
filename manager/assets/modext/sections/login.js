@@ -83,6 +83,7 @@ MODx.panel.Login = function(config) {
 	       ,boxLabel: _('remember_username')
 	       ,name: 'rememberme'
 	       ,id: 'login-rememberme'
+           ,inputValue: true
 	   },{
 	   	   html: onManagerLoginFormRender
 	   }]
