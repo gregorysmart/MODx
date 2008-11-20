@@ -244,6 +244,7 @@ MODx.window.CreateElementProperty = function(config) {
             ,name: 'name'
             ,xtype: 'textfield'
             ,width: 150
+            ,allowBlank: false
         },{
             fieldLabel: _('description')
             ,name: 'description'
