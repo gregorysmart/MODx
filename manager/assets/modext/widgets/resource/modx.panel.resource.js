@@ -19,6 +19,7 @@ MODx.panel.Resource = function(config) {
             ,activeTab: 0
             ,deferredRender: false
             ,border: false
+            ,collapsible: true
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'
