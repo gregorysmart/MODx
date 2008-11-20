@@ -30,13 +30,34 @@ include_once (strtr(realpath(dirname(__FILE__)) . '/../../smarty/Smarty.class.ph
  *
  * Automatically sets appropriate configuration variables for Smarty in
  * the MODx context.
+ *
  * @package modx
  * @subpackage smarty
  */
 class modSmarty extends Smarty {
+    /**
+     * A reference to the modX instance
+     * @var modX
+     * @access protected
+     */
     var $modx= null;
+    /**
+     * A reference to the Smarty instance
+     * @var Smarty
+     * @access protected
+     */
 	var $smarty;
+    /**
+     * Any custom blocks loaded
+     * @var array
+     * @access private
+     */
     var $_blocks;
+    /**
+     * The derived block loaded
+     * @var mixed
+     * @access private
+     */
     var $_derived;
 
 	function modSmarty(& $modx, $params= array ()) {
@@ -72,6 +93,13 @@ class modSmarty extends Smarty {
 		$this->_derived = null;
 	}
 
+    /**
+     * Sets the cache path for this Smarty instance
+     *
+     * @access public
+     * @param string $path The path to set. Defaults to '', which in turn
+     * defaults to $this->modx->cachePath.
+     */
     function setCachePath($path = '') {
     	$path = $this->modx->cachePath.$path;
         if (!is_dir($path)) {
@@ -81,16 +109,35 @@ class modSmarty extends Smarty {
         $this->modx->smarty->compile_dir = $path;
     }
 
+    /**
+     * Sets the template path for this Smarty instance
+     *
+     * @access public
+     * @param string $path The path to set.
+     */
     function setTemplatePath($path = '') {
         if ($path == '') return false;
 
         $this->template_dir = $path;
     }
 
+    /**
+     * Display the template through an echo statement.
+     *
+     * @access public
+     * @param string $resource_name The resource location
+     */
 	function display($resource_name) {
 		echo $this->fetch($resource_name);
 	}
 
+    /**
+     * Fetch the template output without displaying it.
+     *
+     * @access public
+     * @param string $resource_name The resource location
+     * @return string The fetched resource output
+     */
 	function fetch($resource_name) {
 		$ret = parent::fetch($resource_name);
 		while ($resource = $this->_derived) {

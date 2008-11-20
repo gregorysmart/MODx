@@ -1,6 +1,7 @@
 <?php
 /**
  * Custom validation class for modx
+ *
  * @package modx
  * @subpackage validation
  */
@@ -13,15 +14,17 @@ class modValidator extends xPDOValidator {
         $this->object = & $object;
         $this->object->_loadValidation(true);
     }
-    
+
     /**
      * Validate a xPDOObject by the parameters specified
-     * 
-     * @param xPDOObject $object The object to validate
+     *
+     * @access public
+     * @param xPDOObject &$object The object to validate
      * @param array $parameters An associative array of config parameters.
+     * @return boolean Either true or false indicating valid or invalid.
      */
     function validate(& $object, $parameters= array()) {
-        $result= parent :: validate($object,$parameters);        
+        $result= parent :: validate($object,$parameters);
         if (!empty($this->messages)) {
             reset($this->messages);
             while (list ($k, $v)= each($this->messages)) {

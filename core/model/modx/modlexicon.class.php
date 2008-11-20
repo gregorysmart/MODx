@@ -29,20 +29,27 @@
  */
 class modLexicon {
     /**
-     * @var array $_lexicon The actual language array.
+     * Reference to the MODx instance.
+     *
+     * @var modX $modx
+     * @access protected
+     */
+    var $modx = null;
+    /**
+     * The actual language array.
+     *
+     * @var array $_lexicon
      * @access private
      */
     var $_lexicon;
     /**
-     * @var array $_paths Directories to search for language strings in
+     * Directories to search for language strings in.
+     *
+     * @deprecated
+     * @var array $_paths
      * @access private
      */
     var $_paths;
-    /**
-     * @var MODx $modx Reference to the MODx object.
-     * @access protected
-     */
-    var $modx = null;
 
     function modLexicon(&$modx) {
         $this->__construct($modx);
@@ -50,6 +57,19 @@ class modLexicon {
     function __construct(&$modx) {
         $this->modx =& $modx;
         $this->init();
+    }
+
+    /**
+     * Clears the lexicon cache for the specified path.
+     *
+     * @access public
+     * @param string $path The path to clear.
+     * @return string The results of the cache clearing.
+     */
+    function clearCache($path = '') {
+        $path = 'lexicon/'.$path;
+        $cacheManager = $this->modx->getCacheManager();
+        return $cacheManager->clearCache(array($path));
     }
 
     /**
@@ -64,46 +84,6 @@ class modLexicon {
     }
 
     /**
-     * Get a lexicon string by its index.
-     *
-     * @access public
-     * @param string $key The key of the lexicon string.
-     * @param array $params An assocative array of placeholder
-     * keys and values to parse
-     * @return string The text of the lexicon key, blank if not found.
-     */
-    function process($key,$params = array()) {
-        /* make sure key exists */
-        if (!is_string($key) || !isset($this->_lexicon[$key])) {
-            $this->modx->log(XPDO_LOG_LEVEL_WARN,'Language string not found: "'.$key.'"');
-            return $key;
-        }
-        /* if params are passed, allow for parsing of [[+key]] values to strings */
-        return empty($params)
-            ? $this->_lexicon[$key]
-            : $this->_parse($this->_lexicon[$key],$params);
-    }
-
-    /**
-     * Parses a lexicon string, replacing placeholders with
-     * specified strings.
-     *
-     * @access private
-     * @param string $str The string to parse
-     * @param array $params An associative array of keys to replace
-     * @return string The processed string
-     */
-    function _parse($str,$params) {
-        if (!$str) return '';
-        if (empty($params)) return $str;
-
-        foreach ($params as $k => $v) {
-            $str = str_replace('[[+'.$k.']]',$v,$str);
-        }
-        return $str;
-    }
-
-    /**
      * Accessor method for the lexicon array.
      *
      * @access public
@@ -111,49 +91,6 @@ class modLexicon {
      */
     function fetch() {
         return $this->_lexicon;
-    }
-
-    /**
-     * Initializes the lexicon.
-     *
-     * @access protected
-     */
-    function init() {
-        $this->_paths = array(
-             'core' => $this->modx->config['core_path'] . 'cache/lexicon/',
-        );
-        $this->_lexicon = array();
-    }
-
-    /**
-     * Loads a lexicon topic from the cache. If not found, tries to generate a
-     * cache file from the database.
-     *
-     * @access public
-     * @param string $namespace The namespace to load from. Defaults to 'core'.
-     * @param string $topic The topic to load. Defaults to 'default'.
-     * @param string $language The language to load. Defaults to 'en'.
-     * @return array The loaded lexicon array.
-     */
-    function loadCache($namespace = 'core',$topic = 'default',$language = '') {
-        if ($language == '') $language = $this->modx->cultureKey;
-
-        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$topic.'.cache.php';
-
-        $_lang = array();
-        if (file_exists($fileName)) {
-            @include $fileName;
-        } else { /* if cache files don't exist, generate */
-            $cacheManager = $this->modx->getCacheManager();
-            $cacheManager->generateLexiconCache($namespace,$topic,$language);
-
-            if (file_exists($fileName)) {
-                @include $fileName;
-            } else {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with topic: ".$topic);
-            }
-        }
-        return $_lang;
     }
 
     /**
@@ -200,6 +137,58 @@ class modLexicon {
     }
 
     /**
+     * Loads a lexicon topic from the cache. If not found, tries to generate a
+     * cache file from the database.
+     *
+     * @access public
+     * @param string $namespace The namespace to load from. Defaults to 'core'.
+     * @param string $topic The topic to load. Defaults to 'default'.
+     * @param string $language The language to load. Defaults to 'en'.
+     * @return array The loaded lexicon array.
+     */
+    function loadCache($namespace = 'core',$topic = 'default',$language = '') {
+        if ($language == '') $language = $this->modx->cultureKey;
+
+        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$topic.'.cache.php';
+
+        $_lang = array();
+        if (file_exists($fileName)) {
+            @include $fileName;
+        } else { /* if cache files don't exist, generate */
+            $cacheManager = $this->modx->getCacheManager();
+            $cacheManager->generateLexiconCache($namespace,$topic,$language);
+
+            if (file_exists($fileName)) {
+                @include $fileName;
+            } else {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with topic: ".$topic);
+            }
+        }
+        return $_lang;
+    }
+
+    /**
+     * Get a lexicon string by its index.
+     *
+     * @access public
+     * @param string $key The key of the lexicon string.
+     * @param array $params An assocative array of placeholder
+     * keys and values to parse
+     * @return string The text of the lexicon key, blank if not found.
+     */
+    function process($key,$params = array()) {
+        /* make sure key exists */
+        if (!is_string($key) || !isset($this->_lexicon[$key])) {
+            $this->modx->log(XPDO_LOG_LEVEL_WARN,'Language string not found: "'.$key.'"');
+            return $key;
+        }
+        /* if params are passed, allow for parsing of [[+key]] values to strings */
+        return empty($params)
+            ? $this->_lexicon[$key]
+            : $this->_parse($this->_lexicon[$key],$params);
+    }
+
+    /**
      * Sets a lexicon key to a value. Not recommended, since doesn't query the
      * database.
      *
@@ -220,14 +209,33 @@ class modLexicon {
     }
 
     /**
-     * Clears the lexicon cache for the specified path.
+     * Initializes the lexicon.
      *
-     * @param string $path The path to clear.
-     * @return string The results of the cache clearing.
+     * @access protected
      */
-    function clearCache($path = '') {
-        $path = 'lexicon/'.$path;
-        $cacheManager = $this->modx->getCacheManager();
-        return $cacheManager->clearCache(array($path));
+    function init() {
+        $this->_paths = array(
+             'core' => $this->modx->config['core_path'] . 'cache/lexicon/',
+        );
+        $this->_lexicon = array();
+    }
+
+    /**
+     * Parses a lexicon string, replacing placeholders with
+     * specified strings.
+     *
+     * @access private
+     * @param string $str The string to parse
+     * @param array $params An associative array of keys to replace
+     * @return string The processed string
+     */
+    function _parse($str,$params) {
+        if (!$str) return '';
+        if (empty($params)) return $str;
+
+        foreach ($params as $k => $v) {
+            $str = str_replace('[[+'.$k.']]',$v,$str);
+        }
+        return $str;
     }
 }

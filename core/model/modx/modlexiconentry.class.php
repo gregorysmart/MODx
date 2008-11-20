@@ -13,6 +13,9 @@ class modLexiconEntry extends xPDOSimpleObject {
 
     /**
      * Clears the cache for the entry
+     *
+     * @access public
+     * @return boolean True if successful
      */
     function clearCache() {
     	if ($this->xpdo && $this->xpdo->lexicon) {
