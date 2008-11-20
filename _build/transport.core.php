@@ -79,7 +79,7 @@ $collection['1']->fromArray(array (
 ), '', true, true);
 $attributes = array (
     XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+    XPDO_TRANSPORT_UPDATE_OBJECT => false,
 );
 foreach ($collection as $c) {
     $package->put($c, $attributes);
@@ -148,7 +148,6 @@ $c = $xpdo->newObject('modContext');
 $c->fromArray(array (
     'key' => 'web',
     'description' => 'The default front-end context for your web site.',
-
 ), '', true, true);
 $attributes = array (
     XPDO_TRANSPORT_PRESERVE_KEYS => true,
@@ -158,7 +157,11 @@ $attributes['resolve'][] = array (
     'type' => 'file',
     'source' => MODX_BASE_PATH . 'index.php',
     'target' => "return MODX_BASE_PATH;",
-
+);
+$attributes['resolve'][] = array (
+    'type' => 'file',
+    'source' => MODX_BASE_PATH . 'ht.access',
+    'target' => "return MODX_BASE_PATH;",
 );
 $attributes['resolve'][] = array (
     'type' => 'php',
@@ -173,7 +176,6 @@ $c = $xpdo->newObject('modContext');
 $c->fromArray(array (
     'key' => 'mgr',
     'description' => 'The default manager or administration context for content management activity.',
-
 ), '', true, true);
 $attributes = array (
     XPDO_TRANSPORT_PRESERVE_KEYS => true,
@@ -183,31 +185,26 @@ $attributes['resolve'][] = array (
     'type' => 'file',
     'source' => MODX_BASE_PATH . 'manager/assets',
     'target' => "return MODX_MANAGER_PATH;",
-
 );
 $attributes['resolve'][] = array (
     'type' => 'file',
     'source' => MODX_BASE_PATH . 'manager/controllers',
     'target' => "return MODX_MANAGER_PATH;",
-
 );
 $attributes['resolve'][] = array (
     'type' => 'file',
     'source' => MODX_BASE_PATH . 'manager/templates',
     'target' => "return MODX_MANAGER_PATH;",
-
 );
 $attributes['resolve'][] = array (
     'type' => 'file',
     'source' => MODX_BASE_PATH . 'manager/ht.access',
     'target' => "return MODX_MANAGER_PATH;",
-
 );
 $attributes['resolve'][] = array (
     'type' => 'file',
     'source' => MODX_BASE_PATH . 'manager/index.php',
     'target' => "return MODX_MANAGER_PATH;",
-
 );
 $attributes['resolve'][] = array (
     'type' => 'php',
