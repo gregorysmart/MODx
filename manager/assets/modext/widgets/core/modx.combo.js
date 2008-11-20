@@ -25,6 +25,7 @@ MODx.combo.ComboBox = function(config,getStore) {
         ,typeAhead: true
         ,forceSelection: false
         ,minChars: 3
+        ,cls: 'modx-combo'
     });
     Ext.applyIf(config,{
         store: new Ext.data.JsonStore({

@@ -12,6 +12,7 @@ MODx.tree.CheckboxTree = function(config) {
         rootVisible: false
         ,autoScroll: true
         ,autoHeight: true
+        ,cls: 'modx-tree'
     });
     var tb = this.getToolbar();
     if (config.tbar && config.useDefaultToolbar) {

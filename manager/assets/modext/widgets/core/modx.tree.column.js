@@ -9,7 +9,7 @@
 Ext.tree.ColumnTree = Ext.extend(Ext.tree.TreePanel, {
     lines:false,
     borderWidth: Ext.isBorderBox ? 0 : 2, // the combined left/right border for each cell
-    cls:'x-column-tree',
+    cls:'x-column-tree modx-tree',
     
     onRender : function(){
         Ext.tree.ColumnTree.superclass.onRender.apply(this, arguments);

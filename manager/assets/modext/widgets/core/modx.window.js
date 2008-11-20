@@ -19,6 +19,7 @@ MODx.Window = function(config) {
         ,maximizable: true
 		,autoHeight: true
 		,width: 450
+        ,cls: 'modx-window'
 		,buttons: [{
 			text: config.cancelBtnText || _('cancel')
 			,scope: this

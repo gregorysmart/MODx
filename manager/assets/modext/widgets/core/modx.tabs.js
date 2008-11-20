@@ -19,6 +19,7 @@ MODx.Tabs = function(config) {
 		}
 	    ,activeTab: 0
         ,border: false
+        ,cls: 'modx-tabs'
 	});
 	MODx.Tabs.superclass.constructor.call(this,config);
 	this.config = config;

@@ -46,6 +46,7 @@ MODx.tree.Tree = function(config) {
 		,bodyBorder: false
 		,containerScroll: true
 		,autoScroll: true
+        ,cls: 'modx-tree'
         ,tools: [{ 
             id: 'help'
             ,qtip: _('help')

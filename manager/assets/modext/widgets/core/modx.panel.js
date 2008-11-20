@@ -11,7 +11,7 @@ Ext.namespace('MODx.panel');
 MODx.Panel = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        collapsible: true
+        cls: 'modx-panel'
     });
     MODx.Panel.superclass.constructor.call(this,config);
     this.config = config;

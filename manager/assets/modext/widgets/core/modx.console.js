@@ -30,12 +30,13 @@ MODx.Console = function(config) {
         ,height: 400
         ,width: 550
         ,bodyStyle: 'background-color: white; padding: .75em; font-family: Courier'
+        ,cls: 'modx-window'
         ,items: [{
             id: 'console-header'
             ,html: _('console_running')
             ,border: false
         },{
-            xtype: 'panel'
+            xtype: 'modx-panel'
             ,id: 'console-body'
             ,cls: 'modx-console'            
         }]

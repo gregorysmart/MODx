@@ -14,6 +14,7 @@ MODx.Browser = function(config) {
     Ext.applyIf(config,{
         onSelect: function(data) {}
         ,scope: this
+        ,cls: 'modx-browser'
     });
     MODx.Browser.superclass.constructor.call(this,config);
     this.config = config;
