@@ -158,23 +158,24 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         this.loadWindow(btn,e,{
             xtype: 'window-package-installer'
             ,listeners: {
-                'finish': {fn: function() { this._install(this.menu.record); },scope:this}
+                'finish': {fn: function(va) { this._install(this.menu.record,va); },scope:this}
             }
         });
     }
     
-    ,_install: function(r) {
+    ,_install: function(r,va) {
         var topic = '/workspace/package/install/'+r.signature+'/';
         this.loadConsole(Ext.getBody(),topic);
+        Ext.apply(va,{
+            action: 'install'
+            ,signature: r.signature
+            ,register: 'mgr'
+            ,topic: topic
+        });
         
         MODx.Ajax.request({
             url: this.config.url
-            ,params: {
-                action: 'install'
-                ,signature: r.signature
-                ,register: 'mgr'
-                ,topic: topic
-            }
+            ,params: va
             ,listeners: {
                 'success': {fn:function() {
                     Ext.getCmp('window-package-installer').hide();

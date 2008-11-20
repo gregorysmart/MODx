@@ -31,7 +31,11 @@ foreach ($packages as $package) {
     $pkg->set('signature',$package['signature']);
     $pkg->set('state',1);
     $pkg->set('workspace',1);
-    $pkg->transferPackage($package['location'],$_package_cache);
+
+    if (!$pkg->transferPackage($package['location'],$_package_cache)) {
+        $modx->log(MODX_LOG_LEVEL_ERROR,'Could not download package at: '.$package['location']);
+        continue;
+    }
     $pkg->set('created',date('Y-m-d h:i:s'));
     $pkg->set('provider',$provider->get('id'));
 

@@ -174,7 +174,8 @@ MODx.panel.PIInstall = function(config) {
 Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
     submit: function() {
         var va = this.getForm().getValues();
-        Ext.getCmp('window-package-installer').fireEvent('finish');        
+        var pi = Ext.getCmp('window-package-installer');
+        pi.fireEvent('finish',va);
     }
     ,fetch: function() {
         var sig = Ext.getCmp('grid-package').menu.record.signature;

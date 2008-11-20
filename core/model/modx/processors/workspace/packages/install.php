@@ -25,7 +25,7 @@ if ($package == null) {
 $modx->log(XPDO_LOG_LEVEL_INFO,$modx->lexicon('package_install_info_found'));
 
 /* install package */
-$installed = $package->install();
+$installed = $package->install($_POST);
 
 /* empty cache */
 $cacheManager= $modx->getCacheManager();
