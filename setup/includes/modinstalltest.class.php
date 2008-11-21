@@ -134,15 +134,13 @@ class modInstallTest {
         }
 
         /* packages writable? */
-        if (!$this->install->config['unpacked']) {
-            $this->results['core_packages_writable']['msg'] = '<p>'.sprintf($this->install->lexicon['test_directory_writable'],'core/packages');
-            if (!is_writable(MODX_CORE_PATH . 'packages')) {
-                $this->results['core_packages_writable']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></p>';
-                $this->results['core_packages_writable']['class'] = 'testFailed';
-            } else {
-                $this->results['core_packages_writable']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
-                $this->results['core_packages_writable']['class'] = 'testPassed';
-            }
+        $this->results['core_packages_writable']['msg'] = '<p>'.sprintf($this->install->lexicon['test_directory_writable'],'core/packages');
+        if (!is_writable(MODX_CORE_PATH . 'packages')) {
+            $this->results['core_packages_writable']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></p>';
+            $this->results['core_packages_writable']['class'] = 'testFailed';
+        } else {
+            $this->results['core_packages_writable']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
+            $this->results['core_packages_writable']['class'] = 'testPassed';
         }
     }
 
