@@ -311,7 +311,8 @@ MODx.panel.Resource = function(config) {
     Ext.get('ta').on('keydown',this.fieldChangeEvent,this);
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
-    setup: function() {
+    rteLoaded: false
+    ,setup: function() {
         if (this.config.resource === '' || this.config.resource === 0) {
             this.fireEvent('ready');
             return false;
@@ -330,8 +331,9 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     r.object.ta = r.object.content;
                     this.getForm().setValues(r.object);
                     
-                    if (r.object.richtext && MODx.config.use_editor && loadRTE !== null) {
+                    if (r.object.richtext && MODx.config.use_editor && loadRTE !== null && !this.rteLoaded) {
                     	loadRTE('ta');
+                        this.rteLoaded = true;
                     }
                     
                     this.fireEvent('ready');
