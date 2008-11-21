@@ -27,10 +27,19 @@ MODx.grid.SettingsGrid = function(config) {
         }];
     }
     config.tbar.push('->',{
+        xtype: 'combo-namespace'
+        ,name: 'namespace'
+        ,id: 'filter_namespace'
+        ,emptyText: _('namespace_filter')
+        ,allowBlank: true
+        ,listeners: {
+            'select': {fn: this.filterByNamespace, scope:this}
+        }
+    },'-',{
         xtype: 'textfield'
         ,name: 'filter_key'
         ,id: 'filter_key'
-        ,emptyText: _('search')+'...'
+        ,emptyText: _('search_by_key')+'...'
         ,listeners: {
             'change': {fn: this.filterByKey, scope: this}
             ,'render': {fn: this._addEnterKeyHandler}
@@ -115,6 +124,8 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
     	this.getStore().baseParams = {
     		action: 'getList'
     	};
+        Ext.getCmp('filter_namespace').setValue('');
+        Ext.getCmp('filter_key').setValue('');
     	this.refresh();
     	this.getBottomToolbar().changePage(1);
     }
@@ -123,10 +134,15 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
      * Filters the grid by the key column.
      */
     ,filterByKey: function(tf,newValue,oldValue) {
-        this.getStore().baseParams = {
-        	action: 'getList'
-        	,key: newValue
-        };
+        this.getStore().baseParams.key = newValue;
+        this.refresh();
+        this.getBottomToolbar().changePage(1);
+    }
+    /**
+     * Filters the grid by the namespace column
+     */
+    ,filterByNamespace: function(cb,rec,ri) {
+        this.getStore().baseParams['namespace'] = rec.data['name'];
         this.refresh();
         this.getBottomToolbar().changePage(1);
     }
