@@ -27,8 +27,8 @@ $resource->getOne('modTemplate');
 $ra = $resource->toArray();
 
 /* format pub/unpub dates */
-$ra['pub_date'] = $ra['pub_date'] != '0' ? strftime('%Y-%m-%d',$ra['pub_date']) : '';
-$ra['unpub_date'] = $ra['unpub_date'] != '0' ? strftime('%Y-%m-%d',$ra['unpub_date']) : '';
+$ra['pub_date'] = $ra['pub_date'] != '0' ? $ra['pub_date'] : '';
+$ra['unpub_date'] = $ra['unpub_date'] != '0' ? $ra['unpub_date'] : '';
 $ra['status'] = $ra['published'] ? $modx->lexicon('resource_published') : $modx->lexicon('resource_unpublished');
 
 /* keywords */
@@ -45,10 +45,10 @@ $ra['keywords'] = join($keywords,',');
 
 /* get changes */
 $server_offset_time= intval($modx->config['server_offset_time']);
-$ra['createdon_adjusted'] = strftime('%c', $resource->get('createdon') + $server_offset_time);
+$ra['createdon_adjusted'] = strftime('%c', strtotime($resource->get('createdon')) + $server_offset_time);
 $ra['createdon_by'] = $resource->CreatedBy->get('username');
 if ($resource->EditedBy) {
-    $ra['editedon_adjusted'] = strftime('%c', $resource->get('editedon') + $server_offset_time);
+    $ra['editedon_adjusted'] = strftime('%c', strtotime($resource->get('editedon')) + $server_offset_time);
     $ra['editedon_by'] = $resource->EditedBy->get('username');
 }
 
