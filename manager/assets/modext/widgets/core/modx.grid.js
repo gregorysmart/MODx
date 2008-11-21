@@ -30,12 +30,6 @@ MODx.grid.Grid = function(config) {
             ,autoFill: true
 			,showPreview: true
 		}
-        ,tools: [{ 
-            id: 'help'
-            ,qtip: _('help')
-            ,handler: this.help
-            ,scope: this
-        }]
 	});
 	if (config.paging) {
 		Ext.applyIf(config,{
@@ -387,16 +381,6 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
      */
     ,refresh: function() {
         this.getStore().reload();
-    }
-    
-    /**
-     * If set for the grid, displays a help dialog.
-     * 
-     * @access public
-     * @abstract
-     */
-    ,help: function() {
-        Ext.Msg.alert(_('help'),_('help_not_yet'));
     }
     
     /**

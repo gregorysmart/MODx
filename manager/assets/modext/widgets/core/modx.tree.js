@@ -47,12 +47,6 @@ MODx.tree.Tree = function(config) {
 		,containerScroll: true
 		,autoScroll: true
         ,cls: 'modx-tree'
-        ,tools: [{ 
-            id: 'help'
-            ,qtip: _('help')
-            ,handler: this.help
-            ,scope: this
-        }]
 	});
 	if (config.remoteToolbar === true && (config.tbar === undefined || config.tbar === null)) {
 		Ext.Ajax.request({

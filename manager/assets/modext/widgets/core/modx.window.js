@@ -29,12 +29,6 @@ MODx.Window = function(config) {
 			,scope: this
 			,handler: this.submit
 		}]
-        ,tools: [{ 
-            id: 'help'
-            ,qtip: _('help')
-            ,handler: this.help
-            ,scope: this
-        }]
 		,record: {}
 	});
 	MODx.Window.superclass.constructor.call(this,config);

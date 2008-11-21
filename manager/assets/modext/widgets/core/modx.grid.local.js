@@ -44,12 +44,6 @@ MODx.grid.LocalGrid = function(config) {
             ,autoFill: true
             ,showPreview: true
         }
-        ,tools: [{ 
-            id: 'help'
-            ,qtip: _('help')
-            ,handler: this.help
-            ,scope: this
-        }]
     });
     
     this.menu = new Ext.menu.Menu({ defaultAlign: 'tl-b?' });
