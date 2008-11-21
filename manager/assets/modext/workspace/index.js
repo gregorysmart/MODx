@@ -15,15 +15,15 @@ MODx.page.Workspace = function(config) {
     Ext.applyIf(config,{
         tabs: [
             {contentEl: 'tab_packages', title: _('packages')}
-            ,{contentEl: 'tab_provisioners', title: _('provisioners')}
+            ,{contentEl: 'tab_providers', title: _('providers')}
         ]
         ,components: [{
             xtype: 'grid-package'
             ,id: 'grid-package'
             ,el: 'packages_grid'
         },{
-            xtype: 'grid-provisioner'
-            ,el: 'provisioners_grid'
+            xtype: 'grid-provider'
+            ,el: 'providers_grid'
         }]
     });
     MODx.page.Workspace.superclass.constructor.call(this,config);

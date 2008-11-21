@@ -7,7 +7,7 @@
  * @param {Object} config An object of options.
  * @xtype grid-provisioner
  */
-MODx.grid.Provisioner = function(config) {
+MODx.grid.Provider = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('packages')
@@ -35,10 +35,10 @@ MODx.grid.Provisioner = function(config) {
             ,handler: { xtype: 'window-provider-create' }
         }]
     });
-    MODx.grid.Provisioner.superclass.constructor.call(this,config);
+    MODx.grid.Provider.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.grid.Provisioner,MODx.grid.Grid);
-Ext.reg('grid-provisioner',MODx.grid.Provisioner);
+Ext.extend(MODx.grid.Provider,MODx.grid.Grid);
+Ext.reg('grid-provider',MODx.grid.Provider);
 
 /** 
  * Generates the Create Provider window.

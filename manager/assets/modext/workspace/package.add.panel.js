@@ -133,7 +133,6 @@ Ext.extend(MODx.panel.PDFirst,Ext.FormPanel,{
         } else {
            Ext.callback(o.proceed,o.scope || this,['pd-'+va.method]);
         }
-        // handle first panel submission here
     }
     
     ,searchLocal: function() {
@@ -170,7 +169,7 @@ MODx.panel.PDSelProv = function(config) {
             html: '<p>'+_('provider_select_desc')+'</p>'
             ,style: 'padding-bottom: 2em;'
         },{
-            fieldLabel: _('provisioner')
+            fieldLabel: _('provider')
             ,xtype: 'combo-provider'
             ,allowBlank: false
         },{

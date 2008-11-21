@@ -31,7 +31,7 @@ MODx.grid.Package = function(config) {
                ,editor: { xtype:'combo-workspace' ,renderer: true }
                ,editable: false
             },{ 
-                header: _('provisioner')
+                header: _('provider')
                 ,dataIndex: 'provider'
                 ,editor: { xtype: 'combo-provider' ,renderer: true }
                 ,editable: false
