@@ -35,7 +35,7 @@ MODx.panel.Resource = function(config) {
                 ,items: [{
                     html: '<h2>'+_('general_settings')+'</h2>'
                 },{
-                    xtype: 'statictextfield'
+                    xtype: (config.resource ? 'statictextfield' : 'hidden')
                     ,fieldLabel: _('id')
                     ,name: 'id'
                     ,value: config.resource
