@@ -6,6 +6,7 @@
  * @package modx
  * @subpackage processors.resource
  */
+$modx->lexicon->load('resource');
 if (!$modx->hasPermission('save_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_DATA = $modx->fromJSON($_POST['data']);

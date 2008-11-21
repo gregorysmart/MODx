@@ -47,6 +47,7 @@
  * @package modx
  * @subpackage processors.resource
  */
+$modx->lexicon->load('resource');
 
 if (!isset($_REQUEST['id'])) return $modx->error->failure($modx->lexicon('resource_err_ns'));
 $resource = $modx->getObject('modResource',$_REQUEST['id']);
