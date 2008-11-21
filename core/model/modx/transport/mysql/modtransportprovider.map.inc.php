@@ -21,7 +21,7 @@ $xpdo_meta_map['modTransportProvider']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'index' => 'unique',
     ),
     'description' => 
@@ -38,7 +38,7 @@ $xpdo_meta_map['modTransportProvider']= array (
     array (
       'dbtype' => 'datetime',
       'phptype' => 'datetime',
-      'null' => 'false',
+      'null' => false,
     ),
     'updated' => 
     array (

@@ -17,7 +17,7 @@ $xpdo_meta_map['modCategory']= array (
       'dbtype' => 'varchar',
       'precision' => '45',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),

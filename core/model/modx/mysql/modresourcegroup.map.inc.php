@@ -9,8 +9,8 @@ $xpdo_meta_map['modResourceGroup']= array (
   'fields' => 
   array (
     'name' => '',
-    'private_memgroup' => '0',
-    'private_webgroup' => '0',
+    'private_memgroup' => 0,
+    'private_webgroup' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -19,7 +19,7 @@ $xpdo_meta_map['modResourceGroup']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),
@@ -29,8 +29,8 @@ $xpdo_meta_map['modResourceGroup']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'private_webgroup' => 
     array (
@@ -38,8 +38,8 @@ $xpdo_meta_map['modResourceGroup']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'composites' => 

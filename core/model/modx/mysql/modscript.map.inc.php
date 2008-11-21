@@ -10,8 +10,8 @@ $xpdo_meta_map['modScript']= array (
   array (
     'name' => '',
     'description' => '',
-    'editor_type' => '0',
-    'category' => '0',
+    'editor_type' => 0,
+    'category' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -20,7 +20,7 @@ $xpdo_meta_map['modScript']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),
@@ -29,7 +29,7 @@ $xpdo_meta_map['modScript']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'editor_type' => 
@@ -37,16 +37,16 @@ $xpdo_meta_map['modScript']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'category' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'fk',
     ),
   ),

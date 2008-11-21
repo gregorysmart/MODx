@@ -19,7 +19,7 @@ $xpdo_meta_map['modSession']= array (
       'dbtype' => 'varchar',
       'precision' => '32',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'index' => 'pk',
       'default' => '',
     ),
@@ -28,7 +28,7 @@ $xpdo_meta_map['modSession']= array (
       'dbtype' => 'int',
       'precision' => '20',
       'phptype' => 'timestamp',
-      'null' => 'true',
+      'null' => true,
       'attributes' => 'unsigned',
     ),
     'data' => 

@@ -10,11 +10,11 @@ $xpdo_meta_map['modChunk']= array (
   array (
     'name' => '',
     'description' => 'Chunk',
-    'editor_type' => '0',
-    'category' => '0',
-    'cache_type' => '0',
+    'editor_type' => 0,
+    'category' => 0,
+    'cache_type' => 0,
     'snippet' => NULL,
-    'locked' => '0',
+    'locked' => 0,
     'properties' => NULL,
   ),
   'fieldMeta' => 
@@ -24,7 +24,7 @@ $xpdo_meta_map['modChunk']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),
@@ -33,7 +33,7 @@ $xpdo_meta_map['modChunk']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'Chunk',
     ),
     'editor_type' => 
@@ -41,16 +41,16 @@ $xpdo_meta_map['modChunk']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'category' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'fk',
     ),
     'cache_type' => 
@@ -58,8 +58,8 @@ $xpdo_meta_map['modChunk']= array (
       'dbtype' => 'tinyint',
       'precision' => '1',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'snippet' => 
     array (
@@ -72,15 +72,15 @@ $xpdo_meta_map['modChunk']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'properties' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'array',
-      'null' => 'true',
+      'null' => true,
     ),
   ),
   'aggregates' => 

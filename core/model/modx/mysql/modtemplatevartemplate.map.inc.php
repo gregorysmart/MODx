@@ -8,9 +8,9 @@ $xpdo_meta_map['modTemplateVarTemplate']= array (
   'table' => 'site_tmplvar_templates',
   'fields' => 
   array (
-    'tmplvarid' => '0',
-    'templateid' => '0',
-    'rank' => '0',
+    'tmplvarid' => 0,
+    'templateid' => 0,
+    'rank' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -19,8 +19,8 @@ $xpdo_meta_map['modTemplateVarTemplate']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'templateid' => 
@@ -28,8 +28,8 @@ $xpdo_meta_map['modTemplateVarTemplate']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'rank' => 
@@ -37,8 +37,8 @@ $xpdo_meta_map['modTemplateVarTemplate']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

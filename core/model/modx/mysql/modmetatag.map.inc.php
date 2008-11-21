@@ -11,7 +11,7 @@ $xpdo_meta_map['modMetatag']= array (
     'name' => '',
     'tag' => '',
     'tagvalue' => '',
-    'http_equiv' => '0',
+    'http_equiv' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -20,7 +20,7 @@ $xpdo_meta_map['modMetatag']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'tag' => 
@@ -28,7 +28,7 @@ $xpdo_meta_map['modMetatag']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'tagvalue' => 
@@ -36,7 +36,7 @@ $xpdo_meta_map['modMetatag']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'http_equiv' => 
@@ -44,8 +44,8 @@ $xpdo_meta_map['modMetatag']= array (
       'dbtype' => 'tinyint',
       'precision' => '4',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'composites' => 

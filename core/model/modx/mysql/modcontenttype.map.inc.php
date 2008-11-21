@@ -13,7 +13,7 @@ $xpdo_meta_map['modContentType']= array (
     'mime_type' => NULL,
     'file_extensions' => NULL,
     'headers' => NULL,
-    'binary' => '0',
+    'binary' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -22,14 +22,14 @@ $xpdo_meta_map['modContentType']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'index' => 'unique',
     ),
     'description' => 
     array (
       'dbtype' => 'tinytext',
       'phptype' => 'string',
-      'null' => 'true',
+      'null' => true,
     ),
     'mime_type' => 
     array (
@@ -52,8 +52,8 @@ $xpdo_meta_map['modContentType']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

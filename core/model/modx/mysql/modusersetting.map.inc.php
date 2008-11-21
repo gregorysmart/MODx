@@ -8,7 +8,7 @@ $xpdo_meta_map['modUserSetting']= array (
   'table' => 'user_settings',
   'fields' => 
   array (
-    'user' => '0',
+    'user' => 0,
     'key' => '',
     'value' => NULL,
     'xtype' => 'textfield',
@@ -23,8 +23,8 @@ $xpdo_meta_map['modUserSetting']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'key' => 
@@ -32,7 +32,7 @@ $xpdo_meta_map['modUserSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'pk',
     ),
@@ -46,7 +46,7 @@ $xpdo_meta_map['modUserSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '75',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'textfield',
     ),
     'namespace' => 
@@ -54,7 +54,7 @@ $xpdo_meta_map['modUserSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '40',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'core',
     ),
     'area' => 
@@ -62,14 +62,14 @@ $xpdo_meta_map['modUserSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'editedon' => 
     array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
-      'null' => 'false',
+      'null' => false,
       'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
     ),
   ),

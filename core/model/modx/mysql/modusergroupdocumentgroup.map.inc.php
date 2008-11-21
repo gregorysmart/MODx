@@ -8,8 +8,8 @@ $xpdo_meta_map['modUserGroupDocumentGroup']= array (
   'table' => 'membergroup_access',
   'fields' => 
   array (
-    'membergroup' => '0',
-    'documentgroup' => '0',
+    'membergroup' => 0,
+    'documentgroup' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,16 +18,16 @@ $xpdo_meta_map['modUserGroupDocumentGroup']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'documentgroup' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

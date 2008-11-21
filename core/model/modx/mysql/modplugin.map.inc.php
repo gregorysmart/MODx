@@ -8,11 +8,11 @@ $xpdo_meta_map['modPlugin']= array (
   'table' => 'site_plugins',
   'fields' => 
   array (
-    'cache_type' => '0',
+    'cache_type' => 0,
     'plugincode' => '',
-    'locked' => '0',
+    'locked' => 0,
     'properties' => NULL,
-    'disabled' => '0',
+    'disabled' => 0,
     'moduleguid' => '',
   ),
   'fieldMeta' => 
@@ -22,14 +22,14 @@ $xpdo_meta_map['modPlugin']= array (
       'dbtype' => 'tinyint',
       'precision' => '1',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'plugincode' => 
     array (
       'dbtype' => 'mediumtext',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'locked' => 
@@ -38,15 +38,15 @@ $xpdo_meta_map['modPlugin']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'properties' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'array',
-      'null' => 'true',
+      'null' => true,
     ),
     'disabled' => 
     array (
@@ -54,8 +54,8 @@ $xpdo_meta_map['modPlugin']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'moduleguid' => 
@@ -63,7 +63,7 @@ $xpdo_meta_map['modPlugin']= array (
       'dbtype' => 'varchar',
       'precision' => '32',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'fk',
     ),

@@ -8,8 +8,8 @@ $xpdo_meta_map['modTemplateVarResource']= array (
   'table' => 'site_tmplvar_contentvalues',
   'fields' => 
   array (
-    'tmplvarid' => '0',
-    'contentid' => '0',
+    'tmplvarid' => 0,
+    'contentid' => 0,
     'value' => NULL,
   ),
   'fieldMeta' => 
@@ -19,8 +19,8 @@ $xpdo_meta_map['modTemplateVarResource']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'contentid' => 
@@ -28,15 +28,15 @@ $xpdo_meta_map['modTemplateVarResource']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'value' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
   ),
   'aggregates' => 

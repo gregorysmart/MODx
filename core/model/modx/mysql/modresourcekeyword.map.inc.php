@@ -8,8 +8,8 @@ $xpdo_meta_map['modResourceKeyword']= array (
   'table' => 'keyword_xref',
   'fields' => 
   array (
-    'content_id' => '0',
-    'keyword_id' => '0',
+    'content_id' => 0,
+    'keyword_id' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,8 +18,8 @@ $xpdo_meta_map['modResourceKeyword']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'keyword_id' => 
@@ -27,8 +27,8 @@ $xpdo_meta_map['modResourceKeyword']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
   ),

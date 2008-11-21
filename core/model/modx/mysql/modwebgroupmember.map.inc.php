@@ -8,8 +8,8 @@ $xpdo_meta_map['modWebGroupMember']= array (
   'table' => 'web_groups',
   'fields' => 
   array (
-    'webgroup' => '0',
-    'webuser' => '0',
+    'webgroup' => 0,
+    'webuser' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,16 +18,16 @@ $xpdo_meta_map['modWebGroupMember']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'webuser' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

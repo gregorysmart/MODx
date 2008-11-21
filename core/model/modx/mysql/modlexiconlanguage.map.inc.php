@@ -17,7 +17,7 @@ $xpdo_meta_map['modLexiconLanguage']= array (
       'dbtype' => 'varchar',
       'precision' => '20',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'pk',
     ),

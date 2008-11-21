@@ -8,7 +8,7 @@ $xpdo_meta_map['modManagerLog']= array (
   'table' => 'manager_log',
   'fields' => 
   array (
-    'user' => '0',
+    'user' => 0,
     'occurred' => '0000-00-00 00:00:00',
     'action' => '',
     'classKey' => '',
@@ -22,8 +22,8 @@ $xpdo_meta_map['modManagerLog']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'occurred' => 
     array (
@@ -36,7 +36,7 @@ $xpdo_meta_map['modManagerLog']= array (
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'classKey' => 
@@ -44,7 +44,7 @@ $xpdo_meta_map['modManagerLog']= array (
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'item' => 
@@ -52,7 +52,7 @@ $xpdo_meta_map['modManagerLog']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'integer',
-      'null' => 'false',
+      'null' => false,
       'default' => '0',
     ),
   ),

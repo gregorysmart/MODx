@@ -17,7 +17,7 @@ $xpdo_meta_map['modAccessResource']= array (
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'fk',
     ),

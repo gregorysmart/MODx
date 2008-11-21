@@ -10,7 +10,7 @@ $xpdo_meta_map['modLexiconEntry']= array (
   array (
     'name' => '',
     'value' => '',
-    'topic' => '1',
+    'topic' => 1,
     'namespace' => 'core',
     'language' => 'en',
     'createdon' => NULL,
@@ -23,14 +23,14 @@ $xpdo_meta_map['modLexiconEntry']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'value' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'topic' => 
@@ -39,15 +39,15 @@ $xpdo_meta_map['modLexiconEntry']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '1',
+      'null' => false,
+      'default' => 1,
     ),
     'namespace' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '40',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'core',
     ),
     'language' => 
@@ -55,7 +55,7 @@ $xpdo_meta_map['modLexiconEntry']= array (
       'dbtype' => 'varchar',
       'precision' => '20',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'en',
     ),
     'createdon' => 
@@ -67,7 +67,7 @@ $xpdo_meta_map['modLexiconEntry']= array (
     array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
-      'null' => 'false',
+      'null' => false,
       'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
     ),
   ),

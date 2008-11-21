@@ -8,8 +8,8 @@ $xpdo_meta_map['modResourceGroupResource']= array (
   'table' => 'document_groups',
   'fields' => 
   array (
-    'document_group' => '0',
-    'document' => '0',
+    'document_group' => 0,
+    'document' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,8 +18,8 @@ $xpdo_meta_map['modResourceGroupResource']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'document' => 
@@ -27,8 +27,8 @@ $xpdo_meta_map['modResourceGroupResource']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
   ),

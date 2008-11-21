@@ -270,7 +270,7 @@
         <field key="introtext" dbtype="text" phptype="string" index="fulltext" indexgrp="content_ft_idx" />
         <field key="content" dbtype="mediumtext" phptype="string" index="fulltext" indexgrp="content_ft_idx" />
         <field key="richtext" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" />
-        <field key="template" dbtype="int" precision="10" phptype="integer" null="false" default="1" index="index" />
+        <field key="template" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index" />
         <field key="menuindex" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="index" />
         <field key="searchable" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index" />
         <field key="cacheable" dbtype="tinyint" precision="1" attributes="unsigned" phptype="boolean" null="false" default="1" index="index" />

@@ -45,7 +45,7 @@ class modInstallSmarty extends Smarty {
 
         /* Set up configuration variables for Smarty. */
         $this->template_dir = MODX_SETUP_PATH . 'templates/';
-        $this->compile_dir  = MODX_SETUP_PATH . 'templates/_compiled/';
+        $this->compile_dir  = MODX_CORE_PATH . 'cache/' . (MODX_CONFIG_KEY == 'config' ? '' : MODX_CONFIG_KEY . '/') . 'setup/smarty/';
         $this->config_dir   = MODX_CORE_PATH . 'model/smarty/configs';
         $this->plugins_dir  = array(
             MODX_CORE_PATH . 'model/smarty/plugins',
@@ -56,6 +56,8 @@ class modInstallSmarty extends Smarty {
         foreach ($params as $paramKey => $paramValue) {
             $this->$paramKey= $paramValue;
         }
+
+        if (!is_dir($this->compile_dir) || !is_writable($this->compile_dir)) $this->writeTree($this->compile_dir, '0777');
 
         $this->assign('app_name','MODx');
 
@@ -74,5 +76,28 @@ class modInstallSmarty extends Smarty {
             $ret = parent::fetch($resource);
         }
         return $ret;
+    }
+
+    /**
+     * Recursively writes a directory tree of files to the filesystem
+     *
+     * @access public
+     * @param string $dirname The directory to write
+     * @return boolean Returns true if the directory was successfully written.
+     */
+    function writeTree($dirname) {
+        $written= false;
+        if (!empty ($dirname)) {
+            $dirname= strtr(trim($dirname), '\\', '/');
+            if ($dirname{strlen($dirname) - 1} == '/') $dirname = substr($dirname, 0, strlen($dirname) - 1);
+            if (is_dir($dirname) || (is_writable(dirname($dirname)) && mkdir($dirname))) {
+                $written= true;
+            } elseif (!$this->writeTree(dirname($dirname))) {
+                $written= false;
+            } else {
+                $written= mkdir($dirname);
+            }
+        }
+        return $written;
     }
 }

@@ -156,49 +156,53 @@ if (empty($_POST['unpub_date'])) {
     if ($_POST['unpub_date'] < $now) $_POST['published'] = 0;
 }
 
-$tmplvars = array();
-$c = $modx->newQuery('modTemplateVar');
-$c->select('DISTINCT modTemplateVar.*, modTemplateVar.default_text AS value');
-$c->innerJoin('modTemplateVarTemplate','modTemplateVarTemplate');
-$c->where(array(
-    'modTemplateVarTemplate.templateid' => $_POST['template'],
-));
-$c->sortby('modTemplateVar.rank');
-
-$tvs = $modx->getCollection('modTemplateVar',$c);
-
-foreach ($tvs as $tv) {
-	$tmplvar = '';
-	if ($tv->get('type') == 'url') {
-		$tmplvar = $_POST['tv'.$tv->get('id')];
-		if ($_POST['tv' . $row['name'] . '_prefix'] != '--') {
-			$tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
-			$tmplvar = $_POST['tv'.$tv->get('id').'_prefix'].$tmplvar;
-		}
-    } elseif ($tv->get('type') == 'file') {
-		$tmplvar = $_POST['tv'.$tv->get('id')];
-	} else {
-		if (is_array($_POST['tv'.$tv->get('id')])) {
-			/* handles checkboxes & multiple selects elements */
-			$feature_insert = array ();
-            $lst = $_POST['tv'.$tv->get('id')];
-			while (list($featureValue, $feature_item) = each($lst)) {
-            	$feature_insert[count($feature_insert)] = $feature_item;
-			}
-			$tmplvar = implode('||',$feature_insert);
-		} else {
-			$tmplvar = $_POST['tv'.$tv->get('id')];
-		}
-	}
-    /* save value if it was modified */
-	if (in_array($tv->get('id'), $_POST['variablesmodified'])) {
-		if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
-			$tmplvars[$tv->get('id')] = array (
-				$tv->get('id'),
-				$tmplvar,
-			);
-		} else $tmplvars[$tv->get('id')] = $tv->get('id');
+if ($_POST['template'] && ($template = $modx->getObject('modTemplate', $_POST['template']))) {
+    $tmplvars = array();
+    $c = $modx->newQuery('modTemplateVar');
+    $c->select('DISTINCT modTemplateVar.*, modTemplateVar.default_text AS value');
+    $c->innerJoin('modTemplateVarTemplate','modTemplateVarTemplate');
+    $c->where(array(
+        'modTemplateVarTemplate.templateid' => $_POST['template'],
+    ));
+    $c->sortby('modTemplateVar.rank');
+    
+    $tvs = $modx->getCollection('modTemplateVar',$c);
+    
+    foreach ($tvs as $tv) {
+        $tmplvar = '';
+        if ($tv->get('type') == 'url') {
+            $tmplvar = $_POST['tv'.$tv->get('id')];
+            if ($_POST['tv' . $row['name'] . '_prefix'] != '--') {
+                $tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
+                $tmplvar = $_POST['tv'.$tv->get('id').'_prefix'].$tmplvar;
+            }
+        } elseif ($tv->get('type') == 'file') {
+            $tmplvar = $_POST['tv'.$tv->get('id')];
+        } else {
+            if (is_array($_POST['tv'.$tv->get('id')])) {
+                /* handles checkboxes & multiple selects elements */
+                $feature_insert = array ();
+                $lst = $_POST['tv'.$tv->get('id')];
+                while (list($featureValue, $feature_item) = each($lst)) {
+                    $feature_insert[count($feature_insert)] = $feature_item;
+                }
+                $tmplvar = implode('||',$feature_insert);
+            } else {
+                $tmplvar = $_POST['tv'.$tv->get('id')];
+            }
+        }
+        /* save value if it was modified */
+        if (in_array($tv->get('id'), $_POST['variablesmodified'])) {
+            if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
+                $tmplvars[$tv->get('id')] = array (
+                    $tv->get('id'),
+                    $tmplvar,
+                );
+            } else $tmplvars[$tv->get('id')] = $tv->get('id');
+        }
     }
+} else {
+    $_POST['template'] = 0;
 }
 
 /* invoke OnBeforeDocFormSave event */

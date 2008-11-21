@@ -8,8 +8,8 @@ $xpdo_meta_map['modTemplateVarResourceGroup']= array (
   'table' => 'site_tmplvar_access',
   'fields' => 
   array (
-    'tmplvarid' => '0',
-    'documentgroup' => '0',
+    'tmplvarid' => 0,
+    'documentgroup' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,16 +18,16 @@ $xpdo_meta_map['modTemplateVarResourceGroup']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'documentgroup' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

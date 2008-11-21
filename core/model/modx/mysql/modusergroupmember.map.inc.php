@@ -8,9 +8,9 @@ $xpdo_meta_map['modUserGroupMember']= array (
   'table' => 'member_groups',
   'fields' => 
   array (
-    'user_group' => '0',
-    'member' => '0',
-    'role' => '1',
+    'user_group' => 0,
+    'member' => 0,
+    'role' => 1,
   ),
   'fieldMeta' => 
   array (
@@ -20,8 +20,8 @@ $xpdo_meta_map['modUserGroupMember']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'member' => 
     array (
@@ -29,8 +29,8 @@ $xpdo_meta_map['modUserGroupMember']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'role' => 
     array (
@@ -38,8 +38,8 @@ $xpdo_meta_map['modUserGroupMember']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '1',
+      'null' => false,
+      'default' => 1,
       'index' => 'index',
     ),
   ),

@@ -186,11 +186,18 @@ class modInstall {
             $errors = array ();
             $this->xpdo = $this->_modx($errors);
         } else if (!is_object($this->xpdo)) {
-            $this->xpdo = $this->_connect($this->config['database_type'] . ':host=' . $this->config['database_server'] . ';dbname=' . trim($this->config['dbase'], '`') . ';charset=' . $this->config['database_connection_charset'], $this->config['database_user'], $this->config['database_password'], $this->config['table_prefix']);
+            $this->xpdo = $this->_connect($this->config['database_type'] . ':host=' . $this->config['database_server'] . ';dbname=' . trim($this->config['dbase'], '`') . ';charset=' . $this->config['database_connection_charset'] . ';collation=' . $this->config['database_collation'], $this->config['database_user'], $this->config['database_password'], $this->config['table_prefix']);
             $this->xpdo->config['cache_path'] = MODX_CORE_PATH . 'cache/';
         }
         if (is_object($this->xpdo)) {
-            $this->xpdo->setLogTarget('HTML');
+            $this->xpdo->setDebug(E_ALL & ~E_STRICT);
+            $this->xpdo->setLogTarget(array(
+                'target' => 'FILE', 
+                'options' => array(
+                    'filename' => 'install.' . MODX_CONFIG_KEY . '.' . strftime('%Y-%m-%dT%H:%M:%S')
+                )
+            ));
+            $this->xpdo->setLogLevel(XPDO_LOG_LEVEL_WARN);
         }
         return $this->xpdo;
     }
@@ -288,6 +295,7 @@ class modInstall {
 
         /* get connection */
         $this->getConnection($mode);
+        $this->xpdo->setLogLevel(XPDO_LOG_LEVEL_ERROR);
 
         /* run appropriate database routines */
         switch ($mode) {
@@ -642,12 +650,20 @@ class modInstall {
                 XPDO_OPT_LOADER_CLASSES => array('modAccessibleObject')
             ),
             array (
-                PDO_ATTR_ERRMODE => PDO_ERRMODE_SILENT,
+                PDO_ATTR_ERRMODE => PDO_ERRMODE_WARNING,
                 PDO_ATTR_PERSISTENT => false,
                 PDO_MYSQL_ATTR_USE_BUFFERED_QUERY => true
             )
         );
         $xpdo->cachePath = MODX_CORE_PATH . 'cache/';
+        $xpdo->setDebug(E_ALL & ~E_STRICT);
+        $xpdo->setLogTarget(array(
+            'target' => 'FILE', 
+            'options' => array(
+                'filename' => 'install.' . MODX_CONFIG_KEY . '.' . strftime('%Y%m%dT%H%M%S') . '.log'
+            )
+        ));
+        $xpdo->setLogLevel(XPDO_LOG_LEVEL_ERROR);
         return $xpdo;
     }
 
@@ -668,7 +684,12 @@ class modInstall {
                 $errors[] = '<p>'.$this->lexicon['modx_err_instantiate'].'</p>';
             } else {
                 $modx->setDebug(E_ALL & ~E_STRICT);
-                $modx->setLogTarget('HTML');
+                $modx->setLogTarget(array(
+                    'target' => 'FILE', 
+                    'options' => array(
+                        'filename' => 'install.' . MODX_CONFIG_KEY . '.' . strftime('%Y%m%dT%H%M%S') . '.log'
+                    )
+                ));
 
                 /* try to initialize the mgr context */
                 $modx->initialize('mgr');

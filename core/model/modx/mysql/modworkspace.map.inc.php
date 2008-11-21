@@ -11,7 +11,7 @@ $xpdo_meta_map['modWorkspace']= array (
     'name' => '',
     'path' => '',
     'created' => NULL,
-    'active' => '0',
+    'active' => 0,
     'attributes' => NULL,
   ),
   'fieldMeta' => 
@@ -21,7 +21,7 @@ $xpdo_meta_map['modWorkspace']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'index',
     ),
@@ -30,7 +30,7 @@ $xpdo_meta_map['modWorkspace']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),
@@ -38,7 +38,7 @@ $xpdo_meta_map['modWorkspace']= array (
     array (
       'dbtype' => 'datetime',
       'phptype' => 'timestamp',
-      'null' => 'false',
+      'null' => false,
     ),
     'active' => 
     array (
@@ -46,8 +46,8 @@ $xpdo_meta_map['modWorkspace']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'attributes' => 

@@ -96,12 +96,11 @@ class modManagerRequest extends modRequest {
                 }
             }
             $_SESSION['ip']= $ip;
-            $itemid= isset ($_REQUEST[$this->modx->config['request_param_id']]) ? $_REQUEST[$this->modx->config['request_param_id']] : '';
+            $itemid= isset ($_REQUEST[$this->modx->config['request_param_id']]) ? $_REQUEST[$this->modx->config['request_param_id']] : 0;
             $lasthittime= time();
             $a= isset ($_REQUEST['a']) ? $_REQUEST['a'] : '';
             if ($a != 1) {
-                if (!intval($itemid))
-                    $itemid= 'NULL';
+                $itemid= intval($itemid);
                 $activeUserTbl= $this->modx->getTableName('modActiveUser');
                 $sql= "REPLACE INTO {$activeUserTbl} (internalKey, username, lasthit, action, id, ip) values(" . $this->modx->getLoginUserID('mgr') . ", '{$_SESSION['mgrShortname']}', '{$lasthittime}', '{$a}', {$itemid}, '{$ip}')";
                 if (!$rs= $this->modx->exec($sql)) {

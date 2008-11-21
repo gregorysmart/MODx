@@ -17,7 +17,7 @@ $xpdo_meta_map['modKeyword']= array (
       'dbtype' => 'varchar',
       'precision' => '40',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),

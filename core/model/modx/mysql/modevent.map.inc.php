@@ -9,7 +9,7 @@ $xpdo_meta_map['modEvent']= array (
   'fields' => 
   array (
     'name' => '',
-    'service' => '0',
+    'service' => 0,
     'groupname' => '',
   ),
   'fieldMeta' => 
@@ -19,7 +19,7 @@ $xpdo_meta_map['modEvent']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),
@@ -29,15 +29,15 @@ $xpdo_meta_map['modEvent']= array (
       'precision' => '4',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'groupname' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '20',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
   ),

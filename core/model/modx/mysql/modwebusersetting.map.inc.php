@@ -8,7 +8,7 @@ $xpdo_meta_map['modWebUserSetting']= array (
   'table' => 'web_user_settings',
   'fields' => 
   array (
-    'webuser' => '0',
+    'webuser' => 0,
     'setting_name' => '',
     'setting_value' => '',
   ),
@@ -19,8 +19,8 @@ $xpdo_meta_map['modWebUserSetting']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'setting_name' => 
@@ -28,7 +28,7 @@ $xpdo_meta_map['modWebUserSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'pk',
     ),
@@ -36,7 +36,7 @@ $xpdo_meta_map['modWebUserSetting']= array (
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
   ),

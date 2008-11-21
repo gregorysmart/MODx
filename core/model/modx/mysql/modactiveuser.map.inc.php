@@ -8,9 +8,9 @@ $xpdo_meta_map['modActiveUser']= array (
   'table' => 'active_users',
   'fields' => 
   array (
-    'internalKey' => '0',
+    'internalKey' => 0,
     'username' => '',
-    'lasthit' => '0',
+    'lasthit' => 0,
     'id' => NULL,
     'action' => '',
     'ip' => '',
@@ -22,8 +22,8 @@ $xpdo_meta_map['modActiveUser']= array (
       'dbtype' => 'int',
       'precision' => '9',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'username' => 
@@ -31,7 +31,7 @@ $xpdo_meta_map['modActiveUser']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'lasthit' => 
@@ -39,22 +39,22 @@ $xpdo_meta_map['modActiveUser']= array (
       'dbtype' => 'int',
       'precision' => '20',
       'phptype' => 'timestamp',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'id' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'true',
+      'null' => true,
     ),
     'action' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'ip' => 
@@ -62,7 +62,7 @@ $xpdo_meta_map['modActiveUser']= array (
       'dbtype' => 'varchar',
       'precision' => '20',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
   ),

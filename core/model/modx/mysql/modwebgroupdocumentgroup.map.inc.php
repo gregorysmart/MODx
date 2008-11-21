@@ -8,8 +8,8 @@ $xpdo_meta_map['modWebGroupDocumentGroup']= array (
   'table' => 'webgroup_access',
   'fields' => 
   array (
-    'webgroup' => '0',
-    'documentgroup' => '0',
+    'webgroup' => 0,
+    'documentgroup' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,16 +18,16 @@ $xpdo_meta_map['modWebGroupDocumentGroup']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'documentgroup' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

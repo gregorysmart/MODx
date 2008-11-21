@@ -10,7 +10,7 @@ $xpdo_meta_map['modAccessPolicy']= array (
   array (
     'name' => NULL,
     'description' => NULL,
-    'parent' => '0',
+    'parent' => 0,
     'class' => '',
     'data' => '{}',
   ),
@@ -21,7 +21,7 @@ $xpdo_meta_map['modAccessPolicy']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'index' => 'unique',
     ),
     'description' => 
@@ -35,8 +35,8 @@ $xpdo_meta_map['modAccessPolicy']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'class' => 
@@ -44,7 +44,7 @@ $xpdo_meta_map['modAccessPolicy']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'index',
     ),

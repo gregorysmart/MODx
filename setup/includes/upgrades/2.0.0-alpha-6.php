@@ -56,6 +56,10 @@ $sql = "ALTER TABLE {$table} ADD INDEX `context_key` (`context_key`)";
 $description = 'Added new index on `context_key`.';
 $this->processResults($class, $description, $sql);
 
+$sql = "ALTER TABLE {$table} CHANGE `template` `template` INT( 10 ) NOT NULL DEFAULT '0'";
+$description = 'Added new index on `context_key`.';
+$this->processResults($class, $description, $sql);
+
 $class = 'modPlugin';
 $table = $this->install->xpdo->getTableName($class);
 $description = 'Added index on `locked` missing in early Revolution releases';

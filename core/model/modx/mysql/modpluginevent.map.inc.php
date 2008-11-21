@@ -8,9 +8,9 @@ $xpdo_meta_map['modPluginEvent']= array (
   'table' => 'site_plugin_events',
   'fields' => 
   array (
-    'pluginid' => '0',
-    'evtid' => '0',
-    'priority' => '0',
+    'pluginid' => 0,
+    'evtid' => 0,
+    'priority' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -19,8 +19,8 @@ $xpdo_meta_map['modPluginEvent']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'evtid' => 
@@ -28,8 +28,8 @@ $xpdo_meta_map['modPluginEvent']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'priority' => 
@@ -37,8 +37,8 @@ $xpdo_meta_map['modPluginEvent']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
   ),

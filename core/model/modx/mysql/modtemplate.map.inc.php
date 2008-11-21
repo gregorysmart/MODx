@@ -10,12 +10,12 @@ $xpdo_meta_map['modTemplate']= array (
   array (
     'templatename' => '',
     'description' => 'Template',
-    'editor_type' => '0',
-    'category' => '0',
+    'editor_type' => 0,
+    'category' => 0,
     'icon' => '',
-    'template_type' => '0',
+    'template_type' => 0,
     'content' => '',
-    'locked' => '0',
+    'locked' => 0,
     'properties' => NULL,
   ),
   'fieldMeta' => 
@@ -25,7 +25,7 @@ $xpdo_meta_map['modTemplate']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'unique',
     ),
@@ -34,7 +34,7 @@ $xpdo_meta_map['modTemplate']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'Template',
     ),
     'editor_type' => 
@@ -42,16 +42,16 @@ $xpdo_meta_map['modTemplate']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'category' => 
     array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'fk',
     ),
     'icon' => 
@@ -59,7 +59,7 @@ $xpdo_meta_map['modTemplate']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'template_type' => 
@@ -67,14 +67,14 @@ $xpdo_meta_map['modTemplate']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'content' => 
     array (
       'dbtype' => 'mediumtext',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'locked' => 
@@ -83,15 +83,15 @@ $xpdo_meta_map['modTemplate']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'boolean',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'properties' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'array',
-      'null' => 'true',
+      'null' => true,
     ),
   ),
   'aggregates' => 

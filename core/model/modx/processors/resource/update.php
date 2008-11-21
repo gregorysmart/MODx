@@ -140,7 +140,7 @@ if ($modx->error->hasError()) return $modx->error->failure();
 /* publish and unpublish dates */
 $now = time();
 if (empty($_POST['pub_date'])) {
-    $_POST['pub_date'] = null;
+    $_POST['pub_date'] = 0;
 } else {
     $_POST['pub_date'] = strtotime($_POST['pub_date']);
     if ($_POST['pub_date'] < $now) $_POST['published'] = 1;
@@ -148,7 +148,7 @@ if (empty($_POST['pub_date'])) {
 }
 
 if (empty($_POST['unpub_date'])) {
-    $_POST['unpub_date'] = null;
+    $_POST['unpub_date'] = 0;
 } else {
     $_POST['unpub_date'] = strtotime($_POST['unpub_date']);
     if ($_POST['unpub_date'] < $now) {
@@ -212,8 +212,8 @@ foreach ($tvs as $tv) {
 
 /* Deny publishing if not permitted */
 if (!$modx->hasPermission('publish_document')) {
-    $_POST['pub_date'] = null;
-    $_POST['unpub_date'] = null;
+    $_POST['pub_date'] = 0;
+    $_POST['unpub_date'] = 0;
     $_POST['published'] = 0;
 }
 
@@ -226,7 +226,7 @@ $oldparent = $modx->getObject('modResource',$resource->get('parent'));
 if ($resource->get('id') == $modx->config['site_start'] && $_POST['published'] == 0) {
     return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart'));
 }
-if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != null || $_POST['unpub_date'] != null)) {
+if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != 0 || $_POST['unpub_date'] != 0)) {
     return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart_dates'));
 }
 

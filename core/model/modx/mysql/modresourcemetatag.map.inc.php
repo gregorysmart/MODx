@@ -8,8 +8,8 @@ $xpdo_meta_map['modResourceMetatag']= array (
   'table' => 'site_content_metatags',
   'fields' => 
   array (
-    'content_id' => '0',
-    'metatag_id' => '0',
+    'content_id' => 0,
+    'metatag_id' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -18,8 +18,8 @@ $xpdo_meta_map['modResourceMetatag']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
     'metatag_id' => 
@@ -27,8 +27,8 @@ $xpdo_meta_map['modResourceMetatag']= array (
       'dbtype' => 'int',
       'precision' => '11',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'pk',
     ),
   ),

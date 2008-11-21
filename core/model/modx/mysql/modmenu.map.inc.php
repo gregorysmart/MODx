@@ -8,11 +8,11 @@ $xpdo_meta_map['modMenu']= array (
   'table' => 'menus',
   'fields' => 
   array (
-    'parent' => '0',
-    'action' => '0',
+    'parent' => 0,
+    'action' => 0,
     'text' => NULL,
     'icon' => NULL,
-    'menuindex' => '0',
+    'menuindex' => 0,
     'params' => NULL,
     'handler' => NULL,
   ),
@@ -24,8 +24,8 @@ $xpdo_meta_map['modMenu']= array (
       'precision' => '11',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'action' => 
     array (
@@ -33,22 +33,22 @@ $xpdo_meta_map['modMenu']= array (
       'precision' => '11',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'text' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
     'icon' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
     'menuindex' => 
     array (
@@ -56,20 +56,20 @@ $xpdo_meta_map['modMenu']= array (
       'precision' => '11',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'params' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
     'handler' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
   ),
   'aggregates' => 

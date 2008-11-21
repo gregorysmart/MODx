@@ -22,7 +22,7 @@ $xpdo_meta_map['modSystemSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '50',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
       'index' => 'pk',
     ),
@@ -30,7 +30,7 @@ $xpdo_meta_map['modSystemSetting']= array (
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'xtype' => 
@@ -38,7 +38,7 @@ $xpdo_meta_map['modSystemSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '75',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'textfield',
     ),
     'namespace' => 
@@ -46,7 +46,7 @@ $xpdo_meta_map['modSystemSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '40',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'core',
     ),
     'area' => 
@@ -54,14 +54,14 @@ $xpdo_meta_map['modSystemSetting']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'editedon' => 
     array (
       'dbtype' => 'timestamp',
       'phptype' => 'timestamp',
-      'null' => 'false',
+      'null' => false,
       'attributes' => 'ON UPDATE CURRENT_TIMESTAMP',
     ),
   ),

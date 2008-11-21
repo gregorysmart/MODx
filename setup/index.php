@@ -29,11 +29,11 @@
 @ ini_set('magic_quotes_runtime', 0);
 @ ini_set('magic_quotes_sybase', 0);
 
-/* start session */
-session_start();
-
 /* set error reporting */
 error_reporting(E_ALL & ~E_NOTICE);
+
+/* start session */
+session_start();
 
 /* check for compatible PHP version */
 define('MODX_SETUP_PHP_VERSION', phpversion());
@@ -61,23 +61,26 @@ define('MODX_SETUP_PATH', $setupPath);
 $installPath= strtr(realpath(dirname(dirname(__FILE__))), '\\', '/') . '/';
 define('MODX_INSTALL_PATH', $installPath);
 
-if (version_compare(MODX_SETUP_PHP_VERSION, '5.1') < 0 && !extension_loaded('mysql')) {
-    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the mysql extension when using PHP versions before 5.1 and it does not appear to be loaded.</p></body></html>');
-}
-if (version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0 && extension_loaded('PDO') && !extension_loaded('pdo_mysql')) {
-    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the pdo_mysql driver when PDO is enabled and it does not appear to be loaded.</p></body></html>');
-}
 if (!include(MODX_SETUP_PATH . 'includes/config.core.php')) {
     die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all of the setup/ files; your setup/includes/config.core.php file is missing.</p></body></html>');
+}
+if ((defined('XPDO_MODE') && XPDO_MODE == XPDO_MODE_EMULATED) || (version_compare(MODX_SETUP_PHP_VERSION, '5.1') < 0) && !extension_loaded('mysql')) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the mysql extension when using PHP without native PDO and it does not appear to be loaded.</p></body></html>');
+}
+if ((defined('XPDO_MODE') && XPDO_MODE == XPDO_MODE_NATIVE) || (version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0) && !extension_loaded('pdo')) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the PDO extension when native PDO is being used and it does not appear to be loaded.</p></body></html>');
+}
+if ((defined('XPDO_MODE') && XPDO_MODE == XPDO_MODE_NATIVE) || (version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0) && extension_loaded('pdo') && !extension_loaded('pdo_mysql')) {
+    die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the pdo_mysql driver when native PDO is being used and it does not appear to be loaded.</p></body></html>');
 }
 if (!include(MODX_SETUP_PATH . 'includes/modinstall.class.php')) {
     die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all of the setup/ files; your setup/includes/modinstall.class.php file is missing.</p></body></html>');
 }
-if (!is_dir(MODX_SETUP_PATH . 'templates/_compiled') || !is_writable(MODX_SETUP_PATH . 'templates/_compiled')) {
-    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure your setup/templates/_compiled directory exists and is writable by the PHP process.</p></body></html>');
-}
 if (!file_exists(MODX_CORE_PATH) || !is_dir(MODX_CORE_PATH)) {
     die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have specified a valid MODX_CORE_PATH in your setup/includes/config.core.php file; this must point to a working MODx core.</p></body></html>');
+}
+if (!file_exists(MODX_CORE_PATH . 'cache/') || !is_dir(MODX_CORE_PATH . 'cache/') || !is_writable(MODX_CORE_PATH . 'cache/')) {
+    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure your MODX_CORE_PATH/cache directory exists and is writable by the PHP process.</p></body></html>');
 }
 
 $modInstall = new modInstall();

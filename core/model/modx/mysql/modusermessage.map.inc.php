@@ -11,11 +11,11 @@ $xpdo_meta_map['modUserMessage']= array (
     'type' => '',
     'subject' => '',
     'message' => '',
-    'sender' => '0',
-    'recipient' => '0',
-    'private' => '0',
+    'sender' => 0,
+    'recipient' => 0,
+    'private' => 0,
     'date_sent' => '0000-00-00 00:00:00',
-    'read' => '0',
+    'read' => 0,
   ),
   'fieldMeta' => 
   array (
@@ -24,7 +24,7 @@ $xpdo_meta_map['modUserMessage']= array (
       'dbtype' => 'varchar',
       'precision' => '15',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'subject' => 
@@ -32,14 +32,14 @@ $xpdo_meta_map['modUserMessage']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'message' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => '',
     ),
     'sender' => 
@@ -47,30 +47,30 @@ $xpdo_meta_map['modUserMessage']= array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'recipient' => 
     array (
       'dbtype' => 'int',
       'precision' => '10',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'private' => 
     array (
       'dbtype' => 'tinyint',
       'precision' => '4',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
     'date_sent' => 
     array (
       'dbtype' => 'datetime',
       'phptype' => 'datetime',
-      'null' => 'false',
+      'null' => false,
       'default' => '0000-00-00 00:00:00',
     ),
     'read' => 
@@ -78,8 +78,8 @@ $xpdo_meta_map['modUserMessage']= array (
       'dbtype' => 'tinyint',
       'precision' => '1',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
     ),
   ),
   'aggregates' => 

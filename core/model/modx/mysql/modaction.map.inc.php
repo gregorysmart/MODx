@@ -9,9 +9,9 @@ $xpdo_meta_map['modAction']= array (
   'fields' => 
   array (
     'context_key' => 'mgr',
-    'parent' => '0',
+    'parent' => 0,
     'controller' => NULL,
-    'haslayout' => '1',
+    'haslayout' => 1,
     'lang_topics' => NULL,
     'assets' => NULL,
   ),
@@ -22,7 +22,7 @@ $xpdo_meta_map['modAction']= array (
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
       'default' => 'mgr',
     ),
     'parent' => 
@@ -31,8 +31,8 @@ $xpdo_meta_map['modAction']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '0',
+      'null' => false,
+      'default' => 0,
       'index' => 'index',
     ),
     'controller' => 
@@ -40,7 +40,7 @@ $xpdo_meta_map['modAction']= array (
       'dbtype' => 'varchar',
       'precision' => '255',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
     'haslayout' => 
     array (
@@ -48,20 +48,20 @@ $xpdo_meta_map['modAction']= array (
       'precision' => '1',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
-      'default' => '1',
+      'null' => false,
+      'default' => 1,
     ),
     'lang_topics' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
     'assets' => 
     array (
       'dbtype' => 'text',
       'phptype' => 'string',
-      'null' => 'false',
+      'null' => false,
     ),
   ),
   'aggregates' => 

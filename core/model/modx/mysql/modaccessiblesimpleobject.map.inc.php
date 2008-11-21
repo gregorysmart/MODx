@@ -17,7 +17,7 @@ $xpdo_meta_map['modAccessibleSimpleObject']= array (
       'precision' => '10',
       'attributes' => 'unsigned',
       'phptype' => 'integer',
-      'null' => 'false',
+      'null' => false,
       'index' => 'pk',
       'generated' => 'native',
     ),
