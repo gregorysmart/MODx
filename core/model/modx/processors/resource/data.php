@@ -53,7 +53,7 @@ if ($resource->EditedBy) {
 }
 
 /* template */
-$ra['template'] = $resource->modTemplate->get('templatename');
+$ra['template'] = $resource->modTemplate ? $resource->modTemplate->get('templatename') : '-';
 
 /* source */
 $buffer = '';
