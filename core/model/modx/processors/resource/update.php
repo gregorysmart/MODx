@@ -212,8 +212,8 @@ foreach ($tvs as $tv) {
 
 /* Deny publishing if not permitted */
 if (!$modx->hasPermission('publish_document')) {
-    $_POST['pub_date'] = 0;
-    $_POST['unpub_date'] = 0;
+    $_POST['pub_date'] = null;
+    $_POST['unpub_date'] = null;
     $_POST['published'] = 0;
 }
 
@@ -224,10 +224,10 @@ $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 $oldparent = $modx->getObject('modResource',$resource->get('parent'));
 
 if ($resource->get('id') == $modx->config['site_start'] && $_POST['published'] == 0) {
-    return $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart'));
+    return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart'));
 }
-if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != '0' || $_POST['unpub_date'] != '0')) {
-    return $modx->error->failure($modx->lexicon('document_err_unpublish_sitestart_dates'));
+if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != null || $_POST['unpub_date'] != null)) {
+    return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart_dates'));
 }
 
 $count_children = $modx->getCount('modResource',array('parent' => $resource->get('id')));
