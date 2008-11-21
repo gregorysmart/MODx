@@ -44,7 +44,7 @@ MODx.page.ImportHTML = function(config) {
         ,components: [{
             xtype: 'tree-resource-simple'
             ,title: _('resources')
-            ,url: MODx.config.connectors_url+'resource/document.php'
+            ,url: MODx.config.connectors_url+'resource/index.php'
             ,el: 'modx_resource_tree'
             ,id: 'ih_resource_tree'
             ,tb_id: 'modx_resource_tree_tb'

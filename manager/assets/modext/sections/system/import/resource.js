@@ -63,7 +63,7 @@ MODx.page.ImportResource = function(config) {
             ,title: _('resources')
             ,id: 'import_tree'
             ,el: 'import_resource_tree'
-            ,url: MODx.config.connectors_url+'resource/document.php'
+            ,url: MODx.config.connectors_url+'resource/index.php'
             ,enableDrop: false
             ,rootVisible: false
         }]
