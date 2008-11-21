@@ -139,7 +139,7 @@ if ($modx->error->hasError()) return $modx->error->failure();
 /* publish and unpublish dates */
 $now = time();
 if (empty($_POST['pub_date'])) {
-    $_POST['pub_date'] = 0;
+    $_POST['pub_date'] = null;
 } else {
     $_POST['pub_date'] = strtotime($_POST['pub_date']);
     if ($_POST['pub_date'] < $now) $_POST['published'] = 1;
@@ -147,14 +147,13 @@ if (empty($_POST['pub_date'])) {
 }
 
 if (empty($_POST['unpub_date'])) {
-    $_POST['unpub_date'] = 0;
+    $_POST['unpub_date'] = null;
 } else {
     $_POST['unpub_date'] = strtotime($_POST['unpub_date']);
     if ($_POST['unpub_date'] < $now) {
         $_POST['published'] = 0;
     }
 }
-
 
 $tmplvars = array ();
 

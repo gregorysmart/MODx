@@ -50,7 +50,11 @@ if ($modx->config['use_editor'] == 1) {
 
 
 $ra = $resource->toArray();
-$ra['pub_date'] = $ra['pub_date'] != '0' ? strftime('%Y-%m-%d',$ra['pub_date']) : '';
-$ra['unpub_date'] = $ra['unpub_date'] != '0' ? strftime('%Y-%m-%d',$ra['unpub_date']) : '';
+if ($ra['pub_date'] != '0' && $ra['pub_date'] != '' && $ra['pub_date'] != '0000-00-00 00:00:00') {
+    $ra['pub_date'] = strftime('%Y-%m-%d',strtotime($ra['pub_date']));
+} else $ra['pub_date'] = '';
+if ($ra['unpub_date'] != '0' && $ra['unpub_date'] != '' && $ra['unpub_date'] != '0000-00-00 00:00:00') {
+    $ra['unpub_date'] = strftime('%Y-%m-%d',strtotime($ra['unpub_date']));
+} else $ra['unpub_date'] = '';
 
 return $modx->error->success('',$ra);
