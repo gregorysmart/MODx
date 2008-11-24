@@ -40,6 +40,10 @@ class modConnectorResponse extends modResponse {
         if (empty($options['action'])) {
             $this->body = $this->modx->error->failure($modx->lexicon('action_err_ns'));
         } else {
+            /* prevent browsing of subdirectories for security */
+            $options['action'] = str_replace('../','',$options['action']);
+
+            /* find the appropriate processor */
             $file = $this->_directory.str_replace('\\', '/', $options['location'] . '/' . $options['action']).'.php';
 
             /* verify processor exists */
