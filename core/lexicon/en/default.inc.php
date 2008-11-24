@@ -617,4 +617,4 @@ $_lang['xtype'] = 'Field Type';
 $_lang['xtype_desc'] = 'The field type of the setting. This can be: textfield, textarea, or boolean.';
 $_lang['yes'] = 'Yes';
 $_lang['yesno'] = 'Yes/No';
-$_lang['you_got_mail'] = 'You got mail';
+$_lang['you_got_mail'] = 'You have mail';
