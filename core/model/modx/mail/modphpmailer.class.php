@@ -5,7 +5,7 @@
  * @subpackage mail
  */
 
-require_once(MODX_CORE_PATH . 'model/modx/mail/modmail.class.php');
+require_once MODX_CORE_PATH . 'model/modx/mail/modmail.class.php';
 
 /**
  * PHPMailer implementation of the modMail service.
@@ -24,7 +24,7 @@ class modPHPMailer extends modMail {
     /** @ignore */
     function __construct(& $modx, $attributes= array()) {
         parent :: __construct($modx, $attributes);
-        require_once(MODX_CORE_PATH . 'model/modx/mail/phpmailer/class.phpmailer.php');
+        require_once MODX_CORE_PATH . 'model/modx/mail/phpmailer/class.phpmailer.php';
         $this->_getMailer();
     }
     /**#@-*/
@@ -113,11 +113,16 @@ class modPHPMailer extends modMail {
                 $this->mailer->Subject= $this->attributes[$key];
                 break;
             default :
-                $this->modx->log(MODX_LOG_LEVEL_WARN, "{$key} is not a valid PHPMailer attribute and is being ignored by the implementation.");
+                $this->modx->log(MODX_LOG_LEVEL_WARN, $this->modx->lexicon('mail_err_attr_nv',array('attr' => $key)));
                 break;
         }
     }
 
+    /**
+     * Adds an address to the mailer
+     *
+     * {@inheritDoc}
+     */
     function address($type, $email, $name= '') {
         $set= false;
         if ($email) {
@@ -140,13 +145,18 @@ class modPHPMailer extends modMail {
                 }
             }
         } elseif ($email === null) {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR, "modPHPMailer does not support unsetting specific addresses. Use reset() to clear all recipients and add back the ones you want to send to.");
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, $this->modx->lexicon('mail_err_unset_spec'));
         } else {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR, "You must provide an email address to send to.");
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, $this->modx->lexicon('mail_err_address_ns'));
         }
         return $set;
     }
 
+    /**
+     * Adds a custom header to the mailer
+     *
+     * {@inheritDoc}
+     */
     function header($header) {
         $set= parent :: header($header);
         if ($set) {
@@ -200,30 +210,30 @@ class modPHPMailer extends modMail {
         }
         return $success;
     }
-    
+
     /**
      * Attaches a file to the mailer.
-     * 
+     *
      * {@inheritDoc}
      */
     function attach($file) {
         parent :: attach($file);
         $this->mailer->AddAttachment($file);
     }
-    
+
     /**
      * Clears all existing attachments.
-     * 
+     *
      * {@inheritDoc}
      */
     function clearAttachments() {
         parent :: clearAttachments();
         $this->mailer->ClearAttachments();
     }
-    
+
     /**
      * Sets email to HTML or text-only.
-     * 
+     *
      * @access public
      * @param boolean $toggle True to set to HTML.
      */
@@ -231,4 +241,3 @@ class modPHPMailer extends modMail {
         $this->mailer->IsHTML($toggle);
     }
 }
-?>

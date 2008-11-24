@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -82,6 +82,10 @@ class modMail {
      * @var object
      */
     var $mailer= null;
+    /**
+     * A collection of all the current headers for the object.
+     * @var array
+     */
     var $headers= array();
     /**
      * An array of address types: to, cc, bcc, reply-to
@@ -100,7 +104,7 @@ class modMail {
     var $files= array();
 
     /**#@+
-     * Constructs a new instance of the modPHPMailer class.
+     * Constructs a new instance of the modMail class.
      *
      * {@inheritdoc}
      */
@@ -110,6 +114,10 @@ class modMail {
     /** @ignore */
     function __construct(& $modx, $attributes= array()) {
         $this->modx= $modx;
+        if (!$this->modx->lexicon) {
+            $this->modx->getService('lexicon','modLexicon');
+        }
+        $this->modx->lexicon->load('mail');
         if (is_array($attributes)) {
             $this->attributes= $attributes;
         }
@@ -119,6 +127,7 @@ class modMail {
     /**
      * Gets a reference to an attribute of the mail object.
      *
+     * @access public
      * @param string $key The attribute key.
      * @return mixed A reference to the attribute, or null if no attribute value is set for the key.
      */
@@ -139,6 +148,7 @@ class modMail {
      * set in $this->attributes}
      *
      * @abstract
+     * @access public
      * @param string $key The key of the attribute to set.
      * @param mixed $value The value of the attribute.
      */
@@ -149,6 +159,7 @@ class modMail {
     /**
      * Add a new recipient email address to one of the valid address type buckets.
      *
+     * @access public
      * @param string $type The address type to add; to, cc, bcc, or reply-to.
      * @param string $email The email address.
      * @param string $name An optional name for the addressee.
@@ -169,6 +180,13 @@ class modMail {
         return $set;
     }
 
+    /**
+     * Adds a header to the mailer
+     *
+     * @access public
+     * @param string $header The HTTP header to send.
+     * @return boolean True if the header is valid and is set.
+     */
     function header($header) {
         $set= false;
         $parsed= explode(':', $header, 2);
@@ -185,6 +203,7 @@ class modMail {
      * {@internal You should implement the rest of this method in a derivative class.}
      *
      * @abstract
+     * @access public
      * @param array $attributes Attributes to override any existing attributes before sending.
      * @return boolean Indicates if the email was sent successfully.
      */
@@ -200,6 +219,7 @@ class modMail {
     /**
      * Reset the mail service, clearing addresses and attributes.
      *
+     * @access public
      * @param array $attributes An optional array of attributes to apply after reset.
      */
     function reset($attributes= null) {
@@ -230,27 +250,26 @@ class modMail {
      * @return boolean Indicates if the mailer class was instantiated successfully.
      */
     function _getMailer() {
-        $this->modx->log(XPDO_LOG_LEVEL_ERROR, 'Attempt to call abstract function _getMailer() in modMail class. You must implement this function in a derivative of modMail.');
+        $this->modx->log(XPDO_LOG_LEVEL_ERROR, $this->modx->lexicon('mail_err_derive_getmailer'));
         return false;
     }
-    
+
     /**
      * Attach a file to the attachments queue.
-     * 
+     *
      * @access public
      * @param string $file The absolute path to the file
      */
     function attach($file) {
         array_push($this->files,$file);
     }
-    
+
     /**
      * Clear all existing attachments.
-     * 
+     *
      * @access public
      */
     function clearAttachments() {
         $this->files = array();
     }
 }
-?>
