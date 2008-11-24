@@ -192,7 +192,7 @@ class modInstall {
         if (is_object($this->xpdo)) {
             $this->xpdo->setDebug(E_ALL & ~E_STRICT);
             $this->xpdo->setLogTarget(array(
-                'target' => 'FILE', 
+                'target' => 'FILE',
                 'options' => array(
                     'filename' => 'install.' . MODX_CONFIG_KEY . '.' . strftime('%Y-%m-%dT%H:%M:%S')
                 )
@@ -470,13 +470,38 @@ class modInstall {
     }
 
     /**
+     * Cleans up after install.
      *
+     * TODO: implement this function to cleanup any temporary files
      * @param array $options
      */
     function cleanup($options = array ()) {
-        /*
-         * TODO: implement this function to cleanup any temporary files
-         */
+        $errors = array();
+        return $errors;
+    }
+
+    /**
+     * Removes the setup directory
+     *
+     * @access publics
+     */
+    function removeSetupDirectory($options = array()) {
+        $errors = array();
+
+        $modx = $this->_modx($errors);
+        if ($modx) {
+            $cacheManager = $modx->getCacheManager();
+            if ($cacheManager) {
+                if (!$cacheManager->deleteTree($modx->config['base_path'].'setup/',true,false,false)) {
+                    $modx->log(MODX_LOG_LEVEL_ERROR,'An error occurred while trying to remove the setup directory.');
+                }
+            } else {
+                $modx->log(MODX_LOG_LEVEL_ERROR,'MODx\'s Cache Manager could not be loaded.');
+            }
+        } else {
+            $modx->log(MODX_LOG_LEVEL_ERROR,'The MODx object could not be loaded.');
+        }
+        return $errors;
     }
 
     /**
@@ -658,7 +683,7 @@ class modInstall {
         $xpdo->cachePath = MODX_CORE_PATH . 'cache/';
         $xpdo->setDebug(E_ALL & ~E_STRICT);
         $xpdo->setLogTarget(array(
-            'target' => 'FILE', 
+            'target' => 'FILE',
             'options' => array(
                 'filename' => 'install.' . MODX_CONFIG_KEY . '.' . strftime('%Y%m%dT%H%M%S') . '.log'
             )
@@ -685,7 +710,7 @@ class modInstall {
             } else {
                 $modx->setDebug(E_ALL & ~E_STRICT);
                 $modx->setLogTarget(array(
-                    'target' => 'FILE', 
+                    'target' => 'FILE',
                     'options' => array(
                         'filename' => 'install.' . MODX_CONFIG_KEY . '.' . strftime('%Y%m%dT%H%M%S') . '.log'
                     )
