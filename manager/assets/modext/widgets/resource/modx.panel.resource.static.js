@@ -27,7 +27,7 @@ MODx.panel.Static = function(config) {
                 ,labelWidth: 150
             }
             ,items: [{
-                title: _('document_setting')
+                title: _('resource_settings')
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                     html: '<h2>'+_('general_settings')+'</h2>'
@@ -37,8 +37,8 @@ MODx.panel.Static = function(config) {
                     ,value: config.resource
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_title')
-                    ,description: _('document_title_help')
+                    ,fieldLabel: _('resource_pagetitle')
+                    ,description: _('resource_pagetitle_help')
                     ,name: 'pagetitle'
                     ,width: 300
                     ,maxLength: 255
@@ -46,39 +46,39 @@ MODx.panel.Static = function(config) {
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('long_title')
-                    ,description: _('document_long_title_help')
+                    ,fieldLabel: _('resource_longtitle')
+                    ,description: _('resource_longtitle_help')
                     ,name: 'longtitle'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_description')
-                    ,description: _('document_description_help')
+                    ,fieldLabel: _('resource_description')
+                    ,description: _('resource_description_help')
                     ,name: 'description'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_alias')
-                    ,description: _('document_alias_help')
+                    ,fieldLabel: _('resource_alias')
+                    ,description: _('resource_alias_help')
                     ,name: 'alias'
                     ,width: 300
                     ,maxLength: 100
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('link_attributes')
-                    ,description: _('link_attributes_help')
+                    ,fieldLabel: _('resource_link_attributes')
+                    ,description: _('resource_link_attributes_help')
                     ,name: 'link_attributes'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('content')
+                    ,fieldLabel: _('static_resource')
                     ,name: 'content'
                     ,width: 300
                     ,maxLength: 255
@@ -86,16 +86,16 @@ MODx.panel.Static = function(config) {
                     
                 },{
                     xtype: 'textarea'
-                    ,fieldLabel: _('document_summary')
-                    ,description: _('document_summary_help')
+                    ,fieldLabel: _('resource_summary')
+                    ,description: _('resource_summary_help')
                     ,name: 'introtext'
                     ,width: 300
                     ,grow: true
                     
                 },{
                     xtype: 'combo-template'
-                    ,fieldLabel: _('page_data_template')
-                    ,description: _('page_data_template_help')
+                    ,fieldLabel: _('resource_template')
+                    ,description: _('resource_template_help')
                     ,name: 'template'
                     ,id: 'tpl'
                     ,width: 300
@@ -117,16 +117,16 @@ MODx.panel.Static = function(config) {
                     ,width: 60
                 },{
                     xtype: 'textfield'
-                    ,fieldLabel: _('document_opt_menu_title')
-                    ,description: _('document_opt_menu_title_help')
+                    ,fieldLabel: _('resource_menutitle')
+                    ,description: _('resource_menutitle_help')
                     ,name: 'menutitle'
                     ,width: 300
                     ,maxLength: 255
                     
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_show_menu')
-                    ,description: _('document_opt_show_menu_help')
+                    ,fieldLabel: _('resource_hide_from_menus')
+                    ,description: _('resource_hide_from_menus_help')
                     ,name: 'hidemenu'
                     ,inputValue: 1
                     ,checked: false
@@ -139,23 +139,23 @@ MODx.panel.Static = function(config) {
                     html: '<h2>'+_('resource_settings')+'</h2>'
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_folder')
-                    ,description: _('document_opt_folder_help')
+                    ,fieldLabel: _('resource_folder')
+                    ,description: _('resource_folder_help')
                     ,name: 'isfolder'
                     ,inputValue: 1
                     
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_published')
-                    ,description: _('document_opt_published_help')
+                    ,fieldLabel: _('resource_published')
+                    ,description: _('resource_published_help')
                     ,name: 'published'
                     ,inputValue: 1
                     ,checked: MODx.config.publish_default == '1' ? true : false
                     
                 },(config.publish_document ? {
                     xtype: 'datefield'
-                    ,fieldLabel: _('page_data_publishdate')
-                    ,description: _('page_data_publishdate_help')
+                    ,fieldLabel: _('resource_publishdate')
+                    ,description: _('resource_publishdate_help')
                     ,name: 'pub_date'
                     ,format: 'd-m-Y H:i:s'
                     ,allowBlank: true
@@ -164,8 +164,8 @@ MODx.panel.Static = function(config) {
                     
                 }:{}),(config.publish_document ? {
                     xtype: 'datefield'
-                    ,fieldLabel: _('page_data_unpublishdate')
-                    ,description: _('page_data_unpublishdate_help')
+                    ,fieldLabel: _('resource_unpublishdate')
+                    ,description: _('resource_unpublishdate_help')
                     ,name: 'unpub_date'
                     ,format: 'd-m-Y H:i:s'
                     ,allowBlank: true
@@ -174,16 +174,16 @@ MODx.panel.Static = function(config) {
                     
                 }:{}),{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('page_data_searchable')
-                    ,description: _('page_data_searchable_help')
+                    ,fieldLabel: _('resource_searchable')
+                    ,description: _('resource_searchable_help')
                     ,name: 'searchable'
                     ,inputValue: 1
                     ,checked: MODx.config.search_default == '1' ? true : false
                     
                 },{
                     xtype: 'checkbox'
-                    ,fieldLabel: _('document_opt_emptycache')
-                    ,description: _('document_opt_emptycache_help')
+                    ,fieldLabel: _('resource_cacheable')
+                    ,description: _('resource_cacheable_help')
                     ,name: 'syncsite'
                     ,inputValue: 1
                     ,checked: true
@@ -192,7 +192,7 @@ MODx.panel.Static = function(config) {
                     xtype: 'hidden'
                     ,name: 'class_key'
                     ,id: 'class_key'
-                    ,value: config.class_key || 'modDocument'
+                    ,value: config.class_key || 'modStaticResource'
                     
                 },{
                     xtype: 'hidden'

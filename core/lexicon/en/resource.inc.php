@@ -103,6 +103,7 @@ $_lang['resource_view'] = 'View Resource';
 $_lang['site_schedule'] = 'Schedule';
 $_lang['site_schedule_desc'] = 'This shows the current resources that are scheduled to publish or unpublished on specified dates. You may toggle the current view by clicking on the toolbar button.';
 $_lang['source'] = 'Source';
+$_lang['static_resource'] = 'Static Resource';
 $_lang['static_resource_create_here'] = 'Create a Static Resource Here';
 $_lang['status'] = 'Status';
 $_lang['symlink'] = 'Symlink';
