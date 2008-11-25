@@ -4,6 +4,85 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-alpha-6 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-395] i18n'ed the modMail classes, added lexicon topic 'mail' for handling mail strings
+- Added check to make sure user cannot browse to subdirs with ../ in connector processor fetching
+- [#MODX-482] Implemented code to remove setup/ directory when box is checked.
+- [#MODX-408] Fix atrocious grammar in mail reception message
+- Fixed labels for static resource page
+- [#MODX-518] Make sure clearing cache clears registry output from package
+- Fixed in_array() checks against $_currentTimestamps in xPDOObject::save() that prevented timestamp/datetime fields from saving 0 values.
+- [#MODX-512] Fixing check in setup to make sure core/packages is writable
+- Fixed bug with RTE loading and saving
+- Changed 'Provisioner' references to 'Provider' in UI for nomenclature consistency purposes
+- Added lexicon load to resource processors
+- Fix error on resource view when template is empty.
+- Added namespace filter to settings grid
+- Fixed import trees
+- Hide the resource ID field if a new resource
+- [#MODX-514] Fixed issue with pub_date/unpub_date not being reset properly
+- [#MODX-484] Added missing ht.access sample to web context files in included in transport package. 
+- Modified modWorkspace vehicle attributes to XPDO_TRANSPORT_UPDATE_OBJECT => false
+- Updated xPDO to revision 284 for new xPDO package-aware vehicle features when loading classes.
+- Slight styling improvement to grid to make alt-rows more apparent
+- Added clearCache() functions to modLexiconTopic, modLexiconLanguage
+- Added 'collapsible' options to the options tabs of resources. Can now collapse them to show only the content editor.
+- Prevent blank property value names
+- Adding css classes to modext components for easier styling
+- Fixed some issues related to installation of packages, namely dealing with the setup-options attribute and resolver handling
+- Added _build/build.local.xml to prepare an svn development copy for execution; builds core transport, minifies and concats the javascript and puts it in place, etc.
+- Slight fix to login box and css styles to get checkbox checked css to render properly
+- Updated xPDO to revision 281 to get fix to xPDOObject::save() when updating fields with NULL values.
+- Styling updates; make form fields bigger, tabs bigger, menus bigger...basically pretty up the UI
+- Fix to typo in createTable in modInstallVersion
+- Implemented version-specific upgrades to setup/ 
+- Updated xPDO to revision 275 (xPDOObject datetime/timestamp handling improvements, xPDOTransport pre-existing object restoration features, and more). 
+- Changed System Events action to Error Log Viewer, which now allows you to view (and clear) the error log from the manager
+- [#MODX-509] Fixed issue with refreshing of incorrect node in dragdrops on trees
+- Fixes to CSS in setup, moved error box to fixed bottom right, i18n'ed more stuff, cleaned up HTML and simplified outputs
+- Fixed issue where the path for processors could not be overridden by changing the parameters for handleRequest in modConnectorRequest to an array of options
+- [#MODX-501] Fixed issue where trees didn't refresh when package was installed. All trees now refresh.
+- Fixed bug with duplicating resources
+- [#MODX-505] Fixed issue with creating weblink redirecting improperly 
+- Fixed issue with emptying recycle bin and root-level resources
+- [#MODX-508] Weblinks are now not hidden by default
+- Fix missing published checkboxes in resource derivative classes 
+- Applied patch to fix issue with label click of checkboxes not changing value 
+- [#MODX-507] Fixed bug where Published checkbox wasnt showing in resource panel
+- Fixed bug in filetree that would scroll up topmenu
+- [#MODX-507] Adding in textbox for parent ID for now, will come up with better solution later
+- [#MODX-506] Fixed bug where cache wasn't cleared on drag/drop in tree
+- Fixed bug in modPackageBuilder that was preventing deletion of existing package directories and files.
+- Added constants MODX_INSTALL_MODE_NEW, MODX_INSTALL_MODE_UPGRADE_EVO, MODX_INSTALL_MODE_UPGRADE_REVO 
+- Extracted install->test() to a separate class, then i18n'ed the test strings
+- LOTS of phpdoc additions to all processors, including parameter lists for each processor
+- Removed any last trace of modules from Revolution
+- Added phpdoc information to processors
+- Properly clear cache on install/uninstall/remove of packages
+- Removed "require_once MODX_PROCESSORS_PATH.'index.php';" from all processors 
+- Only show 'Update Package' if the package comes from a provider
+- Fixes to get browser working with TinyMCE
+- Fixed issue with forced removing of packages not properly removing the resolvers
+- Standardized modRequest/modResponse methods across all derivatives (i.e. modRequest::handleRequest() always calls modRequest::prepareResponse(), which calls modResponse::outputContent()). 
+- [#MODX-478] Fixed typo in lexicon import/export that prevented window hiding
+- Fixed issues with Symlinks
+- Fix to TV output/input renders when loading in a context other than web/mgr
+- Fix to invokeEvent to prevent unwanted caching of event name if plugin executes more than one event per runtime
+- [#MODX-424] Added readme viewing to package grid
+- Added ability to delete multiple element properties at once via a multiple row handler
+- [#MODX-488] Removing double click from properties grid for 'name' field to prevent unwanted breaking
+- Added back in setDirectory to modConnectorRequest
+- [#MODX-292] Properly format system settings editedon value
+- [#MODX-293] Properly format editedon for lexicon entries
+- [#MODX-481] Fixed rendering issues in element property grid columns
+- [#MODX-479] Fixed issue where first snippet property edited didn't show value
+- [#MODX-480] Fixed issue with lexicon entry update/create not loading proper topic 
+- [#MODX-474] Removing package builder menu item from build script
+- [#MODX-456] Fixed issues with element property grids
+- Fixed MODx.grid.LocalGrid store bugs when dealing with grouped data
+- added pageSize and pageStart config items to MODx.grid.Grid
+- Fix to MODx.grid.Grid in case listeners are provided, dont ignore context menu
+- [#MODX-466] Fixes to dropdowns for element categories, field issues
+- [#MODX-115] Some fixes to rendering issues with comboboxes/datefields on Safari
 - Updated xPDO to rev 265 for improvements in xPDOValidator allowing multiple rules to be evaluated per column.
 - Refactored modError completely, removing all derivative classes and introducing modManagerResponse and modConnectorResponse to handle formatting modError responses appropriately.
 - Added modRequest::registerLogging() and relocated logic for detecting and taking action on register logging parameters out of loadErrorHandler().
