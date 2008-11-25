@@ -267,7 +267,7 @@ switch ($g[0]) {
 		/* 0: type,  1: element/category  2: elID  3: catID */
 		$cat_id = isset($g[3]) ? $g[3] : ($g[1] == 'category' ? $g[2] : 0);
 
-        $c = $modx->newQuery($ar_typemap[$g[1]]);
+        $c = $modx->newQuery($ar_typemap[$g[0]]);
         $c->where(array('category' => $cat_id));
         $c->sortby('id','ASC');
 		$elements = $modx->getCollection($ar_typemap[$g[0]],$c);
