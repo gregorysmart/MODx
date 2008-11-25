@@ -148,12 +148,13 @@ class modInstallVersion {
      * @return string The full version of the MODx installation
      */
     function _getVersion() {
-        $f = MODX_CORE_PATH . 'config/version.inc.php';
-        $v = array('full_version' => '2.0.0-alpha-1');
-        if (file_exists($f)) {
-            $v = include $f;
+        $installVersion = '2.0.0-alpha-1';
+        if ($settings_version = $this->xpdo->getObject('modSystemSetting', array(
+                'key' => 'settings_version'
+            ))) {
+            $installVersion = $settings_version->get('value');
         }
-        $this->version = $v['full_version'];
+        $this->version = $installVersion;
         return $this->version;
     }
 }
