@@ -70,7 +70,11 @@ switch ($g[0]) {
 			);
 		}
 
-		$elements = $modx->getCollection($ar_typemap[$g[1]],array('category' => 0));
+
+        $c = $modx->newQuery($ar_typemap[$g[1]]);
+        $c->where(array('category' => 0));
+        $c->sortby('id','ASC');
+		$elements = $modx->getCollection($ar_typemap[$g[1]],$c);
 		foreach ($elements as $element) {
 			$name = $g[1] == 'template' ? $element->get('templatename') : $element->get('name');
 			$resources[] = array(
@@ -263,14 +267,17 @@ switch ($g[0]) {
 		/* 0: type,  1: element/category  2: elID  3: catID */
 		$cat_id = isset($g[3]) ? $g[3] : ($g[1] == 'category' ? $g[2] : 0);
 
-		$elements = $modx->getCollection($ar_typemap[$g[0]],array('category' => $cat_id));
+        $c = $modx->newQuery($ar_typemap[$g[1]]);
+        $c->where(array('category' => $cat_id));
+        $c->sortby('id','ASC');
+		$elements = $modx->getCollection($ar_typemap[$g[0]],$c);
         $elementType = ucfirst($g[0]);
 		foreach ($elements as $element) {
 			$name = $g[0] == 'template' ? $element->get('templatename') : $element->get('name');
 
 			$resources[] = array(
 				'text' => $name,
-				// setup g[], 1: 'element', 2: type of el, 3: el ID, 4: cat ID
+				/* setup g[], 1: 'element', 2: type of el, 3: el ID, 4: cat ID */
 				'id' => 'n_'.$g[0].'_element_'.$element->get('id').'_'.$element->get('category'),
 				'leaf' => 1,
 				'cls' => 'file',
