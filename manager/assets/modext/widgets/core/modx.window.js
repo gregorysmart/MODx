@@ -97,6 +97,7 @@ Ext.extend(MODx.Window,Ext.Window,{
 	}
     
     ,_onShow: function() {
+        if (Ext.isSafari) return false;
         var p = this.getPosition();
         this.setPosition(p[0],10);
     }

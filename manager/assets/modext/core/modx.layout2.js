@@ -59,7 +59,6 @@ MODx.Layout = function(config){
                 }
                 ,items: [{
                     title: _('resources')
-                    //,xtype: 'tree-resource'
                     ,contentEl: 'modx_rt_div'
                     ,resizeEl: 'modx_resource_tree'
                 },{
@@ -75,8 +74,6 @@ MODx.Layout = function(config){
         ]
     });
     MODx.Layout.superclass.constructor.call(this,config);
-        
-    //this.loadTopBar();
 };
 Ext.extend(MODx.Layout,Ext.Viewport,{
     /**
@@ -96,16 +93,7 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
             ,src: MODx.config.manager_url+'index.php?a='+(this.config.start || '1')
         });
     }
-    
-    /**
-     * Loads the topbar
-     * 
-     * @access protected
-     */
-    ,loadTopBar: function() {
-        MODx.load({ xtype: 'modx-topmenu' });
-    }
-    
+        
     /**
      * Loads the trees for the layout
      * 

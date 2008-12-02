@@ -58,13 +58,11 @@ a:hover {
 	height: 100%;
 	background-color: #2c2c2c;
 }
-#modx_content {
-	height: 100%;/*1500px;*/
-	}
 #modx-inner-container {
 	height: 100%;
     background-color: #d3d2d3;
 }
+body.ext-safari { margin-right: -15px; padding-right: 15px; }
 
 .modx-container {
     background-color: #2c2c2c;

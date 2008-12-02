@@ -56,7 +56,7 @@ Ext.onReady(function() {
 </script>
 {/literal}
 </head>
-<body ondragstart="return false;" onmousedown="parent.Ext.menu.MenuMgr.hideAll();">
+<body ondragstart="return false;" onmousedown="parent.Ext.menu.MenuMgr.hideAll();" class="frame-body">
 
 <div id="modx-inner-rc" class="body-cnr-box">
     <div class="body-cnr-top"><div></div></div>
