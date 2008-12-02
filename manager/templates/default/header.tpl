@@ -12,7 +12,7 @@
 <script src="assets/ext2/ext-all.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.js" type="text/javascript"></script>
 <script src="assets/modext/util/eventfix.js" type="text/javascript"></script>
-<script src="{$_config.connectors_url}lang.js.php?topic=file,category,resource" type="text/javascript"></script>
+<script src="{$_config.connectors_url}lang.js.php?topic=file,category,resource,welcome,configcheck" type="text/javascript"></script>
 <script src="{$_config.connectors_url}layout/modx.config.js.php" type="text/javascript"></script>
 {if $_config.compress_js}
 <script src="assets/modext/modext.js" type="text/javascript"></script>
@@ -31,10 +31,16 @@
 <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
 <script src="assets/modext/util/dynifs.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
+<script src="assets/modext/core/modx.component.js" type="text/javascript"></script>
+<script src="assets/modext/core/modx.actionbuttons.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.msg.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.topmenu.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.panel.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.tabs.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.window.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.tree.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.combo.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.grid.js" type="text/javascript"></script>
+<script src="assets/modext/widgets/core/modx.console.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/windows.js" type="text/javascript"></script>
 
 <script src="assets/modext/widgets/resource/modx.tree.resource.js" type="text/javascript"></script>

@@ -6,6 +6,11 @@
 	<p>Welcome back, admin. Your last long was yesterday, 04:44h.</p>
 </div>
 
+<div id="db-panel">
+    {include file="welcome.tpl"}
+</div>
+
+
 <div id="db-quicklinks" class="section">
     <h2>Quicklinks</h2>
 

@@ -90,7 +90,7 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
             ,width:'98%'
             ,anchor:'1 1'
             ,style: 'padding:0; margin:0; border: 0; background: white;'
-            ,src: MODx.config.manager_url+'index.php?a='+(this.config.start || '1')
+            //,src: MODx.config.manager_url+'index.php?a='+(this.config.start || '1')
         });
     }
         
@@ -158,6 +158,7 @@ MODx.logout = function() {
     });
 };
 
+MODx.dashboardActive = true;
 MODx.showDashboard = function() {
     if (MODx.dashboardActive) return false;
     var o = { duration: .3 };
@@ -174,7 +175,8 @@ MODx.hideDashboard = function() {
     Ext.get('modx-dashboard').fadeOut(o);
     MODx.dashboardActive = false;
 };
-
-Ext.onReady(function() {
-    Ext.get('modx-dashboard').fadeOut();
+Ext.onReady(function() {    
+    Ext.get('modx-dashboard').fadeIn();
+    Ext.get('modx-frame-ct').fadeOut();
+    Ext.get('modx-container').fadeOut();    
 });

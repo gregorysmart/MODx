@@ -14,7 +14,6 @@
 }
 
 .modx-dashboard h2 {
-    color: #fff;
     font-weight: normal;
     font-size: 1.4em;
     border-bottom: 0;
@@ -32,3 +31,16 @@
 .modx-dashboard li {
     margin-left: 2em;
 }
+#db-panel {
+    background-color: #2c2c2c;
+    color: #2c2c2c;
+    float: right;
+    margin-right: 100px;
+    width: 50%;
+}
+
+
+/* welcome panel tabs */
+#db-panel .x-tab-panel-header, .x-tab-panel-header .x-tab-strip-top {
+	background: #2c2c2c !important;
+	}

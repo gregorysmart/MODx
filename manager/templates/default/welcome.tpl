@@ -1,6 +1,6 @@
 <div id="welcome_tabs"></div>
 
-<div id="news" class="padding x-hide-display with-logo-bg">
+<div id="news" class="padding x-hide-display" style="width: 90%;">
 	{foreach from=$newsfeed item=article}
 	<div class="news_article">
 		<h2>
@@ -12,7 +12,7 @@
 	{/foreach}
 </div>
 
-<div id="security" class="padding x-hide-display with-logo-bg">
+<div id="security" class="padding x-hide-display" style="width: 90%;">
 	{foreach from=$securefeed item=article}
     <div class="news_article">
 		<h2>
@@ -25,27 +25,20 @@
 </div>
 
 <!-- system check -->
-<div id="config" class="padding x-hide-display with-logo-bg">
+<div id="config" class="padding x-hide-display">
 	<img src="templates/{$_config.manager_theme}/images/icons/event2.gif" />
 	{$config_check_results}
 </div>
 
-
-<!-- home tab -->
-<div id="welcome" class="padding x-hide-display with-logo-bg">
-    <h2>{$_config.site_name}</h2>
-    {$_lang.welcome_title}
-</div>
-
 <!-- recent activities -->
-<div id="recent" class="padding x-hide-display with-logo-bg">
+<div id="recent" class="padding x-hide-display">
 	{$_lang.activity_message}
 	<br /><br />
 	<div id="grid-recent-resource"></div>
 </div>
 
 <!-- user info -->
-<div id="info" class="padding x-hide-display with-logo-bg">
+<div id="info" class="padding x-hide-display">
 	{$_lang.yourinfo_message}
 	<br /><br />
 	<table class="classy">

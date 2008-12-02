@@ -51,6 +51,7 @@ function getSubMenus($m) {
     return $av;
 }
 $modx->smarty->assign('menus',$menus);
-//print_r($menus); die();
+
+include_once dirname(__FILE__).'/welcome.php';
 
 $modx->smarty->display('header.tpl');

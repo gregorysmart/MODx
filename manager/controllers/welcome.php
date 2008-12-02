@@ -7,8 +7,8 @@
  */
 if (!$modx->hasPermission('home')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
+$modx->lexicon->load('welcome','configcheck');
 $modx->smarty->assign('site_name',$modx->config['site_name']);
-
 
 /* do some config checks */
 include_once MODX_PROCESSORS_PATH . 'system/config_check.inc.php';
@@ -63,6 +63,3 @@ foreach (array_keys($rss->items) as $key) {
     $item['pubdate'] = strftime('%c',$item['date_timestamp']);
 }
 $modx->smarty->assign('securefeed',$rss->items);
-
-
-$modx->smarty->display('welcome.tpl');

@@ -11,6 +11,11 @@ MODx.page.Welcome = function(config) {
 	Ext.applyIf(config,{
 		tabs_div: 'welcome_tabs'
 		,tabs: this.getTabs(config)
+        ,tabOptions: {
+            autoScroll: true
+            ,height: 300
+            ,minTabWidth: 130
+        }
         ,components: [{
             xtype: 'grid-user-recent-resource'
             ,renderTo: 'grid-recent-resource'
@@ -26,8 +31,7 @@ Ext.extend(MODx.page.Welcome,MODx.Component,{
 			items.push({ contentEl: 'config' ,title: _('configcheck_title') });
 		}
 		items.push(
-            { contentEl: 'welcome' ,title: config.site_name }
-            ,{ contentEl: 'news' ,title: _('modx_news') }
+            { contentEl: 'news' ,title: _('modx_news') }
             ,{ contentEl: 'security' ,title: _('security_notices') }
             ,{ contentEl: 'recent' ,title: _('recent_docs') }
             ,{ contentEl: 'info' ,title: _('info') }
