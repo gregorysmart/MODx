@@ -141,7 +141,7 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 	 * @param {Ext.EventObject} e The event object.
 	 */
 	,checkConfirm: function(itm,e) {
-		if (itm.confirm !== null) {
+		if (itm.confirm !== null && itm.confirm !== undefined) {
 			this.confirm(itm,function() {
 				this.handleClick(itm,e);
 			},this);
