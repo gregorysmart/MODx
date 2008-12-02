@@ -3,7 +3,7 @@
 <div id="db-header" class="section">
 	<h2>Dashboard - <span class="site-title">{$_config.site_name}</span></h2>
 	
-	<p>Welcome back, admin. Your last long was yesterday, 04:44h.</p>
+	<p>Welcome back, {$modx->getLoginUserName()}.</p>
 </div>
 
 <div id="db-panel">

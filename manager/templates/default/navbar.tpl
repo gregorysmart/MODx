@@ -2,7 +2,7 @@
     <div id="leftgreennav" onclick="MODx.showDashboard();"></div>
 	<div id="rightlogin">
 	<span>
-	    logged in as <a id="rightlogin-user">admin</a>
+	    logged in as <a id="rightlogin-user" onclick="MODx.loadFrame(49);">{$modx->getLoginUserName()}</a>
 	    | <a id="rightlogin-logout" href="javascript:;" onclick="MODx.logout();">{$_lang.logout}</a>
     </span>
 	</div>
