@@ -130,10 +130,14 @@ Ext.reg('modx-layout',MODx.Layout);
 
 /* TODO: redo these into some sort of class to make quicker */
 MODx.loadFrame = function(a,p) {
-    Ext.get('modx_content').dom.src = '?a='+a+'&'+(p || '');
+    if (MODx.currentAction != a) {
+        Ext.get('modx_content').dom.src = '?a='+a+'&'+(p || '');
+        MODx.currentAction = a;
+    }
     MODx.hideDashboard();
     return false;
 };
+MODx.currentAction = 0;
 MODx.activeMenu = 'menu0';
 MODx.changeMenu = function(a,sm) {
     if (sm === MODx.activeMenu) return false;
@@ -166,6 +170,7 @@ MODx.showDashboard = function() {
     Ext.get('modx-frame-ct').fadeOut(o);
     Ext.get('modx-dashboard').fadeIn(o);
     MODx.dashboardActive = true;
+    return false;
 };
 MODx.hideDashboard = function() {
     if (!MODx.dashboardActive) return false;
@@ -174,6 +179,7 @@ MODx.hideDashboard = function() {
     Ext.get('modx-frame-ct').fadeIn(o);
     Ext.get('modx-dashboard').fadeOut(o);
     MODx.dashboardActive = false;
+    return false;
 };
 Ext.onReady(function() {    
     Ext.get('modx-dashboard').fadeIn();

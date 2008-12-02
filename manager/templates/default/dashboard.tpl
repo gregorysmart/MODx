@@ -16,8 +16,8 @@
 
     <ul>
         <li><a href="javascript:;" onclick="MODx.loadFrame(44);">Create Document</a></li>
-        <li>View Tree</li>
-        <li>Add User</li>
+        <li><a href="javascript:;" onclick="MODx.hideDashboard();">View Tree</a></li>
+        <li><a href="javascript:;" onclick="MODx.loadFrame(54);">Add User</a></li>
     </ul>
 </div>
 
@@ -25,10 +25,9 @@
     <h2>Help</h2>
     
     <ul>
-        <li>Documentation</li>
-        <li>Forums</li>
-        <li>Wiki</li>
-        <li>File a bug</li>
+        <li><a href="http://svn.modxcms.com/docs/" target="_blank">Documentation</a></li>
+        <li><a href="http://www.modxcms.com/forums/" target="_blank">Forums</a></li>
+        <li><a href="http://svn.modxcms.com/jira/" target="_blank">File a bug</a></li>
     </ul>
 </div>
 
