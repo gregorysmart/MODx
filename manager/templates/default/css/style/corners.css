@@ -1,0 +1,54 @@
+.body-cnr-box {
+   background: #d3d2d3;
+}
+.body-cnr-top div {
+   background: url(../../images/style/corners/body-tl.png) no-repeat top left;
+}
+.body-cnr-btm div {
+   background: url(../../images/style/corners/body-bl.png) no-repeat bottom left;
+}
+.body-cnr-top {
+   background: url(../../images/style/corners/body-tr.png) no-repeat top right;
+}
+.body-cnr-btm {
+   background: url(../../images/style/corners/body-br.png) no-repeat bottom right;
+}
+
+.body-cnr-top div, .body-cnr-btm div {
+   width: 100%;
+   height: 15px;
+   font-size: 0px;
+}
+.body-cnr-content { padding: 0 10px; height: 95%;}
+
+/* dont corner left trees */
+#modx-trees-ct .body-cnr-top div {
+   background-image: none;
+}
+#modx-trees-ct .body-cnr-btm div {
+   background-image: none;
+}
+
+/* menu corners */
+.menu-cnr-box {
+   background: #3c3c3c;
+}
+.menu-cnr-top div {
+   background: url(../../images/style/corners/menu-tl.png) no-repeat top left;
+}
+.menu-cnr-top {
+   background: url(../../images/style/corners/menu-tr.png) no-repeat top right;
+}
+.menu-cnr-btm div {
+   background: url(../../images/style/corners/menu-bl.png) no-repeat bottom left;
+}
+.menu-cnr-btm {
+   background: url(../../images/style/corners/menu-br.png) no-repeat bottom right;
+}
+
+.menu-cnr-top div, .menu-cnr-btm div {
+   width: 100%;
+   height: 5px;
+   font-size: 0px;
+}
+.menu-cnr-content { padding: 0 5px; vertical-align: top; }

@@ -19,10 +19,8 @@ MODx.panel.ResourceData = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
-            xtype: 'tabpanel'
-            ,activeTab: 0
+            xtype: 'modx-tabs'
             ,deferredRender: false
-            ,border: false
             ,defaults: {
                 autoHeight: true
                 ,layout: 'form'

@@ -13,6 +13,7 @@ MODx.Tabs = function(config) {
 		enableTabScroll: true
 		,resizeTabs: true
         ,layoutOnTabChange: true
+        ,plain: true
 		,defaults: {
 			autoScroll: true
 			,autoHeight: true

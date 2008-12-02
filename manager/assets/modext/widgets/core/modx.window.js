@@ -30,6 +30,7 @@ MODx.Window = function(config) {
 			,handler: this.submit
 		}]
 		,record: {}
+        ,y: 10
 	});
 	MODx.Window.superclass.constructor.call(this,config);
 	this.options = config;
@@ -96,7 +97,8 @@ Ext.extend(MODx.Window,Ext.Window,{
 	}
     
     ,_onShow: function() {
-        this.center();
+        var p = this.getPosition();
+        this.setPosition(p[0],10);
     }
 	
 	/**

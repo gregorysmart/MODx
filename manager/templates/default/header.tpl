@@ -29,6 +29,7 @@
 {else}
 <script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
+<script src="assets/modext/util/dynifs.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.msg.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/core/modx.topmenu.js" type="text/javascript"></script>
@@ -39,7 +40,7 @@
 <script src="assets/modext/widgets/resource/modx.tree.resource.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/element/modx.tree.element.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.layout.js" type="text/javascript"></script>
+<script src="assets/modext/core/modx.layout2.js" type="text/javascript"></script>
 {/if}
 
 <script src="assets/modext/util/filetree/js/Ext.ux.form.BrowseButton.js" type="text/javascript"></script>
@@ -48,16 +49,26 @@
 <link href="assets/modext/util/filetree/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="assets/modext/util/filetree/css/filetype.css" rel="stylesheet" type="text/css" />
 <link href="assets/modext/util/filetree/css/filetree.css" rel="stylesheet" type="text/css" />
-
 </head>
 <body>
 
-<div id="modx_tm_div"><div id="modx_tm"></div></div>
-<div id="modx_rt_div"><div id="modx_resource_tree"></div></div>
-<div id="modx_et_div"><div id="modx_element_tree"></div></div>
-<div id="modx_ft_div"><div id="modx_file_tree"></div></div>
-<div id="modx_content_div"></div>
-<div id="modx_workspace"></div>
+{include file="navbar.tpl"}
 
+{include file="dashboard.tpl"}
+
+<div id="modx-container">
+    <div id="modx-trees-ct" class="body-cnr-box">
+        <div class="body-cnr-top"><div></div></div>
+	    <div id="modx-trees-div" class="body-cnr-content">
+		    <div id="modx_rt_div"><div id="modx_resource_tree"></div></div>
+		    <div id="modx_et_div"><div id="modx_element_tree"></div></div>
+		    <div id="modx_ft_div"><div id="modx_file_tree"></div></div>
+	    </div>
+	    <div class="body-cnr-btm"><div></div></div>
+    </div>
+</div>
+<div id="modx-frame-ct">
+    <div id="modx_content_div"></div>
+</div>
 </body>
 </html>

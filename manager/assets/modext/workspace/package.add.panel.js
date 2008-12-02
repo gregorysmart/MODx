@@ -44,13 +44,12 @@ MODx.window.PackageDownloader = function(config) {
         },{
             xtype: 'panel-pd-selpackage'
         }]
-        ,listeners: {
-            'show': {fn: this.onShow,scope: this}
-        }
+        ,y: 10
     });
     MODx.window.PackageDownloader.superclass.constructor.call(this,config);
     this.config = config;
     this.lastActiveItem = this.config.firstPanel;
+    this.on('show',this.onShow,this);
 };
 Ext.extend(MODx.window.PackageDownloader,Ext.Window,{
     windows: {}
@@ -83,7 +82,8 @@ Ext.extend(MODx.window.PackageDownloader,Ext.Window,{
             this.getBottomToolbar().items.item(0).setDisabled(false);
             this.getBottomToolbar().items.item(1).setText(_('next'));
         }
-        this.center();
+        var p = this.getPosition();
+        this.setPosition(p[0],10);
     }
 });
 Ext.reg('window-package-downloader',MODx.window.PackageDownloader);

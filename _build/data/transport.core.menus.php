@@ -153,27 +153,6 @@ $collection['14']->fromArray(array (
   'params' => '',
   'handler' => '',
 ), '', true, true);
-$collection['15']= $xpdo->newObject('modMenu');
-$collection['15']->fromArray(array (
-  'id' => 15,
-  'parent' => 1,
-  'action' => 0,
-  'text' => 'logout',
-  'icon' => 'images/icons/unzip.gif',
-  'menuindex' => 9,
-  'params' => '',
-  'handler' => 'MODx.msg.confirm({
-    title: _(\'logout\')
-    ,text: _(\'logout_confirm\')
-    ,url: MODx.config.connectors_url+\'security/logout.php\'
-    ,params: {
-        action: \'logout\'
-    }
-    ,listeners: {
-        \'success\': {fn:function() { location.href = \'./\'; },scope:this}
-    }
-});',
-), '', true, true);
 $collection['16']= $xpdo->newObject('modMenu');
 $collection['16']->fromArray(array (
   'id' => 16,

@@ -1,5 +1,6 @@
 body {
-    color: #535d6c;
+    /*color: #535d6c;*/
+    color: #5c5c5c;
 }
 
 #modx_container p {
@@ -10,8 +11,9 @@ body {
 h2 {
     margin: 0 0 1em;
     font: normal 1.7em Helvetica, Tahoma, Arial, Helvetica, sans-serif;
-    color: #535d6c;
-    border-bottom: 1px solid #c1dad7;
+    /*color: #535d6c;*/
+    padding-bottom: 4px;
+    border-bottom: 1px solid #acacac;
 }
 
 h3 {

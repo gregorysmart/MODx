@@ -4,9 +4,9 @@
 <title>MODx</title>
 <meta http-equiv="Content-Type" content="text/html; charset={$_config.modx_charset}" />
 <link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/ext-all.css" />
-<link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/index.css" />
 
 <link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/xtheme-gray.css" />
+<link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/index.css" />
 
 <script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
 <script src="assets/ext2/ext-all.js" type="text/javascript"></script>
@@ -58,6 +58,8 @@ Ext.onReady(function() {
 </head>
 <body ondragstart="return false;" onmousedown="parent.Ext.menu.MenuMgr.hideAll();">
 
-<div id="modAB"></div>
-<div id="modx_tabs"></div>
-<div id="modx_container">
+<div id="modx-inner-rc" class="body-cnr-box">
+    <div class="body-cnr-top"><div></div></div>
+    <div id="modx-inner-container" class="body-cnr-content">
+        <div id="modAB"></div>
+        <div id="modx_tabs"></div>

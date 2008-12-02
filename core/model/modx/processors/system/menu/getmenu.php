@@ -42,7 +42,6 @@ function getSubMenus($menu) {
             }
         }
         $ma = $menu->toArray();
-
         if ($menu->get('controller')) {
             $ma['controller'] = $menu->get('controller');
         } else {
