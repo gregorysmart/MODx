@@ -21,17 +21,6 @@ $collection['2']->fromArray(array (
   'params' => '',
   'handler' => '',
 ), '', true, true);
-$collection['3']= $xpdo->newObject('modMenu');
-$collection['3']->fromArray(array (
-  'id' => 3,
-  'parent' => 1,
-  'action' => 1,
-  'text' => 'home',
-  'icon' => 'images/icons/home.gif',
-  'menuindex' => 0,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
 $collection['4']= $xpdo->newObject('modMenu');
 $collection['4']->fromArray(array (
   'id' => 4,
@@ -62,17 +51,6 @@ $collection['6']->fromArray(array (
   'text' => 'search',
   'icon' => 'images/icons/context_view.gif',
   'menuindex' => 3,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
-$collection['7']= $xpdo->newObject('modMenu');
-$collection['7']->fromArray(array (
-  'id' => 7,
-  'parent' => 1,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 4,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -142,17 +120,6 @@ $collection['13']->fromArray(array (
   'params' => '&class_key=modWebLink',
   'handler' => '',
 ), '', true, true);
-$collection['14']= $xpdo->newObject('modMenu');
-$collection['14']->fromArray(array (
-  'id' => 14,
-  'parent' => 1,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 8,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
 $collection['16']= $xpdo->newObject('modMenu');
 $collection['16']->fromArray(array (
   'id' => 16,
@@ -173,17 +140,6 @@ $collection['16']->fromArray(array (
         \'success\': {fn:function() { location.href = \'./\'; },scope:this}
     }
 });',
-), '', true, true);
-$collection['17']= $xpdo->newObject('modMenu');
-$collection['17']->fromArray(array (
-  'id' => 17,
-  'parent' => 2,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 1,
-  'params' => '',
-  'handler' => '',
 ), '', true, true);
 $collection['18']= $xpdo->newObject('modMenu');
 $collection['18']->fromArray(array (
@@ -261,17 +217,6 @@ $collection['22']->fromArray(array (
                 }
             });',
 ), '', true, true);
-$collection['23']= $xpdo->newObject('modMenu');
-$collection['23']->fromArray(array (
-  'id' => 23,
-  'parent' => 9,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 5,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
 $collection['24']= $xpdo->newObject('modMenu');
 $collection['24']->fromArray(array (
   'id' => 24,
@@ -302,17 +247,6 @@ $collection['26']->fromArray(array (
   'text' => 'export_site',
   'icon' => 'images/icons/application_side_expand.png',
   'menuindex' => 4,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
-$collection['27']= $xpdo->newObject('modMenu');
-$collection['27']->fromArray(array (
-  'id' => 27,
-  'parent' => 9,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 1,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -514,17 +448,6 @@ $collection['46']->fromArray(array (
   'params' => '',
   'handler' => '',
 ), '', true, true);
-$collection['47']= $xpdo->newObject('modMenu');
-$collection['47']->fromArray(array (
-  'id' => 47,
-  'parent' => 9,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 9,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
 $collection['48']= $xpdo->newObject('modMenu');
 $collection['48']->fromArray(array (
   'id' => 48,
@@ -533,17 +456,6 @@ $collection['48']->fromArray(array (
   'text' => 'namespaces',
   'icon' => '',
   'menuindex' => 13,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
-$collection['49']= $xpdo->newObject('modMenu');
-$collection['49']->fromArray(array (
-  'id' => 49,
-  'parent' => 9,
-  'action' => 0,
-  'text' => '-',
-  'icon' => '',
-  'menuindex' => 14,
   'params' => '',
   'handler' => '',
 ), '', true, true);
