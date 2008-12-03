@@ -42,7 +42,7 @@ MODx.Layout = function(config){
                 ,cls: 'modx-accordion'
                 ,width: '95%'
                 ,autoHeight: true
-                ,minSize: 200
+                ,minSize: 100
                 ,collapsible: true
                 ,resizable: true
                 ,layout: 'accordion'
