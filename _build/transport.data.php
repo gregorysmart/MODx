@@ -28,6 +28,9 @@ $modx->setLogTarget('ECHO');
 // Get all Actions
 $content= "<?php\n";
 $query= $modx->newQuery('modAction');
+$query->where(array('context_key' => 'mgr'));
+$query->orCondition(array('context_key' => 'web'));
+$query->orCondition(array('context_key' => 'connector'));
 $query->sortby('id');
 $collection= $modx->getCollection('modAction', $query);
 foreach ($collection as $key => $c) {
@@ -72,11 +75,11 @@ foreach ($collection as $key => $c) {
 $cacheManager->writeFile(dirname(__FILE__) . '/data/transport.core.content_types.php', $content);
 unset($content, $collection, $key, $c);
 
-
 // Get all System Settings
 $content= "<?php\n";
 $query= $modx->newQuery('modSystemSetting');
 $query->select($modx->getSelectColumns('modSystemSetting', '', '', array('editedon'), true));
+$query->where(array('namespace' => 'core'));
 $query->sortby('`key`');
 $collection= $modx->getCollection('modSystemSetting', $query);
 foreach ($collection as $key => $c) {
@@ -90,6 +93,7 @@ unset($content, $collection, $key, $c);
 $content= "<?php\n";
 $query= $modx->newQuery('modContextSetting');
 $query->select($modx->getSelectColumns('modContextSetting', '', '', array('editedon'), true));
+$query->where(array('namespace' => 'core'));
 $query->sortby('`context_key`');
 $query->sortby('`key`');
 $collection= $modx->getCollection('modContextSetting', $query);
@@ -130,7 +134,7 @@ $cacheManager->writeFile(dirname(__FILE__) . '/data/transport.core.accesspolicie
 unset($content, $collection, $key, $c);
 
 
-// Get the default AccessContext ACLs 
+// Get the default AccessContext ACLs
 $content= "<?php\n";
 $collection= $modx->getCollection('modAccessContext');
 foreach ($collection as $key => $c) {
@@ -138,7 +142,6 @@ foreach ($collection as $key => $c) {
 }
 $cacheManager->writeFile(dirname(__FILE__) . '/data/transport.core.access_contexts.php', $content);
 unset($content, $collection, $key, $c);
-
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

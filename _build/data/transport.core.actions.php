@@ -649,7 +649,6 @@ $collection['75']->fromArray(array (
   'lang_topics' => 'user,policy',
   'assets' => '',
 ), '', true, true);
-
 $collection['76']= $xpdo->newObject('modAction');
 $collection['76']->fromArray(array (
   'id' => 76,
@@ -670,7 +669,6 @@ $collection['77']->fromArray(array (
   'lang_topics' => 'resource',
   'assets' => '',
 ), '', true, true);
-
 $collection['78']= $xpdo->newObject('modAction');
 $collection['78']->fromArray(array (
   'id' => 78,
@@ -691,7 +689,6 @@ $collection['79']->fromArray(array (
   'lang_topics' => 'resource',
   'assets' => '',
 ), '', true, true);
-
 $collection['80']= $xpdo->newObject('modAction');
 $collection['80']->fromArray(array (
   'id' => 80,

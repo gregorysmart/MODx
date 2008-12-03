@@ -6,8 +6,8 @@ $collection['1']->fromArray(array (
   'description' => 'HTML content',
   'mime_type' => 'text/html',
   'file_extensions' => '.html',
-  'headers' => NULL,
-  'binary' => false,
+  'headers' => 'NULL',
+  'binary' => 0,
 ), '', true, true);
 $collection['2']= $xpdo->newObject('modContentType');
 $collection['2']->fromArray(array (
@@ -16,8 +16,8 @@ $collection['2']->fromArray(array (
   'description' => 'XML content',
   'mime_type' => 'text/xml',
   'file_extensions' => '.xml',
-  'headers' => NULL,
-  'binary' => false,
+  'headers' => 'NULL',
+  'binary' => 0,
 ), '', true, true);
 $collection['3']= $xpdo->newObject('modContentType');
 $collection['3']->fromArray(array (
@@ -26,8 +26,8 @@ $collection['3']->fromArray(array (
   'description' => 'plain text content',
   'mime_type' => 'text/plain',
   'file_extensions' => '.txt',
-  'headers' => NULL,
-  'binary' => false,
+  'headers' => 'NULL',
+  'binary' => 0,
 ), '', true, true);
 $collection['4']= $xpdo->newObject('modContentType');
 $collection['4']->fromArray(array (
@@ -36,8 +36,8 @@ $collection['4']->fromArray(array (
   'description' => 'CSS content',
   'mime_type' => 'text/css',
   'file_extensions' => '.css',
-  'headers' => NULL,
-  'binary' => false,
+  'headers' => 'NULL',
+  'binary' => 0,
 ), '', true, true);
 $collection['5']= $xpdo->newObject('modContentType');
 $collection['5']->fromArray(array (
@@ -46,6 +46,6 @@ $collection['5']->fromArray(array (
   'description' => 'javascript content',
   'mime_type' => 'text/javascript',
   'file_extensions' => '.js',
-  'headers' => NULL,
-  'binary' => false,
+  'headers' => 'NULL',
+  'binary' => 0,
 ), '', true, true);

@@ -173,7 +173,7 @@ $collection['18']->fromArray(array (
 $collection['19']= $xpdo->newObject('modSystemSetting');
 $collection['19']->fromArray(array (
   'key' => 'failed_login_attempts',
-  'value' => '3',
+  'value' => '5',
   'xtype' => 'textfield',
   'namespace' => 'core',
   'area' => 'authentication',
@@ -181,15 +181,6 @@ $collection['19']->fromArray(array (
 ), '', true, true);
 $collection['20']= $xpdo->newObject('modSystemSetting');
 $collection['20']->fromArray(array (
-  'key' => 'fe_editor_lang',
-  'value' => 'en',
-  'xtype' => 'combo-language',
-  'namespace' => 'core',
-  'area' => 'language',
-  'editedon' => NULL,
-), '', true, true);
-$collection['21']= $xpdo->newObject('modSystemSetting');
-$collection['21']->fromArray(array (
   'key' => 'feed_modx_news',
   'value' => 'http://feeds.feedburner.com/modx-announce',
   'xtype' => 'textfield',
@@ -197,13 +188,22 @@ $collection['21']->fromArray(array (
   'area' => 'system',
   'editedon' => NULL,
 ), '', true, true);
-$collection['22']= $xpdo->newObject('modSystemSetting');
-$collection['22']->fromArray(array (
+$collection['21']= $xpdo->newObject('modSystemSetting');
+$collection['21']->fromArray(array (
   'key' => 'feed_modx_security',
   'value' => 'http://feeds.feedburner.com/modxsecurity',
   'xtype' => 'textfield',
   'namespace' => 'core',
   'area' => 'system',
+  'editedon' => NULL,
+), '', true, true);
+$collection['22']= $xpdo->newObject('modSystemSetting');
+$collection['22']->fromArray(array (
+  'key' => 'fe_editor_lang',
+  'value' => 'en',
+  'xtype' => 'combo-language',
+  'namespace' => 'core',
+  'area' => 'language',
   'editedon' => NULL,
 ), '', true, true);
 $collection['23']= $xpdo->newObject('modSystemSetting');
@@ -226,6 +226,15 @@ $collection['24']->fromArray(array (
 ), '', true, true);
 $collection['25']= $xpdo->newObject('modSystemSetting');
 $collection['25']->fromArray(array (
+  'key' => 'friendly_urls',
+  'value' => '0',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'furls',
+  'editedon' => NULL,
+), '', true, true);
+$collection['26']= $xpdo->newObject('modSystemSetting');
+$collection['26']->fromArray(array (
   'key' => 'friendly_url_prefix',
   'value' => '',
   'xtype' => 'textfield',
@@ -233,20 +242,11 @@ $collection['25']->fromArray(array (
   'area' => 'furls',
   'editedon' => NULL,
 ), '', true, true);
-$collection['26']= $xpdo->newObject('modSystemSetting');
-$collection['26']->fromArray(array (
+$collection['27']= $xpdo->newObject('modSystemSetting');
+$collection['27']->fromArray(array (
   'key' => 'friendly_url_suffix',
   'value' => '.html',
   'xtype' => 'textfield',
-  'namespace' => 'core',
-  'area' => 'furls',
-  'editedon' => NULL,
-), '', true, true);
-$collection['27']= $xpdo->newObject('modSystemSetting');
-$collection['27']->fromArray(array (
-  'key' => 'friendly_urls',
-  'value' => '0',
-  'xtype' => 'combo-boolean',
   'namespace' => 'core',
   'area' => 'furls',
   'editedon' => NULL,
@@ -271,18 +271,18 @@ $collection['29']->fromArray(array (
 ), '', true, true);
 $collection['30']= $xpdo->newObject('modSystemSetting');
 $collection['30']->fromArray(array (
-  'key' => 'manager_lang_attribute',
+  'key' => 'manager_language',
   'value' => 'en',
-  'xtype' => 'textfield',
+  'xtype' => 'combo-language',
   'namespace' => 'core',
   'area' => 'language',
   'editedon' => NULL,
 ), '', true, true);
 $collection['31']= $xpdo->newObject('modSystemSetting');
 $collection['31']->fromArray(array (
-  'key' => 'manager_language',
+  'key' => 'manager_lang_attribute',
   'value' => 'en',
-  'xtype' => 'combo-language',
+  'xtype' => 'textfield',
   'namespace' => 'core',
   'area' => 'language',
   'editedon' => NULL,
@@ -506,17 +506,7 @@ $collection['55']->fromArray(array (
 $collection['56']= $xpdo->newObject('modSystemSetting');
 $collection['56']->fromArray(array (
   'key' => 'signupemail_message',
-  'value' => 'Hello [[+uid]]
-
-    Here are your login details for [[+sname]] Content Manager:
-
-    Username: [[+uid]]
-    Password: [[+pwd]]
-
-    Once you log into the Content Manager at [[+surl]], you can change your password.
-
-    Regards,
-    Site Administrator',
+  'value' => 'Hello [[+uid]]      Here are your login details for [[+sname]] Content Manager:      Username: [[+uid]]     Password: [[+pwd]]      Once you log into the Content Manager at [[+surl]], you can change your password.      Regards,     Site Administrator',
   'xtype' => 'textarea',
   'namespace' => 'core',
   'area' => 'authentication',

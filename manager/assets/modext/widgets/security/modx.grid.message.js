@@ -27,7 +27,6 @@ MODx.grid.Message = function(config) {
         ,fields: ['id','type','subject','message','sender','recipient','private'
             ,'date_sent'
             ,'read','sender_name','menu']
-        ,width: 800
         ,autosave: true
         ,paging: true
         ,plugins: exp

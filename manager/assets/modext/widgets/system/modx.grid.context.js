@@ -12,7 +12,6 @@ MODx.grid.Context = function(config) {
 		title: _('contexts')
         ,url: MODx.config.connectors_url+'context/index.php'
 		,fields: ['key','description','menu']
-        ,width: 800
 		,paging: true
         ,autosave: true
         ,remoteSort: true

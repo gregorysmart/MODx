@@ -92,3 +92,10 @@ ul#topnav {
 #topnav ul.active a:active {
     color: #fff;
 }
+
+.subnav {
+	font-size: .9em;
+	}
+.subnav li a {
+    padding: 0 10px 3px !important;
+	}

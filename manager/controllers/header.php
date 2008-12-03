@@ -38,6 +38,8 @@ function getSubMenus($m) {
             } else {
                 $ma['text'] = $modx->lexicon($menu->get('text'));
             }
+        } else {
+            $ma['text'] = $modx->lexicon($menu->get('text'));
         }
         $ma['children'] = getSubMenus($menu->get('id'));
 

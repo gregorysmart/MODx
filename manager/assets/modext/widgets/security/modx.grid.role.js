@@ -13,7 +13,6 @@ MODx.grid.Role = function(config) {
 		title: _('roles')
         ,url: MODx.config.connectors_url+'security/role.php'
 		,fields: ['id','rolename_link','description','authority']
-        ,width: 800
         ,paging: true
         ,autosave: true
         ,columns: [

@@ -47,13 +47,9 @@ hr {
     height:400px;
 }
 
-
-#modx_container, .with-logo-bg {
-     /*background: #ffffff url(../images/ext/modext/bg-logo.png) top right no-repeat !important;*/
-}
-
 .padding {
     padding: 1em;
+    background-color: #fff;
 }
 
 div.options {

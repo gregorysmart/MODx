@@ -21,11 +21,11 @@ MODx.grid.AccessContext = function(config) {
 		,paging: true
         ,columns: [
             { header: _('id') ,dataIndex: 'id' ,width: 40 }
-            ,{ header: _('context_id') ,dataIndex: 'target' ,width: 40 }
-            ,{ header: _('context') ,dataIndex: 'target_name' ,width: 150 }
+            ,{ header: _('context_id') ,dataIndex: 'target' ,width: 40 ,hidden: true }
+            ,{ header: _('context') ,dataIndex: 'target_name' ,width: 100 }
             ,{ header: _('user_group_id') ,dataIndex: 'principal' ,width: 40 }
-            ,{ header: _('user_group') ,dataIndex: 'principal_name' ,width: 150 }
-            ,{ header: _('authority') ,dataIndex: 'authority' ,width: 75 }
+            ,{ header: _('user_group') ,dataIndex: 'principal_name' ,width: 120 }
+            ,{ header: _('authority') ,dataIndex: 'authority' ,width: 50 }
             ,{ header: _('policy') ,dataIndex: 'policy_name' ,width: 175 }
         ]
 		,tbar: this.getToolbar()

@@ -15,7 +15,7 @@ MODx.page.Context = function(config) {
 	Ext.applyIf(config,{
 		components: [{
             xtype: 'grid-context'
-            ,renderTo: 'contexts_grid'
+            ,renderTo: 'grid-context'
         }]
 	});
 	MODx.page.Context.superclass.constructor.call(this,config);

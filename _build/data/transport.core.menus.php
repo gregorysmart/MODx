@@ -28,7 +28,7 @@ $collection['4']->fromArray(array (
   'action' => 0,
   'text' => 'preview',
   'icon' => 'images/icons/show.gif',
-  'menuindex' => 1,
+  'menuindex' => 0,
   'params' => '',
   'handler' => 'window.open("../");',
 ), '', true, true);
@@ -39,7 +39,7 @@ $collection['5']->fromArray(array (
   'action' => 62,
   'text' => 'refresh_site',
   'icon' => 'images/icons/refresh.png',
-  'menuindex' => 2,
+  'menuindex' => 1,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -50,7 +50,7 @@ $collection['6']->fromArray(array (
   'action' => 45,
   'text' => 'search',
   'icon' => 'images/icons/context_view.gif',
-  'menuindex' => 3,
+  'menuindex' => 2,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -94,7 +94,7 @@ $collection['11']->fromArray(array (
   'action' => 0,
   'text' => 'profile',
   'icon' => 'images/icons/user_go.png',
-  'menuindex' => 5,
+  'menuindex' => 6,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -105,7 +105,7 @@ $collection['12']->fromArray(array (
   'action' => 44,
   'text' => 'add_document',
   'icon' => 'images/icons/folder_page_add.png',
-  'menuindex' => 5,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -116,7 +116,7 @@ $collection['13']->fromArray(array (
   'action' => 44,
   'text' => 'add_weblink',
   'icon' => 'images/icons/link_add.png',
-  'menuindex' => 6,
+  'menuindex' => 4,
   'params' => '&class_key=modWebLink',
   'handler' => '',
 ), '', true, true);
@@ -224,7 +224,7 @@ $collection['24']->fromArray(array (
   'action' => 59,
   'text' => 'import_resources',
   'icon' => 'images/icons/application_side_contract.png',
-  'menuindex' => 2,
+  'menuindex' => 1,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -235,7 +235,7 @@ $collection['25']->fromArray(array (
   'action' => 60,
   'text' => 'import_site',
   'icon' => 'images/icons/application_side_contract.png',
-  'menuindex' => 3,
+  'menuindex' => 2,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -246,40 +246,40 @@ $collection['26']->fromArray(array (
   'action' => 1,
   'text' => 'export_site',
   'icon' => 'images/icons/application_side_expand.png',
-  'menuindex' => 4,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
 ), '', true, true);
 $collection['28']= $xpdo->newObject('modMenu');
 $collection['28']->fromArray(array (
   'id' => 28,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 6,
   'text' => 'contexts',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => 6,
+  'menuindex' => 0,
   'params' => '',
   'handler' => '',
 ), '', true, true);
 $collection['29']= $xpdo->newObject('modMenu');
 $collection['29']->fromArray(array (
   'id' => 29,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 68,
   'text' => 'manage_workspaces',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => 10,
+  'menuindex' => 2,
   'params' => '',
   'handler' => '',
 ), '', true, true);
 $collection['30']= $xpdo->newObject('modMenu');
 $collection['30']->fromArray(array (
   'id' => 30,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 61,
   'text' => 'system_settings',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => 15,
+  'menuindex' => 6,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -363,11 +363,11 @@ $collection['37']->fromArray(array (
 $collection['38']= $xpdo->newObject('modMenu');
 $collection['38']->fromArray(array (
   'id' => 38,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 2,
   'text' => 'edit_menu',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => 8,
+  'menuindex' => 1,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -378,7 +378,7 @@ $collection['39']->fromArray(array (
   'action' => 0,
   'text' => 'support',
   'icon' => 'images/icons/sysinfo.gif',
-  'menuindex' => 6,
+  'menuindex' => 7,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -429,33 +429,33 @@ $collection['43']->fromArray(array (
 $collection['44']= $xpdo->newObject('modMenu');
 $collection['44']->fromArray(array (
   'id' => 44,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 69,
   'text' => 'content_types',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => 7,
+  'menuindex' => 4,
   'params' => '',
   'handler' => '',
 ), '', true, true);
 $collection['46']= $xpdo->newObject('modMenu');
 $collection['46']->fromArray(array (
   'id' => 46,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 73,
   'text' => 'lexicon_management',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => 12,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
 ), '', true, true);
 $collection['48']= $xpdo->newObject('modMenu');
 $collection['48']->fromArray(array (
   'id' => 48,
-  'parent' => 9,
+  'parent' => 55,
   'action' => 74,
   'text' => 'namespaces',
   'icon' => '',
-  'menuindex' => 13,
+  'menuindex' => 5,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -466,7 +466,29 @@ $collection['50']->fromArray(array (
   'action' => 44,
   'text' => 'add_symlink',
   'icon' => 'images/icons/link_add.png',
-  'menuindex' => 7,
+  'menuindex' => 5,
   'params' => '&class_key=modSymLink',
+  'handler' => '',
+), '', true, true);
+$collection['54']= $xpdo->newObject('modMenu');
+$collection['54']->fromArray(array (
+  'id' => 54,
+  'parent' => 2,
+  'action' => 82,
+  'text' => 'releaseme',
+  'icon' => 'images/icons/plugin.gif',
+  'menuindex' => 0,
+  'params' => '',
+  'handler' => '',
+), '', true, true);
+$collection['55']= $xpdo->newObject('modMenu');
+$collection['55']->fromArray(array (
+  'id' => 55,
+  'parent' => 0,
+  'action' => 0,
+  'text' => 'system',
+  'icon' => 'images/misc/logo_tbar.gif',
+  'menuindex' => 5,
+  'params' => '',
   'handler' => '',
 ), '', true, true);
