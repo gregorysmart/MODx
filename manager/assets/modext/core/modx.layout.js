@@ -16,30 +16,39 @@ MODx.Layout = function(config){
     
     this.createIFrame();
     this.loadTrees();
+
+    Ext.get('modx-dashboard').fadeIn();
+    Ext.get('modx-frame-ct').fadeOut();
+    Ext.get('modx-container').fadeOut();
     
     Ext.applyIf(config,{
         layout: 'border'
-        ,renderTo: Ext.getBody()
+        ,renderTo: 'modx-container'
         ,id: 'modx-layout'
+        ,cls: 'modx-container'
+        ,border: false
         ,items: [
             new Ext.BoxComponent({
-                region: 'north'
-                ,el: 'modx_tm_div'
-                ,height: 26
+                region: 'top'
+                ,applyTo: 'modx-header'
+                ,cls: 'modx-header'
+                ,height: 100
                 ,margin: '0 0 0 0'
             }),{
                 region: 'center'
-                ,el: 'modx_content_div'
-                ,autoHeight: true
                 ,layout: 'fit'
+                ,applyTo: 'modx_content_div'
+                ,autoHeight: true
                 ,minSize: 250
             },{
                 region: 'west'
-                ,id: 'west-panel'
-                ,split: true
-                ,width: '25%'
-                ,minSize: 200
+                ,applyTo: 'modx-trees-div'
+                ,cls: 'modx-accordion'
+                ,width: '95%'
+                ,autoHeight: true
+                ,minSize: 100
                 ,collapsible: true
+                ,resizable: true
                 ,layout: 'accordion'
                 ,layoutConfig: { 
                     animate: true
@@ -48,6 +57,7 @@ MODx.Layout = function(config){
                 }
                 ,defaults: { 
                     border: false
+                    ,autoHeight: true
                     ,autoScroll: true
                     ,fitToFrame: true
                 }
@@ -68,8 +78,6 @@ MODx.Layout = function(config){
         ]
     });
     MODx.Layout.superclass.constructor.call(this,config);
-    
-    this.loadTopBar();
 };
 Ext.extend(MODx.Layout,Ext.Viewport,{
     /**
@@ -83,22 +91,12 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
             ,id: 'modx_content'
             ,frameBorder: 0
             ,height:'100%'
-            ,width:'100%'
+            ,width:'98%'
             ,anchor:'1 1'
             ,style: 'padding:0; margin:0; border: 0; background: white;'
-            ,src: MODx.config.manager_url+'index.php?a='+(this.config.start || '1')
         });
     }
-    
-    /**
-     * Loads the topbar
-     * 
-     * @access protected
-     */
-    ,loadTopBar: function() {
-        MODx.load({ xtype: 'modx-topmenu' });
-    }
-    
+        
     /**
      * Loads the trees for the layout
      * 
@@ -131,3 +129,57 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
     }
 });
 Ext.reg('modx-layout',MODx.Layout);
+
+/**
+ * Handles layout functions. In module format for easier privitization.
+ * @class MODx.LayoutMgr
+ */
+MODx.LayoutMgr = function() {
+    var _activeMenu = 'menu0';
+    var _currentAction =  0;
+    var _dashboardActive = true;
+    
+    return {
+        loadFrame: function(a,p) {
+            if (_currentAction != a) {
+                Ext.get('modx_content').dom.src = '?a='+a+'&'+(p || '');
+                _currentAction = a;
+            }
+            this.hideDashboard();
+            return false;
+        }
+        ,changeMenu: function(a,sm) {
+            if (sm === _activeMenu) return false;
+            
+            Ext.get(sm).addClass('active');
+            var om = Ext.get(_activeMenu);
+            if (om) om.removeClass('active');
+            _activeMenu = sm;
+            return false;
+        }
+        ,showDashboard: function() {
+            if (_dashboardActive) return false;
+            var o = { duration: .3 };
+            Ext.get('modx-container').fadeOut(o);
+            Ext.get('modx-frame-ct').fadeOut(o);
+            Ext.get('modx-dashboard').fadeIn(o);
+            _dashboardActive = true;
+            return false;
+        }
+        ,hideDashboard: function() {
+            if (!_dashboardActive) return false;
+            var o = { duration: .3 };
+            Ext.get('modx-container').fadeIn(o);
+            Ext.get('modx-frame-ct').fadeIn(o);
+            Ext.get('modx-dashboard').fadeOut(o);
+            _dashboardActive = false;
+            return false;
+        }
+    }
+}();
+
+/* aliases for quicker reference */
+MODx.loadFrame = MODx.LayoutMgr.loadFrame;
+MODx.showDashboard = MODx.LayoutMgr.showDashboard;
+MODx.hideDashboard = MODx.LayoutMgr.hideDashboard;
+MODx.changeMenu = MODx.LayoutMgr.changeMenu;

@@ -46,7 +46,7 @@
 <script src="assets/modext/widgets/resource/modx.tree.resource.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/element/modx.tree.element.js" type="text/javascript"></script>
 <script src="assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.layout2.js" type="text/javascript"></script>
+<script src="assets/modext/core/modx.layout.js" type="text/javascript"></script>
 {/if}
 
 <script src="assets/modext/util/filetree/js/Ext.ux.form.BrowseButton.js" type="text/javascript"></script>

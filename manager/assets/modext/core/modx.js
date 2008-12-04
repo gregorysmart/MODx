@@ -53,6 +53,20 @@ Ext.extend(MODx,Ext.Component,{
         }
         return arg;
     }
+    
+    ,logout: function() {
+        MODx.msg.confirm({
+            title: _('logout')
+            ,text: _('logout_confirm')
+            ,url: MODx.config.connectors_url+'security/logout.php'
+            ,params: {
+                action: 'logout'
+            }
+            ,listeners: {
+                'success': {fn:function() { location.href = '../'; },scope:this}
+            }
+        });
+    }
 });
 Ext.reg('modx',MODx);
 
