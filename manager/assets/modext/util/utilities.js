@@ -25,6 +25,8 @@ Ext.override(MODx.util.LoadingBox,{
                 title: _('please_wait')
                 ,msg: _('loading')
                 ,width:240
+                ,modal: false
+                ,cls: 'modx-loading-box'
                 ,progress:true
                 ,closable:false
             });
