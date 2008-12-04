@@ -45,34 +45,45 @@ MODx.Layout = function(config){
                 ,applyTo: 'modx-trees-div'
                 ,cls: 'modx-accordion'
                 ,width: '95%'
-                ,autoHeight: true
                 ,minSize: 100
+                ,minHeight: 300
+                ,maxHeight: 400
+                ,split: true
                 ,collapsible: true
+                ,hideBorders: true
                 ,resizable: true
-                ,layout: 'accordion'
-                ,layoutConfig: { 
-                    animate: true
-                    ,autoWidth: true
-                    ,titleCollapse: true
-                }
-                ,defaults: { 
-                    border: false
-                    ,autoHeight: true
-                    ,autoScroll: true
-                    ,fitToFrame: true
-                }
+                ,autoHeight: true
+                ,layout: 'fit'
                 ,items: [{
-                    title: _('resources')
-                    ,contentEl: 'modx_rt_div'
-                    ,resizeEl: 'modx_resource_tree'
-                },{
-                    title: _('elements')
-                    ,contentEl: 'modx_et_div'
-                    ,resizeEl: 'modx_element_tree'
-                },{
-                    title: _('files')
-                    ,contentEl: 'modx_ft_div'
-                    ,resizeEl: 'modx_file_tree'
+                    maxHeight: 450
+                    ,height: 450
+                    ,layout: 'accordion'
+                    ,layoutConfig: { 
+                        animate: true
+                        ,autoWidth: true
+                        ,autoScroll: true
+                        ,titleCollapse: true
+                    }
+                    ,defaults: {
+                        autoScroll: true
+                        ,fitToFrame: true
+                        ,autoHeight: false
+                        ,maxHeight: 450
+                        ,height: 450
+                    }
+                    ,items: [{                
+                        title: _('resources')
+                        ,contentEl: 'modx_rt_div'
+                        ,resizeEl: 'modx_resource_tree'
+                    },{
+                        title: _('elements')
+                        ,contentEl: 'modx_et_div'
+                        ,resizeEl: 'modx_element_tree'
+                    },{
+                        title: _('files')
+                        ,contentEl: 'modx_ft_div'
+                        ,resizeEl: 'modx_file_tree'
+                    }]
                 }]
             }
         ]
