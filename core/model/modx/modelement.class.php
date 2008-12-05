@@ -67,6 +67,24 @@ class modElement extends modAccessibleSimpleObject {
         parent :: __construct($xpdo);
     }
 
+    function get($k, $format= null, $formatTemplate= null) {
+        $value = parent :: get($k, $format, $formatTemplate);
+        if ($k === 'properties' && is_a($this->xpdo, 'modX') && $this->xpdo->getParser() && empty($value)) {
+            $value = !empty($this->properties) && is_string($this->properties)
+                ? $this->xpdo->parser->parsePropertyString($this->properties)
+                : null;
+        }
+        return $value;
+    }
+
+    function remove($ancestors= array ()) {
+        $result = $this->xpdo->removeCollection('modElementPropertySet', array('element' => $this->get('id'), 'element_class' => $this->_class));
+        if ($result) {
+            $result = parent :: remove($ancestors);
+        }
+        return $result;
+    }
+
     /**
      * Constructs a valid tag representation of the element.
      * 
@@ -77,11 +95,11 @@ class modElement extends modAccessibleSimpleObject {
             $propTemp = array();
             if (empty($this->_propertyString) && !empty($this->_properties)) {
                 while(list($key, $value) = each($this->_properties)) {
-                    if (is_object($value) || is_array($value)) {
-                        $propTemp[] = trim($key) . '=`' . md5(uniqid(rand(), true)) . '`';
-                    }
-                    elseif (is_scalar($value)) {
+                    if (is_scalar($value)) {
                         $propTemp[] = trim($key) . '=`' . $value . '`';
+                    }
+                    else {
+                        $propTemp[] = trim($key) . '=`' . md5(uniqid(rand(), true)) . '`';
                     }
                 }
                 if (!empty($propTemp)) {
@@ -266,11 +284,62 @@ class modElement extends modAccessibleSimpleObject {
      * @return array A simple array of properties ready to use for processing.
      */
     function getProperties($properties = null) {
+        $this->xpdo->getParser();
         $this->_properties= $this->xpdo->parser->parseProperties($this->get('properties'));
-        if ($properties !== null && !empty($properties)) {
+        $set= $this->getPropertySet();
+        if (!empty($set)) {
+            $this->_properties= array_merge($this->_properties, $set);
+        }
+        if (!empty($properties)) {
             $this->_properties= array_merge($this->_properties, $this->xpdo->parser->parseProperties($properties));
         }
         return $this->_properties;
+    }
+
+    /**
+     * Gets a named property set related to this element instance.
+     * 
+     * If a setName parameter is not provided, this function will attempt to
+     * extract a setName from the element name using the @ symbol to delimit the
+     * name of the property set.
+     * 
+     * Here is an example of an element tag using the @ modifier to specify a
+     * property set name:
+     *  [[ElementName@PropertySetName:FilterCommand=`FilterModifier`?
+     *      &PropertyKey1=`PropertyValue1`
+     *      &PropertyKey2=`PropertyValue2`
+     *  ]]
+     * 
+     * @param string|null $setName An explicit property set name to search for.
+     * @return array|null An array of properties or null if no set is found.
+     */
+    function getPropertySet($setName = null) {
+        $propertySet= null;
+        if ($setName === null) {
+            $name = $this->get('name');
+            $split= xPDO :: escSplit('@', $name);
+            if ($split && isset($split[1])) {
+                $name= $split[0];
+                $setName= $split[1];
+                $filters= xPDO :: escSplit(':', $setName);
+                if ($filters && isset($filters[1]) && !empty($filters[1])) {
+                    $setName= $filters[0];
+                    $name.= ':' . $filters[1];
+                }
+                $this->set('name', $name);
+            }
+        }
+        if (!empty($setName)) {
+            $propertySetObj= $this->xpdo->getObjectGraph('modPropertySet', '{"Elements":{}}', array(
+                'Elements.element' => $this->id,
+                'Elements.element_class' => $this->_class,
+                'modPropertySet.name' => $setName
+            ));
+            if ($propertySetObj) {
+                $propertySet= $this->xpdo->parser->parseProperties($propertySetObj->get('properties'));
+            }
+        }
+        return $propertySet;
     }
 
     /**
@@ -325,7 +394,55 @@ class modElement extends modAccessibleSimpleObject {
         }
         return $set;
     }
-    
+
+    /**
+     * Add a property set to this element, making it available for use.
+     * 
+     * @param string|modPropertySet $propertySet A modPropertySet object or the
+     * name of a modPropertySet object to create a relationship with.
+     * @return boolean True if a relationship was created or already exists.
+     */
+    function addPropertySet($propertySet) {
+        $added= false;
+        if (!empty($propertySet)) {
+            if (is_string($propertySet)) {
+                $propertySet = $this->xpdo->getObject('modPropertySet', array('name' => $propertySet));
+            }
+            if (is_object($propertySet) && is_a($propertySet, 'modPropertySet')) {
+                if (!$this->isNew() && !$propertySet->isNew() && $this->xpdo->getCount('modElementPropertySet', array('element' => $this->get('id'), 'element_class' => $this->_class, 'property_set' => $propertySet->get('id')))) {
+                    $added = true;
+                } else {
+                    $link= $this->xpdo->newObject('modElementPropertySet');
+                    $link->set('element', $this->get('id'));
+                    $link->set('element_class', $this->_class);
+                    $link->addOne($propertySet);
+                    $added = $link->save();
+                }
+            }
+        }
+        return $added;
+    }
+
+    /**
+     * Remove a property set from this element, making it unavailable for use.
+     * 
+     * @param string|modPropertySet $propertySet A modPropertySet object or the
+     * name of a modPropertySet object to dissociate from.
+     * @return boolean True if a relationship was destroyed.
+     */
+    function removePropertySet($propertySet) {
+        $removed = false;
+        if (!empty($propertySet)) {
+            if (is_string($propertySet)) {
+                $propertySet = $this->xpdo->getObject('modPropertySet', array('name' => $propertySet));
+            }
+            if (is_object($propertySet) && is_a($propertySet, 'modPropertySet')) {
+                $removed = $this->xpdo->removeObject('modElementPropertySet', array('element' => $this->get('id'), 'element_class' => $this->_class, 'property_set' => $propertySet->get('id')));
+            }
+        }
+        return $removed;
+    }
+
     /**
      * Indicates if the element is cacheable.
      * 
@@ -366,4 +483,3 @@ class modElement extends modAccessibleSimpleObject {
         return $restore;
     }
 }
-?>

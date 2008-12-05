@@ -2,7 +2,13 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
-MODx Revolution 2.0.0-alpha-6 ($LastChangedRevision$, $LastChangedDate$)
+MODx Revolution 2.0.0-beta-1 ($LastChangedRevision$, $LastChangedDate$)
+====================================
+- Added overridden modElement->get() to handle converting legacy property strings stored in the database.
+- Added modPropertySet class to represent persistent sets of properties that can be applied to modElement instances.
+- Added support for modElements to relate modPropertySet objects via modElementPropertySet (many-to-many).
+
+MODx Revolution 2.0.0-alpha-6 (LastChangedRevision: 4485 , LastChangedDate: 2008-11-25 11:58:49 -0600 (Tue, 25 Nov 2008))
 ====================================
 - [#MODX-395] i18n'ed the modMail classes, added lexicon topic 'mail' for handling mail strings
 - Added check to make sure user cannot browse to subdirs with ../ in connector processor fetching

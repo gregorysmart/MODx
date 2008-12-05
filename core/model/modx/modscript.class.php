@@ -95,4 +95,3 @@ class modScript extends modElement {
         return $this->_scriptName;
     }
 }
-?>

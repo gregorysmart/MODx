@@ -4,6 +4,14 @@
  *
  * @package setup
  */
+/* handle new class creation */
+$classes = array(
+    'modElementPropertySet',
+    'modPropertySet'
+);
+if (!empty($classes)) {
+    $this->createTable($classes);
+}
 
 /* remove some menu items that are deprecated from alpha */
 /* first, remove the dashes from revo-alpha */

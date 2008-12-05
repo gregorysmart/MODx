@@ -438,6 +438,10 @@ class modParser {
         $split= xPDO :: escSplit(':', $filtered);
         if ($split && isset($split[0])) {
             $filtered= $split[0];
+            $propsetSplit = xPDO :: escSplit('@', $filtered);
+            if ($propsetSplit && isset($propsetSplit[0])) {
+                $filtered= $propsetSplit[0];
+            }
         }
         return $filtered;
     }
@@ -988,4 +992,3 @@ class modLexiconTag extends modTag {
         return $this->_content;
     }
 }
-?>
