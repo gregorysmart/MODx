@@ -78,10 +78,8 @@ class modElement extends modAccessibleSimpleObject {
     }
 
     function remove($ancestors= array ()) {
-        $result = $this->xpdo->removeCollection('modElementPropertySet', array('element' => $this->get('id'), 'element_class' => $this->_class));
-        if ($result) {
-            $result = parent :: remove($ancestors);
-        }
+        $this->xpdo->removeCollection('modElementPropertySet', array('element' => $this->get('id'), 'element_class' => $this->_class));
+        $result = parent :: remove($ancestors);
         return $result;
     }
 
