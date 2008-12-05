@@ -410,10 +410,11 @@ class modElement extends modAccessibleSimpleObject {
                 if (!$this->isNew() && !$propertySet->isNew() && $this->xpdo->getCount('modElementPropertySet', array('element' => $this->get('id'), 'element_class' => $this->_class, 'property_set' => $propertySet->get('id')))) {
                     $added = true;
                 } else {
+                    if ($propertySet->isNew()) $propertySet->save();
                     $link= $this->xpdo->newObject('modElementPropertySet');
                     $link->set('element', $this->get('id'));
                     $link->set('element_class', $this->_class);
-                    $link->addOne($propertySet);
+                    $link->set('property_set', $propertySet->get('id'));
                     $added = $link->save();
                 }
             }
