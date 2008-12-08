@@ -1,6 +1,7 @@
 <?php
 /**
- * Get a list of directories and files
+ * Get a list of directories and files, sorting them first by folder/file and
+ * then alphanumerically.
  *
  * @param string $id The path to grab a list from
  * @param boolean $prependPath (optional) If true, will prepend rb_base_dir to
@@ -19,8 +20,10 @@ $_POST['hideFiles'] = isset($_POST['hideFiles']) &&
     ($_POST['hideFiles'] === true || $_POST['hideFiles'] === 'true') ? true : false;
 
 $dir = !isset($_REQUEST['id']) || $_REQUEST['id'] == 'root' ? '' : str_replace('n_','',$_REQUEST['id']);
-$da = array();
+
 $directories = array();
+$files = array();
+$ls = array();
 
 $actions = $modx->request->getAllActionIDs();
 
@@ -37,7 +40,7 @@ while(false !== ($name = $odir->read())) {
 
 	/* handle dirs */
 	if(is_dir($fullname)) {
-		$directories[] = array(
+		$directories[$name] = array(
 			'id' => $dir.'/'.$name,
 			'text' => $name,
 			'cls' => 'folder',
@@ -64,7 +67,7 @@ while(false !== ($name = $odir->read())) {
 
     /* get files in current dir */
     if (!is_dir($fullname) && $_POST['hideFiles'] != true) {
-        $directories[] = array(
+        $files[$name] = array(
             'id' => $dir.'/'.$name,
             'text' => $name,
             'cls' => 'file',
@@ -89,4 +92,14 @@ while(false !== ($name = $odir->read())) {
     }
 }
 
-return $modx->toJSON($directories);
+/* now sort files/directories */
+ksort($directories);
+foreach ($directories as $dir) {
+    $ls[] = $dir;
+}
+ksort($files);
+foreach ($files as $file) {
+    $ls[] = $file;
+}
+
+return $modx->toJSON($ls);
