@@ -156,6 +156,7 @@ MODx.panel.Resource = function(config) {
                     ,description: _('resource_richtext_help')
                     ,name: 'richtext'
                     ,inputValue: 1
+                    ,checked: true
                     
                 } : {}),{
                     xtype: 'checkbox'
