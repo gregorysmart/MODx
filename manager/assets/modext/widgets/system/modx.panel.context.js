@@ -32,23 +32,15 @@ MODx.panel.Context = function(config) {
                     html: '<h2>'+_('context')+': '+config.context+'</h2>'
                     ,id: 'context-name'
                 },{
-                    xtype: 'hidden'
-                    ,name: 'key'
-                    ,value: config.context
-                },{
-                    xtype: 'textfield'
+                    xtype: 'statictextfield'
                     ,fieldLabel: _('key')
-                    ,name: 'key'
+                    ,name: 'newkey'
                     ,width: 300
                     ,maxLength: 255
                     ,enableKeyEvents: true
                     ,allowBlank: false
-                    ,listeners: {
-                        'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('context-name').getEl().update('<h2>'+_('context')+': '+f.getValue()+'</h2>');
-                        }}
-                    }
                     ,value: config.context
+                    ,submitValue: true
                 },{
                     xtype: 'textarea'
                     ,fieldLabel: _('description')
