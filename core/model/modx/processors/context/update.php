@@ -51,6 +51,6 @@ if (isset($_POST['settings'])) {
 
 
 /* log manager action */
-$modx->logManagerAction('context_update','modContext',$context->get('id'));
+$modx->logManagerAction('context_update','modContext',$context->get('key'));
 
 return $modx->error->success('', $context);
