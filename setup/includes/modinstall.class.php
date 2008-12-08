@@ -370,6 +370,14 @@ class modInstall {
 
             /* if new install */
             if ($mode == MODX_INSTALL_MODE_NEW) {
+                /* add settings_version */
+                $currentVersion = include MODX_CORE_PATH . 'config/version.inc.php';
+
+                $settings_version = $this->xpdo->newObject('modSystemSetting');
+                $settings_version->set('key','settings_version');
+                $settings_version->set('value', $currentVersion['full_version']);
+                $settings_version->save();
+
                 /* add default admin user */
                 $user = $this->xpdo->newObject('modUser');
                 $user->set('username', $this->config['cmsadmin']);
