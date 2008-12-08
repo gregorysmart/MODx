@@ -1,22 +1,33 @@
 <?php
+/**
+ * Builds the MODx core transport package.
+ *
+ * @package modx
+ * @subpackage build
+ */
 $mtime = microtime();
 $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
-
-// get rid of time limit
+/* get rid of time limit */
 set_time_limit(0);
 
 error_reporting(E_ALL); ini_set('display_errors',true);
 
-// override with your own defines here (see build.config.sample.php)
-@ require_once dirname(__FILE__) . '/build.config.php';
+/* override with your own defines here (see build.config.sample.php) */
+$f = dirname(__FILE__) . '/build.config.php';
+if (file_exists($f)) {
+    @require_once $f;
+} else {
+    die('build.config.php was not found. Please make sure you have created one using the template of build.config.sample.php.');
+}
+unset($f);
 
 if (!defined('MODX_CORE_PATH'))
     define('MODX_CORE_PATH', dirname(dirname(__FILE__)) . '/core/');
-require_once (MODX_CORE_PATH . 'xpdo/xpdo.class.php');
+require_once MODX_CORE_PATH . 'xpdo/xpdo.class.php';
 
-// define the MODX path constants necessary for core installation
+/* define the MODX path constants necessary for core installation */
 if (!defined('MODX_BASE_PATH'))
     define('MODX_BASE_PATH', dirname(dirname(__FILE__)) . '/');
 if (!defined('MODX_MANAGER_PATH'))
@@ -26,7 +37,7 @@ if (!defined('MODX_CONNECTORS_PATH'))
 if (!defined('MODX_ASSETS_PATH'))
     define('MODX_ASSETS_PATH', MODX_BASE_PATH . 'assets/');
 
-// define the connection variables
+/* define the connection variables */
 if (!defined('XPDO_DSN'))
     define('XPDO_DSN', 'mysql:host=localhost;dbname=modx;charset=utf8');
 if (!defined('XPDO_DB_USER'))
@@ -36,6 +47,7 @@ if (!defined('XPDO_DB_PASS'))
 if (!defined('XPDO_TABLE_PREFIX'))
     define('XPDO_TABLE_PREFIX', 'modx_');
 
+/* instantiate xpdo instance */
 $xpdo = new xPDO(XPDO_DSN, XPDO_DB_USER, XPDO_DB_PASS,
     array (
         XPDO_OPT_TABLE_PREFIX => XPDO_TABLE_PREFIX,
@@ -54,6 +66,7 @@ $xpdo->setLogTarget('ECHO');
 $xpdo->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 $packageDirectory = MODX_CORE_PATH . 'packages/';
 
+/* remove pre-existing package files and directory */
 if (file_exists($packageDirectory . 'core.transport.zip')) {
     unlink($packageDirectory . 'core.transport.zip');
 }
@@ -61,6 +74,7 @@ if (file_exists($packageDirectory . 'core') && is_dir($packageDirectory . 'core'
     $cacheManager->deleteTree($packageDirectory . 'core', true);
 }
 
+/* create core transport package */
 $package = new xPDOTransport($xpdo, 'core', $packageDirectory);
 
 $xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
@@ -69,7 +83,7 @@ $xpdo->loadClass('modAccessibleObject');
 $xpdo->loadClass('modAccessibleSimpleObject');
 $xpdo->loadClass('modPrincipal');
 
-// modWorkspace
+/* modWorkspace */
 $collection = array ();
 $collection['1'] = $xpdo->newObject('modWorkspace');
 $collection['1']->fromArray(array (
@@ -86,7 +100,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modx wtf provisioner
+/* modx wtf provisioner */
 $collection = array ();
 $collection['1'] = $xpdo->newObject('transport.modTransportProvider');
 $collection['1']->fromArray(array (
@@ -106,8 +120,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-
-// modAction
+/* modAction */
 $collection= array();
 include dirname(__FILE__).'/data/transport.core.actions.php';
 $attributes = array (
@@ -119,7 +132,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modMenu
+/* modMenu */
 $collection= array();
 include dirname(__FILE__).'/data/transport.core.menus.php';
 $attributes = array (
@@ -131,7 +144,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modContentTypes
+/* modContentTypes */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.content_types.php';
 $attributes = array (
@@ -143,7 +156,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modContext = web
+/* modContext = web */
 $c = $xpdo->newObject('modContext');
 $c->fromArray(array (
     'key' => 'web',
@@ -171,7 +184,7 @@ $attributes['resolve'][] = array (
 $package->put($c, $attributes);
 unset ($c, $attributes);
 
-// modContext = mgr
+/* modContext = mgr */
 $c = $xpdo->newObject('modContext');
 $c->fromArray(array (
     'key' => 'mgr',
@@ -214,7 +227,7 @@ $attributes['resolve'][] = array (
 $package->put($c, $attributes);
 unset ($c, $attributes);
 
-// modContext = connector
+/* modContext = connector */
 $c = $xpdo->newObject('modContext');
 $c->fromArray(array (
     'key' => 'connector',
@@ -293,7 +306,7 @@ $attributes['resolve'][] = array (
 $package->put($c, $attributes);
 unset ($c, $attributes);
 
-// modEvent collection
+/* modEvent collection */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.events.php';
 $attributes = array (
@@ -305,7 +318,7 @@ foreach ($collection as $c) {
 }
 unset ($c, $attributes);
 
-// modSystemSetting collection
+/* modSystemSetting collection */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.system_settings.php';
 $attributes= array (
@@ -332,7 +345,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modContextSetting collection
+/* modContextSetting collection */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.context_settings.php';
 $attributes= array(
@@ -344,7 +357,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modUserGroup
+/* modUserGroup */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.usergroups.php';
 $attributes = array (
@@ -356,7 +369,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modUserGroupRole
+/* modUserGroupRole */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.usergrouproles.php';
 $attributes = array (
@@ -368,7 +381,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// modAccessPolicy
+/* modAccessPolicy */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.accesspolicies.php';
 $attributes = array (
@@ -380,7 +393,7 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
-// Lexicon stuff
+/* Lexicon stuff */
 $entries = array ();
 $topics = array ();
 $languages = array ();
@@ -415,7 +428,7 @@ foreach ($languages as $l) {
 }
 unset ($entries, $languages, $topics, $c, $t, $l);
 
-// modAccessContext
+/* modAccessContext */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.access_contexts.php';
 $attributes = array (
