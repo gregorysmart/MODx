@@ -46,10 +46,7 @@ class modXMLRPCResponse extends modResponse {
         if (!is_a($this->modx->resource, 'modXMLRPCResource')) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
         }
-
-        if (!$this->getServer()) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
-        }
+        if (!isset($options['rpc_type'])) $options['rpc_type']= 'XML';
 
         $this->modx->resource->_output= $this->modx->resource->_content;
 
@@ -58,6 +55,10 @@ class modXMLRPCResponse extends modResponse {
         $maxIterations= isset ($this->modx->config['parser_max_iterations']) ? intval($this->modx->config['parser_max_iterations']) : 10;
         $this->modx->parser->processElementTags('', $this->modx->resource->_output, true, false, '[[', ']]', array(), $maxIterations);
         $this->modx->parser->processElementTags('', $this->modx->resource->_output, true, true, '[[', ']]', array(), $maxIterations);
+
+        if (!$this->getServer()) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load ' . $options['rpc_type'] . '-RPC Server.');
+        }
 
         $this->server->service();
         @ ob_end_flush();

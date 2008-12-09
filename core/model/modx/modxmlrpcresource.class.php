@@ -1,5 +1,7 @@
 <?php
 /**
+ * Extends modResource to service XML-RPC client requests.
+ * 
  * @package modx
  */
 class modXMLRPCResource extends modResource {
