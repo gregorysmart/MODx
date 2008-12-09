@@ -147,15 +147,11 @@ Ext.reg('modx-layout',MODx.Layout);
  */
 MODx.LayoutMgr = function() {
     var _activeMenu = 'menu0';
-    var _currentAction =  0;
     var _dashboardActive = true;
     
     return {
         loadFrame: function(a,p) {
-            if (_currentAction != a) {
-                Ext.get('modx_content').dom.src = '?a='+a+'&'+(p || '');
-                _currentAction = a;
-            }
+            Ext.get('modx_content').dom.src = '?a='+a+'&'+(p || '');
             this.hideDashboard();
             return false;
         }
