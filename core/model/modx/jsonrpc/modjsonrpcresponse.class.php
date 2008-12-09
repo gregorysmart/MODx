@@ -15,7 +15,7 @@ class modJSONRPCResponse extends modXMLRPCResponse {
         parent :: __construct($modx);
     }
 
-    function outputContent($noEvent= false) {
+    function outputContent($options= array()) {
         $error= '';
         if (!is_a($this->modx->resource, 'modJSONRPCResource')) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
@@ -25,7 +25,7 @@ class modJSONRPCResponse extends modXMLRPCResponse {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
         }
 
-        parent :: outputContent($noEvent);
+        parent :: outputContent($options);
     }
 
     function getServer($execute= false) {

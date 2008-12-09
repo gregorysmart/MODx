@@ -41,7 +41,7 @@ class modXMLRPCResponse extends modResponse {
      * @access public
      * @param boolean $noEvent Unused.
      */
-    function outputContent($noEvent= false) {
+    function outputContent($options= array()) {
         $error= '';
         if (!is_a($this->modx->resource, 'modXMLRPCResource')) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
