@@ -130,7 +130,7 @@ $sql = "ALTER TABLE {$table} CHANGE COLUMN `postdate` `date_sent` DATETIME NOT N
 $this->processResults($class,$description,$sql);
 $description = 'Changed modUserMessage `subject` field from VARCHAR(60) to VARCHAR(255).';
 $sql = "ALTER TABLE {$table} CHANGE COLUMN `subject` `subject` VARCHAR(255) NOT NULL";
-$this->processResults($this->install->xpdo,$results,$class,$description,$sql);
+$this->processResults($class,$description,$sql);
 $description = 'Changed modUserMessage `messageread` field to `read`.';
 $sql = "ALTER TABLE {$table} CHANGE COLUMN `messageread` `read` TINYINT(1) NOT NULL";
 $this->processResults($class,$description,$sql);

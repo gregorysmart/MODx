@@ -429,13 +429,19 @@ class modInstall {
                 }
 
                 /* update settings_version */
-                if ($settings_version = $this->xpdo->getObject('modSystemSetting', array(
-                        'key' => 'settings_version'
-                    ))) {
-                    $currentVersion = include MODX_CORE_PATH . 'config/version.inc.php';
-                    $settings_version->set('value', $currentVersion['full_version']);
-                    $settings_version->save();
+                $settings_version = $this->xpdo->getObject('modSystemSetting', array(
+                    'key' => 'settings_version'
+                ));
+                if ($settings_version == null) {
+                    $settings_version = $this->xpdo->newObject('modSystemSetting');
+                    $settings_version->set('key','settings_version');
+                    $settings_version->set('xtype','textfield');
+                    $settings_version->set('namespace','core');
+                    $settings_version->set('area','system');
                 }
+                $currentVersion = include MODX_CORE_PATH . 'config/version.inc.php';
+                $settings_version->set('value', $currentVersion['full_version']);
+                $settings_version->save();
 
                 /* make sure admin user (1) has proper group and role */
                 $adminUser = $this->xpdo->getObject('modUser', 1);
