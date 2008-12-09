@@ -18,13 +18,7 @@ class modJSONRPCResponse extends modXMLRPCResponse {
     }
 
     function outputContent($options= array()) {
-        $error= '';
-        if (!is_a($this->modx->resource, 'modJSONRPCResource')) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load JSON-RPC Server.');
-        }
-
         if (!isset($options['rpc_type'])) $options['rpc_type']= 'JSON';
-
         parent :: outputContent($options);
     }
 

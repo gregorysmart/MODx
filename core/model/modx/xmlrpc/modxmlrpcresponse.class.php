@@ -42,11 +42,12 @@ class modXMLRPCResponse extends modResponse {
      * @param boolean $noEvent Unused.
      */
     function outputContent($options= array()) {
-        $error= '';
-        if (!is_a($this->modx->resource, 'modXMLRPCResource')) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load XML-RPC Server.');
-        }
         if (!isset($options['rpc_type'])) $options['rpc_type']= 'XML';
+
+        $resourceClass = 'mod' . $options['rpc_type'] . 'RPCResource';
+        if (!is_a($this->modx->resource, $resourceClass)) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load ' . $options['rpc_type'] . '-RPC Server class.');
+        }
 
         $this->modx->resource->_output= $this->modx->resource->_content;
 
