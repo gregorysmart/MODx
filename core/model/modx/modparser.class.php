@@ -508,7 +508,7 @@ class modTag {
      */
     function get($k) {
         $value = null;
-        if (isset($this->_fields[$k])) {
+        if (array_key_exists($k, $this->_fields)) {
             if ($k == 'properties') {
                 $value = is_string($this->_fields[$k]) && !empty($this->_fields[$k]) 
                     ? unserialize($this->_fields[$k]) 
@@ -527,7 +527,9 @@ class modTag {
      * @param mixed $v The value to assign to the field.
      */
     function set($k, $v) {
-        if ($k == 'properties') $v = is_array($v) ? serialize($v) : $v;
+        if ($k == 'properties') {
+            $v = is_array($v) ? serialize($v) : $v;
+        }
         $this->_fields[$k]= $v;
     }
     /**
@@ -682,7 +684,7 @@ class modTag {
     function getProperties($properties = null) {
         $this->_properties= $this->modx->parser->parseProperties($this->get('properties'));
         if ($properties !== null && !empty($properties)) {
-            $this->_properties= $this->modx->parser->parseProperties($properties);
+            $this->_properties= array_merge($this->_properties, $this->modx->parser->parseProperties($properties));
         }
         return $this->_properties;
     }
