@@ -1767,17 +1767,20 @@ class modX extends xPDO {
      */
     function getPageInfo($pageid=-1, $active=1, $fields='id, pagetitle, description, alias, class_key, context_key') {
         $data = false;
-        $criteria= $this->newQuery('modResource');
-        $criteria->select($fields);
-        $criteria->where(array(
-            'id' => $pageid,
-            'published' => 1,
-            'deleted' => '0'
-        ));
-        if ($obj= $this->getObject('modResource', $criteria)) {
-            $data= $obj->toArray();
+        $pageid = intval($pageid);
+        if ($pageid > 0) {
+            $criteria= $this->newQuery('modResource');
+            $criteria->select($fields);
+            $criteria->where(array(
+                'id' => $pageid,
+                'published' => !empty($active) ? 1 : '0',
+                'deleted' => '0'
+            ));
+            if ($obj= $this->getObject('modResource', $criteria)) {
+                $data= $obj->toArray();
+            }
+            if ($data == null) $data = false;
         }
-        if ($data == null) $data = false;
         return $data;
     }
 
