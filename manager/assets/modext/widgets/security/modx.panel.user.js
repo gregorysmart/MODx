@@ -53,9 +53,11 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
     }
     ,beforeSubmit: function(o) {
         var g = Ext.getCmp('grid-user-settings');
-        Ext.apply(o.form.baseParams,{
-            settings: g.encodeModified()
-        });
+        if (g) {
+            Ext.apply(o.form.baseParams,{
+                settings: g.encodeModified()
+            });
+        }
     }
     
     ,success: function(o) {
