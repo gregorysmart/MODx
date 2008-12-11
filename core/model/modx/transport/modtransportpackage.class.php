@@ -189,13 +189,14 @@ class modTransportPackage extends xPDOObject {
      *
      * @return boolean True if successful.
      */
-    function uninstall() {
+    function uninstall($options = array()) {
         $uninstalled = false;
         if ($this->getTransport()) {
             $this->getOne('Workspace');
             $wc = isset($this->Workspace->config) && is_array($this->Workspace->config) ? $this->Workspace->config : array();
             $at = is_array($this->get('attributes')) ? $this->get('attributes') : array();
             $attributes = array_merge($wc,$at);
+            $attributes = array_merge($attributes, $options);
             @ini_set('max_execution_time', 0);
             if ($this->package->uninstall($attributes)) {
                 $uninstalled = true;
@@ -224,7 +225,7 @@ class modTransportPackage extends xPDOObject {
         if (is_dir($targetDir) && is_writable($targetDir)) {
             $source= $this->get('service_url') . $sourceFile;
             if ($handle= @ fopen($source, 'rb')) {
-                $filesize= filesize($source);
+                $filesize= @ filesize($source);
                 $memory_limit= @ ini_get('memory_limit');
                 if (!$memory_limit) $memory_limit= '8M';
                 $byte_limit= $this->_bytes($memory_limit) * .5;

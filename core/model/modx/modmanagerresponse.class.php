@@ -38,6 +38,7 @@ class modManagerResponse extends modResponse {
                 $act = $this->modx->actionMap[$action];
 
                 /* assign custom action topics to smarty, so can load custom topics for each page */
+                $this->modx->lexicon->load('action');
                 $topics = explode(',',$act['lang_topics']);
                 foreach ($topics as $topic) { $this->modx->lexicon->load($topic); }
                 $this->modx->smarty->assign('_lang_topics',$act['lang_topics']);

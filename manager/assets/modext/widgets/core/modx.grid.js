@@ -135,7 +135,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
      */
     ,loadWindow: function(btn,e,win,or) {
         var r = this.menu.record;
-        if (!this.windows[win.xtype]) {  
+        if (!this.windows[win.xtype] || win.force) {  
             Ext.applyIf(win,{
                 record: win.blankValues ? {} : r
                 ,grid: this

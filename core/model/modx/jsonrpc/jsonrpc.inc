@@ -1498,11 +1498,13 @@
 				//else
 				//{
 				//}
+                if (is_array($val)) {
 				foreach($val as $key2 => $val2)
 				{
 					$rs .= ',"'.json_encode_entities($key2, null, $charset_encoding).'":';
 					$rs .= serialize_jsonrpcval($val2, $charset_encoding);
 				}
+                }
 				$rs = '{' . substr($rs, 1) . '}';
 				break;
 			default:

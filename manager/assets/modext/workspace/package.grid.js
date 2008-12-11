@@ -54,29 +54,28 @@ MODx.grid.Package = function(config) {
 Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     console: null
     
-    ,update: function(btn,e) {
-    	var r = this.menu.record;
-        var topic = '/workspace/package/update/'+r.signature+'/';
-        this.loadConsole(btn,topic);
-        
+    ,update: function(btn,e) {        
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'update'
-                ,signature: r.signature
-                ,register: 'mgr'
-                ,topic: topic
+                ,signature: this.menu.record.signature
             }
             ,listeners: {
-                'success': {fn:function(r) {
-                    this.console.complete();
-                    Ext.Msg.hide();
-                    this.refresh();
-                },scope:this}
-                ,'failure': {fn:function(r) {
-                	this.console.complete();
-                	Ext.Msg.hide();
-                	return false;
+                'success': {fn:function(r) {           
+                    this.loadWindow(btn,e,{
+                        xtype: 'window-package-update'
+                        ,packages: r.object
+                        ,record: this.menu.record
+                        ,force: true
+                        ,listeners: {
+                            'success': {fn: function(o) {
+                                this.refresh();
+                                this.menu.record = o.a.result.object;
+                                this.install(btn,e);
+                            },scope:this}
+                        }
+                    });
                 },scope:this}
             }
         });
@@ -112,20 +111,31 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     }
     
     ,uninstall: function(btn,e) {
-    	var r = this.menu.record;
+        this.loadWindow(btn,e,{
+            xtype: 'window-package-uninstall'
+            ,listeners: {
+                'success': {fn: function(va) { this._uninstall(this.menu.record,va,btn); },scope:this}
+            }
+        });
+    }
+    
+    ,_uninstall: function(r,va,btn) {
+        var r = this.menu.record;
+        va = va || {};
         var topic = '/workspace/package/uninstall/'+r.signature+'/';
         this.loadConsole(btn,topic);
+        Ext.apply(va,{
+            action: 'uninstall'
+            ,signature: r.signature
+            ,register: 'mgr'
+            ,topic: topic
+        });
         
         MODx.Ajax.request({
             url: this.config.url
-            ,params: {
-                action: 'uninstall'
-                ,signature: r.signature
-                ,register: 'mgr'
-                ,topic: topic
-            }
+            ,params: va
             ,listeners: {
-            	'success': {fn:function(r) {
+                'success': {fn:function(r) {
                     this.console.complete();
                     Ext.Msg.hide();
                     this.refresh();
@@ -136,7 +146,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                     Ext.Msg.hide();
                     this.refresh();
                 },scope:this}
-        	}
+            }
         });
     }
     
@@ -154,7 +164,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         });
     }
     
-    ,install: function(btn,e) {
+    ,install: function(btn,e,r) {
         this.loadWindow(btn,e,{
             xtype: 'window-package-installer'
             ,listeners: {

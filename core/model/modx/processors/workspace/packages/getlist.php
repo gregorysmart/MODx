@@ -23,8 +23,28 @@ $c->sortby('`modTransportPackage`.`disabled`', 'ASC');
 $c->sortby('`modTransportPackage`.`signature`', 'ASC');
 $packages = $modx->getCollection('transport.modTransportPackage',$c);
 
+
+/* hide prior versions */
+$priorVersions = array();
+foreach ($packages as $key => $package) {
+    $newSig = explode('-',$key);
+    $name = $newSig[0];
+    $newVers = $newSig[1].'-'.(isset($newSig[2]) ? $newSig[2] : '');
+    /* if package already exists, see if later version */
+    if (isset($priorVersions[$name])) {
+        $oldVers = $priorVersions[$name];
+        /* if package is newer and installed, hide old one */
+        if (version_compare($oldVers,$newVers,'<') && $package->get('installed')) {
+            unset($packages[$name.'-'.$oldVers]);
+        }
+    }
+    $priorVersions[$name] = $newVers;
+}
+
+/* now create output array */
 $ps = array();
 foreach ($packages as $package) {
+
     if ($package->installed == '0000-00-00 00:00:00') $package->set('installed',null);
     $pa = $package->toArray();
 
@@ -48,7 +68,7 @@ foreach ($packages as $package) {
     $pa['menu'] = array();
     if ($package->get('provider') != 0) {
         $pa['menu'][] = array(
-            'text' => $modx->lexicon('package_update'),
+            'text' => $modx->lexicon('package_check_for_updates'),
             'handler' => 'this.update',
         );
     }

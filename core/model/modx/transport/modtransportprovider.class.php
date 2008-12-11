@@ -4,8 +4,8 @@
  * @subpackage transport
  */
 
-require_once(MODX_CORE_PATH . 'model/modx/xmlrpc/xmlrpc.inc');
-require_once(MODX_CORE_PATH . 'model/modx/jsonrpc/jsonrpc.inc');
+require_once MODX_CORE_PATH . 'model/modx/xmlrpc/xmlrpc.inc';
+require_once MODX_CORE_PATH . 'model/modx/jsonrpc/jsonrpc.inc';
 
 /**
  * Represents a remote transport package provider service.
@@ -28,6 +28,26 @@ class modTransportProvider extends xPDOSimpleObject {
         $this->set('created', strftime('%Y-%m-%d %H:%M:%S'));
     }
 
+    function handleResponse($response) {
+        $result = array();
+        if (!is_a($response, 'jsonrpcresp')) {
+            $msg = $this->xpdo->lexicon('provider_err_no_response',array('provider' => $this->get('service_url')));
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, $msg);
+            return $msg;
+        }
+        if ($response->faultCode()) {
+            $msg = $this->xpdo->lexicon('provider_err_connect',array('error' => $response->faultString()));
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$msg);
+            return $msg;
+        }
+        elseif ($value = $response->value()) {
+            if (is_array($value)) {
+                $result = $value;
+            }
+        }
+        return $result;
+    }
+
     /**
      * Scan the provider for new packages available for installation.
      *
@@ -38,29 +58,21 @@ class modTransportProvider extends xPDOSimpleObject {
         $installed = array ();
         if ($installedPkgs = $this->getMany('Packages')) {
             foreach ($installedPkgs as $iPkg) {
-                $installed[] = new jsonrpcval($iPkg->toArray(), 'struct');
+                $installed[] = $iPkg->get('signature');
             }
         }
+        $installed = implode(',',$installed);
+        $installed = new jsonrpcval($installed,'string');
         $cfg = isset($this->xpdo->transport)
             ? $this->xpdo->transport->config
             : array();
         $options = new jsonrpcval($cfg, 'struct');
-        $request = new jsonrpcmsg('transport.listAvailable');
-        $request->addParam($installed);
+        $request = new jsonrpcmsg('modx.modx_get_repositories');
         $request->addParam($options);
+        $request->addParam($installed);
         $response = $this->sendRequest($request);
-        if (!is_a($response, 'jsonrpcresp')) {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error in getting a response from the server: " . $this->get('service_url'));
-        }
-        if ($response->faultCode()) {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error scanning for new packages: " . $response->faultString());
-        }
-        elseif ($value = $response->value()) {
-            if (is_array($value)) {
-                $packages = $value;
-            }
-        }
-        return $packages;
+
+        return $this->handleResponse($response);
     }
 
     /**
@@ -77,22 +89,31 @@ class modTransportProvider extends xPDOSimpleObject {
             }
         }
         $options = new jsonrpcval($this->xpdo->transport->config, 'struct');
-        $request = new jsonrpcmsg('transport.listUpdates');
+        $request = new jsonrpcmsg('modx.modx_update_all_packages');
         $request->addParam($installed);
         $request->addParam($options);
         $response = $this->sendRequest($request);
-        if (!is_a($response, 'jsonrpcresp')) {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error in getting a response from the server: " . $this->get('service_url'));
-        }
-        if ($response->faultCode()) {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Error scanning for package updates: " . $response->faultString());
-        }
-        elseif ($value = $response->value()) {
-            if (is_array($value)) {
-                $updates = $value;
-            }
-        }
-        return $updates;
+
+        return $this->handleResponse($response);
+    }
+
+    /**
+     * Grab all updates for a specific package
+     *
+     * @access public
+     * @param modTransportPackage $package The package to grab updates for
+     * @return array An array of available updates for the package
+     */
+    function getUpdatesForPackage($package) {
+        $updates = array ();
+        $pa = $package->toArray();
+
+        $signature = new jsonrpcval($package->get('signature'),'string');
+        $options = new jsonrpcval($this->xpdo->transport->config,'struct');
+        $request = new jsonrpcmsg('modx.modx_update_package',array($signature,$options));
+        $response = $this->sendRequest($request);
+
+        return $this->handleResponse($response);
     }
 
     /**

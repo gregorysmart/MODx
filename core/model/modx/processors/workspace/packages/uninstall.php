@@ -23,7 +23,10 @@ if ($package == null) {
 
 $modx->log(MODX_LOG_LEVEL_INFO,$modx->lexicon('package_uninstall_info_prep'));
 
-if ($package->uninstall() == false) {
+$options = array(
+    'preexisting_mode' => $_POST['preexisting_mode'],
+);
+if ($package->uninstall($options) == false) {
     return $modx->error->failure(sprintf($modx->lexicon('package_err_uninstall'),$package->getPrimaryKey()));
 }
 

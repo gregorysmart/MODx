@@ -107,7 +107,7 @@ $collection['1']->fromArray(array (
     'id' => 1,
     'name' => 'MODx Web Transport Facility',
     'description' => 'The official MODx transport facility for 3rd party components.',
-    'service_url' => 'http://wtf.modxcms.com/repos/addons.js',
+    'service_url' => 'http://wtf.modxcms.com/addons2.js',
     'created' => strftime('%Y-%m-%d %H:%M:%S'),
 ), '', true, true);
 $attributes = array (

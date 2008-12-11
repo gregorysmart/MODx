@@ -9,18 +9,18 @@ MODx.panel.PackageDownload = function(config) {
     Ext.applyIf(config,{
         border: false
         ,layout: 'column'
-        ,height: 400
+        ,height: 280
         ,width: Ext.isIE ? 650 : '95%'
         ,items: [{
             xtype: 'tree-package-download'
             ,id: 'tree-package-download'
             ,columnWidth: 0.7
-            ,width: Ext.isIE ? 400 : '60%'
-            ,height: 400
+            ,width: Ext.isIE ? 300 : '60%'
+            ,height: 270
             ,autoHeight: false
         },{
             columnWidth: 0.3
-            ,height: 400
+            ,height: 270
             ,width: Ext.isIE ? 250 : '35%'
             ,border: false
             ,autoScroll: true
@@ -28,7 +28,7 @@ MODx.panel.PackageDownload = function(config) {
                 id: 'panel-package-info'
                 ,xtype: 'panel'
                 ,style: 'padding: ".5em"'
-                ,height: 400
+                ,height: 270
                 ,autoScroll: true
                 ,html: ''
             }]

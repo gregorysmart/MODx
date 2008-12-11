@@ -143,7 +143,7 @@ class modManagerRequest extends modRequest {
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * This implementation adds register logging capabilities via $_POST vars
      * when the error handler is loaded.
      */
