@@ -1768,6 +1768,9 @@ class modX extends xPDO {
     function getPageInfo($pageid=-1, $active=1, $fields='id, pagetitle, description, alias, class_key, context_key') {
         $data = false;
         $pageid = intval($pageid);
+        if ($pageid == -1) {
+            $pageid = is_object($this->resource) && $this->resource->id > 0 ? $this->resource->id : 0;
+        }
         if ($pageid > 0) {
             $criteria= $this->newQuery('modResource');
             $criteria->select($fields);
@@ -2587,6 +2590,10 @@ class modSystemEvent {
      * @var mixed
      */
     var $returnedValues;
+    /**
+     * @var array
+     */
+    var $params;
     /**@#-*/
 
     /**
