@@ -44,10 +44,9 @@ foreach ($packages as $signature) {
 	if ($package != null) continue;
 
 	$package = $modx->newObject('transport.modTransportPackage');
-	$package->set('signature',$signature);
-	$package->set('state',1);
-	$package->set('installed',0);
-	$package->set('workspace',$workspace->get('id'));
+	$package->set('signature', $signature);
+	$package->set('state', 1);
+	$package->set('workspace', $workspace->get('id'));
 
 	if ($package->save() === false) {
         return $modx->error->failure($modx->lexicon('package_err_create'));
