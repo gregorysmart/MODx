@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Modified OnUserNotFound event handling not to rely on references which no longer work properly with recent changes to property handling.
 - Added overridden modElement->get() to handle converting legacy property strings stored in the database.
 - Added modPropertySet class to represent persistent sets of properties that can be applied to modElement instances.
 - Added support for modElements to relate modPropertySet objects via modElementPropertySet (many-to-many).

@@ -40,15 +40,23 @@ if (is_array($rt)) {
 
 $user= $modx->getObjectGraph('modUser', '{"modUserProfile":{},"modUserSetting":{}}', array ('modUser.username' => $username));
 if (!$user) {
-    $modx->invokeEvent("OnUserNotFound", array(
-        'user' => & $user,
-        'username' => & $username,
+    $ru = $modx->invokeEvent("OnUserNotFound", array(
+        'user' => $user,
+        'username' => $username,
         'password' => $password,
         array (
-            'rememberme' => & $rememberme,
+            'rememberme' => $rememberme,
             'loginContext' => $loginContext,
         )
     ));
+    if (!empty($ru)) {
+        foreach ($ru as $obj) {
+            if (is_object($obj) && is_a($obj, 'modUser')) {
+                $user = $obj;
+                break;
+            }
+        }
+    }
     if (!is_object($user) || !is_a($user, 'modUser')) {
         return $modx->error->failure($modx->lexicon('login_cannot_locate_account'));
     }
@@ -125,8 +133,8 @@ if ($rememberme) {
 $postLoginAttributes = array(
     'user' => $user,
     'attributes' => array(
-        'rememberme' => & $rememberme,
-        'loginContext' => & $loginContext
+        'rememberme' => $rememberme,
+        'loginContext' => $loginContext
     )
 );
 if ($loginContext == 'mgr') {
