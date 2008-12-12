@@ -29,12 +29,13 @@ MODx.panel.Plugin = function(config) {
                 ,defaults: { border: false ,msgTarget: 'side' }
                 ,items: [{
                     html: '<h2>'+_('plugin')+': '+config.name+'</h2>'
-                    ,id: 'plugin-name'
+                    ,id: 'plugin-header'
                 },{
                     html: '<p>'+_('plugin_msg')+'</p>'
                 },{
                     xtype: 'hidden'
                     ,name: 'id'
+                    ,id: 'plugin-id'
                     ,value: config.plugin
                 },{
                     xtype: 'hidden'
@@ -44,37 +45,41 @@ MODx.panel.Plugin = function(config) {
                     xtype: 'textfield'
                     ,fieldLabel: _('plugin_name')
                     ,name: 'name'
+                    ,id: 'plugin-name'
                     ,width: 300
                     ,maxLength: 255
                     ,enableKeyEvents: true
                     ,allowBlank: false
                     ,listeners: {
                         'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('plugin-name').getEl().update('<h2>'+_('plugin')+': '+f.getValue()+'</h2>');
+                            Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+f.getValue()+'</h2>');
                         }}
                     }
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('plugin_desc')
                     ,name: 'description'
+                    ,id: 'plugin-description'
                     ,width: 300
                     ,maxLength: 255
                 },{
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
-                    ,id: 'fld-category'
+                    ,id: 'plugin-category'
                     ,width: 250
                     ,value: config.category || null
                 },{
                     xtype: 'checkbox'
                     ,fieldLabel: _('plugin_disabled')
                     ,name: 'disabled'
+                    ,id: 'plugin-disabled'
                 },{
                     xtype: 'checkbox'
                     ,fieldLabel: _('plugin_lock')
                     ,description: _('plugin_lock_msg')
                     ,name: 'locked'
+                    ,id: 'plugin-locked'
                 },{
                     html: onPluginFormRender
                     ,border: false
@@ -84,6 +89,7 @@ MODx.panel.Plugin = function(config) {
                     xtype: 'textarea'
                     ,hideLabel: true
                     ,name: 'plugincode'
+                    ,id: 'plugin-plugincode'
                     ,width: '95%'
                     ,height: 400
                     ,value: "<?php\n\n?>"
@@ -135,7 +141,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
             		if (r.object.category == '0') { r.object.category = null; }
                     r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>";
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('plugin-name').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
@@ -157,7 +163,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         Ext.getCmp('grid-plugin-event').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('fld-category').getValue();
+        var c = Ext.getCmp('plugin-category').getValue();
         var u = c != '' && c != null ? 'n_plugin_category_'+c : 'n_type_plugin'; 
         t.refreshNode(u,true);
     }

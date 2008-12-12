@@ -98,7 +98,7 @@ MODx.panel.WebLink = function(config) {
                     ,fieldLabel: _('resource_template')
                     ,description: _('resource_template_help')
                     ,name: 'template'
-                    ,id: 'tpl'
+                    ,id: 'resource-template'
                     ,width: 300
                     ,baseParams: {
                         action: 'getList'

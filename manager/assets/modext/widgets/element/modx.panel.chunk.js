@@ -29,13 +29,14 @@ MODx.panel.Chunk = function(config) {
                 ,items: [{
                         html: '<h2>'+_('chunk')+': '+config.name+'</h2>'
                         ,border: false
-                        ,id: 'chunk-name'
+                        ,id: 'chunk-header'
                     },{
                         html: '<p>'+_('chunk_msg')+'</p>'
                         ,border: false
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
+                        ,id: 'chunk-id'
                         ,value: config.chunk
                     },{
                         xtype: 'hidden'
@@ -45,26 +46,28 @@ MODx.panel.Chunk = function(config) {
                         xtype: 'textfield'
                         ,fieldLabel: _('name')
                         ,name: 'name'
+                        ,id: 'chunk-name'
                         ,width: 300
                         ,maxLength: 255
                         ,enableKeyEvents: true
                         ,allowBlank: false
                         ,listeners: {
                             'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('chunk-name').getEl().update('<h2>'+_('chunk')+': '+f.getValue()+'</h2>');
+                                Ext.getCmp('chunk-header').getEl().update('<h2>'+_('chunk')+': '+f.getValue()+'</h2>');
                             }}
                         }
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('description')
                         ,name: 'description'
+                        ,id: 'chunk-description'
                         ,width: 300
                         ,maxLength: 255
                     },{
                         xtype: 'combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
-                        ,id: 'fld-category'
+                        ,id: 'chunk-category'
                         ,width: 250
                         ,value: config.category || null
                     },{
@@ -72,6 +75,7 @@ MODx.panel.Chunk = function(config) {
                         ,fieldLabel: _('chunk_lock')
                         ,description: _('chunk_lock_msg')
                         ,name: 'locked'
+                        ,id: 'chunk-locked'
                         ,inputValue: true
                     },{
                         html: onChunkFormRender
@@ -83,6 +87,7 @@ MODx.panel.Chunk = function(config) {
                         xtype: 'textarea'
                         ,hideLabel: true
                         ,name: 'snippet'
+                        ,id: 'chunk-snippet'
                         ,width: '95%'
                         ,height: 400
                         ,value: ""
@@ -134,7 +139,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
                     if (r.object.category == '0') { r.object.category = null; }
                     if (r.object.snippet == 'NULL') { r.object.snippet = ''; }
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('chunk-name').getEl().update('<h2>'+_('chunk')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('chunk-header').getEl().update('<h2>'+_('chunk')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
@@ -152,7 +157,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
     }
     ,success: function(r) {
         Ext.getCmp('grid-element-properties').getStore().commitChanges();
-        var c = Ext.getCmp('fld-category').getValue();
+        var c = Ext.getCmp('chunk-category').getValue();
         var n = c !== '' && c !== null ? 'n_chunk_category_'+c : 'n_type_chunk';
         var t = parent.Ext.getCmp('modx_element_tree');
         if (t) {

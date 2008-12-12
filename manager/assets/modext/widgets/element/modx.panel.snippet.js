@@ -28,12 +28,13 @@ MODx.panel.Snippet = function(config) {
                 ,bodyStyle: 'padding: 1.5em;'
                 ,items: [{
                     html: '<h2>'+_('snippet')+': '+config.name+'</h2>'
-                    ,id: 'snippet-name'
+                    ,id: 'snippet-header'
                 },{
                     html: '<p>'+_('snippet_msg')+'</p>'
                 },{
                     xtype: 'hidden'
                     ,name: 'id'
+                    ,id: 'snippet-id'
                     ,value: config.snippet
                 },{
                     xtype: 'hidden'
@@ -43,37 +44,41 @@ MODx.panel.Snippet = function(config) {
                     xtype: 'textfield'
                     ,fieldLabel: _('snippet_name')
                     ,name: 'name'
+                    ,id: 'snippet-name'
                     ,width: 300
                     ,maxLength: 255
                     ,enableKeyEvents: true
                     ,allowBlank: false
                     ,listeners: {
                         'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('snippet-name').getEl().update('<h2>'+_('snippet')+': '+f.getValue()+'</h2>');
+                            Ext.getCmp('snippet-header').getEl().update('<h2>'+_('snippet')+': '+f.getValue()+'</h2>');
                         }}
                     }
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('snippet_desc')
                     ,name: 'description'
+                    ,id: 'snippet-description'
                     ,width: 300
                     ,maxLength: 255
                 },{
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
-                    ,id: 'fld-category'
+                    ,id: 'snippet-category'
                     ,width: 250
                     ,value: config.category || null
                 },{
                     xtype: 'checkbox'
                     ,fieldLabel: _('snippet_execonsave')
                     ,name: 'runsnippet'
+                    ,id: 'snippet-runsnippet'
                 },{
                     xtype: 'checkbox'
                     ,fieldLabel: _('snippet_lock')
                     ,description: _('snippet_lock_msg')
                     ,name: 'locked'
+                    ,id: 'snippet-locked'
                 },{
                     html: onSnipFormRender
                     ,border: false
@@ -83,6 +88,7 @@ MODx.panel.Snippet = function(config) {
                     xtype: 'textarea'
                     ,hideLabel: true
                     ,name: 'snippet'
+                    ,id: 'snippet-snippet'
                     ,width: '95%'
                     ,height: 400
                     ,value: "<?php\n\n?>"
@@ -118,7 +124,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     if (r.object.category == '0') { r.object.category = null; }
                     r.object.snippet = "<?php\n"+r.object.snippet+"\n?>";
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('snippet-name').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('snippet-header').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
                     this.clearDirty();
                     this.fireEvent('ready',r.object);
                     
@@ -139,7 +145,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
         Ext.getCmp('grid-element-properties').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('fld-category').getValue();
+        var c = Ext.getCmp('snippet-category').getValue();
         var u = c != '' && c != null ? 'n_snippet_category_'+c : 'n_type_snippet'; 
         t.refreshNode(u,true);
     }

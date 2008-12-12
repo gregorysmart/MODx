@@ -24,7 +24,7 @@ Ext.extend(MODx.panel.ResourceTV,MODx.Panel,{
      * @param {Object} config
      */
     autoload: function(config) {
-        var t = Ext.getCmp('tpl');
+        var t = Ext.getCmp('resource-template');
         if (!t) { return false; }
         var template = config.template ? config.template : t.getValue();
         var a = {

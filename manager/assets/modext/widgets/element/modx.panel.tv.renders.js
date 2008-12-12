@@ -22,6 +22,7 @@ MODx.panel.ImageTV = function(config) {
             xtype: 'combo-browser'
             ,browserEl: 'tvbrowser'+config.tv
             ,name: 'tv'+config.tv
+            ,id: 'tv'+config.tv
             ,value: config.value
             ,listeners: {
                 'change': {fn:triggerDirtyField,scope:this}

@@ -38,6 +38,7 @@ MODx.panel.Resource = function(config) {
                     xtype: (config.resource ? 'statictextfield' : 'hidden')
                     ,fieldLabel: _('id')
                     ,name: 'id'
+                    ,id: 'resource-id'
                     ,value: config.resource
                     ,submitValue: true
                 },{
@@ -45,6 +46,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_pagetitle')
                     ,description: _('resource_pagetitle_help')
                     ,name: 'pagetitle'
+                    ,id: 'resource-pagetitle'
                     ,width: 300
                     ,maxLength: 255
                     ,allowBlank: false
@@ -54,6 +56,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_longtitle')
                     ,description: _('resource_longtitle_help')
                     ,name: 'longtitle'
+                    ,id: 'resource-longtitle'
                     ,width: 300
                     ,maxLength: 255
                     
@@ -62,6 +65,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_description')
                     ,description: _('resource_description_help')
                     ,name: 'description'
+                    ,id: 'resource-description'
                     ,width: 300
                     ,maxLength: 255
                     
@@ -70,6 +74,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_alias')
                     ,description: _('resource_alias_help')
                     ,name: 'alias'
+                    ,id: 'resource-alias'
                     ,width: 300
                     ,maxLength: 100
                     
@@ -78,6 +83,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_link_attributes')
                     ,description: _('resource_link_attributes_help')
                     ,name: 'link_attributes'
+                    ,id: 'resource-link-attributes'
                     ,width: 300
                     ,maxLength: 255
                     
@@ -86,6 +92,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('weblink')
                     ,description: _('weblink_help')
                     ,name: 'ta'
+                    ,id: 'resource-weblink'
                     ,width: 300
                     ,maxLength: 255
                     ,value: 'http://'
@@ -95,6 +102,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_summary')
                     ,description: _('resource_summary_help')
                     ,name: 'introtext'
+                    ,id: 'resource-introtext'
                     ,width: 300
                     ,grow: true
                     
@@ -103,8 +111,9 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_template')
                     ,description: _('resource_template_help')
                     ,name: 'template'
-                    ,id: 'tpl'
+                    ,id: 'resource-template'
                     ,width: 300
+                    ,editable: false
                     ,baseParams: {
                         action: 'getList'
                         ,combo: '1'
@@ -126,6 +135,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_menutitle')
                     ,description: _('resource_menutitle_help')
                     ,name: 'menutitle'
+                    ,id: 'resource-menutitle'
                     ,width: 300
                     ,maxLength: 255
                     
@@ -134,6 +144,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_hide_from_menus')
                     ,description: _('resource_hide_from_menus_help')
                     ,name: 'hidemenu'
+                    ,id: 'resource-hidemenu'
                     ,inputValue: 1
                     ,checked: false
                     
@@ -148,6 +159,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_folder')
                     ,description: _('resource_folder_help')
                     ,name: 'isfolder'
+                    ,id: 'resource-isfolder'
                     ,inputValue: 1
                     
                 },(config.class_key == 'modDocument' ? {
@@ -155,6 +167,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_richtext')
                     ,description: _('resource_richtext_help')
                     ,name: 'richtext'
+                    ,id: 'resource-richtext'
                     ,inputValue: 1
                     ,checked: true
                     
@@ -163,6 +176,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_published')
                     ,description: _('resource_published_help')
                     ,name: 'published'
+                    ,id: 'resource-published'
                     ,inputValue: 1
                     ,checked: MODx.config.publish_default == '1' ? true : false
                     
@@ -171,6 +185,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_publishdate')
                     ,description: _('resource_publishdate_help')
                     ,name: 'pub_date'
+                    ,id: 'resource-pub-date'
                     ,format: 'Y-m-d'
                     ,allowBlank: true
                     ,width: 200
@@ -181,6 +196,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_unpublishdate')
                     ,description: _('resource_unpublishdate_help')
                     ,name: 'unpub_date'
+                    ,id: 'resource-unpub-date'
                     ,format: 'Y-m-d'
                     ,allowBlank: true
                     ,width: 200
@@ -191,6 +207,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_searchable')
                     ,description: _('resource_searchable_help')
                     ,name: 'searchable'
+                    ,id: 'resource-searchable'
                     ,inputValue: 1
                     ,checked: MODx.config.search_default == '1' ? true : false
                     
@@ -199,6 +216,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_cacheable')
                     ,description: _('resource_cacheable_help')
                     ,name: 'cacheable'
+                    ,id: 'resource-cacheable'
                     ,inputValue: 1
                     ,checked: MODx.config.cache_default == '1' ? true : false
                     
@@ -207,6 +225,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_syncsite')
                     ,description: _('resource_syncsite_help')
                     ,name: 'syncsite'
+                    ,id: 'resource-syncsite'
                     ,inputValue: 1
                     ,checked: true
                     
@@ -215,6 +234,7 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_content_type')
                     ,description: _('resource_content_type_help')
                     ,name: 'content_type'
+                    ,id: 'resource-content-type'
                     ,width: 200
                     ,value: 1
                     ,anchor: '30%'
@@ -224,11 +244,13 @@ MODx.panel.Resource = function(config) {
                     ,fieldLabel: _('resource_contentdispo')
                     ,description: _('resource_contentdispo_help')
                     ,name: 'content_dispo'
+                    ,id: 'resource-content-dispo'
                     ,anchor: '30%'
                     
                 }:{}),{
                     xtype: 'hidden'
                     ,name: 'class_key'
+                    ,id: 'resource-class-key'
                     ,value: config.class_key || 'modDocument'
                     
                 },{
@@ -239,7 +261,7 @@ MODx.panel.Resource = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'context_key'
-                    ,id: 'context_key'
+                    ,id: 'resource-context-key'
                     ,value: config.context_key || 'web'
                 },{
                     xtype: 'hidden'
@@ -260,6 +282,7 @@ MODx.panel.Resource = function(config) {
                 
             } : {}),*/(config.access_permissions ? {
                 contentEl: 'tab_access'
+                ,id: 'resource-access-permissions'
                 ,title: _('access_permissions')
                 
             } : {})]
@@ -362,7 +385,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     }
     
     ,templateWarning: function() {
-        var t = Ext.getCmp('tpl');
+        var t = Ext.getCmp('resource-template');
         if (!t) { return false; }
         // if selection isn't the current value (originalValue), then show dialog
         if(t.getValue() != t.originalValue) {

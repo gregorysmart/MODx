@@ -31,12 +31,13 @@ MODx.panel.TV = function(config) {
                 ,bodyStyle: 'padding: 1.5em;'
                 ,items: [{
                     html: '<h2>'+_('tv')+': </h2>'
-                    ,id: 'tv-name'
+                    ,id: 'tv-header'
                 },{
                     html: '<p>'+_('tv_msg')+'</p>'
                 },{
                     xtype: 'hidden'
                     ,name: 'id'
+                    ,id: 'tv-id'
                     ,value: config.tv
                 },{
                     xtype: 'hidden'
@@ -46,31 +47,34 @@ MODx.panel.TV = function(config) {
                     xtype: 'textfield'
                     ,fieldLabel: _('tv_name')
                     ,name: 'name'
+                    ,id: 'tv-name'
                     ,width: 300
                     ,maxLength: 100
                     ,enableKeyEvents: true
                     ,allowBlank: false
                     ,listeners: {
                         'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+f.getValue()+'</h2>');
+                            Ext.getCmp('tv-header').getEl().update('<h2>'+_('tv')+': '+f.getValue()+'</h2>');
                         }}
                     }
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('tv_caption')
                     ,name: 'caption'
+                    ,id: 'tv-caption'
                     ,width: 300
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('description')
                     ,name: 'description'
+                    ,id: 'tv-description'
                     ,width: 300
                     ,maxLength: 255
                 },{
                     xtype: 'combo-category'
                     ,fieldLabel: _('category')
                     ,name: 'category'
-                    ,id: 'fld-category'
+                    ,id: 'tv-category'
                     ,width: 250
                     ,value: config.category || null
                 },{
@@ -78,10 +82,12 @@ MODx.panel.TV = function(config) {
                     ,fieldLabel: _('tv_lock')
                     ,description: _('tv_lock_msg')
                     ,name: 'locked'
+                    ,id: 'tv-locked'
                 },{
                     xtype: 'numberfield'
                     ,fieldLabel: _('tv_rank')
                     ,name: 'rank'
+                    ,id: 'tv-rank'
                     ,width: 50
                     ,maxLength: 4
                     ,allowNegative: false
@@ -99,15 +105,18 @@ MODx.panel.TV = function(config) {
                     xtype: 'combo-tv-input-type'
                     ,fieldLabel: _('tv_type')
                     ,name: 'type'
+                    ,id: 'tv-type'
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('tv_elements')
                     ,name: 'els'
+                    ,id: 'tv-els'
                     ,width: 250
                 },{
                     xtype: 'textarea'
                     ,fieldLabel: _('tv_default')
                     ,name: 'default_text'
+                    ,id: 'tv-default-text'
                     ,width: 300
                     ,grow: true
                 },{
@@ -115,7 +124,7 @@ MODx.panel.TV = function(config) {
                     ,fieldLabel: _('tv_output_type')
                     ,name: 'display'
                     ,hiddenName: 'display'
-                    ,id: 'combo-tv-widget'
+                    ,id: 'tv-display'
                     ,listeners: {
                         'select': {fn:this.showParameters,scope:this}
                     }
@@ -178,9 +187,9 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
                 'success': {fn:function(r) {
                     if (r.object.category == '0') { r.object.category = null; }
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('tv-name').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('tv-header').getEl().update('<h2>'+_('tv')+': '+r.object.name+'</h2>');
                     
-                    this.showParameters(Ext.getCmp('combo-tv-widget'));
+                    this.showParameters(Ext.getCmp('tv-display'));
                     this.fireEvent('ready',r.object);
 
                     var d = Ext.decode(r.object.data);
@@ -205,7 +214,7 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
         Ext.getCmp('grid-element-properties').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('fld-category').getValue();
+        var c = Ext.getCmp('tv-category').getValue();
         var u = c != '' && c != null ? 'n_tv_category_'+c : 'n_type_tv'; 
         t.refreshNode(u,true);
     }
