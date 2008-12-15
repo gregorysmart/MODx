@@ -57,12 +57,16 @@ MODx.grid.ElementProperties = function(config) {
             text: _('property_create')
             ,handler: this.create
             ,scope: this
+        },'-',{
+            text: _('property_revert_all')
+            ,handler: this.revertAll
+            ,scope:this
         },'->',{
-            text: 'Add Property Set'
+            text: _('propertyset_add')
             ,handler: this.addPropertySet
             ,scope: this
         },'-',{
-            text: 'Save Property Set'
+            text: _('propertyset_save')
             ,handler: this.save
             ,scope: this
         }]
@@ -202,7 +206,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     }
     
     ,revert: function(btn,e) {
-        Ext.Msg.confirm(_('warning'),'Are you sure you want to revert this property to the default?',function(e) {
+        Ext.Msg.confirm(_('warning'),_('property_revert_confirm'),function(e) {
             if (e == 'yes') {                    
                 var ri = this.menu.recordIndex;
                 var d = this.defaultProperties[ri];
@@ -214,6 +218,14 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                 rec.set('value',d[4]);
                 rec.set('overridden',0);
                 rec.commit();
+            }
+        },this);
+    }
+    
+    ,revertAll: function(btn,e) {
+        Ext.Msg.confirm(_('warning'),_('property_revert_all_confirm'),function(e) {
+            if (e == 'yes') {                    
+                this.getStore().loadData(this.defaultProperties);
             }
         },this);
     }
@@ -259,7 +271,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
         }];
         if (r.overridden == 1) {
             m.push({
-                text: 'Revert Property to Default'
+                text: _('property_revert')
                 ,scope: this
                 ,handler: this.revert
             });
@@ -658,7 +670,7 @@ Ext.reg('combo-property-set',MODx.combo.PropertySet);
 MODx.window.AddPropertySet = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: 'Add Property Set'
+        title: _('propertyset_add')
         ,id: 'element-property-set-add'
         ,url: MODx.config.connectors_url+'element/propertyset.php'
         ,action: 'associate'
@@ -669,8 +681,8 @@ MODx.window.AddPropertySet = function(config) {
             xtype: 'hidden'
             ,name: 'elementType'
         },{
-            html: 'Here you can create a property set, or select an existing one to associate to this element.'
-        },{
+            html: _('propertyset_panel_desc')
+        },MODx.PanelSpacer,{
             xtype: 'combo-property-set'
             ,fieldLabel: 'Property Set'
             ,name: 'propertyset'
@@ -687,7 +699,7 @@ MODx.window.AddPropertySet = function(config) {
             ,value: false
         },{
             xtype: 'fieldset'
-            ,title: 'Create New'
+            ,title: _('propertyset_create_new')
             ,autoHeight: true
             ,checkboxToggle: true
             ,collapsed: true

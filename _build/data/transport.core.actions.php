@@ -106,7 +106,7 @@ $collection['11']->fromArray(array (
   'parent' => 10,
   'controller' => 'element/chunk',
   'haslayout' => 1,
-  'lang_topics' => 'chunk,category',
+  'lang_topics' => 'chunk,category,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['12']= $xpdo->newObject('modAction');
@@ -116,7 +116,7 @@ $collection['12']->fromArray(array (
   'parent' => 11,
   'controller' => 'element/chunk/create',
   'haslayout' => 1,
-  'lang_topics' => 'chunk,category',
+  'lang_topics' => 'chunk,category,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['13']= $xpdo->newObject('modAction');
@@ -126,7 +126,7 @@ $collection['13']->fromArray(array (
   'parent' => 11,
   'controller' => 'element/chunk/update',
   'haslayout' => 1,
-  'lang_topics' => 'chunk,category',
+  'lang_topics' => 'chunk,category,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['14']= $xpdo->newObject('modAction');
@@ -146,7 +146,7 @@ $collection['20']->fromArray(array (
   'parent' => 10,
   'controller' => 'element/plugin',
   'haslayout' => 1,
-  'lang_topics' => 'plugin,category,system_events',
+  'lang_topics' => 'plugin,category,system_events,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['21']= $xpdo->newObject('modAction');
@@ -156,7 +156,7 @@ $collection['21']->fromArray(array (
   'parent' => 20,
   'controller' => 'element/plugin/create',
   'haslayout' => 1,
-  'lang_topics' => 'plugin,category,system_events',
+  'lang_topics' => 'plugin,category,system_events,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['22']= $xpdo->newObject('modAction');
@@ -166,7 +166,7 @@ $collection['22']->fromArray(array (
   'parent' => 20,
   'controller' => 'element/plugin/update',
   'haslayout' => 1,
-  'lang_topics' => 'plugin,category,system_events',
+  'lang_topics' => 'plugin,category,system_events,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['23']= $xpdo->newObject('modAction');
@@ -176,7 +176,7 @@ $collection['23']->fromArray(array (
   'parent' => 20,
   'controller' => 'element/plugin/sortpriority',
   'haslayout' => 1,
-  'lang_topics' => 'plugin,category,system_events',
+  'lang_topics' => 'plugin,category,system_events,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['25']= $xpdo->newObject('modAction');
@@ -186,7 +186,7 @@ $collection['25']->fromArray(array (
   'parent' => 10,
   'controller' => 'element/snippet',
   'haslayout' => 1,
-  'lang_topics' => 'snippet',
+  'lang_topics' => 'snippet,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['26']= $xpdo->newObject('modAction');
@@ -196,7 +196,7 @@ $collection['26']->fromArray(array (
   'parent' => 25,
   'controller' => 'element/snippet/create',
   'haslayout' => 1,
-  'lang_topics' => 'snippet',
+  'lang_topics' => 'snippet,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['27']= $xpdo->newObject('modAction');
@@ -206,7 +206,7 @@ $collection['27']->fromArray(array (
   'parent' => 25,
   'controller' => 'element/snippet/update',
   'haslayout' => 1,
-  'lang_topics' => 'snippet',
+  'lang_topics' => 'snippet,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['28']= $xpdo->newObject('modAction');
@@ -216,7 +216,7 @@ $collection['28']->fromArray(array (
   'parent' => 10,
   'controller' => 'element/template',
   'haslayout' => 1,
-  'lang_topics' => 'template',
+  'lang_topics' => 'template,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['29']= $xpdo->newObject('modAction');
@@ -226,7 +226,7 @@ $collection['29']->fromArray(array (
   'parent' => 28,
   'controller' => 'element/template/create',
   'haslayout' => 1,
-  'lang_topics' => 'template',
+  'lang_topics' => 'template,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['30']= $xpdo->newObject('modAction');
@@ -236,7 +236,7 @@ $collection['30']->fromArray(array (
   'parent' => 28,
   'controller' => 'element/template/update',
   'haslayout' => 1,
-  'lang_topics' => 'template',
+  'lang_topics' => 'template,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['31']= $xpdo->newObject('modAction');
@@ -246,7 +246,7 @@ $collection['31']->fromArray(array (
   'parent' => 28,
   'controller' => 'element/template/tvsort',
   'haslayout' => 1,
-  'lang_topics' => 'template,tv',
+  'lang_topics' => 'template,tv,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['32']= $xpdo->newObject('modAction');
@@ -254,7 +254,7 @@ $collection['32']->fromArray(array (
   'id' => 32,
   'context_key' => 'mgr',
   'parent' => 10,
-  'controller' => 'element/tv',
+  'controller' => 'element/tv,propertyset',
   'haslayout' => 1,
   'lang_topics' => 'tv',
   'assets' => '',
@@ -266,7 +266,7 @@ $collection['33']->fromArray(array (
   'parent' => 32,
   'controller' => 'element/tv/create',
   'haslayout' => 1,
-  'lang_topics' => 'tv,tv_widget',
+  'lang_topics' => 'tv,tv_widget,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['34']= $xpdo->newObject('modAction');
@@ -276,7 +276,7 @@ $collection['34']->fromArray(array (
   'parent' => 32,
   'controller' => 'element/tv/update',
   'haslayout' => 1,
-  'lang_topics' => 'tv,tv_widget',
+  'lang_topics' => 'tv,tv_widget,propertyset',
   'assets' => '',
 ), '', true, true);
 $collection['35']= $xpdo->newObject('modAction');
