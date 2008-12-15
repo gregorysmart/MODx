@@ -207,6 +207,7 @@ $_lang['editedon'] = 'Edit Date';
 $_lang['editing_file'] = 'Editing file: ';
 $_lang['element_duplicate'] = 'Duplicate Element';
 $_lang['element_name_new'] = 'Name of New Element';
+$_lang['element_properties_desc'] = 'Here you can edit the default properties for the element, or edit specific property sets. <b>Note</b>: When you edit the default set, you will be saving the properties to the default properties. Editing a specific property set will save those property settings to the property set.';
 $_lang['elements'] = 'Elements';
 $_lang['email'] = 'Email';
 $_lang['email_sent'] = 'Email sent';

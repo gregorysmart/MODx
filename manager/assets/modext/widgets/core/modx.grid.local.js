@@ -136,7 +136,7 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
             this.getSelectionModel().selectRow(ri);
         }
         this.menu.removeAll();
-        var m = this.getMenu();
+        var m = this.getMenu(g,ri);
         if (m) {
             this.addContextMenuItem(m);
             this.menu.show(e.target);

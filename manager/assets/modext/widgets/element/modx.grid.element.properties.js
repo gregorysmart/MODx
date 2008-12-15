@@ -15,7 +15,7 @@ MODx.grid.ElementProperties = function(config) {
         title: _('properties')
         ,id: 'grid-element-properties'
         ,maxHeight: 300
-        ,fields: ['name','description','xtype','options','value']
+        ,fields: ['name','description','xtype','options','value','overridden']
         ,autoExpandColumn: 'value'
         ,sortBy: 'name'
         ,width: '100%'
@@ -26,6 +26,7 @@ MODx.grid.ElementProperties = function(config) {
             ,dataIndex: 'name'
             ,width: 250
             ,sortable: true
+            ,renderer: this._renderName
         },{
             header: _('type')
             ,dataIndex: 'xtype'
@@ -41,8 +42,28 @@ MODx.grid.ElementProperties = function(config) {
             ,sortable: true
         }]
         ,tbar: [{
+            xtype: 'combo-property-set'
+            ,id: 'combo-property-set'
+            ,baseParams: {
+                action: 'getList'
+                ,showAssociated: true
+                ,elementId: config.elementId
+                ,elementType: config.elementType
+            }
+            ,listeners: {
+                'select': {fn:this.changePropertySet,scope:this}
+            }
+        },{
             text: _('property_create')
             ,handler: this.create
+            ,scope: this
+        },'->',{
+            text: 'Add Property Set'
+            ,handler: this.addPropertySet
+            ,scope: this
+        },'-',{
+            text: 'Save Property Set'
+            ,handler: this.save
             ,scope: this
         }]
     });
@@ -63,6 +84,81 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
             case 'numberfield': return _('integer'); break;
         }
         return _(v);
+    }
+    ,_renderName: function(v,md,rec,ri) {
+        switch (rec.data.overridden) {
+            case 1:
+                return '<span style="color: green;">'+v+'</span>'; break;
+            case 2:
+                return '<span style="color: purple;">'+v+'</span>';
+            default:
+                return '<span>'+v+'</span>';
+        }
+    }
+    
+    ,save: function() {
+        var d = this.encode();
+        var cb = Ext.getCmp('combo-property-set');
+        MODx.Ajax.request({
+            url: MODx.config.connectors_url+'element/propertyset.php'
+            ,params: {
+                action: 'update'
+                ,id: cb.getValue()
+                ,data: d
+                ,elementId: this.config.elementId
+                ,elementType: this.config.elementType
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    this.getStore().commitChanges();
+                    this.changePropertySet(cb);
+                    this.onDirty();
+                },scope:this}
+            }
+        });
+    }
+    
+    ,addPropertySet: function(btn,e) {
+        this.loadWindow(btn,e,{
+            xtype: 'window-element-property-set-add'
+            ,record: {
+                elementId: this.config.elementId != 0 ? this.config.elementId : ''
+                ,elementType: this.config.elementType
+            }
+            ,listeners: {
+                'success': {fn:function(o) {
+                    var cb = Ext.getCmp('combo-property-set');
+                    cb.store.reload({
+                        callback: function() {
+                            cb.setValue(o.a.result.object.id);
+                            this.changePropertySet(cb);     
+                        }
+                        ,scope: this
+                    });
+                    this.onDirty();
+                },scope:this}
+            }
+        });
+    }
+    
+    ,changePropertySet: function(cb) {
+        MODx.Ajax.request({
+            url: MODx.config.connectors_url+'element/propertyset.php'
+            ,params: {
+                action: 'get'
+                ,id: cb.getValue()
+                ,elementId: this.config.elementId
+                ,elementType: this.config.elementType
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    var s = this.getStore();
+                    var data = Ext.decode(r.object.data);
+                    s.removeAll();
+                    s.loadData(data);
+                },scope:this}
+            }
+        });
     }
     
     ,create: function(btn,e) {
@@ -105,6 +201,23 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
         });
     }
     
+    ,revert: function(btn,e) {
+        Ext.Msg.confirm(_('warning'),'Are you sure you want to revert this property to the default?',function(e) {
+            if (e == 'yes') {                    
+                var ri = this.menu.recordIndex;
+                var d = this.defaultProperties[ri];
+                var rec = this.getStore().getAt(ri);
+                rec.set('name',d[0]);
+                rec.set('description',d[1]);
+                rec.set('xtype',d[2]);
+                rec.set('options',d[3]);
+                rec.set('value',d[4]);
+                rec.set('overridden',0);
+                rec.commit();
+            }
+        },this);
+    }
+    
     ,removeMultiple: function(btn,e) {
         var rows = this.getSelectionModel().getSelections();
         var rids = [];
@@ -138,18 +251,29 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     }
     
     ,getMenu: function() {
-        return [{
+        var r = this.menu.record;
+        var m = [{
             text: _('property_update')
             ,scope: this
             ,handler: this.update
-        },{
+        }];
+        if (r.overridden == 1) {
+            m.push({
+                text: 'Revert Property to Default'
+                ,scope: this
+                ,handler: this.revert
+            });
+        }
+        
+        m.push({
             text: _('property_remove')
             ,scope: this
             ,handler: this.remove.createDelegate(this,[{
                 title: _('warning')
                 ,text: _('property_remove_confirm')
             }])
-        }];
+        });
+        return m;
     }
 
     ,propertyChanged: function() {
@@ -509,3 +633,87 @@ Ext.extend(MODx.form.ElementValueField,Ext.form.TextField,{
     }
 });
 Ext.reg('element-value-field',MODx.form.ElementValueField);
+
+
+MODx.combo.PropertySet = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        name: 'propertyset'
+        ,hiddenName: 'propertyset'
+        ,url: MODx.config.connectors_url+'element/propertyset.php'
+        ,baseParams: {
+            action: 'getList'
+        }
+        ,displayField: 'name'
+        ,valueField: 'id'
+        ,fields: ['id','name','description','properties']
+        ,editable: false
+        ,value: 0
+    });
+    MODx.combo.PropertySet.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.PropertySet,MODx.combo.ComboBox);
+Ext.reg('combo-property-set',MODx.combo.PropertySet);
+
+MODx.window.AddPropertySet = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: 'Add Property Set'
+        ,id: 'element-property-set-add'
+        ,url: MODx.config.connectors_url+'element/propertyset.php'
+        ,action: 'associate'
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'elementId'
+        },{
+            xtype: 'hidden'
+            ,name: 'elementType'
+        },{
+            html: 'Here you can create a property set, or select an existing one to associate to this element.'
+        },{
+            xtype: 'combo-property-set'
+            ,fieldLabel: 'Property Set'
+            ,name: 'propertyset'
+            ,baseParams: {
+                action: 'getList'
+                ,showNotAssociated: true
+                ,elementId: config.record.elementId
+                ,elementType: config.record.elementType
+            }
+        },{
+            xtype: 'hidden'
+            ,name: 'propertyset_new'
+            ,id: 'propertyset-new'
+            ,value: false
+        },{
+            xtype: 'fieldset'
+            ,title: 'Create New'
+            ,autoHeight: true
+            ,checkboxToggle: true
+            ,collapsed: true
+            ,id: 'propertyset-new-fs'
+            ,listeners: {
+                'expand': {fn:function(p) {
+                    Ext.getCmp('propertyset-new').setValue(true);
+                },scope:this}
+                ,'collapse': {fn:function(p) {
+                    Ext.getCmp('propertyset-new').setValue(false);
+                },scope:this}
+            }
+            ,items: [{
+                xtype: 'textfield'
+                ,fieldLabel: _('name')
+                ,name: 'name'
+            },{
+                xtype: 'textarea'
+                ,fieldLabel: _('description')
+                ,name: 'description'
+                ,width: '80%'
+                ,grow: true
+            }]
+        }]
+    });
+    MODx.window.AddPropertySet.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.AddPropertySet,MODx.Window);
+Ext.reg('window-element-property-set-add',MODx.window.AddPropertySet);

@@ -110,8 +110,10 @@ MODx.panel.Chunk = function(config) {
                         }
                     }]
             },{
-                xtype: 'grid-element-properties'
-                ,panel: 'panel-chunk'
+                xtype: 'panel-element-properties'
+                ,elementPanel: 'panel-chunk'
+                ,elementId: config.chunk
+                ,elementType: 'modChunk'
             }]
         }
         ,listeners: {
@@ -143,20 +145,18 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    Ext.getCmp('grid-element-properties').getStore().loadData(d);
+                    var g = Ext.getCmp('grid-element-properties');
+                    g.defaultProperties = d;
+                    g.getStore().loadData(d);
                 },scope:this}
             }
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-element-properties');
-        Ext.apply(o.form.baseParams,{
-            propdata: g.encode()
-        });
         return true;
     }
     ,success: function(r) {
-        Ext.getCmp('grid-element-properties').getStore().commitChanges();
+        Ext.getCmp('grid-element-properties').save();
         var c = Ext.getCmp('chunk-category').getValue();
         var n = c !== '' && c !== null ? 'n_chunk_category_'+c : 'n_type_chunk';
         var t = parent.Ext.getCmp('modx_element_tree');

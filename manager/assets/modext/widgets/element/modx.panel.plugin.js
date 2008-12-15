@@ -114,8 +114,10 @@ MODx.panel.Plugin = function(config) {
                     }
                 }]             
             },{
-                xtype: 'grid-element-properties'
-                ,panel: 'panel-plugin'
+                xtype: 'panel-element-properties'
+                ,elementPanel: 'panel-plugin'
+                ,elementId: config.plugin
+                ,elementType: 'modPlugin'
             }]
         }
         ,listeners: {
@@ -145,21 +147,21 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    Ext.getCmp('grid-element-properties').getStore().loadData(d);
+                    var g = Ext.getCmp('grid-element-properties');
+                    g.defaultProperties = d;
+                    g.getStore().loadData(d);
             	},scope:this}
             }
         });
     }
     ,beforeSubmit: function(o) {
         var g = Ext.getCmp('grid-plugin-event');
-        var h = Ext.getCmp('grid-element-properties');
         Ext.apply(o.form.baseParams,{
             events: g.encodeModified()
-            ,propdata: h.encode()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('grid-element-properties').getStore().commitChanges();
+        Ext.getCmp('grid-element-properties').save();
         Ext.getCmp('grid-plugin-event').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');

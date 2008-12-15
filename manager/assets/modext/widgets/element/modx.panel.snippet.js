@@ -95,8 +95,10 @@ MODx.panel.Snippet = function(config) {
                     
                 }]
             },{
-                xtype: 'grid-element-properties'
-                ,panel: 'panel-snippet'
+                xtype: 'panel-element-properties'
+                ,elementPanel: 'panel-snippet'
+                ,elementId: config.snippet
+                ,elementType: 'modSnippet'
             }]
         }
         ,listeners: {
@@ -129,20 +131,18 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    Ext.getCmp('grid-element-properties').getStore().loadData(d);
+                    var g = Ext.getCmp('grid-element-properties');
+                    g.defaultProperties = d;
+                    g.getStore().loadData(d);
                 },scope:this}
             }
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-element-properties');
-        Ext.apply(o.form.baseParams,{
-            propdata: g.encode()
-        });
         return true;
     }
     ,success: function(r) {
-        Ext.getCmp('grid-element-properties').getStore().commitChanges();
+        Ext.getCmp('grid-element-properties').save();
         
         var t = parent.Ext.getCmp('modx_element_tree');
         var c = Ext.getCmp('snippet-category').getValue();
