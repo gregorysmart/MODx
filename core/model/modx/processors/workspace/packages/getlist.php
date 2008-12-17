@@ -50,7 +50,7 @@ foreach ($packages as $package) {
 
     /* format timestamps */
     if ($package->get('updated') != '0000-00-00 00:00:00' && $package->get('updated') != null) {
-        $pa['updated'] = strftime('%b %e, %Y %I:%M %p',$package->get('updated'));
+        $pa['updated'] = strftime('%b %e, %Y %I:%M %p',strtotime($package->get('updated')));
     } else {
         $pa['updated'] = '';
     }

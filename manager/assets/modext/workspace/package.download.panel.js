@@ -69,7 +69,9 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
                     ,'<span>{release}</span><br />'
                     ,'<b>Release Date:</b>&nbsp;'
                     ,'<span>{releasedon}</span>'
-                    ,'<br /><br /><p>{description}</p></div>'
+                    ,'<br /><br /><p>{description}</p>'
+                    ,'<img src="{screenshot}" alt="" width="150" height="100" />'
+                    ,'</div>'
                 ,'</tpl>'
                 ,'</div>'
             )
