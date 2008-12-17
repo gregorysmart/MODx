@@ -43,7 +43,7 @@ if (!is_array($packages)) {
 /* if no newer packages were found */
 if (count($packages) < 1) {
     $msg = $modx->lexicon('package_err_uptodate',array('signature' => $package->get('signature')));
-    $modx->log(MODX_LOG_LEVEL_ERROR,$msg);
+    $modx->log(MODX_LOG_LEVEL_INFO,$msg);
     return $modx->error->failure($msg);
 }
 

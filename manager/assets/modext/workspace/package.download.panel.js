@@ -8,6 +8,7 @@ MODx.panel.PackageDownload = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         border: false
+        ,id: 'panel-package-download'
         ,layout: 'column'
         ,height: 280
         ,width: Ext.isIE ? 650 : '95%'
@@ -47,6 +48,7 @@ MODx.panel.PackageDownload = function(config) {
                 detailEl.hide();
                 this.tpls[data.type].overwrite(detailEl, data.data || {});
                 detailEl.slideIn('l', {stopFx:true,duration:'.2'});
+                this.curData = data.data;
             }
         } else {
             detailEl.update('');
@@ -55,7 +57,18 @@ MODx.panel.PackageDownload = function(config) {
 };
 Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
     tpls: {}
+    ,curData: {}
     
+    ,showMoreInfo: function(btn) {
+        if (!this.mi) {
+            this.mi = MODx.load({
+                xtype: 'window-package-more-info'
+                ,data: this.curData
+            });
+        }
+        this.mi.show(btn);
+        this.mi.setTpl(this.curData);
+    }
     ,loadTemplates: function() {
         this.tpls = {
             version: new Ext.XTemplate(
@@ -67,10 +80,10 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
                     ,'<span>{version}</span><br />'
                     ,'<b>'+_('release')+':</b>&nbsp;'
                     ,'<span>{release}</span><br />'
-                    ,'<b>Release Date:</b>&nbsp;'
-                    ,'<span>{releasedon}</span>'
-                    ,'<br /><br /><p>{description}</p>'
-                    ,'<img src="{screenshot}" alt="" width="150" height="100" />'
+                    ,'<b>'+_('released_on')+':</b>&nbsp;'
+                    ,'<span>{releasedon}</span><br /><br />'
+                    ,'<a id="pd-version-more-info" href="javascript:;" onclick="Ext.getCmp(\'panel-package-download\').showMoreInfo(this);">'+_('more_info')+'</a><br />'
+                    ,'<br /><p>{description}</p>'
                     ,'</div>'
                 ,'</tpl>'
                 ,'</div>'
@@ -105,6 +118,58 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
     
 });
 Ext.reg('panel-package-download',MODx.panel.PackageDownload);
+
+MODx.window.PackageMoreInfo = function(config) {
+    config = config || {};
+    this.tpl = this.createTpl();
+    Ext.applyIf(config,{
+        title: _('package_information')
+        ,width: 600
+        ,url: MODx.config.connectors_url+'workspace/packages.php'
+        ,action: 'info'
+        ,fields: [{
+            html: '<div id="pmi-content"></div>'
+        }]
+        ,buttons: [{
+            text: _('ok')
+            ,handler: function() { this.hide(); }
+            ,scope: this
+        }]
+    });
+    MODx.window.PackageMoreInfo.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.PackageMoreInfo,MODx.Window,{
+    createTpl: function() {
+        this.tpl = new Ext.XTemplate(
+            '<div class="details" style="padding: 1em;">'
+            ,'<tpl for=".">'
+                ,'<div class="pmi-content">'
+                ,'<div style="float: right;"><img src="{screenshot}" alt="" width="200" height="134" /></div>'
+                ,'<h3>{name}</h3>'
+                ,'<tpl if="author">'
+                    ,'<i>'+_('by')+' {author}</i><br />'
+                ,'</tpl>'
+                ,'<span>'+_('released_on')+': {releasedon}</span><br />'
+                ,'<span>'+_('license')+': {license}</span><br />'
+                ,'<span>'+_('downloads')+': {downloads}</span><br />'
+                ,'<br /><h4>'+_('description')+'</h4>'
+                ,'<p>{description}</p>'
+                ,'<tpl if="instructions">'
+                    ,'<br /><h4>'+_('installation_instructions')+'</h4>'
+                    ,'<p>{instructions}</p>'
+                ,'</tpl>'
+                ,'</div>'
+            ,'</tpl></div>'
+        );
+        this.tpl.compile();
+        return this.tpl;
+    }
+    
+    ,setTpl: function(data) {
+        this.tpl.overwrite('pmi-content',data);
+    }
+});
+Ext.reg('window-package-more-info',MODx.window.PackageMoreInfo);
 
 /**
  * @class MODx.tree.PackageDownload
