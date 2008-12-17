@@ -110,8 +110,9 @@ MODx.panel.Snippet = function(config) {
     MODx.panel.Snippet.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
-    setup: function() {
-        if (this.config.snippet === '' || this.config.snippet === 0) {       
+    initialized: false
+    ,setup: function() {
+        if (this.config.snippet === '' || this.config.snippet === 0 || this.initialized) {       
             this.fireEvent('ready');
             return;
         }
@@ -134,6 +135,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     var g = Ext.getCmp('grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
+                    this.initialized = true;
                 },scope:this}
             }
         });

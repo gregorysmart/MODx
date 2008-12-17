@@ -125,8 +125,9 @@ MODx.panel.Chunk = function(config) {
     MODx.panel.Chunk.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
-    setup: function() {
-        if (this.config.chunk === '' || this.config.chunk === 0) {
+    initialized: false
+    ,setup: function() {
+        if (this.config.chunk === '' || this.config.chunk === 0 || this.initialized) {
             this.fireEvent('ready');
             return false;
         }
@@ -148,6 +149,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
                     var g = Ext.getCmp('grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
+                    this.initialized = true;
                 },scope:this}
             }
         });

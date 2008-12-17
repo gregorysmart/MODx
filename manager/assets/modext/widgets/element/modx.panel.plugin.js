@@ -122,13 +122,16 @@ MODx.panel.Plugin = function(config) {
         }
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
+            ,'success': {fn:this.success,scope:this}
+            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
         }
     });
     MODx.panel.Plugin.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
-    setup: function() {
-        if (this.config.plugin === '' || this.config.plugin === 0) {            
+    initialized: false
+    ,setup: function() {
+        if (this.config.plugin === '' || this.config.plugin === 0 || this.initialized) {            
             this.fireEvent('ready');
             return false;
         }
@@ -150,6 +153,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
                     var g = Ext.getCmp('grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
+                    this.initialized = true;
             	},scope:this}
             }
         });

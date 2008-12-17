@@ -10,8 +10,6 @@ $modx->lexicon->load('propertyset');
 /* unencode data */
 $data = $modx->fromJSON($_POST['data']);
 
-
-
 /* get element */
 if (!isset($_POST['elementId']) || !isset($_POST['elementType'])) {
     return $modx->error->failure($modx->lexicon('element_err_ns'));
