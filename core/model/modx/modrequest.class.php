@@ -157,7 +157,9 @@ class modRequest {
         }
         $this->modx->resourceGenerated = (boolean) !$included;
         if (!$included || !is_object($resource)) {
-            if ($resource = $this->modx->getObject('modResource', $resourceId, true)) {
+            $criteria = array('id' => $resourceId, 'deleted' => '0');
+            if (!$this->modx->hasPermission('view_unpublished')) $criteria['published']= 1;
+            if ($resource = $this->modx->getObject('modResource', $criteria, true)) {
                 if (is_object($resource)) {
                     if ($resource->get('context_key') !== $this->modx->context->get('key')) {
                         if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {
@@ -178,11 +180,15 @@ class modRequest {
                     }
                 }
             }
-        } elseif ($included && is_object($resource)) {
-            if ($resource->get('context_key') !== $this->modx->context->get('key')) {
-                if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {
-                    return null;
+        } elseif ($included && is_object($resource) && !$resource->get('deleted')) {
+            if ($resource->get('published') || $this->modx->hasPermission('view_unpublished')) {
+                if ($resource->get('context_key') !== $this->modx->context->get('key')) {
+                    if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {
+                        return null;
+                    }
                 }
+            } else {
+                return null;
             }
         }
         return $resource;

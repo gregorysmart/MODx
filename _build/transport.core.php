@@ -385,7 +385,8 @@ unset ($collection, $c, $attributes);
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.accesspolicies.php';
 $attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => true,
+    XPDO_TRANSPORT_PRESERVE_KEYS => false,
+    XPDO_TRANSPORT_UNIQUE_KEY => array('name'),
     XPDO_TRANSPORT_UPDATE_OBJECT => true,
 );
 foreach ($collection as $c) {
@@ -432,8 +433,9 @@ unset ($entries, $languages, $topics, $c, $t, $l);
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.access_contexts.php';
 $attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => false,
+    XPDO_TRANSPORT_PRESERVE_KEYS => false,
+    XPDO_TRANSPORT_UNIQUE_KEY => array('target', 'principal_class', 'principal'),
+    XPDO_TRANSPORT_UPDATE_OBJECT => true,
 );
 foreach ($collection as $c) {
     $package->put($c, $attributes);

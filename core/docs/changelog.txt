@@ -4,6 +4,9 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-553] Unpublished and deleted Resources now ignored properly in modRequest::getResource().
+- [#MODX-553] Core setup now automatically adds an ACL to the web context for members of the Administrator group.
+- Core setup now updates the Administrator group ACLs for accessing the mgr and connector contexts with an Authority of 0 (highest authority).
 - Modified OnUserNotFound event handling not to rely on references which no longer work properly with recent changes to property handling.
 - Added overridden modElement->get() to handle converting legacy property strings stored in the database.
 - Added modPropertySet class to represent persistent sets of properties that can be applied to modElement instances.
