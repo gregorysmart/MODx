@@ -16,9 +16,23 @@ class modPropertySet extends xPDOSimpleObject {
         parent :: __construct($xpdo);
     }
 
+    /**
+     * Get all the modElement instances this property set is available to.
+     * 
+     * @return array An array of modElement instances.
+     */
+    function getElements() {
+        $elements = array();
+        $links = $this->getMany('Elements');
+        foreach ($links as $link) {
+            $element = $link->getOne('Element');
+            if ($element) $elements[] = $element;
+        }
+        return $elements;
+    }
 
     /**
-     * Set default properties for this element instance.
+     * Set properties for this modPropertySet instance.
      *
      * @param array|string $properties A property array or property string.
      * @param boolean $merge Indicates if properties should be merged with

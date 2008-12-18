@@ -4,6 +4,8 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added modPropertySet->getElements() method as shortcut to get all proper modElement instances available to the set.
+- Added overridden modElementPropertySet->getOne() to get related Element using the proper element_class value.
 - [#XPDO-21] Updated xPDO to revision 290 for updates to xPDOObject::addOne() and addMany().
 - [#MODX-553] Unpublished and deleted Resources now ignored properly in modRequest::getResource().
 - [#MODX-553] Core setup now automatically adds an ACL to the web context for members of the Administrator group.
