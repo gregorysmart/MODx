@@ -5,8 +5,10 @@
  * @package modx
  * @subpackage lexicon
  */
+$_lang['class_name'] = 'Class Name';
 $_lang['default'] = 'Default';
 $_lang['element_properties_desc'] = 'Here you can edit the default properties for the element, or edit specific property sets. <b>Note</b>: When you edit the default set, you will be saving the properties to the default properties. Editing a specific property set will save those property settings to the property set.<br /><br />When you\'ve selected a property set to edit, the default properties will show in the grid in the color <span style="color: gray;">gray</span>. Properties in gray are not in the property set, but show up there for easier editing. Properties in <span style="color: green">green</span> are properties that have been overridden from the default. Properties in <span style="color: purple">purple</span> are new properties in the custom set that are not in the default properties.';
+$_lang['object'] = 'Object';
 $_lang['properties'] = 'Properties';
 $_lang['properties_remove'] = 'Remove Properties';
 $_lang['properties_remove_confirm'] = 'Are you sure you want to remove these properties?';
@@ -31,12 +33,16 @@ $_lang['propertyset_element_remove'] = 'Remove Element from Property Set';
 $_lang['propertyset_err_ae'] = 'A property set already exists with that name. Please specify another.';
 $_lang['propertyset_err_associate'] = 'An error occurred while trying to associate the property set to the element.';
 $_lang['propertyset_err_create'] = 'An error occurred while trying to create the property set.';
+$_lang['propertyset_err_element_add'] = 'An error occurred while trying to add the element to the property set.';
+$_lang['propertyset_err_element_nf'] = 'That element is not associated to that property set.';
+$_lang['propertyset_err_element_remove'] = 'An error occurred while trying to remove the element from the property set.';
 $_lang['propertyset_err_nf'] = 'Property set not found.';
 $_lang['propertyset_err_nfs'] = 'Property set not found with ID [[+id]].';
 $_lang['propertyset_err_ns'] = 'Property set not specified.';
 $_lang['propertyset_err_ns_name'] = 'Please specify a name for the property set.';
 $_lang['propertyset_err_remove'] = 'An error occurred while trying to remove the property set.';
 $_lang['propertyset_err_update'] = 'An error occurred while trying to update the property set.';
+$_lang['propertyset_new'] = 'New Property Set';
 $_lang['propertyset_panel_desc'] = 'Here you can create a property set, or select an existing one to associate to this element.';
 $_lang['propertyset_remove'] = 'Remove Property Set';
 $_lang['propertyset_remove_confirm'] =  'Are you sure you want to remove this property set?';

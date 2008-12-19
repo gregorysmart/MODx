@@ -44,6 +44,11 @@ MODx.combo.ComboBox = function(config,getStore) {
 	}
 	MODx.combo.ComboBox.superclass.constructor.call(this,config);
     this.config = config;
+    if (!config.preventRender) {
+        this.on('render',function() {
+            this.store.load();
+        },this);
+    }
 };
 Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
 	/**
@@ -55,7 +60,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
 	 * @param {Object} v The value to set.
      * @param {boolean} b True to bypass check
 	 */
-	,setValue: function(v,b) {
+	/*,setValue: function(v,b) {
         if (this.isLoaded || b === true || this.mode == 'local' || v === '') {
             MODx.combo.ComboBox.superclass.setValue.call(this,v);
         } else {
@@ -69,7 +74,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
                 ,scope: this
             });
         }
-    }
+    }*/
 });
 Ext.reg('modx-combo',MODx.combo.ComboBox);
 
@@ -119,6 +124,7 @@ MODx.combo.Boolean = function(config) {
         ,triggerAction: 'all'
         ,editable: false
         ,selectOnFocus: false
+        ,preventRender: true
     });
     MODx.combo.Boolean.superclass.constructor.call(this,config);
 };

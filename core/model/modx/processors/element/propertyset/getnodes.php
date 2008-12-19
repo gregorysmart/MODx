@@ -75,7 +75,8 @@ switch ($node[0]) {
                     'leaf' => true,
                     'href' => '',
                     'pk' => $el->get('id'),
-                    'class_key' => $el->get('class_key'),
+                    'propertyset' => $el->get('property_set'),
+                    'element_class' => $class,
                     'menu' => array(
                         array(
                             'text' => $modx->lexicon('propertyset_element_remove'),
