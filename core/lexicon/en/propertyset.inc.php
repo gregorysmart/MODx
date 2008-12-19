@@ -30,6 +30,7 @@ $_lang['propertyset_create'] = 'Create Property Set';
 $_lang['propertyset_create_new'] = 'Create New Property Set';
 $_lang['propertyset_element_add'] = 'Add Element to Property Set';
 $_lang['propertyset_element_remove'] = 'Remove Element from Property Set';
+$_lang['propertyset_element_remove_confirm'] = 'Are you sure you want to remove this element from this property set?';
 $_lang['propertyset_err_ae'] = 'A property set already exists with that name. Please specify another.';
 $_lang['propertyset_err_associate'] = 'An error occurred while trying to associate the property set to the element.';
 $_lang['propertyset_err_create'] = 'An error occurred while trying to create the property set.';

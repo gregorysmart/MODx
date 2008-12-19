@@ -182,7 +182,7 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
     ,removeElement: function(btn,e) {
         var d = this.cm.activeNode.attributes;
         MODx.msg.confirm({
-            text: _('propertyset_remove_confirm') 
+            text: _('propertyset_element_remove_confirm') 
             ,url: MODx.config.connectors_url+'element/propertyset.php'
             ,params: {
                 action: 'removeElement'
