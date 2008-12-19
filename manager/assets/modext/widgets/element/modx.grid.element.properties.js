@@ -24,7 +24,7 @@ MODx.grid.ElementProperties = function(config) {
         ,columns: [exp,{
             header: _('name')
             ,dataIndex: 'name'
-            ,width: 250
+            ,width: 200
             ,sortable: true
             ,renderer: this._renderName
         },{
@@ -78,7 +78,9 @@ MODx.grid.ElementProperties = function(config) {
 };
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     onDirty: function() {
-        Ext.getCmp(this.config.panel).fireEvent('fieldChange');
+        if (this.config.panel) {
+            Ext.getCmp(this.config.panel).fireEvent('fieldChange');
+        }
     }
     
     ,_renderType: function(v,md,rec,ri) {
@@ -103,15 +105,20 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     ,save: function() {
         var d = this.encode();
         var cb = Ext.getCmp('combo-property-set');
+        var p = {
+            action: 'update'
+            ,id: cb.getValue()
+            ,data: d
+        };
+        if (this.config.elementId) {
+            Ext.apply(p,{
+                elementId: this.config.elementId
+                ,elementType: this.config.elementType
+            });
+        }
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'element/propertyset.php'
-            ,params: {
-                action: 'update'
-                ,id: cb.getValue()
-                ,data: d
-                ,elementId: this.config.elementId
-                ,elementType: this.config.elementType
-            }
+            ,params: p
             ,listeners: {
                 'success': {fn:function(r) {
                     this.getStore().commitChanges();
@@ -290,6 +297,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
 
     ,propertyChanged: function() {
         var ep = Ext.getCmp(this.config.panel);
+        if (!ep) return false;
         var hf = this.config.hiddenPropField || 'props';
         ep.getForm().findField(hf).setValue('1');
         ep.fireEvent('fieldChange',{

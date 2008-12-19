@@ -492,3 +492,14 @@ $collection['55']->fromArray(array (
   'params' => '',
   'handler' => '',
 ), '', true, true);
+$collection['56']= $xpdo->newObject('modMenu');
+$collection['56']->fromArray(array (
+  'id' => 56,
+  'parent' => 9,
+  'action' => 82,
+  'text' => 'propertysets',
+  'icon' => 'images/misc/logo_tbar.gif',
+  'menuindex' => 4,
+  'params' => '',
+  'handler' => '',
+), '', true, true);

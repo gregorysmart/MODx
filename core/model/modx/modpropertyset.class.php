@@ -9,6 +9,12 @@
  * @subpackage mysql
  */
 class modPropertySet extends xPDOSimpleObject {
+    /**
+     * The property value array for the element.
+     * @var array
+     */
+    var $_properties= null;
+
     function modPropertySet(& $xpdo) {
         $this->__construct($xpdo);
     }
@@ -18,7 +24,7 @@ class modPropertySet extends xPDOSimpleObject {
 
     /**
      * Get all the modElement instances this property set is available to.
-     * 
+     *
      * @return array An array of modElement instances.
      */
     function getElements() {
@@ -29,6 +35,22 @@ class modPropertySet extends xPDOSimpleObject {
             if ($element) $elements[] = $element;
         }
         return $elements;
+    }
+
+    /**
+     * Get the properties for this element instance for processing.
+     *
+     * @param array|string $properties An array or string of properties to
+     * apply.
+     * @return array A simple array of properties ready to use for processing.
+     */
+    function getProperties($properties = null) {
+        $this->xpdo->getParser();
+        $this->_properties= $this->xpdo->parser->parseProperties($this->get('properties'));
+        if (!empty($properties)) {
+            $this->_properties= array_merge($this->_properties, $this->xpdo->parser->parseProperties($properties));
+        }
+        return $this->_properties;
     }
 
     /**

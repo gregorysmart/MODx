@@ -421,6 +421,7 @@ $_lang['private'] = 'Private';
 $_lang['processor_err_nf'] = 'Processor not found.';
 $_lang['profile'] = 'Profile';
 $_lang['progress'] = 'Progress';
+$_lang['propertysets'] = 'Property Sets';
 $_lang['public'] = 'Public';
 $_lang['publish'] = 'Publish';
 $_lang['publish_date'] = 'Publish Date';
