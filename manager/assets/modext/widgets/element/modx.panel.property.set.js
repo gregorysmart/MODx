@@ -89,8 +89,8 @@ MODx.tree.PropertySets = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         rootVisible: false
-        ,enableDrag: true
-        ,enableDrop: true
+        ,enableDrag: false
+        ,enableDrop: false
         ,title: ''
         ,url: MODx.config.connectors_url+'element/propertyset.php'
         ,baseParams: {
