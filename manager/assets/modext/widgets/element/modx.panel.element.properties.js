@@ -5,7 +5,10 @@ MODx.panel.ElementProperties = function(config) {
         ,title: _('properties')
         ,bodyStyle: 'padding: 1.5em;'
         ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: [{        
+        ,items: [{
+            html: '<h2>'+_('properties')+'</h2>'
+            ,border: false
+        },{
             html: '<p>'+_('element_properties_desc')+'</p>'
             ,border: false
         },MODx.PanelSpacer,{

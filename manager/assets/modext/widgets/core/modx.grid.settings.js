@@ -60,6 +60,7 @@ MODx.grid.SettingsGrid = function(config) {
         }
         ,fields: ['key','name','value','description','xtype','namespace','area','area_text','editedon','oldkey','menu']
         ,paging: true
+        ,pageSize: 50
         ,autosave: true
         ,remoteSort: true
         ,primaryKey: 'key'

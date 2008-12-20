@@ -50,6 +50,7 @@ MODx.grid.ElementProperties = function(config) {
                 ,elementId: config.elementId
                 ,elementType: config.elementType
             }
+            ,value: _('default')
             ,listeners: {
                 'select': {fn:this.changePropertySet,scope:this}
             }
