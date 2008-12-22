@@ -231,7 +231,7 @@ MODx.window.AddElementToPropertySet = function(config) {
             }
         },{
             xtype: 'combo-elements'
-            ,fieldLabel: _('object')
+            ,fieldLabel: _('element')
             ,name: 'element'
             ,id: 'combo-elements'
         }]

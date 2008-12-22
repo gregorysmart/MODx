@@ -693,7 +693,7 @@ MODx.window.AddPropertySet = function(config) {
             html: _('propertyset_panel_desc')
         },MODx.PanelSpacer,{
             xtype: 'combo-property-set'
-            ,fieldLabel: 'Property Set'
+            ,fieldLabel: _('propertyset')
             ,name: 'propertyset'
             ,baseParams: {
                 action: 'getList'
