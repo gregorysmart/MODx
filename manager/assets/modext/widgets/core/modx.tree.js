@@ -25,6 +25,7 @@ MODx.tree.Tree = function(config) {
 	var tl = new Ext.tree.TreeLoader({
 		dataUrl: config.url
 		,baseParams: config.baseParams
+        ,clearOnLoad: true
 	});
 	tl.on('beforeload',function(loader,node) {
 		tl.dataUrl = this.config.url+'?action='+this.config.action+'&id='+node.attributes.id;

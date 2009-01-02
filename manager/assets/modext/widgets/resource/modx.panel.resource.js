@@ -379,7 +379,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     ,success: function(o) {
         Ext.getCmp('grid-resource-security').getStore().commitChanges();
         var t = parent.Ext.getCmp('modx_resource_tree');
-        var ctx = Ext.getCmp('context_key').getValue();
+        var ctx = Ext.getCmp('resource-context-key').getValue();
         var pa = Ext.getCmp('resource-parent').getValue();
         t.refreshNode(ctx+'_'+pa,true);
     }
