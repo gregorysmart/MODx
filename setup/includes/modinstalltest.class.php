@@ -21,6 +21,7 @@ class modInstallTest {
         $this->mode = $mode;
 
         $this->checkPHPVersion();
+        $this->checkMemoryLimit();
         $this->checkSessions();
         $this->checkCache();
         $this->checkExport();
@@ -53,6 +54,57 @@ class modInstallTest {
             }
         }
     }
+
+    /**
+     * Check memory limit, to make sure it is set at least to 64M
+     */
+    function checkMemoryLimit() {
+        $success = false;
+        $ml = ini_get('memory_limit');
+        $bytes = $this->return_bytes($ml);
+
+        if ($bytes < 67108864) { /* 64M limit */
+            $success = @ini_set('memory_limit','64M');
+            $success = $success !== false ? true : false;
+        } else {
+            $success = true;
+        }
+
+        $this->results['memory_limit']['msg'] = '<p>'.$this->install->lexicon['test_memory_limit'].' ';
+        if ($success) {
+            $this->results['memory_limit']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
+            $this->results['memory_limit']['class'] = 'testPassed';
+        } else {
+            $s = '<span class="notok">'.$this->install->lexicon['failed'].'</span>';
+            $s .= '<div class="notes"><p>'.sprintf($this->install->lexicon['test_memory_limit_fail'],$ml).'</p></div>';
+            $s .= '</p>';
+            $this->results['memory_limit']['msg'] .= $s;
+            $this->results['memory_limit']['class'] = 'testFailed';
+        }
+    }
+
+    /**
+     * Helper function that converts php.ini memory string settings to bytes
+     *
+     * @access private
+     * @param string $val The byte string
+     * @return integer The string converted into a proper integer bytes
+     */
+    function return_bytes($val) {
+        $val = trim($val);
+        $num = intval(substr($val,0,strlen($val)-1));
+        $last = strtolower(substr($val,strlen($val/1),1));
+        switch ($last) {
+            case 'g':
+                $num *= 1024;
+            case 'm':
+                $num *= 1024;
+            case 'k':
+                $num *= 1024;
+        }
+        return $num;
+    }
+
 
     /**
      * Check sessions
