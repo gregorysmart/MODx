@@ -42,6 +42,7 @@ $user->profile = $modx->newObject('modUserProfile');
 $user->profile->fromArray($_POST);
 $user->profile->set('internalKey',$user->get('id'));
 $user->profile->set('blocked', isset($_POST['blocked']) && $_POST['blocked'] ? true : false);
+$user->profile->set('photo','');
 
 if ($user->profile->save() == false) {
 	return $modx->error->failure($modx->lexicon('user_err_save_attributes'));
@@ -50,7 +51,7 @@ if ($user->profile->save() == false) {
 /* invoke OnManagerSaveUser event */
 $modx->invokeEvent('OnManagerSaveUser',array(
 	'mode' => 'new',
-	'userid' => $_POST['id'],
+	'userid' => $user->get('id'),
 	'username' => $_POST['newusername'],
 	'userpassword' => $_POST['newpassword'],
 	'useremail' => $_POST['email'],
@@ -95,7 +96,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 	global $modx;
 
 	$message = $modx->config['signupemail_message'];
-	// replace placeholders
+	/* replace placeholders */
 	$message = str_replace("[[+uid]]", $uid, $message);
 	$message = str_replace("[[+pwd]]", $pwd, $message);
 	$message = str_replace("[[+ufn]]", $ufn, $message);
@@ -123,7 +124,7 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 $modx->logManagerAction('user_create','modUser',$user->get('id'));
 
 if ($_POST['passwordnotifymethod'] == 's') {
-	return $modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
+	return $modx->error->success($modx->lexicon('user_created_password_message').$newPassword,$user);
 } else {
-	return $modx->error->success();
+	return $modx->error->success('',$user);
 }

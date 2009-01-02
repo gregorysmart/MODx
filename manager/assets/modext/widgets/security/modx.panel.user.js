@@ -362,5 +362,5 @@ MODx.combo.Gender = function(config) {
     });
     MODx.combo.Gender.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.combo.Gender,MODx.combo.ComboBox);
+Ext.extend(MODx.combo.Gender,Ext.form.ComboBox);
 Ext.reg('combo-gender',MODx.combo.Gender);

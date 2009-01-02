@@ -44,8 +44,9 @@ if (!isset($_POST['email']) || $_POST['email'] == '')
 /* check if the email address already exists */
 $user_email = $modx->getObject('modUserProfile',array('email' => $_POST['email']));
 if ($user_email != null) {
-	if ($user_email->get('internalKey') != $_POST['id'])
+	if ($user_email->get('internalKey') != $_POST['id']) {
 		$modx->error->addField('email',$modx->lexicon('user_err_already_exists_email'));
+    }
 }
 
 /* phone number */
@@ -100,12 +101,14 @@ if (isset($_POST['blockedafter']) && $_POST['blockedafter'] != '') {
 /* get fields for better error displaying */
 $fs = $modx->error->getFields();
 $fields = '<ul>';
-foreach ($fs as $f) {
-	$fields .= '<li>'.ucwords(str_replace('_',' ',$f)).'</li>';
+if (!empty($fs)) {
+    foreach ($fs as $f) {
+    	$fields .= '<li>'.ucwords(str_replace('_',' ',$f)).'</li>';
+    }
 }
 $fields .= '</ul>';
 
-if ($modx->error->hasError()) {
+if ($modx->error->hasError() && !empty($fs)) {
 	return $modx->error->failure(sprintf($modx->lexicon('check_fields_error').$fields));
 }
 
