@@ -106,6 +106,11 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     ,save: function() {
         var d = this.encode();
         var cb = Ext.getCmp('combo-property-set');
+        if (!cb) {
+            this.getStore().commitChanges();
+            this.onDirty();
+            return true;
+        }
         var p = {
             action: 'update'
             ,id: cb.getValue()
