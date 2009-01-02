@@ -165,9 +165,9 @@ if ($_POST['template'] && ($template = $modx->getObject('modTemplate', $_POST['t
         'modTemplateVarTemplate.templateid' => $_POST['template'],
     ));
     $c->sortby('modTemplateVar.rank');
-    
+
     $tvs = $modx->getCollection('modTemplateVar',$c);
-    
+
     foreach ($tvs as $tv) {
         $tmplvar = '';
         if ($tv->get('type') == 'url') {
@@ -265,16 +265,19 @@ if (isset($_POST['resource_groups'])) {
     }
 }
 
-foreach ($tmplvars as $field => $value) {
-	if (is_array($value)) {
-		$tvId = $value[0];
-		$tvVal = $value[1];
-		$tvc = $modx->newObject('modTemplateVarResource');
-		$tvc->set('tmplvarid',$value[0]);
-		$tvc->set('contentid',$resource->get('id'));
-		$tvc->set('value',$value[1]);
-		$tvc->save();
-	}
+/* save TVs */
+if (isset($tmplvars) && !empty($tmplvars)) {
+    foreach ($tmplvars as $field => $value) {
+    	if (is_array($value)) {
+    		$tvId = $value[0];
+    		$tvVal = $value[1];
+    		$tvc = $modx->newObject('modTemplateVarResource');
+    		$tvc->set('tmplvarid',$value[0]);
+    		$tvc->set('contentid',$resource->get('id'));
+    		$tvc->set('value',$value[1]);
+    		$tvc->save();
+    	}
+    }
 }
 
 if ($_POST['parent'] != 0) {
