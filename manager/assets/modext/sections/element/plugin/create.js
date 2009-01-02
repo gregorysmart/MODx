@@ -31,8 +31,8 @@ MODx.page.CreatePlugin = function(config) {
             xtype: 'panel-plugin'
             ,id: 'panel-plugin'
             ,renderTo: 'panel-plugin'
-            ,plugin: config.id
-            ,category: config.category
+            ,plugin: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});

@@ -32,6 +32,7 @@ MODx.page.CreateSnippet = function(config) {
             ,id: 'panel-snippet'
             ,renderTo: 'panel-snippet'
             ,snippet: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});

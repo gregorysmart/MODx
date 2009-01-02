@@ -33,7 +33,8 @@ MODx.page.CreateTV = function(config) {
             xtype: 'panel-tv'
             ,id: 'panel-tv'
             ,renderTo: 'panel-tv'
-            ,tv: ''
+            ,tv: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});

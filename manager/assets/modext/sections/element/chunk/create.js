@@ -33,6 +33,7 @@ MODx.page.CreateChunk = function(config) {
             ,id: 'panel-chunk'
             ,renderTo: 'panel-chunk'
             ,chunk: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});

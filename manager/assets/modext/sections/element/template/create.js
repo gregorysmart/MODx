@@ -35,7 +35,8 @@ MODx.page.CreateTemplate = function(config) {
             xtype: 'panel-template'
             ,id: 'panel-template'
             ,renderTo: 'panel-template'
-            ,template: config.id
+            ,template: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});
