@@ -140,5 +140,5 @@ $modx->logManagerAction('user_update','modUser',$user->get('id'));
 if ($newPassword && $_POST['passwordnotifymethod'] == 's') {
 	return $modx->error->success($modx->lexicon('user_created_password_message').$newPassword);
 } else {
-	return $modx->error->success();
+	return $modx->error->success('',$user);
 }
