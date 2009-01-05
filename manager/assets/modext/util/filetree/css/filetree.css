@@ -56,7 +56,6 @@
 	height:16px;
 	vertical-align:-3px;
 	margin-right:4px;
-	background-image:url(../../../../ext2/resources/images/default/tree/leaf.gif);
 	float:left;
 }
 .ux-up-item-selected {
@@ -101,10 +100,6 @@
 	color:black;
 	font-weight:bold;
 	cursor:default ! important;
-}
-.folder {
-	background-image:url(../../../../ext2/resources/images/default/tree/folder.gif) ! important;
-/*	background-repeat:no-repeat; */
 }
 /* {{{ 
 // IconCombo */
