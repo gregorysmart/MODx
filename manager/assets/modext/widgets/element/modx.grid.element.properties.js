@@ -211,7 +211,6 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                     rec.set('xtype',r.xtype);
                     rec.set('options',r.options);
                     rec.set('value',r.value);
-                    rec.commit();
                     this.onDirty();
                 },scope:this}
             }
@@ -281,14 +280,11 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
             text: _('property_update')
             ,scope: this
             ,handler: this.update
+        },{
+            text: _('property_revert')
+            ,scope: this
+            ,handler: this.revert
         }];
-        if (r.overridden == 1) {
-            m.push({
-                text: _('property_revert')
-                ,scope: this
-                ,handler: this.revert
-            });
-        }
         
         m.push({
             text: _('property_remove')
