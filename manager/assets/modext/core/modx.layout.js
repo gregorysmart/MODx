@@ -33,7 +33,6 @@ MODx.Layout = function(config){
                 ,applyTo: 'modx-header'
                 ,cls: 'modx-header'
                 ,height: 100
-                ,margin: '0 0 0 0'
             }),{
                 region: 'center'
                 ,layout: 'fit'
