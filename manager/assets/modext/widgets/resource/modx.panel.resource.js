@@ -248,9 +248,12 @@ MODx.panel.Resource = function(config) {
                     ,anchor: '30%'
                     
                 }:{}),{
-                    xtype: 'hidden'
+                    xtype: 'textfield'
+                    ,fieldLabel: _('class_key')
                     ,name: 'class_key'
                     ,id: 'resource-class-key'
+                    ,allowBlank: false
+                    ,width: 250
                     ,value: config.class_key || 'modDocument'
                     
                 },{
