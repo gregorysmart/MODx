@@ -81,6 +81,7 @@ MODx.panel.Static = function(config) {
                     ,browserEl: 'modx-browser'
                     ,prependPath: false
                     ,prependUrl: false
+                    ,hideFiles: true
                     ,fieldLabel: _('static_resource')
                     ,name: 'content'
                     ,id: 'resource-content'

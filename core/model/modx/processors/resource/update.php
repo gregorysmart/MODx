@@ -63,9 +63,11 @@ $resourceDir= strtolower(substr($resourceClass, 3));
 $delegateProcessor= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__);
 if (file_exists($delegateProcessor)) {
     $overridden= include ($delegateProcessor);
+    return $overridden;
+    /* need another way to handle this, since now handled with return statements
     if ($overridden !== false) {
         return $modx->error->failure('Warning! Delegate processor did not provide appropriate response.');
-    }
+    }*/
 }
 
 /* specific data escaping */
