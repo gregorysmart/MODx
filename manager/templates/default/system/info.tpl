@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <th>phpInfo()</th>
-            <td><strong><a href="#" onclick="viewPHPInfo();return false;">{$_lang.view}</a></strong></td>
+            <td><strong><a href="javascript:;" onclick="viewPHPInfo();return false;">{$_lang.view}</a></strong></td>
         </tr>
         <tr>
             <th>{$_lang.access_permissions}</th>
@@ -94,9 +94,6 @@
         <tr class="{cycle values=',odd'}">
             <th class="left">{$user->username}</th>
             <td>
-                {if $user->internalKey LT 0}
-                <img src="media/style/{$_config.manager_theme}/images/tree/globe.gif" alt="Web user" style="vertical-align: middle;" />
-                {/if}
                 &nbsp;{$user->internalKey}
             </td>
             <td>{$user->ip}</td>
