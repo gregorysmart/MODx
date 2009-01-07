@@ -76,8 +76,8 @@ class modManagerRequest extends modRequest {
         if ($this->modx->version === null) $this->modx->getVersionData();
 
         /* if not validated, load login page */
-        if (!isset($modx->user) || !$modx->user->isAuthenticated('mgr')) {
-            $modx = & $this->modx;
+        $modx = & $this->modx;
+        if (!isset($this->modx->user) || !$this->modx->user->isAuthenticated('mgr')) {
             include_once $this->modx->config['manager_path'] . 'controllers/security/login.php';
             exit();
         } else {
