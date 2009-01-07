@@ -15,7 +15,7 @@ if (isset($_POST['username']) && $_POST['username'] != '' && $_POST['username'] 
 }
 
 /* password */
-if (isset($_POST['newpassword']) && $_POST['newpassword'] != 'false') {
+if (isset($_POST['newpassword']) && $_POST['newpassword'] != 'false' || $_POST['id'] == 0) {
 	if (!isset($_POST['passwordnotifymethod'])) {
 		$modx->error->addField('password_notify_method',$modx->lexicon('user_err_not_specified_notification_method'));
 	}

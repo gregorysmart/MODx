@@ -126,12 +126,14 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                         ,boxLabel: _('password_method_email')
                         ,xtype: 'radio'
                         ,value: 'e'
+                        ,inputValue: 'e'
                     },{
                         id: 'fld-passwordnotifymethod-s'
                         ,name: 'passwordnotifymethod'
                         ,boxLabel: _('password_method_screen')
                         ,xtype: 'radio'
                         ,value: 's'
+                        ,inputValue: 's'
                         ,checked: true
                     }]
                 },{
@@ -143,6 +145,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                         ,name: 'passwordgenmethod'
                         ,boxLabel: _('password_gen_gen')
                         ,xtype: 'radio'
+                        ,inputValue: 'g'
                         ,value: 'g'
                         ,checked: true
                     },{
@@ -150,6 +153,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                         ,name: 'passwordgenmethod'
                         ,boxLabel: _('password_gen_specify')
                         ,xtype: 'radio'
+                        ,inputValue: 'spec'
                         ,value: 'spec'
                     }]
                 },{

@@ -19,7 +19,7 @@ if ($_POST['newusername'] == '')
 
 $newPassword= '';
 
-require_once $modx->config['processors_path'].'security/user/_validation.php';
+$s = include_once $modx->config['processors_path'].'security/user/_validation.php';
 
 if ($_POST['passwordnotifymethod'] == 'e') {
 	sendMailMessage($_POST['email'], $_POST['newusername'],$newPassword,$_POST['fullname']);
