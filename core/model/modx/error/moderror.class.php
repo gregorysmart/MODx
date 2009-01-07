@@ -182,7 +182,7 @@ class modError {
      */
     function getFields() {
         $f = array ();
-        $errors = array_values(array_filter($errors, array($this, 'isFieldError')));
+        $errors = array_values(array_filter($this->errors, array($this, 'isFieldError')));
         foreach ($errors as $fi) {
             $f[] = $fi['msg'];
         }
@@ -204,7 +204,7 @@ class modError {
     function getErrors($includeFields = false) {
         $errors = $this->errors;
         if (!$includeFields) {
-            $errors = array_values(array_filter($errors, array($this, 'isNotFieldError')));
+            $errors = array_values(array_filter($this->errors, array($this, 'isNotFieldError')));
         }
         return $errors;
     }
