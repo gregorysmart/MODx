@@ -15,6 +15,7 @@ if ($tv == null) {
     return $modx->error->failure(sprintf($modx->lexicon('tv_err_nfs'),$_POST['id']));
 }
 
+$tv->set('els',$tv->get('elements'));
 $properties = $tv->get('properties');
 if (!is_array($properties)) $properties = array();
 

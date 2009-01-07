@@ -78,7 +78,7 @@ foreach ($_POST as $key => $value) {
 }
 
 $tv->fromArray($_POST);
-$tv->set('elements',$_POST['elements']);
+$tv->set('elements',$_POST['els']);
 $tv->set('display_params',$display_params);
 $tv->set('rank', isset($_POST['rank']) ? $_POST['rank'] : 0);
 $tv->set('locked', isset($_POST['locked']));

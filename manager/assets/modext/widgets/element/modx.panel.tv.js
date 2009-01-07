@@ -109,8 +109,8 @@ MODx.panel.TV = function(config) {
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('tv_elements')
-                    ,name: 'elements'
-                    ,id: 'tv-els'
+                    ,name: 'els'
+                    ,id: 'tv-elements'
                     ,width: 250
                 },{
                     xtype: 'textarea'
