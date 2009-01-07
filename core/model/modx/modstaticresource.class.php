@@ -32,7 +32,7 @@ class modStaticResource extends modResource {
 
     /**
      * Treats the local content as a filename to load the raw content from.
-     * 
+     *
      * {@inheritdoc}
      */
     function getContent($options = array()) {
@@ -49,7 +49,8 @@ class modStaticResource extends modResource {
             $this->_sourceFile= $filename;
         }
         if (!empty ($this->_sourceFile)) {
-            if ($this->xpdo->getParser() && $this->xpdo->parser->collectElementTags($this->_sourceFile, array())) {
+            $array = array();
+            if ($this->xpdo->getParser() && $this->xpdo->parser->collectElementTags($this->_sourceFile, $array)) {
                 $this->xpdo->parser->processElementTags('', $this->_sourceFile);
             }
 

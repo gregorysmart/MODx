@@ -77,12 +77,23 @@ MODx.panel.Static = function(config) {
                     ,maxLength: 255
                     
                 },{
-                    xtype: 'textfield'
+                    xtype: 'combo-browser'
+                    ,browserEl: 'modx-browser'
+                    ,prependPath: false
+                    ,prependUrl: false
                     ,fieldLabel: _('static_resource')
                     ,name: 'content'
+                    ,id: 'resource-content'
                     ,width: 300
                     ,maxLength: 255
                     ,value: ''
+                    ,listeners: {
+                        'select':{fn:function(data) {
+                            if (data.url.substring(0,1) == '/') {
+                                Ext.getCmp('resource-content').setValue(data.url.substring(1));
+                            }                            
+                        },scope:this}
+                    }
                     
                 },{
                     xtype: 'textarea'
