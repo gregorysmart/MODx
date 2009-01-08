@@ -45,6 +45,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
             ,buttonsAt: 'tbar'
             ,singleUpload: false
             ,enableProgress: true
+            ,maxFileSize: 10485760
             ,baseParams: {
                 action: 'upload'
                 ,prependPath: this.config.prependPath || null
@@ -57,6 +58,12 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         });
         this.uploader.setUrl(MODx.config.connectors_url+'browser/file.php');
         
+        m.add('-');
+        m.add({
+            text: 'Refresh Directory'
+            ,scope: this
+            ,handler: this.refreshActiveNode
+        });
         m.add('-');
         m.add(new Ext.menu.Adapter(this.uploader,{
              hideOnClick:false

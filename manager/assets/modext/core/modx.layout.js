@@ -17,9 +17,11 @@ MODx.Layout = function(config){
     this.createIFrame();
     this.loadTrees();
 
-    Ext.get('modx-dashboard').fadeIn();
-    Ext.get('modx-frame-ct').fadeOut();
-    Ext.get('modx-container').fadeOut();
+    if (!Ext.isIE) {
+        Ext.get('modx-dashboard').fadeIn();
+        Ext.get('modx-frame-ct').fadeOut();
+        Ext.get('modx-container').fadeOut();
+    }
     
     Ext.applyIf(config,{
         layout: 'border'
@@ -101,9 +103,9 @@ Ext.extend(MODx.Layout,Ext.Viewport,{
             ,id: 'modx_content'
             ,frameBorder: 0
             ,height:'100%'
-            ,width:'98%'
+            ,width: '98%'
             ,anchor:'1 1'
-            ,style: 'padding:0; margin:0; border: 0; background: white;'
+            ,style: 'padding:0; margin:0; border: 0; background: #212121;'
         });
     }
         
@@ -146,12 +148,14 @@ Ext.reg('modx-layout',MODx.Layout);
  */
 MODx.LayoutMgr = function() {
     var _activeMenu = 'menu0';
-    var _dashboardActive = true;
+    var _dashboardActive = Ext.isIE ? false : true;
     
     return {
         loadFrame: function(a,p) {
             Ext.get('modx_content').dom.src = '?a='+a+'&'+(p || '');
-            this.hideDashboard();
+            if (!Ext.isIE) { 
+                this.hideDashboard();
+            }
             return false;
         }
         ,changeMenu: function(a,sm) {

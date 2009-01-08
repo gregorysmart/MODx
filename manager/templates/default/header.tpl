@@ -55,6 +55,10 @@
 <link href="assets/modext/util/filetree/css/icons.css" rel="stylesheet" type="text/css" />
 <link href="assets/modext/util/filetree/css/filetype.css" rel="stylesheet" type="text/css" />
 <link href="assets/modext/util/filetree/css/filetree.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+<link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/ie.css" />
+<![endif]-->
 </head>
 <body>
 
