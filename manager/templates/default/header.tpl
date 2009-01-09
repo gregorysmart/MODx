@@ -29,7 +29,6 @@
 {else}
 <script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="assets/modext/util/utilities.js" type="text/javascript"></script>
-<script src="assets/modext/util/dynifs.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.component.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.actionbuttons.js" type="text/javascript"></script>
