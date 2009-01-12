@@ -50,22 +50,30 @@ foreach ($menus as $menu) {
 		'cls' => 'folder',
 		'type' => 'menu',
 		'menu' => array(
-            array(
-                'text' => $modx->lexicon('menu_update'),
-                'handler' => 'this.update',
-            ),
-            '-',
-            array(
-                'text' => $modx->lexicon('action_place_here'),
-                'handler' => 'this.create',
-            ),
-            '-',
-            array(
-                'text' => $modx->lexicon('menu_remove'),
-                'handler' => 'this.remove',
+            'items' => array(
+                array(
+                    'text' => $modx->lexicon('menu_update'),
+                    'handler' => 'function(itm,e) {
+                        this.update(itm,e);
+                    }',
+                ),
+                '-',
+                array(
+                    'text' => $modx->lexicon('action_place_here'),
+                    'handler' => 'function(itm,e) {
+                        this.create(itm,e);
+                    }',
+                ),
+                '-',
+                array(
+                    'text' => $modx->lexicon('menu_remove'),
+                    'handler' => 'function(itm,e) {
+                        this.remove(itm,e);
+                    }',
+                ),
             ),
         )
 	);
 }
 
-return $modx->toJSON($as);
+return $this->toJSON($as);

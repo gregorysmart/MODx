@@ -143,6 +143,7 @@ $_lang['context'] = 'Context';
 $_lang['contexts'] = 'Contexts';
 $_lang['correct_errors'] = 'Please correct the errors in your form before submitting.';
 $_lang['could_not_find_user'] = 'Could not find user';
+$_lang['create'] = 'Create';
 $_lang['create_document_group'] = 'Create Document Group';
 $_lang['create_document_here'] = 'Create document here';
 $_lang['create_folder_here'] = 'Create folder here';

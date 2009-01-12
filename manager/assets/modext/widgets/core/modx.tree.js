@@ -133,6 +133,10 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	,addContextMenuItem: function(items) {
 		var a = items, l = a.length;
         for(var i = 0; i < l; i++) {
+            a[i].scope = this;
+            this.cm.add(a[i]);
+        }
+        /* @deprecated
 			var options = a[i];
 			
 			if (options == '-') {
@@ -141,7 +145,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 			}
             var h = Ext.emptyFn;
 			if (options.handler) {
-				h = eval(options.handler);
+				h = options.handler;//eval(options.handler);
 			} else {
 				h = function(itm,e) {
 					var o = itm.options;
@@ -174,9 +178,26 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 				,handler: h
 				//,cls: (options.header ? 'x-menu-item-active' : '')
 			});
-		}
+		}*/
 	}
 	
+    /**
+     * Shows the current context menu.
+     * @param {Ext.tree.TreeNode} node The 
+     * @param {Ext.EventObject} e The event object run.
+     */
+    ,_showContextMenu: function(node,e) {
+        node.select();
+        this.cm.activeNode = node;
+        var nar = node.id.split('_');
+        
+        this.cm.removeAll();
+        if (node.attributes.menu && node.attributes.menu.items) {
+            this.addContextMenuItem(node.attributes.menu.items);
+            this.cm.show(node.ui.getEl(),'t?');
+        }
+    }
+    
 	/**
 	 * Checks to see if a node exists in a tree node's children.
 	 * @param {Object} t The parent node.
@@ -350,22 +371,6 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	 */
 	,_handleDrop: function() { }
 	
-	/**
-	 * Shows the current context menu.
-	 * @param {Ext.tree.TreeNode} node The 
-	 * @param {Ext.EventObject} e The event object run.
-	 */
-	,_showContextMenu: function(node,e) {
-		node.select();
-		this.cm.activeNode = node;
-		var nar = node.id.split('_');
-		
-        this.cm.removeAll();
-		if (node.attributes.menu) {
-            this.addContextMenuItem(node.attributes.menu);
-            this.cm.show(node.ui.getEl(),'t?');
-		}
-	}
 	
 	/**
 	 * Semi unique ids across edits
@@ -387,6 +392,14 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 		} else { location.href = loc; }
 	}
 	
+    ,loadAction: function(p) {
+        var w = Ext.get('modx_content');
+        if (w !== null) {
+            var id = this.cm.activeNode.id.split('_'); id = id[1];
+            var u = 'index.php?id='+id+'&'+p;
+            w.dom.src = u;
+        }
+    }
 	/**
 	 * Loads the default toolbar for the tree.
 	 * @access private

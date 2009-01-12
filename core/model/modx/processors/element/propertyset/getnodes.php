@@ -32,14 +32,20 @@ switch ($node[0]) {
                 'class_key' => 'modPropertySet',
                 'qtip' => $set->get('description'),
                 'menu' => array(
-                    array(
-                        'text' => $modx->lexicon('propertyset_element_add'),
-                        'handler' => 'this.addElement',
-                    ),
-                    '-',
-                    array(
-                        'text' => $modx->lexicon('propertyset_remove'),
-                        'handler' => 'this.removeSet',
+                    'items' => array(
+                        array(
+                            'text' => $modx->lexicon('propertyset_element_add'),
+                            'handler' => 'function(itm,e) {
+                                this.addElement(itm,e);
+                            }',
+                        ),
+                        '-',
+                        array(
+                            'text' => $modx->lexicon('propertyset_remove'),
+                            'handler' => 'function(itm,e) {
+                                this.removeSet(itm,e);
+                            }',
+                        ),
                     ),
                 ),
             );
@@ -78,10 +84,14 @@ switch ($node[0]) {
                     'propertyset' => $el->get('property_set'),
                     'element_class' => $class,
                     'menu' => array(
-                        array(
-                            'text' => $modx->lexicon('propertyset_element_remove'),
-                            'handler' => 'this.removeElement',
-                        )
+                        'items' => array(
+                            array(
+                                'text' => $modx->lexicon('propertyset_element_remove'),
+                                'handler' => 'function(itm,e) {
+                                    this.removeElement(itm,e);
+                                }',
+                            )
+                        ),
                     ),
                 );
                 $list[] = $sa;
@@ -92,4 +102,4 @@ switch ($node[0]) {
 }
 
 
-return $modx->toJSON($list);
+return $this->toJSON($list);

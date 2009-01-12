@@ -104,4 +104,54 @@ class modConnectorResponse extends modResponse {
             $this->_directory = $dir;
         }
     }
+
+    /**
+     * Converts PHP structure to JSON format and properly handles string
+     * literals
+     *
+     * @access public
+     * @param mixed $data
+     * @return string The JSON-encoded string
+     */
+    function toJSON($data) {
+        $vals = array();
+        $rkeys = array();
+        foreach ($data as $key => &$value){
+            $this->_parseLiterals($key,$value,$vals,$rkeys);
+        }
+
+        $o = $this->modx->toJSON($data);
+        $o = str_replace($rkeys, $vals, $o);
+        return $o;
+    }
+
+    /**
+     * Parses Javascript literals out of a JSON string, making them properly
+     * executable for the JS, which makes JS eval statements unnecessary.
+     *
+     * @access private
+     * @param string $key The current array index key
+     * @param mixed &$value The value of the current array index
+     * @param array &$vals The stored values to be translated
+     * @param array &$rkeys The stored keys to map to the values to translate
+     */
+    function _parseLiterals($key,&$value,&$vals,&$rkeys) {
+        if (is_array($value)) {
+            foreach ($value as $key => &$v) {
+                $this->_parseLiterals($key,$v,$vals,$rkeys);
+            }
+        } else {
+            /* properly handle common literal structures */
+            if (strpos($value, 'function(') === 0
+             || strpos($value, 'this') === 0
+             || strpos($value, 'new Function(') === 0
+             || strpos($value, 'Ext') === 0) {
+                $uid = uniqid();
+                $v = $value;
+                $vals[] = $v;
+                $value = '%' . $uid . '%';
+                $rkeys[] = '"' . $value . '"';
+            }
+        }
+    }
 }

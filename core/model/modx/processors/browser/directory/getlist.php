@@ -48,18 +48,26 @@ while(false !== ($name = $odir->read())) {
 			'disabled' => is_writable($fullname),
             'leaf' => false,
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('file_folder_create_here'),
-                    'handler' => 'this.createDirectory',
-                ),
-                array(
-                    'text' => $modx->lexicon('file_folder_chmod'),
-                    'handler' => 'this.chmodDirectory',
-                ),
-                '-',
-                array(
-                    'text' => $modx->lexicon('file_folder_remove'),
-                    'handler' => 'this.remove.createDelegate(this,["file_folder_confirm_remove"])',
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('file_folder_create_here'),
+                        'handler' => 'function(itm,e) {
+                            this.createDirectory(itm,e);
+                        }',
+                    ),
+                    array(
+                        'text' => $modx->lexicon('file_folder_chmod'),
+                        'handler' => 'function(itm,e) {
+                            this.chmodDirectory(itm,e);
+                        }',
+                    ),
+                    '-',
+                    array(
+                        'text' => $modx->lexicon('file_folder_remove'),
+                        'handler' => 'function(itm,e) {
+                            this.remove("file_folder_confirm_remove");
+                        }',
+                    ),
                 ),
             ),
 		);
@@ -73,21 +81,27 @@ while(false !== ($name = $odir->read())) {
             'cls' => 'file',
             'type' => 'file',
             'disabled' => is_writable($fullname),
+            'leaf' => true,
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('file_edit'),
-                    'params' => array(
-                        'a' => $actions['system/file/edit'],
-                        'file' => rawurlencode($fullname),
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('file_edit'),
+                        'handler' => 'function() {
+                            Ext.getCmp("modx_file_tree").loadAction("'
+                                . 'a=' . $actions['system/file/edit']
+                                . 'file=' . rawurlencode($fullname)
+                             . '");
+                        }',
+                    ),
+                    '-',
+                    array(
+                        'text' => $modx->lexicon('file_remove'),
+                        'handler' => 'function(itm,e) {
+                            this.removeFile(itm,e);
+                        }',
                     ),
                 ),
-                '-',
-                array(
-                    'text' => $modx->lexicon('file_remove'),
-                    'handler' => 'this.removeFile',
-                )
             ),
-            'leaf' => true
         );
     }
 }
@@ -102,4 +116,4 @@ foreach ($files as $file) {
     $ls[] = $file;
 }
 
-return $modx->toJSON($ls);
+return $this->toJSON($ls);

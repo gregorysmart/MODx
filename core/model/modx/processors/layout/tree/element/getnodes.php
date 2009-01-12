@@ -50,22 +50,28 @@ switch ($g[0]) {
 				'href' => '',
                 'type' => $g[1],
                 'menu' => array(
-                    array(
-                        'text' => '<b>'.$category->get('category').'</b>',
-                        'params' => '',
-                        'handler' => 'new Function("return false");',
-                        'header' => true,
-                    )
-                    ,'-',
-                    array(
-                        'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
-                        'handler' => 'this._createElement',
+                    'items' => array(
+                        array(
+                            'text' => '<b>'.$category->get('category').'</b>',
+                            'params' => '',
+                            'handler' => 'function() { return false; }',
+                            'header' => true,
+                        )
+                        ,'-',
+                        array(
+                            'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
+                            'handler' => 'function(itm,e) {
+                                this._createElement(itm,e);
+                            }',
+                        ),
+                        '-',
+                        array(
+                            'text' => $modx->lexicon('remove_category'),
+                            'handler' => 'function(itm,e) {
+                                this.removeCategory(itm,e);
+                            }',
+                        )
                     ),
-                    '-',
-                    array(
-                        'text' => $modx->lexicon('remove_category'),
-                        'handler' => 'this.removeCategory',
-                    )
                 ),
 			);
 		}
@@ -87,33 +93,46 @@ switch ($g[0]) {
                 'type' => $g[1],
                 'qtip' => $element->get('description'),
                 'menu' => array(
-                    array(
-                        'text' => '<b>'.$name.'</b>',
-                        'params' => '',
-                        'handler' => 'new Function("return false");',
-                        'header' => true,
-                    )
-                    ,'-',
-                    array(
-                        'text' => $modx->lexicon('edit').' '.$elementType,
-                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->get('id'), ),
-                    ),
-                    array(
-                        'text' => $modx->lexicon('duplicate').' '.$elementType,
-                        'handler' => 'this.duplicateElement.createDelegate(this,['.$element->get('id').',"'.strtolower($elementType).'"],true)',
-                    ),
-                    array(
-                        'text' => $modx->lexicon('remove').' '.$elementType,
-                        'handler' => 'this.removeElement',
-                    ),
-                    '-',
-                    array(
-                        'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
-                        'handler' => 'this._createElement',
-                    ),
-                    array(
-                        'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
+                    'items' => array(
+                        array(
+                            'text' => '<b>'.$name.'</b>',
+                            'params' => '',
+                            'handler' => 'function() { return false; }',
+                            'header' => true,
+                        )
+                        ,'-',
+                        array(
+                            'text' => $modx->lexicon('edit').' '.$elementType,
+                            'handler' => 'function() {
+                                Ext.getCmp("modx_element_tree").loadAction("'
+                                    . 'a=' . $actions['element/'.strtolower($elementType).'/update']
+                                    . '&id=' . $element->get('id')
+                                 . '");
+                            }',
+                        ),
+                        array(
+                            'text' => $modx->lexicon('duplicate').' '.$elementType,
+                            'handler' => 'function(itm,e) {
+                                this.duplicateElement(itm,e,'.$element->get('id').',"'.strtolower($elementType).'");
+                            }',
+                        ),
+                        array(
+                            'text' => $modx->lexicon('remove').' '.$elementType,
+                            'handler' => 'function(itm,e) {
+                                this.removeElement(itm,e);
+                            }',
+                        ),
+                        '-',
+                        array(
+                            'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
+                            'handler' => 'function(itm,e) {
+                                this._createElement(itm,e);
+                            }',
+                        ),
+                        array(
+                            'text' => $modx->lexicon('new_category'),
+                            'handler' => 'this.createCategory',
+                        ),
                     ),
                 ),
 			);
@@ -131,17 +150,21 @@ switch ($g[0]) {
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'template',
-                'menu' => array(
+                'menu' => array( 'items' => array(
                     array(
                         'text' => $modx->lexicon('new').' '.$modx->lexicon('template'),
-                        'handler' => 'this._createElement',
+                        'handler' => 'function(itm,e) {
+                            this._createElement(itm,e);
+                        }',
                     ),
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
+                        'handler' => 'function(itm,e) {
+                            this.createCategory(itm,e);
+                        }',
                     )
-                ),
+                )),
 			),
 			array(
 				'text' => $modx->lexicon('tmplvars'),
@@ -150,17 +173,21 @@ switch ($g[0]) {
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'tv',
-                'menu' => array(
+                'menu' => array( 'items' => array(
                     array(
                         'text' => $modx->lexicon('new').' '.$modx->lexicon('tmplvar'),
-                        'handler' => 'this._createElement',
+                        'handler' => 'function(itm,e) {
+                            this._createElement(itm,e);
+                        }',
                     ),
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
+                        'handler' => 'function(itm,e) {
+                            this.createCategory(itm,e);
+                        }',
                     )
-                ),
+                )),
 			),
 			array(
 				'text' => $modx->lexicon('chunks'),
@@ -169,17 +196,21 @@ switch ($g[0]) {
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'chunk',
-                'menu' => array(
+                'menu' => array( 'items' => array(
                     array(
                         'text' => $modx->lexicon('new').' '.$modx->lexicon('chunk'),
-                        'handler' => 'this._createElement',
+                        'handler' => 'function(itm,e) {
+                            this._createElement(itm,e);
+                        }',
                     ),
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
+                        'handler' => 'function(itm,e) {
+                            this.createCategory(itm,e);
+                        }',
                     )
-                ),
+                )),
 			),
 			array(
 				'text' => $modx->lexicon('snippets'),
@@ -188,17 +219,21 @@ switch ($g[0]) {
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'snippet',
-                'menu' => array(
+                'menu' => array( 'items' => array(
                     array(
                         'text' => $modx->lexicon('new').' '.$modx->lexicon('snippet'),
-                        'handler' => 'this._createElement',
+                        'handler' => 'function(itm,e) {
+                            this._createElement(itm,e);
+                        }',
                     ),
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
+                        'handler' => 'function(itm,e) {
+                            this.createCategory(itm,e);
+                        }',
                     )
-                ),
+                )),
 			),
 			array(
 				'text' => $modx->lexicon('plugins'),
@@ -207,17 +242,21 @@ switch ($g[0]) {
 				'cls' => 'folder',
 				'href' => '',
                 'type' => 'plugin',
-                'menu' => array(
+                'menu' => array( 'items' => array(
                     array(
                         'text' => $modx->lexicon('new').' '.$modx->lexicon('plugin'),
-                        'handler' => 'this._createElement',
+                        'handler' => 'function(itm,e) {
+                            this._createElement(itm,e);
+                        }',
                     ),
                     '-',
                     array(
                         'text' => $modx->lexicon('new_category'),
-                        'handler' => 'this.createCategory',
+                        'handler' => 'function(itm,e) {
+                            this.createCategory(itm,e);
+                        }',
                     )
-                ),
+                )),
 			),
             array(
                 'text' => $modx->lexicon('categories'),
@@ -226,12 +265,14 @@ switch ($g[0]) {
                 'cls' => 'folder',
                 'href' => '',
                 'type' => 'category',
-                'menu' => array(
+                'menu' => array( 'items' => array(
                     array(
                         'text' => $modx->lexicon('category_create'),
-                        'handler' => 'this.createCategory',
+                        'handler' => 'function(itm,e) {
+                            this.createCategory(itm,e);
+                        }',
                     ),
-                ),
+                )),
             ),
 		);
 		break;
@@ -246,18 +287,26 @@ switch ($g[0]) {
                 'href' => '',
                 'type' => 'category',
                 'menu' => array(
-                    array(
-                        'text' => $modx->lexicon('category_create'),
-                        'handler' => 'this.createCategory',
-                    ),
-                    array(
-                        'text' => $modx->lexicon('category_rename'),
-                        'handler' => 'this.renameCategory',
-                    ),
-                    '-',
-                    array(
-                        'text' => $modx->lexicon('category_remove'),
-                        'handler' => 'this.removeCategory',
+                    'items' => array(
+                        array(
+                            'text' => $modx->lexicon('category_create'),
+                            'handler' => 'function(itm,e) {
+                                this.createCategory(itm,e);
+                            }',
+                        ),
+                        array(
+                            'text' => $modx->lexicon('category_rename'),
+                            'handler' => 'function(itm,e) {
+                                this.renameCategory(itm,e);
+                            }',
+                        ),
+                        '-',
+                        array(
+                            'text' => $modx->lexicon('category_remove'),
+                            'handler' => 'function(itm,e) {
+                                this.removeCategory(itm,e);
+                            }',
+                        ),
                     ),
                 ),
             );
@@ -285,29 +334,41 @@ switch ($g[0]) {
 				'hrefTarget' => 'modx_content',
                 'type' => $g[0],
                 'menu' => array(
-                     array(
-                        'text' => '<b>'.$name.'</b>',
-                        'params' => '',
-                        'handler' => 'new Function("return false");',
-                        'header' => true,
-                    ),'-',
-                    array(
-                        'text' => $modx->lexicon('edit').' '.$elementType,
-                        'params' => array( 'a' => $actions['element/'.strtolower($elementType).'/update'], 'id' => $element->get('id'), ),
+                    'items' => array(
+                         array(
+                            'text' => '<b>'.$name.'</b>',
+                            'params' => '',
+                            'handler' => 'function() { return false; }',
+                            'header' => true,
+                        ),'-',
+                        array(
+                            'text' => $modx->lexicon('edit').' '.$elementType,
+                            'handler' => 'function() {
+                                Ext.getCmp("modx_element_tree").loadAction("'
+                                    . 'a=' . $actions['element/'.strtolower($elementType).'/update']
+                                    . '&id=' . $element->get('id')
+                                 . '");
+                            }',
+                        ),
+                        array(
+                            'text' => $modx->lexicon('duplicate').' '.$elementType,
+                            'handler' => 'function(itm,e) {
+                                this.duplicateElement(itm,e,"'.$elementType.'");
+                            }',
+                        ),
+                        '-',
+                        array(
+                            'text' => $modx->lexicon('remove').' '.$elementType,
+                            'handler' => 'function(itm,e) {
+                                this.removeElement(itm,e);
+                            }',
+                            'handler' => 'this.removeElement',
+                        )
                     ),
-                    array(
-                        'text' => $modx->lexicon('duplicate').' '.$elementType,
-                        'handler' => 'this.duplicateElement.createDelegate(this,["'.$elementType.'"],true)',
-                    ),
-                    '-',
-                    array(
-                        'text' => $modx->lexicon('remove').' '.$elementType,
-                        'handler' => 'this.removeElement',
-                    )
                 ),
 			);
 		}
 		break;
 }
 
-return $modx->toJSON($resources);
+return $this->toJSON($resources);

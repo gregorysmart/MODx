@@ -38,7 +38,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         
         m.removeAll();
         if (node.attributes.menu) {
-            this.addContextMenuItem(node.attributes.menu);
+            this.addContextMenuItem(node.attributes.menu.items);
         }
         this.uploader = new Ext.ux.UploadPanel({
              contextmenu: this.cm

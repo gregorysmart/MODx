@@ -25,14 +25,20 @@ if ($g == null) {
 			'type' => 'modResourceGroup',
 			'cls' => 'folder',
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('create_document_group'),
-                    'handler' => 'this.create',
-                ),
-                '-',
-                array(
-                    'text' => $modx->lexicon('delete_document_group'),
-                    'handler' => 'this.remove',
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('create_document_group'),
+                        'handler' => 'function(itm,e) {
+                            this.create(itm,e);
+                        }',
+                    ),
+                    '-',
+                    array(
+                        'text' => $modx->lexicon('delete_document_group'),
+                        'handler' => 'function(itm,e) {
+                            this.remove(itm,e);
+                        }',
+                    ),
                 ),
             ),
 		);
@@ -47,13 +53,17 @@ if ($g == null) {
 			'type' => 'modResource',
 			'cls' => '',
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('delete_document_group_document'),
-                    'handler' => 'this.removeResource',
-                )
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('delete_document_group_document'),
+                        'handler' => 'function(itm,e) {
+                            this.removeResource(itm,e);
+                        }',
+                    )
+                ),
             ),
 		);
 	}
 }
 
-return $modx->toJSON($da);
+return $this->toJSON($da);

@@ -25,23 +25,33 @@ foreach ($groups as $group) {
 		'type' => 'usergroup',
 		'cls' => 'folder',
         'menu' => array(
-            array(
-                'text' => $modx->lexicon('add_user_to_group'),
-                'handler' => 'this.addUser',
-            ),
-            '-',
-            array(
-                'text' => $modx->lexicon('create_user_group'),
-                'handler' => 'this.create',
-            ),
-            array(
-                'text' => $modx->lexicon('user_group_update'),
-                'handler' => 'this.update',
-            ),
-            '-',
-            array(
-                'text' => $modx->lexicon('delete_user_group'),
-                'handler' => 'this.remove',
+            'items' => array(
+                array(
+                    'text' => $modx->lexicon('add_user_to_group'),
+                    'handler' => 'function(itm,e) {
+                        this.addUser(itm,e);
+                    }',
+                ),
+                '-',
+                array(
+                    'text' => $modx->lexicon('create_user_group'),
+                    'handler' => 'function(itm,e) {
+                        this.create(itm,e);
+                    }',
+                ),
+                array(
+                    'text' => $modx->lexicon('user_group_update'),
+                    'handler' => 'function(itm,e) {
+                        this.update(itm,e);
+                    }',
+                ),
+                '-',
+                array(
+                    'text' => $modx->lexicon('delete_user_group'),
+                    'handler' => 'function(itm,e) {
+                        this.remove(itm,e);
+                    }',
+                ),
             ),
         ),
 	);
@@ -56,13 +66,17 @@ if ($g != null) {
 			'type' => 'user',
 			'cls' => '',
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('remove_user_from_group'),
-                    'handler' => 'this.removeUser',
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('remove_user_from_group'),
+                        'handler' => 'function(itm,e) {
+                            this.removeUser(itm,e);
+                        }',
+                    ),
                 ),
             ),
 		);
 	}
 }
 
-return $modx->toJSON($da);
+return $this->toJSON($da);

@@ -30,16 +30,18 @@ if ($type == 'root') {
             'leaf' => false,
             'cls' => 'folder',
             'type' => 'context',
-            'menu' => array(
+            'menu' => array( 'items' => array(
                 array(
                     'text' => $modx->lexicon('action_create_here'),
-                    'handler' => 'this.create',
+                    'handler' => 'function(itm,e) {
+                        this.create(itm,e);
+                    }',
                 ),
-            ),
+            )),
         );
     }
 
-    return $modx->toJSON($cs);
+    return $this->toJSON($cs);
     die();
 
 /* root actions */
@@ -70,21 +72,29 @@ if ($type == 'root') {
             'cls' => 'action',
             'type' => 'action',
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('action_update'),
-                    'handler' => 'this.update',
-                ),'-',array(
-                    'text' => $modx->lexicon('action_create_here'),
-                    'handler' => 'this.create',
-                ),'-',array(
-                    'text' => $modx->lexicon('action_remove'),
-                    'handler' => 'this.remove',
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('action_update'),
+                        'handler' => 'function(itm,e) {
+                            this.update(itm,e);
+                        }',
+                    ),'-',array(
+                        'text' => $modx->lexicon('action_create_here'),
+                        'handler' => 'function(itm,e) {
+                            this.create(itm,e);
+                        }',
+                    ),'-',array(
+                        'text' => $modx->lexicon('action_remove'),
+                        'handler' => 'function(itm,e) {
+                            this.remove(itm,e);
+                        }',
+                    ),
                 ),
             ),
         );
     }
 
-    return $modx->toJSON($as);
+    return $this->toJSON($as);
     die();
 
 /* subactions */
@@ -112,20 +122,28 @@ if ($type == 'root') {
             'cls' => 'action',
             'type' => 'action',
             'menu' => array(
-                array(
-                    'text' => $modx->lexicon('action_update'),
-                    'handler' => 'this.update',
-                ),'-',array(
-                    'text' => $modx->lexicon('action_create_here'),
-                    'handler' => 'this.create',
-                ),'-',array(
-                    'text' => $modx->lexicon('action_remove'),
-                    'handler' => 'this.remove',
+                'items' => array(
+                    array(
+                        'text' => $modx->lexicon('action_update'),
+                        'handler' => 'function(itm,e) {
+                            this.update(itm,e);
+                        }',
+                    ),'-',array(
+                        'text' => $modx->lexicon('action_create_here'),
+                        'handler' => 'function(itm,e) {
+                            this.create(itm,e);
+                        }',
+                    ),'-',array(
+                        'text' => $modx->lexicon('action_remove'),
+                        'handler' => 'function(itm,e) {
+                            this.remove(itm,e);
+                        }',
+                    ),
                 ),
             ),
         );
     }
 
-    return $modx->toJSON($as);
+    return $this->toJSON($as);
     die();
 }
