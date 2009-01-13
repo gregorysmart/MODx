@@ -6,7 +6,7 @@
 	    | <a id="rightlogin-logout" href="javascript:;" onclick="MODx.logout();">{$_lang.logout}</a>
     </span>
 	</div>
-	<div id="topnav-div">
+	<div id="topnav-div" class="menu">
 	    <ul id="topnav">
 	    {foreach from=$menus item=menu name=m}
 	       <li id="limenu{$menu.id}" class="{if $smarty.foreach.m.first}first active{/if}">
