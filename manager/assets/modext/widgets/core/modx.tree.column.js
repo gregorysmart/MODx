@@ -142,8 +142,8 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
         this.cm.record = node.attributes;
         this.cm.record.id = node.attributes.pk;
         this.cm.removeAll();
-        if (node.attributes.menu) {
-            this._addContextMenuItem(node.attributes.menu);
+        if (node.attributes.menu && node.attributes.menu.items) {
+            this._addContextMenuItem(node.attributes.menu.items);
             this.cm.show(node.ui.getEl(),'t?');
         }
     }
@@ -154,43 +154,8 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
     ,_addContextMenuItem: function(items) {
         var a = items, l = a.length;
         for(var i = 0; i < l; i++) {
-            var o = a[i];
-            
-            if (o == '-') {
-                this.cm.add('-');
-                continue;
-            }
-            var h = Ext.emptyFn;
-            if (o.handler) {
-                h = eval(o.handler);
-                if (h && typeof(h) == 'object' && h.xtype) {
-                    h = this.loadWindow.createDelegate(this,[h],true);
-                }
-            } else {
-                h = function(itm,e) {
-                    var op = itm.o;    
-                    if (op.confirm) {
-                        Ext.Msg.confirm('',op.confirm,function(e) {
-                            if (e == 'yes') {
-                                var a = Ext.urlEncode(op.params || {action: op.action});
-                                var s = 'index.php?&a='+RM.request.a;
-                                location.href = s;
-                            }
-                        },this);
-                    } else {
-                        var a = Ext.urlEncode(op.params);
-                        var s = 'index.php?&a='+RM.request.a;
-                        location.href = s;
-                    }
-                };
-            }
-            this.cm.add({
-                id: o.id
-                ,text: o.text
-                ,scope: this
-                ,options: o
-                ,handler: h
-            });
+            a[i].scope = this;
+            this.cm.add(a[i]);
         }
     }
     

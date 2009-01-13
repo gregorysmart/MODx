@@ -112,8 +112,8 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
         var nar = node.id.split('_');
         
         this.cm.removeAll();
-        if (node.attributes.menu) {
-            this.addContextMenuItem(node.attributes.menu);
+        if (node.attributes.menu && node.attributes.menu.items) {
+            this.addContextMenuItem(node.attributes.menu.items);
             this.cm.show(node.ui.getEl(),'t?');
         }
     }
@@ -126,48 +126,9 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
      */
     ,addContextMenuItem: function(items) {
         var a = items, l = a.length;
-        for(var i=0;i<l;i=i+1) {
-            var options = a[i];
-            
-            if (options === '-') {
-                this.cm.add('-');
-                continue;
-            }
-            var h = Ext.emptyFn;
-            if (options.handler) {
-                h = eval(options.handler);
-            } else {
-                h = function(itm,e) {
-                    var o = itm.options;
-                    var id = this.cm.activeNode.id.split('_'); id = id[1];
-                    var w = Ext.get('modx_content');
-                    if (o.confirm) {
-                        Ext.Msg.confirm('',o.confirm,function(e) {
-                            if (e === 'yes') {
-                                var a = Ext.urlEncode(o.params || {action: o.action});
-                                var s = 'index.php?id='+id+'&'+a;
-                                if (w === null) {
-                                    location.href = s;
-                                } else { w.dom.src = s; }
-                            }
-                        },this);
-                    } else {
-                        var a = Ext.urlEncode(o.params);
-                        var s = 'index.php?id='+id+'&'+a;
-                        if (w === null) {
-                            location.href = s;
-                        } else { w.dom.src = s; }
-                    }
-                };
-            }
-            this.cm.add({
-                id: options.id
-                ,text: options.text
-                ,scope: this
-                ,options: options
-                ,handler: h
-                //,cls: (options.header ? 'x-menu-item-active' : '')
-            });
+        for(var i = 0; i < l; i++) {
+            a[i].scope = this;
+            this.cm.add(a[i]);
         }
     }
     
