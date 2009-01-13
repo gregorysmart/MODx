@@ -24,10 +24,10 @@
  * @package modx
  * @subpackage transport
  */
- /**
- * Abstracts the package building process
- *
- */
+/**
+* Abstracts the package building process
+*
+*/
 class modPackageBuilder {
     /**
     * @var string The directory in which the package file is located.
@@ -54,20 +54,22 @@ class modPackageBuilder {
      */
     var $autoselects;
 
-    function modPackageBuilder(&$modx) {
+    function modPackageBuilder(& $modx) {
         $this->__construct($modx);
     }
-    function __construct(&$modx) {
+    function __construct(& $modx) {
         $this->modx = $modx;
-        $this->modx->loadClass('transport.modTransportVehicle','',false, true);
+        $this->modx->loadClass('transport.modTransportVehicle', '', false, true);
         $this->modx->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 
-        if (!$workspace= $this->modx->getObject('modWorkspace', array('active' => 1))) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL,"\nYou must have a valid core installation with an active workspace to run the build.\n");
-            exit();
+        if (!$workspace = $this->modx->getObject('modWorkspace', array (
+                'active' => 1
+            ))) {
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, "\nYou must have a valid core installation with an active workspace to run the build.\n");
+            exit ();
         }
         $this->directory = $workspace->get('path') . 'packages/';
-        $this->autoselects = array();
+        $this->autoselects = array ();
     }
 
     /**
@@ -77,9 +79,11 @@ class modPackageBuilder {
     * @returns modWorkspace The workspace set, false if invalid.
     */
     function setWorkspace($workspace_id) {
-        if (!is_numeric($workspace_id)) return false;
-        $workspace = $this->modx->getObject('modWorkspace',$workspace_id);
-        if ($workspace == null) return false;
+        if (!is_numeric($workspace_id))
+            return false;
+        $workspace = $this->modx->getObject('modWorkspace', $workspace_id);
+        if ($workspace == null)
+            return false;
 
         $this->directory = $workspace->get('path') . 'packages/';
         return $workspace;
@@ -88,8 +92,8 @@ class modPackageBuilder {
     /**
      * @deprecated
      */
-    function create($name,$version,$release= '') {
-        $this->createPackage($name,$version,$release);
+    function create($name, $version, $release = '') {
+        $this->createPackage($name, $version, $release);
     }
 
     /**
@@ -101,14 +105,16 @@ class modPackageBuilder {
     * package.
     * @returns xPDOTransport The xPDOTransport package object.
     */
-    function createPackage($name, $version, $release= '') {
+    function createPackage($name, $version, $release = '') {
         /* setup the signature and filename */
-        $s['name']= $name;
-        $s['version']= $version;
-        $s['release']= $release;
+        $s['name'] = $name;
+        $s['version'] = $version;
+        $s['release'] = $release;
         $this->signature = $s['name'];
-        if (!empty($s['version'])) $this->signature .= '-'.$s['version'];
-        if (!empty($s['release'])) $this->signature .= '-'.$s['release'];
+        if (!empty ($s['version']))
+            $this->signature .= '-' . $s['version'];
+        if (!empty ($s['release']))
+            $this->signature .= '-' . $s['release'];
         $this->filename = $this->signature . '.transport.zip';
 
         /* remove the package if it's already been made */
@@ -116,14 +122,14 @@ class modPackageBuilder {
             unlink($this->directory . $this->filename);
         }
         if (file_exists($this->directory . $this->signature) && is_dir($this->directory . $this->signature)) {
-            if ($cacheManager= $this->modx->getCacheManager()) {
-                $cacheManager->deleteTree($this->directory . $this->signature, true, false, array());
+            if ($cacheManager = $this->modx->getCacheManager()) {
+                $cacheManager->deleteTree($this->directory . $this->signature, true, false, array ());
             }
         }
 
         /* create the transport package */
         $this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
-        $this->modx->log(MODX_LOG_LEVEL_INFO,'Created new transport package with signature: '.$this->signature);
+        $this->modx->log(MODX_LOG_LEVEL_INFO, 'Created new transport package with signature: ' . $this->signature);
 
         return $this->package;
     }
@@ -134,7 +140,7 @@ class modPackageBuilder {
      *
      * @param array An array of class names to build in
      */
-    function setAutoSelects($classes = array()) {
+    function setAutoSelects($classes = array ()) {
         $this->autoselects = $classes;
     }
 
@@ -147,7 +153,7 @@ class modPackageBuilder {
     */
     function createVehicle($obj, $attr) {
         if ($this->namespace) {
-			$attr['namespace'] = $this->namespace; /* package the namespace into the metadata */
+            $attr['namespace'] = $this->namespace; /* package the namespace into the metadata */
         }
         $vehicle = new modTransportVehicle($obj, $attr);
 
@@ -169,36 +175,39 @@ class modPackageBuilder {
      */
     function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true) {
         if (!is_a($ns, 'modNamespace')) {
-            $namespace = $this->modx->getObject('modNamespace',$ns);
+            $namespace = $this->modx->getObject('modNamespace', $ns);
             if ($namespace == null) {
                 $namespace = $this->modx->newObject('modNamespace');
-                $namespace->set('name',$ns);
+                $namespace->set('name', $ns);
             }
-        } else $namespace = $ns;
+        } else
+            $namespace = $ns;
         $this->namespace = $namespace;
 
-        $this->modx->log(MODX_LOG_LEVEL_INFO,'Registered package namespace as: '.$this->namespace->get('name'));
+        $this->modx->log(MODX_LOG_LEVEL_INFO, 'Registered package namespace as: ' . $this->namespace->get('name'));
 
         /* define some basic attributes */
-        $attributes= array(
+        $attributes = array (
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
             XPDO_TRANSPORT_RESOLVE_FILES => true,
             XPDO_TRANSPORT_RESOLVE_PHP => true,
+            
         );
         if ($packageNamespace) {
             /* create the namespace vehicle */
-            $v = $this->createVehicle($namespace,$attributes);
+            $v = $this->createVehicle($namespace, $attributes);
 
             /* put it into the package */
-            if (!$this->putVehicle($v)) return false;
-            $this->modx->log(MODX_LOG_LEVEL_INFO,'Packaged namespace "'.$this->namespace->get('name').'" into package.');
+            if (!$this->putVehicle($v))
+                return false;
+            $this->modx->log(MODX_LOG_LEVEL_INFO, 'Packaged namespace "' . $this->namespace->get('name') . '" into package.');
         }
 
         /* Can automatically package in certain classes based upon their namespace values */
-        if ($autoincludes == true || (is_array($autoincludes) && !empty($autoincludes))) {
-            $this->modx->log(MODX_LOG_LEVEL_INFO,'Packaging in autoincludes: '.print_r($autoincludes,true));
+        if ($autoincludes == true || (is_array($autoincludes) && !empty ($autoincludes))) {
+            $this->modx->log(MODX_LOG_LEVEL_INFO, 'Packaging in autoincludes: ' . print_r($autoincludes, true));
             if (is_array($autoincludes)) {
                 /* set automatically included packages */
                 $this->setAutoSelects($autoincludes);
@@ -206,12 +215,14 @@ class modPackageBuilder {
 
             /* grab all related classes that can be auto-packaged and package them in */
             foreach ($this->autoselects as $classname) {
-                $objs = $this->modx->getCollection($classname,array(
+                $objs = $this->modx->getCollection($classname, array (
                     'namespace' => $namespace->get('name'),
+                    
                 ));
                 foreach ($objs as $obj) {
-                    $v = $this->createVehicle($obj,$attributes);
-                    if (!$this->putVehicle($v)) return false;
+                    $v = $this->createVehicle($obj, $attributes);
+                    if (!$this->putVehicle($v))
+                        return false;
                 }
             }
         }
@@ -227,7 +238,7 @@ class modPackageBuilder {
     function putVehicle($vehicle) {
         $attr = $vehicle->compile();
         $obj = $vehicle->fetch();
-        return $this->package->put($obj,$attr);
+        return $this->package->put($obj, $attr);
     }
 
     /**
@@ -257,13 +268,12 @@ class modPackageBuilder {
      * @param string $schema The schema file to generate from.
      * @return boolean true if successful
      */
-    function buildSchema($model,$schema) {
-        $manager= $this->modx->getManager();
-        $generator= $manager->getGenerator();
-        $generator->parseSchema($schema,$model);
+    function buildSchema($model, $schema) {
+        $manager = $this->modx->getManager();
+        $generator = $manager->getGenerator();
+        $generator->parseSchema($schema, $model);
         return true;
     }
-
 
     /**
      * Build in the lexicon into the package.
@@ -272,89 +282,106 @@ class modPackageBuilder {
      * @return boolean True if successful
      */
     function buildLexicon($path) {
-        $invdirs = array('.','..','.svn');
-        $i = 0; $ti = 0;
-        $topics = array();
-        $languages = array();
-        $entries = array();
+        $invdirs = array (
+            '.',
+            '..',
+            '.svn'
+        );
+        $i = 0;
+        $ti = 0;
+        $topics = array ();
+        $languages = array ();
+        $entries = array ();
 
         if (!is_dir($path)) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL,'<b>Error</b> - Lexicon path not found: '.$path);
+            $this->modx->log(MODX_LOG_LEVEL_FATAL, '<b>Error</b> - Lexicon path not found: ' . $path);
         }
 
-        $this->modx->log(MODX_LOG_LEVEL_INFO,'Auto-building in lexicon from path: '.$path);
+        $this->modx->log(MODX_LOG_LEVEL_INFO, 'Auto-building in lexicon from path: ' . $path);
 
         /* loop through cultures */
         $dir = dir($path);
         while (false !== ($culture = $dir->read())) {
-            if (in_array($culture,$invdirs)) continue;
-            if (!is_dir($path.$culture)) continue;
+            if (in_array($culture, $invdirs))
+                continue;
+            if (!is_dir($path . $culture))
+                continue;
 
-            $language= $this->modx->getObject('modLexiconLanguage',$culture);
+            $language = $this->modx->getObject('modLexiconLanguage', $culture);
             if ($language == null) {
-                $language= $this->modx->newObject('modLexiconLanguage');
-                $language->fromArray(array(
+                $language = $this->modx->newObject('modLexiconLanguage');
+                $language->fromArray(array (
                     'name' => $culture,
-                ),'',true,true);
+                ), '', true, true);
             }
-            $languages[$culture]= $language;
+            $languages[$culture] = $language;
 
             /* loop through topics */
-            $fdir = $path.$culture.'/';
+            $fdir = $path . $culture . '/';
             $fd = dir($fdir);
             while (false !== ($entry = $fd->read())) {
-                if (in_array($entry,$invdirs)) continue;
-                if (is_dir($fdir.$entry)) continue;
+                if (in_array($entry, $invdirs))
+                    continue;
+                if (is_dir($fdir . $entry))
+                    continue;
 
-                $top = str_replace('.inc.php','',$entry);
+                $top = str_replace('.inc.php', '', $entry);
 
-                $topic = $this->modx->getObject('modLexiconTopic',array(
+                $topic = $this->modx->getObject('modLexiconTopic', array (
                     'name' => $top,
                     'namespace' => $this->namespace->get('name'),
                 ));
                 if ($topic == null) {
-                    $topic= $this->modx->newObject('modLexiconTopic');
+                    $topic = $this->modx->newObject('modLexiconTopic');
                     $topic->fromArray(array (
-                      'id' => $ti,
-                      'name' => $top,
-                      'namespace' => $this->namespace->get('name'),
-                    ),'',true,true);
+                        'id' => $ti,
+                        'name' => $top,
+                        'namespace' => $this->namespace->get('name'),
+                    ), '', true, true);
                     $ti++;
                 }
 
-                $f = $fdir.$entry;
+                $f = $fdir . $entry;
                 /* loop through entries in topic */
-                $entries = array();
+                $entries = array ();
                 if (file_exists($f)) {
-                    $_lang = array();
-                    @include $f;
+                    $_lang = array ();
+                    @ include $f;
 
                     foreach ($_lang as $key => $value) {
                         $entry = $this->modx->newObject('modLexiconEntry');
                         $entry->fromArray(array (
-                          'id' => $i,
-                          'name' => $key,
-                          'value' => $value,
-                          'topic' => $topic->get('id'),
-                          'namespace' => $this->namespace->get('name'),
-                          'language' => $culture,
-                        ),'',true,true);
+                            'id' => $i,
+                            'name' => $key,
+                            'value' => $value,
+                            'topic' => $topic->get('id'),
+                            'namespace' => $this->namespace->get('name'),
+                            'language' => $culture,
+                        ), '', true, true);
                         $entries[] = $entry;
                         $i++;
                     }
                 }
                 $topic->addMany($entries);
 
-                $vehicle = $this->createVehicle($topic,array (
+                $vehicle = $this->createVehicle($topic, array (
                     XPDO_TRANSPORT_PRESERVE_KEYS => false,
                     XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                    XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
+                    XPDO_TRANSPORT_UNIQUE_KEY => array (
+                        'name',
+                        'namespace'
+                    ),
                     XPDO_TRANSPORT_RELATED_OBJECTS => true,
                     XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array (
                         'modLexiconEntry' => array (
                             XPDO_TRANSPORT_PRESERVE_KEYS => false,
                             XPDO_TRANSPORT_UPDATE_OBJECT => true,
-                            XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'topic', 'namespace', 'language'),
+                            XPDO_TRANSPORT_UNIQUE_KEY => array (
+                                'name',
+                                'topic',
+                                'namespace',
+                                'language'
+                            ),
                         ),
                     ),
                 ));
@@ -364,13 +391,14 @@ class modPackageBuilder {
         $dir->close();
 
         /* package in languages */
-        $attributes= array(
+        $attributes = array (
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
+            
         );
         foreach ($languages as $language) {
-            $vehicle = $this->createVehicle($language,$attributes);
+            $vehicle = $this->createVehicle($language, $attributes);
             $this->putVehicle($vehicle);
         }
 
@@ -383,9 +411,10 @@ class modPackageBuilder {
      * @param array $attributes An array of attributes to set in the
      * manifest of the package being built.
      */
-    function setPackageAttributes($attributes = array()) {
+    function setPackageAttributes($attributes = array ()) {
         if ($this->package !== null) {
-            foreach ($attributes as $k => $v) $this->package->setAttribute($k, $v);
+            foreach ($attributes as $k => $v)
+                $this->package->setAttribute($k, $v);
         } else {
             $this->modx->log(MODX_LOG_LEVEL_ERROR, 'You must create a package with createPackage() before you can call setPackageAttributes()');
         }

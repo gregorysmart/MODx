@@ -24,79 +24,80 @@
  * @package modx
  * @subpackage transport
  */
- /**
- * Abstracts the vehicle construct for package building.
- *
- * @package modx
- * @subpackage transport
- */
+/**
+* Abstracts the vehicle construct for package building.
+*
+* @package modx
+* @subpackage transport
+*/
 class modTransportVehicle {
     /**
      * @var array The collection of attributes to attach to the vehicle.
      */
     var $attributes;
-	/**
-    * @var array The collection of dependencies to resolve post-save.
+    /**
+    * @var array The collection of dependencies to resolve post-install/upgrade.
     */
-	var $resolves;
-	/**
-    * @var string The collection of dependences to validate against for upgrade processes.
+    var $resolvers;
+    /**
+    * @var string The collection of dependences to validate against pre-install/upgrade.
     */
-	var $validates;
-	/**
-    * @var xPDOObject The actual object that the vehicle represents.
+    var $validators;
+    /**
+    * @var mixed The actual object or artifact payload that the vehicle represents.
     */
-	var $obj;
+    var $obj;
 
-	function modTransportVehicle($obj, $attr = array()) {
+    function modTransportVehicle($obj, $attr = array ()) {
         $this->__construct($obj, $attr);
     }
-    function __construct($obj, $attr = array()) {
-		$this->obj = $obj;
+    function __construct($obj, $attr = array ()) {
+        $this->obj = $obj;
         $this->attributes = $attr;
-		$this->validates = array();
-		$this->resolves = array();
+        $this->validators = array ();
+        $this->resolvers = array ();
     }
 
-	/**
+    /**
     * Adds a pre-creation validator to the vehicle.
-	*
-	* @param string $type The type of validator (php,file,etc)
-	* @param array $options An array of options for the validator.
+    *
+    * @param string $type The type of validator (php,file,etc)
+    * @param array $options An array of options for the validator.
     */
-	function validate($type,$options) {
-		$options['type'] = $type;
-		array_push($this->validates,$options);
-		return $options;
-	}
+    function validate($type, $options) {
+        $options['type'] = $type;
+        array_push($this->validators, $options);
+        return $options;
+    }
 
-	/**
+    /**
     * Adds a post-save resolver to the vehicle.
-	*
-	* @param string $type The type of resolver (php,file,etc)
-	* @param array $options An array of options for the resolver.
+    *
+    * @param string $type The type of resolver (php,file,etc)
+    * @param array $options An array of options for the resolver.
     */
-	function resolve($type,$options) {
-		$options['type'] = $type;
-		array_push($this->resolves,$options);
-		return $options;
-	}
+    function resolve($type, $options) {
+        $options['type'] = $type;
+        array_push($this->resolvers, $options);
+        return $options;
+    }
 
-	/**
+    /**
     * Compiles the attributes array to pass on to the modPackageBuilder instance.
     */
-	function compile() {
-		$attributes = array_merge($this->attributes, array(
-			'resolve' => empty($this->resolves) ? NULL : $this->resolves,
-			'validate' => empty($this->validates) ? NULL : $this->validates,
-		));
-		return $attributes;
-	}
+    function compile() {
+        $attributes = array_merge($this->attributes, array (
+            'resolve' => empty ($this->resolvers) ? NULL : $this->resolvers,
+            'validate' => empty ($this->validators) ? NULL : $this->validators,
+            
+        ));
+        return $attributes;
+    }
 
-	/**
-    * Returns the xPDOObject associated with the vehicle.
+    /**
+    * Returns the artifact payload associated with the vehicle.
     */
-	function fetch() {
-		return $this->obj;
-	}
+    function fetch() {
+        return $this->obj;
+    }
 }

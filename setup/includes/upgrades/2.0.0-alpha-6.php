@@ -57,7 +57,7 @@ $description = 'Added new index on `context_key`.';
 $this->processResults($class, $description, $sql);
 
 $sql = "ALTER TABLE {$table} CHANGE `template` `template` INT( 10 ) NOT NULL DEFAULT '0'";
-$description = 'Added new index on `context_key`.';
+$description = 'Changed default value for template column to 0.';
 $this->processResults($class, $description, $sql);
 
 $class = 'modPlugin';

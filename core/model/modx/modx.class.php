@@ -413,7 +413,7 @@ class modX extends xPDO {
             return null;
         }
         if ($this->cacheManager === null) {
-            if ($this->loadClass('cache.xPDOCacheManager', XPDO_CORE_PATH, true, true)) {
+            if ($this->loadClass('cache.xPDOCacheManager', '', true, true)) {
                 $cacheManagerClass= isset ($this->config['modCacheManager.class']) ? $this->config['modCacheManager.class'] : 'modCacheManager';
                 if ($className= $this->loadClass($cacheManagerClass, '', false, true)) {
                     if ($this->cacheManager= new $className ($this)) {

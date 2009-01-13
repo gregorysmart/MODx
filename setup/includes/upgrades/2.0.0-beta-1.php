@@ -34,3 +34,19 @@ $table = $this->install->xpdo->getTableName($class);
 $sql = "ALTER TABLE {$table} ADD COLUMN `description` VARCHAR(255) NOT NULL AFTER `text`";
 $description = 'Added new index on `menuindex`.';
 $this->processResults($class, $description, $sql);
+
+/* fix not null `properties` columns on all element (and property set) tables to allow null */
+$elements = array (
+    'modChunk',
+    'modPlugin',
+    'modSnippet',
+    'modTemplate',
+    'modTemplateVar',
+    'modPropertySet'
+);
+foreach ($elements as $class) {
+    $table = $this->install->xpdo->getTableName($class);
+    $sql = "ALTER TABLE {$table} CHANGE `properties` `properties` TEXT NULL";
+    $description = 'Fixing allow null for ' . $class . '.`properties`.';
+    $this->processResults($class, $description, $sql);
+}
