@@ -19,7 +19,10 @@
 	           {foreach from=$menu.children item=submenu name=sm}
 	               <li><a 
 	                   href="javascript:;"
-	                   onclick="{if $submenu.handler NEQ ''}{$submenu.handler|escape}{else}MODx.loadFrame({$submenu.action},'{$submenu.params}');{/if}">{$submenu.text}</a></li>
+	                   onclick="{if $submenu.handler NEQ ''}{$submenu.handler|escape}{else}MODx.loadFrame({$submenu.action},'{$submenu.params}');{/if}">
+	                       {$submenu.text}                   
+                           {if $submenu.description NEQ ''}<br /><span class="description">{$submenu.description}</span>{/if}
+                       </a></li>
 	           {/foreach}
 	           </ul>
 	           

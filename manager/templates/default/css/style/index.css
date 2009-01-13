@@ -87,7 +87,7 @@ body.ext-safari { margin-right: -15px; padding-right: 15px; }
     width: 32px;
     border: 1px solid green;
     float: left;
-    z-index: 2;
+    z-index: 600;
     }
 #leftgreennav a {
 	width: 100%;
@@ -102,7 +102,7 @@ body.ext-safari { margin-right: -15px; padding-right: 15px; }
 	height: 40px;
 	text-align: right;
 	vertical-align: middle;
-	z-index: 20;
+	z-index: 600;
 }
 #rightlogin span {
     vertical-align: middle;

@@ -41,6 +41,10 @@ function getSubMenus($m) {
         } else {
             $ma['text'] = $modx->lexicon($menu->get('text'));
         }
+
+        if ($menu->get('description') != '') {
+            $ma['description'] = $modx->lexicon($menu->get('description'));
+        }
         $ma['children'] = getSubMenus($menu->get('id'));
 
         if ($menu->get('controller')) {
