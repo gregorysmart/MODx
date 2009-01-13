@@ -1,7 +1,7 @@
 .menu {
    height:32px;
    position:relative;
-   z-index:100;
+   z-index:500;
 }
 /* remove all the bullets, borders and padding from the default list styling */
 .menu ul {
@@ -71,9 +71,6 @@
 	width:200px;
 /*	border-width:0 1px 1px 1px;*/
 }
-/* yet another hack for IE5.5 */
-* html .menu ul ul a, * html .menu ul ul a:visited {width:150px;w\idth:128px;}
-
 /* style the top level hover */
 .menu a:hover, .menu ul ul a:hover{color:#000; background:#b7d186;}
 .menu :hover > a, .menu ul ul :hover > a {color:#000; background:#b7d186;}

@@ -27,3 +27,10 @@ if ($home != null) $home->remove();
 /* remove logout link */
 $logout = $this->install->xpdo->getObject('modMenu',array('text' => 'logout'));
 if ($logout != null) $logout->remove();
+
+/* add description field to menus */
+$class = 'modMenu';
+$table = $this->install->xpdo->getTableName($class);
+$sql = "ALTER TABLE {$table} ADD COLUMN `description` VARCHAR(255) NOT NULL AFTER `text`";
+$description = 'Added new index on `menuindex`.';
+$this->processResults($class, $description, $sql);
