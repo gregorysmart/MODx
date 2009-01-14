@@ -7,6 +7,7 @@ $_lang['message'] = 'Message';
 $_lang['message_create'] = 'Create Message';
 $_lang['message_new'] = 'New Message';
 $_lang['message_remove_confirm'] = 'Are you sure you want to remove this message entirely?';
+$_lang['messages'] = 'Messages';
 $_lang['private'] = 'Private';
 $_lang['read'] = 'Read';
 $_lang['recipient'] = 'Recipient';

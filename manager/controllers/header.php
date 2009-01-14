@@ -5,6 +5,8 @@
  * @package modx
  * @subpackage manager
  */
+$modx->lexicon->load('topmenu');
+
 if (!$modx->hasPermission('frames')) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
@@ -13,7 +15,6 @@ $menus = getSubMenus(0);
 
 function getSubMenus($m) {
     global $modx;
-
     $c = $modx->newQuery('modMenu');
     $c->select('modMenu.*,Action.controller AS controller');
     $c->leftJoin('modAction','Action');
@@ -32,7 +33,7 @@ function getSubMenus($m) {
         $ma = $menu->toArray();
         if ($action) {
             $ctx = $action->getOne('Context');
-            if ($ctx->get('key') != 'mgr' && !$modx->lexicon->exists($menu->get('text'))) {
+            if ($ctx->get('key') != 'mgr') {
                 $modx->lexicon->load($ctx->get('key').':default');
                 $ma['text'] = $modx->lexicon($menu->get('text'));
             } else {
@@ -42,8 +43,11 @@ function getSubMenus($m) {
             $ma['text'] = $modx->lexicon($menu->get('text'));
         }
 
-        if ($menu->get('description') != '') {
-            $ma['description'] = $modx->lexicon($menu->get('description'));
+        $desc = $menu->get('description');
+        if ($desc != '' && $desc != null && $modx->lexicon->exists($desc)) {
+            $ma['description'] = $modx->lexicon($desc);
+        } else {
+            $ma['description'] = '';
         }
         $ma['children'] = getSubMenus($menu->get('id'));
 
@@ -54,6 +58,7 @@ function getSubMenus($m) {
         }
         $av[] = $ma;
     }
+    unset($menu);
     return $av;
 }
 $modx->smarty->assign('menus',$menus);

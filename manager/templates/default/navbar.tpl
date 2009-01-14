@@ -21,7 +21,7 @@
 	                   href="javascript:;"
 	                   onclick="{if $submenu.handler NEQ ''}{$submenu.handler|escape}{else}MODx.loadFrame({$submenu.action},'{$submenu.params}');{/if}">
 	                       {$submenu.text}                   
-                           {if $submenu.description NEQ ''}<br /><span class="description">{$submenu.description}</span>{/if}
+                           {if $submenu.description}<br /><span class="description">{$submenu.description}</span>{/if}
                        </a></li>
 	           {/foreach}
 	           </ul>

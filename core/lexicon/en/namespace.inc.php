@@ -11,4 +11,5 @@ $_lang['namespace_path_desc'] = 'Specify an absolute pathname here: (example: MO
 $_lang['namespace_remove'] = 'Remove Namespace';
 $_lang['namespace_remove_confirm'] = 'Are you sure you want to remove this namespace and all related content?';
 $_lang['namespace_update'] = 'Update Namespace';
+$_lang['namespaces'] = 'Namespaces';
 $_lang['namespaces_desc'] = 'Namespaces are global identifiers for packages and components, registering their vehicles, lexicon entries and resources all together.';
