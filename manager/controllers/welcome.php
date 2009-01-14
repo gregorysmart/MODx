@@ -7,8 +7,13 @@
  */
 if (!$modx->hasPermission('home')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-$modx->lexicon->load('welcome','configcheck');
+$modx->lexicon->load('configcheck');
 $modx->smarty->assign('site_name',$modx->config['site_name']);
+
+/* assign current time message */
+$modx->smarty->assign('online_users_msg',$modx->lexicon('onlineusers_message',array(
+    'curtime' => strftime('%X', time()+$modx->config['server_offset_time'])
+)));
 
 /* do some config checks */
 include_once MODX_PROCESSORS_PATH . 'system/config_check.inc.php';
@@ -29,7 +34,7 @@ $modx->smarty->assign('previous_login',$previous_login);
 
 /* online users
  * :TODO: convert this to revo/modext */
-$modx->smarty->assign('cur_time',strftime('%X', time()+$modx->config['server_offset_time']));
+
 $timetocheck = (time()-(60*20))+$modx->config['server_offset_time'];
 $c = $modx->newQuery('modActiveUser');
 $c->where(array('lasthit:>' => $timetocheck));

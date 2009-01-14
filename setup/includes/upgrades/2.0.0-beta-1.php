@@ -12,6 +12,7 @@ $classes = array(
 if (!empty($classes)) {
     $this->createTable($classes);
 }
+unset($classes);
 
 /* remove some menu items that are deprecated from alpha */
 /* first, remove the dashes from revo-alpha */
@@ -19,14 +20,24 @@ $dashes = $this->install->xpdo->getCollection('modMenu',array( 'text' => '-'));
 foreach ($dashes as $dash) {
     $dash->remove();
 }
+unset($dashes,$dash);
 
 /* remove link to home */
 $home = $this->install->xpdo->getObject('modMenu',array('text' => 'home'));
 if ($home != null) $home->remove();
+unset($home);
 
 /* remove logout link */
 $logout = $this->install->xpdo->getObject('modMenu',array('text' => 'logout'));
 if ($logout != null) $logout->remove();
+unset($logout);
+
+/* remove no-longer-valid lexicon topics */
+$welcometopic = $this->install->xpdo->getObject('modLexiconTopic');
+if ($welcometopic != null) {
+    $welcometopic->remove();
+}
+unset($welcometopic);
 
 /* add description field to menus */
 $class = 'modMenu';
@@ -34,6 +45,7 @@ $table = $this->install->xpdo->getTableName($class);
 $sql = "ALTER TABLE {$table} ADD COLUMN `description` VARCHAR(255) NOT NULL AFTER `text`";
 $description = 'Added new index on `menuindex`.';
 $this->processResults($class, $description, $sql);
+unset($class,$description,$sql,$table);
 
 /* fix not null `properties` columns on all element (and property set) tables to allow null */
 $elements = array (
@@ -42,7 +54,7 @@ $elements = array (
     'modSnippet',
     'modTemplate',
     'modTemplateVar',
-    'modPropertySet'
+    'modPropertySet',
 );
 foreach ($elements as $class) {
     $table = $this->install->xpdo->getTableName($class);
@@ -50,3 +62,4 @@ foreach ($elements as $class) {
     $description = 'Fixing allow null for ' . $class . '.`properties`.';
     $this->processResults($class, $description, $sql);
 }
+unset($elements,$class,$description,$sql,$table);

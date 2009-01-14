@@ -34,9 +34,13 @@
 #db-panel {
     background-color: #2c2c2c;
     color: #2c2c2c;
-    float: right;
-    margin-right: 100px;
+    float: left;
+    margin: 2em 100px 0 4em;
     width: 50%;
+}
+#db-leftpanel {
+    float: left;
+    width: 30%;
 }
 
 

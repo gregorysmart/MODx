@@ -20,9 +20,6 @@ class modManagerResponse extends modResponse {
         $modx= & $this->modx;
         $error= & $this->modx->error;
 
-        /* backwards compatibility */
-        $_lang = $this->modx->lexicon->fetch();
-
         $action = '';
         if (!isset($this->modx->request) || !isset($this->modx->request->action)) {
             $this->body = $this->modx->error->failure($modx->lexicon('action_err_ns'));
@@ -31,7 +28,8 @@ class modManagerResponse extends modResponse {
         }
         if (empty($action)) {
             /* this looks to be a top-level frameset request, so let's serve up the header */
-            $this->modx->smarty->assign('_lang',$_lang);
+            $this->modx->lexicon->load('dashboard','topmenu');
+            $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
             $this->body = include $this->modx->config['manager_path'] . 'controllers/header.php';
         } else {
             if (isset($this->modx->actionMap[$action])) {

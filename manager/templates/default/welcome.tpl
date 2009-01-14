@@ -61,8 +61,7 @@
 
 <!-- online info -->
 <div id="online" class="padding x-hide-display with-logo-bg">
-	{$_lang.onlineusers_message}
-	<strong>{$cur_time}</strong>)
+	{$online_users_msg}
 	<br /><br />
 
 	<table class="classy" style="width: 100%;">
@@ -79,12 +78,7 @@
 	{foreach from=$ausers item=user name='au'}
 		<tr class="{cycle values=',odd'}">
 			<td><strong>{$user->username}</strong></td>
-			<td>
-				{if $user->internalKey GT 0}
-					<img src="templates/{$_config.manager_theme}/images/tree/globe.gif" alt="" />
-				{/if}
-				&nbsp;{$user->internalKey}
-			</td>
+			<td>{$user->internalKey}</td>
 			<td>{$user->ip}</td>
 			<td>{$user->get('lastseen')}</td>
 			<td>{$user->get('currentaction')}</td>

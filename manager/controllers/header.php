@@ -5,8 +5,6 @@
  * @package modx
  * @subpackage manager
  */
-$modx->lexicon->load('topmenu');
-
 if (!$modx->hasPermission('frames')) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
@@ -64,5 +62,8 @@ function getSubMenus($m) {
 $modx->smarty->assign('menus',$menus);
 
 include_once dirname(__FILE__).'/welcome.php';
+
+$welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
+$modx->smarty->assign('welcome_back',$welcome_back);
 
 $modx->smarty->display('header.tpl');
