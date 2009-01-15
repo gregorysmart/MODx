@@ -240,25 +240,6 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 				} else {
 					Ext.Msg.alert(_('error'),_('correct_errors'));	
 				}
-			} else {
-				/* now send form data through MODx.form.Handler to the connector */
-				MODx.form.Handler.send(o.form_id,itm.process,function(opt,s,r) {
-					r = Ext.decode(r.responseText);
-					
-					if (r.success) {						
-						/* refresh the tree, then pass the handling onto the checkOnComplete func */
-						if (o.refreshTree) {
-                            o.refreshTree.refresh();
-                        } else {
-                            parent.Ext.get('modx_resource_tree').refresh();
-                        }
-						this.checkOnComplete(o,itm,r);
-					} else {
-						/* if error, pass handling to MODx.form.Handler.js */
-						MODx.form.Handler.errorJSON(r);
-					}
-				},this);
-				
 			}
         } else {	/* this is any other action besides remote */
 			var id = o.id || 0; /* append the ID of the element if specified */

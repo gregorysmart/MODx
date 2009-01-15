@@ -62,10 +62,10 @@
 <body>
 
 {include file="navbar.tpl"}
-
-{include file="dashboard.tpl"}
-
 <div id="modx-container">
+
+    {include file="dashboard.tpl"}
+
     <div id="modx-trees-ct" class="body-cnr-box">
         <div class="body-cnr-top"><div></div></div>
 	    <div id="modx-trees-div" class="body-cnr-content">
@@ -75,9 +75,9 @@
 	    </div>
 	    <div class="body-cnr-btm"><div></div></div>
     </div>
-</div>
 <div id="modx-frame-ct">
-    <div id="modx_content_div"></div>
+    <iframe src="index.php?a=44" align="left" id="modx-frame" border="0" frameborder="0" hspace="0" vspace="0"></iframe>
+</div>
 </div>
 </body>
 </html>

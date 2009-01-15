@@ -1,0 +1,133 @@
+
+html, body {
+    background-color: #2c2c2c !important;
+    color: #2c2c2c;
+    /*width: 98%;*/
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* frame css */
+#modx-frame {
+    width: 100%;
+    height: 100%;
+    background-color: #2c2c2c;
+}
+
+#modx-frame-ct {
+	position: absolute;
+    left:23%;
+    width: 76%;
+    top:15%;
+    height: 84%; 
+    z-index:100;
+    background-color: #2c2c2c;
+}
+
+/* safari fix */
+body.frame-body.ext-safari { 
+	/*margin-right: -15px; padding-right: 15px;*/ 
+	padding-bottom: 15px;
+	background-color: #2c2c2c; 
+}
+
+
+/* trees css */
+#modx-trees-ct {
+	position: absolute;
+	top: 15%;
+    float: left;
+    width: 22%;
+    margin-right: 10px;
+    background-color: #d3d2d3;
+}
+.modx-accordion .x-accordion-hd {
+    background: #d3d2d3;
+    }
+.modx-accordion .x-panel-header {
+    border-bottom: 1px solid #aeaeae;
+    font-weight: bold;
+    }
+
+.modx-tree .x-toolbar {
+    background: #fff;
+    border: 1px solid #fff;
+    }
+
+/* inside frame css */
+#modx-inner-container {
+    height: 100%;
+    background-color: #d3d2d3;
+}
+
+.modx-container {
+    background-color: #2c2c2c;
+    height: 100%;
+}
+
+
+/* left green bar */
+#leftgreennav {
+    position: absolute;
+    left: 0;
+    top: 11px;
+    background: left url(../../images/style/leftgreennav.png);
+    height: 66px;
+    width: 32px;
+    border: 1px solid green;
+    float: left;
+    z-index: 600;
+    }
+#leftgreennav a {
+    width: 100%;
+    height: 100%;
+    }
+#leftgreennav:hover { cursor: pointer; }
+
+/* right login and logo */
+#rightlogin {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    line-height: 36px;
+    height: 40px;
+    text-align: right;
+    vertical-align: middle;
+    z-index: 600;
+}
+#rightlogin span {
+    vertical-align: middle;
+    }
+#rightlogin a {
+    color: #6c9a37;
+    }   
+#modxlogo {
+    position: absolute;
+    top: 57px;
+    right: 30px;
+}
+#modxlogo img {    
+    width: 144px;
+    height: 40px;
+}
+
+/* modAB */
+
+#modAB {
+    position: fixed;
+    right: 9px;
+    top: 14px;
+    text-align: right;
+    z-index: 400;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #c9c8c9;
+    }
+#modAB .x-toolbar {
+    background: #fff;
+    border: 1px solid #fff;
+    }

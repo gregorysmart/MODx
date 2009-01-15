@@ -44,7 +44,7 @@ MODx.panel.PILicense = function(config) {
             ,name: 'license'
             ,id: 'pi-license-box'
             ,width: '90%'
-            ,height: 300
+            ,height: 250
             ,value: ''
         },{
             boxLabel: _('license_agree')
@@ -115,7 +115,7 @@ MODx.panel.PIReadme = function(config) {
             ,name: 'readme'
             ,id: 'pi-readme-box'
             ,width: '90%'
-            ,height: 300
+            ,height: 250
             ,value: ''
         }]
     });
