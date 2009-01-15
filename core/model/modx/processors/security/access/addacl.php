@@ -34,7 +34,7 @@ $context = isset($_REQUEST['context_key']) ? $_REQUEST['context_key'] : null;
 
 
 
-if (!$targetId || !$principalClass || !$principalId) {
+if (!$targetId || !$principalClass) {
     return $modx->error->failure($modx->lexicon('access_err_create_md'));
 }
 $c = array(

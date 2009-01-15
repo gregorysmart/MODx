@@ -58,6 +58,7 @@ $collection = $modx->getCollectionGraph($accessClass, $objectGraph, $c);
 $data = array();
 foreach ($collection as $key => $object) {
     $principal = $modx->getObject($object->get('principal_class'), $object->get('principal'));
+    if (!$principal) $principal = $modx->newObject($object->get('principal_class'), array('name' => '(anonymous)'));
     $objdata= array(
         'id' => $object->get('id'),
         'target' => $object->get('target'),
