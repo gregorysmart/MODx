@@ -190,7 +190,7 @@ class modAccessibleObject extends xPDOObject {
                                         }
                                     }
                                 }
-                            } elseif ($principalId == '0' && empty($principal) && $principalAuthority <= $applicablePolicy['authority'] && !$applicablePolicy['policy']) {
+                            } elseif ($principalId == '0' && $principalAuthority <= $applicablePolicy['authority'] && !$applicablePolicy['policy']) {
                                 return true;
                             }
                         }
