@@ -63,7 +63,7 @@ Ext.extend(MODx,Ext.Component,{
                 action: 'logout'
             }
             ,listeners: {
-                'success': {fn:function() { location.href = '../'; },scope:this}
+                'success': {fn:function() { location.href = './'; },scope:this}
             }
         });
     }

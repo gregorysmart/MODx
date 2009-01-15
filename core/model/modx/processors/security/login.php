@@ -143,13 +143,25 @@ if ($loginContext == 'mgr') {
     $modx->invokeEvent("OnWebLogin", $postLoginAttributes);
 }
 
-
-if (!isset($manager_login_startup)) {
-    $manager_login_startup= 0;
+$response = array('url' => $modx->config['base_url']);
+switch ($loginContext) {
+    case 'connector':
+    case 'mgr':
+        $manager_login_startup_url = $modx->config['manager_url'];
+        if (!empty($manager_login_startup)) {
+            $manager_login_startup= intval($manager_login_startup);
+            if ($manager_login_startup) $manager_login_startup_url .= '?id=' . $manager_login_startup;
+        }
+        $response= array('url' => $manager_login_startup_url);
+        break;
+    case 'web':
+    default:
+        $login_startup_url = $modx->config['base_url'];
+        if (!empty($login_startup)) {
+            $login_startup = intval($login_startup);
+            if ($login_startup) $login_startup_url = $modx->makeUrl($login_startup, $loginContext, '', 'full');
+        }
+        $response= array('url' => $login_startup_url);
 }
-else {
-    $manager_login_startup= intval($manager_login_startup);
-}
-$response= $manager_login_startup;
 
-return $modx->error->success('',array('id' => $response));
+return $modx->error->success('', $response);

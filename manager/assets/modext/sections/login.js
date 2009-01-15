@@ -7,7 +7,7 @@ Ext.onReady(function() {
 var loginHandler = function(opt,s,r) {
     r = Ext.decode(r.responseText);
     if (r.success) {
-       top.document.location.href = (r.object.id !== undefined) ? './index.php?id=' + r.object.id : './';
+       top.document.location.href = (r.object.url !== undefined) ? r.object.url : './';
     } else { MODx.form.Handler.errorExt(r); }
 };
 var doLogin = function() {
