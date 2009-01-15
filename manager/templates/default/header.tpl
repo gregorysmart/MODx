@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/index.css" />
 
 <script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
-<script src="assets/ext2/ext-all.js" type="text/javascript"></script>
+<script src="assets/ext2/ext-all-debug.js" type="text/javascript"></script>
 <script src="assets/modext/core/modx.js" type="text/javascript"></script>
 <script src="assets/modext/util/eventfix.js" type="text/javascript"></script>
 <script src="{$_config.connectors_url}lang.js.php?topic=file,category,resource,welcome,configcheck" type="text/javascript"></script>

@@ -14,7 +14,7 @@ MODx.grid.ResourceSecurity = function(config) {
         ,header: _('access')
         ,dataIndex: 'access'
         ,width: 40
-        ,sortable: true
+        ,sortable: false
     });
 
     Ext.applyIf(config,{

@@ -9,6 +9,15 @@
  */
 MODx.grid.PluginEvent = function(config) {
     config = config || {};
+    var ec = MODx.load({
+        xtype: 'checkbox-column'
+        ,header: _('enabled')
+        ,dataIndex: 'enabled'
+        ,editable: true
+        ,width: 50
+        ,sortable: false
+    });
+
     Ext.applyIf(config,{
         title: _('system_events')
         ,url: MODx.config.connectors_url+'element/plugin/event.php'
@@ -22,6 +31,7 @@ MODx.grid.PluginEvent = function(config) {
         ,fields: ['id','name','service','groupname','enabled','priority','menu']
         ,paging: true
         ,remoteSort: true
+        ,plugins: ec
         ,columns: [{
             header: _('id')
             ,dataIndex: 'id'
@@ -32,12 +42,9 @@ MODx.grid.PluginEvent = function(config) {
             ,dataIndex: 'name'
             ,width: 150
             ,sortable: true
-        },{
-            header: _('enabled')
-            ,dataIndex: 'enabled'
-            ,width: 100
-            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
-        },{
+        },
+        ec
+        ,{
             header: _('priority')
             ,dataIndex: 'priority'
             ,width: 100

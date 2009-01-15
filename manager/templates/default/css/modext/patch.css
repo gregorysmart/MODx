@@ -12,7 +12,15 @@
 .x-form-check-down .x-form-check,.x-form-check-down .x-form-radio{background-position:-26px 0;}
 .x-item-disabled .x-form-check,.x-item-disabled .x-form-radio{background-position:-39px 0;}
 .x-form-check-checked,.x-form-radio-checked{ background-position:0 -13px !important; }
-.x-form-check-focus .x-form-check-checked,.x-form-check-over .x-form-check-checked,.x-form-check-focus .x-form-radio-checked,.x-form-check-over .x-form-radio-checked{ background-position:-13px -13px !important; }
+.x-form-check-focus .x-form-check-checked,.x-form-check-over .x-form-check-checked,.x-form-check-focus .x-form-radio-checked,.x-form-check-over .x-form-radio-checked{ 
+	   background-position:-13px -13px !important; 
+}
 .x-form-check-down .x-form-check-checked,.x-form-check-down .x-form-radio-checked{background-position:-26px -13px;}
 .x-item-disabled .x-form-check-checked,.x-item-disabled .x-form-radio-checked{background-position:-39px -13px;}
-.x-form-check-wrap-inner input,.x-form-radio-wrap-inner input{position:absolute;-ms-filter:"alpha(opacity=0)";filter:alpha(opacity=0);-moz-opacity:0;opacity:0;}
+.x-form-check-wrap-inner input,.x-form-radio-wrap-inner input{
+	position:absolute;
+	-ms-filter:"alpha(opacity=0)";
+	filter:alpha(opacity=0);
+	-moz-opacity:0;
+	opacity:0;
+}
