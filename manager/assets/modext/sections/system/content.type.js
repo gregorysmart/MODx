@@ -12,9 +12,23 @@ Ext.onReady(function() {
 MODx.page.ContentType = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		components: [{
-            xtype: 'grid-contenttype'
-            ,renderTo: 'content_type_grid'
+        formpanel: 'panel-contenttype'
+        ,buttons: [{
+            process: 'updateFromGrid'
+            ,text: _('save')
+            ,method: 'remote'
+            ,keys: [{
+                key: 's'
+                ,alt: true
+                ,ctrl: true
+            }]
+        },{
+            process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
+        }]
+		,components: [{
+            xtype: 'panel-contenttype'
+            ,title: ''
+            ,renderTo: 'panel-contenttype'
         }]
 	});	
 	MODx.page.ContentType.superclass.constructor.call(this,config);

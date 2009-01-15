@@ -1,12 +1,4 @@
-<div class="padding">
-
-<h2>{$_lang.content_types}</h2>
-
-<p>{$_lang.content_type_desc}</p>
-    
-<div id="content_type_grid"></div>
-
-</div>
+<div id="panel-contenttype"></div>
 
 <script type="text/javascript" src="assets/modext/widgets/system/modx.grid.content.type.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/content.type.js"></script>

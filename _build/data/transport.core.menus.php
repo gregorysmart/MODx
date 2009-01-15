@@ -215,7 +215,7 @@ $collection['22']->fromArray(array (
   'icon' => 'images/ext/default/grid/hmenu-unlock.png',
   'menuindex' => 0,
   'params' => '',
-  'handler' => 'e.preventDefault();
+  'handler' => '
             MODx.msg.confirm({
                 title: _(\'remove_locks\')
                 ,text: _(\'confirm_remove_locks\')
@@ -224,7 +224,7 @@ $collection['22']->fromArray(array (
                     action: \'remove\'
                 }
                 ,listeners: {
-                    \'success\': {fn:function() { navtree.refresh(); },scope:this}
+                    \'success\': {fn:function() { Ext.getCmp("modx_resource_tree").refresh(); },scope:this}
                 }
             });',
 ), '', true, true);
