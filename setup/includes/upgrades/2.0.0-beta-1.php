@@ -43,7 +43,7 @@ unset($welcometopic);
 $class = 'modMenu';
 $table = $this->install->xpdo->getTableName($class);
 $sql = "ALTER TABLE {$table} ADD COLUMN `description` VARCHAR(255) NOT NULL AFTER `text`";
-$description = 'Added new index on `menuindex`.';
+$description = 'Added new column `description` to '.$table.'.';
 $this->processResults($class, $description, $sql);
 unset($class,$description,$sql,$table);
 
