@@ -4,6 +4,7 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#XPDO-23] and [#MODX-604] Updated xPDO to revision 298 to resolve nesting error when logging messages during installation with improper cache directory permissions.
 - Added modPropertySet->getElements() method as shortcut to get all proper modElement instances available to the set.
 - Added overridden modElementPropertySet->getOne() to get related Element using the proper element_class value.
 - [#XPDO-21] Updated xPDO to revision 290 for updates to xPDOObject::addOne() and addMany().
