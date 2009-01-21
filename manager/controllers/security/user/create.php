@@ -53,4 +53,4 @@ $modx->smarty->assign('usergroups',$usergroups);
 $modx->smarty->assign('groupsarray',$groupsarray);
 
 $modx->smarty->assign('user',$user);
-$modx->smarty->display('security/user/create.tpl');
+return $modx->smarty->fetch('security/user/create.tpl');

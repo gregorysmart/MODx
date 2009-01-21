@@ -13,4 +13,4 @@ if ($event == null) return $modx->error->failure('Event not found!');
 $event->user = $modx->getObject('modUser', $event->get('user'));
 
 $modx->smarty->assign('event',$event);
-$modx->smarty->display('system/event/details.tpl');
+return $modx->smarty->fetch('system/event/details.tpl');

@@ -21,4 +21,4 @@ if (!$context->prepare()) {
 
 /*  assign context to smarty and display */
 $modx->smarty->assign('context', $context);
-$modx->smarty->display('context/update.tpl');
+return $modx->smarty->fetch('context/update.tpl');

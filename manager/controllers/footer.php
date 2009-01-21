@@ -1,8 +1,8 @@
 <?php
 /**
- * Loads the footer 
- * 
+ * Loads the footer
+ *
  * @package modx
  * @subpackage manager
  */
-$modx->smarty->display('footer.tpl');
+return $modx->smarty->fetch('footer.tpl');

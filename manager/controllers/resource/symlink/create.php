@@ -85,4 +85,4 @@ if (is_array($onDocFormRender)) {
 $modx->smarty->assign('onDocFormRender',$onDocFormRender);
 
 $modx->smarty->assign('resource',$resource);
-$modx->smarty->display('resource/symlink/create.tpl');
+return $modx->smarty->fetch('resource/symlink/create.tpl');

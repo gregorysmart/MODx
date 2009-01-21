@@ -1,6 +1,8 @@
-<div class="padding">
+<div class="modx-page-header">
 <h2>{$_lang.users}</h2>
+</div>
 
+<div class="padding">
 <p>{$_lang.user_management_msg}</p>
 
 <br />

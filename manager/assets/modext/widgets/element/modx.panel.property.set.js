@@ -8,36 +8,44 @@ MODx.panel.PropertySet = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'panel-property-sets'
-        ,title: _('propertysets')
-        ,bodyStyle: 'padding: 1.5em;'
-        ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: [{        
-            html: '<p>'+_('propertysets_desc')+'</p>'
+        ,items: [{
+            html: '<h2>'+_('propertysets')+'</h2>'
+            ,cls: 'modx-page-header'
             ,border: false
-        },MODx.PanelSpacer,{
-            layout: 'column'
-            ,border: false
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em;'
             ,items: [{
-                columnWidth: .3
-                ,layout: 'form'
+                html: '<p>'+_('propertysets_desc')+'</p>'
                 ,border: false
-                ,items: [{
-                    xtype: 'tree-property-sets'
-                }]
             },{
-                columnWidth: .7
-                ,layout: 'form'
+                layout: 'column'
                 ,border: false
-                ,autoHeight: true
                 ,items: [{
-                    xtype: 'grid-property-set-properties'
+                    columnWidth: .3
+                    ,style:'padding:10px;'
+                    ,border: false
+                    ,items: [{
+                        xtype: 'tree-property-sets'
+                        ,preventRender: true
+                    }]
+                },{
+                    columnWidth: .7
+                    ,style:'padding:10px;'
+                    ,layout: 'form'
+                    ,border: false
+                    ,items: [{
+                        xtype: 'grid-property-set-properties'
+                        ,preventRender: true
+                    }]
                 }]
             }]
         }]
     });
     MODx.panel.PropertySet.superclass.constructor.call(this,config);
+    Ext.getCmp('modx-element-tree-panel').expand();
 };
-Ext.extend(MODx.panel.PropertySet,MODx.Panel);
+Ext.extend(MODx.panel.PropertySet,MODx.FormPanel);
 Ext.reg('panel-property-sets',MODx.panel.PropertySet);
 
 /**

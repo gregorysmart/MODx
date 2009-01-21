@@ -7,4 +7,4 @@
  */
 if (!$modx->hasPermission('lexicons')) return $modx->error->failure($modx->lexicon('access_denied'));
 
-$modx->smarty->display('workspaces/lexicon/index.tpl');
+return $modx->smarty->fetch('workspaces/lexicon/index.tpl');

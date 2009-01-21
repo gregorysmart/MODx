@@ -15,317 +15,205 @@ MODx.panel.Resource = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,deferredRender: false
-            ,border: false
-            ,collapsible: true
-            ,defaults: {
-                autoHeight: true
-                ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
-                ,labelWidth: 150
-            }
-            ,items: [{
-                title: _('resource_settings')
-                ,defaults: { 
-                    border: false 
-                    ,msgTarget: 'side'
-                }
-                ,items: [{
-                    html: '<h2>'+_('general_settings')+'</h2>'
-                },{
-                    xtype: (config.resource ? 'statictextfield' : 'hidden')
-                    ,fieldLabel: _('id')
-                    ,name: 'id'
-                    ,id: 'resource-id'
-                    ,value: config.resource
-                    ,submitValue: true
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_pagetitle')
-                    ,description: _('resource_pagetitle_help')
-                    ,name: 'pagetitle'
-                    ,id: 'resource-pagetitle'
-                    ,width: 300
-                    ,maxLength: 255
-                    ,allowBlank: false
-                    
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_longtitle')
-                    ,description: _('resource_longtitle_help')
-                    ,name: 'longtitle'
-                    ,id: 'resource-longtitle'
-                    ,width: 300
-                    ,maxLength: 255
-                    
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_description')
-                    ,description: _('resource_description_help')
-                    ,name: 'description'
-                    ,id: 'resource-description'
-                    ,width: 300
-                    ,maxLength: 255
-                    
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_alias')
-                    ,description: _('resource_alias_help')
-                    ,name: 'alias'
-                    ,id: 'resource-alias'
-                    ,width: 300
-                    ,maxLength: 100
-                    
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_link_attributes')
-                    ,description: _('resource_link_attributes_help')
-                    ,name: 'link_attributes'
-                    ,id: 'resource-link-attributes'
-                    ,width: 300
-                    ,maxLength: 255
-                    
-                },(config.class_key == 'modWebLink' ? {
-                    xtype: 'textfield'
-                    ,fieldLabel: _('weblink')
-                    ,description: _('weblink_help')
-                    ,name: 'ta'
-                    ,id: 'resource-weblink'
-                    ,width: 300
-                    ,maxLength: 255
-                    ,value: 'http://'
-                    
-                } : {
-                    xtype: 'textarea'
-                    ,fieldLabel: _('resource_summary')
-                    ,description: _('resource_summary_help')
-                    ,name: 'introtext'
-                    ,id: 'resource-introtext'
-                    ,width: 300
-                    ,grow: true
-                    
-                }),{
-                    xtype: 'combo-template'
-                    ,fieldLabel: _('resource_template')
-                    ,description: _('resource_template_help')
-                    ,name: 'template'
-                    ,id: 'resource-template'
-                    ,width: 300
-                    ,editable: false
-                    ,baseParams: {
-                        action: 'getList'
-                        ,combo: '1'
-                    }
-                    ,listeners: {
-                        'select': {fn: this.templateWarning,scope: this}
-                    }
-                    ,value: config.template
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_parent')
-                    ,description: _('resource_parent_help')
-                    ,name: 'parent'
-                    ,id: 'resource-parent'
-                    ,value: config.parent || 0
-                    ,width: 60
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('resource_menutitle')
-                    ,description: _('resource_menutitle_help')
-                    ,name: 'menutitle'
-                    ,id: 'resource-menutitle'
-                    ,width: 300
-                    ,maxLength: 255
-                    
-                },{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_hide_from_menus')
-                    ,description: _('resource_hide_from_menus_help')
-                    ,name: 'hidemenu'
-                    ,id: 'resource-hidemenu'
-                    ,inputValue: 1
-                    ,checked: false
-                    
-                }]
-            },{
-                title: _('page_settings')
-                ,defaults: { border: false ,msgTarget: 'side' }
-                ,items: [{
-                    html: '<h2>'+_('resource_settings')+'</h2>'
-                },{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_folder')
-                    ,description: _('resource_folder_help')
-                    ,name: 'isfolder'
-                    ,id: 'resource-isfolder'
-                    ,inputValue: 1
-                    
-                },(config.class_key == 'modDocument' ? {
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_richtext')
-                    ,description: _('resource_richtext_help')
-                    ,name: 'richtext'
-                    ,id: 'resource-richtext'
-                    ,inputValue: 1
-                    ,checked: true
-                    
-                } : {}),{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_published')
-                    ,description: _('resource_published_help')
-                    ,name: 'published'
-                    ,id: 'resource-published'
-                    ,inputValue: 1
-                    ,checked: MODx.config.publish_default == '1' ? true : false
-                    
-                },(config.publish_document ? {
-                    xtype: 'datefield'
-                    ,fieldLabel: _('resource_publishdate')
-                    ,description: _('resource_publishdate_help')
-                    ,name: 'pub_date'
-                    ,id: 'resource-pub-date'
-                    ,format: 'Y-m-d'
-                    ,allowBlank: true
-                    ,width: 200
-                    ,anchor: '30%'
-                    
-                }:{}),(config.publish_document ? {
-                    xtype: 'datefield'
-                    ,fieldLabel: _('resource_unpublishdate')
-                    ,description: _('resource_unpublishdate_help')
-                    ,name: 'unpub_date'
-                    ,id: 'resource-unpub-date'
-                    ,format: 'Y-m-d'
-                    ,allowBlank: true
-                    ,width: 200
-                    ,anchor: '30%'
-                    
-                }:{}),{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_searchable')
-                    ,description: _('resource_searchable_help')
-                    ,name: 'searchable'
-                    ,id: 'resource-searchable'
-                    ,inputValue: 1
-                    ,checked: MODx.config.search_default == '1' ? true : false
-                    
-                },(config.class_key != 'modWebLink' ? {
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_cacheable')
-                    ,description: _('resource_cacheable_help')
-                    ,name: 'cacheable'
-                    ,id: 'resource-cacheable'
-                    ,inputValue: 1
-                    ,checked: MODx.config.cache_default == '1' ? true : false
-                    
-                }:{}),{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('resource_syncsite')
-                    ,description: _('resource_syncsite_help')
-                    ,name: 'syncsite'
-                    ,id: 'resource-syncsite'
-                    ,inputValue: 1
-                    ,checked: true
-                    
-                },(config.class_key != 'modWebLink' ? {
-                    xtype: 'combo-contenttype'
-                    ,fieldLabel: _('resource_content_type')
-                    ,description: _('resource_content_type_help')
-                    ,name: 'content_type'
-                    ,id: 'resource-content-type'
-                    ,width: 200
-                    ,value: 1
-                    ,anchor: '30%'
-                    
-                }:{}),(config.class_key != 'modWebLink' ? {
-                    xtype: 'combo-content-disposition'
-                    ,fieldLabel: _('resource_contentdispo')
-                    ,description: _('resource_contentdispo_help')
-                    ,name: 'content_dispo'
-                    ,id: 'resource-content-dispo'
-                    ,anchor: '30%'
-                    
-                }:{}),{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('class_key')
-                    ,name: 'class_key'
-                    ,id: 'resource-class-key'
-                    ,allowBlank: false
-                    ,width: 250
-                    ,value: config.class_key || 'modDocument'
-                    
-                },{
-                    xtype: 'hidden'
-                    ,name: 'type'
-                    ,value: 'document'
-                    
-                },{
-                    xtype: 'hidden'
-                    ,name: 'context_key'
-                    ,id: 'resource-context-key'
-                    ,value: config.context_key || 'web'
-                },{
-                    xtype: 'hidden'
-                    ,name: 'content'
-                    ,id: 'hiddenContent'
-                }]
-            },{
-                xtype: 'panel-resource-tv'
-                ,resource: config.resource
-                ,class_key: config.class_key
-                ,template: config.template
-                
-            },/*
-            :TODO: Recreate admin interface for metatags
-            (config.edit_doc_metatags ? {
-                contentEl: 'tab_mtkw'
-                ,title: _('meta_keywords')
-                
-            } : {}),*/(config.access_permissions ? {
-                contentEl: 'tab_access'
-                ,id: 'resource-access-permissions'
-                ,title: _('access_permissions')
-                
-            } : {})]
-        },{
-            html: '<hr />'
+            html: '<h2>'+_('resource_new')+'</h2>'
+            ,id: 'resource-header'
+            ,cls: 'modx-page-header'
             ,border: false
         },{
-            autoHeight: true
-            ,layout: 'form'
-            ,bodyStyle: 'padding: 1.5em;'
-            ,border: false
+            xtype: 'portal'
             ,items: [{
-                html: '<h2>'+_('resource_content')+'</h2>'
-                ,border: false
-            },{
-                xtype: 'textarea'
-                ,name: 'ta'
-                ,id: 'ta'
-                ,hideLabel: true
-                ,width: '97%'
-                ,height: 400
-                ,grow: false
-            },{
-                xtype: 'combo-rte'
-                ,fieldLabel: _('which_editor_title')
-                ,id: 'which_editor'
-                ,name: 'which_editor'
-                ,value: config.which_editor
-                ,editable: false
-                ,listWidth: 300
-                ,triggerAction: 'all'
-                ,allowBlank: true
-                ,listeners: {
-                    'select': {fn:function() {
-                        var w = Ext.getCmp('which_editor').getValue();
-                        this.form.submit();
-                        var u = '?a='+MODx.request.a+'&id='+MODx.request.id+'&which_editor='+w;
-                        location.href = u;
-                    },scope:this}
-                }
+                columnWidth: 1
+                ,items: [{
+                    title: _('resource_settings')
+                    ,layout: 'form'
+                    ,defaults: { 
+                        border: false 
+                        ,msgTarget: 'side'
+                    }
+                    ,items: [{
+                        xtype: (config.resource ? 'statictextfield' : 'hidden')
+                        ,fieldLabel: _('id')
+                        ,name: 'id'
+                        ,id: 'resource-id'
+                        ,value: config.resource
+                        ,submitValue: true
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_pagetitle')
+                        ,description: _('resource_pagetitle_help')
+                        ,name: 'pagetitle'
+                        ,id: 'resource-pagetitle'
+                        ,width: 300
+                        ,maxLength: 255
+                        ,allowBlank: false
+                        ,enableKeyEvents: true
+                        ,listeners: {
+                            'keyup': {scope:this,fn:function(f,e) {
+                                Ext.getCmp('resource-header').getEl().update('<h2>'+_('resource')+': '+f.getValue()+'</h2>');
+                            }}
+                        }
+                        
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_longtitle')
+                        ,description: _('resource_longtitle_help')
+                        ,name: 'longtitle'
+                        ,id: 'resource-longtitle'
+                        ,width: 300
+                        ,maxLength: 255
+                        
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_description')
+                        ,description: _('resource_description_help')
+                        ,name: 'description'
+                        ,id: 'resource-description'
+                        ,width: 300
+                        ,maxLength: 255
+                        
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_alias')
+                        ,description: _('resource_alias_help')
+                        ,name: 'alias'
+                        ,id: 'resource-alias'
+                        ,width: 300
+                        ,maxLength: 100
+                        
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_link_attributes')
+                        ,description: _('resource_link_attributes_help')
+                        ,name: 'link_attributes'
+                        ,id: 'resource-link-attributes'
+                        ,width: 300
+                        ,maxLength: 255
+                        
+                    },(config.class_key == 'modWebLink' ? {
+                        xtype: 'textfield'
+                        ,fieldLabel: _('weblink')
+                        ,description: _('weblink_help')
+                        ,name: 'ta'
+                        ,id: 'resource-weblink'
+                        ,width: 300
+                        ,maxLength: 255
+                        ,value: 'http://'
+                        
+                    } : {
+                        xtype: 'textarea'
+                        ,fieldLabel: _('resource_summary')
+                        ,description: _('resource_summary_help')
+                        ,name: 'introtext'
+                        ,id: 'resource-introtext'
+                        ,width: 300
+                        ,grow: true
+                        
+                    }),{
+                        xtype: 'combo-template'
+                        ,fieldLabel: _('resource_template')
+                        ,description: _('resource_template_help')
+                        ,name: 'template'
+                        ,id: 'resource-template'
+                        ,width: 300
+                        ,editable: false
+                        ,baseParams: {
+                            action: 'getList'
+                            ,combo: '1'
+                        }
+                        ,listeners: {
+                            'select': {fn: this.templateWarning,scope: this}
+                        }
+                        ,value: config.template
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_parent')
+                        ,description: _('resource_parent_help')
+                        ,name: 'parent'
+                        ,id: 'resource-parent'
+                        ,value: config.parent || 0
+                        ,width: 60
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('resource_menutitle')
+                        ,description: _('resource_menutitle_help')
+                        ,name: 'menutitle'
+                        ,id: 'resource-menutitle'
+                        ,width: 300
+                        ,maxLength: 255
+                        
+                    },{
+                        xtype: 'checkbox'
+                        ,fieldLabel: _('resource_hide_from_menus')
+                        ,description: _('resource_hide_from_menus_help')
+                        ,name: 'hidemenu'
+                        ,id: 'resource-hidemenu'
+                        ,inputValue: 1
+                        ,checked: false
+                        
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'type'
+                        ,value: 'document'                        
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'context_key'
+                        ,id: 'resource-context-key'
+                        ,value: config.context_key || 'web'
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'content'
+                        ,id: 'hiddenContent'
+                    }]
+                },{
+                    title: _('resource_content')
+                    ,collapsed: true
+                    ,layout: 'form'
+                    ,bodyStyle: 'padding: 1.5em;'
+                    ,defaults: { 
+                        border: false 
+                        ,msgTarget: 'side'
+                    }
+                    ,items: [{
+                        xtype: 'textarea'
+                        ,name: 'ta'
+                        ,id: 'ta'
+                        ,hideLabel: true
+                        ,width: '97%'
+                        ,height: 400
+                        ,grow: false
+                    },{
+                        xtype: 'combo-rte'
+                        ,fieldLabel: _('which_editor_title')
+                        ,id: 'which_editor'
+                        ,name: 'which_editor'
+                        ,value: config.which_editor
+                        ,editable: false
+                        ,listWidth: 300
+                        ,triggerAction: 'all'
+                        ,allowBlank: true
+                        ,listeners: {
+                            'select': {fn:function() {
+                                var w = Ext.getCmp('which_editor').getValue();
+                                this.form.submit();
+                                var u = '?a='+MODx.request.a+'&id='+MODx.request.id+'&which_editor='+w;
+                                location.href = u;
+                            },scope:this}
+                        }
+                    }]
+                },{
+                    xtype: 'panel-resource-tv'
+                    ,collapsed: true
+                    ,resource: config.resource
+                    ,class_key: config.class_key
+                    ,template: config.template
+                    
+                },(config.access_permissions ? {
+                    contentEl: 'tab_access'
+                    ,collapsed: true
+                    ,id: 'resource-access-permissions'
+                    ,title: _('access_permissions')
+                    
+                } : {})]
             }]
         }]
         ,listeners: {
@@ -358,6 +246,9 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     r.object.ta = r.object.content;
                     this.getForm().setValues(r.object);
                     
+                    Ext.getCmp('modx-resource-settings-fp').getForm().setValues(r.object);
+                    Ext.getCmp('resource-header').getEl().update('<h2>'+_('resource')+': '+r.object.pagetitle+'</h2>');
+                    
                     if (r.object.richtext && MODx.config.use_editor && loadRTE !== null && !this.rteLoaded) {
                     	loadRTE('ta');
                         this.rteLoaded = true;
@@ -372,6 +263,9 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     ,beforeSubmit: function(o) {
         var v = Ext.get('ta').dom.value;
         Ext.getCmp('hiddenContent').setValue(v);
+        
+        var vs = Ext.getCmp('modx-resource-settings-fp').getForm().getValues();
+        Ext.apply(o.form.baseParams,vs);
         
         var g = Ext.getCmp('grid-resource-security');
         Ext.apply(o.form.baseParams,{
@@ -428,3 +322,159 @@ var triggerRTEOnChange = function(i) {
 	triggerDirtyField(Ext.getCmp('ta'));
 }
 var loadRTE = null;
+
+
+MODx.loadAccordionPanels = function() {
+    var va = [];
+    var oc = function(f,nv,ov) {
+        Ext.getCmp('panel-resource').fireEvent('fieldChange');
+    };
+    va.push({
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_folder')
+        ,description: _('resource_folder_help')
+        ,name: 'isfolder'
+        ,id: 'resource-isfolder'
+        ,inputValue: 1
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_richtext')
+        ,description: _('resource_richtext_help')
+        ,name: 'richtext'
+        ,id: 'resource-richtext'
+        ,inputValue: 1
+        ,checked: true
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_published')
+        ,description: _('resource_published_help')
+        ,name: 'published'
+        ,id: 'resource-published'
+        ,inputValue: 1
+        ,checked: MODx.config.publish_default == '1' ? true : false
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    });
+    if (MODx.config.publish_document) {
+        va.push({
+            xtype: 'datefield'
+            ,fieldLabel: _('resource_publishdate')
+            ,description: _('resource_publishdate_help')
+            ,name: 'pub_date'
+            ,id: 'resource-pub-date'
+            ,format: 'Y-m-d'
+            ,allowBlank: true
+            ,width: 100
+            ,listeners: {
+                'change': {fn:oc,scope:this}
+            }
+            
+        });
+    }
+    if (MODx.config.publish_document) {
+        va.push({
+            xtype: 'datefield'
+            ,fieldLabel: _('resource_unpublishdate')
+            ,description: _('resource_unpublishdate_help')
+            ,name: 'unpub_date'
+            ,id: 'resource-unpub-date'
+            ,format: 'Y-m-d'
+            ,allowBlank: true
+            ,width: 100
+            ,listeners: {
+                'change': {fn:oc,scope:this}
+            }
+            
+        });
+    }
+    va.push({
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_searchable')
+        ,description: _('resource_searchable_help')
+        ,name: 'searchable'
+        ,id: 'resource-searchable'
+        ,inputValue: 1
+        ,checked: MODx.config.search_default == '1' ? true : false
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_cacheable')
+        ,description: _('resource_cacheable_help')
+        ,name: 'cacheable'
+        ,id: 'resource-cacheable'
+        ,inputValue: 1
+        ,checked: MODx.config.cache_default == '1' ? true : false
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_syncsite')
+        ,description: _('resource_syncsite_help')
+        ,name: 'syncsite'
+        ,id: 'resource-syncsite'
+        ,inputValue: 1
+        ,checked: true
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'combo-contenttype'
+        ,fieldLabel: _('resource_content_type')
+        ,description: _('resource_content_type_help')
+        ,name: 'content_type'
+        ,id: 'resource-content-type'
+        ,width: 100
+        ,value: 1
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'combo-content-disposition'
+        ,fieldLabel: _('resource_contentdispo')
+        ,description: _('resource_contentdispo_help')
+        ,name: 'content_dispo'
+        ,id: 'resource-content-dispo'
+        ,width: 100
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+        
+    },{
+        xtype: 'textfield'
+        ,fieldLabel: _('class_key')
+        ,name: 'class_key'
+        ,id: 'resource-class-key'
+        ,allowBlank: false
+        ,value: 'modDocument'    
+        ,width: 100
+        ,listeners: {
+            'change': {fn:oc,scope:this}
+        }
+    });
+    return [{
+        title: _('page_settings')
+        ,items: [{
+            xtype: 'modx-formpanel'
+            ,id: 'modx-resource-settings-fp'
+            ,items: va
+            ,cls: 'none'
+        }]
+    }];
+};

@@ -1,7 +1,8 @@
-<div class="padding">
-
+<div class="modx-page-header">
 <h2>{$_lang.refresh_title}</h2>
+</div>
 
+<div class="padding modx-page">
 <p>{$published}</p>
 <p>{$unpublished}</p>
 

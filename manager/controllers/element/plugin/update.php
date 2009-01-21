@@ -24,4 +24,4 @@ $modx->smarty->assign('onPluginFormRender',$onPluginFormRender);
 
 /* load plugin into parser and display */
 $modx->smarty->assign('plugin',$plugin);
-$modx->smarty->display('element/plugin/update.tpl');
+return $modx->smarty->fetch('element/plugin/update.tpl');

@@ -303,8 +303,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
         e.preventDefault();
         e.stopEvent();
         if (n.attributes.href && n.attributes.href !== '') {
-            var d = Ext.get('modx-frame');
-            if (d) { d.dom.src = n.attributes.href; }
+            location.href = n.attributes.href;
         }
     }
     
@@ -386,19 +385,13 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	 * @param {String} loc The URL to direct to.
 	 */
 	,redirect: function(loc) {
-		var w = Ext.get('modx-frame');
-		if (w !== null) {
-			w.dom.src = loc;
-		} else { location.href = loc; }
+        location.href = loc;
 	}
 	
     ,loadAction: function(p) {
-        var w = Ext.get('modx-frame');
-        if (w !== null) {
-            var id = this.cm.activeNode.id.split('_'); id = id[1];
-            var u = 'index.php?id='+id+'&'+p;
-            w.dom.src = u;
-        }
+        var id = this.cm.activeNode.id.split('_'); id = id[1];
+        var u = 'index.php?id='+id+'&'+p;
+        location.href = u;
     }
 	/**
 	 * Loads the default toolbar for the tree.

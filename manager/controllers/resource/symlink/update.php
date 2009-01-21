@@ -83,4 +83,4 @@ $modx->smarty->assign('onDocFormRender',$onDocFormRender);
 
 
 $modx->smarty->assign('resource',$resource);
-$modx->smarty->display('resource/symlink/update.tpl');
+return $modx->smarty->fetch('resource/symlink/update.tpl');

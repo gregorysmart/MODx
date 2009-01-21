@@ -20,12 +20,6 @@
     cursor: pointer;
 }
 
-
-/* topmenu */
-.modx-topmenu .x-btn button {
-	font-size: 12px;
-	}
-	
 /* context menus */
 .x-menu a.x-menu-item {
     font-size: 12px;

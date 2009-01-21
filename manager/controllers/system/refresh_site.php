@@ -30,4 +30,4 @@ $results[] = $p;
 
 $modx->smarty->assign('results', $results);
 
-$modx->smarty->display('system/refresh_site.tpl');
+return $modx->smarty->fetch('system/refresh_site.tpl');

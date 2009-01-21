@@ -316,6 +316,8 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
         if (config.user != 0) {
             f.push({
                 title: _('settings')
+                ,autoHeight: true
+                ,defaults: { autoHeight: true }
                 ,items: [{
                     html: '<h3>'+'User Settings'+'</h3>'
                     ,border: false

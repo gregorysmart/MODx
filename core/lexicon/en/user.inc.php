@@ -1,5 +1,6 @@
 <?php
 $_lang['password_notification'] = 'Password Notification';
+$_lang['rrg_drag'] = 'Drag resources into resource groups here.';
 $_lang['ugc_mutate'] = 'User Group Access to Context';
 $_lang['ugc_grid_title'] = 'User Group Access to Contexts';
 $_lang['ugc_remove'] = 'Remove User Group Access to this Context';

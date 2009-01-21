@@ -96,7 +96,7 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
                             ,options:o
                             ,config:this.config
                         });
-                        this.getForm().clearDirty();
+                        this.clearDirty();
                         this.fireEvent('setup',this.config);
                     }
                 });
@@ -133,22 +133,25 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
         }
     }
     
-    ,fieldChangeEvent: function(fld,nv,ov) {
+    ,fieldChangeEvent: function(fld,nv,ov,f) {
         if (!this.isReady) { return false; }
+        var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
         this.fireEvent('fieldChange',{
             field: fld
             ,nv: nv
             ,ov: ov
-            ,form: this.getForm()
+            ,form: f
         });
     }
     
     ,isDirty: function() {
-    	return this.getForm().isDirty();
+        var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
+    	return f.isDirty();
     }
     
     ,clearDirty: function() {
-    	return this.getForm().clearDirty();
+        var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
+    	return f.clearDirty();
     }
     
     ,onReady: function(r) {
@@ -293,4 +296,5 @@ Ext.reg('modx-wizard-panel',MODx.panel.WizardPanel);
 MODx.PanelSpacer = {
     html: '<br />'
     ,border: false
+    ,bodyStyle: 'background-color: #e0e0e0;'
 };

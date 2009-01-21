@@ -17,7 +17,7 @@ $delegateView= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__)
 if (file_exists($delegateView)) {
     $overridden= include_once ($delegateView);
     if ($overridden !== false) {
-        return true;
+        return $overridden;
     }
 }
 
@@ -113,4 +113,4 @@ if ($modx->config['use_editor']) {
 
 
 $modx->smarty->assign('resource',$resource);
-$modx->smarty->display('resource/update.tpl');
+return $modx->smarty->fetch('resource/update.tpl');

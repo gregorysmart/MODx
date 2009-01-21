@@ -1,4 +1,82 @@
 /**
+ * @class MODx.panel.ContentType
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of options.
+ * @xtype panel-contenttype
+ */
+MODx.panel.ContentType = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'panel-contenttype'
+        ,url: MODx.config.connectors_url+'system/contenttype.php'
+        ,baseParams: {
+            action: 'updateFromGrid'
+        }
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('content_types')+'</h2>'
+            ,cls: 'modx-page-header'
+            ,border: false
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em;'
+            ,items: [{
+                html: '<p>'+_('content_type_desc')+'</p>'
+                ,border: false
+            },{
+                xtype: 'grid-contenttype'
+                ,id: 'grid-contenttype'
+                ,preventRender: true
+            }]
+        }]
+        ,listeners: {
+            'setup': {fn:this.setup,scope:this}
+            ,'success': {fn:this.success,scope:this}
+            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
+        }
+    });
+    MODx.panel.ContentType.superclass.constructor.call(this,config);  
+};
+Ext.extend(MODx.panel.ContentType,MODx.FormPanel,{
+    initialized: false
+    ,setup: function() {
+        /* TODO: maybe eventually convert to local grid
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                action: 'get'
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    if (r.object.category == '0') { r.object.category = null; }
+                    r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>";
+                    this.getForm().setValues(r.object);
+                    Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
+                    this.fireEvent('ready',r.object);
+                    
+                    var d = Ext.decode(r.object.data);
+                    var g = Ext.getCmp('grid-element-properties');
+                    g.defaultProperties = d;
+                    g.getStore().loadData(d);
+                    this.initialized = true;
+                },scope:this}
+            }
+        });
+        */
+    }
+    ,beforeSubmit: function(o) {
+        var g = Ext.getCmp('grid-contenttype');
+        Ext.apply(o.form.baseParams,{
+            data: g.encodeModified()
+        });
+    }
+    ,success: function(o) {
+        Ext.getCmp('grid-contenttype').getStore().commitChanges();
+    }
+});
+Ext.reg('panel-contenttype',MODx.panel.ContentType);
+
+/**
  * Loads a grid of content types
  * 
  * @class MODx.grid.ContentType
@@ -59,83 +137,6 @@ MODx.grid.ContentType = function(config) {
 };
 Ext.extend(MODx.grid.ContentType,MODx.grid.Grid);
 Ext.reg('grid-contenttype',MODx.grid.ContentType);
-
-/**
- * @class MODx.panel.ContentType
- * @extends MODx.FormPanel
- * @param {Object} config An object of options.
- * @xtype panel-contenttype
- */
-MODx.panel.ContentType = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        id: 'panel-contenttype'
-        ,url: MODx.config.connectors_url+'system/contenttype.php'
-        ,baseParams: {
-            action: 'updateFromGrid'
-        }
-        ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: [{
-            html: '<h2>'+_('content_types')+'</h2>'
-            ,border: false
-        },{
-            html: '<p>'+_('content_type_desc')+'</p>'
-            ,border: false
-        },MODx.PanelSpacer,{
-            xtype: 'grid-contenttype'
-            ,id: 'grid-contenttype'
-            ,preventRender: true
-        }]
-        ,listeners: {
-            'setup': {fn:this.setup,scope:this}
-            ,'success': {fn:this.success,scope:this}
-            ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
-        }
-    });
-    MODx.panel.ContentType.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.panel.ContentType,MODx.FormPanel,{
-    initialized: false
-    ,setup: function() {
-        /* TODO: maybe eventually convert to local grid
-        if (this.config.plugin === '' || this.config.plugin === 0 || this.initialized) {            
-            this.fireEvent('ready');
-            return false;
-        }
-        MODx.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'get'
-            }
-            ,listeners: {
-                'success': {fn:function(r) {
-                    if (r.object.category == '0') { r.object.category = null; }
-                    r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>";
-                    this.getForm().setValues(r.object);
-                    Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
-                    this.fireEvent('ready',r.object);
-                    
-                    var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
-                    g.defaultProperties = d;
-                    g.getStore().loadData(d);
-                    this.initialized = true;
-                },scope:this}
-            }
-        });
-        */
-    }
-    ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-contenttype');
-        Ext.apply(o.form.baseParams,{
-            data: g.encodeModified()
-        });
-    }
-    ,success: function(o) {
-        Ext.getCmp('grid-contenttype').getStore().commitChanges();
-    }
-});
-Ext.reg('panel-contenttype',MODx.panel.ContentType);
 
 
 /** 

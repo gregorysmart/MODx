@@ -30,7 +30,6 @@ MODx.Window = function(config) {
 			,handler: this.submit
 		}]
 		,record: {}
-        ,y: 10
 	});
 	MODx.Window.superclass.constructor.call(this,config);
 	this.options = config;
@@ -97,9 +96,9 @@ Ext.extend(MODx.Window,Ext.Window,{
 	}
     
     ,_onShow: function() {
-        if (Ext.isSafari) return false;
+        /*if (Ext.isSafari) return false;
         var p = this.getPosition();
-        this.setPosition(p[0],10);
+        this.setPosition(p[0],10);*/
     }
 	
 	/**

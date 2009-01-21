@@ -14,93 +14,101 @@ MODx.panel.Snippet = function(config) {
         ,plugin: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: {
-            xtype: 'modx-tabs'
-            ,resizeTabs: false
-            ,defaults: {
-                autoHeight: true
-                ,layout: 'form'
-                ,labelWidth: 150
-            }
+        ,items: [{
+            html: '<h2>'+_('snippet_new')+'</h2>'
+            ,id: 'snippet-header'
+            ,cls: 'modx-page-header'
+            ,border: false
+        },{
+            xtype: 'portal'
             ,items: [{
-                title: _('snippet_title')
-                ,defaults: { border: false ,msgTarget: 'side' }
-                ,bodyStyle: 'padding: 1.5em;'
+                columnWidth: 1
+                ,style:'padding:10px;'
+                ,defaults: {
+                    collapsible: true
+                    ,autoHeight: true
+                    ,titleCollapse: true
+                    ,draggable: true
+                    ,style: 'padding: 5px 0;'
+                }
                 ,items: [{
-                    html: '<h2>'+_('snippet')+': '+config.name+'</h2>'
-                    ,id: 'snippet-header'
+                    title: _('snippet_title')
+                    ,defaults: { border: false ,msgTarget: 'side' }
+                    ,bodyStyle: 'padding: 1.5em;'
+                    ,layout: 'form'
+                    ,items: [{
+                        html: '<p>'+_('snippet_msg')+'</p>'
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'id'
+                        ,id: 'snippet-id'
+                        ,value: config.snippet
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'props'
+                        ,value: null
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('snippet_name')
+                        ,name: 'name'
+                        ,id: 'snippet-name'
+                        ,width: 300
+                        ,maxLength: 255
+                        ,enableKeyEvents: true
+                        ,allowBlank: false
+                        ,listeners: {
+                            'keyup': {scope:this,fn:function(f,e) {
+                                Ext.getCmp('snippet-header').getEl().update('<h2>'+_('snippet')+': '+f.getValue()+'</h2>');
+                            }}
+                        }
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('snippet_desc')
+                        ,name: 'description'
+                        ,id: 'snippet-description'
+                        ,width: 300
+                        ,maxLength: 255
+                    },{
+                        xtype: 'combo-category'
+                        ,fieldLabel: _('category')
+                        ,name: 'category'
+                        ,id: 'snippet-category'
+                        ,width: 250
+                        ,value: config.category || null
+                    },{
+                        xtype: 'checkbox'
+                        ,fieldLabel: _('snippet_execonsave')
+                        ,name: 'runsnippet'
+                        ,id: 'snippet-runsnippet'
+                    },{
+                        xtype: 'checkbox'
+                        ,fieldLabel: _('snippet_lock')
+                        ,description: _('snippet_lock_msg')
+                        ,name: 'locked'
+                        ,id: 'snippet-locked'
+                    },{
+                        html: onSnipFormRender
+                        ,border: false
+                    },{
+                        html: '<br />'+_('snippet_code')
+                    },{
+                        xtype: 'textarea'
+                        ,hideLabel: true
+                        ,name: 'snippet'
+                        ,id: 'snippet-snippet'
+                        ,width: '95%'
+                        ,height: 400
+                        ,value: "<?php\n\n?>"
+                        
+                    }]
                 },{
-                    html: '<p>'+_('snippet_msg')+'</p>'
-                },{
-                    xtype: 'hidden'
-                    ,name: 'id'
-                    ,id: 'snippet-id'
-                    ,value: config.snippet
-                },{
-                    xtype: 'hidden'
-                    ,name: 'props'
-                    ,value: null
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('snippet_name')
-                    ,name: 'name'
-                    ,id: 'snippet-name'
-                    ,width: 300
-                    ,maxLength: 255
-                    ,enableKeyEvents: true
-                    ,allowBlank: false
-                    ,listeners: {
-                        'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('snippet-header').getEl().update('<h2>'+_('snippet')+': '+f.getValue()+'</h2>');
-                        }}
-                    }
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('snippet_desc')
-                    ,name: 'description'
-                    ,id: 'snippet-description'
-                    ,width: 300
-                    ,maxLength: 255
-                },{
-                    xtype: 'combo-category'
-                    ,fieldLabel: _('category')
-                    ,name: 'category'
-                    ,id: 'snippet-category'
-                    ,width: 250
-                    ,value: config.category || null
-                },{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('snippet_execonsave')
-                    ,name: 'runsnippet'
-                    ,id: 'snippet-runsnippet'
-                },{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('snippet_lock')
-                    ,description: _('snippet_lock_msg')
-                    ,name: 'locked'
-                    ,id: 'snippet-locked'
-                },{
-                    html: onSnipFormRender
-                    ,border: false
-                },{
-                    html: '<br />'+_('snippet_code')
-                },{
-                    xtype: 'textarea'
-                    ,hideLabel: true
-                    ,name: 'snippet'
-                    ,id: 'snippet-snippet'
-                    ,width: '95%'
-                    ,height: 400
-                    ,value: "<?php\n\n?>"
-                    
+                    xtype: 'panel-element-properties'
+                    ,elementPanel: 'panel-snippet'
+                    ,elementId: config.snippet
+                    ,elementType: 'modSnippet'
                 }]
-            },{
-                xtype: 'panel-element-properties'
-                ,elementPanel: 'panel-snippet'
-                ,elementId: config.snippet
-                ,elementType: 'modSnippet'
             }]
-        }
+        }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -108,6 +116,7 @@ MODx.panel.Snippet = function(config) {
         }
     });
     MODx.panel.Snippet.superclass.constructor.call(this,config);
+    Ext.getCmp('modx-element-tree-panel').expand();
 };
 Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
     initialized: false

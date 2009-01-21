@@ -34,4 +34,4 @@ if (is_array($onTVFormRender)) $onTVFormRender = implode('',$onTVFormRender);
 $modx->smarty->assign('onTVFormRender',$onTVFormRender);
 
 /* display template */
-$modx->smarty->display('element/tv/create.tpl');
+return $modx->smarty->fetch('element/tv/create.tpl');

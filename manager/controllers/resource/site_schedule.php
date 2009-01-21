@@ -1,8 +1,8 @@
 <?php
 /**
  * Loads the site schedule
- * 
+ *
  * @package modx
  * @subpackage manager.resource
  */
-$modx->smarty->display('resource/site_schedule.tpl');
+return $modx->smarty->fetch('resource/site_schedule.tpl');

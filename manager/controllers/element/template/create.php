@@ -24,4 +24,4 @@ if (is_array($onTempFormRender)) $onTempFormRender = implode('',$onTempFormRende
 $modx->smarty->assign('onTempFormRender',$onTempFormRender);
 
 /* display template */
-$modx->smarty->display('element/template/create.tpl');
+return $modx->smarty->fetch('element/template/create.tpl');

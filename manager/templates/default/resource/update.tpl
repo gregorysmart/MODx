@@ -6,6 +6,7 @@
 {literal}
 <script type="text/javascript">
 // <![CDATA[
+{/literal}MODx.config.publish_document = {if $modx->hasPermission('publish_document')}true{else}false{/if}{literal};
 Ext.onReady(function() {
     MODx.load({
 	{/literal}

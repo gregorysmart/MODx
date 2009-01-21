@@ -116,4 +116,4 @@ if ($modx->config['use_editor']) {
 
 
 $modx->smarty->assign('resource',$resource);
-$modx->smarty->display('resource/staticresource/create.tpl');
+return $modx->smarty->fetch('resource/staticresource/create.tpl');

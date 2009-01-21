@@ -15,111 +15,119 @@ MODx.panel.Plugin = function(config) {
         ,plugin: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: {
-            xtype: 'modx-tabs'
-            ,resizeTabs: false
-            ,defaults: {
-                autoHeight: true
-                ,layout: 'form'
-                ,labelWidth: 150
-            }
+        ,items: [{
+            html: '<h2>'+_('plugin_new')+'</h2>'
+            ,id: 'plugin-header'
+            ,cls: 'modx-page-header'
+            ,border: false
+        },{
+            xtype: 'portal'
             ,items: [{
-                title: _('plugin_title')
-                ,bodyStyle: 'padding: 1.5em;'
-                ,defaults: { border: false ,msgTarget: 'side' }
+                columnWidth: 1
+                ,style:'padding:10px;'
+                ,defaults: {
+                    collapsible: true
+                    ,autoHeight: true
+                    ,titleCollapse: true
+                    ,draggable: true
+                    ,style: 'padding: 5px 0;'
+                }
                 ,items: [{
-                    html: '<h2>'+_('plugin')+': '+config.name+'</h2>'
-                    ,id: 'plugin-header'
+                    title: _('plugin_title')
+                    ,bodyStyle: 'padding: 1.5em;'
+                    ,layout: 'form'
+                    ,defaults: { border: false ,msgTarget: 'side' }
+                    ,items: [{
+                        html: '<p>'+_('plugin_msg')+'</p>'
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'id'
+                        ,id: 'plugin-id'
+                        ,value: config.plugin
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'props'
+                        ,value: null
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('plugin_name')
+                        ,name: 'name'
+                        ,id: 'plugin-name'
+                        ,width: 300
+                        ,maxLength: 255
+                        ,enableKeyEvents: true
+                        ,allowBlank: false
+                        ,listeners: {
+                            'keyup': {scope:this,fn:function(f,e) {
+                                Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+f.getValue()+'</h2>');
+                            }}
+                        }
+                    },{
+                        xtype: 'textfield'
+                        ,fieldLabel: _('plugin_desc')
+                        ,name: 'description'
+                        ,id: 'plugin-description'
+                        ,width: 300
+                        ,maxLength: 255
+                    },{
+                        xtype: 'combo-category'
+                        ,fieldLabel: _('category')
+                        ,name: 'category'
+                        ,id: 'plugin-category'
+                        ,width: 250
+                        ,value: config.category || null
+                    },{
+                        xtype: 'checkbox'
+                        ,fieldLabel: _('plugin_disabled')
+                        ,name: 'disabled'
+                        ,id: 'plugin-disabled'
+                    },{
+                        xtype: 'checkbox'
+                        ,fieldLabel: _('plugin_lock')
+                        ,description: _('plugin_lock_msg')
+                        ,name: 'locked'
+                        ,id: 'plugin-locked'
+                    },{
+                        html: onPluginFormRender
+                        ,border: false
+                    },{
+                        html: '<br />'+_('plugin_code')
+                    },{
+                        xtype: 'textarea'
+                        ,hideLabel: true
+                        ,name: 'plugincode'
+                        ,id: 'plugin-plugincode'
+                        ,width: '95%'
+                        ,height: 400
+                        ,value: "<?php\n\n?>"
+                        
+                    }]
                 },{
-                    html: '<p>'+_('plugin_msg')+'</p>'
+                    title: _('system_events')
+                    ,bodyStyle: 'padding: 1.5em;'
+                    ,items: [{
+                        html: '<h2>'+_('system_events')+'</h2>'
+                        ,border: false
+                    },{
+                        html: '<p>'+_('plugin_event_msg')+'</p>'
+                        ,border: false
+                    },{
+                        xtype: 'grid-plugin-event'
+                        ,id: 'grid-plugin-event'
+                        ,preventRender: true
+                        ,plugin: config.plugin
+                        ,listeners: {
+                            'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
+                        }
+                    }]             
                 },{
-                    xtype: 'hidden'
-                    ,name: 'id'
-                    ,id: 'plugin-id'
-                    ,value: config.plugin
-                },{
-                    xtype: 'hidden'
-                    ,name: 'props'
-                    ,value: null
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('plugin_name')
-                    ,name: 'name'
-                    ,id: 'plugin-name'
-                    ,width: 300
-                    ,maxLength: 255
-                    ,enableKeyEvents: true
-                    ,allowBlank: false
-                    ,listeners: {
-                        'keyup': {scope:this,fn:function(f,e) {
-                            Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+f.getValue()+'</h2>');
-                        }}
-                    }
-                },{
-                    xtype: 'textfield'
-                    ,fieldLabel: _('plugin_desc')
-                    ,name: 'description'
-                    ,id: 'plugin-description'
-                    ,width: 300
-                    ,maxLength: 255
-                },{
-                    xtype: 'combo-category'
-                    ,fieldLabel: _('category')
-                    ,name: 'category'
-                    ,id: 'plugin-category'
-                    ,width: 250
-                    ,value: config.category || null
-                },{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('plugin_disabled')
-                    ,name: 'disabled'
-                    ,id: 'plugin-disabled'
-                },{
-                    xtype: 'checkbox'
-                    ,fieldLabel: _('plugin_lock')
-                    ,description: _('plugin_lock_msg')
-                    ,name: 'locked'
-                    ,id: 'plugin-locked'
-                },{
-                    html: onPluginFormRender
-                    ,border: false
-                },{
-                    html: '<br />'+_('plugin_code')
-                },{
-                    xtype: 'textarea'
-                    ,hideLabel: true
-                    ,name: 'plugincode'
-                    ,id: 'plugin-plugincode'
-                    ,width: '95%'
-                    ,height: 400
-                    ,value: "<?php\n\n?>"
-                    
+                    xtype: 'panel-element-properties'
+                    ,elementPanel: 'panel-plugin'
+                    ,elementId: config.plugin
+                    ,elementType: 'modPlugin'
                 }]
-            },{
-                title: _('system_events')
-                ,bodyStyle: 'padding: 1.5em;'
-                ,items: [{
-                    html: '<h2>'+_('system_events')+'</h2>'
-                    ,border: false
-                },{
-                    html: '<p>'+_('plugin_event_msg')+'</p>'
-                    ,border: false
-                },{
-                    xtype: 'grid-plugin-event'
-                    ,id: 'grid-plugin-event'
-                    ,preventRender: true
-                    ,plugin: config.plugin
-                    ,listeners: {
-                        'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
-                    }
-                }]             
-            },{
-                xtype: 'panel-element-properties'
-                ,elementPanel: 'panel-plugin'
-                ,elementId: config.plugin
-                ,elementType: 'modPlugin'
             }]
-        }
+        }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -127,6 +135,7 @@ MODx.panel.Plugin = function(config) {
         }
     });
     MODx.panel.Plugin.superclass.constructor.call(this,config);
+    Ext.getCmp('modx-element-tree-panel').expand();
 };
 Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
     initialized: false

@@ -23,4 +23,4 @@ $onSnipFormRender = $modx->invokeEvent('OnSnipFormRender',array('id' => 0));
 if (is_array($onSnipFormRender)) $onSnipFormRender = implode('',$onSnipFormRender);
 $modx->smarty->assign('onSnipFormRender',$onSnipFormRender);
 
-$modx->smarty->display('element/snippet/create.tpl');
+return $modx->smarty->fetch('element/snippet/create.tpl');

@@ -11,26 +11,32 @@ MODx.panel.Chunk = function(config) {
         ,baseParams: {}
         ,id: 'panel-chunk'
         ,class_key: 'modChunk'
-        ,plugin: ''
+        ,chunk: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: {
-            xtype: 'modx-tabs'
-            ,resizeTabs: false
-            ,defaults: {
-                autoHeight: true
-                ,layout: 'form'
-                ,labelWidth: 150
-            }
+        ,items: [{
+            html: '<h2>'+_('chunk_new')+'</h2>'
+            ,border: false
+            ,cls: 'modx-page-header'
+            ,id: 'chunk-header'
+        },{            
+            xtype: 'portal'
             ,items: [{
-                title: _('chunk_title')
-                ,bodyStyle: 'padding: 1.5em;'
-                ,defaults: { border: false ,msgTarget: 'side' }
+                columnWidth: 1
+                ,style:'padding:10px;'
+                ,defaults: {
+                    collapsible: true
+                    ,autoHeight: true
+                    ,titleCollapse: true
+                    ,draggable: true
+                    ,style: 'padding: 5px 0;'
+                }    
                 ,items: [{
-                        html: '<h2>'+_('chunk')+': '+config.name+'</h2>'
-                        ,border: false
-                        ,id: 'chunk-header'
-                    },{
+                    title: _('chunk_title')
+                    ,bodyStyle: 'padding: 1.5em;'
+                    ,defaults: { border: false ,msgTarget: 'side' }
+                    ,layout: 'form'
+                    ,items: [{
                         html: '<p>'+_('chunk_msg')+'</p>'
                         ,border: false
                     },{
@@ -90,8 +96,7 @@ MODx.panel.Chunk = function(config) {
                         ,id: 'chunk-snippet'
                         ,width: '95%'
                         ,height: 400
-                        ,value: ""
-                        
+                        ,value: ''
                     },{
                         xtype: 'combo-rte'
                         ,fieldLabel: _('which_editor_title')
@@ -109,13 +114,14 @@ MODx.panel.Chunk = function(config) {
                             },scope:this}
                         }
                     }]
-            },{
-                xtype: 'panel-element-properties'
-                ,elementPanel: 'panel-chunk'
-                ,elementId: config.chunk
-                ,elementType: 'modChunk'
+                },{
+                    xtype: 'panel-element-properties'
+                    ,elementPanel: 'panel-chunk'
+                    ,elementId: config.chunk
+                    ,elementType: 'modChunk'
+                }]
             }]
-        }
+        }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -123,6 +129,7 @@ MODx.panel.Chunk = function(config) {
         }
     });
     MODx.panel.Chunk.superclass.constructor.call(this,config);
+    Ext.getCmp('modx-element-tree-panel').expand();
 };
 Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
     initialized: false

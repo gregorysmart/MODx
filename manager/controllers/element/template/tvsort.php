@@ -22,4 +22,4 @@ $tvs = $template->getTVs();
 $modx->smarty->assign('tvs',$tvs);
 
 $modx->smarty->assign('template',$template);
-$modx->smarty->display('element/template/tvsort.tpl');
+return $modx->smarty->fetch('element/template/tvsort.tpl');

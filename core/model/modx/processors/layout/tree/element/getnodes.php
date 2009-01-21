@@ -89,7 +89,6 @@ switch ($g[0]) {
 				'leaf' => true,
 				'cls' => 'file',
 				'href' => 'index.php?a='.$ar_actionmap[$g[1]].'&id='.$element->get('id'),
-				'hrefTarget' => 'modx_content',
                 'type' => $g[1],
                 'qtip' => $element->get('description'),
                 'menu' => array(
@@ -104,10 +103,10 @@ switch ($g[0]) {
                         array(
                             'text' => $modx->lexicon('edit').' '.$elementType,
                             'handler' => 'function() {
-                                Ext.getCmp("modx_element_tree").loadAction("'
+                                location.href = "index.php?'
                                     . 'a=' . $actions['element/'.strtolower($elementType).'/update']
                                     . '&id=' . $element->get('id')
-                                 . '");
+                                 . '";
                             }',
                         ),
                         array(
@@ -331,7 +330,6 @@ switch ($g[0]) {
 				'leaf' => 1,
 				'cls' => 'file',
 				'href' => 'index.php?a='.$ar_actionmap[$g[0]].'&id='.$element->get('id'),
-				'hrefTarget' => 'modx_content',
                 'type' => $g[0],
                 'menu' => array(
                     'items' => array(
@@ -344,10 +342,10 @@ switch ($g[0]) {
                         array(
                             'text' => $modx->lexicon('edit').' '.$elementType,
                             'handler' => 'function() {
-                                Ext.getCmp("modx_element_tree").loadAction("'
+                                location.href = "index.php?'
                                     . 'a=' . $actions['element/'.strtolower($elementType).'/update']
                                     . '&id=' . $element->get('id')
-                                 . '");
+                                 . '";
                             }',
                         ),
                         array(

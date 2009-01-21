@@ -73,7 +73,7 @@ Ext.extend(MODx.panel.PILicense,MODx.panel.WizardPanel,{
     }
     
     ,fetch: function() {
-        var sig = Ext.getCmp('grid-package').menu.record.signature;
+        var sig = Ext.getCmp('modx-grid-package').menu.record.signature;
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'workspace/packages.php'
             ,params: {
@@ -127,7 +127,7 @@ Ext.extend(MODx.panel.PIReadme,MODx.panel.WizardPanel,{
         Ext.getCmp('window-package-installer').fireEvent('proceed','pi-install');
     }
     ,fetch: function() {
-        var sig = Ext.getCmp('grid-package').menu.record.signature;
+        var sig = Ext.getCmp('modx-grid-package').menu.record.signature;
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'workspace/packages.php'
             ,params: {
@@ -178,7 +178,7 @@ Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
         pi.fireEvent('finish',va);
     }
     ,fetch: function() {
-        var sig = Ext.getCmp('grid-package').menu.record.signature;
+        var sig = Ext.getCmp('modx-grid-package').menu.record.signature;
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'workspace/packages.php'
             ,params: {

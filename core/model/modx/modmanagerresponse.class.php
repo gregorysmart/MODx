@@ -26,12 +26,14 @@ class modManagerResponse extends modResponse {
         } else {
             $action =& $this->modx->request->action;
         }
-        if (empty($action)) {
+        if (empty($action) && false) {
             /* this looks to be a top-level frameset request, so let's serve up the header */
-            $this->modx->lexicon->load('dashboard','topmenu');
+
             $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
-            $this->body = include $this->modx->config['manager_path'] . 'controllers/header.php';
         } else {
+            $this->modx->lexicon->load('dashboard','topmenu');
+            if ($action == 0) $action = 44; // todo, make start page
+
             if (isset($this->modx->actionMap[$action])) {
                 $act = $this->modx->actionMap[$action];
 
@@ -43,9 +45,9 @@ class modManagerResponse extends modResponse {
                 $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
                 $this->modx->smarty->assign('_ctx',$act['context']);
 
-                /* if wants the header/footer */
+                $this->body = '';
                 if ($act['haslayout']) {
-                    include_once $this->modx->config['manager_path'].'controllers/frame-header.php';
+                    $this->body .= include $this->modx->config['manager_path'] . 'controllers/header.php';
                 }
 
                 /* find context path */
@@ -68,16 +70,16 @@ class modManagerResponse extends modResponse {
                 /* append .php */
                 if (file_exists($f.'.php')) {
                     $f = $f.'.php';
-                    $this->body = include $f;
+                    $this->body .= include $f;
                 /* for actions that don't have trailing / but reference index */
                 } elseif (file_exists($f.'/index.php')) {
                     $f = $f.'/index.php';
-                    $this->body = include $f;
+                    $this->body .= include $f;
                 }
                 if ($act['haslayout']) {
                     /* reset path to core modx path for header/footer */
                     $this->modx->smarty->setTemplatePath($modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/');
-                    include_once $this->modx->config['manager_path'].'controllers/footer.php';
+                    $this->body .= include_once $this->modx->config['manager_path'].'controllers/footer.php';
                 }
             } else {
                 $this->body = $this->modx->error->failure('No action with ID '.$action.' found.');
@@ -89,7 +91,9 @@ class modManagerResponse extends modResponse {
                 $this->modx->smarty->assign('_e', $this->body);
                 $this->modx->smarty->display('error.tpl');
             }
+
         }
+        echo $this->body;
         exit();
     }
 }

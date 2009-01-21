@@ -13,4 +13,4 @@ if ($role == null) return $modx->error->failure($modx->lexicon('role_err_nf'));
 
 
 $modx->smarty->assign('role',$role);
-$modx->smarty->display('security/role/update.tpl');
+return $modx->smarty->fetch('security/role/update.tpl');

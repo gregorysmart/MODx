@@ -5,21 +5,27 @@ MODx.panel.ErrorLog = function(config) {
         ,baseParams: {
             action: 'clear'
         }
-        ,width: '90%'
-        ,autoHeight: true
-        ,buttonAlign: 'center'
-        ,hideLabels: true
         ,items: [{
             html: '<h2>'+_('error_log')+'</h2>'
+            ,id: 'modx-error-log-header'
+            ,cls: 'modx-page-header'
             ,border: false
         },{
-            html: '<p>'+_('error_log_desc')+'</p>'
-            ,border: false
-        },{
-            xtype: 'textarea'
-            ,name: 'log'
-            ,grow: true
-            ,width: '100%'
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em;'
+            ,hideLabels: true
+            ,width: '90%'
+            ,autoHeight: true
+            ,buttonAlign: 'center'
+            ,items: [{
+                html: '<p>'+_('error_log_desc')+'</p>'
+                ,border: false
+            },{
+                xtype: 'textarea'
+                ,name: 'log'
+                ,grow: true
+                ,width: '100%'
+            }]
         }]
         ,buttons: [{
             text: _('clear')

@@ -64,4 +64,4 @@ if ($templateId && ($template = $modx->getObject('modTemplate', $templateId))) {
 }
 $modx->smarty->assign('categories',$categories);
 
-$modx->smarty->display('resource/sections/tvs.tpl');
+return $modx->smarty->fetch('resource/sections/tvs.tpl');

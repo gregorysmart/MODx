@@ -504,18 +504,6 @@ $collection['50']->fromArray(array (
   'params' => '&class_key=modSymLink',
   'handler' => '',
 ), '', true, true);
-$collection['54']= $xpdo->newObject('modMenu');
-$collection['54']->fromArray(array (
-  'id' => 54,
-  'parent' => 2,
-  'action' => 82,
-  'text' => 'releaseme',
-  'description' => 'releaseme_desc',
-  'icon' => 'images/icons/plugin.gif',
-  'menuindex' => 0,
-  'params' => '',
-  'handler' => '',
-), '', true, true);
 $collection['55']= $xpdo->newObject('modMenu');
 $collection['55']->fromArray(array (
   'id' => 55,

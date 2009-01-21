@@ -63,4 +63,4 @@ $modx->smarty->assign('onTVFormRender',$onTVFormRender);
 
 /* assign TV to parser and display template */
 $modx->smarty->assign('tv',$tv);
-$modx->smarty->display('element/tv/update.tpl');
+return $modx->smarty->fetch('element/tv/update.tpl');

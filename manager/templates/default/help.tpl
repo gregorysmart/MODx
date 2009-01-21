@@ -1,3 +1,7 @@
+<div class="modx-page-header">
+<h2>{$_lang.help}</h2>
+</div>
+<div class="modx-page">
 {literal}<style>
 .about li {
     list-style-type: disc;
@@ -53,6 +57,8 @@
   </tr>
 </tbody>
 </table>
+</div>
+
 </div>
 
 <script type="text/javascript" src="assets/modext/sections/system/help.js"></script>

@@ -54,6 +54,8 @@ Ext.extend(MODx,Ext.Component,{
         return arg;
     }
     
+    ,loadAccordionPanels: function() { return []; }
+    
     ,logout: function() {
         MODx.msg.confirm({
             title: _('logout')

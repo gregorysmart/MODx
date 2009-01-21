@@ -13,4 +13,4 @@ if ($policy == null) {
 }
 
 $modx->smarty->assign('policy',$policy);
-$modx->smarty->display('security/access/policy/update.tpl');
+return $modx->smarty->fetch('security/access/policy/update.tpl');

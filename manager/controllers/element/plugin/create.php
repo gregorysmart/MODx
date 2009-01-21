@@ -13,4 +13,4 @@ if (isset($_REQUEST['category'])) {
 	if ($category != null) $modx->smarty->assign('category',$category);
 }
 
-$modx->smarty->display('element/plugin/create.tpl');
+return $modx->smarty->fetch('element/plugin/create.tpl');

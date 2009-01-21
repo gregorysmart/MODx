@@ -6,13 +6,11 @@ MODx.panel.ElementProperties = function(config) {
         ,bodyStyle: 'padding: 1.5em;'
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
-            html: '<h2>'+_('properties')+'</h2>'
-            ,border: false
-        },{
             html: '<p>'+_('element_properties_desc')+'</p>'
             ,border: false
-        },MODx.PanelSpacer,{
+        },{
             xtype: 'grid-element-properties'
+            ,title: ''
             ,panel: config.elementPanel
             ,elementId: config.elementId
             ,elementType: config.elementType

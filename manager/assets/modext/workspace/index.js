@@ -13,17 +13,9 @@ Ext.onReady(function() {
 MODx.page.Workspace = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        tabs: [
-            {contentEl: 'tab_packages', title: _('packages')}
-            ,{contentEl: 'tab_providers', title: _('providers')}
-        ]
-        ,components: [{
-            xtype: 'grid-package'
-            ,id: 'grid-package'
-            ,el: 'packages_grid'
-        },{
-            xtype: 'grid-provider'
-            ,el: 'providers_grid'
+        components: [{
+            xtype: 'modx-panel-workspace'
+            ,renderTo: 'modx-panel-workspace'
         }]
     });
     MODx.page.Workspace.superclass.constructor.call(this,config);

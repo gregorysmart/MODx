@@ -7,4 +7,4 @@
  */
 if (!$modx->hasPermission('namespaces')) return $modx->error->failure($modx->lexicon('access_denied'));
 
-$modx->smarty->display('workspaces/namespace/index.tpl');
+return $modx->smarty->fetch('workspaces/namespace/index.tpl');

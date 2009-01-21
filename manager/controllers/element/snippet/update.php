@@ -32,4 +32,4 @@ $modx->smarty->assign('onSnipFormRender',$onSnipFormRender);
 
 /* assign snippet to parser and display template */
 $modx->smarty->assign('snippet',$snippet);
-$modx->smarty->display('element/snippet/update.tpl');
+return $modx->smarty->fetch('element/snippet/update.tpl');

@@ -68,4 +68,4 @@ $modx->smarty->assign('groupsarray',$groupsarray);
 
 
 $modx->smarty->assign('user',$user);
-$modx->smarty->display('security/user/update.tpl');
+return $modx->smarty->fetch('security/user/update.tpl');

@@ -4,56 +4,47 @@
 <title>MODx :: {$_config.site_name}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={$_config.modx_charset}" />
 
-<link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/ext-all.css" />
-<link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/xtheme-gray.css" />
-<link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/index.css" />
+<link rel="stylesheet" type="text/css" href="{$_config.manager_url}assets/ext2/resources/css/ext-all.css" />
+<link rel="stylesheet" type="text/css" href="{$_config.manager_url}assets/ext2/resources/css/xtheme-gray.css" />
+<link rel="stylesheet" type="text/css" href="{$_config.manager_url}templates/{$_config.manager_theme}/css/index.css" />
 
-<script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
-<script src="assets/ext2/ext-all-debug.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/ext2/ext-all.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.js" type="text/javascript"></script>
 <script src="assets/modext/util/eventfix.js" type="text/javascript"></script>
-<script src="{$_config.connectors_url}lang.js.php?topic=file,category,resource,welcome,configcheck" type="text/javascript"></script>
-<script src="{$_config.connectors_url}layout/modx.config.js.php" type="text/javascript"></script>
-{if $_config.compress_js}
-<script src="assets/modext/modext.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/core/modx.msg-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/core/modx.topmenu-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/core/modx.window-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/core/modx.tree-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/windows-min.js" type="text/javascript"></script>
+<script src="{$_config.connectors_url}lang.js.php?topic={$_lang_topics}&ctx={$_ctx}&action={$smarty.get.a}" type="text/javascript"></script>
+<script src="{$_config.connectors_url}layout/modx.config.js.php?ctx={$_ctx}&action={$smarty.get.a}" type="text/javascript"></script>
 
-<script src="assets/modext/build/widgets/resource/modx.tree.resource-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/element/modx.tree.element-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/widgets/system/modx.tree.directory-min.js" type="text/javascript"></script>
-<script src="assets/modext/build/core/modx.layout-min.js" type="text/javascript"></script>
-{else}
-<script src="assets/modext/util/spotlight.js" type="text/javascript"></script>
-<script src="assets/modext/util/utilities.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.component.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.actionbuttons.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.msg.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.panel.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.tabs.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.window.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.tree.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.combo.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.grid.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/core/modx.console.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/windows.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/spotlight.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/utilities.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/switchbutton.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.form.handler.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.component.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/core/modx.actionbuttons.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.msg.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.panel.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.tabs.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.window.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.tree.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.combo.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.grid.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.console.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.portal.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/windows.js" type="text/javascript"></script>
 
-<script src="assets/modext/widgets/resource/modx.tree.resource.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/element/modx.tree.element.js" type="text/javascript"></script>
-<script src="assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
-<script src="assets/modext/core/modx.layout.js" type="text/javascript"></script>
-{/if}
+<script src="{$_config.manager_url}assets/modext/widgets/resource/modx.tree.resource.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/element/modx.tree.element.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/system/modx.tree.directory.js" type="text/javascript"></script>
 
-<script src="assets/modext/util/filetree/js/Ext.ux.form.BrowseButton.js" type="text/javascript"></script>
-<script src="assets/modext/util/filetree/js/Ext.ux.FileUploader.js" type="text/javascript"></script>
-<script src="assets/modext/util/filetree/js/Ext.ux.UploadPanel.js" type="text/javascript"></script>
-<link href="assets/modext/util/filetree/css/icons.css" rel="stylesheet" type="text/css" />
-<link href="assets/modext/util/filetree/css/filetype.css" rel="stylesheet" type="text/css" />
-<link href="assets/modext/util/filetree/css/filetree.css" rel="stylesheet" type="text/css" />
+<script src="{$_config.manager_url}assets/modext/util/filetree/js/Ext.ux.form.BrowseButton.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/filetree/js/Ext.ux.FileUploader.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/util/filetree/js/Ext.ux.UploadPanel.js" type="text/javascript"></script>
+<link href="{$_config.manager_url}assets/modext/util/filetree/css/icons.css" rel="stylesheet" type="text/css" />
+<link href="{$_config.manager_url}assets/modext/util/filetree/css/filetype.css" rel="stylesheet" type="text/css" />
+<link href="{$_config.manager_url}assets/modext/util/filetree/css/filetree.css" rel="stylesheet" type="text/css" />
+
+<script src="{$_config.manager_url}assets/modext/core/modx.layout.js" type="text/javascript"></script>
+
 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/ie.css" />
@@ -61,23 +52,45 @@
 </head>
 <body>
 
-{include file="navbar.tpl"}
+
+<script type="text/javascript">
+{literal}
+Ext.onReady(function() {    
+    MODx.load({ 
+        xtype: 'modx-layout'
+        ,accordionPanels: MODx.accordionPanels || [] 
+    });
+});
+{/literal}
+</script>
 <div id="modx-container">
-
-    {include file="dashboard.tpl"}
-
-    <div id="modx-trees-ct" class="body-cnr-box">
-        <div class="body-cnr-top"><div></div></div>
-	    <div id="modx-trees-div" class="body-cnr-content">
-		    <div id="modx_rt_div"><div id="modx_resource_tree"></div></div>
-		    <div id="modx_et_div"><div id="modx_element_tree"></div></div>
-		    <div id="modx_ft_div"><div id="modx_file_tree"></div></div>
-	    </div>
-	    <div class="body-cnr-btm"><div></div></div>
+    <div id="modx-topbar">
+        <div id="modx-logo"><img src="templates/{$_config.manager_theme}/images/style/modx_logo_header.png" alt="" /></div>
+        <div id="modx-site-name">
+            {$_config.site_name}
+            <span class="modx-version">MODx Revolution {$_config.settings_version}</span>
+        </div>
     </div>
-<div id="modx-frame-ct">
-    <iframe src="index.php?a=44" align="left" id="modx-frame" border="0" frameborder="0" hspace="0" vspace="0"></iframe>
-</div>
-</div>
-</body>
-</html>
+    <div id="modx-navbar">
+        <div id="rightlogin">
+        <span>
+            logged in as <a id="modx-login-user" onclick="MODx.loadFrame(49);">{$modx->getLoginUserName()}</a>
+            | <a class="modx-logout" href="javascript:;" onclick="MODx.logout();">{$_lang.logout}</a>
+        </span>
+        </div>
+        {include file="navbar.tpl"}
+    </div>
+    
+    <div id="modx-mainpanel">
+        <div id="modx-accordion" class="modx-accordion">
+            <div class="tl"></div><div class="tr"></div>
+            <div id="modx-accordion-content">                    
+                <div id="modx_rt_div"><div id="modx_resource_tree"></div></div>
+	            <div id="modx_et_div"><div id="modx_element_tree"></div></div>
+	            <div id="modx_ft_div"><div id="modx_file_tree"></div></div>                
+            </div>            
+            <div class="bl"></div><div class="br"></div> 
+        </div>
+        
+        <div id="modAB"></div>
+        <div id="modx-content">          

@@ -16,7 +16,7 @@ MODx.grid.Package = function(config) {
     });
     Ext.applyIf(config,{
         title: _('packages')
-        ,id: 'grid-package'
+        ,id: 'modx-grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
         ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','readme','menu']
         ,plugins: [exp]
@@ -202,7 +202,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-package',MODx.grid.Package);
+Ext.reg('modx-grid-package',MODx.grid.Package);
 
 MODx.window.RemovePackage = function(config) {
     config = config || {};
@@ -238,7 +238,7 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
     submit: function() {
         var r = this.config.record;
         if (this.fp.getForm().isValid()) {            
-            Ext.getCmp('grid-package').loadConsole(Ext.getBody(),r.topic);
+            Ext.getCmp('modx-grid-package').loadConsole(Ext.getBody(),r.topic);
             this.fp.getForm().baseParams = {
                 action: 'remove'
                 ,signature: r.signature
@@ -252,7 +252,7 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
                 ,scope: this
                 ,failure: function(frm,a) {
                     this.fireEvent('failure',frm,a);
-                    var g = Ext.getCmp('grid-package');
+                    var g = Ext.getCmp('modx-grid-package');
                     g.getConsole().complete();
                     g.refresh();
                     Ext.Msg.hide();
@@ -260,7 +260,7 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
                 }
                 ,success: function(frm,a) {
                     this.fireEvent('success',{f:frm,a:a});
-                    var g = Ext.getCmp('grid-package');
+                    var g = Ext.getCmp('modx-grid-package');
                     g.getConsole().complete();
                     g.refresh();
                     Ext.Msg.hide();

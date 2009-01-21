@@ -45,4 +45,4 @@ if ($modx->config['use_editor'] == 1) {
 }
 
 /* display template */
-$modx->smarty->display('element/chunk/create.tpl');
+return $modx->smarty->fetch('element/chunk/create.tpl');

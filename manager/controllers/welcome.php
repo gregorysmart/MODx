@@ -68,3 +68,5 @@ foreach (array_keys($rss->items) as $key) {
     $item['pubdate'] = strftime('%c',$item['date_timestamp']);
 }
 $modx->smarty->assign('securefeed',$rss->items);
+
+return $modx->smarty->fetch('welcome.tpl');

@@ -90,4 +90,4 @@ $modx->smarty->assign('onDocFormRender',$onDocFormRender);
 
 $modx->smarty->assign('resource',$resource);
 
-$modx->smarty->display('resource/weblink/create.tpl');
+return $modx->smarty->fetch('resource/weblink/create.tpl');

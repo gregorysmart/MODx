@@ -32,6 +32,7 @@ $_lang['package_install'] = 'Install Package';
 $_lang['package_install_info_start'] = 'Attempting to install package with signature: [[+signature]]';
 $_lang['package_install_info_found'] = 'Package found...now preparing to install.';
 $_lang['package_install_info_success'] = 'Successfully installed package [[+signature]]';
+$_lang['package_management'] = 'Package Management';
 $_lang['package_obtain_method'] = 'First, select how you would like to obtain the package:';
 $_lang['package_remove'] = 'Remove Package';
 $_lang['package_remove_confirm'] = 'Are you sure you want to remove this package? This is permanent.';

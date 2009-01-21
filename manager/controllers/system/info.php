@@ -38,4 +38,4 @@ foreach ($ausers as $user) {
 }
 $modx->smarty->assign('ausers',$ausers);
 
-$modx->smarty->display('system/info.tpl');
+return $modx->smarty->fetch('system/info.tpl');

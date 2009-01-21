@@ -44,7 +44,6 @@ MODx.window.PackageDownloader = function(config) {
         },{
             xtype: 'panel-pd-selpackage'
         }]
-        ,y: 10
     });
     MODx.window.PackageDownloader.superclass.constructor.call(this,config);
     this.config = config;
@@ -82,8 +81,7 @@ Ext.extend(MODx.window.PackageDownloader,Ext.Window,{
             this.getBottomToolbar().items.item(0).setDisabled(false);
             this.getBottomToolbar().items.item(1).setText(_('next'));
         }
-        var p = this.getPosition();
-        this.setPosition(p[0],10);
+        this.center();
     }
 });
 Ext.reg('window-package-downloader',MODx.window.PackageDownloader);
@@ -145,7 +143,7 @@ Ext.extend(MODx.panel.PDFirst,Ext.FormPanel,{
            }
            ,listeners: {
                 'success':{fn:function(r) {
-                    Ext.getCmp('grid-package').refresh();
+                    Ext.getCmp('modx-grid-package').refresh();
                     Ext.getCmp('window-package-downloader').hide();
                 },scope:this}
            }
@@ -301,7 +299,7 @@ Ext.extend(MODx.panel.PDSelPackage,Ext.FormPanel,{
                     MODx.form.Handler.errorExt(a.result,f);
                 }
                 ,success: function(f,a) {
-                    Ext.getCmp('grid-package').refresh();
+                    Ext.getCmp('modx-grid-package').refresh();
                     Ext.getCmp('window-package-downloader').hide();
                 }
             });

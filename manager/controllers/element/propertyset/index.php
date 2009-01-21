@@ -7,4 +7,4 @@
  */
 
 /* display template */
-$modx->smarty->display('element/propertyset/index.tpl');
+return $modx->smarty->fetch('element/propertyset/index.tpl');

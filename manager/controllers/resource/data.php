@@ -59,4 +59,4 @@ if (file_exists($cache_file)) {
 
 $modx->smarty->assign('resource',$resource);
 
-$modx->smarty->display('resource/data.tpl');
+return $modx->smarty->fetch('resource/data.tpl');

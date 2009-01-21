@@ -8,4 +8,4 @@
 if (!$modx->hasPermission('help')) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
-$modx->smarty->display('help.tpl');
+return $modx->smarty->fetch('help.tpl');

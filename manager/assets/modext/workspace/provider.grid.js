@@ -10,7 +10,7 @@
 MODx.grid.Provider = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('packages')
+        title: _('providers')
         ,url: MODx.config.connectors_url+'workspace/providers.php'
         ,fields: ['id','name','description','service_url','menu']
         ,paging: true
@@ -32,13 +32,13 @@ MODx.grid.Provider = function(config) {
         }]
         ,tbar: [{
             text: _('provider_add')
-            ,handler: { xtype: 'window-provider-create' }
+            ,handler: { xtype: 'modx-window-provider-create' }
         }]
     });
     MODx.grid.Provider.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.Provider,MODx.grid.Grid);
-Ext.reg('grid-provider',MODx.grid.Provider);
+Ext.reg('modx-grid-provider',MODx.grid.Provider);
 
 /** 
  * Generates the Create Provider window.
@@ -79,7 +79,7 @@ MODx.window.CreateProvider = function(config) {
     MODx.window.CreateProvider.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateProvider,MODx.Window);
-Ext.reg('window-provider-create',MODx.window.CreateProvider);
+Ext.reg('modx-window-provider-create',MODx.window.CreateProvider);
 
 /** 
  * Generates the Update Provider window.

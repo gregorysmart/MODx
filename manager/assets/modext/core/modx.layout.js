@@ -1,6 +1,3 @@
-Ext.onReady(function() {    
-    MODx.load({ xtype: 'modx-layout' });
-});
 /**
  * Loads the MODx Ext-driven Layout
  * 
@@ -13,13 +10,7 @@ MODx.Layout = function(config){
     config = config || {};
     this.config = config;
     Ext.BLANK_IMAGE_URL = MODx.config.manager_url+'assets/ext2/resources/images/default/s.gif';
-        
-    if (!Ext.isIE) {
-        Ext.get('modx-dashboard').fadeIn();
-        Ext.get('modx-frame-ct').fadeOut();
-        Ext.get('modx-container').fadeOut();
-    }
-    
+
     this.loadTrees();
     
     Ext.applyIf(config,{
@@ -34,6 +25,7 @@ Ext.extend(MODx.Layout,Ext.Component,{
      * @access protected
      */
     loadTrees: function() {
+        
         this.rtree = MODx.load({
             xtype: 'tree-resource'
             ,el: 'modx_resource_tree'
@@ -54,8 +46,7 @@ Ext.extend(MODx.Layout,Ext.Component,{
         
         MODx.load({
             xtype: 'panel'
-            ,applyTo: 'modx-trees-div'
-            ,cls: 'modx-accordion'
+            ,applyTo: 'modx-accordion-content'
             ,minSize: 100
             ,minHeight: 300
             ,maxHeight: 400
@@ -65,9 +56,8 @@ Ext.extend(MODx.Layout,Ext.Component,{
             ,resizable: true
             ,stateful: false
             ,autoHeight: true
-            ,margin: '0 0 0 0'
-            ,anchor: '1 1'
             ,layout: 'accordion'
+            ,border: false
             ,layoutConfig: { 
                 animate: true
                 ,autoWidth: true
@@ -81,20 +71,9 @@ Ext.extend(MODx.Layout,Ext.Component,{
                 ,autoHeight: true
                 ,maxHeight: 450
                 ,height: 450
+                ,cls: 'modx-accordion-panel'
             }
-            ,items: [{                
-                title: _('resources')
-                ,contentEl: 'modx_rt_div'
-                ,resizeEl: 'modx_resource_tree'
-            },{
-                title: _('elements')
-                ,contentEl: 'modx_et_div'
-                ,resizeEl: 'modx_element_tree'
-            },{
-                title: _('files')
-                ,contentEl: 'modx_ft_div'
-                ,resizeEl: 'modx_file_tree'
-            }]
+            ,items: this.setupAccordion()
         });
     }
     
@@ -102,6 +81,36 @@ Ext.extend(MODx.Layout,Ext.Component,{
         this.rtree.refresh();
         this.eltree.refresh();
         this.ftree.refresh();
+    }
+    
+    ,setupAccordion: function() {
+        var it = [];
+        var lps = MODx.loadAccordionPanels();
+        if (lps.length > 0) {
+            for(var x=0;x<lps.length;x=x+1) {
+                it.push(lps[x]);
+            }
+        }
+        
+        it.push({                
+            title: _('resources')
+            ,contentEl: 'modx_rt_div'
+            ,resizeEl: 'modx_resource_tree'
+            ,id: 'modx-resource-tree-panel'
+        });
+        it.push({
+            title: _('elements')
+            ,contentEl: 'modx_et_div'
+            ,resizeEl: 'modx_element_tree'
+            ,id: 'modx-element-tree-panel'
+        });
+        it.push({
+            title: _('files')
+            ,contentEl: 'modx_ft_div'
+            ,resizeEl: 'modx_file_tree'
+        });
+        
+        return it;
     }
 });
 Ext.reg('modx-layout',MODx.Layout);
@@ -111,15 +120,10 @@ Ext.reg('modx-layout',MODx.Layout);
  * @class MODx.LayoutMgr
  */
 MODx.LayoutMgr = function() {
-    var _activeMenu = 'menu0';
-    var _dashboardActive = Ext.isIE ? false : true;
-    
+    var _activeMenu = 'menu0';    
     return {
-        loadFrame: function(a,p) {
-            Ext.get('modx-frame').dom.src = '?a='+a+'&'+(p || '');
-            if (!Ext.isIE) { 
-                this.hideDashboard();
-            }
+        loadPage: function(a,p) {
+            location.href = '?a='+a+'&'+(p || '');
             return false;
         }
         ,changeMenu: function(a,sm) {
@@ -131,29 +135,11 @@ MODx.LayoutMgr = function() {
             _activeMenu = sm;
             return false;
         }
-        ,showDashboard: function() {
-            if (_dashboardActive) return false;
-            var o = { duration: .3 };
-            Ext.get('modx-container').fadeOut(o);
-            Ext.get('modx-frame-ct').fadeOut(o);
-            Ext.get('modx-dashboard').fadeIn(o);
-            _dashboardActive = true;
-            return false;
-        }
-        ,hideDashboard: function() {
-            if (!_dashboardActive) return false;
-            var o = { duration: .3 };
-            Ext.get('modx-container').fadeIn(o);
-            Ext.get('modx-frame-ct').fadeIn(o);
-            Ext.get('modx-dashboard').fadeOut(o);
-            _dashboardActive = false;
-            return false;
-        }
     }
 }();
 
 /* aliases for quicker reference */
-MODx.loadFrame = MODx.LayoutMgr.loadFrame;
+MODx.loadPage = MODx.LayoutMgr.loadPage;
 MODx.showDashboard = MODx.LayoutMgr.showDashboard;
 MODx.hideDashboard = MODx.LayoutMgr.hideDashboard;
 MODx.changeMenu = MODx.LayoutMgr.changeMenu;

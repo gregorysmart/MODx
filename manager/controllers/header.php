@@ -66,4 +66,4 @@ include_once dirname(__FILE__).'/welcome.php';
 $welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
 $modx->smarty->assign('welcome_back',$welcome_back);
 
-$modx->smarty->display('header.tpl');
+return $modx->smarty->fetch('header.tpl');

@@ -13,27 +13,9 @@ Ext.onReady(function() {
 MODx.page.GroupsRoles = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		tabs: [
-            {contentEl: 'tab_pairing', title: _('user_groups')}
-            ,{contentEl: 'tab_dg', title: _('resource_groups')}
-            ,{contentEl: 'tab_roles', title: _('role_management_title')}
-        ]
-        ,components: [{
-            xtype: 'grid-role'
-            ,el: 'modx_rolegrid'
-        },{
-            xtype: 'tree-resourcegroup'
-            ,el: 'modx_dgtree'
-        },{
-            xtype: 'tree-usergroup'
-            ,el: 'modx_ugtree'
-        },{
-            xtype: 'tree-resource'
-            ,el: 'modx_resource_tree'
-            ,title: _('resources')
-            ,width: 300
-            ,remoteToolbar: false
-            ,enableDrop: false
+        components: [{
+            xtype: 'panel-groups-roles'
+            ,renderTo: 'modx-panel-groups-roles'
         }]
 	});
 	MODx.page.GroupsRoles.superclass.constructor.call(this,config);

@@ -6,10 +6,6 @@ textarea.x-form-field {
     font-weight: normal;
 }
 
-th.x-form-element, td.x-form-element {
-    padding-left: 0;    
-}
-
 .x-menu a {
     text-decoration: none !important;
 }

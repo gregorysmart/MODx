@@ -29,6 +29,7 @@ $_lang['tv_lock_msg'] = 'Users must have the edit_locked attribute in order to e
 $_lang['tv_management_msg'] = 'Manage additional custom content fields (Template Variables) for your documents.';
 $_lang['tv_msg'] = 'Add or edit template variables here. Template Variables must be assigned to templates in order to access them from snippets and documents.';
 $_lang['tv_name'] = 'Variable Name';
+$_lang['tv_new'] = 'New Template Variable';
 $_lang['tv_novars'] = 'No Template Variables found';
 $_lang['tv_output_type'] = 'Output Type';
 $_lang['tv_output_type_properties'] = 'Output Type Properties';

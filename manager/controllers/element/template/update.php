@@ -28,4 +28,4 @@ $modx->smarty->assign('onTempFormRender',$onTempFormRender);
 
 /* assign template to parser and display page */
 $modx->smarty->assign('template',$template);
-$modx->smarty->display('element/template/update.tpl');
+return $modx->smarty->fetch('element/template/update.tpl');

@@ -5,9 +5,9 @@
 @import url(./text.css);
 @import url(./icons.css);
 
-
 @import url(./modext.css);
 @import url(./modext/index.css);
-@import url(./style/index.css);
+
+@import url(./style2/index.css);
 
 @import url(./modext/patch.css);
