@@ -32,6 +32,7 @@ MODx.panel.Welcome = function(config) {
                     ,autoHeight: false
                     ,autoScroll: true
                     ,bodyStyle: 'padding: 1.5em;'
+                    ,titleCollapse: true
                 }
                 ,items: [{
                     title: _('modx_news')
@@ -39,6 +40,7 @@ MODx.panel.Welcome = function(config) {
                 },{
                     title: _('recent_docs')
                     ,id: 'modx-recent'
+                    ,collapsed: true
                     ,items: [{
                         html: '<p>'+_('activity_message')
                         ,border: false
@@ -50,6 +52,7 @@ MODx.panel.Welcome = function(config) {
                 },{
                     title: _('online')
                     ,contentEl: 'modx-online'
+                    ,collapsed: true
                 }]
             },{
                 columnWidth: Ext.isSafari ? .46 : .48
@@ -58,6 +61,7 @@ MODx.panel.Welcome = function(config) {
                     ,autoHeight: false
                     ,autoScroll: true
                     ,bodyStyle: 'padding: 1.5em;'
+                    ,titleCollapse: true
                 }
                 ,items: [{
                     title: _('security_notices')
@@ -65,6 +69,7 @@ MODx.panel.Welcome = function(config) {
                 },{
                     title: _('info')
                     ,contentEl: 'modx-info'
+                    ,collapsed: true
                 }]
             }]
         }]

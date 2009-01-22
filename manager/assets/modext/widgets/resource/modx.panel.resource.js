@@ -26,9 +26,11 @@ MODx.panel.Resource = function(config) {
                 ,items: [{
                     title: _('resource_settings')
                     ,layout: 'form'
+                    ,labelWidth: 200
                     ,defaults: { 
-                        border: false 
+                        border: false
                         ,msgTarget: 'side'
+                        ,width: 400
                     }
                     ,items: [{
                         xtype: (config.resource ? 'statictextfield' : 'hidden')
@@ -43,7 +45,6 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_pagetitle_help')
                         ,name: 'pagetitle'
                         ,id: 'resource-pagetitle'
-                        ,width: 300
                         ,maxLength: 255
                         ,allowBlank: false
                         ,enableKeyEvents: true
@@ -59,7 +60,6 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_longtitle_help')
                         ,name: 'longtitle'
                         ,id: 'resource-longtitle'
-                        ,width: 300
                         ,maxLength: 255
                         
                     },{
@@ -68,7 +68,6 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_description_help')
                         ,name: 'description'
                         ,id: 'resource-description'
-                        ,width: 300
                         ,maxLength: 255
                         
                     },{
@@ -77,7 +76,6 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_alias_help')
                         ,name: 'alias'
                         ,id: 'resource-alias'
-                        ,width: 300
                         ,maxLength: 100
                         
                     },{
@@ -86,29 +84,17 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_link_attributes_help')
                         ,name: 'link_attributes'
                         ,id: 'resource-link-attributes'
-                        ,width: 300
                         ,maxLength: 255
                         
-                    },(config.class_key == 'modWebLink' ? {
-                        xtype: 'textfield'
-                        ,fieldLabel: _('weblink')
-                        ,description: _('weblink_help')
-                        ,name: 'ta'
-                        ,id: 'resource-weblink'
-                        ,width: 300
-                        ,maxLength: 255
-                        ,value: 'http://'
-                        
-                    } : {
+                    },{
                         xtype: 'textarea'
                         ,fieldLabel: _('resource_summary')
                         ,description: _('resource_summary_help')
                         ,name: 'introtext'
                         ,id: 'resource-introtext'
-                        ,width: 300
                         ,grow: true
                         
-                    }),{
+                    },{
                         xtype: 'combo-template'
                         ,fieldLabel: _('resource_template')
                         ,description: _('resource_template_help')
@@ -138,7 +124,6 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_menutitle_help')
                         ,name: 'menutitle'
                         ,id: 'resource-menutitle'
-                        ,width: 300
                         ,maxLength: 255
                         
                     },{
@@ -472,7 +457,9 @@ MODx.loadAccordionPanels = function() {
         title: _('page_settings')
         ,items: [{
             xtype: 'modx-formpanel'
+            ,bodyStyle: 'padding: .3em;'
             ,id: 'modx-resource-settings-fp'
+            ,labelWidth: 90
             ,items: va
             ,cls: 'none'
         }]
