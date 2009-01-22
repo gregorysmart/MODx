@@ -32,13 +32,6 @@
 	{$config_check_results}
 </div>
 
-<!-- recent activities -->
-<div id="modx-recent">
-	{$_lang.activity_message}
-	<br /><br />
-	<div id="grid-recent-resource"></div>
-</div>
-
 <!-- user info -->
 <div id="modx-info">
 	{$_lang.yourinfo_message}

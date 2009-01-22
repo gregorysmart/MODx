@@ -38,7 +38,14 @@ MODx.panel.Welcome = function(config) {
                     ,contentEl: 'modx-news'
                 },{
                     title: _('recent_docs')
-                    ,contentEl: 'modx-recent'
+                    ,items: [{
+                        html: '<p>'+_('activity_message')
+                        ,border: false
+                    },{
+                        xtype: 'grid-user-recent-resource'
+                        ,user: config.user
+                        ,preventRender: true
+                    }]
                 },{
                     title: _('online')
                     ,contentEl: 'modx-online'
