@@ -40,7 +40,7 @@ Ext.extend(MODx.grid.Context,MODx.grid.Grid,{
         location.href = 'index.php?a='+MODx.action['context/update']+'&key='+this.menu.record.key;
     }
 });
-Ext.reg('grid-context',MODx.grid.Context);
+Ext.reg('modx-grid-contexts',MODx.grid.Context);
 
 /**
  * Generates the create context window.
@@ -76,3 +76,31 @@ MODx.window.CreateContext = function(config) {
 Ext.extend(MODx.window.CreateContext,MODx.Window);
 Ext.reg('window-context-create',MODx.window.CreateContext);
 
+
+MODx.panel.Contexts = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'modx-panel-contexts'
+        ,bodyStyle: ''
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('contexts')+'</h2>'
+            ,border: false
+            ,id: 'modx-contexts-header'
+            ,cls: 'modx-page-header'
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em'
+            ,items: [{
+                html: '<p>'+_('context_management_message')+'</p>'
+                ,border: false
+            },{
+                xtype: 'modx-grid-contexts'
+                ,preventRender: true
+            }]
+        }]
+    });
+    MODx.panel.Contexts.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.Contexts,MODx.FormPanel);
+Ext.reg('modx-panel-contexts',MODx.panel.Contexts);

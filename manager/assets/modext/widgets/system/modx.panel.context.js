@@ -9,58 +9,52 @@ MODx.panel.Context = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'context/index.php'
         ,baseParams: {}
-        ,id: 'panel-context'
+        ,id: 'modx-panel-context'
         ,class_key: 'modContext'
         ,plugin: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: {
-            xtype: 'tabpanel'
-            ,activeTab: 0
-            ,deferredRender: false
+        ,items: [{
+            html: '<h2>'+_('context')+': '+config.context+'</h2>'
             ,border: false
-            ,defaults: {
-                autoHeight: true
-                ,layout: 'form'
-                ,bodyStyle: 'padding: 1.5em;'
-                ,labelWidth: 150
-            }
+            ,id: 'context-name'
+            ,cls: 'modx-page-header'
+        },{
+            xtype: 'portal'
             ,items: [{
-                title: _('general_information')
-                ,defaults: { border: false ,msgTarget: 'side' }
+                columnWidth: 1
                 ,items: [{
-                    html: '<h2>'+_('context')+': '+config.context+'</h2>'
-                    ,id: 'context-name'
+                    title: _('general_information')
+                    ,defaults: { border: false ,msgTarget: 'side' }
+                    ,items: [{
+                        xtype: 'statictextfield'
+                        ,fieldLabel: _('key')
+                        ,name: 'newkey'
+                        ,width: 300
+                        ,maxLength: 255
+                        ,enableKeyEvents: true
+                        ,allowBlank: false
+                        ,value: config.context
+                        ,submitValue: true
+                    },{
+                        xtype: 'textarea'
+                        ,fieldLabel: _('description')
+                        ,name: 'description'
+                        ,width: 300
+                        ,grow: true
+                    }]
                 },{
-                    xtype: 'statictextfield'
-                    ,fieldLabel: _('key')
-                    ,name: 'newkey'
-                    ,width: 300
-                    ,maxLength: 255
-                    ,enableKeyEvents: true
-                    ,allowBlank: false
-                    ,value: config.context
-                    ,submitValue: true
-                },{
-                    xtype: 'textarea'
-                    ,fieldLabel: _('description')
-                    ,name: 'description'
-                    ,width: 300
-                    ,grow: true
-                }]
-            },{
-                title: _('context_settings')
-                ,items: [{
-                    html: '<h2>'+_('context_settings')+'</h2>'
-                    ,border: false
-                },{
-                    xtype: 'grid-context-settings'
-                    ,id: 'grid-context-setting'
-                    ,preventRender: true
-                    ,context_key: config.context
+                    title: _('context_settings')
+                    ,items: [{
+                        xtype: 'grid-context-settings'
+                        ,id: 'grid-context-setting'
+                        ,title: ''
+                        ,preventRender: true
+                        ,context_key: config.context
+                    }]
                 }]
             }]
-        }
+        }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
         }
@@ -102,4 +96,4 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
         t.refreshNode(this.config.context+'_0',true);
     }
 });
-Ext.reg('panel-context',MODx.panel.Context);
+Ext.reg('modx-panel-context',MODx.panel.Context);

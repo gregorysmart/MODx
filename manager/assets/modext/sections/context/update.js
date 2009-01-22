@@ -1,6 +1,6 @@
 Ext.onReady(function() {
     MODx.load({
-        xtype: 'page-context-update'
+        xtype: 'modx-page-context-update'
         ,context: MODx.request.key
     });
 });
@@ -14,7 +14,7 @@ Ext.onReady(function() {
 MODx.page.UpdateContext = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        formpanel: 'panel-context'
+        formpanel: 'modx-panel-context'
         ,actions: {
             'new': MODx.action['context/create']
             ,edit: MODx.action['context/update']
@@ -38,13 +38,12 @@ MODx.page.UpdateContext = function(config) {
             }
         }]
         ,components: [{
-            xtype: 'panel-context'
-            ,id: 'panel-context'
-            ,renderTo: 'panel-context'
+            xtype: 'modx-panel-context'
+            ,renderTo: 'modx-panel-context'
             ,context: config.context
         }]
     });
     MODx.page.UpdateContext.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.UpdateContext,MODx.Component);
-Ext.reg('page-context-update',MODx.page.UpdateContext);
+Ext.reg('modx-page-context-update',MODx.page.UpdateContext);

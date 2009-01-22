@@ -19,25 +19,18 @@ MODx.panel.ResourceData = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
+            html: '<h2></h2>'
+            ,id: 'modx-resource-header'
+            ,cls: 'modx-page-header'
+        },{
             xtype: 'portal'
             ,items: [{
                 columnWidth: 1
-                ,style:'padding:10px;'
-                ,defaults: {
-                    collapsible: true
-                    ,autoHeight: true
-                    ,titleCollapse: true
-                    ,draggable: true
-                    ,style: 'padding: 5px 0;'
-                    ,bodyStyle: 'padding: 10px'
-                }
                 ,items: [{
                     title: _('general')
                     ,layout: 'form'
                     ,defaults: df
                     ,items: [{
-                        html: '<h2>'+config.pagetitle+'</h2>'
-                    },{
                         name: 'pagetitle'
                         ,fieldLabel: _('resource_pagetitle')
                         ,description: _('resource_pagetitle_help')
@@ -162,7 +155,7 @@ MODx.panel.ResourceData = function(config) {
                         name: 'buffer'
                         ,xtype: 'textarea'
                         ,hideLabel: true
-                        ,width: '100%'
+                        ,width: '90%'
                         ,grow: true
                     }]
                 },{
@@ -200,6 +193,7 @@ Ext.extend(MODx.panel.ResourceData,MODx.FormPanel,{
             	'success': {fn:function(r) {
                     if (r.object.pub_date == '0') { r.object.pub_date = ''; }
                     if (r.object.unpub_date == '0') { r.object.unpub_date = ''; }
+                    Ext.get('modx-resource-header').update('<h2>'+r.object.pagetitle+'</h2>');
                     this.getForm().setValues(r.object);
                     this.fireEvent('ready');
             	},scope:this}

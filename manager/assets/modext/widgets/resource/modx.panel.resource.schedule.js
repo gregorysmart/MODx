@@ -1,13 +1,40 @@
+MODx.panel.ResourceSchedule = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'modx-panel-resource-schedule'
+        ,bodyStyle: ''
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('site_schedule')+'</h2>'
+            ,border: false
+            ,cls: 'modx-page-header'
+            ,id: 'modx-resource-schedule-header'
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em;'
+            ,items: [{
+                html: '<p>'+_('site_schedule_desc')+'</p>'
+                ,border: false
+            },{
+                xtype: 'modx-grid-resource-schedule'
+                ,preventRender: true
+            }]
+        }]
+    });
+    MODx.panel.ResourceSchedule.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.ResourceSchedule,MODx.FormPanel);
+Ext.reg('modx-panel-resource-schedule',MODx.panel.ResourceSchedule);
+
 /**
  * Loads a grid of Publish/Unpublish events for a resource.
  * 
- * @class MODx.grid.AccessContext
+ * @class MODx.grid.ResourceSchedule
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-resource-event
+ * @xtype modx-grid-resource-schedule
  */
-MODx.grid.ResourceEvent = function(config) {
+MODx.grid.ResourceSchedule = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('site_schedule')
@@ -46,9 +73,9 @@ MODx.grid.ResourceEvent = function(config) {
             ,id: 'btn-toggle'
         }]
     });
-    MODx.grid.ResourceEvent.superclass.constructor.call(this,config);
+    MODx.grid.ResourceSchedule.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.grid.ResourceEvent,MODx.grid.Grid,{
+Ext.extend(MODx.grid.ResourceSchedule,MODx.grid.Grid,{
     toggle: function(btn,e) {
         btn = Ext.getCmp('btn-toggle');
         var s = this.getStore();
@@ -62,4 +89,4 @@ Ext.extend(MODx.grid.ResourceEvent,MODx.grid.Grid,{
         s.reload();
     }
 });
-Ext.reg('grid-resource-event',MODx.grid.ResourceEvent);
+Ext.reg('modx-grid-resource-schedule',MODx.grid.ResourceSchedule);

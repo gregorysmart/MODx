@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-	MODx.load({ xtype: 'page-resource-schedule' });
+	MODx.load({ xtype: 'modx-page-resource-schedule' });
 });
 
 /**
@@ -14,11 +14,11 @@ MODx.page.ResourceSchedule = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         components: [{
-            xtype: 'grid-resource-event'
-            ,renderTo: 'grid-resource-event'
+            xtype: 'modx-panel-resource-schedule'
+            ,renderTo: 'modx-panel-resource-schedule'
         }]
 	});
 	MODx.page.ResourceSchedule.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.ResourceSchedule,MODx.Component);
-Ext.reg('page-resource-schedule',MODx.page.ResourceSchedule);
+Ext.reg('modx-page-resource-schedule',MODx.page.ResourceSchedule);

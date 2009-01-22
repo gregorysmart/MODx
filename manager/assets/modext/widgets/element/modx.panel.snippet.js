@@ -23,14 +23,6 @@ MODx.panel.Snippet = function(config) {
             xtype: 'portal'
             ,items: [{
                 columnWidth: 1
-                ,style:'padding:10px;'
-                ,defaults: {
-                    collapsible: true
-                    ,autoHeight: true
-                    ,titleCollapse: true
-                    ,draggable: true
-                    ,style: 'padding: 5px 0;'
-                }
                 ,items: [{
                     title: _('snippet_title')
                     ,defaults: { border: false ,msgTarget: 'side' }

@@ -1,5 +1,5 @@
 Ext.onReady(function(){
-   MODx.load({ xtype: 'page-context' }); 
+   MODx.load({ xtype: 'modx-page-contexts' }); 
 });
 
 /**
@@ -10,15 +10,15 @@ Ext.onReady(function(){
  * @param {Object} config An object of config properties
  * @xtype page-context
  */
-MODx.page.Context = function(config) {
+MODx.page.Contexts = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		components: [{
-            xtype: 'grid-context'
-            ,renderTo: 'grid-context'
+            xtype: 'modx-panel-contexts'
+            ,renderTo: 'modx-panel-contexts'
         }]
 	});
-	MODx.page.Context.superclass.constructor.call(this,config);
+	MODx.page.Contexts.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.Context,MODx.Component);
-Ext.reg('page-context',MODx.page.Context);    
+Ext.extend(MODx.page.Contexts,MODx.Component);
+Ext.reg('modx-page-contexts',MODx.page.Contexts);    

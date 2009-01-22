@@ -1,6 +1,6 @@
 <div id="tabs_div"></div>
 
-<div id="panel-context"></div>
+<div id="modx-panel-context"></div>
 
 <script type="text/javascript" src="assets/modext/widgets/core/modx.grid.settings.js"></script>
 <script type="text/javascript" src="assets/modext/widgets/system/modx.grid.context.settings.js"></script>

@@ -24,14 +24,6 @@ MODx.panel.Template = function(config) {
             xtype: 'portal'
             ,items: [{
                 columnWidth: 1
-                ,style:'padding:10px;'
-                ,defaults: {
-                    collapsible: true
-                    ,autoHeight: true
-                    ,titleCollapse: true
-                    ,draggable: true
-                    ,style: 'padding: 5px 0;'
-                }
                 ,items: [{
                     title: _('template_title')
                     ,bodyStyle: 'padding: 1.5em;'
