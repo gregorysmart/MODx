@@ -1,5 +1,6 @@
 MODx.panel.ErrorLog = function(config) {
     config = config || {};
+    Ext.getCmp('modx-layout').removeAccordion();
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'system/errorlog.php'
         ,baseParams: {
@@ -14,7 +15,7 @@ MODx.panel.ErrorLog = function(config) {
             layout: 'form'
             ,bodyStyle: 'padding: 1.5em;'
             ,hideLabels: true
-            ,width: '90%'
+            ,width: '100%'
             ,autoHeight: true
             ,buttonAlign: 'center'
             ,items: [{

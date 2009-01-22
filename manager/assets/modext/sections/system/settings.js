@@ -1,25 +1,23 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'page-settings' });
+    MODx.load({ xtype: 'modx-page-system-settings' });
 });
 /**
  * Loads the configuration page
  * 
- * @class MODx.page.Settings
+ * @class MODx.page.SystemSettings
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-settings
+ * @xtype modx-page-system-settings
  */
-MODx.page.Settings = function(config) {
+MODx.page.SystemSettings = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'grid-system-settings'
-            ,renderTo: 'settings_grid'
-            ,height: 525
-            ,autoHeight: Ext.isSafari ? false : true
+            xtype: 'modx-panel-system-settings'
+            ,renderTo: 'modx-panel-system-settings'
         }]
     });
-	MODx.page.Settings.superclass.constructor.call(this,config);
+	MODx.page.SystemSettings.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.Settings,MODx.Component);
-Ext.reg('page-settings',MODx.page.Settings);
+Ext.extend(MODx.page.SystemSettings,MODx.Component);
+Ext.reg('modx-page-system-settings',MODx.page.SystemSettings);

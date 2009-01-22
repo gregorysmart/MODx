@@ -9,7 +9,7 @@
 MODx.grid.Lexicon = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('lexicon')
+        id: 'modx-grid-lexicon'
         ,url: MODx.config.connectors_url+'workspace/lexicon/index.php'
         ,fields: ['id','name','value','namespace','topic','language','editedon','menu']
 		,baseParams: {
@@ -200,7 +200,7 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	});
     }
 });
-Ext.reg('grid-lexicon',MODx.grid.Lexicon);
+Ext.reg('modx-grid-lexicon',MODx.grid.Lexicon);
 
 /**
  * Generates the create lexicon entry window.

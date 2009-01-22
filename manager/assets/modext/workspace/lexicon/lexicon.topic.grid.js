@@ -4,7 +4,7 @@
  * @class MODx.grid.LexiconTopic
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype grid-lexicon-topic
+ * @xtype modx-grid-lexicon-topic
  */
 MODx.grid.LexiconTopic = function(config) {
     config = config || {};
@@ -64,7 +64,7 @@ MODx.grid.LexiconTopic = function(config) {
             ,xtype: 'button'
             ,menu: [{
                 text: _('topic')
-                ,handler: this.loadWindow2.createDelegate(this,['window-lexicon-topic-create'],true)
+                ,handler: this.loadWindow2.createDelegate(this,['modx-window-lexicon-topic-create'],true)
                 ,scope: this
             },{
                 text: _('namespace')
@@ -91,7 +91,7 @@ Ext.extend(MODx.grid.LexiconTopic,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-lexicon-topic',MODx.grid.LexiconTopic);
+Ext.reg('modx-grid-lexicon-topic',MODx.grid.LexiconTopic);
 
 /**
  * Generates the create lexicon topic window.
@@ -124,4 +124,4 @@ MODx.window.CreateLexiconTopic = function(config) {
     MODx.window.CreateLexiconTopic.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateLexiconTopic,MODx.Window);
-Ext.reg('window-lexicon-topic-create',MODx.window.CreateLexiconTopic);
+Ext.reg('modx-window-lexicon-topic-create',MODx.window.CreateLexiconTopic);

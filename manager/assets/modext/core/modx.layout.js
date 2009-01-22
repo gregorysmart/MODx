@@ -25,6 +25,8 @@ Ext.extend(MODx.Layout,Ext.Component,{
      * @access protected
      */
     loadTrees: function() {
+        var a = Ext.get('modx-accordion');
+        if (!a) return;
         
         this.rtree = MODx.load({
             xtype: 'tree-resource'
@@ -111,6 +113,12 @@ Ext.extend(MODx.Layout,Ext.Component,{
         });
         
         return it;
+    }
+    ,removeAccordion: function() {
+        var c = Ext.get('modx-content');
+        c.setStyle('width','95%');
+        c.repaint();
+        Ext.get('modx-accordion').setStyle('display','none');
     }
 });
 Ext.reg('modx-layout',MODx.Layout);

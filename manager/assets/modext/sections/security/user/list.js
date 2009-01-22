@@ -12,6 +12,7 @@ Ext.onReady(function() {
  */
 MODx.page.Users = function(config) {
 	config = config || {};
+    Ext.getCmp('modx-layout').removeAccordion();
 	Ext.applyIf(config,{
 		actions: {
             'new': MODx.action['security/user/create']

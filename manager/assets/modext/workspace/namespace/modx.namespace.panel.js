@@ -1,16 +1,51 @@
 /**
+ * Loads the panel for managing namespaces.
+ * 
+ * @class MODx.panel.Namespaces
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-panel-namespaces
+ */
+MODx.panel.Namespaces = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'modx-panel-namespaces'
+        ,bodyStyle: ''
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('namespaces')+'</h2>'
+            ,border: false
+            ,id: 'modx-namespaces-header'
+            ,cls: 'modx-page-header'
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em'
+            ,items: [{
+                html: '<p>'+_('namespaces_desc')+'</p>'
+                ,border: false
+            },{
+                xtype: 'modx-grid-namespace'
+                ,preventRender: true
+            }]
+        }]
+    });
+    MODx.panel.Namespaces.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.Namespaces,MODx.FormPanel);
+Ext.reg('modx-panel-namespaces',MODx.panel.Namespaces);
+
+/**
  * Loads a grid for managing namespaces.
  * 
  * @class MODx.grid.Namespace
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype grid-namespace
+ * @xtype modx-grid-namespace
  */
 MODx.grid.Namespace = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('namespaces')
-        ,url: MODx.config.connectors_url+'workspace/namespace.php'
+        url: MODx.config.connectors_url+'workspace/namespace.php'
         ,fields: ['id','name','path','menu']
         ,width: '97%'
         ,paging: true
@@ -57,4 +92,4 @@ Ext.extend(MODx.grid.Namespace,MODx.grid.Grid,{
         this.refresh();
     }
 });
-Ext.reg('grid-namespace',MODx.grid.Namespace);
+Ext.reg('modx-grid-namespace',MODx.grid.Namespace);

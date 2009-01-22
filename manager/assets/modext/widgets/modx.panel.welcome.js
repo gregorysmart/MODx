@@ -26,7 +26,7 @@ MODx.panel.Welcome = function(config) {
         },{
             xtype: 'portal'
             ,items: [{
-                columnWidth: .48
+                columnWidth: Ext.isSafari ? .46 : .48
                 ,defaults: {
                     height: 300
                     ,autoHeight: false
@@ -52,7 +52,7 @@ MODx.panel.Welcome = function(config) {
                     ,contentEl: 'modx-online'
                 }]
             },{
-                columnWidth: .48
+                columnWidth: Ext.isSafari ? .46 : .48
                 ,defaults: {
                     height: 300
                     ,autoHeight: false
