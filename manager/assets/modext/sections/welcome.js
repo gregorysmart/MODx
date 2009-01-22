@@ -9,17 +9,9 @@
 MODx.page.Welcome = function(config) {
 	config = config || {}; 
 	Ext.applyIf(config,{
-		tabs_div: 'welcome_tabs'
-		,tabs: this.getTabs(config)
-        ,tabOptions: {
-            autoScroll: true
-            ,height: 300
-            ,minTabWidth: 130
-        }
-        ,components: [{
-            xtype: 'grid-user-recent-resource'
-            ,renderTo: 'grid-recent-resource'
-            ,user: config.user
+		components: [{
+            xtype: 'modx-panel-welcome'
+            ,renderTo: 'modx-panel-welcome'
         }]
 	});
     MODx.page.Welcome.superclass.constructor.call(this,config);

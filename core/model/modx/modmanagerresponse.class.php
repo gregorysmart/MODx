@@ -32,7 +32,7 @@ class modManagerResponse extends modResponse {
             $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
         } else {
             $this->modx->lexicon->load('dashboard','topmenu');
-            if ($action == 0) $action = 44; // todo, make start page
+            if ($action == 0) $action = 1;
 
             if (isset($this->modx->actionMap[$action])) {
                 $act = $this->modx->actionMap[$action];

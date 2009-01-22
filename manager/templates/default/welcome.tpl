@@ -1,6 +1,8 @@
+<div id="modx-panel-welcome"></div>
+
 <div id="welcome_tabs"></div>
 
-<div id="news" class="padding x-hide-display" style="width: 90%;">
+<div id="modx-news">
 	{foreach from=$newsfeed item=article}
 	<div class="news_article">
 		<h2>
@@ -12,7 +14,7 @@
 	{/foreach}
 </div>
 
-<div id="security" class="padding x-hide-display" style="width: 90%;">
+<div id="modx-security">
 	{foreach from=$securefeed item=article}
     <div class="news_article">
 		<h2>
@@ -25,20 +27,20 @@
 </div>
 
 <!-- system check -->
-<div id="config" class="padding x-hide-display">
+<div id="modx-config">
 	<img src="templates/{$_config.manager_theme}/images/icons/event2.gif" />
 	{$config_check_results}
 </div>
 
 <!-- recent activities -->
-<div id="recent" class="padding x-hide-display">
+<div id="modx-recent">
 	{$_lang.activity_message}
 	<br /><br />
 	<div id="grid-recent-resource"></div>
 </div>
 
 <!-- user info -->
-<div id="info" class="padding x-hide-display">
+<div id="modx-info">
 	{$_lang.yourinfo_message}
 	<br /><br />
 	<table class="classy">
@@ -60,7 +62,7 @@
 </div>
 
 <!-- online info -->
-<div id="online" class="padding x-hide-display with-logo-bg">
+<div id="modx-online">
 	{$online_users_msg}
 	<br /><br />
 
@@ -92,6 +94,7 @@
 	</table>
 </div>
 
+<script type="text/javascript" src="assets/modext/widgets/modx.panel.welcome.js"></script>
 <script type="text/javascript" src="assets/modext/widgets/security/modx.grid.user.recent.resource.js"></script>
 <script type="text/javascript" src="assets/modext/sections/welcome.js"></script>
 {literal}
