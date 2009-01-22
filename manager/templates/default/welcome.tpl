@@ -96,7 +96,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'page-welcome'
+		xtype: 'modx-page-welcome'
 		,site_name: '{$_config.site_name|escape}'
 		,config_display: {if $config_display}true{else}false{/if}
 		,user: '{$modx->user->id}'

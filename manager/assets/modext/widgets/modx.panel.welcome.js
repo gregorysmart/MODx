@@ -38,6 +38,7 @@ MODx.panel.Welcome = function(config) {
                     ,contentEl: 'modx-news'
                 },{
                     title: _('recent_docs')
+                    ,id: 'modx-recent'
                     ,items: [{
                         html: '<p>'+_('activity_message')
                         ,border: false
