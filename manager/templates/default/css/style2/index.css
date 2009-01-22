@@ -4,12 +4,7 @@
 body, html {
     margin: 0;
     padding: 0;
-    background-color: #fff;
-    }
-    
-body {  
-    background: url(../../images/restyle/contentArea_bg.jpg) repeat-x;  
-    background-position:0 5.5em;
+    background-color: #ececec;
 }
 
 #modx-container {
