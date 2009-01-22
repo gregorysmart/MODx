@@ -1,6 +1,4 @@
-<div class="padding">
-    <div id="panel-access-policy" style="width: 725px;"></div>
-</div>
+<div id="modx-panel-access-policy"></div>
 
 <script type="text/javascript" src="assets/modext/widgets/security/modx.panel.access.policy.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/access/policy/update.js"></script>
@@ -10,7 +8,7 @@
 // <![CDATA[
 Ext.onReady(function() {
     MODx.load({ 
-        xtype: 'page-access-policy-update'
+        xtype: 'modx-page-access-policy'
         ,policy: '{/literal}{$policy->id}{literal}'
     });
 });

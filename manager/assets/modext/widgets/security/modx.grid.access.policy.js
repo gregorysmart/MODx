@@ -1,16 +1,51 @@
 /**
+ * Loads the panel for managing access policies.
+ * 
+ * @class MODx.panel.AccessPolicies
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-panel-policies
+ */
+MODx.panel.AccessPolicies = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'modx-panel-access-policies'
+        ,bodyStyle: ''
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('policies')+'</h2>'
+            ,border: false
+            ,id: 'modx-policies-header'
+            ,cls: 'modx-page-header'
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em'
+            ,items: [{
+                html: '<p>'+_('policy_management_msg')+'</p>'
+                ,border: false
+            },{
+                xtype: 'modx-grid-access-policy'
+                ,preventRender: true
+            }]
+        }]
+    });
+    MODx.panel.AccessPolicies.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.AccessPolicies,MODx.FormPanel);
+Ext.reg('modx-panel-access-policies',MODx.panel.AccessPolicies);
+
+/**
  * Loads a grid of modAccessPolicies.
  * 
  * @class MODx.grid.AccessPolicy
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-accesspolicy
+ * @xtype modx-grid-access-policy
  */
 MODx.grid.AccessPolicy = function(config) {
     config = config || {};    
     Ext.applyIf(config,{
-		title: _('policies')
+        id: 'modx-grid-access-policy'
         ,url: MODx.config.connectors_url+'security/access/policy.php'
         ,fields: ['id','name','description','class','data','parent','menu']
 		,paging: true
@@ -33,7 +68,7 @@ MODx.grid.AccessPolicy = function(config) {
 		,tbar: [{
         	text: _('add')
         	,scope: this
-        	,handler: { xtype: 'window-accesspolicy-create' }
+        	,handler: { xtype: 'modx-window-access-policy-create' }
 		}]
     });
     MODx.grid.AccessPolicy.superclass.constructor.call(this,config);
@@ -43,16 +78,15 @@ Ext.extend(MODx.grid.AccessPolicy,MODx.grid.Grid,{
         location.href = '?a='+MODx.action['security/access/policy/update']+'&id='+this.menu.record.id;
     }
 });
-Ext.reg('grid-accesspolicy',MODx.grid.AccessPolicy);
+Ext.reg('modx-grid-access-policy',MODx.grid.AccessPolicy);
 
 /**
  * Generates a window for creating Access Policies.
  *  
  * @class MODx.window.CreateAccessPolicy
- * @extends MODx.Window 
- * @constructor
+ * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-accesspolicy-create
+ * @xtype modx-window-access-policy-create
  */
 MODx.window.CreateAccessPolicy = function(config) {
     config = config || {};
@@ -83,4 +117,4 @@ MODx.window.CreateAccessPolicy = function(config) {
     MODx.window.CreateAccessPolicy.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateAccessPolicy,MODx.Window);
-Ext.reg('window-accesspolicy-create',MODx.window.CreateAccessPolicy);
+Ext.reg('modx-window-access-policy-create',MODx.window.CreateAccessPolicy);

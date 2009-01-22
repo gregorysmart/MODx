@@ -1,10 +1,4 @@
-<div class="padding">
-	<h2>{$_lang.policies}</h2>
-		
-	<p>{$_lang.policy_management_msg}</p>
-	<br />
-	<div id="policy_grid" style="width: 725px;"></div>
-</div>
+<div id="modx-panel-access-policies"></div>
 
 <script type="text/javascript" src="assets/modext/widgets/security/modx.grid.access.policy.js"></script>
 <script type="text/javascript" src="assets/modext/sections/security/access/policy.js"></script>

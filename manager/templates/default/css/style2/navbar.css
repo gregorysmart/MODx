@@ -6,6 +6,7 @@
 	left: .5em;
 	top: 4.3em;
 	background: transparent url(../../images/restyle/i/home.png) no-repeat top left;
+	opacity: .80;
 	}
 #modx-home-icon a {
 	width: 100%;
