@@ -143,9 +143,9 @@ class modConnectorResponse extends modResponse {
         } else {
             /* properly handle common literal structures */
             if (strpos($value, 'function(') === 0
-             || strpos($value, 'this') === 0
+             || strpos($value, 'this.') === 0
              || strpos($value, 'new Function(') === 0
-             || strpos($value, 'Ext') === 0) {
+             || strpos($value, 'Ext.') === 0) {
                 $uid = uniqid();
                 $v = $value;
                 $vals[] = $v;
