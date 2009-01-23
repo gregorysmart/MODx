@@ -1,31 +1,24 @@
 Ext.onReady(function() {
-	MODx.load({ xtype: 'page-action'});
+	MODx.load({ xtype: 'modx-page-actions'});
 });
 
 /**
  * Loads the actions page
  * 
- * @class MODx.page.Action
+ * @class MODx.page.Actions
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-action
+ * @xtype modx-page-actions
  */
-MODx.page.Action = function(config) {
+MODx.page.Actions = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		tabs: [
-            {contentEl: 'tab_actions', title: _('actions')}
-            ,{contentEl: 'tab_menus', title: _('topmenu')}
-        ]
-        ,components: [{
-            xtype: 'tree-action'
-            ,el: 'modx_atree'
-        },{
-            xtype: 'tree-menu'
-            ,el: 'modx_mtree'
+		components: [{
+            xtype: 'modx-panel-actions'
+            ,renderTo: 'modx-panel-actions'
         }]
 	});
-	MODx.page.Action.superclass.constructor.call(this,config);
+	MODx.page.Actions.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.Action,MODx.Component);
-Ext.reg('page-action',MODx.page.Action);
+Ext.extend(MODx.page.Actions,MODx.Component);
+Ext.reg('modx-page-actions',MODx.page.Actions);

@@ -4,14 +4,13 @@
  * @class MODx.tree.Action
  * @extends MODx.tree.Tree
  * @param {Object} config An object of options.
- * @xtype tree-action
+ * @xtype modx-tree-action
  */
 MODx.tree.Action = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
         root_id: 'n_root_0'
         ,root_name: _('actions')
-		,title: _('actions')
         ,rootVisible: true
         ,expandFirst: true
         ,enableDrag: true
@@ -144,7 +143,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 		});	
 	}
 });
-Ext.reg('tree-action',MODx.tree.Action);
+Ext.reg('modx-tree-action',MODx.tree.Action);
 
 /** 
  * Generates the Create Action window

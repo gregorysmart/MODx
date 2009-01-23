@@ -3,18 +3,16 @@
  * 
  * @class MODx.grid.ManagerLog
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-manager-log
+ * @xtype modx-grid-manager-log
  */
 MODx.grid.ManagerLog = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('manager_log')
-        ,id: 'grid-manager-log'
+        ,id: 'modx-grid-manager-log'
         ,url: MODx.config.connectors_url+'system/log.php'
         ,fields: ['id','user','occurred','action','classKey','item','menu']
-        ,width: 800
         ,autosave: true
         ,paging: true
         ,columns: [{
@@ -36,7 +34,7 @@ MODx.grid.ManagerLog = function(config) {
     MODx.grid.ManagerLog.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.ManagerLog,MODx.grid.Grid);
-Ext.reg('grid-manager-log',MODx.grid.ManagerLog);
+Ext.reg('modx-grid-manager-log',MODx.grid.ManagerLog);
 
 /**
  * Loads the Manager Log filter panel.
@@ -50,16 +48,37 @@ Ext.reg('grid-manager-log',MODx.grid.ManagerLog);
 MODx.panel.ManagerLog = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        title: _('filter')
-        ,width: 450
-        ,items: this.getItems()
-        ,buttons: [{
-            text: _('filter_clear')
-            ,scope: this
-            ,handler: function() {
-                this.getForm().reset();
-                this.filter();
-            }
+        id: 'modx-panel-manager-log'
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('mgrlog_view')+'</h2>'
+            ,border: false
+            ,cls: 'modx-page-header'
+            ,id: 'manager-log-header'
+        },{            
+            xtype: 'portal'
+            ,items: [{
+                columnWidth: 1
+                ,items: [{
+                    title: _('mgrlog_query')
+                    ,layout: 'form'
+                    ,bodyStyle: 'padding: 1.5em;'
+                    ,items: this.getItems()
+                    ,buttonAlign: 'center'
+                    ,buttons: [{
+                        text: _('filter_clear')
+                        ,scope: this
+                        ,handler: function() {
+                            this.getForm().reset();
+                            this.filter();
+                        }
+                    }]
+                },{
+                    xtype: 'modx-grid-manager-log'
+                    ,bodyStyle: ''
+                    ,preventRender: true
+                }]
+            }]
         }]
     });
     MODx.panel.ManagerLog.superclass.constructor.call(this,config);
@@ -75,6 +94,9 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
             ,'render': {fn:this._addEnterKeyHandler}
         };
         return [{
+            html: '<p>'+_('mgrlog_query_msg')+'</p>'
+            ,border: false
+        },{
             xtype: 'combo-user'
             ,fieldLabel: _('user')
             ,name: 'user'
@@ -108,7 +130,7 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
      */
     ,filter: function(tf,newValue,oldValue) {
         var p = this.getForm().getValues();
-        var g = Ext.getCmp('grid-manager-log');
+        var g = Ext.getCmp('modx-grid-manager-log');
         p.action = 'getList';
         g.getStore().baseParams = p;
         g.refresh();
@@ -123,4 +145,4 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
         },this);
     }
 });
-Ext.reg('panel-manager-log',MODx.panel.ManagerLog);
+Ext.reg('modx-panel-manager-log',MODx.panel.ManagerLog);

@@ -3,9 +3,8 @@
  *
  * @class MODx.tree.Menu
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-menu
+ * @xtype modx-tree-menu
  */
 MODx.tree.Menu = function(config) {
 	config = config || {};
@@ -106,7 +105,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 		});	
 	}
 });
-Ext.reg('tree-menu',MODx.tree.Menu);
+Ext.reg('modx-tree-menu',MODx.tree.Menu);
 
 /** 
  * Generates the Create Menu window

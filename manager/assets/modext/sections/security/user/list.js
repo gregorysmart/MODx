@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-	MODx.load({ xtype: 'page-users' });
+	MODx.load({ xtype: 'modx-page-users' });
 });
 
 /**
@@ -8,7 +8,7 @@ Ext.onReady(function() {
  * @class MODx.page.Users
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-users
+ * @xtype modx-page-users
  */
 MODx.page.Users = function(config) {
 	config = config || {};
@@ -28,11 +28,11 @@ MODx.page.Users = function(config) {
             ,params: { a: MODx.action['welcome'] }
         }]
         ,components: [{
-            xtype: 'grid-user'
-            ,renderTo: 'users_grid'
+            xtype: 'modx-panel-users'
+            ,renderTo: 'modx-panel-users'
         }]
 	});
 	MODx.page.Users.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.Users,MODx.Component);
-Ext.reg('page-users',MODx.page.Users);	
+Ext.reg('modx-page-users',MODx.page.Users);

@@ -1,17 +1,51 @@
 /**
+ * Loads the panel for managing users.
+ * 
+ * @class MODx.panel.Users
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-panel-users
+ */
+MODx.panel.Users = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        id: 'modx-panel-users'
+        ,bodyStyle: ''
+        ,defaults: { collapsible: false ,autoHeight: true }
+        ,items: [{
+            html: '<h2>'+_('users')+'</h2>'
+            ,border: false
+            ,id: 'modx-users-header'
+            ,cls: 'modx-page-header'
+        },{
+            layout: 'form'
+            ,bodyStyle: 'padding: 1.5em'
+            ,items: [{
+                html: '<p>'+_('user_management_msg')+'</p>'
+                ,border: false
+            },{
+                xtype: 'modx-grid-user'
+                ,preventRender: true
+            }]
+        }]
+    });
+    MODx.panel.Users.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.panel.Users,MODx.FormPanel);
+Ext.reg('modx-panel-users',MODx.panel.Users);
+
+/**
  * Loads a grid of MODx users.
  * 
- * @class MODx.grid.AccessResourceGroup
+ * @class MODx.grid.User
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of config properties
- * @xtype grid-user
+ * @xtype modx-grid-user
  */
 MODx.grid.User = function(config) {
     config = config || {};
 	Ext.applyIf(config,{
-		title: _('users')
-        ,url: MODx.config.connectors_url+'security/user.php'
+		url: MODx.config.connectors_url+'security/user.php'
 		,fields: ['id','username','fullname','email'
             ,'gender','blocked','role','menu']
         ,columns: this.getColumns()
@@ -138,4 +172,4 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-user',MODx.grid.User);
+Ext.reg('modx-grid-user',MODx.grid.User);

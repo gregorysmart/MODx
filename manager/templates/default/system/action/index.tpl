@@ -1,4 +1,4 @@
-
+<div id="modx-panel-actions"></div>
 <div id="tabs_div">
     <div id="tab_actions" class="padding x-hide-display">
         <h2>{$_lang.actions}</h2>
@@ -18,4 +18,5 @@
 
 <script type="text/javascript" src="assets/modext/widgets/system/modx.tree.action.js"></script>
 <script type="text/javascript" src="assets/modext/widgets/system/modx.tree.menu.js"></script>
+<script type="text/javascript" src="assets/modext/widgets/system/modx.panel.actions.js"></script>
 <script type="text/javascript" src="assets/modext/sections/system/action.js"></script>

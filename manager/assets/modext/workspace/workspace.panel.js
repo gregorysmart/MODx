@@ -25,6 +25,7 @@ MODx.panel.Workspace = function(config) {
                     }]
                 },{
                     title: _('providers')
+                    ,collapsed: true
                     ,items: [{
                         html: '<p>'+_('providers_desc')+'</p>'
                         ,border: false

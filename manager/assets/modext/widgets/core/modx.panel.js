@@ -296,5 +296,4 @@ Ext.reg('modx-wizard-panel',MODx.panel.WizardPanel);
 MODx.PanelSpacer = {
     html: '<br />'
     ,border: false
-    ,bodyStyle: 'background-color: #e0e0e0;'
 };
