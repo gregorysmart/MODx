@@ -10,7 +10,7 @@
  */
 MODx.grid.SettingsGrid = function(config) {
     config = config || {};
-    var exp = new Ext.grid.RowExpander({
+    this.exp = new Ext.grid.RowExpander({
         tpl : new Ext.Template(
             '<p style="padding: .7em 1em .3em;"><i>{description}</i></p>'
         )
@@ -74,8 +74,8 @@ MODx.grid.SettingsGrid = function(config) {
         ,groupBy: 'area_text'
         ,singleText: _('setting')
         ,pluralText: _('settings')
-        ,plugins: exp
-        ,columns: [exp,{
+        ,plugins: this.exp
+        ,columns: [this.exp,{
             header: _('name')
             ,dataIndex: 'name'
             ,width: 250
@@ -103,11 +103,25 @@ MODx.grid.SettingsGrid = function(config) {
             ,width: 100
             ,sortable: true
         }]
+        ,collapseFirst: false
+        ,tools: [{
+            id: 'plus'
+            ,qtip: _('expand_all')
+            ,handler: this.expandAll
+            ,scope: this
+        },{
+            id: 'minus'
+            ,hidden: true
+            ,qtip: _('collapse_all')
+            ,handler: this.collapseAll
+            ,scope: this
+        }]
     });
     MODx.grid.SettingsGrid.superclass.constructor.call(this,config);
     this.removeListener('celldblclick',this.onCellDblClick,this);
     this.on('celldblclick',this.changeEditor,this);
 };
+MODx.grid.ExpandAllTool = 
 Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
     /**
      * Adds an enter key handler to the object.

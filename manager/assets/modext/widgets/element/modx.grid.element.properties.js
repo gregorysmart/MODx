@@ -6,7 +6,7 @@
  */
 MODx.grid.ElementProperties = function(config) {
     config = config || {};
-    var exp = new Ext.grid.RowExpander({
+    this.exp = new Ext.grid.RowExpander({
         tpl : new Ext.Template(
             '<p style="padding: .7em 1em .3em;"><i>{description}</i></p>'
         )
@@ -20,8 +20,8 @@ MODx.grid.ElementProperties = function(config) {
         ,sortBy: 'name'
         ,width: '100%'
         ,sm: new Ext.grid.RowSelectionModel({singleSelect:false})
-        ,plugins: [exp]
-        ,columns: [exp,{
+        ,plugins: [this.exp]
+        ,columns: [this.exp,{
             header: _('name')
             ,dataIndex: 'name'
             ,width: 200
@@ -69,6 +69,19 @@ MODx.grid.ElementProperties = function(config) {
         },'-',{
             text: _('propertyset_save')
             ,handler: this.save
+            ,scope: this
+        }]
+        ,collapseFirst: false
+        ,tools: [{
+            id: 'plus'
+            ,qtip: _('expand_all')
+            ,handler: this.expandAll
+            ,scope: this
+        },{
+            id: 'minus'
+            ,hidden: true
+            ,qtip: _('collapse_all')
+            ,handler: this.collapseAll
             ,scope: this
         }]
     });

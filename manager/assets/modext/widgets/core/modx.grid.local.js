@@ -234,5 +234,22 @@ Ext.extend(MODx.grid.LocalGrid,Ext.grid.EditorGridPanel,{
         
         return Ext.encode(rs);
     }
+    
+    
+    ,expandAll: function() {
+        if (!this.exp) return false;
+        
+        this.exp.expandAll(); 
+        this.tools['plus'].hide();
+        this.tools['minus'].show();
+    }
+    
+    ,collapseAll: function() {
+        if (!this.exp) return false;
+        
+        this.exp.collapseAll();
+        this.tools['minus'].hide();
+        this.tools['plus'].show();
+    }
 });
 Ext.reg('grid-local',MODx.grid.LocalGrid);

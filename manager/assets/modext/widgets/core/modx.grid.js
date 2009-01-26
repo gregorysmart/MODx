@@ -440,6 +440,22 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
         }
         return Ext.encode(rs);
     }
+    
+    ,expandAll: function() {
+        if (!this.exp) return false;
+        
+        this.exp.expandAll(); 
+        this.tools['plus'].hide();
+        this.tools['minus'].show();
+    }
+    
+    ,collapseAll: function() {
+        if (!this.exp) return false;
+        
+        this.exp.collapseAll();
+        this.tools['minus'].hide();
+        this.tools['plus'].show();
+    }
 });
 
 
@@ -577,6 +593,22 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
             this.state[record.id] = false;
             Ext.fly(row).replaceClass('x-grid3-row-expanded', 'x-grid3-row-collapsed');
             this.fireEvent('collapse', this, record, body, row.rowIndex);
+        }
+    }
+    
+    // Expand all rows
+    ,expandAll : function() {
+        var aRows = this.grid.getView().getRows();
+        for(var i = 0; i < aRows.length; i++) {
+            this.expandRow(aRows[i]);
+        }
+    }
+
+    // Collapse all rows
+    ,collapseAll : function() {
+        var aRows = this.grid.getView().getRows();
+        for(var i = 0; i < aRows.length; i++) {
+            this.collapseRow(aRows[i]);
         }
     }
 });

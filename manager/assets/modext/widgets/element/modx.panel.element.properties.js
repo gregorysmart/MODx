@@ -10,7 +10,6 @@ MODx.panel.ElementProperties = function(config) {
             ,border: false
         },{
             xtype: 'grid-element-properties'
-            ,title: ''
             ,panel: config.elementPanel
             ,elementId: config.elementId
             ,elementType: config.elementType
