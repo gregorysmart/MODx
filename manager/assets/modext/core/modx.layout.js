@@ -110,6 +110,7 @@ Ext.extend(MODx.Layout,Ext.Component,{
             title: _('files')
             ,contentEl: 'modx_ft_div'
             ,resizeEl: 'modx_file_tree'
+            ,id: 'modx-file-tree-panel'
         });
         
         return it;

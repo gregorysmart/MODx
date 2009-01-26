@@ -89,7 +89,7 @@ while(false !== ($name = $odir->read())) {
                         'handler' => 'function() {
                             Ext.getCmp("modx_file_tree").loadAction("'
                                 . 'a=' . $actions['system/file/edit']
-                                . 'file=' . rawurlencode($fullname)
+                                . '&file=' . rawurlencode($fullname)
                              . '");
                         }',
                     ),
