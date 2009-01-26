@@ -71,18 +71,18 @@ MODx.panel.Login = function(config) {
 	       xtype: 'textfield'
 	       ,fieldLabel: _('login_username')
 	       ,name: 'username'
-	       ,id: 'login-username'
+	       ,el: 'login-username'
 	   },{
 	       xtype: 'textfield'
 	       ,fieldLabel: _('login_password')
 	       ,name: 'password'
-	       ,id: 'login-password'
+	       ,el: 'login-password'
 	       ,inputType: 'password'
 	   },{
 	       xtype: 'checkbox'
 	       ,boxLabel: _('remember_username')
 	       ,name: 'rememberme'
-	       ,id: 'login-rememberme'
+	       ,el: 'login-rememberme'
            ,inputValue: true
 	   },{
 	   	   html: onManagerLoginFormRender
@@ -92,6 +92,7 @@ MODx.panel.Login = function(config) {
 	       ,handler: this.submit
 	       ,scope: this
 	   }]
+       ,renderTo: 'login-form'
 	   ,listeners: {
 	   	   'success': {fn:function(o) {
 	   	   	   location.href = (o.result.object.id !== undefined) ? './index.php?id=' + o.result.object.id : './';

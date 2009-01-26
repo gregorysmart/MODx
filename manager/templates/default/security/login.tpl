@@ -34,7 +34,7 @@
     {/if}
     
     <meta name="robots" content="noindex, nofollow" />
-
+{literal}<style>body, html { background: #fafafa !important; }</style>{/literal}
 <script type="text/javascript">
 var SITE_NAME = '{$_config.site_name|escape}';
 var CONNECTORS_URL = '{$_config.connectors_url}';
@@ -46,6 +46,11 @@ var onManagerLoginFormRender = '{$onManagerLoginFormRender}';
     {$onManagerLoginFormPrerender}
     <br />
     <div id="panel-login"></div>
+    <form id="login-form" method="post">
+    <input type="text" id="login-username" name="username" />
+    <input type="password" id="login-password" name="password" />
+    <input type="checkbox" id="login-rememberme" name="rememberme" />
+    </form>
 </div>
 <!-- close #mx_loginbox -->
 
