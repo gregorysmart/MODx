@@ -26,11 +26,6 @@ MODx.grid.Package = function(config) {
             ,{ header: _('updated') ,dataIndex: 'updated' }
             ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }
             ,{ 
-               header: _('workspace')
-               ,dataIndex: 'workspace'
-               ,editor: { xtype:'combo-workspace' ,renderer: true }
-               ,editable: false
-            },{ 
                 header: _('provider')
                 ,dataIndex: 'provider'
                 ,editor: { xtype: 'combo-provider' ,renderer: true }
