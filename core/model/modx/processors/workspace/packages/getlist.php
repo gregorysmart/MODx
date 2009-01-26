@@ -45,22 +45,22 @@ foreach ($packages as $key => $package) {
 $ps = array();
 foreach ($packages as $package) {
 
-    if ($package->installed == '0000-00-00 00:00:00') $package->set('installed',null);
+    if ($package->get('installed') == '0000-00-00 00:00:00') $package->set('installed',null);
     $pa = $package->toArray();
 
     /* format timestamps */
     if ($package->get('updated') != '0000-00-00 00:00:00' && $package->get('updated') != null) {
-        $pa['updated'] = strftime('%b %e, %Y %I:%M %p',strtotime($package->get('updated')));
+        $pa['updated'] = strftime('%b %d, %Y %I:%M %p',strtotime($package->get('updated')));
     } else {
         $pa['updated'] = '';
     }
-    $pa['created']= strftime('%b %e, %Y %I:%M %p',strtotime($package->get('created')));
+    $pa['created']= strftime('%b %d, %Y %I:%M %p',strtotime($package->get('created')));
     if ($package->get('installed') == null || $package->get('installed') == '0000-00-00 00:00:00') {
         $not_installed = true;
         $pa['installed'] = null;
     } else {
         $not_installed = false;
-        $pa['installed'] = strftime('%b %e, %Y %I:%M %p',strtotime($package->get('installed')));
+        $pa['installed'] = strftime('%b %d, %Y %I:%M %p',strtotime($package->get('installed')));
     }
 
     /* setup menu */
