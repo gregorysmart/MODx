@@ -49,7 +49,7 @@ MODx.Console = function(config) {
             ,id: 'modx-console-ok'
             ,disabled: true
             ,scope: this
-            ,handler: this.shutdown
+            ,handler: this.hideConsole
         }]
         ,listeners: {
         	'show': {fn:this.init ,scope:this}
@@ -89,12 +89,18 @@ Ext.extend(MODx.Console,Ext.Window,{
         this.config.baseParams.topic = topic;
     }
     
+    ,hideConsole: function() {
+        Ext.getCmp('modx-console-ok').setDisabled(true);
+        this.hide();
+    }
+    
     ,complete: function() {
     	Ext.getCmp('modx-console-ok').setDisabled(false);
+        this.shutdown();
     }
     
     ,shutdown: function() {
-        this.mgr.stopAutoRefresh();
+        this.mgr.stopAutoRefresh();        
         if (MODx.util.LoadingBox) { MODx.util.LoadingBox.enable(); }
     	MODx.Ajax.request({
     	    url: this.config.url
@@ -107,8 +113,6 @@ Ext.extend(MODx.Console,Ext.Window,{
             }
             ,listeners: {
             	'success': {fn:function(r) {
-        	    	Ext.getCmp('modx-console-ok').setDisabled(true);
-                    this.hide();
         	    },scope:this}
             }
     	});
