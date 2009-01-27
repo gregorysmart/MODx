@@ -100,7 +100,7 @@ Ext.extend(MODx.Console,Ext.Window,{
     }
     
     ,shutdown: function() {
-        this.mgr.stopAutoRefresh();        
+                this.mgr.stopAutoRefresh();
         if (MODx.util.LoadingBox) { MODx.util.LoadingBox.enable(); }
     	MODx.Ajax.request({
     	    url: this.config.url
@@ -112,7 +112,8 @@ Ext.extend(MODx.Console,Ext.Window,{
                 ,remove_read: 1
             }
             ,listeners: {
-            	'success': {fn:function(r) {
+            	'success': {fn:function(r) {                    
+                    Ext.getCmp('console-body').getEl().update(r.message);
         	    },scope:this}
             }
     	});
