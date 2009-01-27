@@ -104,12 +104,18 @@ class modTransportPackage extends xPDOObject {
                         if (!$transferred) {
                             if (@ ini_get('allow_url_fopen')) {
                                 if (!$transferred= $this->transferPackage($sourceFile, $packageDir)) {
-                                    $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not transfer package {$sourceFile} to {$packageDir}");
+                                    $this->xpdo->log(XPDO_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_transfer',array(
+                                    'sourceFile' => $sourceFile,
+                                    'packageDir' => $packageDir,
+                                )));
                                 } else {
                                     $sourceFile= basename($sourceFile);
                                 }
                             } else {
-                                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not transfer package {$sourceFile} to {$packageDir}; allow_url_fopen is not enabled on your configuration");
+                                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_transfer_fopen',array(
+                                    'sourceFile' => $sourceFile,
+                                    'packageDir' => $packageDir,
+                                )));
                             }
                         }
                         if ($transferred) {
@@ -129,7 +135,7 @@ class modTransportPackage extends xPDOObject {
                             }
                         }
                     } else {
-                        $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "No valid source specified for the package");
+                        $this->xpdo->log(XPDO_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_source_nf'));
                     }
                 }
             }
@@ -166,14 +172,14 @@ class modTransportPackage extends xPDOObject {
     function install($options = array()) {
         $installed = false;
         if ($this->getTransport()) {
-            $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Grabbing package workspace...');
+            $this->xpdo->log(XPDO_LOG_LEVEL_INFO,$this->xpdo->lexicon('workspace_grabbing'));
             $this->getOne('Workspace');
             $wc = isset($this->Workspace->config) && is_array($this->Workspace->config) ? $this->Workspace->config : array();
             $at = is_array($this->get('attributes')) ? $this->get('attributes') : array();
             $attributes = array_merge($wc, $at);
             $attributes = array_merge($attributes, $options);
             @ini_set('max_execution_time', 0);
-            $this->xpdo->log(XPDO_LOG_LEVEL_INFO,'Workspace environment initiated, now installing package...');
+            $this->xpdo->log(XPDO_LOG_LEVEL_INFO,$this->xpdo->lexicon('package_installing'));
             if ($this->package->install($attributes)) {
                 $installed = true;
                 $this->set('installed', strftime('%Y-%m-%d %H:%M:%S'));
@@ -204,10 +210,12 @@ class modTransportPackage extends xPDOObject {
                 $this->set('attributes',$attributes);
                 $this->save();
             } else {
-                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Error occurred during uninstall.");
+                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_uninstall',array(
+                    'signature' => $this->package->get('signature'),
+                )));
             }
         } else {
-            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, "Could not load transport package.");
+            $this->xpdo->log(XPDO_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_load'));
         }
         return $uninstalled;
     }
@@ -236,7 +244,9 @@ class modTransportPackage extends xPDOObject {
                 }
                 @ fclose($handle);
             } else {
-                $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$source}");
+                $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_file_read',array(
+                    'source' => $source,
+                )));
             }
             if ($content) {
                 if ($cacheManager= $this->xpdo->getCacheManager()) {
@@ -246,7 +256,9 @@ class modTransportPackage extends xPDOObject {
                 }
             }
         } else {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR,'Target directory is either not a directory or writable: '.$targetDir);
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_target_write',array(
+                'targetDir' => $targetDir,
+            )));
         }
         return $transferred;
     }
@@ -280,4 +292,3 @@ class modTransportPackage extends xPDOObject {
         return $value;
     }
 }
-?>

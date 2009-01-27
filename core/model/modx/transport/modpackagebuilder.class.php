@@ -65,10 +65,11 @@ class modPackageBuilder {
         if (!$workspace = $this->modx->getObject('modWorkspace', array (
                 'active' => 1
             ))) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, "\nYou must have a valid core installation with an active workspace to run the build.\n");
+            $this->modx->log(MODX_LOG_LEVEL_FATAL,$this->modx->lexicon('core_err_invalid'));
             exit ();
         }
         $this->directory = $workspace->get('path') . 'packages/';
+        $this->modx->lexicon->load('workspace');
         $this->autoselects = array ();
     }
 
@@ -79,11 +80,13 @@ class modPackageBuilder {
     * @returns modWorkspace The workspace set, false if invalid.
     */
     function setWorkspace($workspace_id) {
-        if (!is_numeric($workspace_id))
+        if (!is_numeric($workspace_id)) {
             return false;
+        }
         $workspace = $this->modx->getObject('modWorkspace', $workspace_id);
-        if ($workspace == null)
+        if ($workspace == null) {
             return false;
+        }
 
         $this->directory = $workspace->get('path') . 'packages/';
         return $workspace;
@@ -111,10 +114,12 @@ class modPackageBuilder {
         $s['version'] = $version;
         $s['release'] = $release;
         $this->signature = $s['name'];
-        if (!empty ($s['version']))
+        if (!empty ($s['version'])) {
             $this->signature .= '-' . $s['version'];
-        if (!empty ($s['release']))
+        }
+        if (!empty ($s['release'])) {
             $this->signature .= '-' . $s['release'];
+        }
         $this->filename = $this->signature . '.transport.zip';
 
         /* remove the package if it's already been made */
@@ -129,7 +134,9 @@ class modPackageBuilder {
 
         /* create the transport package */
         $this->package = new xPDOTransport($this->modx, $this->signature, $this->directory);
-        $this->modx->log(MODX_LOG_LEVEL_INFO, 'Created new transport package with signature: ' . $this->signature);
+        $this->modx->log(MODX_LOG_LEVEL_INFO, $this->modx->lexicon('package_created',array(
+            'signature' => $this->signature,
+        )));
 
         return $this->package;
     }
@@ -180,11 +187,14 @@ class modPackageBuilder {
                 $namespace = $this->modx->newObject('modNamespace');
                 $namespace->set('name', $ns);
             }
-        } else
+        } else {
             $namespace = $ns;
+        }
         $this->namespace = $namespace;
 
-        $this->modx->log(MODX_LOG_LEVEL_INFO, 'Registered package namespace as: ' . $this->namespace->get('name'));
+        $this->modx->log(MODX_LOG_LEVEL_INFO, $this->modx->lexicon('namespace_registered',array(
+            'namespace' => $this->namespace->get('name'),
+        )));
 
         /* define some basic attributes */
         $attributes = array (
@@ -193,21 +203,26 @@ class modPackageBuilder {
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
             XPDO_TRANSPORT_RESOLVE_FILES => true,
             XPDO_TRANSPORT_RESOLVE_PHP => true,
-            
+
         );
         if ($packageNamespace) {
             /* create the namespace vehicle */
             $v = $this->createVehicle($namespace, $attributes);
 
             /* put it into the package */
-            if (!$this->putVehicle($v))
+            if (!$this->putVehicle($v)) {
                 return false;
-            $this->modx->log(MODX_LOG_LEVEL_INFO, 'Packaged namespace "' . $this->namespace->get('name') . '" into package.');
+            }
+            $this->modx->log(MODX_LOG_LEVEL_INFO, $this->modx->lexicon('namespace_packaged',array(
+                'namespace' => $this->namespace->get('name'),
+            )));
         }
 
         /* Can automatically package in certain classes based upon their namespace values */
         if ($autoincludes == true || (is_array($autoincludes) && !empty ($autoincludes))) {
-            $this->modx->log(MODX_LOG_LEVEL_INFO, 'Packaging in autoincludes: ' . print_r($autoincludes, true));
+            $this->modx->log(MODX_LOG_LEVEL_INFO, $this->modx->lexicon('autoincludes_packaging',array(
+                'autoincludes' => print_r($autoincludes, true),
+            )));
             if (is_array($autoincludes)) {
                 /* set automatically included packages */
                 $this->setAutoSelects($autoincludes);
@@ -217,12 +232,13 @@ class modPackageBuilder {
             foreach ($this->autoselects as $classname) {
                 $objs = $this->modx->getCollection($classname, array (
                     'namespace' => $namespace->get('name'),
-                    
+
                 ));
                 foreach ($objs as $obj) {
                     $v = $this->createVehicle($obj, $attributes);
-                    if (!$this->putVehicle($v))
+                    if (!$this->putVehicle($v)) {
                         return false;
+                    }
                 }
             }
         }
@@ -294,10 +310,14 @@ class modPackageBuilder {
         $entries = array ();
 
         if (!is_dir($path)) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, '<b>Error</b> - Lexicon path not found: ' . $path);
+            $this->modx->log(MODX_LOG_LEVEL_FATAL,$this->modx->lexicon('lexicon_err_path_nf',array(
+                'path' => $path,
+            )));
         }
 
-        $this->modx->log(MODX_LOG_LEVEL_INFO, 'Auto-building in lexicon from path: ' . $path);
+        $this->modx->log(MODX_LOG_LEVEL_INFO, $this->modx->lexicon('lexicon_autobuilding',array(
+            'path' => $path
+        )));
 
         /* loop through cultures */
         $dir = dir($path);
@@ -395,7 +415,7 @@ class modPackageBuilder {
             XPDO_TRANSPORT_UNIQUE_KEY => 'name',
             XPDO_TRANSPORT_PRESERVE_KEYS => true,
             XPDO_TRANSPORT_UPDATE_OBJECT => true,
-            
+
         );
         foreach ($languages as $language) {
             $vehicle = $this->createVehicle($language, $attributes);
@@ -416,7 +436,7 @@ class modPackageBuilder {
             foreach ($attributes as $k => $v)
                 $this->package->setAttribute($k, $v);
         } else {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR, 'You must create a package with createPackage() before you can call setPackageAttributes()');
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, $this->modx->lexicon('package_err_spa'));
         }
     }
 }

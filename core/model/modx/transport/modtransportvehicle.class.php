@@ -87,9 +87,9 @@ class modTransportVehicle {
     */
     function compile() {
         $attributes = array_merge($this->attributes, array (
-            'resolve' => empty ($this->resolvers) ? NULL : $this->resolvers,
-            'validate' => empty ($this->validators) ? NULL : $this->validators,
-            
+            'resolve' => empty ($this->resolvers) ? null : $this->resolvers,
+            'validate' => empty ($this->validators) ? null : $this->validators,
+
         ));
         return $attributes;
     }

@@ -1,14 +1,26 @@
 <?php
+/**
+ * Default workspace lexicon strings
+ *
+ * @package modx
+ * @subpackage lexicon
+ */
+$_lang['autoincludes_packaging'] = 'Packaging in autoincludes: [[+autoincludes]]';
 $_lang['by'] = 'by';
+$_lang['core_err_invalid'] = 'You must have a valid core installation with an active workspace to run the build.';
 $_lang['description'] = 'Description';
 $_lang['downloads'] = 'Downloads';
 $_lang['installation_instructions'] = 'Installation Instructions';
+$_lang['lexicon_autobuilding'] = 'Auto-building in lexicon from path: [[+path]]';
+$_lang['lexicon_err_path_nf'] = '<b>Error</b> - Lexicon path not found: [[+path]]';
 $_lang['license'] = 'License';
 $_lang['license_agree'] = 'I Agree';
 $_lang['license_agreement'] = 'License Agreement';
 $_lang['license_agreement_desc'] = 'Please review the license agreement for this package.';
 $_lang['license_disagree'] = 'I Disagree';
 $_lang['more_info'] = 'More Info';
+$_lang['namespace_packaged'] = 'Packaged namespace "[[+namespace]]" into package.';
+$_lang['namespace_registered'] = 'Registered package namespace as: [[+namespace]]';
 $_lang['not_installed'] = 'Not Installed';
 $_lang['package'] = 'Package';
 $_lang['package_add'] = 'Add New Package';
@@ -16,15 +28,23 @@ $_lang['package_check_for_updates'] = 'Check For Updates';
 $_lang['package_confirm_install'] = 'Are you sure you want to install this package?';
 $_lang['package_confirm_remove'] = 'Are you sure you want to delete this package?';
 $_lang['package_confirm_uninstall'] = 'Are you sure you want to uninstall this package?';
+$_lang['package_created'] = 'Created new transport package with signature: [[+signature]]';
 $_lang['package_download_err_create'] = 'Could not download and create transport package with signature: [[+signature]]';
 $_lang['package_download_err_ns'] = 'Please select at least one package version to download.';
 $_lang['package_err_create'] = 'Could not create the package.';
+$_lang['package_err_file_read'] = 'Could not open file for reading: [[+source]]';
 $_lang['package_err_install'] = 'Could not install package with signature: [[+signature]]';
 $_lang['package_err_install_gen'] = 'Failed to install the package.';
+$_lang['package_err_load'] = 'Could not load transport package.';
 $_lang['package_err_nf'] = 'Package not found.';
 $_lang['package_err_nfs'] = 'Could not retrieve package with signature: [[+signature]].';
 $_lang['package_err_ns'] = 'Package not specified.';
 $_lang['package_err_remove'] = 'Error removing package with signature: [[+signature]]';
+$_lang['package_err_source_nf'] = 'No valid source specified for the package.';
+$_lang['package_err_spa'] = 'You must create a package with createPackage() before you can call setPackageAttributes()';
+$_lang['package_err_target_write'] = 'Target directory is either not a directory or writable: [[+targetDir]]';
+$_lang['package_err_transfer'] = 'Could not transfer package [[+sourceFile]] to [[+packageDir]].';
+$_lang['package_err_transfer_fopen'] = 'Could not transfer package [[+sourceFile]] to [[+packageDir]]; allow_url_fopen is not enabled on your configuration.';
 $_lang['package_err_uninstall'] = 'Error uninstalling package with signature: [[+signature]]';
 $_lang['package_err_uptodate'] = 'Your package is already up-to-date at: [[+signature]]';
 $_lang['package_information'] = 'Package Information';
@@ -32,6 +52,7 @@ $_lang['package_install'] = 'Install Package';
 $_lang['package_install_info_start'] = 'Attempting to install package with signature: [[+signature]]';
 $_lang['package_install_info_found'] = 'Package found...now preparing to install.';
 $_lang['package_install_info_success'] = 'Successfully installed package [[+signature]]';
+$_lang['package_installing'] = 'Workspace environment initiated, now installing package...';
 $_lang['package_management'] = 'Package Management';
 $_lang['package_obtain_method'] = 'First, select how you would like to obtain the package:';
 $_lang['package_remove'] = 'Remove Package';
@@ -105,6 +126,7 @@ $_lang['setup_options'] = 'Setup Options';
 $_lang['setup_options_desc'] = 'Please choose the appropriate options (if applicable) and click Finish to install the package.';
 $_lang['workspace'] = 'Workspace';
 $_lang['workspace_err_nf'] = 'Workspace not found.';
+$_lang['workspace_grabbing'] = 'Grabbing package workspace...';
 $_lang['workspace_management'] = 'MODx Workspace Management';
 $_lang['workspace_scan_for_new'] = 'Search for new packages';
 $_lang['workspace_scan_for_updates'] = 'Search for package updates';
