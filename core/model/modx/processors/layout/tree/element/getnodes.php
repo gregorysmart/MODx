@@ -360,7 +360,6 @@ switch ($g[0]) {
                             'handler' => 'function(itm,e) {
                                 this.removeElement(itm,e);
                             }',
-                            'handler' => 'this.removeElement',
                         )
                     ),
                 ),
