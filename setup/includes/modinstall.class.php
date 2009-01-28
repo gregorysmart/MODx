@@ -249,6 +249,14 @@ class modInstall {
     function loadTestHandler($class = 'modInstallTest') {
         $included = @include dirname(__FILE__).'/'.strtolower($class).'.class.php';
         if ($included) {
+            /* now load build-specific test class if not @svn */
+            if (MODX_SETUP_KEY != '@svn') {
+                $class = $class.ucfirst(str_replace('@','',MODX_SETUP_KEY));
+                $included = @include dirname(__FILE__).'/checks/'.strtolower($class).'.class.php';
+                if (!$included) {
+                    die('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all the necessary files.</p></body></html>');
+                }
+            }
             $this->test = new $class($this);
             return $this->test;
         } else {

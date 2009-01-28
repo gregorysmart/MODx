@@ -1,4 +1,10 @@
 <?php
+/**
+ * Runs tests on the server to determine if MODx can be installed
+ *
+ * @package setup
+ * @subpackage tests
+ */
 class modInstallTest {
     var $results = array();
     var $mode;
@@ -20,6 +26,7 @@ class modInstallTest {
         $this->results = array();
         $this->mode = $mode;
 
+        $this->checkDependencies();
         $this->checkPHPVersion();
         $this->checkMemoryLimit();
         $this->checkSessions();
@@ -56,15 +63,15 @@ class modInstallTest {
     }
 
     /**
-     * Check memory limit, to make sure it is set at least to 64M
+     * Check memory limit, to make sure it is set at least to 32M
      */
     function checkMemoryLimit() {
         $success = false;
         $ml = ini_get('memory_limit');
         $bytes = $this->return_bytes($ml);
 
-        if ($bytes < 67108864) { /* 64M limit */
-            $success = @ini_set('memory_limit','64M');
+        if ($bytes < 33554432) { /* 32M = 33554432 */
+            $success = @ini_set('memory_limit','32M');
             $success = $success !== false ? true : false;
         } else {
             $success = true;
@@ -103,6 +110,25 @@ class modInstallTest {
                 $num *= 1024;
         }
         return $num;
+    }
+
+    /**
+     * Check to see if PHP has zlib installed.
+     *
+     * @access public
+     */
+    function checkDependencies() {
+        $this->results['dependencies']['msg'] = '<p>'.$this->install->lexicon['test_dependencies'].' ';
+        if (!extension_loaded('zlib')) {
+            $s = '<span class="notok">'.$this->install->lexicon['failed'].'</span>';
+            $s .= '<div class="notes"><p>'.$this->install->lexicon['test_dependencies_fail_zlib'].'</p></div>';
+            $s .= '</p>';
+            $this->results['dependencies']['msg'] = $s;
+            $this->results['dependencies']['class'] = 'testFailed';
+        } else {
+            $this->results['dependencies']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
+            $this->results['dependencies']['class'] = 'testPassed';
+        }
     }
 
 
