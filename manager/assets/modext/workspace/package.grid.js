@@ -9,7 +9,7 @@
  */
 MODx.grid.Package = function(config) {
     config = config || {};
-    var exp = new Ext.grid.RowExpander({
+    this.exp = new Ext.grid.RowExpander({
         tpl : new Ext.Template(
             '<p style="padding: .7em 1em .3em;"><i>{readme}</i></p>'
         )
@@ -19,8 +19,8 @@ MODx.grid.Package = function(config) {
         ,id: 'modx-grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
         ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','readme','menu']
-        ,plugins: [exp]
-        ,columns: [exp,{
+        ,plugins: [this.exp]
+        ,columns: [this.exp,{
                header: _('package_signature') ,dataIndex: 'signature' }
             ,{ header: _('created') ,dataIndex: 'created' }
             ,{ header: _('updated') ,dataIndex: 'updated' }
@@ -42,6 +42,18 @@ MODx.grid.Package = function(config) {
         ,tbar: [{
             text: _('package_add')
             ,handler: { xtype: 'window-package-downloader' }
+        }]
+        ,tools: [{
+            id: 'plus'
+            ,qtip: _('expand_all')
+            ,handler: this.expandAll
+            ,scope: this
+        },{
+            id: 'minus'
+            ,hidden: true
+            ,qtip: _('collapse_all')
+            ,handler: this.collapseAll
+            ,scope: this
         }]
     });
     MODx.grid.Package.superclass.constructor.call(this,config);

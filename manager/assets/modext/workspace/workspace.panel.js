@@ -20,7 +20,6 @@ MODx.panel.Workspace = function(config) {
                     },{
                         xtype: 'modx-grid-package'
                         ,id: 'modx-grid-package'
-                        ,title: ''
                         ,preventRender: true
                     }]
                 },{
