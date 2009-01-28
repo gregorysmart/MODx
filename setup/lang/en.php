@@ -182,7 +182,7 @@ $_lang['test_db_check'] = 'Creating connection to the database: ';
 $_lang['test_db_check_conn'] = 'Check the connection details and try again.';
 $_lang['test_db_failed'] = 'Database connection failed!';
 $_lang['test_db_setup_create'] = 'Setup will attempt to create the database.';
-$_lang['test_dependencies'] = 'Checking PHP dependencies zlib and pdo: ';
+$_lang['test_dependencies'] = 'Checking PHP for zlib dependency: ';
 $_lang['test_dependencies_fail_zlib'] = 'Your PHP installation does not have the "zlib" extension installed. This extension is necessary for MODx to run. Please enable it to continue.';
 $_lang['test_directory_exists'] = 'Checking if <span class="mono">%s</span> directory exists: ';
 $_lang['test_directory_writable'] = 'Checking if <span class="mono">%s</span> directory is writable: ';
