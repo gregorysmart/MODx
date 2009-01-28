@@ -23,4 +23,7 @@ if ($entry->remove() === false) {
 
 $entry->clearCache();
 
+/* log manager action */
+$modx->logManagerAction('lexicon_entry_remove','modLexiconEntry',$entry->get('id'));
+
 return $modx->error->success();

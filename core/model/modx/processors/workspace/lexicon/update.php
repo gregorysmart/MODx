@@ -45,4 +45,7 @@ if (!$entry->save()) return $modx->error->failure($modx->lexicon('entry_err_save
 $r = $modx->lexicon->clearCache($old_namespace.'/'.$old_topic->get('name').'.cache.php');
 $r = $modx->lexicon->clearCache($entry->get('namespace').'/'.$topic->get('name').'.cache.php');
 
+/* log manager action */
+$modx->logManagerAction('lexicon_entry_update','modLexiconEntry',$entry->get('id'));
+
 return $modx->error->success();

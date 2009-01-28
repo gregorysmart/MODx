@@ -23,4 +23,7 @@ if ($namespace->save() === false) {
     return $modx->error->failure($modx->lexicon('namespace_err_save'));
 }
 
+/* log manager action */
+$modx->logManagerAction('namespace_update','modNamespace',$namespace->get('id'));
+
 return $modx->error->success();

@@ -21,4 +21,7 @@ if ($topic->remove() === false) {
     return $modx->error->failure($modx->lexicon('topic_err_remove'));
 }
 
+/* log manager action */
+$modx->logManagerAction('lexicon_topic_remove','modLexiconTopic',$topic->get('id'));
+
 return $modx->error->success();

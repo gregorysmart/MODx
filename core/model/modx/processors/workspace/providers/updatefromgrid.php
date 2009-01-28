@@ -28,6 +28,11 @@ $provider->set('name',$_DATA['name']);
 $provider->set('service_url',$_DATA['service_url']);
 $provider->set('description',$_DATA['description']);
 
-if (!$provider->save()) return $modx->error->failure($modx->lexicon('provider_err_save'));
+if ($provider->save() == false) {
+    return $modx->error->failure($modx->lexicon('provider_err_save'));
+}
+
+/* log manager action */
+$modx->logManagerAction('provider_update','transport.modTransportProvider',$provider->get('id'));
 
 return $modx->error->success();

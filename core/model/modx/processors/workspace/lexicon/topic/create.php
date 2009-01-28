@@ -24,4 +24,7 @@ if ($topic->save() === false) {
 	return $modx->error->failure($modx->lexicon('topic_err_create'));
 }
 
+/* log manager action */
+$modx->logManagerAction('lexicon_topic_create','modLexiconTopic',$topic->get('id'));
+
 return $modx->error->success();

@@ -24,8 +24,13 @@ if (!isset($_DATA['name']) || $_DATA['name'] == '') {
 $entry->set('name',$_DATA['name']);
 $entry->set('value',$_DATA['value']);
 
-if (!$entry->save()) return $modx->error->failure($modx->lexicon('entry_err_save'));
+if ($entry->save() == false) {
+    return $modx->error->failure($modx->lexicon('entry_err_save'));
+}
 
 $entry->clearCache();
+
+/* log manager action */
+$modx->logManagerAction('lexicon_entry_update','modLexiconEntry',$entry->get('id'));
 
 return $modx->error->success();

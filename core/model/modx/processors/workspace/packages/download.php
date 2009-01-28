@@ -35,4 +35,7 @@ if ($package->save() == false) {
     $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('package_download_err_create',array('signature' => $signature)));
 }
 
+/* log manager action */
+$modx->logManagerAction('package_download','transport.modTransportPackage',$package->get('id'));
+
 return $modx->error->success('',$package);

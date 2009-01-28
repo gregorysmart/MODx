@@ -92,5 +92,8 @@ while (false !== ($culture = $dir->read())) {
 }
 $dir->close();
 
+/* clear cache after reloading */
+$modx->lexicon->clearCache();
+
 $modx->log(MODX_LOG_LEVEL_WARN,'Successfully reloaded '.$i.' strings.');
 return $modx->error->success(intval($i));

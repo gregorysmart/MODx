@@ -37,4 +37,7 @@ if ($entry->save() === false) {
 
 $entry->clearCache();
 
+/* log manager action */
+$modx->logManagerAction('lexicon_entry_create','modLexiconEntry',$entry->get('id'));
+
 return $modx->error->success();

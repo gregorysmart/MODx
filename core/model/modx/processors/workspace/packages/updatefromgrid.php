@@ -19,4 +19,8 @@ $package->fromArray($_DATA);
 if ($package->save() === false) {
     return $modx->error->failure($modx->lexicon('package_err_save'));
 }
+
+/* log manager action */
+$modx->logManagerAction('package_update','transport.modTransportPackage',$package->get('id'));
+
 return $modx->error->success();

@@ -37,4 +37,7 @@ $modx->log(MODX_LOG_LEVEL_WARN,$modx->lexicon('package_uninstall_info_success',a
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 
+/* log manager action */
+$modx->logManagerAction('package_uninstall','transport.modTransportPackage',$package->get('id'));
+
 return $modx->error->success();

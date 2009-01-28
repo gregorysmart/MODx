@@ -15,4 +15,9 @@ $package->set('state', 1);
 if ($package->save() == false) {
     return $modx->error->failure($modx->lexicon('package_err_create'));
 }
+
+/* log manager action */
+$modx->logManagerAction('package_create','transport.modTransportPackage',$package->get('id'));
+
+
 return $modx->error->success('', $package->get(array ('signature')));

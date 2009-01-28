@@ -55,4 +55,7 @@ foreach ($packages as $p) {
     $pa[] = $p;
 }
 
+/* log manager action */
+$modx->logManagerAction('package_update','transport.modTransportPackage',$package->get('id'));
+
 return $modx->error->success('',$pa);

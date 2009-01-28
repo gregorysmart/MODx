@@ -17,6 +17,11 @@ if ($provider == null) {
     return $modx->error->failure(sprintf($modx->lexicon('provider_err_nfs'),$_POST['id']));
 }
 
-if (!$provider->remove()) return $modx->error->failure($modx->lexicon('provider_err_remove'));
+if ($provider->remove() == false) {
+    return $modx->error->failure($modx->lexicon('provider_err_remove'));
+}
+
+/* log manager action */
+$modx->logManagerAction('provider_remove','transport.modTransportProvider',$provider->get('id'));
 
 return $modx->error->success();

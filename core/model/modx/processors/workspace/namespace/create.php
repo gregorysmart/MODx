@@ -24,4 +24,7 @@ if ($namespace->save() === false) {
 	return $modx->error->failure($modx->lexicon('namespace_err_create'));
 }
 
+/* log manager action */
+$modx->logManagerAction('namespace_create','modNamespace',$namespace->get('id'));
+
 return $modx->error->success();
