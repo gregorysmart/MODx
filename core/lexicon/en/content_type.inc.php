@@ -2,7 +2,7 @@
 $_lang['content_type'] = 'Content Type';
 $_lang['content_type_desc'] = 'Content types are specific filesystem types for your resources. Here you can manage them; as well as associate them with file extensions.';
 $_lang['content_type_err_nf'] = 'Content type not found.';
-$_lang['content_type_err_nfs'] = 'Content type not found: %s';
+$_lang['content_type_err_nfs'] = 'Content type with ID [[+id]] not found.';
 $_lang['content_type_err_ns'] = 'Content type not specified.';
 $_lang['content_type_err_ns_name'] = 'Please specify a valid name for the content type.';
 $_lang['content_type_err_create'] = 'An error occurred while trying to create the content type.';
