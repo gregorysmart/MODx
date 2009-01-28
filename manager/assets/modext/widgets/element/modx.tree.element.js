@@ -63,7 +63,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 			,text: _('category_confirm_delete')
 			,url: MODx.config.connectors_url+'element/category.php'
 			,params: {
-				action: 'delete'
+				action: 'remove'
 				,id: id
 			}
 			,listeners: {
