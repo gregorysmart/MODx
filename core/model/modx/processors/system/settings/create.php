@@ -85,7 +85,6 @@ if ($setting->save() === false) {
     return $modx->error->failure($modx->lexicon('setting_err_save'));
 }
 
-
 $modx->reloadConfig();
 
 return $modx->error->success();

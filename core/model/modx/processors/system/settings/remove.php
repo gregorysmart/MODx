@@ -28,7 +28,7 @@ $description = $modx->getObject('modLexiconEntry',array(
 ));
 if ($description != null) $description->remove();
 
-if ($setting->remove() == null) {
+if ($setting->remove() == false) {
     return $modx->error->failure($modx->lexicon('setting_err_remove'));
 }
 
