@@ -14,20 +14,7 @@ MODx.page.Users = function(config) {
 	config = config || {};
     Ext.getCmp('modx-layout').removeAccordion();
 	Ext.applyIf(config,{
-		actions: {
-            'new': MODx.action['security/user/create']
-            ,cancel: MODx.action['welcome']
-        }
-        ,buttons: [{
-            type: 'new'
-            ,text: _('new')
-            ,params: { a: MODx.action['security/user/create'] }
-        },'-',{
-            type: 'cancel'
-            ,text: _('cancel')
-            ,params: { a: MODx.action['welcome'] }
-        }]
-        ,components: [{
+		components: [{
             xtype: 'modx-panel-users'
             ,renderTo: 'modx-panel-users'
         }]

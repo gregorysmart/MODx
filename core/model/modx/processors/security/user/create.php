@@ -31,13 +31,23 @@ $modx->invokeEvent('OnBeforeUserFormSave',array(
 	'id' => $_POST['id'],
 ));
 
+/* create user group links */
+$ugms = array();
+$groups = $modx->fromJSON($_POST['groups']);
+foreach ($groups as $group) {
+    $ugm = $modx->newObject('modUserGroupMember');
+    $ugm->set('user_group',$group['usergroup']);
+    $ugm->set('role',$group['role']);
+    $ugms[] = $ugm;
+}
+$user->addMany($ugms,'modUserGroupMember');
 
 /* update user */
 if ($user->save() == false) {
     return $modx->error->failure($modx->lexicon('user_err_save'));
 }
 
-
+/* create user profile */
 $user->profile = $modx->newObject('modUserProfile');
 $user->profile->fromArray($_POST);
 $user->profile->set('internalKey',$user->get('id'));
@@ -66,19 +76,6 @@ $modx->invokeEvent('OnUserFormSave',array(
 	'mode' => 'new',
 	'id' => $user->get('id'),
 ));
-
-/*
- * manage user group memberships
- * :TODO: add modUserGroupRole and sub-group handling
- */
-if (isset($_POST['user_groups']) && count($_POST['user_groups']) > 0) {
-    foreach ($_POST['user_groups'] as $group_id) {
-        $ug = $modx->newObject('modUserGroupMember');
-        $ug->set('user_group',$group_id);
-        $ug->set('member',$user->get('id'));
-        $ug->save();
-    }
-}
 
 /* converts date format dd-mm-yyyy to php date */
 function convertDate($date) {

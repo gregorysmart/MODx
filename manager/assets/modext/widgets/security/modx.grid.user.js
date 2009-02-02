@@ -52,6 +52,10 @@ MODx.grid.User = function(config) {
         ,paging: true
 		,autosave: true
 		,tbar: [{
+            text: _('user_new')
+            ,handler: this.createUser
+            ,scope: this
+        },'-',{
             xtype: 'textfield'
             ,name: 'username_filter'
             ,id: 'username_filter'
@@ -109,6 +113,10 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
 			,editor: { xtype: 'combo-boolean', renderer: 'boolean' }
         }];
 	}
+    
+    ,createUser: function() {
+        location.href = 'index.php?a='+MODx.action['security/user/create'];
+    }
     
     /**
      * Prompts a confirm dialog to remove the user

@@ -5,7 +5,7 @@ MODx.panel.User = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'security/user.php'
         ,baseParams: {}
-        ,id: 'panel-user'
+        ,id: 'modx-panel-user'
         ,defaults: { collapsible: false ,autoHeight: true }
         ,bodyStyle: ''
         ,items: {
@@ -42,10 +42,17 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
             ,params: {
                 action: 'get'
                 ,id: this.config.user
+                ,getGroups: true
             }
             ,listeners: {
                 'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
+                    
+                    var d = Ext.decode(r.object.groups);
+                    var g = Ext.getCmp('modx-grid-user-groups');
+                    var s = g.getStore();
+                    s.loadData(d);
+                    
                     this.fireEvent('ready',r.object);
                 },scope:this}
             }
@@ -53,11 +60,11 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
     }
     ,beforeSubmit: function(o) {
         var g = Ext.getCmp('grid-user-settings');
-        if (g) {
-            Ext.apply(o.form.baseParams,{
-                settings: g.encodeModified()
-            });
-        }
+        var h = Ext.getCmp('modx-grid-user-groups');
+        Ext.apply(o.form.baseParams,{
+            settings: g ? g.encodeModified() : {}
+            ,groups: h.encode()
+        });
     }
     
     ,success: function(o) {
@@ -74,7 +81,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     return false;
                 }
             });
-        } else {
+        } else if (this.config.user == 0) {            
             location.href = '?a='+MODx.action['security/user/update']+'&id='+o.result.object.id;
         }
     }
@@ -331,15 +338,25 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,user: config.user
                 }]
             })
-        }                
+        }
         f.push({
-            contentEl: 'tab_access'
-            ,title: _('access_permissions')
+            title: _('access_permissions')
+            ,layout: 'form'
+            ,bodyStyle: 'padding: 1.5em;'
+            ,defaults: { border: false ,autoHeight: true }
+            ,items: [{
+                html: _('access_permissions_user_message')
+            },MODx.PanelSpacer,{            
+                xtype: 'modx-grid-user-groups'
+                ,title: 'User Groups'
+                ,preventRender: true
+                ,user: config.user
+            }]
         });
         return f;
     }
 });
-Ext.reg('panel-user',MODx.panel.User);
+Ext.reg('modx-panel-user',MODx.panel.User);
 
 
 

@@ -9,7 +9,7 @@
 MODx.page.UpdateUser = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-       formpanel: 'panel-user'
+       formpanel: 'modx-panel-user'
        ,actions: {
             'new': MODx.action['security/user/create']
             ,edit: MODx.action['security/user/update']
@@ -24,9 +24,8 @@ MODx.page.UpdateUser = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-user'
-            ,id: 'panel-user'
-            ,renderTo: 'panel-user'
+            xtype: 'modx-panel-user'
+            ,renderTo: 'modx-panel-user'
             ,user: config.user
             ,name: ''
         }]
@@ -34,4 +33,4 @@ MODx.page.UpdateUser = function(config) {
 	MODx.page.UpdateUser.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.UpdateUser,MODx.Component);
-Ext.reg('page-user-update',MODx.page.UpdateUser);
+Ext.reg('modx-page-user-update',MODx.page.UpdateUser);

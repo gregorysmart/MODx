@@ -16,6 +16,7 @@ if (!$modx->hasPermission(array('access_permissions' => true, 'save_user' => tru
 $user = $modx->getObject('modUser',$_POST['id']);
 if ($user == null) return $modx->error->failure($modx->lexicon('user_err_not_found'));
 
+
 $newPassword= false;
 require_once MODX_PROCESSORS_PATH.'security/user/_validation.php';
 
@@ -29,6 +30,23 @@ $modx->invokeEvent('OnBeforeUserFormSave',array(
 	'mode' => 'upd',
 	'id' => $_POST['id'],
 ));
+
+
+/* remove prior user group links */
+$ugms = $user->getMany('modUserGroupMember');
+foreach ($ugms as $ugm) { $ugm->remove(); }
+
+/* create user group links */
+$ugms = array();
+$groups = $modx->fromJSON($_POST['groups']);
+foreach ($groups as $group) {
+    $ugm = $modx->newObject('modUserGroupMember');
+    $ugm->set('user_group',$group['usergroup']);
+    $ugm->set('role',$group['role']);
+    $ugm->set('member',$user->get('id'));
+    $ugms[] = $ugm;
+}
+$user->addMany($ugms,'modUserGroupMember');
 
 /* update user */
 if ($user->save() == false) {
@@ -58,6 +76,7 @@ if ($user->profile->save() == false) {
 	return $modx->error->failure($modx->lexicon('user_profile_err_save'));
 }
 
+
 /* invoke OnManagerSaveUser event */
 $modx->invokeEvent('OnManagerSaveUser',array(
 	'mode' => 'upd',
@@ -76,22 +95,6 @@ $modx->invokeEvent('OnUserFormSave',array(
 	'mode' => 'upd',
 	'id' => $user->get('id'),
 ));
-
-$ugs = $modx->getCollection('modUserGroupMember',array('member' => $user->get('id')));
-if (count($ugs) > 0) {
-    foreach ($ugs as $ug) {
-        $ug->remove();
-    }
-}
-
-if (count($_POST['user_groups']) > 0) {
-    foreach ($_POST['user_groups'] as $group_id) {
-        $ug = $modx->newObject('modUserGroupMember');
-        $ug->set('user_group',$group_id);
-        $ug->set('member',$user->get('id'));
-        $ug->save();
-    }
-}
 
 /* converts date format dd-mm-yyyy to php date */
 function convertDate($date) {

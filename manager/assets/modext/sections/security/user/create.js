@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-	MODx.load({ xtype: 'page-user-create' });
+	MODx.load({ xtype: 'modx-page-user-create' });
 });
 
 /**
@@ -13,7 +13,7 @@ Ext.onReady(function() {
 MODx.page.CreateUser = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-	   formpanel: 'panel-user'
+	   formpanel: 'modx-panel-user'
        ,actions: {
             'new': MODx.action['security/user/create']
             ,edit: MODx.action['security/user/update']
@@ -26,9 +26,8 @@ MODx.page.CreateUser = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-user'
-            ,id: 'panel-user'
-            ,renderTo: 'panel-user'
+            xtype: 'modx-panel-user'
+            ,renderTo: 'modx-panel-user'
             ,user: 0
             ,name: ''
         }]
@@ -36,4 +35,4 @@ MODx.page.CreateUser = function(config) {
 	MODx.page.CreateUser.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateUser,MODx.Component);
-Ext.reg('page-user-create',MODx.page.CreateUser);
+Ext.reg('modx-page-user-create',MODx.page.CreateUser);
