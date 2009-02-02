@@ -34,7 +34,7 @@ MODx.panel.GroupsRoles = function(config) {
                 },{
                     title: _('roles')
                     ,items: [{
-                        xtype: 'grid-role'
+                        xtype: 'modx-grid-role'
                         ,title: ''
                         ,preventRender: true
                     }]

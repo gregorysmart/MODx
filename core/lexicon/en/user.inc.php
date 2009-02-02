@@ -1,5 +1,19 @@
 <?php
+$_lang['authority'] = 'Authority';
 $_lang['password_notification'] = 'Password Notification';
+$_lang['role'] = 'Role';
+$_lang['role_create'] = 'Create Role';
+$_lang['role_err_duplicate'] = 'An error occurred while duplicating the role.';
+$_lang['role_err_has_users'] = 'There are users with this role. It cannot be deleted.';
+$_lang['role_err_nf'] = 'Role not found.';
+$_lang['role_err_nfs'] = 'Role not found with name: [[+name]]';
+$_lang['role_err_ns'] = 'Role not specified!';
+$_lang['role_err_ns_name'] = 'Please specify a name for the role.';
+$_lang['role_err_remove'] = 'An error occurred while trying to remove the role.';
+$_lang['role_err_remove_admin'] = 'The role you are trying to delete is the admin role. This role cannot be deleted!';
+$_lang['role_remove'] = 'Remove Role';
+$_lang['role_remove_confirm'] = 'Are you sure you want to remove this role?';
+$_lang['roles'] = 'Roles';
 $_lang['rrg_drag'] = 'Drag resources into resource groups here.';
 $_lang['ugc_mutate'] = 'User Group Access to Context';
 $_lang['ugc_grid_title'] = 'User Group Access to Contexts';

@@ -33,11 +33,11 @@ if ($logout != null) $logout->remove();
 unset($logout);
 
 /* remove no-longer-valid lexicon topics */
-$welcometopic = $this->install->xpdo->getObject('modLexiconTopic');
-if ($welcometopic != null) {
-    $welcometopic->remove();
-}
-unset($welcometopic);
+$roletopic = $this->install->xpdo->getObject('modLexiconTopic',array(
+    'name' => 'role',
+));
+if ($roletopic != null) { $roletopic->remove(); }
+unset($roletopic);
 
 /* add description field to menus */
 $class = 'modMenu';

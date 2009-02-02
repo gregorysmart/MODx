@@ -7,16 +7,19 @@
  * @package modx
  * @subpackage processors.security.role
  */
-$modx->lexicon->load('role');
+$modx->lexicon->load('user');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'delete_role' => true))) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
-$role = $modx->getObject('modUserGroupRole',$_REQUEST['id']);
-if ($role == null) return $modx->error->failure($modx->lexicon('role_err_not_found'));
+$role = $modx->getObject('modUserGroupRole',$_POST['id']);
+if ($role == null) {
+    return $modx->error->failure($modx->lexicon('role_err_nfs',array('role' => $_POST['id'])));
+}
 
 /* don't delete the Member or Super User roles */
+/* TODO: when this is converted in build script, convert to i18n */
 if ($role->get('name') == 'Member' || $role->get('name') == 'Super User') {
     return $modx->error->failure($modx->lexicon('role_err_remove_admin'));
 }

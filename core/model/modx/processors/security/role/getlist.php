@@ -12,7 +12,7 @@
  * @package modx
  * @subpackage processors.security.role
  */
-$modx->lexicon->load('role');
+$modx->lexicon->load('user');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'edit_role' => true))) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
@@ -29,16 +29,19 @@ $c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
 $c->limit($_REQUEST['limit'],$_REQUEST['start']);
 $roles = $modx->getCollection('modUserGroupRole', $c);
 
-$actions = $modx->request->getAllActionIDs();
-
 $rs = array();
 if (isset($_REQUEST['addNone']) && $_REQUEST['addNone']) {
     $rs[] = array('id' => 0, 'name' => $modx->lexicon('none'));
 }
 
 foreach ($roles as $r) {
-	$rr = $r->toArray();
-	$rr['rolename_link'] = '<a href="index.php?a='.$actions['security/role/update'].'&id='.$r->get('id').'" title="'.$modx->lexicon('click_to_edit_title').'">'.$r->get('name').'</a>';
-	$rs[] = $rr;
+	$ra = $r->toArray();
+    $ra['menu'] = array(
+        array(
+            'text' => $modx->lexicon('role_remove'),
+            'handler' => 'this.remove.createDelegate(this,["role_remove_confirm"])',
+        )
+    );
+	$rs[] = $ra;
 }
 return $this->outputArray($rs);

@@ -5,7 +5,7 @@
  * @package modx
  * @subpackage processors.security.role
  */
-$modx->lexicon->load('role');
+$modx->lexicon->load('user');
 
 if (!$modx->hasPermission(array('access_permissions' => true, 'new_role' => true))) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
@@ -14,7 +14,7 @@ if (!$modx->hasPermission(array('access_permissions' => true, 'new_role' => true
 $role = $modx->newObject('modUserGroupRole');
 
 if ($_POST['name'] == '') {
-	return $modx->error->failure($modx->lexicon('role_err_not_specified_name'));
+	return $modx->error->failure($modx->lexicon('role_err_ns_name'));
 }
 
 $role->fromArray($_POST);
