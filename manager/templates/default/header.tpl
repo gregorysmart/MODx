@@ -28,6 +28,7 @@
 <script src="{$_config.manager_url}assets/modext/widgets/core/modx.tree.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/widgets/core/modx.combo.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/widgets/core/modx.grid.js" type="text/javascript"></script>
+<script src="{$_config.manager_url}assets/modext/widgets/core/modx.grid.local.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/widgets/core/modx.console.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/widgets/core/modx.portal.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/widgets/windows.js" type="text/javascript"></script>

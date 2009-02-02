@@ -299,6 +299,36 @@ $collection['36']->fromArray(array (
   'lang_topics' => '',
   'assets' => '',
 ), '', true, true);
+$collection['37']= $xpdo->newObject('modAction');
+$collection['37']->fromArray(array (
+  'id' => 37,
+  'context_key' => 'mgr',
+  'parent' => 46,
+  'controller' => 'security/resourcegroup/index',
+  'haslayout' => 1,
+  'lang_topics' => 'resource,user,access',
+  'assets' => '',
+), '', true, true);
+$collection['38']= $xpdo->newObject('modAction');
+$collection['38']->fromArray(array (
+  'id' => 38,
+  'context_key' => 'mgr',
+  'parent' => 46,
+  'controller' => 'security/usergroup/create',
+  'haslayout' => 1,
+  'lang_topics' => 'user,access',
+  'assets' => '',
+), '', true, true);
+$collection['39']= $xpdo->newObject('modAction');
+$collection['39']->fromArray(array (
+  'id' => 39,
+  'context_key' => 'mgr',
+  'parent' => 46,
+  'controller' => 'security/usergroup/update',
+  'haslayout' => 1,
+  'lang_topics' => 'user,access',
+  'assets' => '',
+), '', true, true);
 $collection['40']= $xpdo->newObject('modAction');
 $collection['40']->fromArray(array (
   'id' => 40,

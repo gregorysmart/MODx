@@ -23,6 +23,19 @@ if ($ug != null) return $modx->error->failure($modx->lexicon('user_group_err_alr
 $ug = $modx->newObject('modUserGroup');
 $ug->set('name',$_POST['name']);
 $ug->set('parent',$_POST['parent']);
+
+/* then add back in ones in form */
+$users = $modx->fromJSON($_POST['users']);
+$ugms = array();
+foreach ($users as $ua) {
+    $ugm = $modx->newObject('modUserGroupMember');
+    $ugm->set('user_group',$ug->get('id'));
+    $ugm->set('member',$ua['id']);
+    $ugm->set('role',$ua['role']);
+    $ugms[] = $ugm;
+}
+$ug->addMany($ugms);
+
 if ($ug->save() == false) {
     return $modx->error->failure($modx->lexicon('user_group_err_create'));
 }

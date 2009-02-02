@@ -58,49 +58,19 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 		    p = n.id.substr(2).split('_'); p = p[1];
 		    if (p === undefined) { p = 0; }
         } else { p = 0; }
-        var r = {parent: p};
         
-		if (!this.windows.create) {
-    		this.windows.create = MODx.load({
-    			xtype: 'window-usergroup-create'
-    			,record: r
-    			,listeners: {
-    				'success': {fn:this.refresh,scope:this}
-    			}
-    		});
-        } else {
-            this.windows.create.setValues(r);
-        }
-		this.windows.create.show(e.target);
+        location.href = 'index.php'
+            + '?a=' + MODx.action['security/usergroup/create']
+            + '&parent=' + p;
 	}
     
     ,update: function(item,e) {
         var n = this.cm.activeNode;
         var id = n.id.substr(2).split('_'); id = id[1];
         
-        Ext.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'get'
-                ,id: id
-            }
-            ,scope: this
-            ,success: function(r,o) {
-                r = Ext.decode(r.responseText);
-                if (!this.windows.update) {
-                    this.windows.update = MODx.load({
-                        xtype: 'window-usergroup-update'
-                        ,record: r.object
-                        ,listeners: {
-                        	'success': {fn:this.refresh,scope:this}
-                        }
-                    });
-                } else {
-                    this.windows.update.setValues(r.object);
-                }
-                this.windows.update.show(e.target);
-            }
-        });
+        location.href = 'index.php'
+            + '?a=' + MODx.action['security/usergroup/update']
+            + '&id=' + id;
     }
 	
 	,remove: function(item,e) {
@@ -142,37 +112,3 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 	}
 });
 Ext.reg('tree-usergroup',MODx.tree.UserGroup);
-
-
-/** 
- * Generates the Create User Group window.
- *  
- * @class MODx.window.CreateUserGroup
- * @extends MODx.Window
- * @constructor
- * @param {Object} config An object of options.
- * @xtype window-usergroup-create
- */
-MODx.window.UpdateUserGroup = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        title: _('user_group_update')
-        ,height: 150
-        ,width: 375
-        ,url: MODx.config.connectors_url+'security/group.php'
-        ,action: 'update'
-        ,fields: [{
-            xtype: 'hidden'
-            ,name: 'id'
-        },{
-            xtype: 'textfield'
-            ,fieldLabel: _('name')
-            ,name: 'name'
-            ,width: 150
-            ,allowBlank: false
-        }]
-    });
-    MODx.window.UpdateUserGroup.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.window.UpdateUserGroup,MODx.Window);
-Ext.reg('window-usergroup-update',MODx.window.UpdateUserGroup);

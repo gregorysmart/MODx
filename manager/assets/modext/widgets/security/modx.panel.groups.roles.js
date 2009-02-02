@@ -22,35 +22,6 @@ MODx.panel.GroupsRoles = function(config) {
                     ,bodyStyle: 'padding: 10px'
                 }
                 ,items: [{
-                    title: _('resource_groups')
-                    ,items: [{
-                        html: '<p>'+_('rrg_drag')+'</p>'
-                    },{
-                        layout: 'column'
-                        ,items: [{
-                            columnWidth: .4
-                            ,layout: 'fit'
-                            ,style: 'padding: .4em;'
-                            ,items: [{
-                                xtype: 'tree-resourcegroup'
-                                ,id: 'gr-tree-resourcegroup'
-                                ,height: 400
-                            }]
-                        },{
-                            columnWidth: .4
-                            ,layout: 'fit'
-                            ,style: 'padding: .4em;'
-                            ,items: [{
-                                xtype: 'tree-resource'
-                                ,id: 'gr-tree-resource'
-                                ,title: _('resources')
-                                ,width: 300
-                                ,remoteToolbar: false
-                                ,enableDrop: true
-                            }]
-                        }]
-                    }]
-                },{
                     title: _('user_groups')
                     ,items: [{
                         html: '<p>'+_('user_group_management_msg')+'</p>'

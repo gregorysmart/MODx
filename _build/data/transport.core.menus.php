@@ -125,6 +125,18 @@ $collection['13']->fromArray(array (
   'params' => '&class_key=modWebLink',
   'handler' => '',
 ), '', true, true);
+$collection['14']= $xpdo->newObject('modMenu');
+$collection['14']->fromArray(array (
+  'id' => 14,
+  'parent' => 8,
+  'action' => 37,
+  'text' => 'resource_groups',
+  'description' => 'resource_groups_desc',
+  'icon' => '',
+  'menuindex' => 2,
+  'params' => '',
+  'handler' => '',
+), '', true, true);
 $collection['16']= $xpdo->newObject('modMenu');
 $collection['16']->fromArray(array (
   'id' => 16,
@@ -133,7 +145,7 @@ $collection['16']->fromArray(array (
   'text' => 'flush_sessions',
   'description' => 'flush_sessions_desc',
   'icon' => 'images/icons/unzip.gif',
-  'menuindex' => 5,
+  'menuindex' => 6,
   'params' => '',
   'handler' => 'MODx.msg.confirm({
     title: _(\'flush_sessions\')
@@ -179,7 +191,7 @@ $collection['20']->fromArray(array (
   'text' => 'access_permissions',
   'description' => 'access_permissions_desc',
   'icon' => 'images/icons/password.gif',
-  'menuindex' => 2,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -191,7 +203,7 @@ $collection['21']->fromArray(array (
   'text' => 'flush_access',
   'description' => 'flush_access_desc',
   'icon' => 'images/icons/unzip.gif',
-  'menuindex' => 4,
+  'menuindex' => 5,
   'params' => '',
   'handler' => 'MODx.msg.confirm({
     title: _(\'flush_access\')
@@ -452,7 +464,7 @@ $collection['43']->fromArray(array (
   'text' => 'policy_management',
   'description' => 'policy_management_desc',
   'icon' => 'images/icons/logging.gif',
-  'menuindex' => 3,
+  'menuindex' => 4,
   'params' => '',
   'handler' => '',
 ), '', true, true);

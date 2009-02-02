@@ -28,6 +28,13 @@ $groups = $modx->getCollection('modUserGroup',$c);
 $count = $modx->getCount('modUserGroup');
 
 $gs = array();
+if (isset($_REQUEST['addNone']) && $_REQUEST['addNone']) {
+    $gs[] = array(
+        'id' => '0',
+        'name' => $modx->lexicon('none'),
+        'parent' => '0',
+    );
+}
 if (isset($_REQUEST['combo'])) {
     $gs[] = array(
         'id' => ''
