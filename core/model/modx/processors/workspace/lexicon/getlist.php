@@ -60,7 +60,7 @@ foreach ($entries as $entry) {
     $pa['menu'] = array(
         array(
             'text' => $modx->lexicon('entry_update'),
-            'handler' => array( 'xtype' => 'window-lexicon-entry-update' ),
+            'handler' => array( 'xtype' => 'modx-window-lexicon-entry-update' ),
         ),
         '-',
         array(

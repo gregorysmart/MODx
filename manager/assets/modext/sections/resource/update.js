@@ -4,14 +4,14 @@
  * @class MODx.page.UpdateResource
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-resource-update
+ * @xtype modx-page-resource-update
  */
 MODx.page.UpdateResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
     	url: MODx.config.connectors_url+'resource/index.php'
         ,which_editor: 'none'
-        ,formpanel: 'panel-resource'
+        ,formpanel: 'modx-panel-resource'
     	,actions: {
             'new': MODx.action['resource/create']
             ,edit: MODx.action['resource/update']
@@ -20,8 +20,8 @@ MODx.page.UpdateResource = function(config) {
         }
     	,loadStay: true
         ,components: [{
-            xtype: 'panel-resource'
-            ,renderTo: 'panel-resource'
+            xtype: 'modx-panel-resource'
+            ,renderTo: 'modx-panel-resource'
             ,resource: config.id
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -29,9 +29,8 @@ MODx.page.UpdateResource = function(config) {
             ,access_permissions: config.access_permissions
             ,template: config.template
         },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
+            xtype: 'modx-grid-resource-security'
+            ,renderTo: 'modx-grid-resource-security'
             ,resource: config.id
         }]
         ,buttons: [{
@@ -41,7 +40,7 @@ MODx.page.UpdateResource = function(config) {
             ,method: 'remote'
             ,checkDirty: true
             ,keys: [{
-                key: "s"
+                key: 's'
                 ,alt: true
                 ,ctrl: true
             }]
@@ -85,4 +84,4 @@ Ext.extend(MODx.page.UpdateResource,MODx.Component,{
         });
     }
 });
-Ext.reg('page-resource-update',MODx.page.UpdateResource);
+Ext.reg('modx-page-resource-update',MODx.page.UpdateResource);

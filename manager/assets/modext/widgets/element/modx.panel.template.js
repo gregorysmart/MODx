@@ -17,7 +17,7 @@ MODx.panel.Template = function(config) {
         ,bodyStyle: ''
         ,items: [{
             html: '<h2>'+_('template_new')+'</h2>'
-            ,id: 'template-header'
+            ,id: 'modx-template-header'
             ,cls: 'modx-page-header'
             ,border: false
         },{
@@ -29,22 +29,24 @@ MODx.panel.Template = function(config) {
                     ,bodyStyle: 'padding: 1.5em;'
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,layout: 'form'
+                    ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('template_msg')+'</p>'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
-                        ,id: 'template-id'
+                        ,id: 'modx-template-id'
                         ,value: config.template
                     },{
                         xtype: 'hidden'
                         ,name: 'props'
+                        ,id: 'modx-template-props'
                         ,value: null
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('template_name')
                         ,name: 'templatename'
-                        ,id: 'template-templatename'
+                        ,id: 'modx-template-templatename'
                         ,width: 300
                         ,maxLength: 100
                         ,enableKeyEvents: true
@@ -58,14 +60,14 @@ MODx.panel.Template = function(config) {
                         xtype: 'textfield'
                         ,fieldLabel: _('template_desc')
                         ,name: 'description'
-                        ,id: 'template-description'
+                        ,id: 'modx-template-description'
                         ,width: 300
                         ,maxLength: 255
                     },{
                         xtype: 'combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
-                        ,id: 'template-category'
+                        ,id: 'modx-template-category'
                         ,width: 250
                         ,value: config.category || null
                     },{
@@ -73,7 +75,7 @@ MODx.panel.Template = function(config) {
                         ,fieldLabel: _('template_lock')
                         ,description: _('template_lock_msg')
                         ,name: 'locked'
-                        ,id: 'template-locked'
+                        ,id: 'modx-template-locked'
                     },{
                     	html: onTempFormRender
                     	,border: false
@@ -83,7 +85,7 @@ MODx.panel.Template = function(config) {
                         xtype: 'textarea'
                         ,hideLabel: true
                         ,name: 'content'
-                        ,id: 'template-content'
+                        ,id: 'modx-template-content'
                         ,width: '95%'
                         ,height: 400
                     }]
@@ -130,7 +132,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
                 'success': {fn:function(r) {
                     if (r.object.category == '0') { r.object.category = null; }
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('template-header').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
+                    Ext.getCmp('modx-template-header').getEl().update('<h2>'+_('template')+': '+r.object.templatename+'</h2>');
                     this.fireEvent('ready',r.object);
 
                     var d = Ext.decode(r.object.data);
@@ -153,7 +155,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
         Ext.getCmp('modx-grid-template-tv').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('template-category').getValue();
+        var c = Ext.getCmp('modx-template-category').getValue();
         var u = c != '' && c != null ? 'n_template_category_'+c : 'n_type_template'; 
         t.refreshNode(u,true);
     }

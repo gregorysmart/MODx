@@ -8,7 +8,7 @@
 Ext.onReady(function() {
     MODx.load({
 	{/literal}
-	    xtype: 'page-symlink-update'
+	    xtype: 'modx-page-symlink-update'
 	    ,id: '{$resource->id}'
 	    ,ctx: '{$resource->context_key}'
 	    ,template: '{$resource->template}'

@@ -1,5 +1,5 @@
 <div id="modx-browser"></div>
-<div id="panel-static"></div>
+<div id="modx-panel-static"></div>
 
 {include file='resource/_javascript.tpl'}
 <script type="text/javascript" src="{$_config.manager_url}assets/modext/core/modx.view.js"></script>
@@ -22,17 +22,17 @@
 <!-- BEGIN TOP PANE -->
 
 <!-- START Template Variables -->
-<div id="tab_tvs" class="padding x-hide-display">
+<div id="modx-tab-tvs" class="padding x-hide-display">
 {include file='resource/sections/tvs.tpl'}
 </div>
 <!-- END Template Variables -->
 
 <!-- START Access Permissions -->
-<div id="tab_access" class="padding x-hide-display">
+<div id="modx-tab-access" class="padding x-hide-display">
     <h2>{$_lang.security}</h2>
     
     <p>{$_lang.resource_access_message}</p>
-    <div id="grid-resource-security"></div>
+    <div id="modx-grid-resource-security"></div>
 </div>
 <!-- END Access Permissions -->
     

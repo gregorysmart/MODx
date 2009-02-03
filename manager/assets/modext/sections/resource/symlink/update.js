@@ -4,7 +4,7 @@
  * @class MODx.page.UpdateSymLink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-symlink-update
+ * @xtype modx-page-symlink-update
  */
 MODx.page.UpdateSymLink = function(config) {
     config = config || {};
@@ -12,7 +12,7 @@ MODx.page.UpdateSymLink = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,which_editor: 'none'
-        ,formpanel: 'panel-symlink'
+        ,formpanel: 'modx-panel-symlink'
         ,actions: {
             'new': MODx.action['resource/symlink/create']
             ,edit: MODx.action['resource/symlink/update']
@@ -20,8 +20,8 @@ MODx.page.UpdateSymLink = function(config) {
             ,cancel: MODx.action['welcome']
         }
         ,components: [{
-            xtype: 'panel-symlink'
-            ,renderTo: 'panel-symlink'
+            xtype: 'modx-panel-symlink'
+            ,renderTo: 'modx-panel-symlink'
             ,resource: config.id
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -29,9 +29,8 @@ MODx.page.UpdateSymLink = function(config) {
             ,access_permissions: config.access_permissions
             ,template: config.template
         },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
+            xtype: 'modx-grid-resource-security'
+            ,renderTo: 'modx-grid-resource-security'
             ,resource: config.id
         }]
     	,loadStay: true
@@ -84,4 +83,4 @@ Ext.extend(MODx.page.UpdateSymLink,MODx.Component,{
         });
     }
 });
-Ext.reg('page-symlink-update',MODx.page.UpdateSymLink);
+Ext.reg('modx-page-symlink-update',MODx.page.UpdateSymLink);

@@ -4,7 +4,7 @@
  * @class MODx.page.UpdateWebLink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-weblink-update
+ * @xtype modx-page-weblink-update
  */
 MODx.page.UpdateWebLink = function(config) {
     config = config || {};
@@ -12,7 +12,7 @@ MODx.page.UpdateWebLink = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,which_editor: 'none'
-        ,formpanel: 'panel-weblink'
+        ,formpanel: 'modx-panel-weblink'
         ,actions: {
             'new': MODx.action['resource/create']
             ,edit: MODx.action['resource/update']
@@ -20,8 +20,8 @@ MODx.page.UpdateWebLink = function(config) {
             ,cancel: MODx.action['welcome']
         }
         ,components: [{
-            xtype: 'panel-weblink'
-            ,renderTo: 'panel-weblink'
+            xtype: 'modx-panel-weblink'
+            ,renderTo: 'modx-panel-weblink'
             ,resource: config.id
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -29,9 +29,8 @@ MODx.page.UpdateWebLink = function(config) {
             ,access_permissions: config.access_permissions
             ,template: config.template
         },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
+            xtype: 'modx-grid-resource-security'
+            ,renderTo: 'modx-grid-resource-security'
             ,resource: config.id
         }]
     	,loadStay: true
@@ -84,4 +83,4 @@ Ext.extend(MODx.page.UpdateWebLink,MODx.Component,{
         });
     }
 });
-Ext.reg('page-weblink-update',MODx.page.UpdateWebLink);
+Ext.reg('modx-page-weblink-update',MODx.page.UpdateWebLink);

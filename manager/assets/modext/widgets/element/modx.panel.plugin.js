@@ -17,7 +17,7 @@ MODx.panel.Plugin = function(config) {
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
             html: '<h2>'+_('plugin_new')+'</h2>'
-            ,id: 'plugin-header'
+            ,id: 'modx-plugin-header'
             ,cls: 'modx-page-header'
             ,border: false
         },{
@@ -28,57 +28,59 @@ MODx.panel.Plugin = function(config) {
                     title: _('plugin_title')
                     ,bodyStyle: 'padding: 1.5em;'
                     ,layout: 'form'
+                    ,labelWidth: 150
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,items: [{
                         html: '<p>'+_('plugin_msg')+'</p>'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
-                        ,id: 'plugin-id'
+                        ,id: 'modx-plugin-id'
                         ,value: config.plugin
                     },{
                         xtype: 'hidden'
                         ,name: 'props'
+                        ,id: 'modx-plugin-props'
                         ,value: null
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('plugin_name')
                         ,name: 'name'
-                        ,id: 'plugin-name'
+                        ,id: 'modx-plugin-name'
                         ,width: 300
                         ,maxLength: 255
                         ,enableKeyEvents: true
                         ,allowBlank: false
                         ,listeners: {
                             'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+f.getValue()+'</h2>');
+                                Ext.getCmp('modx-plugin-header').getEl().update('<h2>'+_('plugin')+': '+f.getValue()+'</h2>');
                             }}
                         }
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('plugin_desc')
                         ,name: 'description'
-                        ,id: 'plugin-description'
+                        ,id: 'modx-plugin-description'
                         ,width: 300
                         ,maxLength: 255
                     },{
-                        xtype: 'combo-category'
+                        xtype: 'modx-combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
-                        ,id: 'plugin-category'
+                        ,id: 'modx-plugin-category'
                         ,width: 250
                         ,value: config.category || null
                     },{
                         xtype: 'checkbox'
                         ,fieldLabel: _('plugin_disabled')
                         ,name: 'disabled'
-                        ,id: 'plugin-disabled'
+                        ,id: 'modx-plugin-disabled'
                     },{
                         xtype: 'checkbox'
                         ,fieldLabel: _('plugin_lock')
                         ,description: _('plugin_lock_msg')
                         ,name: 'locked'
-                        ,id: 'plugin-locked'
+                        ,id: 'modx-plugin-locked'
                     },{
                         html: onPluginFormRender
                         ,border: false
@@ -88,7 +90,7 @@ MODx.panel.Plugin = function(config) {
                         xtype: 'textarea'
                         ,hideLabel: true
                         ,name: 'plugincode'
-                        ,id: 'plugin-plugincode'
+                        ,id: 'modx-plugin-plugincode'
                         ,width: '95%'
                         ,height: 400
                         ,value: "<?php\n\n?>"
@@ -146,7 +148,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
             		if (r.object.category == '0') { r.object.category = null; }
                     r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>";
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('modx-plugin-header').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
@@ -169,7 +171,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         Ext.getCmp('modx-grid-plugin-event').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('plugin-category').getValue();
+        var c = Ext.getCmp('modx-plugin-category').getValue();
         var u = c != '' && c != null ? 'n_plugin_category_'+c : 'n_type_plugin'; 
         t.refreshNode(u,true);
     }

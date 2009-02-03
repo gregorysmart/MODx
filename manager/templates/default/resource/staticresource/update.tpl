@@ -8,7 +8,7 @@
 Ext.onReady(function() {
     MODx.load({
     {/literal}
-        xtype: 'page-static-update'
+        xtype: 'modx-page-static-update'
         ,id: '{$resource->id}'
         ,ctx: '{$resource->context_key}'
         ,template: '{$resource->template}'

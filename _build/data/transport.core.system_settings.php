@@ -120,7 +120,7 @@ $collection['13']= $xpdo->newObject('modSystemSetting');
 $collection['13']->fromArray(array (
   'key' => 'default_template',
   'value' => '1',
-  'xtype' => 'combo-template',
+  'xtype' => 'modx-combo-template',
   'namespace' => 'core',
   'area' => 'site',
   'editedon' => NULL,
@@ -201,7 +201,7 @@ $collection['22']= $xpdo->newObject('modSystemSetting');
 $collection['22']->fromArray(array (
   'key' => 'fe_editor_lang',
   'value' => 'en',
-  'xtype' => 'combo-language',
+  'xtype' => 'modx-combo-language',
   'namespace' => 'core',
   'area' => 'language',
   'editedon' => NULL,
@@ -273,7 +273,7 @@ $collection['30']= $xpdo->newObject('modSystemSetting');
 $collection['30']->fromArray(array (
   'key' => 'manager_language',
   'value' => 'en',
-  'xtype' => 'combo-language',
+  'xtype' => 'modx-combo-language',
   'namespace' => 'core',
   'area' => 'language',
   'editedon' => NULL,
@@ -309,7 +309,7 @@ $collection['34']= $xpdo->newObject('modSystemSetting');
 $collection['34']->fromArray(array (
   'key' => 'modx_charset',
   'value' => 'UTF-8',
-  'xtype' => 'combo-charset',
+  'xtype' => 'modx-combo-charset',
   'namespace' => 'core',
   'area' => 'language',
   'editedon' => NULL,
@@ -746,7 +746,7 @@ $collection['80']= $xpdo->newObject('modSystemSetting');
 $collection['80']->fromArray(array (
   'key' => 'which_editor',
   'value' => 'TinyMCE',
-  'xtype' => 'combo-rte',
+  'xtype' => 'modx-combo-rte',
   'namespace' => 'core',
   'area' => 'manager',
   'editedon' => NULL,

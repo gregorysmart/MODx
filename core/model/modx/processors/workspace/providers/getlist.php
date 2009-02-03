@@ -31,7 +31,7 @@ foreach ($providers as $provider) {
     $pa['menu'] = array(
         array(
             'text' => $modx->lexicon('provider_update'),
-            'handler' => array( 'xtype' => 'window-provider-update' ),
+            'handler' => array( 'xtype' => 'modx-window-provider-update' ),
         ),
         '-',
         array(

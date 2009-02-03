@@ -277,8 +277,7 @@ Ext.reg('combo-policy',MODx.combo.Policy);
  * 
  * @class MODx.combo.Template
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-template
+ * @xtype modx-combo-template
  */
 MODx.combo.Template = function(config) {
 	config = config || {};
@@ -298,7 +297,7 @@ MODx.combo.Template = function(config) {
 	MODx.combo.Template.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Template,MODx.combo.ComboBox);
-Ext.reg('combo-template',MODx.combo.Template);
+Ext.reg('modx-combo-template',MODx.combo.Template);
 
 /**
  * Displays a dropdown list of modCategories.
@@ -332,7 +331,7 @@ Ext.extend(MODx.combo.Category,MODx.combo.ComboBox,{
         this.setValue(v,true);
     }
 });
-Ext.reg('combo-category',MODx.combo.Category);
+Ext.reg('modx-combo-category',MODx.combo.Category);
 
 /**
  * Displays a dropdown list of languages.
@@ -386,7 +385,7 @@ MODx.combo.Charset = function(config) {
 	MODx.combo.Charset.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Charset,MODx.combo.ComboBox);
-Ext.reg('combo-charset',MODx.combo.Charset);
+Ext.reg('modx-combo-charset',MODx.combo.Charset);
 
 /**
  * Displays a dropdown list of available RTEs.
@@ -414,7 +413,7 @@ MODx.combo.RTE = function(config) {
 	MODx.combo.RTE.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.RTE,MODx.combo.ComboBox);
-Ext.reg('combo-rte',MODx.combo.RTE);
+Ext.reg('modx-combo-rte',MODx.combo.RTE);
 
 /**
  * Displays a dropdown list of available Roles.
@@ -447,8 +446,7 @@ Ext.reg('combo-role',MODx.combo.Role);
  * 
  * @class MODx.combo.ContentType
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-contenttype
+ * @xtype modx-combo-content-type
  */
 MODx.combo.ContentType = function(config) {
     config = config || {};
@@ -466,7 +464,7 @@ MODx.combo.ContentType = function(config) {
     MODx.combo.ContentType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ContentType,MODx.combo.ComboBox);
-Ext.reg('combo-contenttype',MODx.combo.ContentType);
+Ext.reg('modx-combo-content-type',MODx.combo.ContentType);
 
 /**
  * Displays a content disposition combo
@@ -496,7 +494,7 @@ MODx.combo.ContentDisposition = function(config) {
     MODx.combo.ContentDisposition.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ContentDisposition,Ext.form.ComboBox);
-Ext.reg('combo-content-disposition',MODx.combo.ContentDisposition);
+Ext.reg('modx-combo-content-disposition',MODx.combo.ContentDisposition);
 
 
 /**
@@ -593,7 +591,7 @@ Ext.reg('modx-combo-namespace',MODx.combo.Namespace);
  * @class MODx.combo.Browser
  * @extends Ext.form.TriggerField
  * @param {Object} config An object of configuration properties
- * @xtype combo-browser
+ * @xtype modx-combo-browser
  */
 MODx.combo.Browser = function(config) {
     config = config || {};
@@ -636,7 +634,7 @@ Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
         MODx.combo.Catalog.superclass.onDestroy.call(this);
     }
 });
-Ext.reg('combo-browser',MODx.combo.Browser);
+Ext.reg('modx-combo-browser',MODx.combo.Browser);
 
 
 /**

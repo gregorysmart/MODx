@@ -9,7 +9,7 @@ MODx.panel.WebLink = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
-        ,id: 'panel-weblink'
+        ,id: 'modx-panel-weblink'
         ,class_key: 'modWebLink'
         ,resource: ''
         ,bodyStyle: ''
@@ -94,11 +94,11 @@ MODx.panel.WebLink = function(config) {
                     ,grow: true
                     
                 },{
-                    xtype: 'combo-template'
+                    xtype: 'modx-combo-template'
                     ,fieldLabel: _('resource_template')
                     ,description: _('resource_template_help')
                     ,name: 'template'
-                    ,id: 'resource-template'
+                    ,id: 'modx-resource-template'
                     ,width: 300
                     ,baseParams: {
                         action: 'getList'
@@ -113,7 +113,7 @@ MODx.panel.WebLink = function(config) {
                     ,fieldLabel: _('resource_parent')
                     ,description: _('resource_parent_help')
                     ,name: 'parent'
-                    ,id: 'resource-parent'
+                    ,id: 'modx-resource-parent'
                     ,value: config.parent || 0
                     ,width: 60
                 },{
@@ -192,7 +192,7 @@ MODx.panel.WebLink = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'class_key'
-                    ,id: 'class_key'
+                    ,id: 'modx-resource-class-key'
                     ,value: config.class_key || 'modDocument'
                     
                 },{
@@ -203,17 +203,17 @@ MODx.panel.WebLink = function(config) {
                 },{
                     xtype: 'hidden'
                     ,name: 'context_key'
-                    ,id: 'context_key'
+                    ,id: 'modx-resource-context-key'
                     ,value: config.context_key || 'web'
                 }]
             },{
-                xtype: 'panel-resource-tv'
+                xtype: 'modx-panel-resource-tv'
                 ,resource: config.resource
                 ,class_key: config.class_key
                 ,template: config.template
                 
             },(config.access_permissions ? {
-                contentEl: 'tab_access'
+                contentEl: 'modx-tab-access'
                 ,title: _('access_permissions')
                 
             } : {})]
@@ -252,28 +252,28 @@ Ext.extend(MODx.panel.WebLink,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {        
-        var g = Ext.getCmp('grid-resource-security');
+        var g = Ext.getCmp('modx-grid-resource-security');
         Ext.apply(o.form.baseParams,{
             resource_groups: g.encodeModified()
         });
     }
 
     ,success: function(o) {
-        Ext.getCmp('grid-resource-security').getStore().commitChanges();
+        Ext.getCmp('modx-grid-resource-security').getStore().commitChanges();
         var t = parent.Ext.getCmp('modx_resource_tree');
-        var ctx = Ext.getCmp('context_key').getValue();
-        var pa = Ext.getCmp('resource-parent').getValue();
+        var ctx = Ext.getCmp('modx-resource-context-key').getValue();
+        var pa = Ext.getCmp('modx-resource-parent').getValue();
         t.refreshNode(ctx+'_'+pa,true);
     }
     
     ,templateWarning: function() {
-        var t = Ext.getCmp('tpl');
+        var t = Ext.getCmp('modx-resource-template');
         if (!t) { return false; }
         // if selection isn't the current value (originalValue), then show dialog
         if(t.getValue() != t.originalValue) {
             Ext.Msg.confirm(_('tmplvar_change_template'), _('tmplvar_change_template_msg'), function(e) {
                 if (e == 'yes') {
-                    var tvpanel = Ext.getCmp('panel-resource-tv');
+                    var tvpanel = Ext.getCmp('modx-panel-resource-tv');
                     if(tvpanel && tvpanel.body) {
                         // update the Template Variables tab
                         this.tvum = tvpanel.body.getUpdater();
@@ -297,11 +297,11 @@ Ext.extend(MODx.panel.WebLink,MODx.FormPanel,{
         }
     }
 });
-Ext.reg('panel-weblink',MODx.panel.WebLink);
+Ext.reg('modx-panel-weblink',MODx.panel.WebLink);
 
 // global accessor for TV dynamic fields
 var triggerDirtyField = function(fld) {
-    Ext.getCmp('panel-resource').fieldChangeEvent(fld);
+    Ext.getCmp('modx-panel-weblink').fieldChangeEvent(fld);
 };
 var triggerRTEOnChange = function(i) {
     triggerDirtyField(Ext.getCmp('ta'));

@@ -19,7 +19,7 @@ MODx.panel.ImageTV = function(config) {
         }
         ,width: 400
         ,items: [{
-            xtype: 'combo-browser'
+            xtype: 'modx-combo-browser'
             ,browserEl: 'tvbrowser'+config.tv
             ,name: 'tv'+config.tv
             ,id: 'tv'+config.tv
@@ -36,4 +36,4 @@ MODx.panel.ImageTV = function(config) {
     MODx.panel.ImageTV.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.ImageTV,MODx.Panel);
-Ext.reg('panel-tv-image',MODx.panel.ImageTV);
+Ext.reg('modx-panel-tv-image',MODx.panel.ImageTV);

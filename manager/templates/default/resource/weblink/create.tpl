@@ -8,7 +8,7 @@
 Ext.onReady(function() {
     MODx.load({
 	{/literal}
-	    xtype: 'page-weblink-create'
+	    xtype: 'modx-page-weblink-create'
 	    ,template: '{$resource->template}'
 	    ,class_key: '{$resource->class_key}'
 	    ,edit_doc_metatags: {if $modx->hasPermission('edit_doc_metatags')}true{else}false{/if}

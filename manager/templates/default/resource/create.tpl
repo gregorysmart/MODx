@@ -9,7 +9,7 @@
 Ext.onReady(function() {
     MODx.load({
 	{/literal}
-	    xtype: 'page-resource-create'
+	    xtype: 'modx-page-resource-create'
 	    ,template: '{$_config.default_template}'
 	    ,class_key: '{$smarty.request.class_key|default:"modDocument"}'
         ,context_key: '{$smarty.request.context_key|default:"web"}'

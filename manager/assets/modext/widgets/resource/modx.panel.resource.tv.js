@@ -9,8 +9,8 @@
 MODx.panel.ResourceTV = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        contentEl: 'tab_tvs'
-        ,id: 'panel-resource-tv'
+        contentEl: 'modx-tab-tvs'
+        ,id: 'modx-panel-resource-tv'
         ,title: _('settings_templvars')
         ,class_key: ''
         ,resource: ''
@@ -24,7 +24,7 @@ Ext.extend(MODx.panel.ResourceTV,MODx.Panel,{
      * @param {Object} config
      */
     autoload: function(config) {
-        var t = Ext.getCmp('resource-template');
+        var t = Ext.getCmp('modx-resource-template');
         if (!t) { return false; }
         var template = config.template ? config.template : t.getValue();
         var a = {
@@ -41,4 +41,4 @@ Ext.extend(MODx.panel.ResourceTV,MODx.Panel,{
         return a;        	
     }
 });
-Ext.reg('panel-resource-tv',MODx.panel.ResourceTV);
+Ext.reg('modx-panel-resource-tv',MODx.panel.ResourceTV);

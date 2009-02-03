@@ -16,7 +16,7 @@ MODx.panel.Snippet = function(config) {
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
             html: '<h2>'+_('snippet_new')+'</h2>'
-            ,id: 'snippet-header'
+            ,id: 'modx-snippet-header'
             ,cls: 'modx-page-header'
             ,border: false
         },{
@@ -28,56 +28,58 @@ MODx.panel.Snippet = function(config) {
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,bodyStyle: 'padding: 1.5em;'
                     ,layout: 'form'
+                    ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('snippet_msg')+'</p>'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
-                        ,id: 'snippet-id'
+                        ,id: 'modx-snippet-id'
                         ,value: config.snippet
                     },{
                         xtype: 'hidden'
                         ,name: 'props'
+                        ,id: 'modx-snippet-props'
                         ,value: null
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('snippet_name')
                         ,name: 'name'
-                        ,id: 'snippet-name'
+                        ,id: 'modx-snippet-name'
                         ,width: 300
                         ,maxLength: 255
                         ,enableKeyEvents: true
                         ,allowBlank: false
                         ,listeners: {
                             'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('snippet-header').getEl().update('<h2>'+_('snippet')+': '+f.getValue()+'</h2>');
+                                Ext.getCmp('modx-snippet-header').getEl().update('<h2>'+_('snippet')+': '+f.getValue()+'</h2>');
                             }}
                         }
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('snippet_desc')
                         ,name: 'description'
-                        ,id: 'snippet-description'
+                        ,id: 'modx-snippet-description'
                         ,width: 300
                         ,maxLength: 255
                     },{
-                        xtype: 'combo-category'
+                        xtype: 'modx-combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
-                        ,id: 'snippet-category'
+                        ,id: 'modx-snippet-category'
                         ,width: 250
                         ,value: config.category || null
-                    },{
+                    },/*{
                         xtype: 'checkbox'
                         ,fieldLabel: _('snippet_execonsave')
                         ,name: 'runsnippet'
-                        ,id: 'snippet-runsnippet'
-                    },{
+                        ,id: 'modx-snippet-runsnippet'
+                    },*/{
                         xtype: 'checkbox'
                         ,fieldLabel: _('snippet_lock')
                         ,description: _('snippet_lock_msg')
                         ,name: 'locked'
-                        ,id: 'snippet-locked'
+                        ,id: 'modx-snippet-locked'
                     },{
                         html: onSnipFormRender
                         ,border: false
@@ -87,7 +89,7 @@ MODx.panel.Snippet = function(config) {
                         xtype: 'textarea'
                         ,hideLabel: true
                         ,name: 'snippet'
-                        ,id: 'snippet-snippet'
+                        ,id: 'modx-snippet-snippet'
                         ,width: '95%'
                         ,height: 400
                         ,value: "<?php\n\n?>"
@@ -128,7 +130,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     if (r.object.category == '0') { r.object.category = null; }
                     r.object.snippet = "<?php\n"+r.object.snippet+"\n?>";
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('snippet-header').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('modx-snippet-header').getEl().update('<h2>'+_('snippet')+': '+r.object.name+'</h2>');
                     this.clearDirty();
                     this.fireEvent('ready',r.object);
                     
@@ -148,7 +150,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
         Ext.getCmp('modx-grid-element-properties').save();
         
         var t = parent.Ext.getCmp('modx_element_tree');
-        var c = Ext.getCmp('snippet-category').getValue();
+        var c = Ext.getCmp('modx-snippet-category').getValue();
         var u = c != '' && c != null ? 'n_snippet_category_'+c : 'n_type_snippet'; 
         t.refreshNode(u,true);
     }

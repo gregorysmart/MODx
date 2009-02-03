@@ -18,7 +18,7 @@ MODx.panel.Chunk = function(config) {
             html: '<h2>'+_('chunk_new')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
-            ,id: 'chunk-header'
+            ,id: 'modx-chunk-header'
         },{            
             xtype: 'portal'
             ,items: [{
@@ -28,44 +28,46 @@ MODx.panel.Chunk = function(config) {
                     ,bodyStyle: 'padding: 1.5em;'
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,layout: 'form'
+                    ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('chunk_msg')+'</p>'
                         ,border: false
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
-                        ,id: 'chunk-id'
+                        ,id: 'modx-chunk-id'
                         ,value: config.chunk
                     },{
                         xtype: 'hidden'
                         ,name: 'props'
+                        ,id: 'modx-chunk-props'
                         ,value: null
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('name')
                         ,name: 'name'
-                        ,id: 'chunk-name'
+                        ,id: 'modx-chunk-name'
                         ,width: 300
                         ,maxLength: 255
                         ,enableKeyEvents: true
                         ,allowBlank: false
                         ,listeners: {
                             'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('chunk-header').getEl().update('<h2>'+_('chunk')+': '+f.getValue()+'</h2>');
+                                Ext.getCmp('modx-chunk-header').getEl().update('<h2>'+_('chunk')+': '+f.getValue()+'</h2>');
                             }}
                         }
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('description')
                         ,name: 'description'
-                        ,id: 'chunk-description'
+                        ,id: 'modx-chunk-description'
                         ,width: 300
                         ,maxLength: 255
                     },{
-                        xtype: 'combo-category'
+                        xtype: 'modx-combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
-                        ,id: 'chunk-category'
+                        ,id: 'modx-chunk-category'
                         ,width: 250
                         ,value: config.category || null
                     },{
@@ -73,7 +75,7 @@ MODx.panel.Chunk = function(config) {
                         ,fieldLabel: _('chunk_lock')
                         ,description: _('chunk_lock_msg')
                         ,name: 'locked'
-                        ,id: 'chunk-locked'
+                        ,id: 'modx-chunk-locked'
                         ,inputValue: true
                     },{
                         html: onChunkFormRender
@@ -85,21 +87,21 @@ MODx.panel.Chunk = function(config) {
                         xtype: 'textarea'
                         ,hideLabel: true
                         ,name: 'snippet'
-                        ,id: 'chunk-snippet'
+                        ,id: 'modx-chunk-snippet'
                         ,width: '95%'
                         ,height: 400
                         ,value: ''
                     },{
-                        xtype: 'combo-rte'
+                        xtype: 'modx-combo-rte'
                         ,fieldLabel: _('which_editor_title')
-                        ,id: 'which_editor'
+                        ,id: 'modx-chunk-which-editor'
                         ,editable: false
                         ,listWidth: 300
                         ,triggerAction: 'all'
                         ,allowBlank: true
                         ,listeners: {
                             'select': {fn:function() {
-                                var w = Ext.getCmp('which_editor').getValue();
+                                var w = Ext.getCmp('modx-chunk-which-editor').getValue();
                                 this.form.submit();
                                 var u = '?a='+MODx.action['element/chunk/create']+'&which_editor='+w+'&category='+this.config.category;
                                 location.href = u;
@@ -141,7 +143,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
                     if (r.object.category == '0') { r.object.category = null; }
                     if (r.object.snippet == 'NULL') { r.object.snippet = ''; }
                     this.getForm().setValues(r.object);
-                    Ext.getCmp('chunk-header').getEl().update('<h2>'+_('chunk')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('modx-chunk-header').getEl().update('<h2>'+_('chunk')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
@@ -158,7 +160,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
     }
     ,success: function(r) {
         Ext.getCmp('modx-grid-element-properties').save();
-        var c = Ext.getCmp('chunk-category').getValue();
+        var c = Ext.getCmp('modx-chunk-category').getValue();
         var n = c !== '' && c !== null ? 'n_chunk_category_'+c : 'n_type_chunk';
         var t = parent.Ext.getCmp('modx_element_tree');
         if (t) {

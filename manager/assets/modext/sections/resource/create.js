@@ -4,13 +4,13 @@
  * @class MODx.page.CreateResource
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-resource-create
+ * @xtype modx-page-resource-create
  */
 MODx.page.CreateResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
-        ,formpanel: 'panel-resource'
+        ,formpanel: 'modx-panel-resource'
         ,which_editor: 'none'
     	,actions: {
             'new': MODx.action['resource/create']
@@ -24,7 +24,7 @@ MODx.page.CreateResource = function(config) {
             ,checkDirty: true
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
             ,keys: [{
-                key: "s"
+                key: 's'
                 ,alt: true
                 ,ctrl: true
             }]
@@ -35,8 +35,8 @@ MODx.page.CreateResource = function(config) {
         }]
     	,loadStay: true
         ,components: [{
-            xtype: 'panel-resource'
-            ,renderTo: 'panel-resource'
+            xtype: 'modx-panel-resource'
+            ,renderTo: 'modx-panel-resource'
             ,resource: 0
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -45,12 +45,10 @@ MODx.page.CreateResource = function(config) {
             ,template: config.template
             ,parent: config.parent
         },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
+            xtype: 'modx-grid-resource-security'
+            ,renderTo: 'modx-grid-resource-security'
         },{
-            xtype: 'panel-resource-tv'
-            ,id: 'panel-resource-tv'
+            xtype: 'modx-panel-resource-tv'
             ,class_key: config.class_key
             ,resource: 0
         }]
@@ -58,4 +56,4 @@ MODx.page.CreateResource = function(config) {
     MODx.page.CreateResource.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateResource,MODx.Component);
-Ext.reg('page-resource-create',MODx.page.CreateResource);
+Ext.reg('modx-page-resource-create',MODx.page.CreateResource);

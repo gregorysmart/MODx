@@ -64,7 +64,7 @@ foreach ($settings as $setting) {
         array(
             'text' => $modx->lexicon('setting_update'),
             'handler' => array(
-                'xtype' => 'window-context-setting-update',
+                'xtype' => 'modx-window-context-setting-update',
                 'record' => $sa,
             ),
         ),

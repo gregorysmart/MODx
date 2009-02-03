@@ -4,7 +4,7 @@
  * @class MODx.page.UpdateStatic
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-static-update
+ * @xtype modx-page-static-update
  */
 MODx.page.UpdateStatic = function(config) {
     config = config || {};
@@ -12,7 +12,7 @@ MODx.page.UpdateStatic = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,which_editor: 'none'
-        ,formpanel: 'panel-static'
+        ,formpanel: 'modx-panel-static'
         ,actions: {
             'new': MODx.action['resource/staticresource/create']
             ,edit: MODx.action['resource/staticresource/update']
@@ -20,8 +20,8 @@ MODx.page.UpdateStatic = function(config) {
             ,cancel: MODx.action['welcome']
         }
         ,components: [{
-            xtype: 'panel-static'
-            ,renderTo: 'panel-static'
+            xtype: 'modx-panel-static'
+            ,renderTo: 'modx-panel-static'
             ,resource: config.id
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -29,9 +29,8 @@ MODx.page.UpdateStatic = function(config) {
             ,access_permissions: config.access_permissions
             ,template: config.template
         },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
+            xtype: 'modx-grid-resource-security'
+            ,renderTo: 'modx-grid-resource-security'
             ,resource: config.id
         }]
     	,loadStay: true
@@ -84,4 +83,4 @@ Ext.extend(MODx.page.UpdateStatic,MODx.Component,{
         });
     }
 });
-Ext.reg('page-static-update',MODx.page.UpdateStatic);
+Ext.reg('modx-page-static-update',MODx.page.UpdateStatic);

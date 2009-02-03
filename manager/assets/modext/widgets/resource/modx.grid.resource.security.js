@@ -19,6 +19,7 @@ MODx.grid.ResourceSecurity = function(config) {
 
     Ext.applyIf(config,{
         title: _('security')
+        ,id: 'modx-grid-resource-security'
         ,url: MODx.config.connectors_url+'resource/resourcegroup.php'
         ,baseParams: {
             action: 'getList'
@@ -41,4 +42,4 @@ MODx.grid.ResourceSecurity = function(config) {
     MODx.grid.ResourceSecurity.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.ResourceSecurity,MODx.grid.Grid);
-Ext.reg('grid-resource-security',MODx.grid.ResourceSecurity);
+Ext.reg('modx-grid-resource-security',MODx.grid.ResourceSecurity);

@@ -5,7 +5,7 @@
 {literal}
 MODx.load({
 {/literal}
-    xtype: 'panel-tv-image'
+    xtype: 'modx-panel-tv-image'
     ,renderTo: 'tvpanel{$tv->id}'
     ,tv: '{$tv->id}'
     ,value: '{$tv->value}' 

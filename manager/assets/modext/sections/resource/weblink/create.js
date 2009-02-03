@@ -4,13 +4,13 @@
  * @class MODx.page.CreateWebLink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-weblink-create
+ * @xtype modx-page-weblink-create
  */
 MODx.page.CreateWebLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
-        ,formpanel: 'panel-weblink'
+        ,formpanel: 'modx-panel-weblink'
         ,which_editor: 'none'
         ,actions: {
             'new': MODx.action['resource/weblink/create']
@@ -32,8 +32,8 @@ MODx.page.CreateWebLink = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-weblink'
-            ,renderTo: 'panel-weblink'
+            xtype: 'modx-panel-weblink'
+            ,renderTo: 'modx-panel-weblink'
             ,resource: 0
             ,class_key: config.class_key
             ,publish_document: config.publish_document
@@ -42,12 +42,10 @@ MODx.page.CreateWebLink = function(config) {
             ,template: config.template
             ,parent: config.parent
         },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
+            xtype: 'modx-grid-resource-security'
+            ,renderTo: 'modx-grid-resource-security'
         },{
-            xtype: 'panel-resource-tv'
-            ,id: 'panel-resource-tv'
+            xtype: 'modx-panel-resource-tv'
             ,class_key: config.class_key
             ,resource: 0
         }]
@@ -55,4 +53,4 @@ MODx.page.CreateWebLink = function(config) {
     MODx.page.CreateWebLink.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateWebLink,MODx.Component);
-Ext.reg('page-weblink-create',MODx.page.CreateWebLink);
+Ext.reg('modx-page-weblink-create',MODx.page.CreateWebLink);
