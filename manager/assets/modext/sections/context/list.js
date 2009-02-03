@@ -8,7 +8,7 @@ Ext.onReady(function(){
  * @class MODx.page.Context
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-context
+ * @xtype modx-page-contexts
  */
 MODx.page.Contexts = function(config) {
 	config = config || {};

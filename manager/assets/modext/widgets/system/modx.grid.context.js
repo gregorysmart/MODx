@@ -4,7 +4,7 @@
  * @class MODx.grid.Context
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype grid-context
+ * @xtype modx-grid-contexts
  */
 MODx.grid.Context = function(config) {
 	config = config || {};
@@ -30,7 +30,7 @@ MODx.grid.Context = function(config) {
         }]
 		,tbar: [{
 			text: _('create_new')
-			,handler: { xtype: 'window-context-create' ,blankValues: true }
+			,handler: { xtype: 'modx-window-context-create' ,blankValues: true }
 		}]
 	});
 	MODx.grid.Context.superclass.constructor.call(this,config);
@@ -47,9 +47,8 @@ Ext.reg('modx-grid-contexts',MODx.grid.Context);
  *  
  * @class MODx.window.CreateContext
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-context-create
+ * @xtype modx-window-context-create
  */
 MODx.window.CreateContext = function(config) {
     config = config || {};
@@ -74,9 +73,16 @@ MODx.window.CreateContext = function(config) {
     MODx.window.CreateContext.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateContext,MODx.Window);
-Ext.reg('window-context-create',MODx.window.CreateContext);
+Ext.reg('modx-window-context-create',MODx.window.CreateContext);
 
-
+/**
+ * Loads the Contexts panel
+ * 
+ * @class MODx.panel.Contexts
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration options
+ * @xtype modx-panel-contexts
+ */
 MODx.panel.Contexts = function(config) {
     config = config || {};
     Ext.applyIf(config,{

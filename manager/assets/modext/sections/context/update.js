@@ -9,7 +9,7 @@ Ext.onReady(function() {
  * @class MODx.page.UpdateContext
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-context-update
+ * @xtype modx-page-context-update
  */
 MODx.page.UpdateContext = function(config) {
     config = config || {};

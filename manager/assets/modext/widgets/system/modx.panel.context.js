@@ -2,7 +2,7 @@
  * @class MODx.panel.Context
  * @extends MODx.FormPanel
  * @param {Object} config An object of config properties
- * @xtype panel-context
+ * @xtype modx-panel-context
  */
 MODx.panel.Context = function(config) {
     config = config || {};
@@ -46,8 +46,7 @@ MODx.panel.Context = function(config) {
                 },{
                     title: _('context_settings')
                     ,items: [{
-                        xtype: 'grid-context-settings'
-                        ,id: 'grid-context-setting'
+                        xtype: 'modx-grid-context-settings'
                         ,title: ''
                         ,preventRender: true
                         ,context_key: config.context
@@ -84,13 +83,13 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-context-setting');
+        var g = Ext.getCmp('modx-grid-context-settings');
         Ext.apply(o.form.baseParams,{
             settings: g.encodeModified()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('grid-context-setting').getStore().commitChanges();
+        Ext.getCmp('modx-grid-context-settings').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');        
         t.refreshNode(this.config.context+'_0',true);

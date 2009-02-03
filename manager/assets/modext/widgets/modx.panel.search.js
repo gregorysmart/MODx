@@ -1,12 +1,10 @@
-
 /**
  * Loads the search filter panel
  * 
  * @class MODx.panel.Search
  * @extends MODx.FormPanel
- * @constructor
  * @param {Object} config An object of options.
- * @xtype panel-search
+ * @xtype modx-panel-search
  */
 MODx.panel.Search = function(config) {
     config = config || {};
@@ -32,7 +30,7 @@ MODx.panel.Search = function(config) {
                     }
                     ,items: this.getFields()
                 },{
-                    xtype: 'grid-search'
+                    xtype: 'modx-grid-search'
                     ,preventRender: true
                     ,bodyStyle: ''
                 }]
@@ -111,7 +109,7 @@ Ext.extend(MODx.panel.Search,MODx.FormPanel,{
         },this);
     }
 });
-Ext.reg('panel-search',MODx.panel.Search);
+Ext.reg('modx-panel-search',MODx.panel.Search);
 
 /**
  * Loads the search result grid
@@ -162,4 +160,4 @@ MODx.grid.Search = function(config) {
     MODx.grid.Search.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.Search,MODx.grid.Grid);
-Ext.reg('grid-search',MODx.grid.Search);
+Ext.reg('modx-grid-search',MODx.grid.Search);
