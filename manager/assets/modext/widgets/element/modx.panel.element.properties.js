@@ -1,7 +1,7 @@
 MODx.panel.ElementProperties = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'panel-element-properties'
+        id: 'modx-panel-element-properties'
         ,title: _('properties')
         ,bodyStyle: 'padding: 1.5em;'
         ,defaults: { collapsible: false ,autoHeight: true }
@@ -9,7 +9,7 @@ MODx.panel.ElementProperties = function(config) {
             html: '<p>'+_('element_properties_desc')+'</p>'
             ,border: false
         },{
-            xtype: 'grid-element-properties'
+            xtype: 'modx-grid-element-properties'
             ,panel: config.elementPanel
             ,elementId: config.elementId
             ,elementType: config.elementType
@@ -18,4 +18,4 @@ MODx.panel.ElementProperties = function(config) {
     MODx.panel.ElementProperties.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.ElementProperties,MODx.Panel);
-Ext.reg('panel-element-properties',MODx.panel.ElementProperties);
+Ext.reg('modx-panel-element-properties',MODx.panel.ElementProperties);

@@ -9,7 +9,7 @@ MODx.panel.Snippet = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'element/snippet.php'
         ,baseParams: {}
-        ,id: 'panel-snippet'
+        ,id: 'modx-panel-snippet'
         ,class_key: 'modSnippet'
         ,plugin: ''
         ,bodyStyle: ''
@@ -94,8 +94,8 @@ MODx.panel.Snippet = function(config) {
                         
                     }]
                 },{
-                    xtype: 'panel-element-properties'
-                    ,elementPanel: 'panel-snippet'
+                    xtype: 'modx-panel-element-properties'
+                    ,elementPanel: 'modx-panel-snippet'
                     ,elementId: config.snippet
                     ,elementType: 'modSnippet'
                 }]
@@ -133,7 +133,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
+                    var g = Ext.getCmp('modx-grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
                     this.initialized = true;
@@ -145,7 +145,7 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
         return true;
     }
     ,success: function(r) {
-        Ext.getCmp('grid-element-properties').save();
+        Ext.getCmp('modx-grid-element-properties').save();
         
         var t = parent.Ext.getCmp('modx_element_tree');
         var c = Ext.getCmp('snippet-category').getValue();
@@ -153,4 +153,4 @@ Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
         t.refreshNode(u,true);
     }
 });
-Ext.reg('panel-snippet',MODx.panel.Snippet);
+Ext.reg('modx-panel-snippet',MODx.panel.Snippet);

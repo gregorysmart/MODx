@@ -10,7 +10,7 @@ MODx.panel.Plugin = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'element/plugin.php'
         ,baseParams: {}
-        ,id: 'panel-plugin'
+        ,id: 'modx-panel-plugin'
         ,class_key: 'modPlugin'
         ,plugin: ''
         ,bodyStyle: ''
@@ -104,8 +104,7 @@ MODx.panel.Plugin = function(config) {
                         html: '<p>'+_('plugin_event_msg')+'</p>'
                         ,border: false
                     },{
-                        xtype: 'grid-plugin-event'
-                        ,id: 'grid-plugin-event'
+                        xtype: 'modx-grid-plugin-event'
                         ,preventRender: true
                         ,plugin: config.plugin
                         ,listeners: {
@@ -113,8 +112,8 @@ MODx.panel.Plugin = function(config) {
                         }
                     }]             
                 },{
-                    xtype: 'panel-element-properties'
-                    ,elementPanel: 'panel-plugin'
+                    xtype: 'modx-panel-element-properties'
+                    ,elementPanel: 'modx-panel-plugin'
                     ,elementId: config.plugin
                     ,elementType: 'modPlugin'
                 }]
@@ -151,7 +150,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
+                    var g = Ext.getCmp('modx-grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
                     this.initialized = true;
@@ -160,14 +159,14 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-plugin-event');
+        var g = Ext.getCmp('modx-grid-plugin-event');
         Ext.apply(o.form.baseParams,{
             events: g.encodeModified()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('grid-element-properties').save();
-        Ext.getCmp('grid-plugin-event').getStore().commitChanges();
+        Ext.getCmp('modx-grid-element-properties').save();
+        Ext.getCmp('modx-grid-plugin-event').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
         var c = Ext.getCmp('plugin-category').getValue();
@@ -175,4 +174,4 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         t.refreshNode(u,true);
     }
 });
-Ext.reg('panel-plugin',MODx.panel.Plugin);
+Ext.reg('modx-panel-plugin',MODx.panel.Plugin);

@@ -1,4 +1,4 @@
-<div id="panel-property-sets"></div>
+<div id="modx-panel-property-sets"></div>
 
 
 <script type="text/javascript" src="assets/modext/widgets/core/modx.grid.local.js"></script>

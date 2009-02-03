@@ -9,7 +9,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'page-snippet-update'
+		xtype: 'modx-page-snippet-update'
 		,id: '{$snippet->id}' 
 		,category: '{if $snippet->category NEQ NULL}{$snippet->category->id}{/if}'
 	{literal}

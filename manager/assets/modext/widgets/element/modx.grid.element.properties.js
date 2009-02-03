@@ -13,7 +13,7 @@ MODx.grid.ElementProperties = function(config) {
     });
     Ext.applyIf(config,{
         title: _('properties')
-        ,id: 'grid-element-properties'
+        ,id: 'modx-grid-element-properties'
         ,maxHeight: 300
         ,fields: ['name','description','xtype','options','value','overridden']
         ,autoExpandColumn: 'value'
@@ -42,8 +42,8 @@ MODx.grid.ElementProperties = function(config) {
             ,sortable: true
         }]
         ,tbar: [{
-            xtype: 'combo-property-set'
-            ,id: 'combo-property-set'
+            xtype: 'modx-combo-property-set'
+            ,id: 'modx-combo-property-set'
             ,baseParams: {
                 action: 'getList'
                 ,showAssociated: true
@@ -91,7 +91,9 @@ MODx.grid.ElementProperties = function(config) {
     this.on('celldblclick',this.onDirty,this);
 };
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
-    onDirty: function() {
+    defaultProperties: []
+    
+    ,onDirty: function() {
         if (this.config.panel) {
             Ext.getCmp(this.config.panel).fireEvent('fieldChange');
         }
@@ -150,14 +152,14 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     
     ,addPropertySet: function(btn,e) {
         this.loadWindow(btn,e,{
-            xtype: 'window-element-property-set-add'
+            xtype: 'modx-window-element-property-set-add'
             ,record: {
                 elementId: this.config.elementId != 0 ? this.config.elementId : ''
                 ,elementType: this.config.elementType
             }
             ,listeners: {
                 'success': {fn:function(o) {
-                    var cb = Ext.getCmp('combo-property-set');
+                    var cb = Ext.getCmp('modx-combo-property-set');
                     cb.store.reload({
                         callback: function() {
                             cb.setValue(o.a.result.object.id);
@@ -193,7 +195,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     
     ,create: function(btn,e) {
         this.loadWindow(btn,e,{
-            xtype: 'window-element-property-create'
+            xtype: 'modx-window-element-property-create'
             ,listeners: {
                 'success': {fn:function(r) {
                     var rec = new this.propRecord({
@@ -213,7 +215,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     
     ,update: function(btn,e) {
         this.loadWindow(btn,e,{
-            xtype: 'window-element-property-update'
+            xtype: 'modx-window-element-property-update'
             ,record: this.menu.record
             ,listeners: {
                 'success': {fn:function(r) {
@@ -249,7 +251,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     
     ,revertAll: function(btn,e) {
         Ext.Msg.confirm(_('warning'),_('property_revert_all_confirm'),function(e) {
-            if (e == 'yes') {                    
+            if (e == 'yes') {
                 this.getStore().loadData(this.defaultProperties);
             }
         },this);
@@ -322,14 +324,14 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
         return true;
     }
 });
-Ext.reg('grid-element-properties',MODx.grid.ElementProperties);
+Ext.reg('modx-grid-element-properties',MODx.grid.ElementProperties);
 
 
 MODx.grid.ElementPropertyOption = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('property_options')
-        ,id: 'grid-element-property-option'
+        ,id: 'modx-grid-element-property-options'
         ,autoHeight: true
         ,maxHeight: 300
         ,width: '100%'
@@ -359,7 +361,7 @@ MODx.grid.ElementPropertyOption = function(config) {
 Ext.extend(MODx.grid.ElementPropertyOption,MODx.grid.LocalGrid,{
     create: function(btn,e) {
         this.loadWindow(btn,e,{
-            xtype: 'window-element-property-option-create'
+            xtype: 'modx-window-element-property-option-create'
             ,listeners: {
                 'success': {fn:function(r) {
                     var rec = new this.optRecord({
@@ -383,13 +385,13 @@ Ext.extend(MODx.grid.ElementPropertyOption,MODx.grid.LocalGrid,{
         }];
     }
 });
-Ext.reg('grid-element-property-options',MODx.grid.ElementPropertyOption);
+Ext.reg('modx-grid-element-property-options',MODx.grid.ElementPropertyOption);
 
 /**
  * @class MODx.window.CreateElementProperty
  * @extends MODx.Window
  * @param {Object} config An object of configuration properties
- * @xtype window-element-property-create
+ * @xtype modx-window-element-property-create
  */
 MODx.window.CreateElementProperty = function(config) {
     config = config || {};
@@ -412,12 +414,12 @@ MODx.window.CreateElementProperty = function(config) {
         },{
             fieldLabel: _('type')
             ,name: 'xtype'
-            ,xtype: 'combo-xtype'
+            ,xtype: 'modx-combo-xtype'
             ,id: 'cep-xtype'
             ,width: 150
             ,listeners: {
                 'select': {fn:function(cb,r,i) {
-                    var g = Ext.getCmp('grid-element-property-options');
+                    var g = Ext.getCmp('modx-grid-element-property-options');
                     if (cb.getValue() == 'list') {
                        g.show();
                     } else {
@@ -427,11 +429,11 @@ MODx.window.CreateElementProperty = function(config) {
                 },scope:this}
             }
         },{
-            xtype: 'element-value-field'
+            xtype: 'modx-element-value-field'
             ,xtypeField: 'cep-xtype'
         },{
-            id: 'grid-element-property-options'
-            ,xtype: 'grid-element-property-options'
+            xtype: 'modx-grid-element-property-options'
+            ,id: 'cep-grid-element-property-options'
         }]
     });
     MODx.window.CreateElementProperty.superclass.constructor.call(this,config);
@@ -441,7 +443,7 @@ Ext.extend(MODx.window.CreateElementProperty,MODx.Window,{
     submit: function() {
         var v = this.fp.getForm().getValues();
         
-        var g = Ext.getCmp('grid-element-property-options');
+        var g = Ext.getCmp('cep-grid-element-property-options');
         var opt = eval(g.encode());
         Ext.apply(v,{
             options: opt
@@ -457,14 +459,14 @@ Ext.extend(MODx.window.CreateElementProperty,MODx.Window,{
         return false;
     }
     ,onShow: function() {
-        var g = Ext.getCmp('grid-element-property-options');
+        var g = Ext.getCmp('cep-grid-element-property-options');
         g.getStore().removeAll();
         g.hide();
         this.syncSize();
         this.center();
     }
 });
-Ext.reg('window-element-property-create',MODx.window.CreateElementProperty);
+Ext.reg('modx-window-element-property-create',MODx.window.CreateElementProperty);
 
 
 
@@ -472,7 +474,7 @@ Ext.reg('window-element-property-create',MODx.window.CreateElementProperty);
  * @class MODx.window.UpdateElementProperty
  * @extends MODx.Window
  * @param {Object} config An object of configuration properties
- * @xtype window-element-property-update
+ * @xtype modx-window-element-property-update
  */
 MODx.window.UpdateElementProperty = function(config) {
     config = config || {};
@@ -494,7 +496,7 @@ MODx.window.UpdateElementProperty = function(config) {
         },{
             fieldLabel: _('type')
             ,name: 'xtype'
-            ,xtype: 'combo-xtype'
+            ,xtype: 'modx-combo-xtype'
             ,id: 'uep-xtype'
             ,width: 150
             ,listeners: {
@@ -510,12 +512,12 @@ MODx.window.UpdateElementProperty = function(config) {
                 },scope:this}
             }
         },{
-            xtype: 'element-value-field'
+            xtype: 'modx-element-value-field'
             ,xtypeField: 'uep-xtype'
             ,name: 'value'
         },{
             id: 'uep-grid-element-property-options'
-            ,xtype: 'grid-element-property-options'
+            ,xtype: 'modx-grid-element-property-options'
         }]
     });
     MODx.window.UpdateElementProperty.superclass.constructor.call(this,config);
@@ -560,13 +562,13 @@ Ext.extend(MODx.window.UpdateElementProperty,MODx.Window,{
         this.center();
     }
 });
-Ext.reg('window-element-property-update',MODx.window.UpdateElementProperty);
+Ext.reg('modx-window-element-property-update',MODx.window.UpdateElementProperty);
 
 /**
  * @class MODx.window.CreateElementPropertyOption
  * @extends MODx.Window
  * @param {Object} config An object of configuration properties
- * @xtype window-element-property-option-create
+ * @xtype modx-window-element-property-option-create
  */
 MODx.window.CreateElementPropertyOption = function(config) {
     config = config || {};
@@ -601,7 +603,7 @@ Ext.extend(MODx.window.CreateElementPropertyOption,MODx.Window,{
         return false;
     }
 });
-Ext.reg('window-element-property-option-create',MODx.window.CreateElementPropertyOption);
+Ext.reg('modx-window-element-property-option-create',MODx.window.CreateElementPropertyOption);
 
 
 
@@ -611,7 +613,7 @@ Ext.reg('window-element-property-option-create',MODx.window.CreateElementPropert
  * @class MODx.combo.xType
  * @extends Ext.form.ComboBox
  * @param {Object} config An object of configuration properties
- * @xtype combo-xtype
+ * @xtype modx-combo-xtype
  */
 MODx.combo.xType = function(config) {
     config = config || {};
@@ -640,7 +642,7 @@ MODx.combo.xType = function(config) {
     MODx.combo.xType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
-Ext.reg('combo-xtype',MODx.combo.xType);
+Ext.reg('modx-combo-xtype',MODx.combo.xType);
 
 
 
@@ -667,7 +669,7 @@ Ext.extend(MODx.form.ElementValueField,Ext.form.TextField,{
         }
     }
 });
-Ext.reg('element-value-field',MODx.form.ElementValueField);
+Ext.reg('modx-element-value-field',MODx.form.ElementValueField);
 
 
 MODx.combo.PropertySet = function(config) {
@@ -688,13 +690,12 @@ MODx.combo.PropertySet = function(config) {
     MODx.combo.PropertySet.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.PropertySet,MODx.combo.ComboBox);
-Ext.reg('combo-property-set',MODx.combo.PropertySet);
+Ext.reg('modx-combo-property-set',MODx.combo.PropertySet);
 
 MODx.window.AddPropertySet = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('propertyset_add')
-        ,id: 'element-property-set-add'
         ,url: MODx.config.connectors_url+'element/propertyset.php'
         ,action: 'associate'
         ,fields: [{
@@ -706,7 +707,7 @@ MODx.window.AddPropertySet = function(config) {
         },{
             html: _('propertyset_panel_desc')
         },MODx.PanelSpacer,{
-            xtype: 'combo-property-set'
+            xtype: 'modx-combo-property-set'
             ,fieldLabel: _('propertyset')
             ,name: 'propertyset'
             ,baseParams: {
@@ -751,4 +752,4 @@ MODx.window.AddPropertySet = function(config) {
     MODx.window.AddPropertySet.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.AddPropertySet,MODx.Window);
-Ext.reg('window-element-property-set-add',MODx.window.AddPropertySet);
+Ext.reg('modx-window-element-property-set-add',MODx.window.AddPropertySet);

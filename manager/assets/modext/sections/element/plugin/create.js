@@ -4,12 +4,12 @@
  * @class MODx.page.CreatePlugin
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-plugin-create
+ * @xtype modx-page-plugin-create
  */
 MODx.page.CreatePlugin = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		formpanel: 'panel-plugin'
+		formpanel: 'modx-panel-plugin'
 	    ,actions: {
             'new': MODx.action['element/plugin/create']
             ,edit: MODx.action['element/plugin/update']
@@ -19,7 +19,7 @@ MODx.page.CreatePlugin = function(config) {
             process: 'create', text: _('save'), method: 'remote'
             ,checkDirty: true
             ,keys: [{
-                key: "s"
+                key: 's'
                 ,alt: true
                 ,ctrl: true
             }]
@@ -28,9 +28,8 @@ MODx.page.CreatePlugin = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-plugin'
-            ,id: 'panel-plugin'
-            ,renderTo: 'panel-plugin'
+            xtype: 'modx-panel-plugin'
+            ,renderTo: 'modx-panel-plugin'
             ,plugin: 0
             ,category: config.category || 0
             ,name: ''
@@ -39,4 +38,4 @@ MODx.page.CreatePlugin = function(config) {
 	MODx.page.CreatePlugin.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreatePlugin,MODx.Component);
-Ext.reg('page-plugin-create',MODx.page.CreatePlugin);
+Ext.reg('modx-page-plugin-create',MODx.page.CreatePlugin);

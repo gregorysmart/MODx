@@ -3,14 +3,14 @@
  * 
  * @class MODx.grid.TVSecurity
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-resource-security
+ * @xtype modx-grid-tv-security
  */
 MODx.grid.TVSecurity = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('access_permissions')
+        ,id: 'modx-grid-tv-security'
         ,url: MODx.config.connectors_url+'element/tv/resourcegroup.php'
         ,baseParams: {
             action: 'getList'
@@ -36,4 +36,4 @@ MODx.grid.TVSecurity = function(config) {
     MODx.grid.TVSecurity.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.TVSecurity,MODx.grid.Grid);
-Ext.reg('grid-tv-security',MODx.grid.TVSecurity);
+Ext.reg('modx-grid-tv-security',MODx.grid.TVSecurity);

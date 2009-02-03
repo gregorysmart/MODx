@@ -4,12 +4,12 @@
  * @class MODx.page.CreateTV
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-tv-create
+ * @xtype modx-page-tv-create
  */
 MODx.page.CreateTV = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		formpanel: 'panel-tv'
+		formpanel: 'modx-panel-tv'
 		,actions: {
             'new': MODx.action['element/tv/create']
             ,edit: MODx.action['element/tv/update']
@@ -21,7 +21,7 @@ MODx.page.CreateTV = function(config) {
             ,method: 'remote'
             ,checkDirty: true
             ,keys: [{
-                key: "s"
+                key: 's'
                 ,alt: true
                 ,ctrl: true
             }]
@@ -30,9 +30,8 @@ MODx.page.CreateTV = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-tv'
-            ,id: 'panel-tv'
-            ,renderTo: 'panel-tv'
+            xtype: 'modx-panel-tv'
+            ,renderTo: 'modx-panel-tv'
             ,tv: 0
             ,category: config.category || 0
             ,name: ''
@@ -41,4 +40,4 @@ MODx.page.CreateTV = function(config) {
 	MODx.page.CreateTV.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateTV,MODx.Component);
-Ext.reg('page-tv-create',MODx.page.CreateTV);
+Ext.reg('modx-page-tv-create',MODx.page.CreateTV);

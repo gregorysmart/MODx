@@ -88,9 +88,9 @@ MODx.panel.Template = function(config) {
                         ,height: 400
                     }]
                 },{
-                    xtype: 'panel-element-properties'
+                    xtype: 'modx-panel-element-properties'
                     ,collapsible: true
-                    ,elementPanel: 'panel-template'
+                    ,elementPanel: 'modx-panel-template'
                     ,elementId: config.template
                     ,elementType: 'modTemplate'
                 },{
@@ -134,7 +134,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
 
                     var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
+                    var g = Ext.getCmp('modx-grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
                     this.initialized = true;
@@ -143,13 +143,13 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-template-tv');
+        var g = Ext.getCmp('modx-grid-template-tv');
         Ext.apply(o.form.baseParams,{
             tvs: g.encodeModified()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('grid-element-properties').save();
+        Ext.getCmp('modx-grid-element-properties').save();
         Ext.getCmp('modx-grid-template-tv').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');

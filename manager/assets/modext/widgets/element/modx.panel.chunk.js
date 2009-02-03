@@ -2,14 +2,14 @@
  * @class MODx.panel.Chunk
  * @extends MODx.FormPanel
  * @param {Object} config An object of configuration properties
- * @xtype panel-chunk
+ * @xtype modx-panel-chunk
  */
 MODx.panel.Chunk = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'element/chunk.php'
         ,baseParams: {}
-        ,id: 'panel-chunk'
+        ,id: 'modx-panel-chunk'
         ,class_key: 'modChunk'
         ,chunk: ''
         ,bodyStyle: ''
@@ -107,8 +107,8 @@ MODx.panel.Chunk = function(config) {
                         }
                     }]
                 },{
-                    xtype: 'panel-element-properties'
-                    ,elementPanel: 'panel-chunk'
+                    xtype: 'modx-panel-element-properties'
+                    ,elementPanel: 'modx-panel-chunk'
                     ,elementId: config.chunk
                     ,elementType: 'modChunk'
                 }]
@@ -145,7 +145,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
                     
                     var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
+                    var g = Ext.getCmp('modx-grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
                     this.initialized = true;
@@ -157,7 +157,7 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
         return true;
     }
     ,success: function(r) {
-        Ext.getCmp('grid-element-properties').save();
+        Ext.getCmp('modx-grid-element-properties').save();
         var c = Ext.getCmp('chunk-category').getValue();
         var n = c !== '' && c !== null ? 'n_chunk_category_'+c : 'n_type_chunk';
         var t = parent.Ext.getCmp('modx_element_tree');
@@ -166,4 +166,4 @@ Ext.extend(MODx.panel.Chunk,MODx.FormPanel,{
         }
     }
 });
-Ext.reg('panel-chunk',MODx.panel.Chunk);
+Ext.reg('modx-panel-chunk',MODx.panel.Chunk);

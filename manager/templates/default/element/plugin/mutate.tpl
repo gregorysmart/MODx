@@ -1,4 +1,4 @@
-<div id="panel-plugin"></div>
+<div id="modx-panel-plugin"></div>
 
 <script type="text/javascript" src="assets/modext/widgets/core/modx.grid.local.js"></script>
 <script type="text/javascript" src="assets/modext/widgets/core/modx.grid.local.property.js"></script>

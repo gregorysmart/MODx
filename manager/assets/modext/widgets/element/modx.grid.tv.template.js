@@ -3,14 +3,14 @@
  * 
  * @class MODx.grid.TemplateVarTemplate
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-templatevartemplate
+ * @xtype modx-grid-tv-template
  */
 MODx.grid.TemplateVarTemplate = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('tv_tmpl_access')
+        ,id: 'modx-grid-tv-template'
         ,url: MODx.config.connectors_url+'element/tv/template.php'
         ,fields: ['id','templatename','description','rank','access','menu']
         ,baseParams: {
@@ -47,4 +47,4 @@ MODx.grid.TemplateVarTemplate = function(config) {
     MODx.grid.TemplateVarTemplate.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.TemplateVarTemplate,MODx.grid.Grid);
-Ext.reg('grid-tv-template',MODx.grid.TemplateVarTemplate);
+Ext.reg('modx-grid-tv-template',MODx.grid.TemplateVarTemplate);

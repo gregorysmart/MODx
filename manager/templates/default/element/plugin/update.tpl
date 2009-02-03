@@ -8,7 +8,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'page-plugin-update'
+		xtype: 'modx-page-plugin-update'
 		,id: '{$plugin->id}'
 		,category: '{if $plugin->category NEQ NULL}{$plugin->category->id}{/if}'
 	{literal}

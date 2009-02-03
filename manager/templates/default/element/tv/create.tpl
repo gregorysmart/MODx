@@ -7,7 +7,7 @@
 // <![CDATA[
 Ext.onReady(function() {
 	MODx.load({
-		xtype: 'page-tv-create'
+		xtype: 'modx-page-tv-create'
 		,category: '{/literal}{if $category NEQ NULL}{$category->category}{/if}{literal}'
 	});
 });

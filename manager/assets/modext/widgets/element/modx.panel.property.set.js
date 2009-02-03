@@ -2,12 +2,12 @@
  * @class MODx.panel.PropertySet
  * @extends MODx.Panel
  * @param {Object} config An object of config properties
- * @xtype panel-property-sets
+ * @xtype modx-panel-property-sets
  */
 MODx.panel.PropertySet = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'panel-property-sets'
+        id: 'modx-panel-property-sets'
         ,items: [{
             html: '<h2>'+_('propertysets')+'</h2>'
             ,cls: 'modx-page-header'
@@ -26,7 +26,7 @@ MODx.panel.PropertySet = function(config) {
                     ,style:'padding:10px;'
                     ,border: false
                     ,items: [{
-                        xtype: 'tree-property-sets'
+                        xtype: 'modx-tree-property-sets'
                         ,preventRender: true
                     }]
                 },{
@@ -35,7 +35,7 @@ MODx.panel.PropertySet = function(config) {
                     ,layout: 'form'
                     ,border: false
                     ,items: [{
-                        xtype: 'grid-property-set-properties'
+                        xtype: 'modx-grid-property-set-properties'
                         ,preventRender: true
                     }]
                 }]
@@ -46,35 +46,35 @@ MODx.panel.PropertySet = function(config) {
     Ext.getCmp('modx-element-tree-panel').expand();
 };
 Ext.extend(MODx.panel.PropertySet,MODx.FormPanel);
-Ext.reg('panel-property-sets',MODx.panel.PropertySet);
+Ext.reg('modx-panel-property-sets',MODx.panel.PropertySet);
 
 /**
  * @class MODx.grid.PropertySetProperties
  * @extends MODx.grid.ElementProperties
  * @param {Object} config An object of config properties
- * @xtype grid-property-set-properties
+ * @xtype modx-grid-property-set-properties
  */
 MODx.grid.PropertySetProperties = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         autoHeight: true
         ,tbar: [{
-            xtype: 'combo-property-set'
-            ,id: 'combo-property-set'
+            xtype: 'modx-combo-property-set'
+            ,id: 'modx-combo-property-set'
             ,baseParams: {
                 action: 'getList'
             }
             ,listeners: {
-                'select': {fn:function(cb) { Ext.getCmp('grid-element-properties').changePropertySet(cb); },scope:this}
+                'select': {fn:function(cb) { Ext.getCmp('modx-grid-element-properties').changePropertySet(cb); },scope:this}
             }
             ,value: ''
         },{
             text: _('property_create')
-            ,handler: function(btn,e) { Ext.getCmp('grid-element-properties').create(btn,e); }
+            ,handler: function(btn,e) { Ext.getCmp('modx-grid-element-properties').create(btn,e); }
             ,scope: this
         },'->',{
             text: _('propertyset_save')
-            ,handler: function() { Ext.getCmp('grid-element-properties').save(); }
+            ,handler: function() { Ext.getCmp('modx-grid-element-properties').save(); }
             ,scope: this
         }]
     });
@@ -85,13 +85,13 @@ Ext.extend(MODx.grid.PropertySetProperties,MODx.grid.ElementProperties,{
         return '<span>'+v+'</span>';
     }
 });
-Ext.reg('grid-property-set-properties',MODx.grid.PropertySetProperties);
+Ext.reg('modx-grid-property-set-properties',MODx.grid.PropertySetProperties);
 
 /**
  * @class MODx.tree.PropertySets
  * @extends MODx.tree.Tree
  * @param {Object} config An object of config properties
- * @xtype tree-property-sets
+ * @xtype modx-tree-property-sets
  */
 MODx.tree.PropertySets = function(config) {
     config = config || {};
@@ -127,13 +127,13 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
                 ,listeners: {
                     'success': {fn:function(r) {
                         var d = r.object;
-                        var g = Ext.getCmp('grid-element-properties');
+                        var g = Ext.getCmp('modx-grid-element-properties');
                         var s = g.getStore();
                         g.defaultProperties = d;
                         s.removeAll();
                         s.loadData(d);
                         
-                        Ext.getCmp('combo-property-set').setValue(ar[1]);
+                        Ext.getCmp('modx-combo-property-set').setValue(ar[1]);
                     },scope:this}
                 }
             });
@@ -143,11 +143,11 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
     ,createSet: function(btn,e) {        
         if (!this.winCreateSet) {
             this.winCreateSet = MODx.load({
-                xtype: 'window-property-set-create'
+                xtype: 'modx-window-property-set-create'
                 ,listeners: {
                     'success':{fn:function() { 
                         this.refresh();
-                        Ext.getCmp('combo-property-set').store.reload();
+                        Ext.getCmp('modx-combo-property-set').store.reload();
                     },scope:this}
                 }
             });
@@ -175,7 +175,7 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
         
         if (!this.winPSEA) {
             this.winPSEA = MODx.load({
-                xtype: 'window-propertyset-element-add'
+                xtype: 'modx-window-propertyset-element-add'
                 ,record: {
                     propertysetName: this.cm.activeNode.text
                     ,propertyset: id
@@ -204,13 +204,13 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
         });
     }
 });
-Ext.reg('tree-property-sets',MODx.tree.PropertySets);
+Ext.reg('modx-tree-property-sets',MODx.tree.PropertySets);
 
 /**
  * @class MODx.window.AddElementToPropertySet
  * @extends MODx.Window
  * @param {Object} config An object of configuration properties
- * @xtype window-propertyset-element-add
+ * @xtype modx-window-propertyset-element-add
  */
 MODx.window.AddElementToPropertySet = function(config) {
     config = config || {};
@@ -230,37 +230,37 @@ MODx.window.AddElementToPropertySet = function(config) {
             ,name: 'propertysetName'
             ,width: 250
         },{
-            xtype: 'combo-element-class'
+            xtype: 'modx-combo-element-class'
             ,fieldLabel: _('class_name')
             ,name: 'element_class'
-            ,id: 'combo-element-class'
+            ,id: 'modx-combo-element-class'
             ,listeners: {
                 'select': {fn:this.onClassSelect,scope:this}
             }
         },{
-            xtype: 'combo-elements'
+            xtype: 'modx-combo-elements'
             ,fieldLabel: _('element')
             ,name: 'element'
-            ,id: 'combo-elements'
+            ,id: 'modx-combo-elements'
         }]
     });
     MODx.window.AddElementToPropertySet.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.AddElementToPropertySet,MODx.Window,{
     onClassSelect: function(cb) {
-        var s = Ext.getCmp('combo-elements').store;
+        var s = Ext.getCmp('modx-combo-elements').store;
         s.baseParams.element_class = cb.getValue();
         s.load();
     }
 });
-Ext.reg('window-propertyset-element-add',MODx.window.AddElementToPropertySet);
+Ext.reg('modx-window-propertyset-element-add',MODx.window.AddElementToPropertySet);
 
 
 /**
  * @class MODx.combo.ElementClass
  * @extends MODx.combo.ComboBox
  * @param {Object} config An object of configuration properties
- * @xtype combo-element-class
+ * @xtype modx-combo-element-class
  */
 MODx.combo.ElementClass = function(config) {
     config = config || {};
@@ -280,13 +280,13 @@ MODx.combo.ElementClass = function(config) {
     MODx.combo.ElementClass.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ElementClass,MODx.combo.ComboBox);
-Ext.reg('combo-element-class',MODx.combo.ElementClass);
+Ext.reg('modx-combo-element-class',MODx.combo.ElementClass);
 
 /**
  * @class MODx.combo.Elements
  * @extends MODx.combo.ComboBox
  * @param {Object} config An object of configuration properties
- * @xtype combo-elements
+ * @xtype modx-combo-elements
  */
 MODx.combo.Elements = function(config) {
     config = config || {};
@@ -307,13 +307,13 @@ MODx.combo.Elements = function(config) {
     MODx.combo.Elements.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Elements,MODx.combo.ComboBox);
-Ext.reg('combo-elements',MODx.combo.Elements);
+Ext.reg('modx-combo-elements',MODx.combo.Elements);
 
 /**
  * @class MODx.window.CreatePropertySet
  * @extends MODx.Window
  * @param {Object} config An object of configuration properties
- * @xtype window-property-set-create
+ * @xtype modx-window-property-set-create
  */
 MODx.window.CreatePropertySet = function(config) {
     config = config || {};
@@ -341,4 +341,4 @@ MODx.window.CreatePropertySet = function(config) {
     MODx.window.CreatePropertySet.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreatePropertySet,MODx.Window);
-Ext.reg('window-property-set-create',MODx.window.CreatePropertySet);
+Ext.reg('modx-window-property-set-create',MODx.window.CreatePropertySet);

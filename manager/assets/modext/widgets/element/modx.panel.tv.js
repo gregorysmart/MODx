@@ -4,14 +4,14 @@
  * @class MODx.panel.TV
  * @extends MODx.FormPanel
  * @param {Object} config An object of configuration properties
- * @xtype panel-tv
+ * @xtype modx-panel-tv
  */
 MODx.panel.TV = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'element/tv.php'
         ,baseParams: {}
-        ,id: 'panel-tv'
+        ,id: 'modx-panel-tv'
         ,class_key: 'modTemplateVar'
         ,tv: ''
         ,bodyStyle: ''
@@ -142,21 +142,19 @@ MODx.panel.TV = function(config) {
                         ,id: 'widget-props'
                     }]
                 },{
-                    xtype: 'panel-element-properties'
-                    ,elementPanel: 'panel-tv'
+                    xtype: 'modx-panel-element-properties'
+                    ,elementPanel: 'modx-panel-tv'
                     ,elementId: config.tv
                     ,elementType: 'modTemplateVar'
                 },{ 
-                    xtype: 'grid-tv-template'
-                    ,id: 'grid-tv-templates'
+                    xtype: 'modx-grid-tv-template'
                     ,tv: config.tv
                     ,preventRender: true
                     ,listeners: {
                         'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
                     }
                 },{
-                    xtype: 'grid-tv-security'
-                    ,id: 'grid-tv-security'
+                    xtype: 'modx-grid-tv-security'
                     ,tv: config.tv
                     ,preventRender: true
                     ,listeners: {
@@ -197,7 +195,7 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
                     this.fireEvent('ready',r.object);
 
                     var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
+                    var g = Ext.getCmp('modx-grid-element-properties');
                     g.defaultProperties = d;
                     g.getStore().loadData(d);
                     this.initialized = true;
@@ -206,17 +204,17 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-tv-templates');
-        var rg = Ext.getCmp('grid-tv-security');
+        var g = Ext.getCmp('modx-grid-tv-template');
+        var rg = Ext.getCmp('modx-grid-tv-security');
         Ext.apply(o.form.baseParams,{
             templates: g.encodeModified()
             ,resource_groups: rg.encodeModified()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('grid-tv-templates').getStore().commitChanges();
-        Ext.getCmp('grid-tv-security').getStore().commitChanges();
-        Ext.getCmp('grid-element-properties').save();
+        Ext.getCmp('modx-grid-tv-template').getStore().commitChanges();
+        Ext.getCmp('modx-grid-tv-security').getStore().commitChanges();
+        Ext.getCmp('modx-grid-element-properties').save();
         
         var t = parent.Ext.getCmp('modx_element_tree');
         var c = Ext.getCmp('tv-category').getValue();
@@ -238,4 +236,4 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
         });
     }
 });
-Ext.reg('panel-tv',MODx.panel.TV);
+Ext.reg('modx-panel-tv',MODx.panel.TV);

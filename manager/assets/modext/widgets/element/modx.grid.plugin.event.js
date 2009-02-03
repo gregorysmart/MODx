@@ -3,9 +3,8 @@
  * 
  * @class MODx.grid.PluginEvent
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-plugin-event
+ * @xtype modx-grid-plugin-event
  */
 MODx.grid.PluginEvent = function(config) {
     config = config || {};
@@ -20,6 +19,7 @@ MODx.grid.PluginEvent = function(config) {
 
     Ext.applyIf(config,{
         title: _('system_events')
+        ,id: 'modx-grid-plugin-event'
         ,url: MODx.config.connectors_url+'element/plugin/event.php'
         ,baseParams: {
             action: 'getList'
@@ -84,4 +84,4 @@ Ext.extend(MODx.grid.PluginEvent,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-plugin-event',MODx.grid.PluginEvent);
+Ext.reg('modx-grid-plugin-event',MODx.grid.PluginEvent);
