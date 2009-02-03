@@ -48,7 +48,7 @@ MODx.browser.Window = function(config) {
         ,ident: this.ident
     });
     this.tree = MODx.load({
-        xtype: 'tree-directory'
+        xtype: 'modx-tree-directory'
         ,onUpload: function() { this.view.run(); }
         ,scope: this
         ,prependPath: config.prependPath || null

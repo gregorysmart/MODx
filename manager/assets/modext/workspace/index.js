@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'page-workspace' });
+    MODx.load({ xtype: 'modx-page-workspace' });
 });
 
 /**
@@ -8,7 +8,7 @@ Ext.onReady(function() {
  * @class MODx.page.Workspace
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-workspace
+ * @xtype modx-page-workspace
  */
 MODx.page.Workspace = function(config) {
     config = config || {};
@@ -22,4 +22,4 @@ MODx.page.Workspace = function(config) {
     Ext.Ajax.timeout = 0;
 };
 Ext.extend(MODx.page.Workspace,MODx.Component);
-Ext.reg('page-workspace',MODx.page.Workspace);
+Ext.reg('modx-page-workspace',MODx.page.Workspace);

@@ -1,5 +1,5 @@
 /**
- * Generates a modAction Tree in Ext
+ * Generates a modAction Tree
  * 
  * @class MODx.tree.Action
  * @extends MODx.tree.Tree
@@ -163,11 +163,13 @@ MODx.window.CreateAction = function(config) {
         ,fields: [{
             fieldLabel: _('controller')
             ,name: 'controller'
+            ,id: 'modx-cact-controller'
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('context')
             ,name: 'context_key'
+            ,id: 'modx-cact-context-key'
             ,xtype: 'combo-context'
             ,width: 150
             ,allowBlank: false
@@ -176,22 +178,26 @@ MODx.window.CreateAction = function(config) {
             fieldLabel: _('controller_parent')
             ,name: 'parent'
             ,hiddenName: 'parent'
-            ,xtype: 'combo-action'
+            ,id: 'modx-cact-parent'
+            ,xtype: 'modx-combo-action'
             ,width: 200
         },{
             fieldLabel: _('load_headers')
             ,name: 'loadheaders'
+            ,id: 'modx-cact-loadheaders'
             ,xtype: 'checkbox'
             ,checked: true
         },{
             fieldLabel: _('lang_topics')
             ,description: _('lang_topics_desc')
             ,name: 'lang_topics'
+            ,id: 'modx-cact-lang-topics'
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('assets')
             ,name: 'assets'
+            ,id: 'modx-cact-assets'
             ,xtype: 'textarea'
             ,width: 200
             ,grow: false
@@ -220,19 +226,23 @@ MODx.window.UpdateAction = function(config) {
         ,action: 'update'
         ,fields: [{
             name: 'id'
+            ,id: 'modx-uact-id'
             ,xtype: 'hidden'
         },{
             name: 'parent'
+            ,id: 'modx-uact-parent'
             ,xtype: 'hidden'
         },{
             fieldLabel: _('controller')
             ,name: 'controller'
+            ,id: 'modx-uact-controller' 
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('context')
             ,name: 'context_key'
             ,hiddenName: 'context_key'
+            ,id: 'modx-uact-context-key'
             ,xtype: 'combo-context'
             ,width: 150
             ,allowBlank: false
@@ -240,23 +250,27 @@ MODx.window.UpdateAction = function(config) {
             fieldLabel: _('controller_parent')
             ,name: 'parent_controller'
             ,hiddenName: 'parent_controller'
-            ,xtype: 'combo-action'
+            ,id: 'modx-uact-parent-controller'
+            ,xtype: 'modx-combo-action'
             ,readOnly: true
             ,width: 200
         },{
             fieldLabel: _('load_headers')
             ,name: 'loadheaders'
+            ,id: 'modx-uact-loadheaders'
             ,xtype: 'checkbox'
             ,checked: true
         },{
             fieldLabel: _('lang_topics')
             ,description: _('lang_topics_desc')
             ,name: 'lang_topics'
+            ,id: 'modx-uact-lang-topics'
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('assets')
             ,name: 'assets'
+            ,id: 'modx-uact-assets'
             ,xtype: 'textarea'
             ,width: 200
             ,grow: false
@@ -265,14 +279,15 @@ MODx.window.UpdateAction = function(config) {
 	MODx.window.UpdateAction.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.UpdateAction,MODx.Window);
-Ext.reg('window-action-update',MODx.window.UpdateAction);
+Ext.reg('modx-window-action-update',MODx.window.UpdateAction);
 
 
 /**
  * Displays a dropdown list of modActions.
+ * 
  * @class MODx.combo.Action
  * @extends MODx.combo.ComboBox
- * @xtype combo-action
+ * @xtype modx-combo-action
  */
 MODx.combo.Action = function(config) {
     config = config || {};
@@ -287,5 +302,5 @@ MODx.combo.Action = function(config) {
     MODx.combo.Action.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Action,MODx.combo.ComboBox);
-Ext.reg('combo-action',MODx.combo.Action);
+Ext.reg('modx-combo-action',MODx.combo.Action);
 

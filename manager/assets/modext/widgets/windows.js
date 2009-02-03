@@ -68,7 +68,7 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
 		this.renderForm();
 	}
 });
-Ext.reg('window-resource-duplicate',MODx.window.DuplicateResource);
+Ext.reg('modx-window-resource-duplicate',MODx.window.DuplicateResource);
 
 /** 
  * Generates the Create User Group window.
@@ -198,9 +198,8 @@ Ext.reg('window-category-create',MODx.window.CreateCategory);
  *  
  * @class MODx.window.CreateNamespace
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-namespace-create
+ * @xtype modx-window-namespace-create
  */
 MODx.window.CreateNamespace = function(config) {
     config = config || {};
@@ -214,6 +213,7 @@ MODx.window.CreateNamespace = function(config) {
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-cns-name'
             ,width: 250
             ,maxLength: 100
         },{
@@ -221,10 +221,11 @@ MODx.window.CreateNamespace = function(config) {
             ,fieldLabel: _('path')
             ,description: _('namespace_path_desc')
             ,name: 'path'
+            ,id: 'modx-cns-path'
             ,width: 400
         }]
     });
     MODx.window.CreateNamespace.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateNamespace,MODx.Window);
-Ext.reg('window-namespace-create',MODx.window.CreateNamespace);
+Ext.reg('modx-window-namespace-create',MODx.window.CreateNamespace);

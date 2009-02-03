@@ -339,8 +339,7 @@ Ext.reg('combo-category',MODx.combo.Category);
  * 
  * @class MODx.combo.Language
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-language
+ * @xtype modx-combo-language
  */
 MODx.combo.Language = function(config) {
 	config = config || {};
@@ -359,7 +358,7 @@ MODx.combo.Language = function(config) {
 	MODx.combo.Language.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Language,MODx.combo.ComboBox);
-Ext.reg('combo-language',MODx.combo.Language);
+Ext.reg('modx-combo-language',MODx.combo.Language);
 
 /**
  * Displays a dropdown list of available charsets.
@@ -505,9 +504,8 @@ Ext.reg('combo-content-disposition',MODx.combo.ContentDisposition);
  * 
  * @class MODx.combo.ClassKey
  * @extends MODx.combo.ComboBox
- * @constructor
  * @param {Object} config An object of options.
- * @xtype combo-class-key
+ * @xtype modx-combo-class-key
  */
 MODx.combo.ClassKey = function(config) {
     config = config || {};
@@ -526,7 +524,7 @@ MODx.combo.ClassKey = function(config) {
     MODx.combo.ClassKey.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ClassKey,MODx.combo.ComboBox);
-Ext.reg('combo-class-key',MODx.combo.ClassKey);
+Ext.reg('modx-combo-class-key',MODx.combo.ClassKey);
 
 
 /**
@@ -535,9 +533,8 @@ Ext.reg('combo-class-key',MODx.combo.ClassKey);
  * 
  * @class MODx.combo.Object
  * @extends MODx.combo.ComboBox
- * @constructor
  * @param {Object} config An object of options.
- * @xtype combo-object
+ * @xtype modx-combo-object
  */
 MODx.combo.Object = function(config) {
     config = config || {};
@@ -558,15 +555,14 @@ MODx.combo.Object = function(config) {
     MODx.combo.Object.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Object,MODx.combo.ComboBox);
-Ext.reg('combo-object',MODx.combo.Object);
+Ext.reg('modx-combo-object',MODx.combo.Object);
 
 /**
  * Displays a dropdown list of available Content Types.
  * 
  * @class MODx.combo.ContentType
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-contenttype
+ * @xtype modx-combo-namespace
  */
 MODx.combo.Namespace = function(config) {
     config = config || {};
@@ -587,7 +583,7 @@ MODx.combo.Namespace = function(config) {
     MODx.combo.Namespace.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Namespace,MODx.combo.ComboBox);
-Ext.reg('combo-namespace',MODx.combo.Namespace);
+Ext.reg('modx-combo-namespace',MODx.combo.Namespace);
 
 
 
@@ -649,7 +645,7 @@ Ext.reg('combo-browser',MODx.combo.Browser);
  * @class MODx.combo.Country
  * @extends MODx.combo.ComboBox
  * @param {Object} config An object of configuration properties
- * @xtype combo-country
+ * @xtype modx-combo-country
  */
 MODx.combo.Country = function(config) {
     config = config || {};
@@ -666,4 +662,4 @@ MODx.combo.Country = function(config) {
     MODx.combo.Country.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Country,MODx.combo.ComboBox);
-Ext.reg('combo-country',MODx.combo.Country);
+Ext.reg('modx-combo-country',MODx.combo.Country);

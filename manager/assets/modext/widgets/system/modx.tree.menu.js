@@ -42,7 +42,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
                     });
                     if (!this.windows.create_menu) {
                         this.windows.create_menu = MODx.load({
-                            xtype: 'window-menu-create'
+                            xtype: 'modx-window-menu-create'
                             ,scope: this
                             ,success: this.refresh
                             ,record: r.object
@@ -73,7 +73,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
                     });
                     if (!this.windows.update_menu) {
                         this.windows.update_menu = MODx.load({
-                            xtype: 'window-menu-update'
+                            xtype: 'modx-window-menu-update'
                             ,scope: this
                             ,success: this.refresh
                             ,record: r.object
@@ -112,9 +112,8 @@ Ext.reg('modx-tree-menu',MODx.tree.Menu);
  * 
  * @class MODx.window.CreateMenu
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-menu-create
+ * @xtype modx-window-menu-create
  */
 MODx.window.CreateMenu = function(config) {
 	config = config || {};
@@ -127,6 +126,7 @@ MODx.window.CreateMenu = function(config) {
         ,fields: [{
             fieldLabel: _('text')
             ,name: 'text'
+            ,id: 'modx-cmen-text'
             ,xtype: 'textfield'
             ,allowBlank: false
             ,width: 200
@@ -134,28 +134,33 @@ MODx.window.CreateMenu = function(config) {
             fieldLabel: _('action')
             ,name: 'action_id'
             ,hiddenName: 'action_id'
+            ,id: 'modx-cmen-action-id'
             ,xtype: 'combo-action'
         },{
             fieldLabel: _('menu_parent')
             ,name: 'parent'
             ,hiddenName: 'parent'
+            ,id: 'modx-cmen-parent'
             ,xtype: 'combo-menu'
             ,hideTrigger: true
             ,width: 200
         },{
             fieldLabel: _('icon')
             ,name: 'icon'
+            ,id: 'modx-cmen-icon'
             ,xtype: 'textfield'
             ,allowBlank: true
             ,width: 200
         },{
             fieldLabel: _('parameters')
             ,name: 'params'
+            ,id: 'modx-cmen-params'
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('handler')
             ,name: 'handler'
+            ,id: 'modx-cmen-handler'
             ,xtype: 'textarea'
             ,width: 320
             ,grow: false
@@ -185,10 +190,12 @@ MODx.window.UpdateMenu = function(config) {
         ,action: 'update'
         ,fields: [{
             name: 'id'
+            ,id: 'modx-umen-id'
             ,xtype: 'hidden'
         },{
             fieldLabel: _('text')
             ,name: 'text'
+            ,id: 'modx-umen-text'
             ,xtype: 'textfield'
             ,allowBlank: false
             ,width: 200
@@ -196,29 +203,34 @@ MODx.window.UpdateMenu = function(config) {
             fieldLabel: _('action')
             ,name: 'action_id'
             ,hiddenName: 'action_id'
-            ,xtype: 'combo-action'
+            ,id: 'modx-umen-action-id'
+            ,xtype: 'modx-combo-action'
         },{
             fieldLabel: _('menu_parent')
             ,name: 'parent'
             ,hiddenName: 'parent'
-            ,xtype: 'combo-menu'
+            ,id: 'modx-umen-parent'
+            ,xtype: 'modx-combo-menu'
             ,readOnly: true
             ,hideTrigger: true
             ,width: 200
         },{
             fieldLabel: _('icon')
             ,name: 'icon'
+            ,id: 'modx-umen-icon'
             ,xtype: 'textfield'
             ,allowBlank: true
             ,width: 200
         },{
             fieldLabel: _('parameters')
             ,name: 'params'
+            ,id: 'modx-umen-params'
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('handler')
             ,name: 'handler'
+            ,id: 'modx-umen-handler'
             ,xtype: 'textarea'
             ,width: 320
             ,grow: false
@@ -227,16 +239,15 @@ MODx.window.UpdateMenu = function(config) {
 	MODx.window.UpdateMenu.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.UpdateMenu,MODx.Window);
-Ext.reg('window-menu-update',MODx.window.UpdateMenu);
+Ext.reg('modx-window-menu-update',MODx.window.UpdateMenu);
 
 /** 
  * Displays a dropdown of modActions
  * 
  * @class MODx.combo.Action
  * @extends MODx.combo.ComboBox
- * @constructor
  * @param {Object} config An object of options.
- * @xtype combo-action
+ * @xtype modx-combo-action
  */
 MODx.combo.Action = function(config) {
     config = config || {};
@@ -252,7 +263,7 @@ MODx.combo.Action = function(config) {
 	MODx.combo.Action.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Action,MODx.combo.ComboBox);
-Ext.reg('combo-action',MODx.combo.Action);
+Ext.reg('modx-combo-action',MODx.combo.Action);
 
 
 /** 
@@ -260,9 +271,8 @@ Ext.reg('combo-action',MODx.combo.Action);
  * 
  * @class MODx.combo.Menu
  * @extends MODx.combo.ComboBox
- * @constructor
  * @param {Object} config An object of options.
- * @xtype combo-menu
+ * @xtype modx-combo-menu
  */
 MODx.combo.Menu = function(config) {
     config = config || {};
@@ -278,4 +288,4 @@ MODx.combo.Menu = function(config) {
     MODx.combo.Menu.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Menu,MODx.combo.ComboBox);
-Ext.reg('combo-menu',MODx.combo.Menu);
+Ext.reg('modx-combo-menu',MODx.combo.Menu);

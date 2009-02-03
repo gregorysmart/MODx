@@ -6,7 +6,7 @@ MODx.window.PackageUninstall = function(config) {
         ,action: ''
         ,height: 400
         ,width: 500
-        ,id: 'window-package-uninstall'
+        ,id: 'modx-window-package-uninstall'
         ,saveBtnText: 'Uninstall'
         ,fields: [{
             html: _('preexisting_mode_select')
@@ -41,4 +41,4 @@ Ext.extend(MODx.window.PackageUninstall,MODx.Window,{
         this.hide();
     }
 });
-Ext.reg('window-package-uninstall',MODx.window.PackageUninstall);
+Ext.reg('modx-window-package-uninstall',MODx.window.PackageUninstall);

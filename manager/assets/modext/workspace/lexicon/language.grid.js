@@ -10,6 +10,7 @@ MODx.grid.Language = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('languages')
+        ,id: 'modx-grid-language'
         ,url: MODx.config.connectors_url+'system/language.php'
         ,fields: ['id','name','menu']
         ,width: '97%'

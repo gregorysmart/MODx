@@ -2,19 +2,18 @@
  * @class MODx.panel.PackageDownload
  * @extends MODx.Panel
  * @param {Object} config An object of config properties
- * @xtype panel-package-download
+ * @xtype modx-panel-package-download
  */
 MODx.panel.PackageDownload = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         border: false
-        ,id: 'panel-package-download'
+        ,id: 'modx-panel-package-download'
         ,layout: 'column'
         ,height: 280
         ,width: Ext.isIE ? 650 : '95%'
         ,items: [{
-            xtype: 'tree-package-download'
-            ,id: 'tree-package-download'
+            xtype: 'modx-tree-package-download'
             ,columnWidth: 0.7
             ,width: Ext.isIE ? 300 : '60%'
             ,height: 270
@@ -26,7 +25,7 @@ MODx.panel.PackageDownload = function(config) {
             ,border: false
             ,autoScroll: true
             ,items: [{
-                id: 'panel-package-info'
+                id: 'modx-panel-package-info'
                 ,xtype: 'panel'
                 ,style: 'padding: ".5em"'
                 ,height: 270
@@ -38,9 +37,9 @@ MODx.panel.PackageDownload = function(config) {
     MODx.panel.PackageDownload.superclass.constructor.call(this,config);
     this.loadTemplates();
     
-    var t = Ext.getCmp('tree-package-download');
+    var t = Ext.getCmp('modx-tree-package-download');
     t.on('click',function(n,e) {
-        var p = Ext.getCmp('panel-package-info');
+        var p = Ext.getCmp('modx-panel-package-info');
         var detailEl = p.body;
         if(n && n.attributes){
             var data = n.attributes;
@@ -62,7 +61,7 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
     ,showMoreInfo: function(btn) {
         if (!this.mi) {
             this.mi = MODx.load({
-                xtype: 'window-package-more-info'
+                xtype: 'modx-window-package-more-info'
                 ,data: this.curData
             });
         }
@@ -82,7 +81,7 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
                     ,'<span>{release}</span><br />'
                     ,'<b>'+_('released_on')+':</b>&nbsp;'
                     ,'<span>{releasedon}</span><br /><br />'
-                    ,'<a id="pd-version-more-info" href="javascript:;" onclick="Ext.getCmp(\'panel-package-download\').showMoreInfo(this);">'+_('more_info')+'</a><br />'
+                    ,'<a id="pd-version-more-info" href="javascript:;" onclick="Ext.getCmp(\'modx-panel-package-download\').showMoreInfo(this);">'+_('more_info')+'</a><br />'
                     ,'<br /><p>{description}</p>'
                     ,'</div>'
                 ,'</tpl>'
@@ -117,8 +116,14 @@ Ext.extend(MODx.panel.PackageDownload,MODx.Panel,{
     }
     
 });
-Ext.reg('panel-package-download',MODx.panel.PackageDownload);
+Ext.reg('modx-panel-package-download',MODx.panel.PackageDownload);
 
+/**
+ * @class MODx.window.PackageMoreInfo
+ * @extends MODx.Window
+ * @param {Object} config An object of configuration parameters
+ * @xtype modx-window-package-more-info
+ */
 MODx.window.PackageMoreInfo = function(config) {
     config = config || {};
     this.tpl = this.createTpl();
@@ -128,7 +133,7 @@ MODx.window.PackageMoreInfo = function(config) {
         ,url: MODx.config.connectors_url+'workspace/packages.php'
         ,action: 'info'
         ,fields: [{
-            html: '<div id="pmi-content"></div>'
+            html: '<div id="modx-pmi-content"></div>'
         }]
         ,buttons: [{
             text: _('ok')
@@ -166,21 +171,21 @@ Ext.extend(MODx.window.PackageMoreInfo,MODx.Window,{
     }
     
     ,setTpl: function(data) {
-        this.tpl.overwrite('pmi-content',data);
+        this.tpl.overwrite('modx-pmi-content',data);
     }
 });
-Ext.reg('window-package-more-info',MODx.window.PackageMoreInfo);
+Ext.reg('modx-window-package-more-info',MODx.window.PackageMoreInfo);
 
 /**
  * @class MODx.tree.PackageDownload
  * @extends MODx.tree.CheckboxTree
  * @param {Object} config An object of config properties
- * @xtype tree-package-download
+ * @xtype modx-tree-package-download
  */
 MODx.tree.PackageDownload = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'tree-package-download'
+        id: 'modx-tree-package-download'
         ,baseParams: {
             action: 'getPackages'
             ,provider: ''
@@ -204,4 +209,4 @@ Ext.extend(MODx.tree.PackageDownload,MODx.tree.CheckboxTree,{
         });
     }
 });
-Ext.reg('tree-package-download',MODx.tree.PackageDownload);
+Ext.reg('modx-tree-package-download',MODx.tree.PackageDownload);

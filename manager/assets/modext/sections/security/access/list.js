@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-	MODx.load({ xtype: 'page-access-permissions' });
+	MODx.load({ xtype: 'modx-page-access-permissions' });
 });
 
 /**
@@ -8,16 +8,16 @@ Ext.onReady(function() {
  * @class MODx.page.AccessPermissions
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-access-permissions
+ * @xtype modx-page-access-permissions
  */
 MODx.page.AccessPermissions = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		components: [{ 
-            xtype: 'grid-accesscontext'
+            xtype: 'modx-grid-access-context'
             ,el: 'access_context_grid' 
         },{
-            xtype: 'grid-accessresourcegroup'
+            xtype: 'modx-grid-access-resource-group'
             ,el: 'access_resourcegroup_grid'
         }]
         ,deferredRender: true
@@ -25,4 +25,4 @@ MODx.page.AccessPermissions = function(config) {
 	MODx.page.AccessPermissions.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.AccessPermissions,MODx.Component);
-Ext.reg('page-access-permissions',MODx.page.AccessPermissions);
+Ext.reg('modx-page-access-permissions',MODx.page.AccessPermissions);

@@ -118,7 +118,7 @@ Ext.extend(MODx.grid.LocalProperty,MODx.grid.LocalGrid,{
         } else if (r[xtype] === 'datefield') {
             f = Ext.util.Format.dateRenderer('Y-m-d');
             return f(v);
-        } else if (r[xtype].substr(0,5) == 'combo' || r[xtype] == 'list') {
+        } else if (r[xtype].substr(0,5) == 'combo' || r[xtype] == 'list' || r[xtype].substr(0,9) == 'modx-combo') {
             var cm = g.getColumnModel();
             var ed = cm.getCellEditor(ci,ri);
             if (!ed) {

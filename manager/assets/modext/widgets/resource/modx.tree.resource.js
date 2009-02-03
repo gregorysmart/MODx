@@ -4,7 +4,7 @@
  * @class MODx.tree.Resource
  * @extends MODx.tree.Tree
  * @param {Object} config An object of options.
- * @xtype tree-resource
+ * @xtype modx-tree-resource
  */
 MODx.tree.Resource = function(config) {
 	config = config || {};
@@ -56,7 +56,7 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
            this.windows.duplicate.destroy(); 
         }
         this.windows.duplicate = MODx.load({
-        	xtype: 'window-resource-duplicate'
+        	xtype: 'modx-window-resource-duplicate'
             ,resource: id
             ,is_folder: node.getUI().hasClass('folder')
             ,listeners: {
@@ -222,4 +222,4 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
             && ap;
     }
 });
-Ext.reg('tree-resource',MODx.tree.Resource);
+Ext.reg('modx-tree-resource',MODx.tree.Resource);

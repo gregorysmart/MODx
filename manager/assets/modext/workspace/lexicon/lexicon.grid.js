@@ -4,7 +4,7 @@
  * @class MODx.grid.Lexicon
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype grid-lexicon
+ * @xtype modx-grid-lexicon
  */
 MODx.grid.Lexicon = function(config) {
     config = config || {};
@@ -14,7 +14,7 @@ MODx.grid.Lexicon = function(config) {
         ,fields: ['id','name','value','namespace','topic','language','editedon','menu']
 		,baseParams: {
 			action: 'getList'
-			,namespace: 'core'
+			,'namespace': 'core'
 			,topic: ''
 		}
         ,width: '98%'
@@ -40,9 +40,9 @@ MODx.grid.Lexicon = function(config) {
         ,tbar: [{
             text: _('namespace')+':'
         },{
-			xtype: 'combo-namespace'
+			xtype: 'modx-combo-namespace'
 			,name: 'namespace'
-			,id: 'filter_namespace'
+			,id: 'modx-lexicon-filter-namespace'
 			,value: 'core'
 			,listeners: {
 				'select': {fn: this.changeNamespace,scope:this}
@@ -50,9 +50,9 @@ MODx.grid.Lexicon = function(config) {
 		},{
 		    text: _('topic')+':'
 		},{
-			xtype: 'combo-lexicon-topic'
+			xtype: 'modx-combo-lexicon-topic'
 			,name: 'topic'
-			,id: 'filter_topic'
+			,id: 'modx-lexicon-filter-topic'
 			,value: 'default'
             ,listeners: {
                 'select': {fn:this.filter.createDelegate(this,['topic'],true),scope:this}
@@ -60,9 +60,9 @@ MODx.grid.Lexicon = function(config) {
 		},{
 		    text: _('language')+':'
 		},{
-			xtype: 'combo-language'
+			xtype: 'modx-combo-language'
 			,name: 'language'
-			,id: 'filter_language'
+			,id: 'modx-lexicon-filter-language'
 			,value: 'en'
             ,listeners: {
                 'select': {fn:this.filter.createDelegate(this,['language'],true),scope:this}
@@ -72,19 +72,19 @@ MODx.grid.Lexicon = function(config) {
             ,xtype: 'button'
             ,menu: [{
                 text: _('entry')
-                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-entry-create'}],true)
+                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'modx-window-lexicon-entry-create'}],true)
                 ,scope: this
             },{
                 text: _('topic')
-                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'window-lexicon-topic-create'}],true)
+                ,handler: this.loadWindow2.createDelegate(this,[{ xtype: 'modx-window-lexicon-topic-create'}],true)
                 ,scope: this
             },{
                 text: _('namespace')
                 ,handler: this.loadWindow2.createDelegate(this,[{
-                	   xtype: 'window-namespace-create'
+                	   xtype: 'modx-window-namespace-create'
                 	   ,listeners: {
                             'success':{fn: function() {
-                    	       Ext.getCmp('filter_namespace').store.reload();
+                    	       Ext.getCmp('modx-lexicon-filter-namespace').store.reload();
                             },scope: this}
                 	   }
                 }],true)
@@ -95,7 +95,7 @@ MODx.grid.Lexicon = function(config) {
 		,{
 		    xtype: 'textfield'
 		    ,name: 'name'
-		    ,id: 'filter_name'
+		    ,id: 'modx-lexicon-filter-name'
 		    ,emptyText: _('search')+'...'
             ,listeners: {
                 'change': {fn:this.filter.createDelegate(this,['name'],true),scope:this}
@@ -107,7 +107,7 @@ MODx.grid.Lexicon = function(config) {
             }
 		},{
             xtype: 'button'
-            ,id: 'filter_clear'
+            ,id: 'modx-lexicon-filter-clear'
             ,text: _('filter_clear')
             ,listeners: {
                 'click': {fn: this.clearFilter, scope: this}
@@ -122,12 +122,12 @@ MODx.grid.Lexicon = function(config) {
         ,{
             xtype: 'button'
             ,text: _('lexicon_import')
-            ,handler: function(btn,e) { this.loadWindow2(btn,e,{ xtype: 'window-lexicon-import'}); }
+            ,handler: function(btn,e) { this.loadWindow2(btn,e,{ xtype: 'modx-window-lexicon-import'}); }
             ,scope: this
         },{
             xtype: 'button'
             ,text: _('lexicon_export')
-            ,handler: function(btn,e) { this.loadWindow2(btn,e,{ xtype: 'window-lexicon-export'}); }
+            ,handler: function(btn,e) { this.loadWindow2(btn,e,{ xtype: 'modx-window-lexicon-export'}); }
             ,scope: this
         }]
     });
@@ -145,33 +145,33 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     ,clearFilter: function() {
     	this.store.baseParams = {
     		action: 'getList'
-            ,namespace: 'core'
+            ,'namespace': 'core'
             ,topic: 'default'
             ,language: 'en'
     	};
     	this.getBottomToolbar().changePage(1);
-    	Ext.getCmp('filter_namespace').setValue('core');
-    	Ext.getCmp('filter_topic').setValue('default');
-    	Ext.getCmp('filter_language').setValue('en');
+    	Ext.getCmp('modx-lexicon-filter-namespace').setValue('core');
+    	Ext.getCmp('modx-lexicon-filter-topic').setValue('default');
+    	Ext.getCmp('modx-lexicon-filter-language').setValue('en');
     	this.refresh();
     }
     ,changeNamespace: function(cb,nv,ov) {
-    	var s = Ext.getCmp('filter_topic').store;
-    	s.baseParams.namespace = cb.getValue();
+    	var s = Ext.getCmp('modx-lexicon-filter-topic').store;
+    	s.baseParams['namespace'] = cb.getValue();
     	s.reload();
     	
     	this.filter(cb,null,1,'namespace');
     }
     ,loadWindow2: function(btn,e,o) {
     	this.menu.record = {
-            namespace: Ext.getCmp('filter_namespace').getValue()
-            ,language: Ext.getCmp('filter_language').getValue()
+            'namespace': Ext.getCmp('modx-lexicon-filter-namespace').getValue()
+            ,language: Ext.getCmp('modx-lexicon-filter-language').getValue()
         };
-        if (o.xtype != 'window-lexicon-import') {
-        	this.menu.record.topic = Ext.getCmp('filter_topic').getValue();
+        if (o.xtype != 'modx-window-lexicon-import') {
+        	this.menu.record.topic = Ext.getCmp('modx-lexicon-filter-topic').getValue();
         }
-        var clef = Ext.getCmp('cle-topic');
-        if (clef) { clef.store.baseParams.namespace = this.menu.record.namespace; }
+        var clef = Ext.getCmp('modx-cle-topic');
+        if (clef) { clef.store.baseParams['namespace'] = this.menu.record['namespace']; }
     	this.loadWindow(btn, e, o);
     }
     ,reloadFromBase: function() {
@@ -208,7 +208,7 @@ Ext.reg('modx-grid-lexicon',MODx.grid.Lexicon);
  * @class MODx.window.CreateLexiconEntry
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-lexicon-entry-create
+ * @xtype modx-window-lexicon-entry-create
  */
 MODx.window.CreateLexiconEntry = function(config) {
     config = config || {};
@@ -221,36 +221,40 @@ MODx.window.CreateLexiconEntry = function(config) {
             xtype: 'textfield'
             ,fieldLabel: _('key')
             ,name: 'name'
+            ,id: 'modx-cle-name'
             ,width: 250
             ,maxLength: 100
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
-            ,value: r.namespace
+            ,id: 'modx-cle-namespace'
+            ,value: r['namespace']
             ,listeners: {
             	'select': {fn: function(cb,r,i) {
-                    cle = Ext.getCmp('cle-topic');
-                    cle.store.baseParams.namespace = cb.getValue();
+                    cle = Ext.getCmp('modx-cle-topic');
+                    cle.store.baseParams['namespace'] = cb.getValue();
                     cle.store.reload();
                     cle.setValue('default');
             	},scope:this}
             }
         },{
-            xtype: 'combo-lexicon-topic'
+            xtype: 'modx-combo-lexicon-topic'
             ,fieldLabel: _('topic')
             ,name: 'topic'
-            ,id: 'cle-topic'
+            ,id: 'modx-cle-topic'
             ,value: r.topic
         },{
-            xtype: 'combo-language'
+            xtype: 'modx-combo-language'
             ,fieldLabel: _('language')
             ,name: 'language'
+            ,id: 'modx-cle-language'
             ,value: r.language
         },{
             xtype: 'textarea'
             ,fieldLabel: _('value')
             ,name: 'value'
+            ,id: 'modx-cle-value'
             ,width: 300
             ,grow: true
         }]
@@ -262,7 +266,7 @@ Ext.extend(MODx.window.CreateLexiconEntry,MODx.Window,{
     preFillTopic: function() {
         var ns = this.fp.getForm().findField('namespace').getValue();        
         var fld = this.fp.getForm().findField('topic');
-        fld.store.baseParams.namespace = ns;
+        fld.store.baseParams['namespace'] = ns;
         var v = fld.getValue();
         fld.store.load({
             callback: function(r,o,s) {
@@ -271,7 +275,7 @@ Ext.extend(MODx.window.CreateLexiconEntry,MODx.Window,{
         });
     }
 });
-Ext.reg('window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
+Ext.reg('modx-window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
 
 
 /**
@@ -280,7 +284,7 @@ Ext.reg('window-lexicon-entry-create',MODx.window.CreateLexiconEntry);
  * @class MODx.window.UpdateLexiconEntry
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-lexicon-entry-update
+ * @xtype modx-window-lexicon-entry-update
  */
 MODx.window.UpdateLexiconEntry = function(config) {
     config = config || {};
@@ -292,43 +296,47 @@ MODx.window.UpdateLexiconEntry = function(config) {
         ,fields: [{
             xtype: 'hidden'
             ,name: 'id'
+            ,id: 'modx-ule-id'
             ,value: r.id
         },{
             xtype: 'textfield'
             ,fieldLabel: _('key')
             ,name: 'name'
+            ,id: 'modx-ule-name'
             ,width: 250
             ,maxLength: 100
             ,value: r.name
         },{
-            xtype: 'combo-lexicon-topic'
+            xtype: 'modx-combo-lexicon-topic'
             ,fieldLabel: _('topic')
             ,name: 'topic'
-            ,id: 'ule-topic'
+            ,id: 'modx-ule-topic'
             ,value: r.topic
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
-            ,id: 'ule-namespace'
-            ,value: r.namespace
+            ,id: 'modx-ule-namespace'
+            ,value: r['namespace']
             ,listeners: {
                 'select': {fn: function(cb,r,i) {
-                    cle = Ext.getCmp('ule-topic');
-                    cle.store.baseParams.namespace = cb.getValue();
+                    cle = Ext.getCmp('modx-ule-topic');
+                    cle.store.baseParams['namespace'] = cb.getValue();
                     cle.store.reload();
                     cle.setValue('default');
                 },scope:this}
             }
         },{
-            xtype: 'combo-language'
+            xtype: 'modx-combo-language'
             ,fieldLabel: _('language')
             ,name: 'language'
+            ,id: 'modx-ule-language'
             ,value: r.language
         },{
             xtype: 'textarea'
             ,fieldLabel: _('value')
             ,name: 'value'
+            ,id: 'modx-ule-value'
             ,width: 300
             ,grow: true
             ,value: r.value
@@ -341,7 +349,7 @@ Ext.extend(MODx.window.UpdateLexiconEntry,MODx.Window,{
     preFillTopic: function() {
         var ns = this.fp.getForm().findField('namespace').getValue();        
         var fld = this.fp.getForm().findField('topic');
-        fld.store.baseParams.namespace = ns;
+        fld.store.baseParams['namespace'] = ns;
         var v = fld.getValue();
         fld.store.load({
             callback: function(r,o,s) {
@@ -350,7 +358,7 @@ Ext.extend(MODx.window.UpdateLexiconEntry,MODx.Window,{
         });
     }
 });
-Ext.reg('window-lexicon-entry-update',MODx.window.UpdateLexiconEntry);
+Ext.reg('modx-window-lexicon-entry-update',MODx.window.UpdateLexiconEntry);
 
 /**
  * Generates the create lexicon topic window.
@@ -358,7 +366,7 @@ Ext.reg('window-lexicon-entry-update',MODx.window.UpdateLexiconEntry);
  * @class MODx.window.CreateLexiconTopic
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-lexicon-topic-create
+ * @xtype modx-window-lexicon-topic-create
  */
 MODx.window.CreateLexiconTopic = function(config) {
     config = config || {};
@@ -371,19 +379,21 @@ MODx.window.CreateLexiconTopic = function(config) {
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-clt-name'
             ,width: 250
             ,maxLength: 100
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
-            ,value: r.namespace
+            ,id: 'modx-clt-namespace'
+            ,value: r['namespace']
         }]
     });
     MODx.window.CreateLexiconTopic.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateLexiconTopic,MODx.Window);
-Ext.reg('window-lexicon-topic-create',MODx.window.CreateLexiconTopic);
+Ext.reg('modx-window-lexicon-topic-create',MODx.window.CreateLexiconTopic);
 
 
 /**
@@ -392,7 +402,7 @@ Ext.reg('window-lexicon-topic-create',MODx.window.CreateLexiconTopic);
  * @class MODx.window.ImportLexicon
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-lexicon-import
+ * @xtype modx-window-lexicon-import
  */
 MODx.window.ImportLexicon = function(config) {
     config = config || {};
@@ -410,26 +420,30 @@ MODx.window.ImportLexicon = function(config) {
             xtype: 'textfield'
             ,fieldLabel: _('lexicon')
             ,name: 'lexicon'
+            ,id: 'modx-clt-lexicon'
             ,width: 250
             ,inputType: 'file'
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
+            ,id: 'modx-clt-namespace'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('topic')
             ,name: 'topic'
+            ,id: 'modx-clt-topic'
         },{
             xtype: 'combo-language'
             ,fieldLabel: _('language')
             ,name: 'language'
+            ,id: 'modx-clt-language'
         }]
     });
     MODx.window.ImportLexicon.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.ImportLexicon,MODx.Window);
-Ext.reg('window-lexicon-import',MODx.window.ImportLexicon);
+Ext.reg('modx-window-lexicon-import',MODx.window.ImportLexicon);
 
 
 
@@ -439,7 +453,7 @@ Ext.reg('window-lexicon-import',MODx.window.ImportLexicon);
  * @class MODx.window.ExportLexicon
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-lexicon-export
+ * @xtype modx-window-lexicon-export
  */
 MODx.window.ExportLexicon = function(config) {
     config = config || {};
@@ -454,9 +468,10 @@ MODx.window.ExportLexicon = function(config) {
             ,border: false
             ,bodyStyle: 'margin: 1em;'
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
+            ,id: 'modx-elex-namespace'
             ,listeners: {
                 'select': {fn: function(cb,r,i) {
                     cle = Ext.getCmp('ex-cmb-topic');
@@ -466,17 +481,18 @@ MODx.window.ExportLexicon = function(config) {
                 },scope:this}
             }
         },{
-            xtype: 'combo-lexicon-topic'
+            xtype: 'modx-combo-lexicon-topic'
             ,fieldLabel: _('topic')
             ,name: 'topic'
-            ,id: 'ex-cmb-topic'
+            ,id: 'modx-elex-topic'
         },{
-            xtype: 'combo-language'
+            xtype: 'modx-combo-language'
             ,fieldLabel: _('language')
             ,name: 'language'
+            ,id: 'modx-elex-language'
         }]
     });
     MODx.window.ExportLexicon.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.ExportLexicon,MODx.Window);
-Ext.reg('window-lexicon-export',MODx.window.ExportLexicon);
+Ext.reg('modx-window-lexicon-export',MODx.window.ExportLexicon);

@@ -16,11 +16,11 @@ MODx.panel.Actions = function(config) {
             html: '<h2>'+_('actions')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
-            ,id: 'actions-header'
+            ,id: 'modx-actions-header'
         },{            
             xtype: 'portal'
             ,items: [{
-                columnWidth: .5
+                columnWidth: .47
                 ,items: [{
                     title: _('actions')
                     ,layout: 'form'
@@ -32,7 +32,7 @@ MODx.panel.Actions = function(config) {
                     }]
                 }]
             },{
-                columnWidth: .5
+                columnWidth: .47
                 ,items: [{
                     title: _('topmenu')
                     ,layout: 'form'

@@ -82,7 +82,6 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 	,_handleDrop:  function(e){
         var n = e.dropNode;
 
-        // copy node from usergroup tree
         if(this.isDocCopy(e,n)) {
             var copy = new Ext.tree.TreeNode(
                 Ext.apply({leaf: true,allowDelete:true,expanded:true}, n.attributes)
@@ -140,7 +139,6 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
 		
-		// send it to the backend to save
 		MODx.Ajax.request({
 			url: this.config.url
 			,scope: this
@@ -164,4 +162,4 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 		});
 	}
 });
-Ext.reg('tree-resourcegroup',MODx.tree.ResourceGroup);
+Ext.reg('modx-tree-resource-group',MODx.tree.ResourceGroup);

@@ -8,7 +8,7 @@ Ext.onReady(function() {
  * @class MODx.page.CreateUser
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-user-create
+ * @xtype modx-page-user-create
  */
 MODx.page.CreateUser = function(config) {
 	config = config || {};

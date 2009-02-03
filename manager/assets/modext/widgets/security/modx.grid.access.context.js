@@ -3,9 +3,8 @@
  * 
  * @class MODx.grid.AccessContext
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-accesscontext
+ * @xtype modx-grid-access-context
  */
 MODx.grid.AccessContext = function(config) {
     config = config || {};
@@ -44,7 +43,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
         });
 		if (!this.windows.create_acl) {
 			this.windows.create_acl = MODx.load({
-                xtype: 'window-accesscontext'
+                xtype: 'modx-window-access-context'
 	            ,record: r
 	            ,listeners: {
 	            	'success': {fn:function(o) {    	                
@@ -74,7 +73,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
         });
         if (!this.windows.update_acl) {
 			this.windows.update_acl = MODx.load({
-	            xtype: 'window-accesscontext'
+	            xtype: 'modx-window-access-context'
 	            ,id: r.id
 	            ,record: r
 	            ,listeners: {
@@ -167,16 +166,15 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
 	    ];
 	}
 });
-Ext.reg('grid-accesscontext',MODx.grid.AccessContext);
+Ext.reg('modx-grid-access-context',MODx.grid.AccessContext);
 
 /** 
  * Generates the modAccessContext window.
  *  
  * @class MODx.window.AccessContext
  * @extends MODx.Window
- * @constructor
  * @param {Object} An object of configuration options.
- * @xtype window-accesscontext
+ * @xtype modx-window-access-context
  */
 MODx.window.AccessContext = function(config) {
     config = config || {};
@@ -276,4 +274,4 @@ Ext.extend(MODx.window.AccessContext,MODx.Window,{
         this.renderForm();
     }
 });
-Ext.reg('window-accesscontext',MODx.window.AccessContext);
+Ext.reg('modx-window-access-context',MODx.window.AccessContext);

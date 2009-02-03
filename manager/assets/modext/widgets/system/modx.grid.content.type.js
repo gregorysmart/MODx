@@ -2,12 +2,12 @@
  * @class MODx.panel.ContentType
  * @extends MODx.FormPanel
  * @param {Object} config An object of options.
- * @xtype panel-contenttype
+ * @xtype modx-panel-content-type
  */
 MODx.panel.ContentType = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'panel-contenttype'
+        id: 'modx-panel-content-type'
         ,url: MODx.config.connectors_url+'system/contenttype.php'
         ,baseParams: {
             action: 'updateFromGrid'
@@ -24,8 +24,7 @@ MODx.panel.ContentType = function(config) {
                 html: '<p>'+_('content_type_desc')+'</p>'
                 ,border: false
             },{
-                xtype: 'grid-contenttype'
-                ,id: 'grid-contenttype'
+                xtype: 'modx-grid-content-type'
                 ,preventRender: true
             }]
         }]
@@ -65,25 +64,24 @@ Ext.extend(MODx.panel.ContentType,MODx.FormPanel,{
         */
     }
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('grid-contenttype');
+        var g = Ext.getCmp('modx-grid-content-type');
         Ext.apply(o.form.baseParams,{
             data: g.encodeModified()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('grid-contenttype').getStore().commitChanges();
+        Ext.getCmp('modx-grid-content-type').getStore().commitChanges();
     }
 });
-Ext.reg('panel-contenttype',MODx.panel.ContentType);
+Ext.reg('modx-panel-content-type',MODx.panel.ContentType);
 
 /**
  * Loads a grid of content types
  * 
  * @class MODx.grid.ContentType
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-contenttype
+ * @xtype modx-grid-contenttype
  */
 MODx.grid.ContentType = function(config) {
     config = config || {};
@@ -96,7 +94,8 @@ MODx.grid.ContentType = function(config) {
     });
 
     Ext.applyIf(config,{
-        url: MODx.config.connectors_url+'system/contenttype.php'
+        id: 'modx-grid-content-type'
+        ,url: MODx.config.connectors_url+'system/contenttype.php'
         ,fields: ['id','name','mime_type','file_extensions','headers','binary','description','menu']
         ,paging: true
         ,remoteSort: true
@@ -130,13 +129,13 @@ MODx.grid.ContentType = function(config) {
         },binaryColumn]
         ,tbar: [{
             text: _('content_type_new')
-            ,handler: { xtype: 'window-contenttype-create' ,blankValues: true }
+            ,handler: { xtype: 'modx-window-content-type-create' ,blankValues: true }
         }]
     });
     MODx.grid.ContentType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.ContentType,MODx.grid.Grid);
-Ext.reg('grid-contenttype',MODx.grid.ContentType);
+Ext.reg('modx-grid-content-type',MODx.grid.ContentType);
 
 
 /** 
@@ -145,7 +144,7 @@ Ext.reg('grid-contenttype',MODx.grid.ContentType);
  * @class MODx.window.ContentType
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-contenttype-create
+ * @xtype modx-window-contenttype-create
  */
 MODx.window.CreateContentType = function(config) {
     config = config || {};
@@ -157,12 +156,14 @@ MODx.window.CreateContentType = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-cct-name'
             ,xtype: 'textfield'
             ,width: 200
             ,allowBlank: false
         },{
             fieldLabel: _('mime_type')
             ,name: 'mime_type'
+            ,id: 'modx-cct-mime-type'
             ,xtype: 'textfield'
             ,description: _('mime_type_desc')
             ,width: 200
@@ -170,6 +171,7 @@ MODx.window.CreateContentType = function(config) {
         },{
             fieldLabel: _('file_extensions')
             ,name: 'file_extensions'
+            ,id: 'modx-cct-file-extensions'
             ,xtype: 'textfield'
             ,description: _('file_extensions_desc')
             ,width: 200
@@ -178,12 +180,14 @@ MODx.window.CreateContentType = function(config) {
             xtype: 'combo-boolean'
             ,fieldLabel: _('binary')
             ,name: 'binary'
+            ,id: 'modx-cct-binary'
             ,description: _('binary_desc')
             ,width: 60
             ,value: 0
         },{
             fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-cct-description'
             ,xtype: 'textarea'
             ,width: 200
             ,grow: true
@@ -192,4 +196,4 @@ MODx.window.CreateContentType = function(config) {
     MODx.window.CreateContentType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateContentType,MODx.Window);
-Ext.reg('window-contenttype-create',MODx.window.CreateContentType);
+Ext.reg('modx-window-content-type-create',MODx.window.CreateContentType);

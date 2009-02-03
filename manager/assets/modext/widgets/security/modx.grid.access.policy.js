@@ -4,7 +4,7 @@
  * @class MODx.panel.AccessPolicies
  * @extends MODx.FormPanel
  * @param {Object} config An object of configuration properties
- * @xtype modx-panel-policies
+ * @xtype modx-panel-access-policies
  */
 MODx.panel.AccessPolicies = function(config) {
     config = config || {};
@@ -98,19 +98,23 @@ MODx.window.CreateAccessPolicy = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-cap-name'
             ,xtype: 'textfield'
             ,width: 200
         },{
             fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-cap-description'
             ,xtype: 'textarea'
             ,width: 230
             ,height: 50
         },{
             name: 'class'
+            ,id: 'modx-cap-class'
             ,xtype: 'hidden'
         },{
             name: 'id'
+            ,id: 'modx-cap-id'
             ,xtype: 'hidden'
         }]
     });

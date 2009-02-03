@@ -3,7 +3,6 @@
  * 
  * @class MODx.combo.Provider
  * @extends MODx.combo.ComboBox
- * @constructor
  * @param {Object} config An object of options.
  * @xtype combo-provider
  */
@@ -18,16 +17,15 @@ MODx.combo.Provider = function(config) {
     MODx.combo.Provider.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Provider,MODx.combo.ComboBox);
-Ext.reg('combo-provider',MODx.combo.Provider);
+Ext.reg('modx-combo-provider',MODx.combo.Provider);
 
 /**
  * Displays a dropdown list of modWorkspaces
  * 
  * @class MODx.combo.Workspace
  * @extends MODx.combo.ComboBox
- * @constructor
  * @param {Object} config An object of options.
- * @xtype combo-workspace
+ * @xtype modx-combo-workspace
  */
 MODx.combo.Workspace = function(config) {
     config = config || {};
@@ -40,4 +38,4 @@ MODx.combo.Workspace = function(config) {
     MODx.combo.Workspace.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Workspace,MODx.combo.ComboBox);
-Ext.reg('combo-workspace',MODx.combo.Workspace);
+Ext.reg('modx-combo-workspace',MODx.combo.Workspace);

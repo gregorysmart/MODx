@@ -1,3 +1,9 @@
+/**
+ * @class MODx.panel.ResourceGroups
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-panel-resource-groups
+ */
 MODx.panel.ResourceGroups = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -22,8 +28,8 @@ MODx.panel.ResourceGroups = function(config) {
                     ,layout: 'fit'
                     ,style: 'padding: .4em;'
                     ,items: [{
-                        xtype: 'tree-resourcegroup'
-                        ,id: 'gr-tree-resourcegroup'
+                        xtype: 'modx-tree-resource-group'
+                        ,id: 'modx-gr-tree-resourcegroup'
                         ,height: 400
                     }]
                 },{
@@ -31,8 +37,8 @@ MODx.panel.ResourceGroups = function(config) {
                     ,layout: 'fit'
                     ,style: 'padding: .4em;'
                     ,items: [{
-                        xtype: 'tree-resource'
-                        ,id: 'gr-tree-resource'
+                        xtype: 'modx-tree-resource'
+                        ,id: 'modx-gr-tree-resource'
                         ,title: _('resources')
                         ,width: 300
                         ,remoteToolbar: false

@@ -1,11 +1,10 @@
 /**
- * Generates the Element Tree in Ext
+ * Generates the Element Tree
  * 
  * @class MODx.tree.Element
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-element
+ * @xtype modx-tree-element
  */
 MODx.tree.Element = function(config) {
 	config = config || {};
@@ -145,7 +144,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         return r;
     }
 });
-Ext.reg('tree-element',MODx.tree.Element);
+Ext.reg('modx-tree-element',MODx.tree.Element);
 
 
 /** 

@@ -26,7 +26,7 @@ MODx.grid.SettingsGrid = function(config) {
         }];
     }
     config.tbar.push('->',{
-        xtype: 'combo-namespace'
+        xtype: 'modx-combo-namespace'
         ,name: 'namespace'
         ,id: 'modx-filter-namespace'
         ,emptyText: _('namespace_filter')
@@ -251,7 +251,7 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
         } else if (r.xtype === 'datefield') {
             f = Ext.util.Format.dateRenderer('Y-m-d');
             return f(v);
-        } else if (r.xtype.substr(0,5) == 'combo') {
+        } else if (r.xtype.substr(0,5) == 'combo' || r.xtype.substr(0,9) == 'modx-combo') {
             var cm = g.getColumnModel();
             var ed = cm.getCellEditor(ci,ri);
             if (!ed) {
@@ -308,7 +308,7 @@ MODx.window.CreateSetting = function(config) {
             ,id: 'modx-cs-xtype'
             ,width: 200
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,id: 'modx-cs-namespace'
@@ -430,7 +430,7 @@ MODx.window.UpdateSetting = function(config) {
             ,fieldLabel: _('xtype')
             ,description: _('xtype_desc')
         },{
-            xtype: 'combo-namespace'
+            xtype: 'modx-combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
             ,id: 'modx-us-namespace'

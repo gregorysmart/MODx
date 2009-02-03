@@ -3,9 +3,8 @@
  * 
  * @class MODx.grid.AccessResourceGroup
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-accessresourcegroup
+ * @xtype modx-grid-access-resource-group
  */
 MODx.grid.AccessResourceGroup = function(config) {
     config = config || {};
@@ -41,7 +40,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         var r = this.menu.record;
         if (!this.windows.create_arg) {
             this.windows.create_arg = MODx.load({
-                xtype: 'window-access-resourcegroup'
+                xtype: 'modx-window-access-resource-group'
                 ,record: r
                 ,listeners: {
                 	'success': {fn: function(frm,a) {
@@ -66,7 +65,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         var r = this.menu.record;
         if (!this.windows.update_arg) {
             this.windows.update_arg = MODx.load({
-                xtype: 'window-access-resourcegroup'
+                xtype: 'modx-window-access-resource-group'
                 ,id: r.id
                 ,record: r
                 ,listeners: {
@@ -152,16 +151,15 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         ];
     }
 });
-Ext.reg('grid-accessresourcegroup',MODx.grid.AccessResourceGroup);
+Ext.reg('modx-grid-access-resource-group',MODx.grid.AccessResourceGroup);
 
 /** 
  * Generates the modAccessResourceGroup window.
  *  
  * @class MODx.window.AccessResourceGroup
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-access-resourcegroup
+ * @xtype modx-window-access-resource-group
  */
 MODx.window.AccessResourceGroup = function(config) {
     config = config || {};
@@ -217,12 +215,14 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     fieldLabel: _('resource_group')
                     ,name: 'target'
                     ,hiddenName: 'target'
+                    ,id: 'modx-arg-target'
                     ,xtype: 'combo-resourcegroup'
                     ,value: data.target
                 },{
                     fieldLabel: _('user_group')
                     ,name: 'principal'
                     ,hiddenName: 'principal'
+                    ,id: 'modx-arg-principal'
                     ,xtype: 'combo-usergroup'
                     ,value: data.principal || ''
                     ,baseParams: {
@@ -232,6 +232,7 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                 },{
                     fieldLabel: _('authority')
                     ,name: 'authority'
+                    ,id: 'modx-arg-authority'
                     ,xtype: 'textfield'
                     ,width: 40
                     ,value: data.authority
@@ -239,6 +240,7 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     fieldLabel: _('policy')
                     ,name: 'policy'
                     ,hiddenName: 'policy'
+                    ,id: 'modx-arg-policy'
                     ,xtype: 'combo-policy'
                     ,value: data.policy || ''
                     ,baseParams: {
@@ -249,14 +251,17 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     fieldLabel: _('context')
                     ,name: 'context_key'
                     ,hiddenName: 'context_key'
+                    ,id: 'modx-arg-context-key'
                     ,xtype: 'combo-context'
                     ,value: data.context_key || ''
                 },{
                     name: 'principal_class'
+                    ,id: 'modx-arg-principal-class'
                     ,xtype: 'hidden'
                     ,value: 'modUserGroup'
                 },{
                     name: 'id'
+                    ,id: 'modx-arg-id'
                     ,xtype: 'hidden'
                     ,value: data.id
                 }
@@ -266,4 +271,4 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
         this.renderForm();
     }
 });
-Ext.reg('window-access-resourcegroup',MODx.window.AccessResourceGroup);
+Ext.reg('modx-window-access-resource-group',MODx.window.AccessResourceGroup);

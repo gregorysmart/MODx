@@ -68,7 +68,7 @@ MODx.grid.Namespace = function(config) {
         },{
             xtype: 'textfield'
             ,name: 'name'
-            ,id: 'lf_filter_name'
+            ,id: 'modx-namespace-filter-name'
             ,listeners: {
                 'change': {fn:this.filter.createDelegate(this,['name'],true),scope:this}
                 ,'render': {fn:function(tf) {
@@ -79,7 +79,7 @@ MODx.grid.Namespace = function(config) {
             }
         },{
             text: _('create_new')
-            ,handler: { xtype: 'window-namespace-create' ,blankValues: true }
+            ,handler: { xtype: 'modx-window-namespace-create' ,blankValues: true }
             ,scope: this
         }]
     });

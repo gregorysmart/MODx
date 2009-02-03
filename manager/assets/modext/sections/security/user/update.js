@@ -4,7 +4,7 @@
  * @class MODx.page.UpdateUser
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-user-update
+ * @xtype modx-page-user-update
  */
 MODx.page.UpdateUser = function(config) {
 	config = config || {};

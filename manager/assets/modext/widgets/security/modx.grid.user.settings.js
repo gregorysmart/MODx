@@ -3,14 +3,14 @@
  * 
  * @class MODx.grid.UserSettings
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-user-settings
+ * @xtype modx-grid-user-settings
  */
 MODx.grid.UserSettings = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('user_settings')
+        ,id: 'modx-grid-user-settings'
         ,url: MODx.config.connectors_url+'security/user/setting.php'
         ,baseParams: {
             action: 'getList'
@@ -23,7 +23,7 @@ MODx.grid.UserSettings = function(config) {
             text: _('create_new')
             ,scope: this
             ,handler: { 
-                xtype: 'window-setting-create'
+                xtype: 'modx-window-setting-create'
                 ,url: MODx.config.connectors_url+'security/user/setting.php'
                 ,fk: config.user
             }
@@ -32,4 +32,4 @@ MODx.grid.UserSettings = function(config) {
     MODx.grid.UserSettings.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.UserSettings,MODx.grid.SettingsGrid);
-Ext.reg('grid-user-settings',MODx.grid.UserSettings);
+Ext.reg('modx-grid-user-settings',MODx.grid.UserSettings);

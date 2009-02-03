@@ -1,3 +1,9 @@
+/**
+ * @class MODx.panel.GroupsRoles
+ * @extends MODx.FormPanel
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-panel-groups-roles
+ */
 MODx.panel.GroupsRoles = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -45,4 +51,4 @@ MODx.panel.GroupsRoles = function(config) {
     MODx.panel.GroupsRoles.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.GroupsRoles,MODx.FormPanel);
-Ext.reg('panel-groups-roles',MODx.panel.GroupsRoles);
+Ext.reg('modx-panel-groups-roles',MODx.panel.GroupsRoles);

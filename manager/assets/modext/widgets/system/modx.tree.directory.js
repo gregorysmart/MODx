@@ -1,11 +1,10 @@
 /**
- * Generates the Directory Tree in Ext
+ * Generates the Directory Tree
  * 
  * @class MODx.tree.Directory
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-directory
+ * @xtype modx-tree-directory
  */
 MODx.tree.Directory = function(config) {
 	config = config || {};
@@ -184,7 +183,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         });
     }
 });
-Ext.reg('tree-directory',MODx.tree.Directory);
+Ext.reg('modx-tree-directory',MODx.tree.Directory);
 
 /** 
  * Generates the Create Directory window

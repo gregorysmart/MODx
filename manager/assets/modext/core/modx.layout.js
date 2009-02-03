@@ -29,17 +29,17 @@ Ext.extend(MODx.Layout,Ext.Component,{
         if (!a) return;
         
         this.rtree = MODx.load({
-            xtype: 'tree-resource'
+            xtype: 'modx-tree-resource'
             ,el: 'modx_resource_tree'
             ,id: 'modx_resource_tree'
         });
         this.eltree = MODx.load({
-            xtype: 'tree-element'
+            xtype: 'modx-tree-element'
             ,el: 'modx_element_tree'
             ,id: 'modx_element_tree' 
         });
         this.ftree = MODx.load({
-            xtype: 'tree-directory'
+            xtype: 'modx-tree-directory'
             ,el: 'modx_file_tree'
             ,id: 'modx_file_tree'
             ,hideFiles: false

@@ -6,7 +6,7 @@ MODx.window.PackageUpdate = function(config) {
         ,action: 'download'
         ,height: 400
         ,width: 400
-        ,id: 'window-package-update'
+        ,id: 'modx-window-package-update'
         ,saveBtnText: 'Update'
         ,fields: this.setupOptions(config.packages,config.record)
     });
@@ -40,4 +40,4 @@ Ext.extend(MODx.window.PackageUpdate,MODx.Window,{
         return items;
     }
 });
-Ext.reg('window-package-update',MODx.window.PackageUpdate);
+Ext.reg('modx-window-package-update',MODx.window.PackageUpdate);

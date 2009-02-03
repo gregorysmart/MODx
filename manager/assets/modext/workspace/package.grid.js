@@ -3,9 +3,8 @@
  * 
  * @class MODx.grid.Package
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-package
+ * @xtype modx-grid-package
  */
 MODx.grid.Package = function(config) {
     config = config || {};
@@ -28,7 +27,7 @@ MODx.grid.Package = function(config) {
             ,{ 
                 header: _('provider')
                 ,dataIndex: 'provider'
-                ,editor: { xtype: 'combo-provider' ,renderer: true }
+                ,editor: { xtype: 'modx-combo-provider' ,renderer: true }
                 ,editable: false
             },{
                 header: _('disabled')
@@ -41,7 +40,7 @@ MODx.grid.Package = function(config) {
         ,autosave: true
         ,tbar: [{
             text: _('package_add')
-            ,handler: { xtype: 'window-package-downloader' }
+            ,handler: { xtype: 'modx-window-package-downloader' }
         }]
         ,tools: [{
             id: 'plus'
@@ -71,7 +70,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
             ,listeners: {
                 'success': {fn:function(r) {           
                     this.loadWindow(btn,e,{
-                        xtype: 'window-package-update'
+                        xtype: 'modx-window-package-update'
                         ,packages: r.object
                         ,record: this.menu.record
                         ,force: true
@@ -119,7 +118,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     
     ,uninstall: function(btn,e) {
         this.loadWindow(btn,e,{
-            xtype: 'window-package-uninstall'
+            xtype: 'modx-window-package-uninstall'
             ,listeners: {
                 'success': {fn: function(va) { this._uninstall(this.menu.record,va,btn); },scope:this}
             }
@@ -162,7 +161,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         var topic = '/workspace/package/remove/'+r.signature+'/';
         
         this.loadWindow(btn,e,{
-            xtype: 'window-package-remove'
+            xtype: 'modx-window-package-remove'
             ,record: {
                 signature: r.signature
                 ,topic: topic
@@ -173,7 +172,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     
     ,install: function(btn,e,r) {
         this.loadWindow(btn,e,{
-            xtype: 'window-package-installer'
+            xtype: 'modx-window-package-installer'
             ,listeners: {
                 'finish': {fn: function(va) { this._install(this.menu.record,va); },scope:this}
             }
@@ -195,7 +194,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
             ,params: va
             ,listeners: {
                 'success': {fn:function() {
-                    Ext.getCmp('window-package-installer').hide();
+                    Ext.getCmp('modx-window-package-installer').hide();
                     this.console.complete();
                     this.refresh();
                     parent.Ext.getCmp('modx-layout').refreshTrees();
@@ -211,6 +210,12 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
 });
 Ext.reg('modx-grid-package',MODx.grid.Package);
 
+/**
+ * @class MODx.window.RemovePackage
+ * @extends MODx.Window
+ * @param {Object} config An object of configuration parameters
+ * @xtype modx-window-package-remove
+ */
 MODx.window.RemovePackage = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -223,6 +228,7 @@ MODx.window.RemovePackage = function(config) {
         ,fields: [{
             xtype: 'hidden'
             ,name: 'signature'
+            ,id: 'modx-rpack-signature'
             ,value: config.signature
         },{
             html: _('package_remove_confirm')
@@ -233,7 +239,7 @@ MODx.window.RemovePackage = function(config) {
             xtype: 'checkbox'
             ,name: 'force'
             ,boxLabel: _('package_remove_force')
-            ,id: 'pr-force'
+            ,id: 'modx-rpack-force'
             ,labelSeparator: ''
             ,inputValue: 'true'
         }]
@@ -251,7 +257,7 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
                 ,signature: r.signature
                 ,register: 'mgr'
                 ,topic: r.topic
-                ,force: Ext.getCmp('pr-force').getValue()
+                ,force: Ext.getCmp('modx-rpack-force').getValue()
             };
             
             this.fp.getForm().submit({ 
@@ -277,4 +283,4 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
         }
     }
 });
-Ext.reg('window-package-remove',MODx.window.RemovePackage);
+Ext.reg('modx-window-package-remove',MODx.window.RemovePackage);

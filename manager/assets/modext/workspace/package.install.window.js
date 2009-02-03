@@ -4,33 +4,33 @@
  * @class MODx.window.PackageInstaller
  * @extends MODx.Wizard
  * @param {Object} config An object of options.
- * @xtype window-package-installer
+ * @xtype modx-window-package-installer
  */
 MODx.window.PackageInstaller = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: 'Package Installer'
-        ,id: 'window-package-installer'
-        ,firstPanel: 'pi-license'
-        ,lastPanel: 'pi-install'
+        ,id: 'modx-window-package-installer'
+        ,firstPanel: 'modx-pi-license'
+        ,lastPanel: 'modx-pi-install'
         ,items: [{
-            xtype: 'panel-pi-license'
+            xtype: 'modx-panel-pi-license'
         },{
-            xtype: 'panel-pi-readme'
+            xtype: 'modx-panel-pi-readme'
         },{
-            xtype: 'panel-pi-install'
+            xtype: 'modx-panel-pi-install'
         }]
     });
     MODx.window.PackageInstaller.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.PackageInstaller,MODx.Wizard);
-Ext.reg('window-package-installer',MODx.window.PackageInstaller);
+Ext.reg('modx-window-package-installer',MODx.window.PackageInstaller);
 
 MODx.panel.PILicense = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'pi-license'
-        ,back: 'pi-license'
+        id: 'modx-pi-license'
+        ,back: 'modx-pi-license'
         ,hideLabels: true
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
@@ -42,7 +42,7 @@ MODx.panel.PILicense = function(config) {
             xtype: 'textarea'
             ,style: 'font: arial; font-size: .9em'
             ,name: 'license'
-            ,id: 'pi-license-box'
+            ,id: 'modx-pi-license-box'
             ,width: '90%'
             ,height: 250
             ,value: ''
@@ -66,9 +66,9 @@ Ext.extend(MODx.panel.PILicense,MODx.panel.WizardPanel,{
         if (!va.agree) {
             
         } else if (va.agree === 'disagree') {
-           Ext.getCmp('window-package-installer').hide();
+           Ext.getCmp('modx-window-package-installer').hide();
         } else {
-           Ext.getCmp('window-package-installer').fireEvent('proceed','pi-readme');
+           Ext.getCmp('modx-window-package-installer').fireEvent('proceed','modx-pi-readme');
         }
     }
     
@@ -84,7 +84,7 @@ Ext.extend(MODx.panel.PILicense,MODx.panel.WizardPanel,{
             ,listeners: {
                 'success': {fn:function(r) {
                     var a = r.object.attr;
-                    var b = Ext.getCmp('pi-license-box');
+                    var b = Ext.getCmp('modx-pi-license-box');
                     if (a !== null && a !== 'null') {
                         b.setValue(a);
                     } else {
@@ -95,13 +95,13 @@ Ext.extend(MODx.panel.PILicense,MODx.panel.WizardPanel,{
         });
     }
 });
-Ext.reg('panel-pi-license',MODx.panel.PILicense);
+Ext.reg('modx-panel-pi-license',MODx.panel.PILicense);
 
 MODx.panel.PIReadme = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'pi-readme'
-        ,back: 'pi-license'
+        id: 'modx-pi-readme'
+        ,back: 'modx-pi-license'
         ,hideLabels: true
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
@@ -113,7 +113,7 @@ MODx.panel.PIReadme = function(config) {
             xtype: 'textarea'
             ,style: 'font: arial; font-size: .9em'
             ,name: 'readme'
-            ,id: 'pi-readme-box'
+            ,id: 'modx-pi-readme-box'
             ,width: '90%'
             ,height: 250
             ,value: ''
@@ -124,7 +124,7 @@ MODx.panel.PIReadme = function(config) {
 Ext.extend(MODx.panel.PIReadme,MODx.panel.WizardPanel,{
     submit: function() {
         var va = this.getForm().getValues();
-        Ext.getCmp('window-package-installer').fireEvent('proceed','pi-install');
+        Ext.getCmp('modx-window-package-installer').fireEvent('proceed','modx-pi-install');
     }
     ,fetch: function() {
         var sig = Ext.getCmp('modx-grid-package').menu.record.signature;
@@ -138,7 +138,7 @@ Ext.extend(MODx.panel.PIReadme,MODx.panel.WizardPanel,{
             ,listeners: {
                 'success': {fn:function(r) {
                     var a = r.object.attr;
-                    var b = Ext.getCmp('pi-readme-box');
+                    var b = Ext.getCmp('modx-pi-readme-box');
                     if (a !== null && a !== 'null') {
                         b.setValue(a);
                     } else {
@@ -149,13 +149,13 @@ Ext.extend(MODx.panel.PIReadme,MODx.panel.WizardPanel,{
         });
     }
 });
-Ext.reg('panel-pi-readme',MODx.panel.PIReadme);
+Ext.reg('modx-panel-pi-readme',MODx.panel.PIReadme);
 
 MODx.panel.PIInstall = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'pi-install'
-        ,back: 'pi-readme'
+        id: 'modx-pi-install'
+        ,back: 'modx-pi-readme'
         ,hideLabels: true
         ,defaults: { labelSeparator: '', border: false }
         ,bodyStyle: 'padding: 3em 3em'
@@ -166,7 +166,7 @@ MODx.panel.PIInstall = function(config) {
             ,style: 'padding-bottom: 2em'
         },{
             html: ''
-            ,id: 'setup-options'
+            ,id: 'modx-setup-options'
         }]
     });
     MODx.panel.PIInstall.superclass.constructor.call(this,config);
@@ -174,7 +174,7 @@ MODx.panel.PIInstall = function(config) {
 Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
     submit: function() {
         var va = this.getForm().getValues();
-        var pi = Ext.getCmp('window-package-installer');
+        var pi = Ext.getCmp('modx-window-package-installer');
         pi.fireEvent('finish',va);
     }
     ,fetch: function() {
@@ -189,7 +189,7 @@ Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
             ,listeners: {
                 'success': {fn:function(r) {
                     var a = r.object.attr;
-                    var el = Ext.getCmp('setup-options').getEl();
+                    var el = Ext.getCmp('modx-setup-options').getEl();
                     if (a !== null && a !== 'null') {
                         el.update(a);
                     } else {
@@ -200,4 +200,4 @@ Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
         });
     }
 });
-Ext.reg('panel-pi-install',MODx.panel.PIInstall);
+Ext.reg('modx-panel-pi-install',MODx.panel.PIInstall);
