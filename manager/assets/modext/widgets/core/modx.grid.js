@@ -636,6 +636,7 @@ Ext.extend(Ext.grid.CheckColumn,Ext.Component,{
             var index = this.grid.getView().findRowIndex(t);
             var record = this.grid.store.getAt(index);
             record.set(this.dataIndex, !record.data[this.dataIndex]);
+            this.grid.fireEvent('afteredit');
         }
     },
 

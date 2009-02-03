@@ -4,14 +4,14 @@
  * @class MODx.panel.Template
  * @extends MODx.FormPanel
  * @param {Object} config An object of configuration properties
- * @xtype panel-template
+ * @xtype modx-panel-template
  */
 MODx.panel.Template = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'element/template.php'
         ,baseParams: {}
-        ,id: 'panel-template'
+        ,id: 'modx-panel-template'
         ,class_key: 'modTemplate'
         ,template: ''
         ,bodyStyle: ''
@@ -94,8 +94,7 @@ MODx.panel.Template = function(config) {
                     ,elementId: config.template
                     ,elementType: 'modTemplate'
                 },{
-                   xtype: 'grid-template-tv'
-                   ,id: 'grid-template-tv'
+                   xtype: 'modx-grid-template-tv'
                    ,preventRender: true
                    ,width: '100%'
                    ,template: config.template
@@ -151,7 +150,7 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
     }
     ,success: function(o) {
         Ext.getCmp('grid-element-properties').save();
-        Ext.getCmp('grid-template-tv').getStore().commitChanges();
+        Ext.getCmp('modx-grid-template-tv').getStore().commitChanges();
         
         var t = parent.Ext.getCmp('modx_element_tree');
         var c = Ext.getCmp('template-category').getValue();
@@ -159,4 +158,4 @@ Ext.extend(MODx.panel.Template,MODx.FormPanel,{
         t.refreshNode(u,true);
     }
 });
-Ext.reg('panel-template',MODx.panel.Template);
+Ext.reg('modx-panel-template',MODx.panel.Template);

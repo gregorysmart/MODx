@@ -189,7 +189,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                 }]
             },{
                 id: 'fs-general'
-                ,title: 'General Information'
+                ,title: _('general_information')
                 ,xtype: 'fieldset'
                 ,items: [{
                     id: 'fld-username'
@@ -211,12 +211,6 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,width: 300
                     ,maxLength: 255
                     ,allowBlank: false
-                },{
-                    id: 'fld-role'
-                    ,name: 'role'
-                    ,fieldLabel: _('role')
-                    ,xtype: 'combo-role'
-                    ,value: config.role || _('none')
                 },{
                     id: 'fld-phone'
                     ,name: 'phone'

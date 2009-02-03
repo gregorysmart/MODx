@@ -8,7 +8,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'page-template-create'
+		xtype: 'modx-page-template-create'
 		,category: '{if $category NEQ NULL}{$category->category}{/if}'
 	{literal}
 	});

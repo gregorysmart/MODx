@@ -7,7 +7,7 @@
 
 {$onTempFormPrerender}
 
-<div id="panel-template"></div>
+<div id="modx-panel-template"></div>
 
 {modblock name='ab'}{/modblock}
 
