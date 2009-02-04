@@ -168,19 +168,20 @@ MODx.window.CreateAction = function(config) {
             ,xtype: 'textfield'
             ,width: 200
         },{
-            fieldLabel: _('context')
-            ,name: 'context_key'
-            ,id: 'modx-cact-context-key'
-            ,xtype: 'modx-combo-context'
-            ,width: 150
+            fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,id: 'modx-cact-namespace'
+            ,xtype: 'modx-combo-namespace'
+            ,width: 200
             ,allowBlank: false
-            ,value: 'mgr'
+            ,value: 'core'
         },{
             fieldLabel: _('controller_parent')
             ,name: 'parent'
             ,hiddenName: 'parent'
             ,id: 'modx-cact-parent'
             ,xtype: 'modx-combo-action'
+            ,editable: false
             ,width: 200
         },{
             fieldLabel: _('load_headers')
@@ -240,12 +241,12 @@ MODx.window.UpdateAction = function(config) {
             ,xtype: 'textfield'
             ,width: 200
         },{
-            fieldLabel: _('context')
-            ,name: 'context_key'
-            ,hiddenName: 'context_key'
-            ,id: 'modx-uact-context-key'
-            ,xtype: 'modx-combo-context'
-            ,width: 150
+            fieldLabel: _('namespace')
+            ,name: 'namespace'
+            ,hiddenName: 'namespace'
+            ,id: 'modx-uact-namespace'
+            ,xtype: 'modx-combo-namespace'
+            ,width: 200
             ,allowBlank: false
         },{
             fieldLabel: _('controller_parent')
@@ -254,6 +255,7 @@ MODx.window.UpdateAction = function(config) {
             ,id: 'modx-uact-parent-controller'
             ,xtype: 'modx-combo-action'
             ,readOnly: true
+            ,editable: false
             ,width: 200
         },{
             fieldLabel: _('load_headers')

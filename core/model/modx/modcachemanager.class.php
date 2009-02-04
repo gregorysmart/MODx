@@ -340,7 +340,7 @@ class modCacheManager extends xPDOCacheManager {
     function generateActionMap($fileName) {
         $written= false;
 		$c = $this->modx->newQuery('modAction');
-		$c->sortby('context_key','ASC');
+		$c->sortby('namespace','ASC');
 		$c->sortby('controller','ASC');
 		$actions = $this->modx->getCollection('modAction',$c);
 
@@ -348,29 +348,18 @@ class modCacheManager extends xPDOCacheManager {
 		$content .= " \$this->modx->actionMap = array(";
 		foreach ($actions as $action) {
 			$objArray = $action->toArray('',true);
-            $ctx = $action->getOne('Context');
-            if ($ctx != null && $ctx->get('key') != 'mgr') {
-                $bp = $ctx->getOne('modContextSetting',array(
-                    'key' => $ctx->get('key').'.base_path',
-                ));
-                $bu = $ctx->getOne('modContextSetting',array(
-                    'key' => $ctx->get('key').'.base_url',
-                ));
-                $objArray['context'] = $ctx->get('key');
-                if ($bp != null && $bu != null) {
-                    $objArray['context_path'] = $this->modx->config['base_path'].$bp->value;
-                    $objArray['context_url'] = $this->modx->config['base_url'].$bu->value;
-                } else {
-                    $objArray['context_path'] = $this->modx->config['manager_path'];
-                    $objArray['context_url'] = $this->modx->config['manager_url'];
+            $objArray['namespace_path'] = $this->modx->config['manager_path'];
+            $ns = $action->getOne('modNamespace');
+            if ($ns != null && $ns->get('name') != 'core') {
+                $bp = $ns->get('path');
+                if ($bp != null && $bp != '') {
+                    $bp = str_replace('{core_path}',$this->modx->config['core_path'],$bp);
+                    $bp = str_replace('{base_path}',$this->modx->config['base_path'],$bp);
+                    $objArray['namespace_path'] = $bp;
                 }
-            } else {
-                $objArray['context'] = 'mgr';
-                $objArray['context_path'] = $this->modx->config['manager_path'];
-                $objArray['context_url'] = $this->modx->config['manager_url'];
             }
 
-			$content .= '"'.$action->id.'" => '.var_export($objArray, true).",\n";
+			$content .= '"'.$action->get('id').'" => '.var_export($objArray, true).",\n";
 		}
 		$content .= ");";
 		$written= $this->writeFile($fileName, $content);

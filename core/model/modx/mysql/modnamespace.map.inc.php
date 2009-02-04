@@ -71,6 +71,14 @@ $xpdo_meta_map['modNamespace']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
+    'modAction' => 
+    array (
+      'class' => 'modAction',
+      'local' => 'name',
+      'foreign' => 'namespace',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
   ),
 );
 if (XPDO_PHP4_MODE) $xpdo_meta_map['modNamespace']['composites']= array_merge($xpdo_meta_map['modNamespace']['composites'], array_change_key_case($xpdo_meta_map['modNamespace']['composites']));

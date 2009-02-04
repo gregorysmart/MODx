@@ -2,7 +2,7 @@
 $collection['1']= $xpdo->newObject('modAction');
 $collection['1']->fromArray(array (
   'id' => 1,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'welcome',
   'haslayout' => 1,
@@ -12,17 +12,17 @@ $collection['1']->fromArray(array (
 $collection['2']= $xpdo->newObject('modAction');
 $collection['2']->fromArray(array (
   'id' => 2,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/action',
   'haslayout' => 1,
-  'lang_topics' => 'action,menu',
+  'lang_topics' => 'action,menu,namespace',
   'assets' => '',
 ), '', true, true);
 $collection['3']= $xpdo->newObject('modAction');
 $collection['3']->fromArray(array (
   'id' => 3,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'system',
   'haslayout' => 0,
@@ -32,7 +32,7 @@ $collection['3']->fromArray(array (
 $collection['4']= $xpdo->newObject('modAction');
 $collection['4']->fromArray(array (
   'id' => 4,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/info',
   'haslayout' => 1,
@@ -42,7 +42,7 @@ $collection['4']->fromArray(array (
 $collection['5']= $xpdo->newObject('modAction');
 $collection['5']->fromArray(array (
   'id' => 5,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'browser',
   'haslayout' => 1,
@@ -52,7 +52,7 @@ $collection['5']->fromArray(array (
 $collection['6']= $xpdo->newObject('modAction');
 $collection['6']->fromArray(array (
   'id' => 6,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'context',
   'haslayout' => 1,
@@ -62,7 +62,7 @@ $collection['6']->fromArray(array (
 $collection['7']= $xpdo->newObject('modAction');
 $collection['7']->fromArray(array (
   'id' => 7,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 6,
   'controller' => 'context/create',
   'haslayout' => 1,
@@ -72,7 +72,7 @@ $collection['7']->fromArray(array (
 $collection['8']= $xpdo->newObject('modAction');
 $collection['8']->fromArray(array (
   'id' => 8,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 6,
   'controller' => 'context/update',
   'haslayout' => 1,
@@ -82,7 +82,7 @@ $collection['8']->fromArray(array (
 $collection['9']= $xpdo->newObject('modAction');
 $collection['9']->fromArray(array (
   'id' => 9,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 6,
   'controller' => 'context/view',
   'haslayout' => 1,
@@ -92,7 +92,7 @@ $collection['9']->fromArray(array (
 $collection['10']= $xpdo->newObject('modAction');
 $collection['10']->fromArray(array (
   'id' => 10,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'element',
   'haslayout' => 1,
@@ -102,7 +102,7 @@ $collection['10']->fromArray(array (
 $collection['11']= $xpdo->newObject('modAction');
 $collection['11']->fromArray(array (
   'id' => 11,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/chunk',
   'haslayout' => 1,
@@ -112,7 +112,7 @@ $collection['11']->fromArray(array (
 $collection['12']= $xpdo->newObject('modAction');
 $collection['12']->fromArray(array (
   'id' => 12,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 11,
   'controller' => 'element/chunk/create',
   'haslayout' => 1,
@@ -122,7 +122,7 @@ $collection['12']->fromArray(array (
 $collection['13']= $xpdo->newObject('modAction');
 $collection['13']->fromArray(array (
   'id' => 13,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 11,
   'controller' => 'element/chunk/update',
   'haslayout' => 1,
@@ -132,7 +132,7 @@ $collection['13']->fromArray(array (
 $collection['14']= $xpdo->newObject('modAction');
 $collection['14']->fromArray(array (
   'id' => 14,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'system/logs/index',
   'haslayout' => 1,
@@ -142,7 +142,7 @@ $collection['14']->fromArray(array (
 $collection['20']= $xpdo->newObject('modAction');
 $collection['20']->fromArray(array (
   'id' => 20,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/plugin',
   'haslayout' => 1,
@@ -152,7 +152,7 @@ $collection['20']->fromArray(array (
 $collection['21']= $xpdo->newObject('modAction');
 $collection['21']->fromArray(array (
   'id' => 21,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 20,
   'controller' => 'element/plugin/create',
   'haslayout' => 1,
@@ -162,7 +162,7 @@ $collection['21']->fromArray(array (
 $collection['22']= $xpdo->newObject('modAction');
 $collection['22']->fromArray(array (
   'id' => 22,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 20,
   'controller' => 'element/plugin/update',
   'haslayout' => 1,
@@ -172,7 +172,7 @@ $collection['22']->fromArray(array (
 $collection['23']= $xpdo->newObject('modAction');
 $collection['23']->fromArray(array (
   'id' => 23,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 20,
   'controller' => 'element/plugin/sortpriority',
   'haslayout' => 1,
@@ -182,7 +182,7 @@ $collection['23']->fromArray(array (
 $collection['25']= $xpdo->newObject('modAction');
 $collection['25']->fromArray(array (
   'id' => 25,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/snippet',
   'haslayout' => 1,
@@ -192,7 +192,7 @@ $collection['25']->fromArray(array (
 $collection['26']= $xpdo->newObject('modAction');
 $collection['26']->fromArray(array (
   'id' => 26,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 25,
   'controller' => 'element/snippet/create',
   'haslayout' => 1,
@@ -202,7 +202,7 @@ $collection['26']->fromArray(array (
 $collection['27']= $xpdo->newObject('modAction');
 $collection['27']->fromArray(array (
   'id' => 27,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 25,
   'controller' => 'element/snippet/update',
   'haslayout' => 1,
@@ -212,7 +212,7 @@ $collection['27']->fromArray(array (
 $collection['28']= $xpdo->newObject('modAction');
 $collection['28']->fromArray(array (
   'id' => 28,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/template',
   'haslayout' => 1,
@@ -222,7 +222,7 @@ $collection['28']->fromArray(array (
 $collection['29']= $xpdo->newObject('modAction');
 $collection['29']->fromArray(array (
   'id' => 29,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 28,
   'controller' => 'element/template/create',
   'haslayout' => 1,
@@ -232,7 +232,7 @@ $collection['29']->fromArray(array (
 $collection['30']= $xpdo->newObject('modAction');
 $collection['30']->fromArray(array (
   'id' => 30,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 28,
   'controller' => 'element/template/update',
   'haslayout' => 1,
@@ -242,7 +242,7 @@ $collection['30']->fromArray(array (
 $collection['31']= $xpdo->newObject('modAction');
 $collection['31']->fromArray(array (
   'id' => 31,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 28,
   'controller' => 'element/template/tvsort',
   'haslayout' => 1,
@@ -252,7 +252,7 @@ $collection['31']->fromArray(array (
 $collection['32']= $xpdo->newObject('modAction');
 $collection['32']->fromArray(array (
   'id' => 32,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/tv,propertyset,element',
   'haslayout' => 1,
@@ -262,7 +262,7 @@ $collection['32']->fromArray(array (
 $collection['33']= $xpdo->newObject('modAction');
 $collection['33']->fromArray(array (
   'id' => 33,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 32,
   'controller' => 'element/tv/create',
   'haslayout' => 1,
@@ -272,7 +272,7 @@ $collection['33']->fromArray(array (
 $collection['34']= $xpdo->newObject('modAction');
 $collection['34']->fromArray(array (
   'id' => 34,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 32,
   'controller' => 'element/tv/update',
   'haslayout' => 1,
@@ -282,7 +282,7 @@ $collection['34']->fromArray(array (
 $collection['35']= $xpdo->newObject('modAction');
 $collection['35']->fromArray(array (
   'id' => 35,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/view',
   'haslayout' => 1,
@@ -292,7 +292,7 @@ $collection['35']->fromArray(array (
 $collection['36']= $xpdo->newObject('modAction');
 $collection['36']->fromArray(array (
   'id' => 36,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'resource',
   'haslayout' => 1,
@@ -302,7 +302,7 @@ $collection['36']->fromArray(array (
 $collection['37']= $xpdo->newObject('modAction');
 $collection['37']->fromArray(array (
   'id' => 37,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/resourcegroup/index',
   'haslayout' => 1,
@@ -312,7 +312,7 @@ $collection['37']->fromArray(array (
 $collection['38']= $xpdo->newObject('modAction');
 $collection['38']->fromArray(array (
   'id' => 38,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/usergroup/create',
   'haslayout' => 1,
@@ -322,7 +322,7 @@ $collection['38']->fromArray(array (
 $collection['39']= $xpdo->newObject('modAction');
 $collection['39']->fromArray(array (
   'id' => 39,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/usergroup/update',
   'haslayout' => 1,
@@ -332,7 +332,7 @@ $collection['39']->fromArray(array (
 $collection['40']= $xpdo->newObject('modAction');
 $collection['40']->fromArray(array (
   'id' => 40,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/data',
   'haslayout' => 1,
@@ -342,7 +342,7 @@ $collection['40']->fromArray(array (
 $collection['41']= $xpdo->newObject('modAction');
 $collection['41']->fromArray(array (
   'id' => 41,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/empty_recycle_bin',
   'haslayout' => 1,
@@ -352,7 +352,7 @@ $collection['41']->fromArray(array (
 $collection['42']= $xpdo->newObject('modAction');
 $collection['42']->fromArray(array (
   'id' => 42,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/site_schedule',
   'haslayout' => 1,
@@ -362,7 +362,7 @@ $collection['42']->fromArray(array (
 $collection['43']= $xpdo->newObject('modAction');
 $collection['43']->fromArray(array (
   'id' => 43,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/update',
   'haslayout' => 1,
@@ -372,7 +372,7 @@ $collection['43']->fromArray(array (
 $collection['44']= $xpdo->newObject('modAction');
 $collection['44']->fromArray(array (
   'id' => 44,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/create',
   'haslayout' => 1,
@@ -382,7 +382,7 @@ $collection['44']->fromArray(array (
 $collection['45']= $xpdo->newObject('modAction');
 $collection['45']->fromArray(array (
   'id' => 45,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'search',
   'haslayout' => 1,
@@ -392,7 +392,7 @@ $collection['45']->fromArray(array (
 $collection['46']= $xpdo->newObject('modAction');
 $collection['46']->fromArray(array (
   'id' => 46,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'security',
   'haslayout' => 1,
@@ -402,7 +402,7 @@ $collection['46']->fromArray(array (
 $collection['47']= $xpdo->newObject('modAction');
 $collection['47']->fromArray(array (
   'id' => 47,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/message',
   'haslayout' => 1,
@@ -412,7 +412,7 @@ $collection['47']->fromArray(array (
 $collection['48']= $xpdo->newObject('modAction');
 $collection['48']->fromArray(array (
   'id' => 48,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/access',
   'haslayout' => 1,
@@ -422,7 +422,7 @@ $collection['48']->fromArray(array (
 $collection['49']= $xpdo->newObject('modAction');
 $collection['49']->fromArray(array (
   'id' => 49,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/profile',
   'haslayout' => 1,
@@ -432,7 +432,7 @@ $collection['49']->fromArray(array (
 $collection['50']= $xpdo->newObject('modAction');
 $collection['50']->fromArray(array (
   'id' => 50,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/role',
   'haslayout' => 1,
@@ -442,7 +442,7 @@ $collection['50']->fromArray(array (
 $collection['51']= $xpdo->newObject('modAction');
 $collection['51']->fromArray(array (
   'id' => 51,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 50,
   'controller' => 'security/role/create',
   'haslayout' => 1,
@@ -452,7 +452,7 @@ $collection['51']->fromArray(array (
 $collection['52']= $xpdo->newObject('modAction');
 $collection['52']->fromArray(array (
   'id' => 52,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 50,
   'controller' => 'security/role/update',
   'haslayout' => 1,
@@ -462,7 +462,7 @@ $collection['52']->fromArray(array (
 $collection['53']= $xpdo->newObject('modAction');
 $collection['53']->fromArray(array (
   'id' => 53,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/user',
   'haslayout' => 1,
@@ -472,7 +472,7 @@ $collection['53']->fromArray(array (
 $collection['54']= $xpdo->newObject('modAction');
 $collection['54']->fromArray(array (
   'id' => 54,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 53,
   'controller' => 'security/user/create',
   'haslayout' => 1,
@@ -482,7 +482,7 @@ $collection['54']->fromArray(array (
 $collection['55']= $xpdo->newObject('modAction');
 $collection['55']->fromArray(array (
   'id' => 55,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 53,
   'controller' => 'security/user/update',
   'haslayout' => 1,
@@ -492,7 +492,7 @@ $collection['55']->fromArray(array (
 $collection['56']= $xpdo->newObject('modAction');
 $collection['56']->fromArray(array (
   'id' => 56,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/login',
   'haslayout' => 1,
@@ -502,7 +502,7 @@ $collection['56']->fromArray(array (
 $collection['57']= $xpdo->newObject('modAction');
 $collection['57']->fromArray(array (
   'id' => 57,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/event',
   'haslayout' => 1,
@@ -512,7 +512,7 @@ $collection['57']->fromArray(array (
 $collection['58']= $xpdo->newObject('modAction');
 $collection['58']->fromArray(array (
   'id' => 58,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 57,
   'controller' => 'system/event/details',
   'haslayout' => 1,
@@ -522,7 +522,7 @@ $collection['58']->fromArray(array (
 $collection['59']= $xpdo->newObject('modAction');
 $collection['59']->fromArray(array (
   'id' => 59,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/import',
   'haslayout' => 1,
@@ -532,7 +532,7 @@ $collection['59']->fromArray(array (
 $collection['60']= $xpdo->newObject('modAction');
 $collection['60']->fromArray(array (
   'id' => 60,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 59,
   'controller' => 'system/import/html',
   'haslayout' => 1,
@@ -542,7 +542,7 @@ $collection['60']->fromArray(array (
 $collection['61']= $xpdo->newObject('modAction');
 $collection['61']->fromArray(array (
   'id' => 61,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/settings',
   'haslayout' => 1,
@@ -552,7 +552,7 @@ $collection['61']->fromArray(array (
 $collection['62']= $xpdo->newObject('modAction');
 $collection['62']->fromArray(array (
   'id' => 62,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/refresh_site',
   'haslayout' => 1,
@@ -562,7 +562,7 @@ $collection['62']->fromArray(array (
 $collection['63']= $xpdo->newObject('modAction');
 $collection['63']->fromArray(array (
   'id' => 63,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 0,
   'controller' => 'help',
   'haslayout' => 1,
@@ -572,7 +572,7 @@ $collection['63']->fromArray(array (
 $collection['64']= $xpdo->newObject('modAction');
 $collection['64']->fromArray(array (
   'id' => 64,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/phpinfo',
   'haslayout' => 1,
@@ -582,7 +582,7 @@ $collection['64']->fromArray(array (
 $collection['65']= $xpdo->newObject('modAction');
 $collection['65']->fromArray(array (
   'id' => 65,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 48,
   'controller' => 'security/access/policy',
   'haslayout' => 1,
@@ -592,7 +592,7 @@ $collection['65']->fromArray(array (
 $collection['66']= $xpdo->newObject('modAction');
 $collection['66']->fromArray(array (
   'id' => 66,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 46,
   'controller' => 'security/permission',
   'haslayout' => 1,
@@ -602,7 +602,7 @@ $collection['66']->fromArray(array (
 $collection['67']= $xpdo->newObject('modAction');
 $collection['67']->fromArray(array (
   'id' => 67,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/tvs',
   'haslayout' => 0,
@@ -612,7 +612,7 @@ $collection['67']->fromArray(array (
 $collection['68']= $xpdo->newObject('modAction');
 $collection['68']->fromArray(array (
   'id' => 68,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'workspaces',
   'haslayout' => 1,
@@ -622,7 +622,7 @@ $collection['68']->fromArray(array (
 $collection['69']= $xpdo->newObject('modAction');
 $collection['69']->fromArray(array (
   'id' => 69,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/contenttype',
   'haslayout' => 1,
@@ -632,7 +632,7 @@ $collection['69']->fromArray(array (
 $collection['70']= $xpdo->newObject('modAction');
 $collection['70']->fromArray(array (
   'id' => 70,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 3,
   'controller' => 'system/file',
   'haslayout' => 1,
@@ -642,7 +642,7 @@ $collection['70']->fromArray(array (
 $collection['71']= $xpdo->newObject('modAction');
 $collection['71']->fromArray(array (
   'id' => 71,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 70,
   'controller' => 'system/file/edit',
   'haslayout' => 1,
@@ -652,7 +652,7 @@ $collection['71']->fromArray(array (
 $collection['73']= $xpdo->newObject('modAction');
 $collection['73']->fromArray(array (
   'id' => 73,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 68,
   'controller' => 'workspaces/lexicon',
   'haslayout' => 1,
@@ -662,7 +662,7 @@ $collection['73']->fromArray(array (
 $collection['74']= $xpdo->newObject('modAction');
 $collection['74']->fromArray(array (
   'id' => 74,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 68,
   'controller' => 'workspaces/namespace',
   'haslayout' => 1,
@@ -672,7 +672,7 @@ $collection['74']->fromArray(array (
 $collection['75']= $xpdo->newObject('modAction');
 $collection['75']->fromArray(array (
   'id' => 75,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 65,
   'controller' => 'security/access/policy/update',
   'haslayout' => 1,
@@ -682,7 +682,7 @@ $collection['75']->fromArray(array (
 $collection['76']= $xpdo->newObject('modAction');
 $collection['76']->fromArray(array (
   'id' => 76,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/weblink/update',
   'haslayout' => 1,
@@ -692,7 +692,7 @@ $collection['76']->fromArray(array (
 $collection['77']= $xpdo->newObject('modAction');
 $collection['77']->fromArray(array (
   'id' => 77,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/weblink/create',
   'haslayout' => 1,
@@ -702,7 +702,7 @@ $collection['77']->fromArray(array (
 $collection['78']= $xpdo->newObject('modAction');
 $collection['78']->fromArray(array (
   'id' => 78,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/symlink/update',
   'haslayout' => 1,
@@ -712,7 +712,7 @@ $collection['78']->fromArray(array (
 $collection['79']= $xpdo->newObject('modAction');
 $collection['79']->fromArray(array (
   'id' => 79,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/symlink/create',
   'haslayout' => 1,
@@ -722,7 +722,7 @@ $collection['79']->fromArray(array (
 $collection['80']= $xpdo->newObject('modAction');
 $collection['80']->fromArray(array (
   'id' => 80,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/staticresource/update',
   'haslayout' => 1,
@@ -732,7 +732,7 @@ $collection['80']->fromArray(array (
 $collection['81']= $xpdo->newObject('modAction');
 $collection['81']->fromArray(array (
   'id' => 81,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 36,
   'controller' => 'resource/staticresource/create',
   'haslayout' => 1,
@@ -742,7 +742,7 @@ $collection['81']->fromArray(array (
 $collection['82']= $xpdo->newObject('modAction');
 $collection['82']->fromArray(array (
   'id' => 82,
-  'context_key' => 'mgr',
+  'namespace' => 'core',
   'parent' => 10,
   'controller' => 'element/propertyset/index',
   'haslayout' => 1,

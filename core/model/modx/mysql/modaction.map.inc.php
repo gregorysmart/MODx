@@ -8,7 +8,7 @@ $xpdo_meta_map['modAction']= array (
   'table' => 'actions',
   'fields' => 
   array (
-    'context_key' => 'mgr',
+    'namespace' => 'core',
     'parent' => 0,
     'controller' => NULL,
     'haslayout' => 1,
@@ -17,13 +17,13 @@ $xpdo_meta_map['modAction']= array (
   ),
   'fieldMeta' => 
   array (
-    'context_key' => 
+    'namespace' => 
     array (
       'dbtype' => 'varchar',
       'precision' => '100',
       'phptype' => 'string',
       'null' => false,
-      'default' => 'mgr',
+      'default' => 'core',
     ),
     'parent' => 
     array (
@@ -66,11 +66,11 @@ $xpdo_meta_map['modAction']= array (
   ),
   'aggregates' => 
   array (
-    'Context' => 
+    'modNamespace' => 
     array (
-      'class' => 'modContext',
-      'local' => 'context_key',
-      'foreign' => 'key',
+      'class' => 'modNamespace',
+      'local' => 'namespace',
+      'foreign' => 'name',
       'owner' => 'foreign',
       'cardinality' => 'one',
     ),

@@ -30,9 +30,9 @@ function getSubMenus($m) {
         $action = $menu->getOne('Action');
         $ma = $menu->toArray();
         if ($action) {
-            $ctx = $action->getOne('Context');
-            if ($ctx->get('key') != 'mgr') {
-                $modx->lexicon->load($ctx->get('key').':default');
+            $ns = $action->getOne('modNamespace');
+            if ($ns->get('name') != 'core') {
+                $modx->lexicon->load($ns->get('name').':default');
                 $ma['text'] = $modx->lexicon($menu->get('text'));
             } else {
                 $ma['text'] = $modx->lexicon($menu->get('text'));

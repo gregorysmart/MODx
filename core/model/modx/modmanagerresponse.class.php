@@ -47,17 +47,16 @@ class modManagerResponse extends modResponse {
             }
 
             /* find context path */
-            if (!isset($act['context']) || $act['context'] == 'mgr') {
-                $f = $act['context_path'].'controllers/'.$act['controller'];
+            if (!isset($act['namespace']) || $act['namespace'] == 'core') {
+                $f = $act['namespace_path'].'controllers/'.$act['controller'];
 
             } else { /* if a custom 3rd party path */
-                 $this->modx->smarty->setTemplatePath($act['context_path'].'core/templates/');
-                 $f = $act['context_path'].'core/controllers/'.$act['controller'];
+                 $this->modx->smarty->setTemplatePath($act['namespace_path'].'core/templates/');
+                 $f = $act['namespace_path'].'core/controllers/'.$act['controller'];
             }
 
             /* set context url and path */
-            $this->modx->config['context_url'] = $act['context_url'];
-            $this->modx->config['context_path'] = $act['context_path'];
+            $this->modx->config['namespace_path'] = $act['namespace_path'];
 
             /* if action is a directory, load base index.php */
             if (substr($f,strlen($f)-1,1) == '/') {

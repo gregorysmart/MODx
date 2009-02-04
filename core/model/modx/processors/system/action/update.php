@@ -5,7 +5,7 @@
  * @param string $controller The controller location
  * @param boolean $loadheaders Whether or not to load header templates for the
  * action
- * @param string $context_key The context for the action
+ * @param string $namespace The namespace for the action
  * @param string $lang_topics The lexicon topics for the action
  * @param string $assets
  * @param integer $parent (optional) The parent for the action. Defaults to 0.
@@ -13,7 +13,7 @@
  * @package modx
  * @subpackage processors.system.action
  */
-$modx->lexicon->load('action','menu','context');
+$modx->lexicon->load('action','menu','namespace');
 
 if (!$modx->hasPermission('actions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
@@ -36,19 +36,23 @@ if ($_POST['parent'] == 0) {
 	if ($parent == null) return $modx->error->failure($modx->lexicon('action_parent_err_nf'));
 }
 
-if (!isset($_POST['context_key']) || $_POST['context_key'] == '') return $modx->error->failure($modx->lexicon('context_err_nf'));
-$context = $modx->getObject('modContext',$_POST['context_key']);
-if ($context == null) return $modx->error->failure($modx->lexicon('context_err_nf'));
+if (!isset($_POST['namespace']) || $_POST['namespace'] == '') {
+    return $modx->error->failure($modx->lexicon('namespace_err_nf'));
+}
+$namespace = $modx->getObject('modNamespace',$_POST['namespace']);
+if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 
-$action->set('context_key',$context->get('key'));
+$action->set('namespace',$namespace->get('key'));
 $action->set('parent',$parent->get('id'));
 $action->set('controller',$_POST['controller']);
 $action->set('loadheaders',$loadheaders);
 $action->set('lang_topics',$_POST['lang_topics']);
 $action->set('assets',$_POST['assets']);
 
-if (!$action->save()) return $modx->error->failure($modx->lexicon('action_err_save'));
+if ($action->save() == false) {
+    return $modx->error->failure($modx->lexicon('action_err_save'));
+}
 
 /* log manager action */
 $modx->logManagerAction('action_update','modAction',$action->get('id'));

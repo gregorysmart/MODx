@@ -47,6 +47,15 @@ $description = 'Added new column `description` to '.$table.'.';
 $this->processResults($class, $description, $sql);
 unset($class,$description,$sql,$table);
 
+/* change modAction context_key to namespace */
+$class = 'modAction';
+$table = $this->install->xpdo->getTableName($class);
+$sql = "ALTER TABLE `modx_actions` CHANGE `context_key` `namespace` VARCHAR( 100 ) NOT NULL DEFAULT 'core'";
+$description = 'Changed column `context_key` to `namespace` on '.$table.'.';
+$this->processResults($class,$description,$sql);
+unset($class,$description,$sql,$table);
+
+
 /* fix not null `properties` columns on all element (and property set) tables to allow null */
 $elements = array (
     'modChunk',

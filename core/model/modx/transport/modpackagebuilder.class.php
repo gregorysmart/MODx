@@ -178,14 +178,16 @@ class modPackageBuilder {
      * relative resources to the namespace.
      * @param boolean $packageNamespace If false, will not package the namespace
      * as a vehicle.
+     * @param string $path The path for the namespace to be created.
      * @return boolean True if successful.
      */
-    function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true) {
+    function registerNamespace($ns = 'core', $autoincludes = true, $packageNamespace = true, $path = '') {
         if (!is_a($ns, 'modNamespace')) {
             $namespace = $this->modx->getObject('modNamespace', $ns);
             if ($namespace == null) {
                 $namespace = $this->modx->newObject('modNamespace');
                 $namespace->set('name', $ns);
+                $namespace->set('path',$path);
             }
         } else {
             $namespace = $ns;

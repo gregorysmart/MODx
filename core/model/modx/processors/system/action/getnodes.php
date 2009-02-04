@@ -20,16 +20,16 @@ $id = $ar[2];
 
 /* contexts */
 if ($type == 'root') {
-    $contexts = $modx->getCollection('modContext');
+    $namespaces = $modx->getCollection('modNamespace');
 
     $cs = array();
-    foreach ($contexts as $context) {
+    foreach ($namespaces as $namespace) {
         $cs[] = array(
-            'text' => $context->get('key'),
-            'id' => 'n_context_'.$context->get('key'),
+            'text' => $namespace->get('name'),
+            'id' => 'n_namespace_'.$namespace->get('name'),
             'leaf' => false,
             'cls' => 'folder',
-            'type' => 'context',
+            'type' => 'namespace',
             'menu' => array( 'items' => array(
                 array(
                     'text' => $modx->lexicon('action_create_here'),
@@ -45,11 +45,11 @@ if ($type == 'root') {
     die();
 
 /* root actions */
-} else if ($type == 'context') {
+} else if ($type == 'namespace') {
     $c = $modx->newQuery('modAction');
     $c->where(array(
         'parent' => 0,
-        'context_key' => $id,
+        'namespace' => $id,
     ));
     $c->sortby('controller','ASC');
     $c->limit($_REQUEST['limit'],$_REQUEST['start']);
@@ -59,7 +59,7 @@ if ($type == 'root') {
     $cc = $modx->newQuery('modAction');
     $cc->where(array(
         'parent' => 0,
-        'context_key' => $id,
+        'namespace' => $id,
     ));
     $count = $modx->getCount('modAction',$cc);
 

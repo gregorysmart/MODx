@@ -69,13 +69,13 @@
         <aggregate alias="Target" class="modResourceGroup" local="target" foreign="id" owner="foreign" cardinality="one" />
     </object>
     <object class="modAction" table="actions" extends="modAccessibleSimpleObject">
-        <field key="context_key" dbtype="varchar" precision="100" phptype="string" null="false" default="mgr" />
+        <field key="namespace" dbtype="varchar" precision="100" phptype="string" null="false" default="core" />
         <field key="parent" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" index="index" />
         <field key="controller" dbtype="varchar" precision="255" phptype="string" null="false" />
         <field key="haslayout" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="1" />
         <field key="lang_topics" dbtype="text" phptype="string" null="false" />
         <field key="assets" dbtype="text" phptype="string" null="false" />
-        <aggregate alias="Context" class="modContext" local="context_key" foreign="key" owner="foreign" cardinality="one" />
+        <aggregate alias="modNamespace" class="modNamespace" local="namespace" foreign="name" owner="foreign" cardinality="one" />
         <aggregate alias="Parent" class="modAction" local="parent" foreign="id" owner="foreign" cardinality="one" />
         <aggregate alias="Children" class="modAction" local="id" foreign="parent" owner="local" cardinality="many" />
         <composite alias="Menus" class="modMenu" local="id" foreign="action" owner="local" cardinality="many" />
@@ -243,6 +243,7 @@
         <composite alias="modSystemSetting" class="modSystemSetting" local="name" foreign="namespace" cardinality="many" owner="local" />
         <composite alias="modContextSetting" class="modContextSetting" local="name" foreign="namespace" cardinality="many" owner="local" />
         <composite alias="modUserSetting" class="modUserSetting" local="name" foreign="namespace" cardinality="many" owner="local" />
+        <composite alias="modAction" class="modAction" local="name" foreign="namespace" cardinality="many" owner="local" />
     </object>
     <object class="modPlugin" table="site_plugins" extends="modScript">
         <field key="cache_type" dbtype="tinyint" precision="1" phptype="integer" null="false" default="0" />
