@@ -193,11 +193,20 @@ MODx.panel.Resource = function(config) {
                     ,template: config.template
                     
                 },(config.access_permissions ? {
-                    contentEl: 'modx-tab-access'
+                    id: 'modx-resource-access-permissions'
                     ,collapsed: false
-                    ,id: 'modx-resource-access-permissions'
                     ,title: _('access_permissions')
-                    
+                    ,layout: 'form'
+                    ,items: [{
+                        html: '<p>'+_('resource_access_message')+'</p>'
+                    },{
+                        xtype: 'modx-grid-resource-security'
+                        ,preventRender: true
+                        ,resource: config.resource
+                        ,listeners: {
+                            'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                        }
+                    }]
                 } : {})]
             }]
         }]

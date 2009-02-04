@@ -45,9 +45,6 @@ MODx.page.CreateResource = function(config) {
             ,template: config.template
             ,parent: config.parent
         },{
-            xtype: 'modx-grid-resource-security'
-            ,renderTo: 'modx-grid-resource-security'
-        },{
             xtype: 'modx-panel-resource-tv'
             ,class_key: config.class_key
             ,resource: 0

@@ -28,10 +28,6 @@ MODx.page.UpdateResource = function(config) {
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
             ,template: config.template
-        },{
-            xtype: 'modx-grid-resource-security'
-            ,renderTo: 'modx-grid-resource-security'
-            ,resource: config.id
         }]
         ,buttons: [{
             process: 'update'

@@ -110,7 +110,7 @@ MODx.panel.Plugin = function(config) {
                         ,preventRender: true
                         ,plugin: config.plugin
                         ,listeners: {
-                            'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
+                            'afteredit': {fn:this.fieldChangeEvent,scope:this}
                         }
                     }]             
                 },{

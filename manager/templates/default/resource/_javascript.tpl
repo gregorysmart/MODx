@@ -10,39 +10,6 @@ function cleanupRTE(editor) {
     return false;
 }
 
-
-function makePublic(b){
-    var notPublic=false;
-    var f=$('mutate_document');
-    var chkpub = f['chkalldocs'];
-    var chks = f['docgroups[]'];
-    if(!chks && chkpub) {
-        chkpub.checked=true;
-        return false;
-    }
-    else if (!b && chkpub) {
-        if(!chks.length) notPublic=chks.checked;
-        else for(i=0;i<chks.length;i++) if(chks[i].checked) notPublic=true;
-        chkpub.checked=!notPublic;
-    }
-    else {
-        if(!chks.length) chks.checked = (b)? false:chks.checked;
-        else for(i=0;i<chks.length;i++) if (b) chks[i].checked=false;
-        chkpub.checked=true;
-    }
-}
-
-
-function changestate(element) {
-    var currval = eval(element).value;
-    if(currval==1) {
-        eval(element).value=0;
-    } else {
-        eval(element).value=1;
-    }
-    documentDirty=true;
-}
-
 function previewdocument() {
     var win = window.frames['preview'];
     url = '../index.php?id={/literal}{$smarty.request.id}{literal}&manprev=z';

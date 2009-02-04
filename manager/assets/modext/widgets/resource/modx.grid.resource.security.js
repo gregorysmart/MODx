@@ -18,8 +18,7 @@ MODx.grid.ResourceSecurity = function(config) {
     });
 
     Ext.applyIf(config,{
-        title: _('security')
-        ,id: 'modx-grid-resource-security'
+        id: 'modx-grid-resource-security'
         ,url: MODx.config.connectors_url+'resource/resourcegroup.php'
         ,baseParams: {
             action: 'getList'

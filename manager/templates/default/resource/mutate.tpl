@@ -13,28 +13,11 @@
 {$onDocFormPrerender}
 <!-- BEGIN TOP PANE -->
 
-<!-- START META Keywords -->
-{if $modx->hasPermission('edit_doc_metatags')}
-<div id="tab_mtkw" class="x-hide-display">
-{include file='resource/sections/metatags.tpl'}
-</div>
-{/if}
-<!-- END META Keywords -->
-
 <!-- START Template Variables -->
 <div id="modx-tab-tvs" class="x-hide-display">
 {include file='resource/sections/tvs.tpl'}
 </div>
 <!-- END Template Variables -->
-
-<!-- START Access Permissions -->
-<div id="modx-tab-access" class="x-hide-display">
-    <h2>{$_lang.security}</h2>
-
-    <p>{$_lang.resource_access_message}</p>
-    <div id="modx-grid-resource-security"></div>
-</div>
-<!-- END Access Permissions -->
 
 
 {$onDocFormRender}
