@@ -31,7 +31,7 @@ function getSubMenus($m) {
         $ma = $menu->toArray();
         if ($action) {
             $ns = $action->getOne('modNamespace');
-            if ($ns->get('name') != 'core') {
+            if ($ns != null && $ns->get('name') != 'core') {
                 $modx->lexicon->load($ns->get('name').':default');
                 $ma['text'] = $modx->lexicon($menu->get('text'));
             } else {
