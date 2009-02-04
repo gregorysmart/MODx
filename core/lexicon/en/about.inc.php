@@ -11,8 +11,8 @@ $_lang['credits_shouts_msg'] = '
 <p>The folks that started it all.</p>
 <ul>
     <li>Jason Coward (OpenGeek)</li>
-    <li>Raymond Irving (xwisdom) - emeritus</li>
     <li>Ryan Thrash (rthrash)</li>
+    <li>Raymond Irving (xwisdom) - emeritus</li>
 </ul>
 
 <h3>Foundation &amp; Architecture</h3>
@@ -21,50 +21,52 @@ $_lang['credits_shouts_msg'] = '
     What\'s it take to make it here? Experience ... and lots of it.
 </p>
 <ul>
-    <li>Victor Brilon (vbrilon)</li>
     <li>Shaun McCormick (splittingred)</li>
+    <li>Victor Brilon (vbrilon)</li>
 </ul>
 
 <h3>Core Code</h3>
 <p>Creating all the cool stuff inside MODx.</p>
 <ul>
+    <li>Garry Nutting (garryn)</li>
     <li>Timon Reinhard (netnoise)</li>
     <li>Matthew Pietz (sirlancelot)</li>
-    <li>Garry Nutting (garryn)</li>
 </ul>
 
 <h3>Components & Plugins</h3>
 <p>Creating all the cool stuff that works with MODx.</p>
 <ul>
+    <li>Bob Ray (BobRay)</li>
     <li>Mark Kaplan (Mark)</li>
     <li>Jeff Whitfield (Bravado)</li>
     <li>Anssi Rajakallio (doze)</li>
     <li>Armand Pondman (bS)</li>
+    <li>Olivier Deland (ConseilsWeb)</li>
+    <li>Mike Schell (netProphET)</li>
     <li>Jelle Jager (tobyL)</li>
     <li>Mike Reid (pixelchutes)</li>
     <li>Brian Stanback (ApoXX)</li>
     <li>Scotty Delicious (Scotty Delicious)</li>
     <li>Frederic Million (heliotrope)</li>
-    <li>Olivier Deland (ConseilsWeb)</li>
-    <li>Mike Schell (netProphET)</li>
     <li>Brunaud Devillard (coroico)</li>
-    <li>Bob Ray (BobRay)</li>
 </ul>
 
 <h3>Marketing &amp; Design</h3>
 <p>Creating the look and messaging for MODx.</p>
 <ul>
+    <li>Martin Sanders (modxPowered) - Special thanks for coming up with the current manager design!</li>
     <li>David Molliere (davidm)</li>
     <li>Zaigham Rana (zi)</li>
-    <li>Debbie Munoz (Mrs Communication)</li>
     <li>Jay Gilmore (smashingred)</li>
+    <li>Debbie Munoz (Mrs Communication)</li>
 </ul>
 
 <h3>Documentation</h3>
 <p>Helping our users understand MODx.</p>
 <ul>
     <li>Susan Ottwell (sottwell)</li>
-    <li>Michael Henderson (mdhender)</li></ul>
+    <li>Michael Henderson (mdhender)</li>
+</ul>
 
 <h3>QA &amp; Support</h3>
 <p>Internal testing and community support ambassadors.</p>
@@ -80,6 +82,7 @@ $_lang['credits_shouts_msg'] = '
 <p>Helpful folks who\'ve since moved on... Thanks for the assistance!</p>
 <ul>
     <li>Dave Denis</li>
+    <li>Al Bates (redman)</li>
     <li>Brian Oberkirch (lightbox5)</li>
     <li>Carsten Richter (carsten)</li>
     <li>Travis Sitzlar (Infoclipper)</li>
@@ -90,7 +93,6 @@ $_lang['credits_shouts_msg'] = '
     <li>Andreas Viklund (andreasviklund)</li>
     <li>Richard Quinn (ricardosanX)</li>
     <li>Wendy Novianto (Djamoer)</li>
-    <li>Al Bates (redman)</li>
     <li>Grzegorz Adamiak (grad)</li>
     <li>Andraz Kozelj (andrazk)</li>
 </ul>';
