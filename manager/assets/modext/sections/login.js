@@ -2,7 +2,7 @@ Ext.onReady(function() {
     if (top.frames.length !== 0) {
         top.location=self.document.location;
     }
-    MODx.load({ xtype: 'page-login' });
+    MODx.load({ xtype: 'modx-page-login' });
 });
 var loginHandler = function(opt,s,r) {
     r = Ext.decode(r.responseText);
@@ -18,14 +18,14 @@ var doLogin = function() {
  * @class MODx.page.Login
  * @extends MODx.Component
  * @param {Object} config An object with config parameters
- * @xtype page-login
+ * @xtype modx-page-login
  */
 MODx.page.Login = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 	   components: [{
-	       xtype: 'panel-login'
-	       ,renderTo: 'panel-login'
+	       xtype: 'modx-panel-login'
+	       ,renderTo: 'modx-panel-login'
 	   }]
 	});
 	MODx.page.Login.superclass.constructor.call(this,config);
@@ -33,13 +33,13 @@ MODx.page.Login = function(config) {
 Ext.extend(MODx.page.Login,MODx.Component,{
 	
 });
-Ext.reg('page-login',MODx.page.Login);
+Ext.reg('modx-page-login',MODx.page.Login);
 
 /**
  * @class MODx.panel.Login
  * @extends MODx.FormPanel
  * @param {Object} config An object of config parameters
- * @xtype panel-login
+ * @xtype modx-panel-login
  */
 MODx.panel.Login = function(config) {
 	config = config || {};
@@ -66,33 +66,38 @@ MODx.panel.Login = function(config) {
 	   },{
 	       xtype: 'hidden'
 	       ,name: 'login_context'
+           ,id: 'modx-login-context'
 	       ,value: 'mgr'
 	   },{
 	       xtype: 'textfield'
 	       ,fieldLabel: _('login_username')
 	       ,name: 'username'
-	       ,el: 'login-username'
+	       ,el: 'modx-login-username'
+           ,id: 'modx-login-username'
 	   },{
 	       xtype: 'textfield'
 	       ,fieldLabel: _('login_password')
 	       ,name: 'password'
-	       ,el: 'login-password'
+	       ,el: 'modx-login-password'
+           ,id: 'modx-login-password'
 	       ,inputType: 'password'
 	   },{
 	       xtype: 'checkbox'
 	       ,boxLabel: _('remember_username')
 	       ,name: 'rememberme'
-	       ,el: 'login-rememberme'
+	       ,el: 'modx-login-rememberme'
+           ,id: 'modx-login-rememberme'
            ,inputValue: true
 	   },{
 	   	   html: onManagerLoginFormRender
 	   }]
 	   ,buttons: [{
 	       text: _('login_button')
+           ,id: 'modx-login-button'
 	       ,handler: this.submit
 	       ,scope: this
 	   }]
-       ,renderTo: 'login-form'
+       ,renderTo: 'modx-login-form'
 	   ,listeners: {
 	   	   'success': {fn:function(o) {
 	   	   	   location.href = (o.result.object.id !== undefined) ? './index.php?id=' + o.result.object.id : './';
@@ -108,4 +113,4 @@ MODx.panel.Login = function(config) {
 	MODx.panel.Login.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.Login,MODx.FormPanel);
-Ext.reg('panel-login',MODx.panel.Login);
+Ext.reg('modx-panel-login',MODx.panel.Login);
