@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'page-system-event' });
+    MODx.load({ xtype: 'modx-page-system-event' });
 });
 /**
  * Loads the system event page
@@ -7,17 +7,17 @@ Ext.onReady(function() {
  * @class MODx.page.SystemEvent
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-system-event
+ * @xtype modx-page-system-event
  */
 MODx.page.SystemEvent = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'panel-error-log'
-            ,renderTo: 'panel-error-log'
+            xtype: 'modx-panel-error-log'
+            ,renderTo: 'modx-panel-error-log'
         }]
     });
     MODx.page.SystemEvent.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.SystemEvent,MODx.Component);
-Ext.reg('page-system-event',MODx.page.SystemEvent);
+Ext.reg('modx-page-system-event',MODx.page.SystemEvent);

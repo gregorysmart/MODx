@@ -33,9 +33,8 @@ MODx.panel.GroupsRoles = function(config) {
                         html: '<p>'+_('user_group_management_msg')+'</p>'
                         ,border: false
                     },{
-                        xtype: 'tree-usergroup'
+                        xtype: 'modx-tree-usergroup'
                         ,title: ''
-                        ,id: 'gr-tree-usergroup'
                     }]
                 },{
                     title: _('roles')

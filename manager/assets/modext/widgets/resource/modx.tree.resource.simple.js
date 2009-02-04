@@ -4,7 +4,7 @@
  * @class MODx.tree.SimpleResource
  * @extends MODx.tree.Tree
  * @param {Object} config An object of options.
- * @xtype tree-resource-simple
+ * @xtype modx-tree-resource-simple
  */
 MODx.tree.SimpleResource = function(config) {
 	config = config || {};
@@ -17,4 +17,4 @@ MODx.tree.SimpleResource = function(config) {
 	MODx.tree.SimpleResource.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.tree.SimpleResource,MODx.tree.Tree);
-Ext.reg('tree-resource-simple',MODx.tree.SimpleResource);
+Ext.reg('modx-tree-resource-simple',MODx.tree.SimpleResource);

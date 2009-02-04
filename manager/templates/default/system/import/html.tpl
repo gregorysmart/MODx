@@ -6,20 +6,20 @@
 
 <p>{$_lang.import_site_message}</p>
 
-<div id="import_results"></div>
+<div id="modx-import-results"></div>
 
 
-<form id="import_site" method="post" action="{$_config.connectors_url}system/import/html.php" onsubmit="return false;">
+<form id="modx-import-site" method="post" action="{$_config.connectors_url}system/import/html.php" onsubmit="return false;">
 <table class="classy">
 <tbody>
 <tr>
-    <th><label for="import_element">{$_lang.import_enter_root_element}{$_lang.import_element}</label></th>
+    <th><label for="modx-import-element">{$_lang.import_enter_root_element}{$_lang.import_element}</label></th>
     <td class="x-form-element">
-        <input id="import_element" name="import_element" type="text" />
+        <input id="modx-import-element" name="import_element" type="text" />
     </td>
 </tr>
 <tr class="odd">
-    <th><label for="modx_resource_tree">{$_lang.import_parent_document}</label></th>
+    <th><label for="modx-ih-resource-tree">{$_lang.import_parent_document}</label></th>
     <td>
         {$_lang.import_use_doc_tree}
     </td>
@@ -28,13 +28,13 @@
 </table>
 
 <div style="padding: 1em;">
-    <div id="modx_resource_tree" class="tree"><div id="modx_resource_tree_tb"></div></div>
+    <div id="modx-ih-resource-tree" class="tree"><div id="modx-ih-resource-tree-tb"></div></div>
     <br style="clear: right" />
 </div>
 <br style="clear: both" />
 
-<input type="hidden" id="import_parent" name="import_parent" />
-<input type="hidden" id="import_context" name="import_context" />
+<input type="hidden" id="modx-import-parent" name="import_parent" />
+<input type="hidden" id="modx-import-context" name="import_context" />
 
 
 </form>

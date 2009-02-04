@@ -9,7 +9,8 @@
 MODx.tree.Action = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
-        root_id: 'n_root_0'
+        id: 'modx-tree-action'
+        ,root_id: 'n_root_0'
         ,root_name: _('actions')
         ,rootVisible: true
         ,expandFirst: true
@@ -48,7 +49,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
                     });
                     if (!this.windows.create_action) {
                         this.windows.create_action = MODx.load({
-                            xtype: 'window-action-create'
+                            xtype: 'modx-window-action-create'
                             ,scope: this
                             ,success: this.refresh
                             ,record: r.object
@@ -64,7 +65,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
 						Ext.apply(r.object,{parent: 0});
                         if (!this.windows.create_action) {
                             this.windows.create_action = MODx.load({
-                                xtype: 'window-action-create'
+                                xtype: 'modx-window-action-create'
                                 ,scope: this
                                 ,success: this.refresh
                                 ,record: r.object
@@ -105,7 +106,7 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
                     });
                     if (!this.windows.update_action) {
                         this.windows.update_action = MODx.load({
-                            xtype: 'window-action-update'
+                            xtype: 'modx-window-action-update'
                             ,scope: this
                             ,success: this.refresh
                             ,record: r.object
@@ -151,7 +152,7 @@ Ext.reg('modx-tree-action',MODx.tree.Action);
  * @class MODx.window.CreateAction
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-action-create
+ * @xtype modx-window-action-create
  */
 MODx.window.CreateAction = function(config) {
     config = config || {};
@@ -170,7 +171,7 @@ MODx.window.CreateAction = function(config) {
             fieldLabel: _('context')
             ,name: 'context_key'
             ,id: 'modx-cact-context-key'
-            ,xtype: 'combo-context'
+            ,xtype: 'modx-combo-context'
             ,width: 150
             ,allowBlank: false
             ,value: 'mgr'
@@ -206,7 +207,7 @@ MODx.window.CreateAction = function(config) {
 	MODx.window.CreateAction.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateAction,MODx.Window);
-Ext.reg('window-action-create',MODx.window.CreateAction);
+Ext.reg('modx-window-action-create',MODx.window.CreateAction);
 
 
 /** 
@@ -215,7 +216,7 @@ Ext.reg('window-action-create',MODx.window.CreateAction);
  * @class MODx.window.UpdateAction
  * @extends MODx.Window
  * @param {Object} config An object of options.
- * @xtype window-action-update
+ * @xtype modx-window-action-update
  */
 MODx.window.UpdateAction = function(config) {
     config = config || {};
@@ -243,7 +244,7 @@ MODx.window.UpdateAction = function(config) {
             ,name: 'context_key'
             ,hiddenName: 'context_key'
             ,id: 'modx-uact-context-key'
-            ,xtype: 'combo-context'
+            ,xtype: 'modx-combo-context'
             ,width: 150
             ,allowBlank: false
         },{

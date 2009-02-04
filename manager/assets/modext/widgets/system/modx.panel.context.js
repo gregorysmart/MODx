@@ -17,7 +17,7 @@ MODx.panel.Context = function(config) {
         ,items: [{
             html: '<h2>'+_('context')+': '+config.context+'</h2>'
             ,border: false
-            ,id: 'context-name'
+            ,id: 'modx-context-name'
             ,cls: 'modx-page-header'
         },{
             xtype: 'portal'
@@ -75,7 +75,7 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
             ,listeners: {
             	'success': {fn:function(r) {
                     this.getForm().setValues(r.object);
-                    var el = Ext.getCmp('context-name');
+                    var el = Ext.getCmp('modx-context-name');
                     if (el) { el.getEl().update('<h2>'+_('context')+': '+r.object.key+'</h2>'); }
                     this.fireEvent('ready');
             	},scope:this}

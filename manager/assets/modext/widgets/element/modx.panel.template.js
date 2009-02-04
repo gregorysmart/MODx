@@ -64,7 +64,7 @@ MODx.panel.Template = function(config) {
                         ,width: 300
                         ,maxLength: 255
                     },{
-                        xtype: 'combo-category'
+                        xtype: 'modx-combo-category'
                         ,fieldLabel: _('category')
                         ,name: 'category'
                         ,id: 'modx-template-category'

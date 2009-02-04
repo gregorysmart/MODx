@@ -1,5 +1,5 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'page-system-info' });
+    MODx.load({ xtype: 'modx-page-system-info' });
 });
 
 /**
@@ -8,32 +8,32 @@ Ext.onReady(function() {
  * @class MODx.page.SystemInfo
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-system-info
+ * @xtype modx-page-system-info
  */
 MODx.page.SystemInfo = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
         components: [{
-            xtype: 'grid-databasetables'
-            ,renderTo: 'dt_grid'
+            xtype: 'modx-grid-databasetables'
+            ,renderTo: 'modx-grid-databasetables'
         },{
-            xtype: 'grid-resource-active'
-            ,renderTo: 'grid-resource-active'
+            xtype: 'modx-grid-resource-active'
+            ,renderTo: 'modx-grid-resource-active'
         }]
         ,tabs: [{
-            contentEl: 'tab_server', title: _('server')
+            contentEl: 'modx-tab-server', title: _('server')
         },{
-            contentEl: 'tab_documents', title: _('activity_title')
+            contentEl: 'modx-tab-resources', title: _('activity_title')
         },{
-            contentEl: 'tab_database', title: _('database_tables')
+            contentEl: 'modx-tab-database', title: _('database_tables')
         },{
-            contentEl: 'tab_users', title: _('onlineusers_title')
+            contentEl: 'modx-tab-users', title: _('onlineusers_title')
         }]
 	});
 	MODx.page.SystemInfo.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.SystemInfo,MODx.Component);
-Ext.reg('page-system-info',MODx.page.SystemInfo);
+Ext.reg('modx-page-system-info',MODx.page.SystemInfo);
 
 
 var viewPHPInfo = function() {

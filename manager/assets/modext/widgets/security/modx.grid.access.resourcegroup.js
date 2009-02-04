@@ -108,7 +108,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
     }
     
     ,getToolbar: function() {
-        this.combos.ug = MODx.load({ xtype: 'combo-usergroup' });
+        this.combos.ug = MODx.load({ xtype: 'modx-combo-usergroup' });
         this.combos.ug.on('select',function(btn,e) {
             this.getStore().baseParams = {
                 action: 'getList'
@@ -119,7 +119,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
             this.getStore().reload();
         },this);
         
-        this.combos.rg = MODx.load({ xtype: 'combo-resourcegroup' });
+        this.combos.rg = MODx.load({ xtype: 'modx-combo-resourcegroup' });
         this.combos.rg.on('select',function(btn,e) {
             this.getStore().baseParams = {
                 action: 'getList'
@@ -216,14 +216,14 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     ,name: 'target'
                     ,hiddenName: 'target'
                     ,id: 'modx-arg-target'
-                    ,xtype: 'combo-resourcegroup'
+                    ,xtype: 'modx-combo-resourcegroup'
                     ,value: data.target
                 },{
                     fieldLabel: _('user_group')
                     ,name: 'principal'
                     ,hiddenName: 'principal'
                     ,id: 'modx-arg-principal'
-                    ,xtype: 'combo-usergroup'
+                    ,xtype: 'modx-combo-usergroup'
                     ,value: data.principal || ''
                     ,baseParams: {
                         action: 'getList'
@@ -241,7 +241,7 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     ,name: 'policy'
                     ,hiddenName: 'policy'
                     ,id: 'modx-arg-policy'
-                    ,xtype: 'combo-policy'
+                    ,xtype: 'modx-combo-policy'
                     ,value: data.policy || ''
                     ,baseParams: {
                         action: 'getList'
@@ -252,7 +252,7 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     ,name: 'context_key'
                     ,hiddenName: 'context_key'
                     ,id: 'modx-arg-context-key'
-                    ,xtype: 'combo-context'
+                    ,xtype: 'modx-combo-context'
                     ,value: data.context_key || ''
                 },{
                     name: 'principal_class'

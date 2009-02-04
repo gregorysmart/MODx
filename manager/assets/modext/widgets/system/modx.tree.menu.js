@@ -9,7 +9,8 @@
 MODx.tree.Menu = function(config) {
 	config = config || {};
     Ext.applyIf(config,{
-        root_id: 'n_0'
+        id: 'modx-tree-menu'
+        ,root_id: 'n_0'
         ,root_name: _('menu_top')
 		,title: _('menu_top')
         ,rootVisible: true
@@ -135,13 +136,13 @@ MODx.window.CreateMenu = function(config) {
             ,name: 'action_id'
             ,hiddenName: 'action_id'
             ,id: 'modx-cmen-action-id'
-            ,xtype: 'combo-action'
+            ,xtype: 'modx-combo-action'
         },{
             fieldLabel: _('menu_parent')
             ,name: 'parent'
             ,hiddenName: 'parent'
             ,id: 'modx-cmen-parent'
-            ,xtype: 'combo-menu'
+            ,xtype: 'modx-combo-menu'
             ,hideTrigger: true
             ,width: 200
         },{
@@ -169,7 +170,7 @@ MODx.window.CreateMenu = function(config) {
 	MODx.window.CreateMenu.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateMenu,MODx.Window);
-Ext.reg('window-menu-create',MODx.window.CreateMenu);
+Ext.reg('modx-window-menu-create',MODx.window.CreateMenu);
 
 /** 
  * Generates the Update Menu window

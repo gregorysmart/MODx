@@ -3,9 +3,8 @@
  * 
  * @class MODx.tree.ResourceGroup
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-resourcegroup
+ * @xtype modx-tree-resourcegroup
  */
 MODx.tree.ResourceGroup = function(config) {
 	config = config || {};
@@ -70,7 +69,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 	,create: function(itm,e) {
 		if (!this.windows.create) {
 			this.windows.create = MODx.load({
-				xtype: 'window-resourcegroup-create'
+				xtype: 'modx-window-resourcegroup-create'
 				,listeners: {
 				    'success': {fn:this.refresh,scope:this}
 				}

@@ -45,7 +45,7 @@ MODx.panel.Welcome = function(config) {
                         html: '<p>'+_('activity_message')
                         ,border: false
                     },{
-                        xtype: 'grid-user-recent-resource'
+                        xtype: 'modx-grid-user-recent-resource'
                         ,user: config.user
                         ,preventRender: true
                     }]
@@ -78,9 +78,3 @@ MODx.panel.Welcome = function(config) {
 };
 Ext.extend(MODx.panel.Welcome,MODx.FormPanel);
 Ext.reg('modx-panel-welcome',MODx.panel.Welcome);
-/*
-{
-            xtype: 'grid-user-recent-resource'
-            ,renderTo: 'grid-recent-resource'
-            ,user: config.user
-        }*/

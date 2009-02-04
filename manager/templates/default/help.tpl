@@ -14,17 +14,17 @@
 
 <div id="tabs_div"></div>
 
-<div id="about" class="padding x-hide-display">
+<div id="modx-tab-about" class="padding x-hide-display">
     <h2>{$_lang.about_title}</h2>
     <p>{$_lang.about_msg}</p>
 </div>
 
-<div id="help" class="padding x-hide-display">
+<div id="modx-tab-help" class="padding x-hide-display">
     <h2>{$_lang.help}</h2>
     <p>{$_lang.help_msg}</p>
 </div>
 
-<div id="credits" class="padding x-hide-display">
+<div id="modx-tab-credits" class="padding x-hide-display">
 
 <h2>{$_lang.credits}</h2>
 <table width="500" border="0" cellspacing="0" cellpadding="0" class="about">

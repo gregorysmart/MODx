@@ -136,7 +136,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         var r = {parent: node.id};
         if (!this.windows.create) {
     		this.windows.create = MODx.load({
-    			xtype: 'window-directory-create'
+    			xtype: 'modx-window-directory-create'
     			,record: r
                 ,prependPath: this.config.prependPath || null
                 ,listeners: {
@@ -154,7 +154,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         var r = {dir: node.id};
         if (!this.windows.chmod) {
             this.windows.chmod = MODx.load({
-    			xtype: 'window-directory-chmod'
+    			xtype: 'modx-window-directory-chmod'
     			,record: r
                 ,prependPath: this.config.prependPath || null
                 ,listeners: {
@@ -190,9 +190,8 @@ Ext.reg('modx-tree-directory',MODx.tree.Directory);
  * 
  * @class MODx.window.CreateDirectory
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of configuration options.
- * @xtype window-directory-create
+ * @xtype modx-window-directory-create
  */
 MODx.window.CreateDirectory = function(config) {
     config = config || {};
@@ -222,16 +221,15 @@ MODx.window.CreateDirectory = function(config) {
 	MODx.window.CreateDirectory.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateDirectory,MODx.Window);
-Ext.reg('window-directory-create',MODx.window.CreateDirectory);
+Ext.reg('modx-window-directory-create',MODx.window.CreateDirectory);
 
 /** 
  * Generates the Chmod Directory window
  * 
  * @class MODx.window.ChmodDirectory
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of configuration options.
- * @xtype window-directory-chmod
+ * @xtype modx-window-directory-chmod
  */
 MODx.window.ChmodDirectory = function(config) {
     config = config || {};
@@ -260,4 +258,4 @@ MODx.window.ChmodDirectory = function(config) {
 	MODx.window.ChmodDirectory.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.ChmodDirectory,MODx.Window);
-Ext.reg('window-directory-chmod',MODx.window.ChmodDirectory);
+Ext.reg('modx-window-directory-chmod',MODx.window.ChmodDirectory);

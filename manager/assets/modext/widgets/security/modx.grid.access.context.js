@@ -117,7 +117,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
 	
 	,getToolbar: function() {
 		this.combos.ug = MODx.load({ 
-            xtype: 'combo-usergroup'
+            xtype: 'modx-combo-usergroup'
             ,listeners: {
               	'select': {fn:function(btn,e) {
                     this.getStore().baseParams = {
@@ -131,7 +131,7 @@ Ext.extend(MODx.grid.AccessContext,MODx.grid.Grid,{
             }
 		});
 	    this.combos.ctx = MODx.load({ 
-            xtype: 'combo-context'
+            xtype: 'modx-combo-context'
             ,listeners: {
                	'select': {fn:function(btn,e) {
                     this.getStore().baseParams = {
@@ -231,13 +231,13 @@ Ext.extend(MODx.window.AccessContext,MODx.Window,{
                     fieldLabel: _('context')
                     ,name: 'target'
                     ,hiddenName: 'target'
-                    ,xtype: 'combo-context'
+                    ,xtype: 'modx-combo-context'
                     ,value: data.context
                 },{
                     fieldLabel: _('user_group')
                     ,name: 'principal'
                     ,hiddenName: 'principal'
-                    ,xtype: 'combo-usergroup'
+                    ,xtype: 'modx-combo-usergroup'
                     ,value: data.principal || ''
                     ,baseParams: {
                         action: 'getList'
@@ -253,7 +253,7 @@ Ext.extend(MODx.window.AccessContext,MODx.Window,{
                     fieldLabel: _('policy')
                     ,name: 'policy'
                     ,hiddenName: 'policy'
-                    ,xtype: 'combo-policy'
+                    ,xtype: 'modx-combo-policy'
                     ,value: data.policy || ''
                     ,baseParams: {
                         action: 'getList'

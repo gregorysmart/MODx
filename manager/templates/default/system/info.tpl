@@ -1,6 +1,6 @@
 <div id="tabs_div">
     <!-- server -->
-    <div class="padding x-hide-display" id="tab_server">
+    <div class="padding x-hide-display" id="modx-tab-server">
         <h2>{$_lang.view_sysinfo}</h2>
     
         <table class="classy">
@@ -62,19 +62,19 @@
     </div>
     
     <!-- recent documents -->
-    <div class="padding x-hide-display" id="tab_documents">
+    <div class="padding x-hide-display" id="modx-tab-resources">
         <h2>{$_lang.recent_docs}</h2>
         <p>{$_lang.sysinfo_activity_message}</p>
-        <div id="grid-resource-active" style="overflow:hidden; width:100%;"></div>
+        <div id="modx-grid-resource-active" style="overflow:hidden; width:100%;"></div>
     </div>
     
     <!-- database -->
-    <div class="x-hide-display" id="tab_database">
-        <div id="dt_grid" style="overflow:hidden; width:100%;"></div>       
+    <div class="x-hide-display" id="modx-tab-database">
+        <div id="modx-grid-databasetables" style="overflow:hidden; width:100%;"></div>       
     </div>
     
     <!-- online users -->
-    <div class="padding x-hide-display" id="tab_users">
+    <div class="padding x-hide-display" id="modx-tab-users">
         <h2>{$_lang.onlineusers_title}</h2>
         
         <p>{$_lang.onlineusers_message}<strong>{$now}</strong>)</p>

@@ -2,7 +2,7 @@
  * @class MODx.panel.ResourceData
  * @extends MODx.FormPanel
  * @param {Object} config An object of configuration parameters
- * @xtype panel-resource-data
+ * @xtype modx-panel-resource-data
  */
 MODx.panel.ResourceData = function(config) {
     config = config || {};
@@ -13,7 +13,7 @@ MODx.panel.ResourceData = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
-        ,id: 'panel-resource-data'
+        ,id: 'modx-panel-resource-data'
         ,class_key: 'modResource'
         ,resource: ''
         ,bodyStyle: ''
@@ -201,4 +201,4 @@ Ext.extend(MODx.panel.ResourceData,MODx.FormPanel,{
         });
     }
 });
-Ext.reg('panel-resource-data',MODx.panel.ResourceData);
+Ext.reg('modx-panel-resource-data',MODx.panel.ResourceData);

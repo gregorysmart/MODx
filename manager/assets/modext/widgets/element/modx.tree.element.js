@@ -27,7 +27,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		
 		if (!this.windows.createCategory) {
 			this.windows.createCategory = MODx.load({
-				xtype: 'window-category-create'
+				xtype: 'modx-window-category-create'
 				,listeners: {
 					'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
 				}
@@ -41,7 +41,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         
         if (!this.windows.renameCategory) {
             this.windows.renameCategory = MODx.load({
-                xtype: 'window-category-rename'
+                xtype: 'modx-window-category-rename'
                 ,record: { 
                     id: id
                     ,name: this.cm.activeNode.text
@@ -80,7 +80,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         
         if (!this.windows.duplicateElement) {
             this.windows.duplicateElement = MODx.load({
-                xtype: 'window-element-duplicate'
+                xtype: 'modx-window-element-duplicate'
                 ,record: r
                 ,listeners: {
                 	'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
@@ -152,9 +152,8 @@ Ext.reg('modx-tree-element',MODx.tree.Element);
  * 
  * @class MODx.window.DuplicateElement
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-element-duplicate
+ * @xtype modx-window-element-duplicate
  */
 MODx.window.DuplicateElement = function(config) {
     config = config || {};
@@ -165,17 +164,19 @@ MODx.window.DuplicateElement = function(config) {
         ,fields: [{
             xtype: 'hidden'
             ,name: 'id'
+            ,id: 'modx-dupel-id'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('element_name_new')
             ,name: 'name'
+            ,id: 'modx-dupel-name'
             ,width: 250
         }]
     });
     MODx.window.DuplicateElement.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.DuplicateElement,MODx.Window);
-Ext.reg('window-element-duplicate',MODx.window.DuplicateElement);
+Ext.reg('modx-window-element-duplicate',MODx.window.DuplicateElement);
 
 
 
@@ -184,9 +185,8 @@ Ext.reg('window-element-duplicate',MODx.window.DuplicateElement);
  *  
  * @class MODx.window.RenameCategory
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-category-rename
+ * @xtype modx-window-category-rename
  */
 MODx.window.RenameCategory = function(config) {
     config = config || {};
@@ -199,11 +199,13 @@ MODx.window.RenameCategory = function(config) {
         ,fields: [{
             xtype: 'hidden'
             ,name: 'id'
+            ,id: 'modx-rencat-id'
             ,value: config.record.id
         },{
-            fieldLabel: _('name')
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
             ,name: 'category'
-            ,xtype: 'textfield'
+            ,id: 'modx-rencat-category'
             ,width: 150
             ,value: config.record.name
         }]
@@ -211,4 +213,4 @@ MODx.window.RenameCategory = function(config) {
     MODx.window.RenameCategory.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.RenameCategory,MODx.Window);
-Ext.reg('window-category-rename',MODx.window.RenameCategory);
+Ext.reg('modx-window-category-rename',MODx.window.RenameCategory);

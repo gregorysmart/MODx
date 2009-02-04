@@ -1,16 +1,16 @@
 /**
- * Generates the User Group Tree in Ext
+ * Generates the User Group Tree
  *
  * @class MODx.tree.UserGroup
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-usergroup
+ * @xtype modx-tree-usergroup
  */
 MODx.tree.UserGroup = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		title: _('user_groups') 
+        ,id: 'modx-tree-usergroup'
         ,url: MODx.config.connectors_url+'security/group.php'
 		,root_id: 'n_ug_0'
 		,root_name: _('user_groups')
@@ -38,7 +38,7 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
         
         if (!this.windows.adduser) {
             this.windows.adduser = MODx.load({
-    			xtype: 'window-usergroup-adduser'
+    			xtype: 'modx-window-usergroup-adduser'
     			,record: r
     			,listeners: {
     				'success': {fn:this.refresh,scope:this}
@@ -111,4 +111,4 @@ Ext.extend(MODx.tree.UserGroup,MODx.tree.Tree,{
 		});
 	}
 });
-Ext.reg('tree-usergroup',MODx.tree.UserGroup);
+Ext.reg('modx-tree-usergroup',MODx.tree.UserGroup);

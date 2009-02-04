@@ -3,15 +3,14 @@
  * 
  * @class MODx.grid.DatabaseTables
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-databasetables
+ * @xtype modx-grid-databasetables
  */
 MODx.grid.DatabaseTables = function(config) {
     config = config || {};
 	Ext.applyIf(config,{
         title: _('database_tables')
-        ,id: 'grid-dbtable'
+        ,id: 'modx-grid-dbtable'
         ,url: MODx.config.connectors_url+'system/databasetables.php'
 		,fields: ['Name','Rows','Data_size','Data_free','Effective_size','Index_length','Total_size']
         ,paging: false
@@ -83,11 +82,11 @@ Ext.extend(MODx.grid.DatabaseTables,MODx.grid.Grid,{
 		return false;
 	}
 });
-Ext.reg('grid-databasetables',MODx.grid.DatabaseTables);
+Ext.reg('modx-grid-databasetables',MODx.grid.DatabaseTables);
 
 var truncate = function(name) {
-    Ext.getCmp('grid-dbtable').truncate(name);
+    Ext.getCmp('modx-grid-dbtable').truncate(name);
 };
 var optimize = function(name) {
-    Ext.getCmp('grid-dbtable').optimize(name);
+    Ext.getCmp('modx-grid-dbtable').optimize(name);
 };

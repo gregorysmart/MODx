@@ -23,7 +23,7 @@ MODx.grid.ManagerLog = function(config) {
             header: _('user')
             ,dataIndex: 'user'
             ,width: 200
-            ,editor: { xtype: 'combo-user' ,renderer: true }
+            ,editor: { xtype: 'modx-combo-user' ,renderer: true }
             ,editable: false
         },{
             header: _('action')
@@ -97,7 +97,7 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
             html: '<p>'+_('mgrlog_query_msg')+'</p>'
             ,border: false
         },{
-            xtype: 'combo-user'
+            xtype: 'modx-combo-user'
             ,fieldLabel: _('user')
             ,name: 'user'
             ,listeners: {

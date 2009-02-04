@@ -1,15 +1,15 @@
 <div id="tabs_div">
-<div id="tab_information" class="padding x-hide-display">
+<div id="modx-tab-information" class="padding x-hide-display">
 	<h2>{$user->profile->fullname} ({$user->username})</h2>
-	<div id="info_panel"></div>
+	<div id="modx-info-panel"></div>
 	<br />
-	<div id="password_change_panel"></div>
+	<div id="modx-password-change-panel"></div>
 </div>
 
-<div id="tab_stats" class="padding x-hide-display">
+<div id="modx-tab-stats" class="padding x-hide-display">
 	<h2>{$_lang.activity_message}</h2>
 	
-	<div id="grid-recent-resource"></div>
+	<div id="modx-grid-recent-resource"></div>
 </div>
 
 </div>
@@ -21,7 +21,7 @@
 // <![CDATA[
 Ext.onReady(function() {
 	MODx.load({
-		xtype: 'page-profile'
+		xtype: 'modx-page-profile'
 		,user: '{/literal}{$user->id}{literal}'
 	});
 });

@@ -21,7 +21,7 @@ MODx.panel.AccessPolicy = function(config) {
             html: '<h2>'+_('chunk_new')+'</h2>'
             ,border: false
             ,cls: 'modx-page-header'
-            ,id: 'policy-header'
+            ,id: 'modx-policy-header'
         },{
             xtype: 'portal'
             ,items: [{
@@ -47,7 +47,7 @@ MODx.panel.AccessPolicy = function(config) {
                         ,allowBlank: false
                         ,listeners: {
                             'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('policy-header').getEl().update('<h2>'+_('policy')+': '+f.getValue()+'</h2>');
+                                Ext.getCmp('modx-policy-header').getEl().update('<h2>'+_('policy')+': '+f.getValue()+'</h2>');
                             }}
                         }
                     },{
@@ -102,7 +102,7 @@ Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
                     g.config.policy = r.object.id;
                     g.getView().refresh();
                     
-                    Ext.getCmp('policy-header').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('modx-policy-header').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready');
             	},scope:this}
             }

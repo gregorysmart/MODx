@@ -56,7 +56,7 @@ function previewdocument() {
 
 /* Added for RTE selection */
 var changeRTE = function() {
-    var whichEditor = Ext.get('which_editor').dom;
+    var whichEditor = Ext.get('modx-resource-which-editor').dom;
     if (whichEditor) {
         for (var i=0; i<whichEditor.length; i++) {
             if (whichEditor[i].selected) {

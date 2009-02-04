@@ -3,9 +3,8 @@
  *  
  * @class MODx.window.DuplicateResource
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-resource-duplicate
+ * @xtype modx-window-resource-duplicate
  */
 MODx.window.DuplicateResource = function(config) {
 	config = config || {};
@@ -35,9 +34,9 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
                 ,listeners: {
                     'check': {fn: function(cb,checked) { 
                         if (checked) {
-                            this.fp.getForm().findField('drd_name').disable();
+                            this.fp.getForm().findField('modx-dupres-name').disable();
                         } else {
-                            this.fp.getForm().findField('drd_name').enable();
+                            this.fp.getForm().findField('modx-dupres-name').enable();
                         }
                     },scope:this}
                 }
@@ -45,7 +44,7 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
 		}
 		items.push({
             xtype: 'textfield'
-            ,id: 'drd_name'
+            ,id: 'modx-dupres-name'
             ,fieldLabel: _('resource_name_new')
             ,name: 'name'
             ,width: 150
@@ -75,9 +74,8 @@ Ext.reg('modx-window-resource-duplicate',MODx.window.DuplicateResource);
  *  
  * @class MODx.window.CreateUserGroup
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-usergroup-create
+ * @xtype modx-window-usergroup-create
  */
 MODx.window.CreateUserGroup = function(config) {
 	config = config || {};
@@ -100,16 +98,15 @@ MODx.window.CreateUserGroup = function(config) {
 	MODx.window.CreateUserGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateUserGroup,MODx.Window);
-Ext.reg('window-usergroup-create',MODx.window.CreateUserGroup);
+Ext.reg('modx-window-usergroup-create',MODx.window.CreateUserGroup);
 
 /** 
  * Generates the Add User to User Group window.
  *  
  * @class MODx.window.AddUserToUserGroup
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-usergroup-adduser
+ * @xtype modx-window-usergroup-adduser
  */
 MODx.window.AddUserToUserGroup = function(config) {
 	config = config || {};
@@ -123,7 +120,7 @@ MODx.window.AddUserToUserGroup = function(config) {
             fieldLabel: _('name')
             ,name: 'member'
             ,hiddenName: 'member'
-            ,xtype: 'combo-user'
+            ,xtype: 'modx-combo-user'
         },{
             name: 'user_group'
             ,xtype: 'hidden'
@@ -132,16 +129,15 @@ MODx.window.AddUserToUserGroup = function(config) {
 	MODx.window.AddUserToUserGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.AddUserToUserGroup,MODx.Window);
-Ext.reg('window-usergroup-adduser',MODx.window.AddUserToUserGroup);
+Ext.reg('modx-window-usergroup-adduser',MODx.window.AddUserToUserGroup);
 
 /** 
  * Generates the Create Document Group window.
  *  
  * @class MODx.window.CreateDocumentGroup
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-resourcegroup-create
+ * @xtype modx-window-resourcegroup-create
  */
 MODx.window.CreateDocumentGroup = function(config) {
 	config = config || {};
@@ -161,16 +157,15 @@ MODx.window.CreateDocumentGroup = function(config) {
 	MODx.window.CreateDocumentGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateDocumentGroup,MODx.Window);
-Ext.reg('window-resourcegroup-create',MODx.window.CreateDocumentGroup);
+Ext.reg('modx-window-resourcegroup-create',MODx.window.CreateDocumentGroup);
 
 /** 
  * Generates the Create Category window.
  *  
  * @class MODx.window.CreateCategory
  * @extends MODx.Window
- * @constructor
  * @param {Object} config An object of options.
- * @xtype window-category-create
+ * @xtype modx-window-category-create
  */
 MODx.window.CreateCategory = function(config) {
 	config = config || {};
@@ -190,7 +185,7 @@ MODx.window.CreateCategory = function(config) {
 	MODx.window.CreateCategory.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateCategory,MODx.Window);
-Ext.reg('window-category-create',MODx.window.CreateCategory);
+Ext.reg('modx-window-category-create',MODx.window.CreateCategory);
 
 
 /**

@@ -4,12 +4,12 @@
  * @class MODx.page.ResourceData
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-resource-data
+ * @xtype modx-page-resource-data
  */
 MODx.page.ResourceData = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		form: 'resource_data'
+		form: 'modx-resource-data'
 		,actions: {
             'new': MODx.action['resource/create']
             ,edit: MODx.action['resource/update']
@@ -39,8 +39,8 @@ MODx.page.ResourceData = function(config) {
             ,params: { a: MODx.action['welcome'] }
         }]
         ,components: [{
-            xtype: 'panel-resource-data'
-            ,renderTo: 'panel-data'
+            xtype: 'modx-panel-resource-data'
+            ,renderTo: 'modx-panel-resource-data'
             ,resource: config.id
             ,context: config.ctx
             ,class_key: config.class_key
@@ -50,4 +50,4 @@ MODx.page.ResourceData = function(config) {
 	MODx.page.ResourceData.superclass.constructor.call(this,config);	
 };
 Ext.extend(MODx.page.ResourceData,MODx.Component);
-Ext.reg('page-resource-data',MODx.page.ResourceData);
+Ext.reg('modx-page-resource-data',MODx.page.ResourceData);

@@ -6,7 +6,7 @@
 Ext.onReady(function() {
 	MODx.load({
 	{/literal}
-		xtype: 'page-resource-data'
+		xtype: 'modx-page-resource-data'
 		,id: '{$resource->id}'
 		,ctx: '{$resource->context_key}'
 		,class_key: '{$resource->class_key}'
@@ -19,8 +19,8 @@ Ext.onReady(function() {
 </script>
 {/literal}
 
-<div id="panel-data"></div>
+<div id="modx-panel-resource-data"></div>
 
-<form id="resource_data" action="{$_config.connectors_url}resource/index.php" onsubmit="return false;">
+<form id="modx-resource-data" action="{$_config.connectors_url}resource/index.php" onsubmit="return false;">
 <input type="hidden" class="hidden" id="id" name="id" value="{$resource->id}" />
 </form>

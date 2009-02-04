@@ -105,16 +105,16 @@ MODx.window.AddGroupToUser = function(config) {
             fieldLabel: _('user_group')
             ,name: 'usergroup'
             ,hiddenName: 'usergroup'
-            ,id: 'agu-combo-usergroup'
-            ,xtype: 'combo-usergroup'
+            ,id: 'modx-agu-usergroup'
+            ,xtype: 'modx-combo-usergroup'
             ,editable: false
             ,allowBlank: false
         },{
             fieldLabel: _('role')
             ,name: 'role'
             ,hiddenName: 'role'
-            ,id: 'agu-combo-role'
-            ,xtype: 'combo-role'
+            ,id: 'modx-agu-role'
+            ,xtype: 'modx-combo-role'
             ,allowBlank: false
         },{
             name: 'member'
@@ -135,8 +135,8 @@ Ext.extend(MODx.window.AddGroupToUser,MODx.Window,{
             return false;
         }
         
-        r.rolename = Ext.getCmp('agu-combo-role').getRawValue();
-        r.name = Ext.getCmp('agu-combo-usergroup').getRawValue();
+        r.rolename = Ext.getCmp('modx-agu-role').getRawValue();
+        r.name = Ext.getCmp('modx-agu-usergroup').getRawValue();
         this.fireEvent('success',r);
         this.hide();
         return false;
@@ -158,8 +158,8 @@ MODx.window.UpdateUserGroupsRole = function(config) {
             ,name: 'user'
             ,value: config.user
         },{
-            xtype: 'combo-role'
-            ,id: 'uugrs-combo-role'
+            xtype: 'modx-combo-role'
+            ,id: 'modx-uugrs-role'
             ,name: 'role'
             ,fieldLabel: _('role')
         }]
@@ -169,7 +169,7 @@ MODx.window.UpdateUserGroupsRole = function(config) {
 Ext.extend(MODx.window.UpdateUserGroupsRole,MODx.Window,{
     submit: function() {
         var r = this.fp.getForm().getValues();
-        r.rolename = Ext.getCmp('uugrs-combo-role').getRawValue();
+        r.rolename = Ext.getCmp('modx-uugrs-role').getRawValue();
         this.fireEvent('success',r);
         this.hide();
         return false;

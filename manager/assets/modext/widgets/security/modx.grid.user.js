@@ -58,7 +58,7 @@ MODx.grid.User = function(config) {
         },'-',{
             xtype: 'textfield'
             ,name: 'username_filter'
-            ,id: 'username_filter'
+            ,id: 'modx-filter-username'
             ,emptyText: _('filter_by_username')
             ,listeners: {
                 'change': {fn:this.filterByName,scope:this}
@@ -105,7 +105,7 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
             header: _('role')
             ,dataIndex: 'role'
             ,sortable: true
-            ,editor: { xtype: 'combo-role' ,renderer: true }
+            ,editor: { xtype: 'modx-combo-role' ,renderer: true }
         },{
 			header: _('user_block')
             ,dataIndex: 'blocked'

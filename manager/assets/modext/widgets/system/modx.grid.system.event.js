@@ -3,9 +3,8 @@
  * 
  * @class MODx.grid.SystemEvent
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-system-event
+ * @xtype modx-grid-system-event
  */
 MODx.grid.SystemEvent = function(config) {
     config = config || {};
@@ -28,4 +27,4 @@ MODx.grid.SystemEvent = function(config) {
     MODx.grid.SystemEvent.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.SystemEvent,MODx.grid.Grid);
-Ext.reg('grid-system-event',MODx.grid.SystemEvent);
+Ext.reg('modx-grid-system-event',MODx.grid.SystemEvent);

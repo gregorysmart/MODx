@@ -108,8 +108,7 @@ MODx.combo.Renderer = function(combo) {
  * 
  * @class MODx.combo.Boolean
  * @extends Ext.form.ComboBox
- * @constructor
- * @xtype combo-boolean
+ * @xtype modx-combo-boolean
  */
 MODx.combo.Boolean = function(config) {
     config = config || {};
@@ -130,14 +129,14 @@ MODx.combo.Boolean = function(config) {
 };
 Ext.extend(MODx.combo.Boolean,MODx.combo.ComboBox);
 Ext.reg('combo-boolean',MODx.combo.Boolean);
+Ext.reg('modx-combo-boolean',MODx.combo.Boolean);
 
 /**
  * Displays a dropdown list of modUsers
  * 
  * @class MODx.combo.User
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-user
+ * @xtype modx-combo-user
  */
 MODx.combo.User = function(config) {
 	config = config || {};
@@ -152,15 +151,14 @@ MODx.combo.User = function(config) {
 	MODx.combo.User.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.User,MODx.combo.ComboBox);
-Ext.reg('combo-user',MODx.combo.User);
+Ext.reg('modx-combo-user',MODx.combo.User);
 
 /**
  * Displays a dropdown list of modUsers
  * 
  * @class MODx.combo.User
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-usergroup
+ * @xtype modx-combo-usergroup
  */
 MODx.combo.UserGroup = function(config) {
 	config = config || {};
@@ -176,15 +174,14 @@ MODx.combo.UserGroup = function(config) {
 	MODx.combo.UserGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.UserGroup,MODx.combo.ComboBox);
-Ext.reg('combo-usergroup',MODx.combo.UserGroup);
+Ext.reg('modx-combo-usergroup',MODx.combo.UserGroup);
 
 /**
  * Displays a dropdown list of modUserGroupRoles.
  * 
  * @class MODx.combo.UserGroupRole
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-usergrouprole
+ * @xtype modx-combo-usergrouprole
  */
 MODx.combo.UserGroupRole = function(config) {
 	config = config || {};
@@ -199,15 +196,14 @@ MODx.combo.UserGroupRole = function(config) {
 	MODx.combo.UserGroupRole.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.UserGroupRole,MODx.combo.ComboBox);
-Ext.reg('combo-usergrouprole',MODx.combo.UserGroupRole);
+Ext.reg('modx-combo-usergrouprole',MODx.combo.UserGroupRole);
 
 /**
  * Displays a dropdown list of modResourceGroups.
  * 
  * @class MODx.combo.ResourceGroup
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-resourcegroup
+ * @xtype modx-combo-resourcegroup
  */
 MODx.combo.ResourceGroup = function(config) {
 	config = config || {};
@@ -222,15 +218,14 @@ MODx.combo.ResourceGroup = function(config) {
     MODx.combo.ResourceGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ResourceGroup,MODx.combo.ComboBox);
-Ext.reg('combo-resourcegroup',MODx.combo.ResourceGroup);
+Ext.reg('modx-combo-resourcegroup',MODx.combo.ResourceGroup);
 
 /**
  * Displays a dropdown list of modContexts.
  * 
  * @class MODx.combo.Context
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-context
+ * @xtype modx-combo-context
  */
 MODx.combo.Context = function(config) {
 	config = config || {};
@@ -245,15 +240,14 @@ MODx.combo.Context = function(config) {
     MODx.combo.Context.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Context,MODx.combo.ComboBox);
-Ext.reg('combo-context',MODx.combo.Context);
+Ext.reg('modx-combo-context',MODx.combo.Context);
 
 /**
  * Displays a dropdown list of modPolicies.
  * 
  * @class MODx.combo.Policy
  * @extends MODx.combo.ComboBox
- * @constructor
- * @xtype combo-policy
+ * @xtype modx-combo-policy
  */
 MODx.combo.Policy = function(config) {
 	config = config || {};
@@ -270,7 +264,7 @@ MODx.combo.Policy = function(config) {
     MODx.combo.Policy.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Policy,MODx.combo.ComboBox);
-Ext.reg('combo-policy',MODx.combo.Policy);
+Ext.reg('modx-combo-policy',MODx.combo.Policy);
 
 /**
  * Displays a dropdown list of modTemplates.
@@ -420,7 +414,6 @@ Ext.reg('modx-combo-rte',MODx.combo.RTE);
  * 
  * @class MODx.combo.Role
  * @extends MODx.combo.ComboBox
- * @constructor
  * @xtype combo-role
  */
 MODx.combo.Role = function(config) {
@@ -439,7 +432,7 @@ MODx.combo.Role = function(config) {
     MODx.combo.Role.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Role,MODx.combo.ComboBox);
-Ext.reg('combo-role',MODx.combo.Role);
+Ext.reg('modx-combo-role',MODx.combo.Role);
 
 /**
  * Displays a dropdown list of available Content Types.
