@@ -150,19 +150,30 @@ MODx.panel.TV = function(config) {
                     ,elementId: config.tv
                     ,elementType: 'modTemplateVar'
                 },{ 
-                    xtype: 'modx-grid-tv-template'
-                    ,tv: config.tv
-                    ,preventRender: true
-                    ,listeners: {
-                        'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
-                    }
+                    title: _('tv_tmpl_access')
+                    ,items: [{
+                        html: '<p>'+_('tv_tmpl_access_msg')+'</p>'
+                    },{
+                        xtype: 'modx-grid-tv-template'
+                        ,tv: config.tv
+                        ,preventRender: true
+                        ,width: '100%'
+                        ,listeners: {
+                            'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                        }
+                    }]
                 },{
-                    xtype: 'modx-grid-tv-security'
-                    ,tv: config.tv
-                    ,preventRender: true
-                    ,listeners: {
-                        'rowdblclick': {fn:this.fieldChangeEvent,scope:this}
-                    }
+                    title: _('access_permissions')
+                    ,items: [{
+                        html: '<p>'+_('tv_access_msg')+'</p>'
+                    },{
+                        xtype: 'modx-grid-tv-security'
+                        ,tv: config.tv
+                        ,preventRender: true
+                        ,listeners: {
+                            'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                        }
+                    }]
                 }]
             }]
         }]

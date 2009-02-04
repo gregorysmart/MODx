@@ -151,7 +151,7 @@ MODx.panel.Resource = function(config) {
                     }]
                 },{
                     title: _('resource_content')
-                    ,collapsed: true
+                    ,collapsed: false
                     ,layout: 'form'
                     ,bodyStyle: 'padding: 1.5em;'
                     ,defaults: { 
@@ -187,14 +187,14 @@ MODx.panel.Resource = function(config) {
                     }]
                 },{
                     xtype: 'modx-panel-resource-tv'
-                    ,collapsed: true
+                    ,collapsed: false
                     ,resource: config.resource
                     ,class_key: config.class_key
                     ,template: config.template
                     
                 },(config.access_permissions ? {
                     contentEl: 'modx-tab-access'
-                    ,collapsed: true
+                    ,collapsed: false
                     ,id: 'modx-resource-access-permissions'
                     ,title: _('access_permissions')
                     

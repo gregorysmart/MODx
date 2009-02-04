@@ -8,9 +8,15 @@
  */
 MODx.grid.TemplateVarTemplate = function(config) {
     config = config || {};
+    var tt = MODx.load({
+        xtype: 'checkbox-column'
+        ,header: _('access')
+        ,dataIndex: 'access'
+        ,width: 40
+        ,sortable: false
+    });
     Ext.applyIf(config,{
-        title: _('tv_tmpl_access')
-        ,id: 'modx-grid-tv-template'
+        id: 'modx-grid-tv-template'
         ,url: MODx.config.connectors_url+'element/tv/template.php'
         ,fields: ['id','templatename','description','rank','access','menu']
         ,baseParams: {
@@ -22,6 +28,7 @@ MODx.grid.TemplateVarTemplate = function(config) {
         }
         ,width: 800
         ,paging: true
+        ,plugins: tt
         ,columns: [{
             header: _('name')
             ,dataIndex: 'templatename'
@@ -32,12 +39,7 @@ MODx.grid.TemplateVarTemplate = function(config) {
             ,dataIndex: 'description'
             ,width: 350
             ,editor: { xtype: 'textfield' }
-        },{
-            header: _('has_access')
-            ,dataIndex: 'access'
-            ,width: 100
-            ,editor: { xtype: 'combo-boolean', renderer: 'boolean' }
-        },{
+        },tt,{
             header: _('rank')
             ,dataIndex: 'rank'
             ,width: 100

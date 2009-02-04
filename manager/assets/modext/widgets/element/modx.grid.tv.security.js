@@ -8,9 +8,15 @@
  */
 MODx.grid.TVSecurity = function(config) {
     config = config || {};
+    var tt = MODx.load({
+        xtype: 'checkbox-column'
+        ,header: _('access')
+        ,dataIndex: 'access'
+        ,width: 40
+        ,sortable: false
+    });
     Ext.applyIf(config,{
-        title: _('access_permissions')
-        ,id: 'modx-grid-tv-security'
+        id: 'modx-grid-tv-security'
         ,url: MODx.config.connectors_url+'element/tv/resourcegroup.php'
         ,baseParams: {
             action: 'getList'
@@ -19,18 +25,13 @@ MODx.grid.TVSecurity = function(config) {
         ,fields: ['id','name','access','menu']
         ,paging: true
         ,remoteSort: true
+        ,plugins: tt
         ,columns: [{
             header: _('name')
             ,dataIndex: 'name'
             ,width: 200
             ,sortable: true
-        },{
-            header: _('access')
-            ,dataIndex: 'access'
-            ,width: 80
-            ,sortable: true
-            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
-        }]
+        },tt]
         
     });
     MODx.grid.TVSecurity.superclass.constructor.call(this,config);
