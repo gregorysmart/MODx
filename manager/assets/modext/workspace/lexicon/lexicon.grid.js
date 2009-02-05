@@ -156,9 +156,11 @@ Ext.extend(MODx.grid.Lexicon,MODx.grid.Grid,{
     	this.refresh();
     }
     ,changeNamespace: function(cb,nv,ov) {
-    	var s = Ext.getCmp('modx-lexicon-filter-topic').store;
+    	var ft = Ext.getCmp('modx-lexicon-filter-topic');
+        var s = ft.store;
     	s.baseParams['namespace'] = cb.getValue();
     	s.reload();
+        ft.setValue('');
     	
     	this.filter(cb,null,1,'namespace');
     }
@@ -434,7 +436,7 @@ MODx.window.ImportLexicon = function(config) {
             ,name: 'topic'
             ,id: 'modx-clt-topic'
         },{
-            xtype: 'combo-language'
+            xtype: 'modx-combo-language'
             ,fieldLabel: _('language')
             ,name: 'language'
             ,id: 'modx-clt-language'
@@ -474,10 +476,10 @@ MODx.window.ExportLexicon = function(config) {
             ,id: 'modx-elex-namespace'
             ,listeners: {
                 'select': {fn: function(cb,r,i) {
-                    cle = Ext.getCmp('ex-cmb-topic');
-                    cle.store.baseParams.namespace = cb.getValue();
+                    cle = Ext.getCmp('modx-elex-topic');
+                    cle.store.baseParams['namespace'] = cb.getValue();
                     cle.store.reload();
-                    cle.setValue('default');
+                    cle.setValue('');
                 },scope:this}
             }
         },{
