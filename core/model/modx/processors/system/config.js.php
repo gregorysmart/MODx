@@ -26,8 +26,7 @@ $c = array(
 );
 
 /* if custom context, load into MODx.config */
-if (isset($_REQUEST['action']) && isset($_REQUEST['ctx'])
-    && $_REQUEST['action'] != '' && isset($modx->actionMap[$_REQUEST['action']])) {
+if (isset($_REQUEST['action']) && $_REQUEST['action'] != '' && isset($modx->actionMap[$_REQUEST['action']])) {
 
     $action = $modx->actionMap[$_REQUEST['action']];
     $c['namespace'] = $action['namespace'];
