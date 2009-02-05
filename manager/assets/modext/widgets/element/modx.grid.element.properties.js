@@ -290,25 +290,35 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     }
     
     ,getMenu: function() {
+        var ps = Ext.getCmp('modx-combo-property-set').getValue();
+        var def = (ps == 0 || ps == _('default'));
+        
         var r = this.menu.record;
-        var m = [{
+        var m = []
+        m.push({
             text: _('property_update')
             ,scope: this
             ,handler: this.update
-        },{
-            text: _('property_revert')
-            ,scope: this
-            ,handler: this.revert
-        }];
-        
-        m.push({
-            text: _('property_remove')
-            ,scope: this
-            ,handler: this.remove.createDelegate(this,[{
-                title: _('warning')
-                ,text: _('property_remove_confirm')
-            }])
         });
+        
+        if (r.overridden) {
+            m.push({
+                text: _('property_revert')
+                ,scope: this
+                ,handler: this.revert
+            });
+        }
+        
+        if (!r.overridden && def) {
+            m.push({
+                text: _('property_remove')
+                ,scope: this
+                ,handler: this.remove.createDelegate(this,[{
+                    title: _('warning')
+                    ,text: _('property_remove_confirm')
+                }])
+            });
+        }
         return m;
     }
 
@@ -403,19 +413,21 @@ MODx.window.CreateElementProperty = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
-            ,xtype: 'textfield'
+            ,id: 'modx-cep-name'
+            ,xtype: 'textfield'            
             ,width: 150
             ,allowBlank: false
         },{
             fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-cep-description'
             ,xtype: 'textarea'
             ,width: 150
         },{
             fieldLabel: _('type')
             ,name: 'xtype'
+            ,id: 'modx-cep-xtype'
             ,xtype: 'modx-combo-xtype'
-            ,id: 'cep-xtype'
             ,width: 150
             ,listeners: {
                 'select': {fn:function(cb,r,i) {
@@ -430,10 +442,10 @@ MODx.window.CreateElementProperty = function(config) {
             }
         },{
             xtype: 'modx-element-value-field'
-            ,xtypeField: 'cep-xtype'
+            ,xtypeField: 'modx-cep-xtype'
         },{
             xtype: 'modx-grid-element-property-options'
-            ,id: 'cep-grid-element-property-options'
+            ,id: 'modx-cep-grid-element-property-options'
         }]
     });
     MODx.window.CreateElementProperty.superclass.constructor.call(this,config);
@@ -443,7 +455,7 @@ Ext.extend(MODx.window.CreateElementProperty,MODx.Window,{
     submit: function() {
         var v = this.fp.getForm().getValues();
         
-        var g = Ext.getCmp('cep-grid-element-property-options');
+        var g = Ext.getCmp('modx-cep-grid-element-property-options');
         var opt = eval(g.encode());
         Ext.apply(v,{
             options: opt
@@ -459,7 +471,7 @@ Ext.extend(MODx.window.CreateElementProperty,MODx.Window,{
         return false;
     }
     ,onShow: function() {
-        var g = Ext.getCmp('cep-grid-element-property-options');
+        var g = Ext.getCmp('modx-cep-grid-element-property-options');
         g.getStore().removeAll();
         g.hide();
         this.syncSize();
@@ -486,22 +498,24 @@ MODx.window.UpdateElementProperty = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-uep-name'
             ,xtype: 'textfield'
             ,width: 150
         },{
             fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-uep-description'
             ,xtype: 'textarea'
             ,width: 150
         },{
             fieldLabel: _('type')
             ,name: 'xtype'
             ,xtype: 'modx-combo-xtype'
-            ,id: 'uep-xtype'
+            ,id: 'modx-uep-xtype'
             ,width: 150
             ,listeners: {
                 'select': {fn:function(cb,r,i) {
-                    var g = Ext.getCmp('uep-grid-element-property-options');
+                    var g = Ext.getCmp('modx-uep-grid-element-property-options');
                     var v = cb.getValue();
                     if (v == 'list') {
                         g.show();
@@ -513,10 +527,10 @@ MODx.window.UpdateElementProperty = function(config) {
             }
         },{
             xtype: 'modx-element-value-field'
-            ,xtypeField: 'uep-xtype'
+            ,xtypeField: 'modx-uep-xtype'
             ,name: 'value'
         },{
-            id: 'uep-grid-element-property-options'
+            id: 'modx-uep-grid-element-property-options'
             ,xtype: 'modx-grid-element-property-options'
         }]
     });
@@ -527,7 +541,7 @@ Ext.extend(MODx.window.UpdateElementProperty,MODx.Window,{
     submit: function() {
         var v = this.fp.getForm().getValues();
         
-        var g = Ext.getCmp('uep-grid-element-property-options');
+        var g = Ext.getCmp('modx-uep-grid-element-property-options');
         var opt = eval(g.encode());
         Ext.apply(v,{
             options: opt
@@ -543,7 +557,7 @@ Ext.extend(MODx.window.UpdateElementProperty,MODx.Window,{
         return false;
     }
     ,onShow: function() {
-        var g = Ext.getCmp('uep-grid-element-property-options');
+        var g = Ext.getCmp('modx-uep-grid-element-property-options');
         g.getStore().removeAll();
         var opt = this.config.record.options;
         var opts = [];
@@ -580,11 +594,13 @@ MODx.window.CreateElementPropertyOption = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-cepo-name'
             ,xtype: 'textfield'
             ,width: 150
         },{
             fieldLabel: _('value')
             ,name: 'value'
+            ,id: 'modx-cepo-value'
             ,xtype: 'textfield'
             ,width: 150
         }]
