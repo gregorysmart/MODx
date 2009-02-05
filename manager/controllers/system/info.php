@@ -25,17 +25,22 @@ $modx->smarty->assign('database_charset',$modx->config['charset']);
 $modx->smarty->assign('database_name',str_replace('`','',$modx->config['dbname']));
 $modx->smarty->assign('database_server',$modx->config['host']);
 
-// active users
-$timetocheck = (time()-(60*20));
-$c = $modx->newQuery('modActiveUser');
-$c->where(array('lasthit:>' => $timetocheck));
-$c->sortby('username','ASC');
-$ausers = $modx->getCollection('modActiveUser',$c);
+/* active users */
+$timetocheck = strftime('%m-%d-%Y %H:%M:%S',time()-(60*20));
+$c = $modx->newQuery('modManagerLog');
+$c->select('modManagerLog.*, User.username AS username');
+$c->innerJoin('modUser','User');
+$c->where(array('occurred:>' => $timetocheck));
+$c->groupby('user');
+$c->sortby('occurred','ASC');
+
+$ausers = $modx->getCollection('modManagerLog',$c);
 
 foreach ($ausers as $user) {
-    $offset = $user->lasthit+$modx->config['server_offset_time'];
-    $user->set('lasthit',strftime('%H:%M:%S',$offset));
+    $offset = strtotime($user->get('occurred')) + $modx->config['server_offset_time'];
+    $user->set('lasthit',strftime('%b %d, %Y %I:%M %p',$offset));
 }
 $modx->smarty->assign('ausers',$ausers);
+$modx->smarty->assign('now',strftime('%b %d, %Y %I:%M %p',time()));
 
 return $modx->smarty->fetch('system/info.tpl');

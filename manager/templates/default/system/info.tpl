@@ -78,15 +78,15 @@
         <h2>{$_lang.onlineusers_title}</h2>
         
         <p>{$_lang.onlineusers_message}<strong>{$now}</strong>)</p>
+        <br />
+        
         <table class="classy" style="width: 100%;">
         <thead>
         <tr>
             <th>{$_lang.onlineusers_user}</th>
             <th>{$_lang.onlineusers_userid}</th>
-            <th>{$_lang.onlineusers_ipaddress}</th>
             <th>{$_lang.onlineusers_lasthit}</th>
             <th>{$_lang.onlineusers_action}</th>
-            <th class="right">{$_lang.onlineusers_actionid}</th>
         </tr>
         </thead>
         <tbody>
@@ -94,9 +94,8 @@
         <tr class="{cycle values=',odd'}">
             <th class="left">{$user->username}</th>
             <td>
-                &nbsp;{$user->internalKey}
+                &nbsp;{$user->user}
             </td>
-            <td>{$user->ip}</td>
             <td>{$user->lasthit}</td>
             <td class="right">{$user->action}</td>
         </tr>
