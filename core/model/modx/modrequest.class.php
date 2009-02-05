@@ -290,17 +290,17 @@ class modRequest {
 
     /**
      * Provides an easy way to initiate register logging.
-     * 
+     *
      * Through an array of options, you can have all calls to modX::log()
      * recorded in a topic of a modRegister instance. The options include:
-     * 
+     *
      * <ul>
      * <li>register: the name of the register (required)</li>
      * <li>topic: the topic to record to (required)</li>
      * <li>register_class: the modRegister class (defaults to modFileRegister)</li>
      * <li>log_level: the logging level (defaults to MODX_LOG_LEVEL_INFO)</li>
      * </ul>
-     * 
+     *
      * @param array $options An array containing all the options required to
      * initiate and configure logging to a modRegister instance.
      */
@@ -363,7 +363,7 @@ class modRequest {
      */
     function checkPublishStatus() {
         $cacheRefreshTime= 0;
-        if (file_exists($this->modx->cachePath . "sitePublishing.idx.php")) 
+        if (file_exists($this->modx->cachePath . "sitePublishing.idx.php"))
             include ($this->modx->cachePath . "sitePublishing.idx.php");
         $timeNow= time() + $this->modx->config['server_offset_time'];
         if ($cacheRefreshTime != 0 && $cacheRefreshTime <= strtotime($timeNow)) {
@@ -414,9 +414,9 @@ class modRequest {
         }
     }
 
-    function getAllActionIDs($ctx = '') {
+    function getAllActionIDs($namespace = '') {
         $c = array();
-        if ($ctx != '') $c['context_key'] = $ctx;
+        if ($namespace != '') $c['namespace'] = $namespace;
         $actions = $this->modx->getCollection('modAction',$c);
 
         $as = array();
@@ -425,12 +425,12 @@ class modRequest {
         }
         return $as;
     }
-    function getActionIDs($actions = array(), $ctx = 'mgr') {
+    function getActionIDs($actions = array(), $namespace = 'core') {
         if (!is_array($actions)) return false;
         $as = array();
         foreach ($actions as $action) {
             $act = $this->modx->getObject('modAction',array(
-                'context_key' => $ctx,
+                'namespace' => $namespace,
                 'controller' => $action,
             ));
             if ($act == null) {

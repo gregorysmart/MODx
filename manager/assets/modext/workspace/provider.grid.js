@@ -53,24 +53,28 @@ MODx.window.CreateProvider = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('provider_add')
+        ,id: 'modx-window-provider-create'
         ,width: 375
         ,url: MODx.config.connectors_url+'workspace/providers.php'
         ,action: 'create'
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-cprov-name'
             ,xtype: 'textfield'
-            ,width: 150
+            ,width: 200
             ,allowBlank: false
         },{
             fieldLabel: _('service_url')
             ,name: 'service_url'
+            ,id: 'modx-cprov-service-url'
             ,xtype: 'textfield'
             ,width: 200
             ,allowBlank: false
         },{
             fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-cprov-description'
             ,xtype: 'textarea'
             ,width: 200
             ,grow: true
@@ -94,6 +98,7 @@ MODx.window.UpdateProvider = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('provider_update')
+        ,id: 'modx-window-provider-update'
         ,width: 375
         ,url: MODx.config.connectors_url+'workspace/providers.php'
         ,action: 'update'
@@ -103,18 +108,21 @@ MODx.window.UpdateProvider = function(config) {
         },{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-uprov-name'
             ,xtype: 'textfield'
-            ,width: 150
+            ,width: 200
             ,allowBlank: false
         },{
             fieldLabel: _('service_url')
             ,name: 'service_url'
+            ,id: 'modx-uprov-service-url'
             ,xtype: 'textfield'
             ,width: 200
             ,allowBlank: false
         },{
             fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-uprov-description'
             ,xtype: 'textarea'
             ,width: 200
             ,grow: true
@@ -123,4 +131,4 @@ MODx.window.UpdateProvider = function(config) {
     MODx.window.UpdateProvider.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.UpdateProvider,MODx.Window);
-Ext.reg('window-provider-update',MODx.window.UpdateProvider);
+Ext.reg('modx-window-provider-update',MODx.window.UpdateProvider);

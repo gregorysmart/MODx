@@ -130,7 +130,9 @@ switch ($g[0]) {
                         ),
                         array(
                             'text' => $modx->lexicon('new_category'),
-                            'handler' => 'this.createCategory',
+                            'handler' => 'function(itm,e) {
+                                this.createCategory(itm,e);
+                            }',
                         ),
                     ),
                 ),

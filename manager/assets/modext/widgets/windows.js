@@ -132,17 +132,18 @@ Ext.extend(MODx.window.AddUserToUserGroup,MODx.Window);
 Ext.reg('modx-window-usergroup-adduser',MODx.window.AddUserToUserGroup);
 
 /** 
- * Generates the Create Document Group window.
+ * Generates the Create Resource Group window.
  *  
- * @class MODx.window.CreateDocumentGroup
+ * @class MODx.window.CreateResourceGroup
  * @extends MODx.Window
  * @param {Object} config An object of options.
  * @xtype modx-window-resourcegroup-create
  */
-MODx.window.CreateDocumentGroup = function(config) {
+MODx.window.CreateResourceGroup = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		title: _('create_document_group')
+        ,id: 'modx-window-resourcegroup-create'
 		,height: 150
 		,width: 350
         ,url: MODx.config.connectors_url+'security/documentgroup.php'
@@ -150,14 +151,15 @@ MODx.window.CreateDocumentGroup = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-crgrp-name'
             ,xtype: 'textfield'
             ,width: 150
         }]
 	});
-	MODx.window.CreateDocumentGroup.superclass.constructor.call(this,config);
+	MODx.window.CreateResourceGroup.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.window.CreateDocumentGroup,MODx.Window);
-Ext.reg('modx-window-resourcegroup-create',MODx.window.CreateDocumentGroup);
+Ext.extend(MODx.window.CreateResourceGroup,MODx.Window);
+Ext.reg('modx-window-resourcegroup-create',MODx.window.CreateResourceGroup);
 
 /** 
  * Generates the Create Category window.
@@ -171,6 +173,7 @@ MODx.window.CreateCategory = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		title: _('new_category')
+        ,id: 'modx-window-category-create'
 		,height: 150
 		,width: 350
         ,url: MODx.config.connectors_url+'element/category.php'
@@ -178,6 +181,7 @@ MODx.window.CreateCategory = function(config) {
         ,fields: [{
             fieldLabel: _('name')
             ,name: 'category'
+            ,id: 'modx-ccat-category'
             ,xtype: 'textfield'
             ,width: 150
         }]
