@@ -209,7 +209,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
      * Gets a default toolbar setup
      */
     ,getToolbar: function() {
-        var iu = MODx.config.template_url+'images/icons/';
+        var iu = MODx.config.template_url+'images/restyle/icons/';
         return [{
             icon: iu+'arrow_down.png'
             ,cls: 'x-btn-icon'

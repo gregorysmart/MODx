@@ -192,7 +192,7 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
     }
     
     ,_getToolbar: function() {
-        var iu = MODx.config.template_url+'images/icons/';
+        var iu = MODx.config.template_url+'images/restyle/icons/';
         return [{
             icon: iu+'sort.png'
             ,cls: 'x-btn-icon'
