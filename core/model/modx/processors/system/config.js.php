@@ -27,13 +27,11 @@ $c = array(
 
 /* if custom context, load into MODx.config */
 if (isset($_REQUEST['action']) && isset($_REQUEST['ctx'])
-    && $_REQUEST['ctx'] != 'mgr' && $_REQUEST['ctx'] != ''
     && $_REQUEST['action'] != '' && isset($modx->actionMap[$_REQUEST['action']])) {
 
     $action = $modx->actionMap[$_REQUEST['action']];
-    $c['context'] = $action['context'];
-    $c['context_path'] = $action['context_path'];
-    $c['context_url'] = $action['context_url'];
+    $c['namespace'] = $action['namespace'];
+    $c['namespace_path'] = $action['namespace_path'];
 }
 
 $actions = $modx->request->getAllActionIDs();
