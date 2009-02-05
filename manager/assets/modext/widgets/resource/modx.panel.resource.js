@@ -111,13 +111,17 @@ MODx.panel.Resource = function(config) {
                         }
                         ,value: config.template
                     },{
-                        xtype: 'textfield'
+                        xtype: 'modx-field-parent-change'
                         ,fieldLabel: _('resource_parent')
                         ,description: _('resource_parent_help')
                         ,name: 'parent'
                         ,id: 'modx-resource-parent'
+                        ,value: config.parentName || 0
+                    },{
+                        xtype: 'hidden'
+                        ,name: 'parent'
                         ,value: config.parent || 0
-                        ,width: 60
+                        ,id: 'modx-resource-parent-hidden'
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('resource_menutitle')
@@ -254,7 +258,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
         });
     }
     
-    ,beforeSubmit: function(o) {
+    ,beforeSubmit: function(o) {        
         var v = Ext.get('ta').dom.value;
         Ext.getCmp('hiddenContent').setValue(v);
         
@@ -271,7 +275,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
         Ext.getCmp('modx-grid-resource-security').getStore().commitChanges();
         var t = parent.Ext.getCmp('modx_resource_tree');
         var ctx = Ext.getCmp('modx-resource-context-key').getValue();
-        var pa = Ext.getCmp('modx-resource-parent').getValue();
+        var pa = Ext.getCmp('modx-resource-parent-hidden').getValue();
         t.refreshNode(ctx+'_'+pa,true);
     }
     
@@ -474,3 +478,56 @@ MODx.loadAccordionPanels = function() {
         }]
     }];
 };
+
+
+MODx.ChangeParentField = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        triggerAction: 'all'
+        ,editable: false
+        ,readOnly: true
+    });    
+    MODx.ChangeParentField.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.ChangeParentField,Ext.form.TriggerField,{
+    onTriggerClick: function() {
+        if (this.disabled) {
+            return false;
+        }
+        
+        var t = Ext.getCmp('modx_resource_tree');
+        if (!t) return;
+        
+        this.setValue(_('resource_parent_select_node'));
+        
+        Ext.getCmp('modx-resource-tree-panel').expand();
+        
+        t.removeListener('click',t._handleClick,t);
+        t.on('click',this.handleChangeParent,this);
+    }
+    
+    
+    ,handleChangeParent: function(node,e) {
+        e.preventDefault();
+        e.stopEvent();
+        
+        var t = Ext.getCmp('modx_resource_tree');
+        if (!t) return;
+        
+        var id = node.id.split('_'); id = id[1];
+        if (id == MODx.request.id) {
+            MODx.msg.alert('',_('resource_err_own_parent'));            
+            return;
+        }
+        
+        Ext.getCmp('modx-resource-parent-hidden').setValue(id);
+        this.setValue(node.text);
+        
+        t.removeListener('click',this.handleChangeParent,this);
+        t.on('click',t._handleClick,t);
+        
+        Ext.getCmp('modx-panel-resource').fireEvent('fieldChange');
+        return false;
+    }
+});
+Ext.reg('modx-field-parent-change',MODx.ChangeParentField);

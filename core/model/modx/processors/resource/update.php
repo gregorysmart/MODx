@@ -223,8 +223,7 @@ $_POST['publishedon'] = $_POST['published'] ? time() : 0;
 $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 
 /* get parent */
-$oldparent = $modx->getObject('modResource',$resource->get('parent'));
-
+$oldparent_id = $resource->get('parent');
 if ($resource->get('id') == $modx->config['site_start'] && $_POST['published'] == 0) {
     return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart'));
 }
@@ -255,8 +254,27 @@ $resource->fromArray($_POST);
 $resource->set('editedby', $modx->user->get('id'));
 $resource->set('editedon', time(), 'integer');
 
+
 if ($resource->save() == false) {
     return $modx->error->failure($modx->lexicon('resource_err_save'));
+}
+
+/* if parent changed, change folder status of old and new parents */
+if ($resource->get('parent') != $oldparent_id) {
+    $oldparent = $modx->getObject('modResource',$oldparent_id);
+    if ($oldparent != null) {
+        $opc = $modx->getCount('modResource',array('parent' => $oldparent->get('id')));
+        if ($opc <= 0 || $opc == null) {
+            $oldparent->set('isfolder',false);
+            $oldparent->save();
+        }
+    }
+
+    $newparent = $modx->getObject('modResource',$resource->get('parent'));
+    if ($newparent != null) {
+        $newparent->set('isfolder',true);
+        $newparent->save();
+    }
 }
 
 foreach ($tmplvars as $field => $value) {

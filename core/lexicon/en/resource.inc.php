@@ -74,6 +74,7 @@ $_lang['resource_pagetitle'] = 'Title';
 $_lang['resource_pagetitle_help'] = 'The name/title of the resource. Try to avoid using backslashes in the name!';
 $_lang['resource_parent'] = 'Parent Resource';
 $_lang['resource_parent_help'] = 'The parent resource\'s ID number.';
+$_lang['resource_parent_select_node'] = 'Please select a node in the tree to the left.';
 $_lang['resource_publish'] = 'Publish Resource';
 $_lang['resource_publish_confirm'] = 'Publishing this resource now will remove any (un)publishing dates that may have been set. If you wish to set or keep publish or unpublish dates, please choose to edit the resource instead.<br /><br />Proceed?';
 $_lang['resource_publishdate'] = 'Publish Date';

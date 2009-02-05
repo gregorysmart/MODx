@@ -624,7 +624,7 @@ Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
     }
     
     ,onDestroy: function(){
-        MODx.combo.Catalog.superclass.onDestroy.call(this);
+        MODx.combo.Browser.superclass.onDestroy.call(this);
     }
 });
 Ext.reg('modx-combo-browser',MODx.combo.Browser);
