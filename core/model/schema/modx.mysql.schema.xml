@@ -218,8 +218,8 @@
         <field key="parent" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="action" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="text" dbtype="varchar" precision="255" phptype="string" null="false" />
-        <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" />
-        <field key="icon" dbtype="varchar" precision="255" phptype="string" null="false" />
+        <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="icon" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="menuindex" dbtype="int" precision="11" attributes="unsigned" phptype="integer" null="false" default="0" />
         <field key="params" dbtype="text" phptype="string" null="false" />
         <field key="handler" dbtype="text" phptype="string" null="false" />

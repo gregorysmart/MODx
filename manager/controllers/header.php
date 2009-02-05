@@ -5,9 +5,9 @@
  * @package modx
  * @subpackage manager
  */
-if (!$modx->hasPermission('frames')) {
-    return $modx->error->failure($modx->lexicon('permission_denied'));
-}
+//if (!$modx->hasPermission('frames')) {
+//    return $modx->error->failure($modx->lexicon('permission_denied'));
+//}
 
 $menus = getSubMenus(0);
 

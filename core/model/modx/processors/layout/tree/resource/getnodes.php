@@ -29,7 +29,7 @@ $orderby = 'context, '.$_REQUEST['sortBy'].' ASC, isfolder, pagetitle';
 /* grab resources */
 if (empty($context) || $context == 'root') {
     $itemClass= 'modContext';
-    $c= '`key` NOT IN (\'mgr\', \'connector\')';
+    $c= '`key` != \'mgr\'';
 } else {
     $itemClass= 'modResource';
     $c= $modx->newQuery('modResource');

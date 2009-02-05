@@ -2,17 +2,17 @@
 /**
  * Grabs a list of inputs for a TV.
  *
- * @param string $ctx (optional) The context by which to grab renders from.
- * Defaults to mgr.
+ * @param string $context (optional) The context by which to grab renders from. Defaults to
+ * executing context.
  *
  * @package modx
  * @subpackage processors.element.tv.renders
  */
 $modx->lexicon->load('tv_widget');
 
-if (!isset($_REQUEST['ctx'])) $_REQUEST['ctx'] = 'mgr';
+$context = (isset($_REQUEST['context']) && !empty($_REQUEST['context'])) ? $_REQUEST['context'] : $modx->context->get('key');
 
-$renderdir = dirname(__FILE__).'/'.$_REQUEST['ctx'].'/input/';
+$renderdir = dirname(__FILE__).'/'.$context.'/input/';
 
 $types = array();
 if ($handle = opendir($renderdir)) {

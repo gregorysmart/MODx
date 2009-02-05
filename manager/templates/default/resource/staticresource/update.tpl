@@ -10,7 +10,7 @@ Ext.onReady(function() {
     {/literal}
         xtype: 'modx-page-static-update'
         ,id: '{$resource->id}'
-        ,ctx: '{$resource->context_key}'
+        ,context_key: '{$resource->context_key}'
         ,template: '{$resource->template}'
         ,class_key: '{$resource->class_key}'
         ,published: '{$resource->published}'

@@ -2,17 +2,16 @@
 /**
  * Grabs a list of output renders for the tv.
  *
- * @param string $ctx (optional) The context by which to grab renders from.
- * Defaults to web.
+ * @param string $context (optional) The context by which to grab renders from. Defaults to web.
  *
  * @package modx
  * @subpackage processors.element.tv.renders
  */
 $modx->lexicon->load('tv_widget');
 
-if (!isset($_REQUEST['ctx'])) $_REQUEST['ctx'] = 'web';
+$context = (isset($_REQUEST['context']) && !empty($_REQUEST['context'])) ? $_REQUEST['context'] : 'web';
 
-$renderdir = dirname(__FILE__).'/'.$_REQUEST['ctx'].'/output/';
+$renderdir = dirname(__FILE__).'/'.$context.'/output/';
 
 $types = array();
 if ($handle = opendir($renderdir)) {

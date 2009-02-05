@@ -227,84 +227,61 @@ $attributes['resolve'][] = array (
 $package->put($c, $attributes);
 unset ($c, $attributes);
 
-/* modContext = connector */
-$c = $xpdo->newObject('modContext');
-$c->fromArray(array (
-    'key' => 'connector',
-    'description' => 'A context of AJAX processors for interacting with your MODx or custom models.',
-
-), '', true, true);
+/* connector file transport */
 $attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => false
+    'vehicle_class' => 'xPDOFileVehicle',
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/browser',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/context',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/element',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/layout',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/resource',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/security',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/system',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/workspace',
     'target' => "return MODX_CONNECTORS_PATH;",
-
 );
-$attributes['resolve'][] = array (
-    'type' => 'file',
-    'source' => MODX_BASE_PATH . 'connectors/index.php',
-    'target' => "return MODX_CONNECTORS_PATH;",
-
-);
-$attributes['resolve'][] = array (
-    'type' => 'file',
+$files[] = array (
     'source' => MODX_BASE_PATH . 'connectors/lang.js.php',
     'target' => "return MODX_CONNECTORS_PATH;",
-
+);
+foreach ($files as $fileset) {
+    $package->put($fileset, $attributes);
+}
+unset ($files, $fileset);
+$fileset = array (
+    'source' => MODX_BASE_PATH . 'connectors/index.php',
+    'target' => "return MODX_CONNECTORS_PATH;",
 );
 $attributes['resolve'][] = array (
     'type' => 'php',
     'source' => dirname(__FILE__) . '/resolvers/resolve.core.php',
     'target' => "return MODX_CONNECTORS_PATH . 'config.core.php';",
 );
-$package->put($c, $attributes);
-unset ($c, $attributes);
+$package->put($fileset, $attributes);
+unset ($fileset, $attributes);
 
 /* modEvent collection */
 $collection = array ();

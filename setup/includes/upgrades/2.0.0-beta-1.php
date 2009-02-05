@@ -72,3 +72,55 @@ foreach ($elements as $class) {
     $this->processResults($class, $description, $sql);
 }
 unset($elements,$class,$description,$sql,$table);
+
+/* remove connector context */
+if ($connectorContext = $this->install->xpdo->getObject('modContext', 'connector')) {
+    if ($connectorContext->remove()) {
+        $this->results[] = array(
+            'class' => 'success',
+            'msg' => '<p class="ok">Successfully removed data from table for class modContext<br /><small>Removed connector context.</small></p>'
+        );
+    } else {
+        $this->results[] = array(
+            'class' => 'warning',
+            'msg' => '<p class="notok">Error removing data from table for class modContext<br /><small>Could not remove connector context.</small></p>'
+        );
+    }
+}
+unset($connectorContext);
+
+/* remove connector context related ACLs */
+if ($connectorContextACLs = $this->install->xpdo->getCollection('modAccessContext', array('target' => 'connector'))) {
+    foreach ($connectorContextACLs as $acl) {
+        if ($acl->remove()) {
+            $this->results[] = array(
+                'class' => 'success',
+                'msg' => '<p class="ok">Successfully removed data for class modAccessContext<br /><small>Removed connector context ACLs.</small></p>'
+            );
+        } else {
+            $this->results[] = array(
+                'class' => 'warning',
+                'msg' => '<p class="notok">Error removing data for class modAccessContext<br /><small>Could not remove connector context ACLs.</small></p>'
+            );
+        }
+    }
+}
+unset($connectorContextACLs, $acl);
+
+/* remove connector context related ResourceGroup ACLs */
+if ($connectorContextACLs = $this->install->xpdo->getCollection('modAccessResourceGroup', array('context_key' => 'connector'))) {
+    foreach ($connectorContextACLs as $acl) {
+        if ($acl->remove()) {
+            $this->results[] = array(
+                'class' => 'success',
+                'msg' => '<p class="ok">Successfully removed data for class modAccessResourceGroup<br /><small>Removed connector context ACLs.</small></p>'
+            );
+        } else {
+            $this->results[] = array(
+                'class' => 'warning',
+                'msg' => '<p class="notok">Error removing data for class modAccessResourceGroup<br /><small>Could not remove connector context ACLs.</small></p>'
+            );
+        }
+    }
+}
+unset($connectorContextACLs, $acl);

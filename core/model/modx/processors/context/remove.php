@@ -2,7 +2,7 @@
 /**
  * Removes a context
  *
- * @param string $key The key of the context. Cannot be mgr, web or connector.
+ * @param string $key The key of the context. Cannot be mgr or web.
  *
  * @package modx
  * @subpackage processors.context
@@ -13,7 +13,7 @@ if (!$modx->hasPermission('delete_context')) return $modx->error->failure($modx-
 
 $context= $modx->getObject('modContext', $_REQUEST['key']);
 if ($context == null) return $modx->error->failure($modx->lexicon('context_err_nf'));
-if ($context->get('key') == 'web' || $context->get('key') == 'mgr' || $context->get('key') == 'connector') {
+if ($context->get('key') == 'web' || $context->get('key') == 'mgr') {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 

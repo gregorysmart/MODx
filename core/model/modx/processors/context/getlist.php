@@ -40,7 +40,7 @@ foreach ($collection as $key => $object) {
             'handler' => 'this.update'
         ),
     );
-    if (!in_array($key,array('connector','mgr','web'))) {
+    if (!in_array($key,array('mgr','web'))) {
         array_push($la['menu'],
             '-',
             array(

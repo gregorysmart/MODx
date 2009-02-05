@@ -30,7 +30,6 @@ $content= "<?php\n";
 $query= $modx->newQuery('modAction');
 $query->where(array('context_key' => 'mgr'));
 $query->orCondition(array('context_key' => 'web'));
-$query->orCondition(array('context_key' => 'connector'));
 $query->sortby('id');
 $collection= $modx->getCollection('modAction', $query);
 foreach ($collection as $key => $c) {

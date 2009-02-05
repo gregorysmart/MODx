@@ -12,7 +12,7 @@ Ext.onReady(function() {
 	{/literal}
 	    xtype: 'modx-page-resource-update'
 	    ,id: '{$resource->id}'
-	    ,ctx: '{$resource->context_key}'
+	    ,context_key: '{$resource->context_key}'
 	    ,template: '{$resource->template}'
 	    ,class_key: '{$resource->class_key}'
 	    ,context_key: '{$resource->context_key}'

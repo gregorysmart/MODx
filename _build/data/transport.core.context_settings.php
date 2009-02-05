@@ -1,16 +1,6 @@
 <?php
 $collection['0']= $xpdo->newObject('modContextSetting');
 $collection['0']->fromArray(array (
-  'context_key' => 'connector',
-  'key' => 'modRequest.class',
-  'value' => 'modConnectorRequest',
-  'xtype' => 'textfield',
-  'namespace' => 'core',
-  'area' => 'system',
-  'editedon' => NULL,
-), '', true, true);
-$collection['1']= $xpdo->newObject('modContextSetting');
-$collection['1']->fromArray(array (
   'context_key' => 'mgr',
   'key' => 'allow_tags_in_post',
   'value' => '1',
@@ -19,8 +9,8 @@ $collection['1']->fromArray(array (
   'area' => 'system',
   'editedon' => NULL,
 ), '', true, true);
-$collection['2']= $xpdo->newObject('modContextSetting');
-$collection['2']->fromArray(array (
+$collection['1']= $xpdo->newObject('modContextSetting');
+$collection['1']->fromArray(array (
   'context_key' => 'mgr',
   'key' => 'modRequest.class',
   'value' => 'modManagerRequest',

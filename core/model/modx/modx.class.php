@@ -2147,7 +2147,7 @@ class modX extends xPDO {
      * @return boolean true if the request is executing in the mgr context.
      */
     function insideManager() {
-        return is_object($this->context) && ($this->context->get('key') === 'mgr' || $this->context->get('key') === 'connector');
+        return is_object($this->context) && ($this->context->get('key') === 'mgr');
     }
 
     /**
@@ -2366,12 +2366,12 @@ class modX extends xPDO {
     function getEventMap($contextKey) {
         $eventElementMap= array ();
         if ($contextKey) {
-            $service= "ev.`service` IN (1,3,4,5,6) AND (ev.`groupname` = '' OR ev.`groupname` = 'RichText Editor' OR ev.`groupname` = 'modUser') AND";
             switch ($contextKey) {
-                case 'connector':
                 case 'mgr':
                     $service= "ev.`service` IN (1,2,4,5,6) AND";
                     break;
+                default:
+                    $service= "ev.`service` IN (1,3,4,5,6) AND (ev.`groupname` = '' OR ev.`groupname` = 'RichText Editor' OR ev.`groupname` = 'modUser') AND";
             }
             $eeTbl= $this->getTableName('modPluginEvent');
             $eventTbl= $this->getTableName('modEvent');

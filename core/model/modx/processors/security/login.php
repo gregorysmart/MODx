@@ -23,7 +23,7 @@ $onBeforeLoginParams = array(
 );
 
 $rt = false;  /* $rt will be an array if the event fires */
-if ($loginContext == 'mgr' || $loginContext == 'connector') {
+if ($loginContext == 'mgr') {
     $rt = $modx->invokeEvent("OnBeforeManagerLogin", $onBeforeLoginParams);
 } else {
     $rt = $modx->invokeEvent("OnBeforeWebLogin", $onBeforeLoginParams);
@@ -122,7 +122,6 @@ if (!$rt || (is_array($rt) && !in_array(true, $rt))) {
 }
 
 $user->addSessionContext($loginContext);
-if ($loginContext == 'mgr') $user->addSessionContext('connector');
 
 if ($rememberme) {
     $_SESSION['modx.' . $loginContext . '.session.cookie.lifetime']= intval($modx->config['session_cookie_lifetime']);
@@ -145,7 +144,6 @@ if ($loginContext == 'mgr') {
 
 $response = array('url' => $modx->config['base_url']);
 switch ($loginContext) {
-    case 'connector':
     case 'mgr':
         $manager_login_startup_url = $modx->config['manager_url'];
         if (!empty($manager_login_startup)) {

@@ -11,15 +11,6 @@ $collection['1']->fromArray(array (
 $collection['2']= $xpdo->newObject('modAccessContext');
 $collection['2']->fromArray(array (
   'id' => 2,
-  'target' => 'connector',
-  'principal_class' => 'modUserGroup',
-  'principal' => 1,
-  'authority' => 0,
-  'policy' => 2,
-), '', true, true);
-$collection['3']= $xpdo->newObject('modAccessContext');
-$collection['3']->fromArray(array (
-  'id' => 3,
   'target' => 'web',
   'principal_class' => 'modUserGroup',
   'principal' => 1,

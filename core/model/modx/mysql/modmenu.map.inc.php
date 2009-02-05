@@ -11,8 +11,8 @@ $xpdo_meta_map['modMenu']= array (
     'parent' => 0,
     'action' => 0,
     'text' => NULL,
-    'description' => NULL,
-    'icon' => NULL,
+    'description' => '',
+    'icon' => '',
     'menuindex' => 0,
     'params' => NULL,
     'handler' => NULL,
@@ -50,6 +50,7 @@ $xpdo_meta_map['modMenu']= array (
       'precision' => '255',
       'phptype' => 'string',
       'null' => false,
+      'default' => '',
     ),
     'icon' => 
     array (
@@ -57,6 +58,7 @@ $xpdo_meta_map['modMenu']= array (
       'precision' => '255',
       'phptype' => 'string',
       'null' => false,
+      'default' => '',
     ),
     'menuindex' => 
     array (

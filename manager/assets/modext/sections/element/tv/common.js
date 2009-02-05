@@ -43,8 +43,7 @@ MODx.combo.TVInputType = function(config) {
         ,fields: ['value','name']
         ,url: MODx.config.connectors_url+'element/tv/renders.php'
         ,baseParams: {
-        	action: 'getInputs'
-        	,ctx: 'mgr'
+            action: 'getInputs'
         }
         ,value: 'text'
     });

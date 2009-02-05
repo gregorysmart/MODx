@@ -8,7 +8,7 @@ Ext.onReady(function() {
 	{/literal}
 		xtype: 'modx-page-resource-data'
 		,id: '{$resource->id}'
-		,ctx: '{$resource->context_key}'
+		,context_key: '{$resource->context_key}'
 		,class_key: '{$resource->class_key}'
 		,pagetitle: '{$resource->pagetitle}'
 		,show_preview: {if $_config.show_preview EQ 1}true{else}false{/if}

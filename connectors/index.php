@@ -32,8 +32,11 @@ $modx->setLogLevel(MODX_LOG_LEVEL_ERROR);
 $modx->setLogTarget('FILE');
 
 // initialize the proper context
-$modx->initialize('connector');
+$ctx = isset($_REQUEST['ctx']) && !empty($_REQUEST['ctx']) ? $_REQUEST['ctx'] : 'mgr';
+$modx->initialize($ctx);
 
 // handle the request
+$connectorRequestClass = isset($modx->config['modConnectorRequest.class']) ? $modx->config['modConnectorRequest.class'] : 'modConnectorRequest';
+$modx->config['modRequest.class'] = $connectorRequestClass;
 $modx->getRequest();
 $modx->request->sanitizeRequest();

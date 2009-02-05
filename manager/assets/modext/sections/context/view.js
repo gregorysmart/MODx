@@ -47,7 +47,7 @@ Ext.extend(MODx.page.ViewContext,MODx.Component,{
 	        ,method: 'remote'
 	        ,confirm: _('context_duplicate_confirm')
 	    });
-		if (config.key != 'web' && config.key != 'mgr' && config.key != 'connector') {
+		if (config.key != 'web' && config.key != 'mgr') {
 			b.push({
 				process: 'delete',
 				text: _('delete'),

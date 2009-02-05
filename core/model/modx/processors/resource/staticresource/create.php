@@ -27,7 +27,7 @@ $_POST['syncsite'] = !isset($_POST['syncsite']) ? 0 : 1;
 /* default pagetitle */
 if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_document');
 
-$_POST['context_key']= !isset($_POST['context_key']) ? 'web' : $_POST['context_key'];
+$_POST['context_key']= !isset($_POST['context_key']) || $_POST['context_key'] == '' ? 'web' : $_POST['context_key'];
 
 /* friendly url alias checks */
 if ($modx->config['friendly_alias_urls']) {

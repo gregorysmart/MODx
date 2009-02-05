@@ -2,8 +2,8 @@
 /**
  * Grabs a list of render properties for a TV render
  *
- * @param string $ctx (optional) The context by which to grab renders from.
- * Defaults to mgr.
+ * @param string $context (optional) The context by which to grab renders from. Defaults to
+ * executing context.
  * @param string $type (optional) The type of render to grab properties for.
  * Defaults to default.
  * @param integer $tv (optional) The TV to prefill property values from.
@@ -13,7 +13,7 @@
  */
 $modx->lexicon->load('tv_widget');
 
-if (!isset($_REQUEST['ctx'])) $_REQUEST['ctx'] = 'mgr';
+$context = (isset($_REQUEST['context']) && !empty($_REQUEST['context'])) ? $_REQUEST['context'] : $modx->context->get('key');
 if (!isset($_REQUEST['type'])) $_REQUEST['type'] = 'default';
 
 if (!isset($modx->smarty)) {
@@ -36,7 +36,7 @@ if (isset($_REQUEST['tv']) && $_REQUEST['tv'] != '') {
 }
 $modx->smarty->assign('params',$settings);
 
-$renderPath = dirname(__FILE__).'/'.$_REQUEST['ctx'].'/properties/';
+$renderPath = dirname(__FILE__).'/'.$context.'/properties/';
 $renderFile = $renderPath.$_REQUEST['type'].'.php';
 
 if (file_exists($renderFile)) {

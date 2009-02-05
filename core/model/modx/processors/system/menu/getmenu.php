@@ -34,14 +34,27 @@ function getSubMenus($menu) {
 
         /* if 3rd party menu item, load proper text */
         $action = $menu->getOne('Action');
-        if ($action) {
-            $ctx = $action->getOne('Context');
-            if ($ctx->get('key') != 'mgr' && !$modx->lexicon->exists($menu->get('text'))) {
-                $modx->lexicon->load($ctx->get('key').':default');
-                $menu->set('text',$modx->lexicon($menu->get('text')));
-            }
-        }
         $ma = $menu->toArray();
+        if ($action) {
+            $ns = $action->getOne('modNamespace');
+            if ($ns != null && $ns->get('name') != 'core') {
+                $modx->lexicon->load($ns->get('name').':default');
+                $ma['text'] = $modx->lexicon($menu->get('text'));
+            } else {
+                $ma['text'] = $modx->lexicon($menu->get('text'));
+            }
+        } else {
+            $ma['text'] = $modx->lexicon($menu->get('text'));
+        }
+
+        $desc = $menu->get('description');
+        if ($desc != '' && $desc != null && $modx->lexicon->exists($desc)) {
+            $ma['description'] = $modx->lexicon($desc);
+        } else {
+            $ma['description'] = '';
+        }
+        $ma['children'] = getSubMenus($menu->get('id'));
+
         if ($menu->get('controller')) {
             $ma['controller'] = $menu->get('controller');
         } else {

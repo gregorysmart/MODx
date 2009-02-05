@@ -40,7 +40,7 @@ foreach ($nodes as $ar_node) {
 			$parent->save();
 		}
 	}
-    $node->set('context_key',$ar_node['ctx']);
+    $node->set('context_key',$ar_node['context']);
 	$node->set('menuindex',$ar_node['order']);
 	$node->save();
 }
@@ -59,7 +59,7 @@ function getNodesFormatted(&$ar_nodes,$cur_level,$parent = 0) {
             $par = explode('_',$parent);
     		$ar_nodes[] = array(
     			'id' => $ar[1],
-                'ctx' => $par[0],
+                'context' => $par[0],
     			'parent' => $par[1],
     			'order' => $order,
     		);
