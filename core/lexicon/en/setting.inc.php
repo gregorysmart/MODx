@@ -88,6 +88,9 @@ $_lang['setting_cache_json_desc'] = '';
 $_lang['setting_cache_json_expires'] = 'Expiration Time for JSON Cache';
 $_lang['setting_cache_json_expires_desc'] = '';
 
+$_lang['setting_cache_lang_js'] = 'Cache Lexicon JS Strings';
+$_lang['setting_cache_lang_js_desc'] = 'If set to true, this will use server headers to cache the lexicon strings loaded into JavaScript for the manager interface.';
+
 $_lang['setting_cache_resource'] = 'Enable Partial Resource Cache';
 $_lang['setting_cache_resource_desc'] = 'Partial resource caching is configurable by resource when this feature is enabled.  Disabling this feature will disable it globally.';
 

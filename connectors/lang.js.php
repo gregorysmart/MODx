@@ -1,4 +1,10 @@
 <?php
+/**
+ * Loads the lexicon into a JS-compatible function _()
+ *
+ * @package modx
+ * @subpackage lexicon
+ */
 ob_start();
 require_once dirname(__FILE__).'/index.php';
 ob_clean();
@@ -32,22 +38,31 @@ function esc($s) {
     return strtr($s,array('\\'=>'\\\\',"'"=>"\\'",'"'=>'\\"',"\r"=>'\\r',"\n"=>'\\n','</'=>'<\/'));
 }
 
-// now force caching if the size is the same
-
-// generate unique ID
+/* gather output from buffer */
 $output = ob_get_contents();
 ob_end_clean();
 
-$hash = md5($output);
-$headers = $modx->request->getHeaders();
-// if Browser sent ID, we check if they match
-if (isset($headers['If-None-Match']) && ereg($hash, $headers['If-None-Match'])) {
-    header('HTTP/1.1 304 Not Modified');
+
+/* if turned on, will cache lexicon entries in JS based upon http headers */
+if (isset($modx->config['cache_lang_js']) && $modx->config['cache_lang_js']) {
+    $hash = md5($output);
+    $headers = $modx->request->getHeaders();
+
+    /* if Browser sent ID, check if they match */
+    if (isset($headers['If-None-Match']) && ereg($hash, $headers['If-None-Match'])) {
+        header('HTTP/1.1 304 Not Modified');
+    } else {
+        header("ETag: \"{$hash}\"");
+        header('Accept-Ranges: bytes');
+        header('Content-Length: '.strlen($output));
+        header('Content-Type: application/x-javascript');
+
+        echo $output;
+    }
 } else {
-    header("ETag: \"{$hash}\"");
-    header('Accept-Ranges: bytes');
+    /* just output JS with no server caching */
     header('Content-Length: '.strlen($output));
     header('Content-Type: application/x-javascript');
-
     echo $output;
 }
+exit();

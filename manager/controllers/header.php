@@ -5,10 +5,6 @@
  * @package modx
  * @subpackage manager
  */
-//if (!$modx->hasPermission('frames')) {
-//    return $modx->error->failure($modx->lexicon('permission_denied'));
-//}
-
 $menus = getSubMenus(0);
 
 function getSubMenus($m) {
@@ -60,8 +56,6 @@ function getSubMenus($m) {
     return $av;
 }
 $modx->smarty->assign('menus',$menus);
-
-include_once dirname(__FILE__).'/welcome.php';
 
 $welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
 $modx->smarty->assign('welcome_back',$welcome_back);

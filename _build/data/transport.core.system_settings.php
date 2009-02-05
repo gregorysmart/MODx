@@ -751,3 +751,12 @@ $collection['80']->fromArray(array (
   'area' => 'manager',
   'editedon' => NULL,
 ), '', true, true);
+$collection['81']= $xpdo->newObject('modSystemSetting');
+$collection['81']->fromArray(array (
+  'key' => 'cache_lang_js',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
