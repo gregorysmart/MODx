@@ -456,7 +456,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
      * Gets a default toolbar setup
      */
 	,getToolbar: function() {
-		var iu = MODx.config.template_url+'images/icons/';
+		var iu = MODx.config.template_url+'images/restyle/icons/';
         return [{
             icon: iu+'arrow_down.png'
             ,cls: 'x-btn-icon'
@@ -470,7 +470,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
             ,tooltip: {text: _('tree_collapse')}
             ,handler: this.collapse
         },'-',{
-            icon: iu+'sort.png'
+            icon: iu+'refresh.png'
             ,cls: 'x-btn-icon'
             ,scope: this
             ,tooltip: {text: _('tree_refresh')}
