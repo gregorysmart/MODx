@@ -194,7 +194,7 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
     ,_getToolbar: function() {
         var iu = MODx.config.template_url+'images/restyle/icons/';
         return [{
-            icon: iu+'sort.png'
+            icon: iu+'refresh.png'
             ,cls: 'x-btn-icon'
             ,tooltip: {text: _('tree_refresh')}
             ,handler: this.refresh

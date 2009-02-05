@@ -223,7 +223,7 @@ Ext.extend(MODx.tree.CheckboxTree,Ext.tree.TreePanel,{
             ,tooltip: {text: _('tree_collapse')}
             ,handler: this.collapse
         },'-',{
-            icon: iu+'sort.png'
+            icon: iu+'refresh.png'
             ,cls: 'x-btn-icon'
             ,scope: this
             ,tooltip: {text: _('tree_refresh')}
