@@ -11,6 +11,7 @@ $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
 /* get rid of time limit */
 set_time_limit(0);
+echo '<pre>';
 
 error_reporting(E_ALL); ini_set('display_errors',true);
 
@@ -60,11 +61,13 @@ $xpdo = new xPDO(XPDO_DSN, XPDO_DB_USER, XPDO_DB_PASS,
     )
 );
 $cacheManager= $xpdo->getCacheManager();
-$xpdo->setLogLevel(XPDO_LOG_LEVEL_ERROR);
+$xpdo->setLogLevel(XPDO_LOG_LEVEL_INFO);
 $xpdo->setLogTarget('ECHO');
 
 $xpdo->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 $packageDirectory = MODX_CORE_PATH . 'packages/';
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Beginning build script processes...'); flush();
 
 /* remove pre-existing package files and directory */
 if (file_exists($packageDirectory . 'core.transport.zip')) {
@@ -73,6 +76,7 @@ if (file_exists($packageDirectory . 'core.transport.zip')) {
 if (file_exists($packageDirectory . 'core') && is_dir($packageDirectory . 'core')) {
     $cacheManager->deleteTree($packageDirectory . 'core', true);
 }
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Removed pre-existing core/ and core.transport.zip.'); flush();
 
 /* create core transport package */
 $package = new xPDOTransport($xpdo, 'core', $packageDirectory);
@@ -82,6 +86,8 @@ $xpdo->loadClass('modAccess');
 $xpdo->loadClass('modAccessibleObject');
 $xpdo->loadClass('modAccessibleSimpleObject');
 $xpdo->loadClass('modPrincipal');
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Core transport package created.'); flush();
 
 /* modWorkspace */
 $collection = array ();
@@ -99,6 +105,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Default workspace packaged.'); flush();
 
 /* modx wtf provisioner */
 $collection = array ();
@@ -120,6 +128,8 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in MODx Web Transport Facility reference.'); flush();
+
 /* modAction */
 $collection= array();
 include dirname(__FILE__).'/data/transport.core.actions.php';
@@ -131,6 +141,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all modActions.'); flush();
 
 /* modMenu */
 $collection= array();
@@ -144,6 +156,8 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all modMenus.'); flush();
+
 /* modContentTypes */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.content_types.php';
@@ -155,6 +169,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default modContentTypes.'); flush();
 
 /* modContext = web */
 $c = $xpdo->newObject('modContext');
@@ -183,6 +199,8 @@ $attributes['resolve'][] = array (
 );
 $package->put($c, $attributes);
 unset ($c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in web context.'); flush();
 
 /* modContext = mgr */
 $c = $xpdo->newObject('modContext');
@@ -226,6 +244,8 @@ $attributes['resolve'][] = array (
 );
 $package->put($c, $attributes);
 unset ($c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in mgr context.'); flush();
 
 /* connector file transport */
 $attributes = array (
@@ -283,6 +303,8 @@ $attributes['resolve'][] = array (
 $package->put($fileset, $attributes);
 unset ($fileset, $attributes);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in connectors.'); flush();
+
 /* modEvent collection */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.events.php';
@@ -294,6 +316,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default events.'); flush();
 
 /* modSystemSetting collection */
 $collection = array ();
@@ -322,6 +346,8 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default system settings.'); flush();
+
 /* modContextSetting collection */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.context_settings.php';
@@ -333,6 +359,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default context settings.'); flush();
 
 /* modUserGroup */
 $collection = array ();
@@ -346,6 +374,8 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default user groups.'); flush();
+
 /* modUserGroupRole */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.usergrouproles.php';
@@ -357,6 +387,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default roles Member and SuperUser.'); flush();
 
 /* modAccessPolicy */
 $collection = array ();
@@ -370,6 +402,8 @@ foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
 unset ($collection, $c, $attributes);
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default access policies.'); flush();
 
 /* Lexicon stuff */
 $entries = array ();
@@ -406,6 +440,8 @@ foreach ($languages as $l) {
 }
 unset ($entries, $languages, $topics, $c, $t, $l);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged core lexicon entries and topics.'); flush();
+
 /* modAccessContext */
 $collection = array ();
 include dirname(__FILE__).'/data/transport.core.access_contexts.php';
@@ -419,7 +455,11 @@ foreach ($collection as $c) {
 }
 unset ($collection, $c, $attributes);
 
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default access context permissions.'); flush();
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Beginning to zip up transport package...'); flush();
 $package->pack();
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Transport zip created. Build script finished.'); flush();
 
 $mtime = microtime();
 $mtime = explode(" ", $mtime);
@@ -428,6 +468,5 @@ $tend = $mtime;
 $totalTime = ($tend - $tstart);
 $totalTime = sprintf("%2.4f s", $totalTime);
 
-echo "\nExecution time: {$totalTime}\n";
-
+echo "\nExecution time: {$totalTime}\n"; flush();
 exit ();
