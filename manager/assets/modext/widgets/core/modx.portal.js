@@ -8,7 +8,7 @@ Ext.namespace('MODx.portal');
  */
 Ext.ux.Portal = Ext.extend(Ext.Panel, {
     layout: 'column',
-    autoScroll:true,
+    /*autoScroll:true,*/ /* this causes problems with scrollbars in FF/IE */ 
     cls:'x-portal',
     defaultType: 'portalcolumn',
     
