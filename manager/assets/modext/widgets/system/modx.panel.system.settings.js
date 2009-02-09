@@ -20,16 +20,21 @@ MODx.panel.SystemSettings = function(config) {
         },{
             layout: 'form'
             ,bodyStyle: 'padding: 1.5em'
+            ,autoHeight: true
+            ,defaults: { border: false }
             ,items: [{
                 html: '<p>'+_('settings_desc')+'</p>'
-                ,border: false
             },{
-                xtype: 'modx-grid-system-settings'
-                ,preventRender: true
+                id: 'modx-system-settings-grid-ct'
             }]
         }]
     });
     MODx.panel.SystemSettings.superclass.constructor.call(this,config);
+    /* load after b/c of safari/ie focus bug */
+    MODx.load({
+        xtype: 'modx-grid-system-settings'
+        ,renderTo: 'modx-system-settings-grid-ct'
+    });
 };
 Ext.extend(MODx.panel.SystemSettings,MODx.FormPanel);
 Ext.reg('modx-panel-system-settings',MODx.panel.SystemSettings);

@@ -218,7 +218,7 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
                 if(!ed.rendered){
                     ed.render(this.view.getEditorParent(ed));
                 }
-                (function(){ // complex but required for focus issues in safari, ie and opera
+                (function(){ /* complex but required for focus issues in safari, ie and opera */
                     ed.row = row;
                     ed.col = col;
                     ed.record = r;
