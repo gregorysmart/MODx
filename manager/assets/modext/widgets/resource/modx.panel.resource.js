@@ -114,7 +114,7 @@ MODx.panel.Resource = function(config) {
                         xtype: 'modx-field-parent-change'
                         ,fieldLabel: _('resource_parent')
                         ,description: _('resource_parent_help')
-                        ,name: 'parent'
+                        ,name: 'parent-cmb'
                         ,id: 'modx-resource-parent'
                         ,value: config.parent || 0
                     },{
