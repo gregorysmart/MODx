@@ -6,6 +6,10 @@
  */
 MODx.panel.Static = function(config) {
     config = config || {};
+    
+    var oc = function(f,nv,ov) {
+        Ext.getCmp('modx-panel-static').fireEvent('fieldChange');
+    };
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
@@ -216,6 +220,40 @@ MODx.panel.Static = function(config) {
                     ,name: 'context_key'
                     ,id: 'modx-resource-context-key'
                     ,value: config.context_key || 'web'
+                },{
+                    xtype: 'modx-combo-content-type'
+                    ,fieldLabel: _('resource_content_type')
+                    ,description: _('resource_content_type_help')
+                    ,name: 'content_type'
+                    ,id: 'modx-resource-content-type'
+                    ,width: 100
+                    ,value: 1
+                    ,listeners: {
+                        'change': {fn:oc,scope:this}
+                    }
+                    
+                },{
+                    xtype: 'modx-combo-content-disposition'
+                    ,fieldLabel: _('resource_contentdispo')
+                    ,description: _('resource_contentdispo_help')
+                    ,name: 'content_dispo'
+                    ,id: 'modx-resource-content-dispo'
+                    ,width: 100
+                    ,listeners: {
+                        'change': {fn:oc,scope:this}
+                    }
+                    
+                },{
+                    xtype: 'textfield'
+                    ,fieldLabel: _('class_key')
+                    ,name: 'class_key'
+                    ,id: 'modx-resource-class-key'
+                    ,allowBlank: false
+                    ,value: 'modDocument'    
+                    ,width: 100
+                    ,listeners: {
+                        'change': {fn:oc,scope:this}
+                    }
                 }]
             },{
                 xtype: 'modx-panel-resource-tv'
