@@ -82,7 +82,7 @@
 	background-image:url(../img/silk/icons/page_white_get.png);
 }
 .ux-up-icon-uploading {
-	background-image:url(../ext/resources/images/default/grid/wait.gif);
+    background-image:url(../../../../ext2/resources/images/default/grid/wait.gif);
 }
 .ux-up-icon-done {
 	background-image:url(../img/silk/icons/accept.png);
