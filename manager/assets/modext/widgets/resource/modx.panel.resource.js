@@ -116,7 +116,7 @@ MODx.panel.Resource = function(config) {
                         ,description: _('resource_parent_help')
                         ,name: 'parent'
                         ,id: 'modx-resource-parent'
-                        ,value: config.parentName || 0
+                        ,value: config.parent || 0
                     },{
                         xtype: 'hidden'
                         ,name: 'parent'
