@@ -94,6 +94,8 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	    this.on('nodedragover',this._handleDrop,this);
 	    this.on('nodedrop',this._handleDrag,this);
 	    this.on('click',this._saveState,this);
+        this.on('contextmenu',this._saveState,this);
+        this.on('expand',this._saveState,this);        
         this.on('click',this._handleClick,this);
 	    
 	    this.root = new Ext.tree.AsyncTreeNode({
