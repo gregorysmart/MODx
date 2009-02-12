@@ -365,14 +365,14 @@ MODx.loadAccordionPanels = function() {
     });
     if (MODx.config.publish_document) {
         va.push({
-            xtype: 'datefield'
+            xtype: 'datetimefield'
             ,fieldLabel: _('resource_publishdate')
             ,description: _('resource_publishdate_help')
             ,name: 'pub_date'
             ,id: 'modx-resource-pub-date'
-            ,format: 'Y-m-d'
             ,allowBlank: true
-            ,width: 100
+            ,dateWidth: 80
+            ,timeWidth: 80
             ,listeners: {
                 'change': {fn:oc,scope:this}
             }
@@ -381,14 +381,14 @@ MODx.loadAccordionPanels = function() {
     }
     if (MODx.config.publish_document) {
         va.push({
-            xtype: 'datefield'
+            xtype: 'datetimefield'
             ,fieldLabel: _('resource_unpublishdate')
             ,description: _('resource_unpublishdate_help')
             ,name: 'unpub_date'
             ,id: 'modx-resource-unpub-date'
-            ,format: 'Y-m-d'
             ,allowBlank: true
-            ,width: 100
+            ,dateWidth: 80
+            ,timeWidth: 80
             ,listeners: {
                 'change': {fn:oc,scope:this}
             }
