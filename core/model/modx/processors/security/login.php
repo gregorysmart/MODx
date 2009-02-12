@@ -142,7 +142,7 @@ if ($loginContext == 'mgr') {
     $modx->invokeEvent("OnWebLogin", $postLoginAttributes);
 }
 
-$response = array('url' => $modx->config['base_url']);
+$response = array('url' => $modx->config['site_url']);
 switch ($loginContext) {
     case 'mgr':
         $manager_login_startup_url = $modx->config['manager_url'];
@@ -154,7 +154,7 @@ switch ($loginContext) {
         break;
     case 'web':
     default:
-        $login_startup_url = $modx->config['base_url'];
+        $login_startup_url = $modx->config['site_url'];
         if (!empty($login_startup)) {
             $login_startup = intval($login_startup);
             if ($login_startup) $login_startup_url = $modx->makeUrl($login_startup, $loginContext, '', 'full');

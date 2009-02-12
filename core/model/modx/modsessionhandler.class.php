@@ -1,6 +1,6 @@
 <?php
 /*
- * MODx Revolution  *  
+ * MODx Revolution  *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -35,7 +35,7 @@ class modSessionHandler {
         $this->__construct($modx);
     }
     function __construct(& $modx) {
-        $this->modx= $modx;
+        $this->modx= & $modx;
     }
 
     /**

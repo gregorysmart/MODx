@@ -459,7 +459,7 @@ class modUser extends modPrincipal {
         }
         return $groups;
     }
-    
+
     function getUserGroupNames() {
         $groupNames= array();
         if (isset($_SESSION['modx.user.userGroupNames'])) {

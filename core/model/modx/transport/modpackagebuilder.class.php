@@ -58,7 +58,7 @@ class modPackageBuilder {
         $this->__construct($modx);
     }
     function __construct(& $modx) {
-        $this->modx = $modx;
+        $this->modx = & $modx;
         $this->modx->loadClass('transport.modTransportVehicle', '', false, true);
         $this->modx->loadClass('transport.xPDOTransport', XPDO_CORE_PATH, true, true);
 

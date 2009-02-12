@@ -113,7 +113,7 @@ class modMail {
     }
     /** @ignore */
     function __construct(& $modx, $attributes= array()) {
-        $this->modx= $modx;
+        $this->modx= & $modx;
         if (!$this->modx->lexicon) {
             $this->modx->getService('lexicon','modLexicon');
         }

@@ -232,6 +232,8 @@ class modX extends xPDO {
 
     /**
      * Harden the environment against common security flaws.
+     *
+     * @static
      */
     function protect() {
         if (isset ($_SERVER['QUERY_STRING']) && strpos(urldecode($_SERVER['QUERY_STRING']), chr(0)) !== false) die();
@@ -250,6 +252,7 @@ class modX extends xPDO {
     /**
      * Sanitize values of an array using regular expression patterns.
      *
+     * @static
      * @param array $target The target array to sanitize.
      * @param array|string $patterns A regular expression pattern, or array of
      * regular expression patterns to apply to all values of the target.
@@ -877,6 +880,9 @@ class modX extends xPDO {
         }
         if ($contextKey && isset ($_SESSION['modx.user.contextTokens'][$contextKey])) {
             $user= $this->getObject('modUser', intval($_SESSION['modx.user.contextTokens'][$contextKey]), true);
+            if ($user) {
+                $user->getSessionContexts();
+            }
         }
         return $user;
     }
@@ -980,20 +986,6 @@ class modX extends xPDO {
     function getSettings() {
         $this->getConfig();
         return $this->config;
-    }
-
-    /**
-     * Determines the current site_status.
-     *
-     * @return boolean True if the site is online or the user has a valid
-     * user session in the 'mgr' context; false otherwise.
-     */
-    function _checkSiteStatus() {
-        $status = false;
-        if ($this->config['site_status'] == '1' || $this->hasPermission('view_offline')) {
-            $status = true;
-        }
-        return $status;
     }
 
     /**
@@ -1199,6 +1191,22 @@ class modX extends xPDO {
             }
         }
         return $results;
+    }
+
+    function executeProcessor($options) {
+        $result = null;
+        if (is_array($options) && !empty($options) && isset($options['action']) && $this->getRequest()) {
+            $processor = isset($options['processors_path']) ? $options['processors_path'] : $this->config['processors_path'];
+            if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
+            $processor .= str_replace('../', '', $options['action']) . '.php';
+            if (file_exists($processor)) {
+                if (!isset($this->lexicon)) $this->getService('lexicon', 'modLexicon');
+                if (!isset($this->error)) $this->request->loadErrorHandler();
+                $modx =& $this;
+                $result = include $processor;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -2179,33 +2187,6 @@ class modX extends xPDO {
     }
 
     /**
-     * Loads the modX system configuration settings.
-     *
-     * @access protected
-     * @return boolean True if successful.
-     */
-    function _loadConfig() {
-        $this->config= $this->_config;
-        $cachePath= $this->getCachePath();
-        $fileName= "{$cachePath}config.cache.php";
-        if (!file_exists($fileName)) {
-            if ($cacheManager= $this->getCacheManager()) {
-                $fileName= $cacheManager->generateConfig();
-            }
-        }
-        if (!@ include ($fileName)) {
-            if (!$settings= $this->getCollection('modSystemSetting')) {
-                return false;
-            }
-            foreach ($settings as $setting) {
-                $this->config[$setting->get('key')]= $setting->get('value');
-            }
-        }
-        $this->_systemConfig= $this->config;
-        return true;
-    }
-
-    /**
      * Switches the primary Context for the modX instance.
      *
      * Be aware that switching contexts does not allow custom session handling
@@ -2223,6 +2204,157 @@ class modX extends xPDO {
             $switched= $this->_initContext($contextKey);
         }
         return $switched;
+    }
+
+    /**
+     * Retrieve a context by name without initializing it.
+     *
+     * Within a request, contexts retrieved using this function will cache the
+     * context data into the modX::$contexts array to avoid loading the same
+     * context multiple times.
+     *
+     * @access public
+     * @param string $contextKey The context to retrieve.
+     * @return &$modContext A modContext object retrieved from cache or
+     * database.
+     */
+    function getContext($contextKey) {
+        if (!isset($this->contexts[$contextKey])) {
+            $this->contexts[$contextKey]= $this->getObject('modContext', $contextKey);
+            if ($this->contexts[$contextKey]) {
+                $this->contexts[$contextKey]->prepare();
+            }
+        }
+        return $this->contexts[$contextKey];
+    }
+
+    /**
+     * Gets a map of events and registered plugins for the specified context.
+     *
+     * @param string $contextKey Context identifier.
+     * @return array A map of events and registered plugins for each.
+     */
+    function getEventMap($contextKey) {
+        $eventElementMap= array ();
+        if ($contextKey) {
+            switch ($contextKey) {
+                case 'mgr':
+                    $service= "ev.`service` IN (1,2,4,5,6) AND";
+                    break;
+                default:
+                    $service= "ev.`service` IN (1,3,4,5,6) AND (ev.`groupname` = '' OR ev.`groupname` = 'RichText Editor' OR ev.`groupname` = 'modUser') AND";
+            }
+            $eeTbl= $this->getTableName('modPluginEvent');
+            $eventTbl= $this->getTableName('modEvent');
+            $pluginTbl= $this->getTableName('modPlugin');
+            $sql= "SELECT ev.`name` AS `event`, ee.`pluginid` FROM {$eeTbl} ee INNER JOIN {$pluginTbl} pl ON pl.`id` = ee.`pluginid` AND pl.`disabled` = 0 INNER JOIN {$eventTbl} ev ON {$service} ev.`id` = ee.`evtid` ORDER BY ev.`name`, ee.`priority` ASC";
+            $stmt= $this->prepare($sql);
+            if ($stmt->execute()) {
+                while ($ee = $stmt->fetch(PDO_FETCH_ASSOC)) {
+                    $eventElementMap[$ee['event']][]= $ee['pluginid'];
+                }
+            }
+        }
+        return $eventElementMap;
+    }
+
+    /**
+     * Checks for locking on a page.
+     *
+     * @param integer $id Id of the user checking for a lock.
+     * @param string $action The action identifying what is locked.
+     * @param string $type Message indicating the kind of lock being checked.
+     */
+    function checkForLocks($id,$action,$type) {
+        $msg= false;
+        $id= intval($id);
+        if (!$id) $id= $this->getLoginUserID();
+        if ($au = $this->getObject('modActiveUser',array('action' => $action, 'internalKey:!=' => $id))) {
+            $msg = sprintf($this->lexicon('lock_msg'), $au->get('username'), $type);
+        }
+        return $msg;
+    }
+
+    /**
+     * Grabs a processed lexicon string.
+     *
+     * @access public
+     * @param string $key
+     * @param array $params
+     */
+    function lexicon($key,$params = array()) {
+        if ($this->lexicon) {
+            return $this->lexicon->process($key,$params);
+        } else {
+            $this->log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
+        }
+    }
+
+    /**
+     * Returns the state of the SESSION being used by modX.
+     *
+     * The possible values for session state are:
+     *
+     * MODX_SESSION_STATE_UNINITIALIZED
+     * MODX_SESSION_STATE_UNAVAILABLE
+     * MODX_SESSION_STATE_EXTERNAL
+     * MODX_SESSION_STATE_INITIALIZED
+     *
+     * @return integer Returns an integer representing the session state.
+     */
+    function getSessionState() {
+        if ($this->_sessionState == MODX_SESSION_STATE_UNINITIALIZED) {
+            if (XPDO_CLI_MODE) {
+                $this->_sessionState = MODX_SESSION_STATE_UNAVAILABLE;
+            }
+            elseif (isset($_SESSION)) {
+                $this->_sessionState = MODX_SESSION_STATE_EXTERNAL;
+            }
+        }
+        return $this->_sessionState;
+    }
+
+    /**
+     * Executed before parser processing of an element.
+     *
+     * @access protected
+     */
+    function _beforeProcessing() {
+        $this->documentIdentifier= & $this->resourceIdentifier;
+        $this->documentMethod= & $this->resourceMethod;
+        $this->documentContent= & $this->resource->_content;
+        $this->documentGenerated= & $this->resourceGenerated;
+        $this->dbConfig= & $this->db->config;
+    }
+
+    /**
+     * Executed before the response is rendered.
+     *
+     * @access protected
+     */
+    function _beforeRender() {
+        $this->documentOutput= & $this->resource->_output;
+    }
+
+    /**
+     * Executed before the handleRequest function.
+     *
+     * @access protected
+     */
+    function _beforeRequest() {}
+
+    /**
+     * Determines the current site_status.
+     *
+     * @return boolean True if the site is online or the user has a valid
+     * user session in the 'mgr' context; false otherwise.
+     */
+    function _checkSiteStatus() {
+        $status = false;
+        if ($this->config['site_status'] == '1' || $this->hasPermission('view_offline')) {
+            $status = true;
+        }
+        return $status;
     }
 
     /**
@@ -2264,25 +2396,14 @@ class modX extends xPDO {
     }
 
     /**
-     * Retrieve a context by name without initializing it.
+     * Initializes the culture settings.
      *
-     * Within a request, contexts retrieved using this function will cache the
-     * context data into the modX::$contexts array to avoid loading the same
-     * context multiple times.
-     *
-     * @access public
-     * @param string $contextKey The context to retrieve.
-     * @return &$modContext A modContext object retrieved from cache or
-     * database.
+     * @access protected
      */
-    function getContext($contextKey) {
-        if (!isset($this->contexts[$contextKey])) {
-            $this->contexts[$contextKey]= $this->getObject('modContext', $contextKey);
-            if ($this->contexts[$contextKey]) {
-                $this->contexts[$contextKey]->prepare();
-            }
-        }
-        return $this->contexts[$contextKey];
+    function _initCulture() {
+        global $_lang;
+        $this->getService('lexicon','modLexicon');
+        $this->invokeEvent('OnInitCulture');
     }
 
     /**
@@ -2301,6 +2422,18 @@ class modX extends xPDO {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Populates the map of events and registered plugins for each.
+     *
+     * @access protected
+     * @param string $contextKey Context identifier.
+     */
+    function _initEventMap($contextKey) {
+        if ($this->eventMap === null) {
+            $this->eventMap= $this->getEventMap($contextKey);
         }
     }
 
@@ -2358,158 +2491,30 @@ class modX extends xPDO {
     }
 
     /**
-     * Gets a map of events and registered plugins for the specified context.
+     * Loads the modX system configuration settings.
      *
-     * @param string $contextKey Context identifier.
-     * @return array A map of events and registered plugins for each.
+     * @access protected
+     * @return boolean True if successful.
      */
-    function getEventMap($contextKey) {
-        $eventElementMap= array ();
-        if ($contextKey) {
-            switch ($contextKey) {
-                case 'mgr':
-                    $service= "ev.`service` IN (1,2,4,5,6) AND";
-                    break;
-                default:
-                    $service= "ev.`service` IN (1,3,4,5,6) AND (ev.`groupname` = '' OR ev.`groupname` = 'RichText Editor' OR ev.`groupname` = 'modUser') AND";
-            }
-            $eeTbl= $this->getTableName('modPluginEvent');
-            $eventTbl= $this->getTableName('modEvent');
-            $pluginTbl= $this->getTableName('modPlugin');
-            $sql= "SELECT ev.`name` AS `event`, ee.`pluginid` FROM {$eeTbl} ee INNER JOIN {$pluginTbl} pl ON pl.`id` = ee.`pluginid` AND pl.`disabled` = 0 INNER JOIN {$eventTbl} ev ON {$service} ev.`id` = ee.`evtid` ORDER BY ev.`name`, ee.`priority` ASC";
-            $stmt= $this->prepare($sql);
-            if ($stmt->execute()) {
-                while ($ee = $stmt->fetch(PDO_FETCH_ASSOC)) {
-                    $eventElementMap[$ee['event']][]= $ee['pluginid'];
-                }
+    function _loadConfig() {
+        $this->config= $this->_config;
+        $cachePath= $this->getCachePath();
+        $fileName= "{$cachePath}config.cache.php";
+        if (!file_exists($fileName)) {
+            if ($cacheManager= $this->getCacheManager()) {
+                $fileName= $cacheManager->generateConfig();
             }
         }
-        return $eventElementMap;
-    }
-
-    /**
-     * Checks for locking on a page.
-     *
-     * @param integer $id Id of the user checking for a lock.
-     * @param string $action The action identifying what is locked.
-     * @param string $type Message indicating the kind of lock being checked.
-     */
-    function checkForLocks($id,$action,$type) {
-        $msg= false;
-        $id= intval($id);
-        if (!$id) $id= $this->getLoginUserID();
-        if ($au = $this->getObject('modActiveUser',array('action' => $action, 'internalKey:!=' => $id))) {
-            $msg = sprintf($this->lexicon('lock_msg'), $au->get('username'), $type);
-        }
-        return $msg;
-    }
-
-    /**
-     * Populates the map of events and registered plugins for each.
-     *
-     * @access protected
-     * @param string $contextKey Context identifier.
-     */
-    function _initEventMap($contextKey) {
-        if ($this->eventMap === null) {
-            $this->eventMap= $this->getEventMap($contextKey);
-        }
-    }
-
-    /**
-     * Initializes the culture settings.
-     *
-     * @access protected
-     */
-    function _initCulture() {
-        global $_lang;
-        $this->getService('lexicon','modLexicon');
-        $this->invokeEvent('OnInitCulture');
-    }
-
-    /**
-     * Grabs a processed lexicon string.
-     *
-     * @access public
-     * @param string $key
-     * @param array $params
-     */
-    function lexicon($key,$params = array()) {
-        if ($this->lexicon) {
-            return $this->lexicon->process($key,$params);
-        } else {
-            $this->log(XPDO_LOG_LEVEL_ERROR,'Culture not initialized; cannot use lexicon.');
-        }
-    }
-
-    /**
-     * Returns the state of the SESSION being used by modX.
-     *
-     * The possible values for session state are:
-     *
-     * MODX_SESSION_STATE_UNINITIALIZED
-     * MODX_SESSION_STATE_UNAVAILABLE
-     * MODX_SESSION_STATE_EXTERNAL
-     * MODX_SESSION_STATE_INITIALIZED
-     *
-     * @return integer Returns an integer representing the session state.
-     */
-    function getSessionState() {
-        if ($this->_sessionState == MODX_SESSION_STATE_UNINITIALIZED) {
-            if (XPDO_CLI_MODE) {
-                $this->_sessionState = MODX_SESSION_STATE_UNAVAILABLE;
+        if (!@ include ($fileName)) {
+            if (!$settings= $this->getCollection('modSystemSetting')) {
+                return false;
             }
-            elseif (isset($_SESSION)) {
-                $this->_sessionState = MODX_SESSION_STATE_EXTERNAL;
+            foreach ($settings as $setting) {
+                $this->config[$setting->get('key')]= $setting->get('value');
             }
         }
-        return $this->_sessionState;
-    }
-
-    /**
-     * Executed before the handleRequest function.
-     *
-     * @access protected
-     */
-    function _beforeRequest() {}
-
-    /**
-     * Executed before parser processing of an element.
-     *
-     * @access protected
-     */
-    function _beforeProcessing() {
-        $this->documentIdentifier= & $this->resourceIdentifier;
-        $this->documentMethod= & $this->resourceMethod;
-        $this->documentContent= & $this->resource->_content;
-        $this->documentGenerated= & $this->resourceGenerated;
-        $this->dbConfig= & $this->db->config;
-    }
-
-    /**
-     * Executed before the response is rendered.
-     *
-     * @access protected
-     */
-    function _beforeRender() {
-        $this->documentOutput= & $this->resource->_output;
-    }
-
-    /**
-     * Executed after the response is sent and execution is completed.
-     *
-     * @access protected
-     */
-    function _postProcess() {
-        if (isset ($this->config['cache_resource']) && $this->config['cache_resource']) {
-            if ($this->cacheManager && $this->documentGenerated && is_a($this->resource, 'modResource') && $this->resource->get('cacheable')) {
-                $this->invokeEvent('OnBeforeSaveWebPageCache');
-                if (!$this->cacheManager->generateResource($this->resource)) {
-                    $this->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
-                }
-            }
-        }
-        $this->invokeEvent('OnWebPageComplete');
+        $this->_systemConfig= $this->config;
+        return true;
     }
 
     /**
@@ -2563,6 +2568,23 @@ class modX extends xPDO {
         }
         $register->send('', array($messageKey => $message), $options);
         $this->_logSequence++;
+    }
+
+    /**
+     * Executed after the response is sent and execution is completed.
+     *
+     * @access protected
+     */
+    function _postProcess() {
+        if (isset ($this->config['cache_resource']) && $this->config['cache_resource']) {
+            if ($this->cacheManager && $this->documentGenerated && is_a($this->resource, 'modResource') && $this->resource->get('cacheable')) {
+                $this->invokeEvent('OnBeforeSaveWebPageCache');
+                if (!$this->cacheManager->generateResource($this->resource)) {
+                    $this->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
+                }
+            }
+        }
+        $this->invokeEvent('OnWebPageComplete');
     }
 }
 
