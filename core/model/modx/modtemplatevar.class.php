@@ -217,6 +217,19 @@ class modTemplateVar extends modElement {
         }
         $this->xpdo->smarty->assign('tv',$this);
 
+
+        $param= array ();
+        if ($paramstring= $this->get('display_params')) {
+            $cp= split("&", $paramstring);
+            foreach ($cp as $p => $v) {
+                $v= trim($v);
+                $ar= split("=", $v);
+                if (is_array($ar) && count($ar) == 2) {
+                    $params[$ar[0]]= $this->decodeParamValue($ar[1]);
+                }
+            }
+        }
+
         /* find the correct renderer for the TV, if not one, render a textbox */
         $inputRenderPath = MODX_PROCESSORS_PATH.'element/tv/renders/'.$this->xpdo->context->get('key').'/input/';
         if (!file_exists($inputRenderPath) || !is_dir($inputRenderPath)) {

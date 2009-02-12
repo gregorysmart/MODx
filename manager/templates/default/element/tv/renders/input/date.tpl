@@ -6,7 +6,6 @@
 	onblur="javascript:triggerDirtyField(this);"
 />
 
-
 <script type="text/javascript">
 {literal}
 MODx.load({
