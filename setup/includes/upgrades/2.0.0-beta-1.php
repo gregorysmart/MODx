@@ -124,3 +124,20 @@ if ($connectorContextACLs = $this->install->xpdo->getCollection('modAccessResour
     }
 }
 unset($connectorContextACLs, $acl);
+
+/* fix change in xtypes for system settings */
+$cbtypes = array('template','charset','language','rte');
+foreach ($cbtypes as $xt) {
+    $cbs = $this->install->xpdo->getCollection('modSystemSetting',array(
+        'xtype' => 'combo-'.$xt,
+    ));
+    foreach ($cbs as $cb) {
+        $cb->set('xtype','modx-combo-'.$xt);
+        $cb->save();
+    }
+}
+$this->results[] = array(
+    'class' => 'success',
+    'msg' => '<p class="ok">Successfully fixed xtypes for modSystemSettings.</small></p>'
+);
+unset($cbtypes,$xt,$cbs,$cb);
