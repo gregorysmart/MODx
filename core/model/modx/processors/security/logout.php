@@ -7,21 +7,36 @@
  */
 $modx->lexicon->load('login');
 
-if (!$user= $modx->getUser()) return $modx->error->failure($modx->lexicon('not_logged_in'));
+if (!$modx->user->isAuthenticated()) return $modx->error->failure($modx->lexicon('not_logged_in'));
 
-/* invoke OnBeforeManagerLogout event */
-$modx->invokeEvent('OnBeforeManagerLogout',array(
-    'userid' => $user->get('id'),
-    'username' => $user->get('username'),
-));
+$loginContext= isset ($_POST['login_context']) ? $_POST['login_context'] : $modx->context->get('key');
 
-$modx->user->endSession();
+if ($loginContext == 'mgr') {
+    /* invoke OnBeforeManagerLogout event */
+    $modx->invokeEvent('OnBeforeManagerLogout',array(
+        'userid' => $modx->user->get('id'),
+        'username' => $modx->user->get('username'),
+    ));
+} else {
+    $modx->invokeEvent('OnBeforeWebLogout',array(
+        'userid' => $modx->user->get('id'),
+        'username' => $modx->user->get('username'),
+    ));
+}
 
-/* invoke OnManagerLogout event */
-$modx->invokeEvent('OnManagerLogout',array(
-	'userid' => $internalKey,
-	'username' => $username,
-));
+$modx->user->removeSessionContext($loginContext);
 
-/* show login screen */
+if ($loginContext == 'mgr') {
+    /* invoke OnManagerLogout event */
+    $modx->invokeEvent('OnManagerLogout',array(
+        'userid' => $modx->user->get('id'),
+        'username' => $modx->user->get('username'),
+    ));
+} else {
+    $modx->invokeEvent('OnWebLogout',array(
+        'userid' => $modx->user->get('id'),
+        'username' => $modx->user->get('username'),
+    ));
+}
+
 return $modx->error->success();

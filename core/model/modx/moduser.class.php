@@ -157,7 +157,8 @@ class modUser extends modPrincipal {
      * Ends a user session completely, including all contexts.
      */
     function endSession() {
-        if (is_array($this->sessionContexts)) {
+        $this->getSessionContexts();
+        if (!empty($this->sessionContexts)) {
             $this->removeSessionContext($this->sessionContexts);
         }
         @ session_destroy();
@@ -234,10 +235,7 @@ class modUser extends modPrincipal {
      * Adds a new context to the user session context array.
      */
     function addSessionContext($context) {
-        if (!is_array($this->sessionContexts)) {
-            $this->sessionContexts= array ();
-        }
-
+        $this->getSessionContexts();
         $regenerated= false;
         if (version_compare(XPDO_PHP_VERSION, '4.3.2', '>=')) {
             if (version_compare(XPDO_PHP_VERSION, '5.1.0', '>=')) {
@@ -321,7 +319,7 @@ class modUser extends modPrincipal {
      * @param string|array $context The context key or an array of context keys.
      */
     function removeSessionContext($context) {
-        if (is_array($this->sessionContexts)) {
+        if ($this->getSessionContexts()) {
             $contextToken= array ();
             if (is_array($context)) {
                 foreach ($context as $ctx) {
@@ -333,6 +331,7 @@ class modUser extends modPrincipal {
                 $this->removeSessionContextVars($context);
             }
             $this->sessionContexts= array_diff_assoc($this->sessionContexts, $contextToken);
+            $_SESSION['modx.user.contextTokens']= $this->sessionContexts;
         }
     }
 
