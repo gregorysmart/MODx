@@ -11,7 +11,7 @@ $username = $_POST['username'];
 $givenPassword = $_POST['password'];
 
 $rememberme= isset ($_POST['rememberme']) ? ($_POST['rememberme'] == 'on' || $_POST['rememberme'] == true) : false;
-$loginContext= isset ($_POST['login_context']) ? $_POST['login_context'] : 'mgr';
+$loginContext= isset ($_POST['login_context']) ? $_POST['login_context'] : $modx->context->get('key');
 
 $onBeforeLoginParams = array(
     'username' => $username,
