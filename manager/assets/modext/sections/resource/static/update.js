@@ -24,14 +24,11 @@ MODx.page.UpdateStatic = function(config) {
             ,renderTo: 'modx-panel-static'
             ,resource: config.id
             ,class_key: config.class_key
+            ,context_key: config.context_key
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
             ,template: config.template
-        },{
-            xtype: 'modx-grid-resource-security'
-            ,renderTo: 'modx-grid-resource-security'
-            ,resource: config.id
         }]
     	,loadStay: true
         ,buttons: [{

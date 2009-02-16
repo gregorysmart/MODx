@@ -24,6 +24,7 @@ MODx.page.UpdateWebLink = function(config) {
             ,renderTo: 'modx-panel-weblink'
             ,resource: config.id
             ,class_key: config.class_key
+            ,context_key: config.context_key
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
