@@ -28,6 +28,7 @@ MODx.page.UpdateResource = function(config) {
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
             ,template: config.template
+            ,which_editor: config.which_editor
         }]
         ,buttons: [{
             process: 'update'

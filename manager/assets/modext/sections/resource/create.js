@@ -42,8 +42,13 @@ MODx.page.CreateResource = function(config) {
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
+            ,context_key: MODx.request.context_key || 'web'
             ,template: config.template
             ,parent: config.parent
+            ,which_editor: config.which_editor
+            ,edit_doc_metatags: config.edit_doc_metatags
+            ,access_permissions: config.access_permissions
+            ,publish_document: config.publish_document
         },{
             xtype: 'modx-panel-resource-tv'
             ,class_key: config.class_key
