@@ -335,7 +335,7 @@ MODx.loadAccordionPanels = function() {
         ,id: 'modx-resource-isfolder'
         ,inputValue: 1
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -347,7 +347,7 @@ MODx.loadAccordionPanels = function() {
         ,inputValue: 1
         ,checked: true
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -359,7 +359,7 @@ MODx.loadAccordionPanels = function() {
         ,inputValue: 1
         ,checked: MODx.config.publish_default == '1' ? true : false
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     });
@@ -374,7 +374,7 @@ MODx.loadAccordionPanels = function() {
             ,dateWidth: 80
             ,timeWidth: 80
             ,listeners: {
-                'change': {fn:oc,scope:this}
+                'focus': {fn:oc,scope:this}
             }
             
         });
@@ -390,7 +390,7 @@ MODx.loadAccordionPanels = function() {
             ,dateWidth: 80
             ,timeWidth: 80
             ,listeners: {
-                'change': {fn:oc,scope:this}
+                'focus': {fn:oc,scope:this}
             }
             
         });
@@ -404,7 +404,7 @@ MODx.loadAccordionPanels = function() {
         ,inputValue: 1
         ,checked: MODx.config.search_default == '1' ? true : false
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -416,7 +416,7 @@ MODx.loadAccordionPanels = function() {
         ,inputValue: 1
         ,checked: MODx.config.cache_default == '1' ? true : false
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -428,7 +428,7 @@ MODx.loadAccordionPanels = function() {
         ,inputValue: 1
         ,checked: true
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -440,7 +440,7 @@ MODx.loadAccordionPanels = function() {
         ,width: 100
         ,value: 1
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -451,7 +451,7 @@ MODx.loadAccordionPanels = function() {
         ,id: 'modx-resource-content-dispo'
         ,width: 100
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
         
     },{
@@ -463,7 +463,7 @@ MODx.loadAccordionPanels = function() {
         ,value: 'modDocument'    
         ,width: 100
         ,listeners: {
-            'change': {fn:oc,scope:this}
+            'focus': {fn:oc,scope:this}
         }
     });
     return [{
