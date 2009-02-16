@@ -7,9 +7,9 @@
  */
 $modx->lexicon->load('login');
 
-if (!$modx->user->isAuthenticated()) return $modx->error->failure($modx->lexicon('not_logged_in'));
-
 $loginContext= isset ($_REQUEST['login_context']) ? $_REQUEST['login_context'] : $modx->context->get('key');
+
+if (!$modx->user->isAuthenticated($loginContext)) return $modx->error->failure($modx->lexicon('not_logged_in'));
 
 if ($loginContext == 'mgr') {
     /* invoke OnBeforeManagerLogout event */

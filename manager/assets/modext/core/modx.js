@@ -63,6 +63,7 @@ Ext.extend(MODx,Ext.Component,{
             ,url: MODx.config.connectors_url+'security/logout.php'
             ,params: {
                 action: 'logout'
+                ,login_context: 'mgr'
             }
             ,listeners: {
                 'success': {fn:function() { location.href = './'; },scope:this}
