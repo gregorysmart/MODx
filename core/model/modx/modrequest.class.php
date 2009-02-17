@@ -107,7 +107,7 @@ class modRequest {
     function prepareResponse($options = array()) {
         $this->modx->_beforeProcessing();
         $this->modx->invokeEvent("OnLoadWebDocument");
-        $this->modx->resource->process();
+
         if (!$this->modx->getResponse()) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
         }

@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -46,13 +46,15 @@ class modResponse {
      * @param array $options Various options that can be set.
      */
     function outputContent($options = array()) {
-        $this->modx->resource->_output= $this->modx->resource->_content;
-
-        if (!$contentType= $this->modx->resource->getOne('ContentType')) {
+        if (!($contentType = $this->modx->resource->getOne('ContentType'))) {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, "The requested resource has no valid content type specified.\nRESOURCE: " . print_r($this->modx->resource->toArray(), true));
         }
 
         if (!$contentType->get('binary')) {
+            $this->modx->resource->process();
+
+            $this->modx->resource->_output= $this->modx->resource->_content;
+
             /* collect any uncached element tags in the content and process them */
             $this->modx->getParser();
             $maxIterations= isset ($this->modx->config['parser_max_iterations']) ? intval($this->modx->config['parser_max_iterations']) : 10;
@@ -145,6 +147,8 @@ class modResponse {
                             $name .= ".{$ext}";
                         }
                     }
+                    $header= 'Cache-Control: public';
+                    header($header);
                     $header= 'Content-Disposition: attachment; filename=' . $name;
                     header($header);
                     $header= 'Vary: User-Agent';
@@ -159,9 +163,13 @@ class modResponse {
             "_postProcess"
         ));
 
-        echo $this->modx->resource->_output;
-        while (@ ob_end_flush()) {}
-        exit();
+        if ($contentType->get('binary')) {
+            $this->modx->resource->process();
+        } else {
+            echo $this->modx->resource->_output;
+            while (@ ob_end_flush()) {}
+            exit();
+        }
     }
 
     /**

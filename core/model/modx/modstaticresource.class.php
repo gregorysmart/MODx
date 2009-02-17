@@ -78,22 +78,22 @@ class modStaticResource extends modResource {
      */
     function getFileContent($file) {
         $content= false;
-        if ($handle= @ fopen($file, 'rb')) {
-            $filesize= filesize($file);
-            $memory_limit= @ ini_get('memory_limit');
-            if (!$memory_limit) $memory_limit= '8M';
-            $byte_limit= $this->_bytes($memory_limit) * .5;
-            if (strpos($file, '://') !== false || $filesize > $byte_limit) {
-                $content= '';
-                while (!feof($file)) {
-                    $content .= @ fread($handle, 8192);
-                }
-            } else {
-                $content= @ fread($handle, $filesize);
+        $memory_limit= ini_get('memory_limit');
+        if (!$memory_limit) $memory_limit= '8M';
+        $byte_limit= $this->_bytes($memory_limit) * .5;
+        $filesize= filesize($file);
+        if ($this->getOne('ContentType')) {
+            if ($this->ContentType->get('binary') || $filesize > $byte_limit) {
+                while (ob_end_clean()) {}
+                readfile($file);
+                die();
             }
-            @ fclose($handle);
-        } else {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$file}");
+            elseif ($handle= fopen($file, 'rb')) {
+                $content= fread($handle, $filesize);
+                fclose($handle);
+            } else {
+                $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not open file for reading: {$file}");
+            }
         }
         return $content;
     }
