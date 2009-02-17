@@ -4,7 +4,8 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
-- Refactored connectors to execute in the context from which they are called, rather than their own context.
+- modOutputFilter: Refactored date modifier to return '' if the timestamp encountered == 0 or -1.
+- modOutputFilter: Added strtotime modifier.- Refactored connectors to execute in the context from which they are called, rather than their own context.
 - Updated xPDO to revision 304 for new xPDOFileVehicle feature to respect XPDO_TRANSPORT_RESOLVE_FILES options.
 - [#MODX-562], [#XPDO-24], [#XPDO-25], and [#XPDO-26] Updated xPDO to revision 302 to resolve various issues regarding transport packages and model generation.
 - [#XPDO-23] and [#MODX-604] Updated xPDO to revision 298 to resolve nesting error when logging messages during installation with improper cache directory permissions.

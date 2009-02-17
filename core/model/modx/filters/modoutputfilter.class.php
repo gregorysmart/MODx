@@ -60,8 +60,8 @@ class modOutputFilter {
                 $output = trim($output);
 
                 switch ($m_cmd) {
-                    // conditional operators
-                    // @todo these conditionals should be removed because there are cleaner ways to do this now
+                    /* conditional operators */
+                    /* @todo these conditionals should be removed because there are cleaner ways to do this now */
                     case "input" :
                     case "if" :
                         $output= $m_val;
@@ -97,8 +97,8 @@ class modOutputFilter {
                         break;
                     case "isinrole" :
                     case "memberof" :
-                    case "mo" : // Is Member Of  (same as inrole but this one can be stringed as a conditional)
-                        //@todo: fix or possibly remove
+                    case "mo" : /* Is Member Of  (same as inrole but this one can be stringed as a conditional) */
+                        /* @todo: fix or possibly remove */
                         if ($output == "&_PHX_INTERNAL_&")
                             $output= $this->user["id"];
                         $grps= (strlen($m_val) > 0) ? explode(",", $m_val) : array ();
@@ -139,24 +139,24 @@ class modOutputFilter {
                         }
                         $output= $map[$output];
                         break;
-                        ##### End of Conditional Modifiers
+                        /* #####  End of Conditional Modifiers */
 
-                    #####  String Modifiers
-                    case "cat": // appends the options value (if not empty) to the input value
+                    /* #####  String Modifiers */
+                    case "cat": /* appends the options value (if not empty) to the input value */
                         if (!empty($m_val))
                             $output = $output . $m_val;
-                    case "lcase" : // See PHP's strtolower - http://www.php.net/manual/en/function.strtolower.php
+                    case "lcase" : /* See PHP's strtolower - http://www.php.net/manual/en/function.strtolower.php */
                         $output= strtolower($output);
                         break;
-                    case "ucase" : // See PHP's strtoupper - http://www.php.net/manual/en/function.strtoupper.php
+                    case "ucase" : /* See PHP's strtoupper - http://www.php.net/manual/en/function.strtoupper.php */
                         $output= strtoupper($output);
                         break;
-                    case "ucfirst" : // See PHP's ucfirst - http://www.php.net/manual/en/function.ucfirst.php
+                    case "ucfirst" : /* See PHP's ucfirst - http://www.php.net/manual/en/function.ucfirst.php */
                         if (empty($m_val))
                             $m_val = false;
                         $output= ucfirst($output, $m_val);
                         break;
-                    case "htmlent" : // See PHP's htmlentities - http://www.php.net/manual/en/function.htmlentities.php
+                    case "htmlent" : /* See PHP's htmlentities - http://www.php.net/manual/en/function.htmlentities.php */
                         $output= htmlentities($output, ENT_QUOTES, $this->modx->config['modx_charset']);
                         break;
                     case "esc" :
@@ -164,20 +164,20 @@ class modOutputFilter {
                         $output= preg_replace("/&amp;(#[0-9]+|[a-z]+);/i", "&$1;", htmlspecialchars($output));
                         $output= str_replace(array ("[", "]", "`"), array ("&#91;", "&#93;", "&#96;"), $output);
                         break;
-                    case "strip" : // Replaces all linebreaks, tabs and multiple spaces with just one space
+                    case "strip" : /* Replaces all linebreaks, tabs and multiple spaces with just one space */
                         $output= preg_replace("~([\n|\r|\t|\s]+)~", " ", $output);
                         break;
-                    case "notags" : // See PHP's strip_tags - http://www.php.net/manual/en/function.strip_tags.php
+                    case "notags" : /* See PHP's strip_tags - http://www.php.net/manual/en/function.strip_tags.php */
                         $output= strip_tags($output);
                         break;
-                    case "length" : // See PHP's strlen - http://www.php.net/manual/en/function.strlen.php
+                    case "length" : /* See PHP's strlen - http://www.php.net/manual/en/function.strlen.php */
                     case "len" :
                         $output= strlen($output);
                         break;
-                    case "reverse" : // See PHP's strrev - http://www.php.net/manual/en/function.strrev.php
+                    case "reverse" : /* See PHP's strrev - http://www.php.net/manual/en/function.strrev.php */
                         $output= strrev($output);
                         break;
-                    case "wordwrap" : // See PHP's wordwrap - http://www.php.net/manual/en/function.wordwrap.php
+                    case "wordwrap" : /* See PHP's wordwrap - http://www.php.net/manual/en/function.wordwrap.php */
                         $wrapat= intval($m_val);
                         if ($wrapat) {
                             $output= wordwrap($output, $wrapat, " ", 1);
@@ -185,14 +185,14 @@ class modOutputFilter {
                             $output= wordwrap($output, 70, " ", 1);
                         }
                         break;
-                    case "limit" : // default: 100
+                    case "limit" : /* default: 100 */
                         $limit= intval($m_val) ? intval($m_val) : 100;
                         $output= substr($output, 0, $limit);
                         break;
 
-                    #####  Special functions
+                    /* #####  Special functions */
 
-                    case "tag": // Displays the raw element tag without :tag
+                    case "tag": /* Displays the raw element tag without :tag */
                         $tag = $element->_tag;
                         $tag = htmlentities($tag, ENT_QUOTES, $this->modx->config['modx_charset']);
                         $tag = str_replace(array ("[", "]", "`"), array ("&#91;", "&#93;", "&#96;"), $tag);
@@ -200,13 +200,13 @@ class modOutputFilter {
                         $output = $tag;
                         break;
 
-                    case "math": // Returns the result of an advanced calculation (expensive)
+                    case "math": /* Returns the result of an advanced calculation (expensive) */
                     	$filter= preg_replace("~([a-zA-Z\n\r\t\s])~", "", $m_val);
                         $filter= str_replace('?', $output, $filter);
                         $output= eval("return " . $filter . ";");
                         break;
 
-                    case "add": // Returns input incremented by option (default: +1)
+                    case "add": /* Returns input incremented by option (default: +1) */
                     case "increment":
                     case "incr":
                     	if (empty($m_val))
@@ -215,70 +215,83 @@ class modOutputFilter {
                     	break;
 
                     case "substract":
-                    case "decrement": // Returns input decremented by option (default: -1)
+                    case "decrement": /* Returns input decremented by option (default: -1) */
                     case "decr":
                         if (empty($m_val))
                             $m_val = 1;
                         $output = intval($output) - intval($m_val);
                         break;
 
-                    case "multiply": // Returns input multiplied by option (default: *2)
+                    case "multiply": /* Returns input multiplied by option (default: *2) */
                     case "mpy":
                         if (empty($m_val))
                             $m_val = 1;
                         $output = intval($output) * intval($m_val);
                         break;
 
-                    case "divide": // Returns input divided by option (default: /2)
+                    case "divide": /* Returns input divided by option (default: /2) */
                     case "div":
                         if (empty($m_val))
                             $m_val = 2;
                         $output = intval($output) / intval($m_val);
                         break;
 
-                    case "modulus": // Returns the option modulus on input (default: %2, returns 0 or 1)
+                    case "modulus": /* Returns the option modulus on input (default: %2, returns 0 or 1) */
                     case "mod":
                         if (empty($m_val))
                             $m_val = 2;
                         $output = intval($output) % intval($m_val);
                         break;
 
-                    case "default" : // Returns the input value if empty
+                    case "default" : /* Returns the input value if empty */
                     case "ifempty" :
                         if (empty($output))
                             $output= $m_val;
                         break;
 
-                    case "nl2br" : // See PHP's nl2br - http://www.php.net/manual/en/function.nl2br.php
+                    case "nl2br" : /* See PHP's nl2br - http://www.php.net/manual/en/function.nl2br.php */
                         $output= nl2br($output);
                         break;
 
-                    case "date": // See PHP's strftime - http://www.php.net/manual/en/function.strftime.php
+                    case "date": /* See PHP's strftime - http://www.php.net/manual/en/function.strftime.php */
                         if (empty($m_val))
-                            $m_val = "%A, %d %B %Y %H:%M:%S"; // @todo this should be modx default date/time format? Lexicon?
-                        $output= strftime($m_val, 0 + $output);
+                            $m_val = "%A, %d %B %Y %H:%M:%S"; /* @todo this should be modx default date/time format? Lexicon? */
+                        $value = 0 + $output;
+                        if ($value != 0 && $value != -1) {
+                            $output= strftime($m_val, 0 + $output);
+                        } else {
+                            $output= '';
+                        }
                         break;
 
-                    case "md5" : // See PHP's md5 - http://www.php.net/manual/en/function.md5.php
+                    case "strtotime": /* See PHP's strtotime() function - http://www.php.net/strtotime */
+                        if (!empty($output)) {
+                            $output = strtotime($output);
+                        } else {
+                            $output = '';
+                        }
+                        break;
+
+                    case "md5" : /* See PHP's md5 - http://www.php.net/manual/en/function.md5.php */
                         $output= md5($output);
                         break;
 
-                    case "userinfo" : // Returns the requested user data (input: userid)
+                    case "userinfo" : /* Returns the requested user data (input: userid) */
                         $key = (!empty($m_val)) ? $m_val : 'username';
                     	$user = $this->modx->getUserInfo($output);
                         $output = $user ? $user[$key] : null;
                         break;
 
-                    // Default, custom modifier (run snippet with modifier name)
+                    /* Default, custom modifier (run snippet with modifier name) */
                     default:
-                        //@todo Possibility to only look for snippet names prefixed with 'filter:'
-                        //@todo Maybe pass whole element by reference instead of token/tag/name?
+                        /*@todo Possibility to only look for snippet names prefixed with 'filter:' */
+                        /*@todo Maybe pass whole element by reference instead of token/tag/name? */
                         $params = array (
                             'input' => $output,
                             'options' => $m_val,
-                            'token' => $element->_token, // type of parent element
-                            'name' => $element->get('name'), // name of the parent element
-                            'tag' => $element->getTag() // complete parent tag
+                            'token' => $element->_token, /* type of parent element */
+                            'name' => $element->get('name'), /* name of the parent element */
+                            'tag' => $element->getTag() /* complete parent tag */
                         );
                         $this->log('This modifier is custom running as snippet.');
                         $tmp = $this->modx->runSnippet($m_cmd, $params);
