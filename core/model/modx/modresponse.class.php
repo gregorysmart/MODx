@@ -78,7 +78,7 @@ class modResponse {
             $this->modx->_beforeRender();
 
             /* invoke OnWebPagePrerender event */
-            if (!empty($options['noEvent'])) {
+            if (!isset($options['noEvent']) || empty($options['noEvent'])) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
 
@@ -106,7 +106,7 @@ class modResponse {
             $this->modx->_beforeRender();
 
             /* invoke OnWebPagePrerender event */
-            if (!empty($options['noEvent'])) {
+            if (!isset($options['noEvent']) || empty($options['noEvent'])) {
                 $this->modx->invokeEvent("OnWebPagePrerender");
             }
         }
