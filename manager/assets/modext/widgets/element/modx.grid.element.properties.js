@@ -318,7 +318,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
             });
         }
         
-        if (!r.overridden && def) {
+        if (r.overridden != 1 && def) {
             m.push({
                 text: _('property_remove')
                 ,scope: this
