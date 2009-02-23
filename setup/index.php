@@ -64,13 +64,13 @@ define('MODX_INSTALL_PATH', $installPath);
 if (!include(MODX_SETUP_PATH . 'includes/config.core.php')) {
     die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>Make sure you have uploaded all of the setup/ files; your setup/includes/config.core.php file is missing.</p></body></html>');
 }
-if ((defined('XPDO_MODE') && XPDO_MODE == XPDO_MODE_EMULATED) || (version_compare(MODX_SETUP_PHP_VERSION, '5.1') < 0) && !extension_loaded('mysql')) {
+if ((!extension_loaded('mysql') && !function_exists('mysql_connect')) && ((defined('XPDO_MODE') && XPDO_MODE == 2) || (!defined('XPDO_MODE') && version_compare(MODX_SETUP_PHP_VERSION, '5.1') < 0))) {
     die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the mysql extension when using PHP without native PDO and it does not appear to be loaded.</p></body></html>');
 }
-if ((defined('XPDO_MODE') && XPDO_MODE == XPDO_MODE_NATIVE) || (version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0) && !extension_loaded('pdo')) {
+if (!extension_loaded('pdo') && ((defined('XPDO_MODE') && XPDO_MODE == 1) || (!defined('XPDO_MODE') && version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0))) {
     die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the PDO extension when native PDO is being used and it does not appear to be loaded.</p></body></html>');
 }
-if ((defined('XPDO_MODE') && XPDO_MODE == XPDO_MODE_NATIVE) || (version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0) && extension_loaded('pdo') && !extension_loaded('pdo_mysql')) {
+if (!extension_loaded('pdo_mysql') && ((defined('XPDO_MODE') && XPDO_MODE == 1) || (!defined('XPDO_MODE') && version_compare(MODX_SETUP_PHP_VERSION, '5.1') >= 0))) {
     die ('<html><head><title></title></head><body><h1>FATAL ERROR: MODx Setup cannot continue.</h1><p>MODx requires the pdo_mysql driver when native PDO is being used and it does not appear to be loaded.</p></body></html>');
 }
 if (!include(MODX_SETUP_PATH . 'includes/modinstall.class.php')) {
