@@ -30,9 +30,11 @@ MODx.panel.TV = function(config) {
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,bodyStyle: 'padding: 1.5em;'
                     ,layout: 'form'
+                    ,id: 'modx-tv-form'
                     ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('tv_msg')+'</p>'
+                        ,id: 'modx-tv-msg'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
@@ -101,7 +103,8 @@ MODx.panel.TV = function(config) {
                     title: _('rendering_options')
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,bodyStyle: 'padding: 1.5em;'
-                    ,layout: 'form'                    
+                    ,layout: 'form'
+                    ,id: 'modx-tv-render-options'
                     ,labelWidth: 150
                     ,items: [{
                         xtype: 'modx-combo-tv-input-type'
@@ -151,8 +154,10 @@ MODx.panel.TV = function(config) {
                     ,elementType: 'modTemplateVar'
                 },{ 
                     title: _('tv_tmpl_access')
+                    ,id: 'modx-tv-template-form'
                     ,items: [{
                         html: '<p>'+_('tv_tmpl_access_msg')+'</p>'
+                        ,id: 'modx-tv-template-msg'
                     },{
                         xtype: 'modx-grid-tv-template'
                         ,tv: config.tv
@@ -164,8 +169,10 @@ MODx.panel.TV = function(config) {
                     }]
                 },{
                     title: _('access_permissions')
+                    ,id: 'modx-tv-access-form'
                     ,items: [{
                         html: '<p>'+_('tv_access_msg')+'</p>'
+                        ,id: 'modx-tv-access-msg'
                     },{
                         xtype: 'modx-grid-tv-security'
                         ,tv: config.tv

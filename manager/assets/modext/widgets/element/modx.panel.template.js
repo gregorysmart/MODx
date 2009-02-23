@@ -29,9 +29,11 @@ MODx.panel.Template = function(config) {
                     ,bodyStyle: 'padding: 1.5em;'
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,layout: 'form'
+                    ,id: 'modx-template-form'
                     ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('template_msg')+'</p>'
+                        ,id: 'modx-template-msg'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'

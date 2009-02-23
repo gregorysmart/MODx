@@ -28,9 +28,11 @@ MODx.panel.Snippet = function(config) {
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,bodyStyle: 'padding: 1.5em;'
                     ,layout: 'form'
+                    ,id: 'modx-snippet-form'
                     ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('snippet_msg')+'</p>'
+                        ,id: 'modx-snippet-msg'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'

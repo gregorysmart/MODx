@@ -28,9 +28,11 @@ MODx.panel.Chunk = function(config) {
                     ,bodyStyle: 'padding: 1.5em;'
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,layout: 'form'
+                    ,id: 'modx-chunk-form'
                     ,labelWidth: 150
                     ,items: [{
                         html: '<p>'+_('chunk_msg')+'</p>'
+                        ,id: 'modx-chunk-msg'
                         ,border: false
                     },{
                         xtype: 'hidden'

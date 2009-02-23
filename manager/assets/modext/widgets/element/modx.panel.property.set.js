@@ -15,8 +15,10 @@ MODx.panel.PropertySet = function(config) {
         },{
             layout: 'form'
             ,bodyStyle: 'padding: 1.5em;'
+            ,id: 'modx-property-set-form'
             ,items: [{
                 html: '<p>'+_('propertysets_desc')+'</p>'
+                ,id: 'modx-property-set-msg'
                 ,border: false
             },{
                 layout: 'column'

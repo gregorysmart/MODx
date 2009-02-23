@@ -30,6 +30,12 @@ MODx.Window = function(config) {
 			,handler: this.submit
 		}]
 		,record: {}
+       ,keys: [{
+            key: Ext.EventObject.ENTER,
+            fn: this.submit
+            ,scope: this
+        }]
+
 	});
 	MODx.Window.superclass.constructor.call(this,config);
 	this.options = config;

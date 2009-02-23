@@ -28,10 +28,12 @@ MODx.panel.Plugin = function(config) {
                     title: _('plugin_title')
                     ,bodyStyle: 'padding: 1.5em;'
                     ,layout: 'form'
+                    ,id: 'modx-plugin-form'
                     ,labelWidth: 150
                     ,defaults: { border: false ,msgTarget: 'side' }
                     ,items: [{
                         html: '<p>'+_('plugin_msg')+'</p>'
+                        ,id: 'modx-plugin-msg'
                     },{
                         xtype: 'hidden'
                         ,name: 'id'
@@ -99,11 +101,10 @@ MODx.panel.Plugin = function(config) {
                 },{
                     title: _('system_events')
                     ,bodyStyle: 'padding: 1.5em;'
+                    ,id: 'modx-plugin-sysevents'
                     ,items: [{
-                        html: '<h2>'+_('system_events')+'</h2>'
-                        ,border: false
-                    },{
                         html: '<p>'+_('plugin_event_msg')+'</p>'
+                        ,id: 'modx-plugin-sysevents-msg'
                         ,border: false
                     },{
                         xtype: 'modx-grid-plugin-event'
