@@ -127,7 +127,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
             return true;
         }
         var p = {
-            action: 'update'
+            action: 'updatefromelement'
             ,id: cb.getValue()
             ,data: d
         };

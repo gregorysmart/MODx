@@ -69,6 +69,14 @@ $xpdo_meta_map['modCategory']= array (
       'cardinality' => 'many',
       'owner' => 'local',
     ),
+    'modPropertySet' => 
+    array (
+      'class' => 'modPropertySet',
+      'local' => 'id',
+      'foreign' => 'category',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
   ),
   'validation' => 
   array (

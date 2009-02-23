@@ -38,7 +38,10 @@ switch ($g[0]) {
 	case 'type': /* if in the element, but not in a category */
         $elementType = ucfirst($g[1]);
 		/* 1: type - eg. category_templates */
-		$categories = $modx->getCollection('modCategory');
+        $c = $modx->newQuery('modCategory');
+        $c->sortby('category','ASC');
+		$categories = $modx->getCollection('modCategory',$c);
+
 		foreach ($categories as $category) {
 		    $els = $category->getMany($ar_typemap[$g[1]]);
             if (count($els) <= 0) continue;
@@ -79,7 +82,7 @@ switch ($g[0]) {
 
         $c = $modx->newQuery($ar_typemap[$g[1]]);
         $c->where(array('category' => 0));
-        $c->sortby('id','ASC');
+        $c->sortby('name','ASC');
 		$elements = $modx->getCollection($ar_typemap[$g[1]],$c);
 		foreach ($elements as $element) {
 			$name = $g[1] == 'template' ? $element->get('templatename') : $element->get('name');
@@ -319,7 +322,7 @@ switch ($g[0]) {
 
         $c = $modx->newQuery($ar_typemap[$g[0]]);
         $c->where(array('category' => $cat_id));
-        $c->sortby('id','ASC');
+        $c->sortby('name','ASC');
 		$elements = $modx->getCollection($ar_typemap[$g[0]],$c);
         $elementType = ucfirst($g[0]);
 		foreach ($elements as $element) {

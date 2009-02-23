@@ -156,6 +156,27 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
         }
         this.winCreateSet.show(e.target);
     }
+    
+    
+    ,updateSet: function(btn,e) {
+        var id = this.cm.activeNode.id.split('_');
+        var r = this.cm.activeNode.attributes.data;
+        r.id = id[1];
+        if (!this.winUpdateSet) {
+            this.winUpdateSet = MODx.load({
+                xtype: 'modx-window-property-set-update'
+                ,record: r
+                ,listeners: {
+                    'success':{fn:function() { 
+                        this.refresh();
+                        Ext.getCmp('modx-combo-property-set').store.reload();
+                    },scope:this}
+                }
+            });
+        }
+        this.winUpdateSet.setValues(r);
+        this.winUpdateSet.show(e.target);
+    }
     ,removeSet: function(btn,e) {
         var id = this.cm.activeNode.id.split('_');
         id = id[1];
@@ -330,12 +351,21 @@ MODx.window.CreatePropertySet = function(config) {
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
+            ,id: 'modx-cpropset-name'
             ,width: 200
             ,allowBlank: false
+        },{
+            xtype: 'modx-combo-category'
+            ,fieldLabel: _('category')
+            ,name: 'category'
+            ,id: 'modx-cpropset-category'
+            ,width: 200
+            ,allowBlank: true
         },{
             xtype: 'textarea'
             ,fieldLabel: _('description')
             ,name: 'description'
+            ,id: 'modx-cpropset-description'
             ,width: 200
             ,grow: true
         }]
@@ -344,3 +374,51 @@ MODx.window.CreatePropertySet = function(config) {
 };
 Ext.extend(MODx.window.CreatePropertySet,MODx.Window);
 Ext.reg('modx-window-property-set-create',MODx.window.CreatePropertySet);
+
+
+/**
+ * @class MODx.window.UpdatePropertySet
+ * @extends MODx.Window
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-window-property-set-update
+ */
+MODx.window.UpdatePropertySet = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('propertyset_update')
+        ,url: MODx.config.connectors_url+'element/propertyset.php'
+        ,baseParams: {
+            action: 'update'
+        }
+        ,width: 550
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'id'
+            ,id: 'modx-upropset-id'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,id: 'modx-upropset-name'
+            ,width: 200
+            ,allowBlank: false
+        },{
+            xtype: 'modx-combo-category'
+            ,fieldLabel: _('category')
+            ,name: 'category'
+            ,id: 'modx-upropset-category'
+            ,width: 200
+            ,allowBlank: true
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,id: 'modx-upropset-description'
+            ,width: 200
+            ,grow: true
+        }]
+    });
+    MODx.window.UpdatePropertySet.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.UpdatePropertySet,MODx.Window);
+Ext.reg('modx-window-property-set-update',MODx.window.UpdatePropertySet);

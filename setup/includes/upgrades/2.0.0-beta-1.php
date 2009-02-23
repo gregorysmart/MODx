@@ -39,6 +39,20 @@ $roletopic = $this->install->xpdo->getObject('modLexiconTopic',array(
 if ($roletopic != null) { $roletopic->remove(); }
 unset($roletopic);
 
+/* add category field to property sets */
+$class = 'modPropertySet';
+$table = $this->install->xpdo->getTableName($class);
+$sql = "ALTER TABLE `{$table}` ADD `category` INT( 10 ) UNSIGNED NOT NULL AFTER `name`;";
+$description = 'Added new column `category` to '.$table.'.';
+$this->processResults($class, $description, $sql);
+
+/* add index to category field for property sets */
+$sql = "ALTER TABLE `{$table}` ADD INDEX `category` ( `category` )";
+$description = 'Added index for field `category` to '.$table.'.';
+$this->processResults($class, $description, $sql);
+unset($class,$description,$sql,$table);
+
+
 /* add description field to menus */
 $class = 'modMenu';
 $table = $this->install->xpdo->getTableName($class);

@@ -1,56 +1,39 @@
 <?php
 /**
- * Saves a property set
+ * Updates a  property set
  *
  * @package modx
  * @subpackage processors.element.propertyset
  */
-$modx->lexicon->load('propertyset','element');
+$modx->lexicon->load('propertyset','category');
 
-/* unencode data */
-$data = $modx->fromJSON($_POST['data']);
+/* get property set */
+if (!isset($_POST['id'])) return $modx->error->failure($modx->lexicon('propertyset_err_ns'));
+$set = $modx->getObject('modPropertySet',$_POST['id']);
+if ($set == null) return $modx->error->failure($modx->lexicon('propertyset_err_nf'));
 
-/* get element, if necessary */
-if (isset($_POST['elementId']) && isset($_POST['elementType'])) {
-    $element = $modx->getObject($_POST['elementType'],$_POST['elementId']);
-    $default = $element->getProperties();
+/* make sure set with that name doesn't already exist */
+$ae = $modx->getCount('modPropertySet',array(
+    'name' => $_POST['name'],
+    'id:!=' => $_POST['id'],
+));
+if ($ae > 0) return $modx->error->failure($modx->lexicon('propertyset_err_ae'));
+
+/* set category if specified */
+if (isset($_POST['category'])) {
+    $category = $modx->getObject('modCategory',$_POST['category']);
+    if ($category == null) return $modx->error->failure($modx->lexicon('category_err_nf'));
+
+    $set->set('category',$_POST['category']);
 }
 
-/* if no id specified */
-if (!isset($_REQUEST['id']) || $_REQUEST['id'] == '') {
-    return $modx->error->failure($modx->lexicon('propertyset_err_ns'));
-}
-/* if grabbing a modPropertySet */
-if ($_REQUEST['id'] != 0) {
-    $set = $modx->getObject('modPropertySet',$_REQUEST['id']);
-    if ($set == null) {
-        return $modx->error->failure($modx->lexicon('propertyset_err_nfs',array(
-            'id' => $_REQUEST['id'],
-        )));
-    }
+/* create property set */
+$set->set('name',$_POST['name']);
+$set->set('description',$_POST['description']);
 
-    /* if editing an element, unset properties from the set that are the
-     * same as the default properties, to save db space
-     */
-    if (isset($element)) {
-        foreach ($data as $k => $prop) {
-            if (array_key_exists($prop['name'],$default)) {
-                if ($prop['value'] == $default[$prop['name']]) {
-                    unset($data[$k]);
-                }
-            }
-        }
-    }
-    $set->setProperties($data);
-    $set->save();
-
-/* if setting default properties for an element */
-} else {
-    if (!isset($element)) return $modx->error->failure($modx->lexicon('element_err_ns'));
-    if ($element == null) return $modx->error->failure($modx->lexicon('element_err_nf'));
-
-    $element->setProperties($data);
-    $element->save();
+/* save set */
+if ($set->save() === false) {
+    return $modx->error->failure($modx->lexicon('propertyset_err_create'));
 }
 
 return $modx->error->success();

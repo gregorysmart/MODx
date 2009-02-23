@@ -9,6 +9,7 @@ $xpdo_meta_map['modPropertySet']= array (
   'fields' => 
   array (
     'name' => '',
+    'category' => 0,
     'description' => '',
     'properties' => NULL,
   ),
@@ -22,6 +23,15 @@ $xpdo_meta_map['modPropertySet']= array (
       'null' => false,
       'default' => '',
       'index' => 'unique',
+    ),
+    'category' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'null' => false,
+      'default' => 0,
+      'index' => 'fk',
     ),
     'description' => 
     array (
@@ -38,6 +48,18 @@ $xpdo_meta_map['modPropertySet']= array (
       'null' => true,
     ),
   ),
+  'aggregates' => 
+  array (
+    'modCategory' => 
+    array (
+      'class' => 'modCategory',
+      'key' => 'id',
+      'local' => 'category',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
+  ),
   'composites' => 
   array (
     'Elements' => 
@@ -50,5 +72,6 @@ $xpdo_meta_map['modPropertySet']= array (
     ),
   ),
 );
+if (XPDO_PHP4_MODE) $xpdo_meta_map['modPropertySet']['aggregates']= array_merge($xpdo_meta_map['modPropertySet']['aggregates'], array_change_key_case($xpdo_meta_map['modPropertySet']['aggregates']));
 if (XPDO_PHP4_MODE) $xpdo_meta_map['modPropertySet']['composites']= array_merge($xpdo_meta_map['modPropertySet']['composites'], array_change_key_case($xpdo_meta_map['modPropertySet']['composites']));
 $xpdo_meta_map['modpropertyset']= & $xpdo_meta_map['modPropertySet'];

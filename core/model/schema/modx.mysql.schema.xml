@@ -97,6 +97,7 @@
         <aggregate alias="modPlugin" class="modPlugin" key="id" local="id" foreign="category" cardinality="many" owner="local" />
         <aggregate alias="modTemplate" class="modTemplate" key="id" local="id" foreign="category" cardinality="many" owner="local" />
         <aggregate alias="modTemplateVar" class="modTemplateVar" key="id" local="id" foreign="category" cardinality="many" owner="local" />
+        <aggregate alias="modPropertySet" class="modPropertySet" local="id" foreign="category" cardinality="many" owner="local" />
         <validation>
             <rule field="category" name="preventBlank" type="xPDOValidationRule" rule="xPDOMinLengthValidationRule" value="1" message="category_err_ns_name" />
         </validation>
@@ -266,9 +267,11 @@
     </object>
     <object class="modPropertySet" table="property_set" extends="xPDOSimpleObject">
         <field key="name" dbtype="varchar" precision="50" phptype="string" null="false" default="" index="unique" />
+        <field key="category" dbtype="int" precision="10" phptype="integer" null="false" default="0" index="fk" />
         <field key="description" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="properties" dbtype="text" phptype="array" null="true" />
-        <composite alias="Elements" class="modElementPropertySet" local="id" foreign="property_set" cardinality="many" owner="local" />
+        <aggregate alias="modCategory" class="modCategory" key="id" local="category" foreign="id" cardinality="one" owner="foreign" />
+        <composite alias="Elements" class="modElementPropertySet" local="id" foreign="property_set" cardinality="many" owner="local" />        
     </object>
     <object class="modResource" table="site_content" extends="modAccessibleSimpleObject">
         <field key="type" dbtype="varchar" precision="20" phptype="string" null="false" default="document" />
