@@ -10,7 +10,7 @@ Ext.onReady(function() {
     MODx.load({
 	{/literal}
 	    xtype: 'modx-page-resource-create'
-	    ,template: '{$_config.default_template}'
+	    ,template: '{if $parent}{$parent->get('template')}{else}{$_config.default_template}{/if}'
 	    ,class_key: '{$smarty.request.class_key|default:"modDocument"}'
         ,context_key: '{$smarty.request.context_key|default:"web"}'
 	    ,which_editor: '{$which_editor}'

@@ -17,6 +17,14 @@ if (file_exists($delegateView)) {
 
 $resource = $modx->newObject($resourceClass);
 
+/* handle template inheritance */
+if (isset($_REQUEST['parent'])) {
+    $parent = $modx->getObject('modResource',$_REQUEST['parent']);
+    if ($parent != null) {
+        $modx->smarty->assign('parent',$parent);
+    }
+}
+
 /* handle switch template */
 if (isset ($_REQUEST['newtemplate'])) {
     foreach ($_POST as $key => $val) {
