@@ -16,7 +16,7 @@ MODx.panel.SymLink = function(config) {
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
             html: '<h2>'+_('symlink_new')+'</h2>'
-            ,id: 'modx-resource-header'
+            ,id: 'modx-symlink-header'
             ,cls: 'modx-page-header'
             ,border: false
         },{
@@ -30,11 +30,13 @@ MODx.panel.SymLink = function(config) {
                         xtype: 'hidden'
                         ,name: 'id'
                         ,value: config.resource
+                        ,id: 'modx-symlink-id'
                     },{
                         xtype: 'textfield'
                         ,fieldLabel: _('resource_pagetitle')
                         ,description: _('resource_pagetitle_help')
                         ,name: 'pagetitle'
+                        ,id: 'modx-symlink-pagetitle'
                         ,width: 300
                         ,maxLength: 255
                         ,allowBlank: false
@@ -44,6 +46,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_longtitle')
                         ,description: _('resource_longtitle_help')
                         ,name: 'longtitle'
+                        ,id: 'modx-symlink-longtitle'
                         ,width: 300
                         ,maxLength: 255
                         
@@ -52,6 +55,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_description')
                         ,description: _('resource_description_help')
                         ,name: 'description'
+                        ,id: 'modx-symlink-description'
                         ,width: 300
                         ,maxLength: 255
                         
@@ -60,6 +64,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_alias')
                         ,description: _('resource_alias_help')
                         ,name: 'alias'
+                        ,id: 'modx-symlink-alias'
                         ,width: 300
                         ,maxLength: 100
                         
@@ -68,6 +73,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_link_attributes')
                         ,description: _('resource_link_attributes_help')
                         ,name: 'link_attributes'
+                        ,id: 'modx-symlink-link-attributes'
                         ,width: 300
                         ,maxLength: 255
                         
@@ -76,6 +82,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('symlink')
                         ,description: _('symlink_help')
                         ,name: 'content'
+                        ,id: 'modx-symlink-content'
                         ,width: 300
                         ,maxLength: 255
                         ,value: 'http://'
@@ -85,6 +92,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_summary')
                         ,description: _('resource_summary_help')
                         ,name: 'introtext'
+                        ,id: 'modx-symlink-introtext'
                         ,width: 300
                         ,grow: true
                         
@@ -122,6 +130,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_menutitle')
                         ,description: _('resource_menutitle_help')
                         ,name: 'menutitle'
+                        ,id: 'modx-symlink-menutitle'
                         ,width: 300
                         ,maxLength: 255
                         
@@ -130,6 +139,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_hide_from_menus')
                         ,description: _('resource_hide_from_menus_help')
                         ,name: 'hidemenu'
+                        ,id: 'modx-symlink-hidemenu'
                         ,inputValue: 1
                         ,checked: false
                         
@@ -144,6 +154,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_folder')
                         ,description: _('resource_folder_help')
                         ,name: 'isfolder'
+                        ,id: 'modx-symlink-isfolder'
                         ,inputValue: 1
                         
                     },{
@@ -151,6 +162,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_published')
                         ,description: _('resource_published_help')
                         ,name: 'published'
+                        ,id: 'modx-symlink-published'
                         ,inputValue: 1
                         ,checked: MODx.config.publish_default == '1' ? true : false
                         
@@ -159,6 +171,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_publishdate')
                         ,description: _('resource_publishdate_help')
                         ,name: 'pub_date'
+                        ,id: 'modx-symlink-pub-date'
                         ,format: 'd-m-Y H:i:s'
                         ,allowBlank: true
                         ,width: 200
@@ -169,6 +182,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_unpublishdate')
                         ,description: _('resource_unpublishdate_help')
                         ,name: 'unpub_date'
+                        ,id: 'modx-symlink-unpub-date'
                         ,format: 'd-m-Y H:i:s'
                         ,allowBlank: true
                         ,width: 200
@@ -179,6 +193,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_searchable')
                         ,description: _('resource_searchable_help')
                         ,name: 'searchable'
+                        ,id: 'modx-symlink-searchable'
                         ,inputValue: 1
                         ,checked: MODx.config.search_default == '1' ? true : false
                         
@@ -187,6 +202,7 @@ MODx.panel.SymLink = function(config) {
                         ,fieldLabel: _('resource_cacheable')
                         ,description: _('resource_cacheable_help')
                         ,name: 'syncsite'
+                        ,id: 'modx-symlink-syncsite'
                         ,inputValue: 1
                         ,checked: true
                         
@@ -195,11 +211,6 @@ MODx.panel.SymLink = function(config) {
                         ,name: 'class_key'
                         ,id: 'modx-resource-class-key'
                         ,value: config.class_key || 'modDocument'
-                        
-                    },{
-                        xtype: 'hidden'
-                        ,name: 'type'
-                        ,value: 'document'
                         
                     },{
                         xtype: 'hidden'
