@@ -1,12 +1,7 @@
 <?php
-/**
- * @package modx
- * @subpackage xmlrpc
- */
-
 // by Edd Dumbill (C) 1999-2002
 // <edd@usefulinc.com>
-// $Id: xmlrpcs.inc,v 1.66 2006/09/17 21:25:06 ggiunta Exp $
+// $Id: xmlrpcs.inc,v 1.69 2007/09/20 20:14:25 ggiunta Exp $
 
 // Copyright (c) 1999,2000,2002 Edd Dumbill.
 // All rights reserved.
@@ -409,7 +404,8 @@
 				// NB: this code will NOT work on php < 4.0.2: only 2 params were used for error handlers
 				if(is_array($GLOBALS['_xmlrpcs_prev_ehandler']))
 				{
-					$GLOBALS['_xmlrpcs_prev_ehandler'][0]->$GLOBALS['_xmlrpcs_prev_ehandler'][1]($errcode, $errstring, $filename, $lineno, $context);
+					// the following works both with static class methods and plain object methods as error handler
+					call_user_func_array($GLOBALS['_xmlrpcs_prev_ehandler'], array($errcode, $errstring, $filename, $lineno, $context));
 				}
 				else
 				{
@@ -568,7 +564,16 @@
 		{
 			if ($data === null)
 			{
-				$data = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
+				// workaround for a known bug in php ver. 5.2.2 that broke $HTTP_RAW_POST_DATA
+				$ver = phpversion();
+				if ($ver[0] >= 5)
+				{
+					$data = file_get_contents('php://input');
+				}
+				else
+				{
+					$data = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : '';
+				}
 			}
 			$raw_data = $data;
 
@@ -580,10 +585,6 @@
 			{
 				$this->debugmsg("+++GOT+++\n" . $data . "\n+++END+++");
 			}
-
-            if (!isset($req_charset)) $req_charset = '';
-            if (!isset($req_charset)) $resp_charset = '';
-            if (!isset($req_charset)) $resp_encoding = '';
 
 			$r = $this->parseRequestHeaders($data, $req_charset, $resp_charset, $resp_encoding);
 			if (!$r)
@@ -838,7 +839,7 @@
 					/// @todo we should parse q=0.x preferences instead of getting first charset specified...
 					$client_accepted_charsets = explode(',', strtoupper($_SERVER['HTTP_ACCEPT_CHARSET']));
 					// Give preference to internal encoding
-					$known_charsets = array($this->internal_encoding, 'UTF-8', 'ISO-8859-1', 'US-ASCII');
+					$known_charsets = array($GLOBALS['xmlrpc_internalencoding'], 'UTF-8', 'ISO-8859-1', 'US-ASCII');
 					foreach ($known_charsets as $charset)
 					{
 						foreach ($client_accepted_charsets as $accepted)
@@ -918,6 +919,7 @@
 				}
 				/// @BUG this will fail on PHP 5 if charset is not specified in the xml prologue,
 				// the encoding is not UTF8 and there are non-ascii chars in the text...
+				/// @todo use an ampty string for php 5 ???
 				$parser = xml_parser_create($req_encoding);
 			}
 			else
@@ -928,7 +930,18 @@
 			xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, true);
 			// G. Giunta 2005/02/13: PHP internally uses ISO-8859-1, so we have to tell
 			// the xml parser to give us back data in the expected charset
-			xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $GLOBALS['xmlrpc_internalencoding']);
+			// What if internal encoding is not in one of the 3 allowed?
+			// we use the broadest one, ie. utf8
+			// This allows to send data which is native in various charset,
+			// by extending xmlrpc_encode_entitites() and setting xmlrpc_internalencoding
+			if (!in_array($GLOBALS['xmlrpc_internalencoding'], array('UTF-8', 'ISO-8859-1', 'US-ASCII')))
+			{
+				xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'UTF-8');
+			}
+			else
+			{
+				xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $GLOBALS['xmlrpc_internalencoding']);
+			}
 
 			if ($this->functions_parameters_type != 'xmlrpcvals')
 				xml_set_element_handler($parser, 'xmlrpc_se', 'xmlrpc_ee_fast');
@@ -978,7 +991,6 @@
 					{
 						$this->debugmsg("\n+++PARSED+++\n".var_export($m, true)."\n+++END+++");
 					}
-
 					$r = $this->execute($m);
 				}
 			}

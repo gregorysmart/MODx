@@ -3,12 +3,11 @@
  * PHP-XMLRPC "wrapper" functions
  * Generate stubs to transparently access xmlrpc methods as php functions and viceversa
  *
- * @version $Id: xmlrpc_wrappers.inc,v 1.10 2006/09/01 21:49:19 ggiunta Exp $
- * @copyright G. Giunta (C) 2006
+ * @version $Id: xmlrpc_wrappers.inc,v 1.12 2008/03/06 18:58:44 ggiunta Exp $
  * @author Gaetano Giunta
+ * @copyright (C) 2006-2008 G. Giunta
+ * @license code licensed under the BSD License: http://phpxmlrpc.sourceforge.net/license.txt
  *
- * @package modx
- * @subpackage xmlrpc
  * @todo separate introspection from code generation for func-2-method wrapping
  * @todo use some better templating system from code generation?
  * @todo implement method wrapping with preservation of php objs in calls
