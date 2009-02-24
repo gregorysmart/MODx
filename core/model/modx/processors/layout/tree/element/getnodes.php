@@ -82,7 +82,7 @@ switch ($g[0]) {
 
         $c = $modx->newQuery($ar_typemap[$g[1]]);
         $c->where(array('category' => 0));
-        $c->sortby('name','ASC');
+        $c->sortby($g[1] == 'template' ? 'templatename' : 'name','ASC');
 		$elements = $modx->getCollection($ar_typemap[$g[1]],$c);
 		foreach ($elements as $element) {
 			$name = $g[1] == 'template' ? $element->get('templatename') : $element->get('name');
