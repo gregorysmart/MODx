@@ -95,13 +95,13 @@ Ext.extend(MODx.Layout,Ext.Component,{
         }
         
         it.push({                
-            title: _('resources')
+            title: _('web_resources')
             ,contentEl: 'modx_rt_div'
             ,resizeEl: 'modx_resource_tree'
             ,id: 'modx-resource-tree-panel'
         });
         it.push({
-            title: _('elements')
+            title: _('content_elements')
             ,contentEl: 'modx_et_div'
             ,resizeEl: 'modx_element_tree'
             ,id: 'modx-element-tree-panel'
