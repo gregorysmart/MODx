@@ -19,7 +19,7 @@ if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 20;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'templatename';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
-if (isset($_REQUEST['tv'])) {
+if (isset($_REQUEST['tv']) && $_REQUEST['tv'] != 0) {
     $tv = $modx->getObject('modTemplateVar',$_REQUEST['tv']);
     if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_nf'));
 }
@@ -34,7 +34,7 @@ $count = $modx->getCount('modTemplate');
 
 $ts = array();
 foreach ($templates as $template) {
-    if (isset($_REQUEST['tv'])) {
+    if (isset($_REQUEST['tv']) && $_REQUEST['tv'] != 0) {
         $tvt = $modx->getObject('modTemplateVarTemplate',array(
             'tmplvarid' => $tv->get('id'),
             'templateid' => $template->get('id'),
@@ -50,6 +50,9 @@ foreach ($templates as $template) {
     }
     $ta = $template->toArray();
     unset($ta['content']);
+
+    $ta['menu'] = array();
+
     $ts[] = $ta;
 }
 

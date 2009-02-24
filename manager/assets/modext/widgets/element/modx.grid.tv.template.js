@@ -33,12 +33,10 @@ MODx.grid.TemplateVarTemplate = function(config) {
             header: _('name')
             ,dataIndex: 'templatename'
             ,width: 150
-            ,editor: { xtype: 'textfield' ,allowBlank: false }
         },{
             header: _('description')
             ,dataIndex: 'description'
             ,width: 350
-            ,editor: { xtype: 'textfield' }
         },tt,{
             header: _('rank')
             ,dataIndex: 'rank'
