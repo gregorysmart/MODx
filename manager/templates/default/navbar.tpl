@@ -1,4 +1,4 @@
-<div id="modx-home-icon"><a href="?index.php?a=1"></a></div>
+<div id="modx-home-icon"><a href="?a=1"></a></div>
 <div id="modx-topnav-div">
     <ul id="modx-topnav">
     {foreach from=$menus item=menu name=m}
