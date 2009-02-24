@@ -321,6 +321,7 @@ $_lang['move'] = 'Move';
 $_lang['name'] = 'Name';
 $_lang['new'] = 'New';
 $_lang['new_category'] = 'New Category';
+$_lang['new_document'] = 'New Document';
 $_lang['new_folder'] = 'New Folder';
 $_lang['new_keyword'] = 'Add new keyword:';
 $_lang['new_message'] = 'New Message';

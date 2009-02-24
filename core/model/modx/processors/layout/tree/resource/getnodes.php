@@ -75,7 +75,7 @@ foreach ($collection as $item) {
                         'items' => array(
                             array(
                                 'id' => 'cm-context-resource-create',
-                                'text' => $modx->lexicon('resource_create_here'),
+                                'text' => $modx->lexicon('document_create_here'),
                                 'scope' => 'this',
                                 'handler' => 'function() {
                                     Ext.getCmp("modx_resource_tree").loadAction("'
@@ -186,7 +186,7 @@ foreach ($collection as $item) {
                     'items' => array(
                         array(
                             'id' => 'cm-resource-create',
-                            'text' => $modx->lexicon('resource_create_here'),
+                            'text' => $modx->lexicon('document_create_here'),
                             'scope' => 'this',
                             'handler' => 'function() {
                                 Ext.getCmp("modx_resource_tree").loadAction("'

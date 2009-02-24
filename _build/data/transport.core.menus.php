@@ -106,7 +106,7 @@ $collection['12']->fromArray(array (
   'id' => 12,
   'parent' => 1,
   'action' => 44,
-  'text' => 'new_resource',
+  'text' => 'new_document',
   'description' => '',
   'icon' => 'images/icons/folder_page_add.png',
   'menuindex' => 3,

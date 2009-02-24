@@ -15,7 +15,7 @@ MODx.panel.Resource = function(config) {
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
-            html: '<h2>'+_('resource_new')+'</h2>'
+            html: '<h2>'+_('document_new')+'</h2>'
             ,id: 'modx-resource-header'
             ,cls: 'modx-page-header'
             ,border: false
@@ -50,7 +50,7 @@ MODx.panel.Resource = function(config) {
                         ,enableKeyEvents: true
                         ,listeners: {
                             'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('resource')+': '+f.getValue()+'</h2>');
+                                Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('document')+': '+f.getValue()+'</h2>');
                             }}
                         }
                         
@@ -245,7 +245,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     this.getForm().setValues(r.object);
                     
                     Ext.getCmp('modx-resource-settings-fp').getForm().setValues(r.object);
-                    Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('resource')+': '+r.object.pagetitle+'</h2>');
+                    Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('document')+': '+r.object.pagetitle+'</h2>');
                     
                     if (r.object.richtext && MODx.config.use_editor && loadRTE !== null && !this.rteLoaded) {
                     	loadRTE('ta');
