@@ -19,6 +19,7 @@ Ext.onReady(function() {
 	    ,which_editor: '{$which_editor}'
 	    ,published: '{$resource->published}'
 	    ,deleted: '{$resource->deleted}'
+	    ,parent: '{$resource->parent}'
 	    ,content_type: '{$resource->content_type}'
         ,edit_doc_metatags: {if $modx->hasPermission('edit_doc_metatags')}true{else}false{/if}
         ,access_permissions: {if $modx->hasPermission('access_permissions')}true{else}false{/if}

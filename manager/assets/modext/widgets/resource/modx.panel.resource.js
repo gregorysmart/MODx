@@ -109,18 +109,18 @@ MODx.panel.Resource = function(config) {
                         ,listeners: {
                             'select': {fn: this.templateWarning,scope: this}
                         }
-                        ,value: config.template
+                        ,value: config.record.template
                     },{
                         xtype: 'modx-field-parent-change'
                         ,fieldLabel: _('resource_parent')
                         ,description: _('resource_parent_help')
                         ,name: 'parent-cmb'
                         ,id: 'modx-resource-parent'
-                        ,value: config.parent || 0
+                        ,value: config.record.parent || 0
                     },{
                         xtype: 'hidden'
                         ,name: 'parent'
-                        ,value: config.parent || 0
+                        ,value: config.record.parent || 0
                         ,id: 'modx-resource-parent-hidden'
                     },{
                         xtype: 'textfield'
@@ -147,7 +147,7 @@ MODx.panel.Resource = function(config) {
                         xtype: 'hidden'
                         ,name: 'context_key'
                         ,id: 'modx-resource-context-key'
-                        ,value: config.context_key || 'web'
+                        ,value: config.record.context_key || 'web'
                     },{
                         xtype: 'hidden'
                         ,name: 'content'
@@ -175,7 +175,7 @@ MODx.panel.Resource = function(config) {
                         ,fieldLabel: _('which_editor_title')
                         ,id: 'modx-resource-which-editor'
                         ,name: 'which_editor'
-                        ,value: config.which_editor
+                        ,value: config.record.which_editor
                         ,editable: false
                         ,listWidth: 300
                         ,triggerAction: 'all'
@@ -193,8 +193,8 @@ MODx.panel.Resource = function(config) {
                     xtype: 'modx-panel-resource-tv'
                     ,collapsed: false
                     ,resource: config.resource
-                    ,class_key: config.class_key
-                    ,template: config.template
+                    ,class_key: config.record.class_key
+                    ,template: config.record.template
                     
                 },(config.access_permissions ? {
                     id: 'modx-resource-access-permissions'
@@ -222,9 +222,15 @@ MODx.panel.Resource = function(config) {
     });
     MODx.panel.Resource.superclass.constructor.call(this,config);
     Ext.get('ta').on('keydown',this.fieldChangeEvent,this);
+    /* to deal with combobox bug */
+    setTimeout("Ext.getCmp('modx-panel-resource').onLoad();",1000);
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     rteLoaded: false
+    ,onLoad: function() {
+        this.getForm().setValues(this.config.record);
+        Ext.getCmp('modx-resource-settings-fp').getForm().setValues(this.config.record);
+    }
     ,setup: function() {
         if (this.config.resource === '' || this.config.resource === 0) {
             this.fireEvent('ready');
@@ -252,6 +258,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                         this.rteLoaded = true;
                     }
                     
+                    this.onLoad();
                     this.fireEvent('ready');
             	},scope:this}
             }

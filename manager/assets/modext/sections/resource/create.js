@@ -38,14 +38,15 @@ MODx.page.CreateResource = function(config) {
             xtype: 'modx-panel-resource'
             ,renderTo: 'modx-panel-resource'
             ,resource: 0
-            ,class_key: config.class_key
-            ,publish_document: config.publish_document
-            ,edit_doc_metatags: config.edit_doc_metatags
-            ,access_permissions: config.access_permissions
-            ,context_key: MODx.request.context_key || 'web'
-            ,template: config.template
-            ,parent: config.parent
-            ,which_editor: config.which_editor
+            ,record: {
+                context_key: MODx.request.context_key || 'web'
+                ,template: config.template
+                ,parent: config.parent
+                ,'parent-cmb': config.parent
+                ,which_editor: config.which_editor
+                ,class_key: config.class_key
+                ,content_type: config.content_type
+            }
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
             ,publish_document: config.publish_document
