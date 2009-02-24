@@ -13,15 +13,16 @@ if ($set == null) return $modx->error->failure($modx->lexicon('propertyset_err_n
 $properties = $set->get('properties');
 
 $data = array();
-foreach ($properties as $property) {
-    $data[] = array(
-        $property['name'],
-        $property['desc'],
-        $property['type'],
-        $property['options'],
-        $property['value'],
-        false, /* overridden set to false */
-    );
+if (is_array($properties)) {
+    foreach ($properties as $property) {
+        $data[] = array(
+            $property['name'],
+            $property['desc'],
+            $property['type'],
+            $property['options'],
+            $property['value'],
+            false, /* overridden set to false */
+        );
+    }
 }
-
 return $modx->error->success('',$data);
