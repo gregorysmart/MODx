@@ -28,9 +28,9 @@ $modx->setLogTarget('ECHO');
 // Get all Actions
 $content= "<?php\n";
 $query= $modx->newQuery('modAction');
-$query->where(array('context_key' => 'mgr'));
-$query->orCondition(array('context_key' => 'web'));
+$query->where(array('namespace' => 'core'));
 $query->sortby('id');
+
 $collection= $modx->getCollection('modAction', $query);
 foreach ($collection as $key => $c) {
     $content.= $cacheManager->generateObject($c, "collection['{$key}']", false, false, 'xpdo');
@@ -141,6 +141,7 @@ foreach ($collection as $key => $c) {
 }
 $cacheManager->writeFile(dirname(__FILE__) . '/data/transport.core.access_contexts.php', $content);
 unset($content, $collection, $key, $c);
+
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

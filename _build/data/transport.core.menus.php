@@ -5,6 +5,7 @@ $collection['1']->fromArray(array (
   'parent' => 0,
   'action' => 0,
   'text' => 'site',
+  'description' => '',
   'icon' => 'images/misc/logo_tbar.gif',
   'menuindex' => 0,
   'params' => '',
@@ -16,6 +17,7 @@ $collection['2']->fromArray(array (
   'parent' => 0,
   'action' => 0,
   'text' => 'components',
+  'description' => '',
   'icon' => 'images/icons/plugin.gif',
   'menuindex' => 1,
   'params' => '',
@@ -53,7 +55,7 @@ $collection['6']->fromArray(array (
   'text' => 'search',
   'description' => 'search_desc',
   'icon' => 'images/icons/context_view.gif',
-  'menuindex' => 2,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -63,6 +65,7 @@ $collection['8']->fromArray(array (
   'parent' => 0,
   'action' => 0,
   'text' => 'security',
+  'description' => '',
   'icon' => 'images/icons/lock.gif',
   'menuindex' => 2,
   'params' => '',
@@ -74,6 +77,7 @@ $collection['9']->fromArray(array (
   'parent' => 0,
   'action' => 0,
   'text' => 'tools',
+  'description' => '',
   'icon' => 'images/icons/menu_settings.gif',
   'menuindex' => 3,
   'params' => '',
@@ -85,6 +89,7 @@ $collection['10']->fromArray(array (
   'parent' => 0,
   'action' => 0,
   'text' => 'reports',
+  'description' => '',
   'icon' => 'images/icons/menu_settings16.gif',
   'menuindex' => 4,
   'params' => '',
@@ -95,7 +100,8 @@ $collection['11']->fromArray(array (
   'id' => 11,
   'parent' => 0,
   'action' => 0,
-  'text' => 'profile',
+  'text' => 'user',
+  'description' => '',
   'icon' => 'images/icons/user_go.png',
   'menuindex' => 6,
   'params' => '',
@@ -109,7 +115,7 @@ $collection['12']->fromArray(array (
   'text' => 'new_document',
   'description' => '',
   'icon' => 'images/icons/folder_page_add.png',
-  'menuindex' => 3,
+  'menuindex' => 4,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -121,7 +127,7 @@ $collection['13']->fromArray(array (
   'text' => 'new_weblink',
   'description' => '',
   'icon' => 'images/icons/link_add.png',
-  'menuindex' => 4,
+  'menuindex' => 5,
   'params' => '&class_key=modWebLink',
   'handler' => '',
 ), '', true, true);
@@ -220,12 +226,12 @@ $collection['21']->fromArray(array (
 $collection['22']= $xpdo->newObject('modMenu');
 $collection['22']->fromArray(array (
   'id' => 22,
-  'parent' => 9,
+  'parent' => 1,
   'action' => 0,
   'text' => 'remove_locks',
   'description' => 'remove_locks_desc',
   'icon' => 'images/ext/default/grid/hmenu-unlock.png',
-  'menuindex' => 0,
+  'menuindex' => 2,
   'params' => '',
   'handler' => '
             MODx.msg.confirm({
@@ -248,7 +254,7 @@ $collection['24']->fromArray(array (
   'text' => 'import_resources',
   'description' => 'import_resources_desc',
   'icon' => 'images/icons/application_side_contract.png',
-  'menuindex' => 1,
+  'menuindex' => 0,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -260,7 +266,7 @@ $collection['25']->fromArray(array (
   'text' => 'import_site',
   'description' => 'import_site_desc',
   'icon' => 'images/icons/application_side_contract.png',
-  'menuindex' => 2,
+  'menuindex' => 1,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -272,7 +278,7 @@ $collection['26']->fromArray(array (
   'text' => 'export_site',
   'description' => 'export_site_desc',
   'icon' => 'images/icons/application_side_expand.png',
-  'menuindex' => 3,
+  'menuindex' => 2,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -380,7 +386,7 @@ $collection['36']->fromArray(array (
   'text' => 'profile',
   'description' => 'profile_desc',
   'icon' => '',
-  'menuindex' => 2,
+  'menuindex' => 0,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -392,7 +398,7 @@ $collection['37']->fromArray(array (
   'text' => 'messages',
   'description' => 'messages_desc',
   'icon' => 'images/icons/messages.gif',
-  'menuindex' => 2,
+  'menuindex' => 1,
   'params' => '',
   'handler' => '',
 ), '', true, true);
@@ -512,7 +518,7 @@ $collection['50']->fromArray(array (
   'text' => 'new_symlink',
   'description' => '',
   'icon' => 'images/icons/link_add.png',
-  'menuindex' => 5,
+  'menuindex' => 6,
   'params' => '&class_key=modSymLink',
   'handler' => '',
 ), '', true, true);
@@ -524,7 +530,7 @@ $collection['51']->fromArray(array (
   'text' => 'new_static_resource',
   'description' => '',
   'icon' => 'images/icons/link_add.png',
-  'menuindex' => 6,
+  'menuindex' => 7,
   'params' => '&class_key=modStaticResource',
   'handler' => '',
 ), '', true, true);
@@ -534,6 +540,7 @@ $collection['55']->fromArray(array (
   'parent' => 0,
   'action' => 0,
   'text' => 'system',
+  'description' => '',
   'icon' => 'images/misc/logo_tbar.gif',
   'menuindex' => 5,
   'params' => '',
@@ -547,7 +554,19 @@ $collection['56']->fromArray(array (
   'text' => 'propertysets',
   'description' => 'propertysets_desc',
   'icon' => 'images/misc/logo_tbar.gif',
-  'menuindex' => 4,
+  'menuindex' => 3,
   'params' => '',
   'handler' => '',
+), '', true, true);
+$collection['57']= $xpdo->newObject('modMenu');
+$collection['57']->fromArray(array (
+  'id' => 57,
+  'parent' => 1,
+  'action' => 0,
+  'text' => 'logout',
+  'description' => '',
+  'icon' => 'images/misc/logo_tbar.gif',
+  'menuindex' => 8,
+  'params' => '',
+  'handler' => 'MODx.logout(); return false;',
 ), '', true, true);

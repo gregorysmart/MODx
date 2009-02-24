@@ -749,4 +749,3 @@ $collection['82']->fromArray(array (
   'lang_topics' => 'element,category,propertyset',
   'assets' => '',
 ), '', true, true);
-
