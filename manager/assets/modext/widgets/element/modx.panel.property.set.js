@@ -207,7 +207,13 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
                 ,id: id
             }
             ,listeners: {
-                'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
+                'success': {fn:function() { 
+                    this.refreshNode(this.cm.activeNode.id);
+                    var g = Ext.getCmp('modx-grid-element-properties');
+                    g.getStore().removeAll();
+                    g.defaultProperties = [];
+                    Ext.getCmp('modx-combo-property-set').setValue('');
+                },scope:this}
             }
         });
     }
