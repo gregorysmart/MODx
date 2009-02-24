@@ -7,7 +7,9 @@
  */
 $_lang['class_name'] = 'Class Name';
 $_lang['default'] = 'Default';
+$_lang['duplicate_of'] = 'Duplicate of [[+name]]';
 $_lang['element_properties_desc'] = 'Here you can edit the default properties for the element, or edit specific property sets. <b>Note</b>: When you edit the default set, you will be saving the properties to the default properties. Editing a specific property set will save those property settings to the property set.<br /><br />When you\'ve selected a property set to edit, the default properties will show in the grid in the color <span style="color: gray;">gray</span>. Properties in gray are not in the property set, but show up there for easier editing. Properties in <span style="color: green">green</span> are properties that have been overridden from the default. Properties in <span style="color: purple">purple</span> are new properties in the custom set that are not in the default properties.';
+$_lang['new_name'] = 'New Name';
 $_lang['object'] = 'Object';
 $_lang['properties'] = 'Properties';
 $_lang['properties_remove'] = 'Remove Properties';
@@ -28,6 +30,8 @@ $_lang['propertyset'] = 'Property Set';
 $_lang['propertyset_add'] = 'Add Property Set';
 $_lang['propertyset_create'] = 'Create Property Set';
 $_lang['propertyset_create_new'] = 'Create New Property Set';
+$_lang['propertyset_duplicate'] = 'Duplicate Property Set';
+$_lang['propertyset_duplicate_copyels'] = 'Copy Element associations?';
 $_lang['propertyset_element_add'] = 'Attach Element to Property Set';
 $_lang['propertyset_element_remove'] = 'Remove Element from Property Set';
 $_lang['propertyset_element_remove_confirm'] = 'Are you sure you want to unattach this element from this property set?';

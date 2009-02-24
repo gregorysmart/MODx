@@ -72,6 +72,12 @@ switch ($node[0]) {
                                 this.updateSet(itm,e);
                             }',
                         ),
+                        array(
+                            'text' => $modx->lexicon('propertyset_duplicate'),
+                            'handler' => 'function(itm,e) {
+                                this.duplicateSet(itm,e);
+                            }',
+                        ),
                         '-',
                         array(
                             'text' => $modx->lexicon('propertyset_remove'),
@@ -116,6 +122,12 @@ switch ($node[0]) {
                             'text' => $modx->lexicon('propertyset_update'),
                             'handler' => 'function(itm,e) {
                                 this.updateSet(itm,e);
+                            }',
+                        ),
+                        array(
+                            'text' => $modx->lexicon('propertyset_duplicate'),
+                            'handler' => 'function(itm,e) {
+                                this.duplicateSet(itm,e);
                             }',
                         ),
                         '-',

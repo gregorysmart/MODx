@@ -156,6 +156,7 @@ Ext.extend(MODx.grid.LocalProperty,MODx.grid.LocalGrid,{
                     ,triggerAction: 'all'
                     ,editable: false
                     ,selectOnFocus: false
+                    ,preventRender: true
                 });
             } catch (e2) {
                 obj = Ext.ComponentMgr.create({ xtype: 'combo-boolean' });

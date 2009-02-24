@@ -157,7 +157,26 @@ Ext.extend(MODx.tree.PropertySets,MODx.tree.Tree,{
         this.winCreateSet.show(e.target);
     }
     
-    
+    ,duplicateSet: function(btn,e) {
+        var id = this.cm.activeNode.id.split('_');
+        var r = this.cm.activeNode.attributes.data;
+        r.id = id[1];
+        r.new_name = _('duplicate_of',{name:r.name});
+        if (!this.winDupeSet) {
+            this.winDupeSet = MODx.load({
+                xtype: 'modx-window-property-set-duplicate'
+                ,record: r
+                ,listeners: {
+                    'success':{fn:function() { 
+                        this.refresh();
+                        Ext.getCmp('modx-combo-property-set').store.reload();
+                    },scope:this}
+                }
+            });
+        }
+        this.winDupeSet.setValues(r);
+        this.winDupeSet.show(e.target);
+    }
     ,updateSet: function(btn,e) {
         var id = this.cm.activeNode.id.split('_');
         var r = this.cm.activeNode.attributes.data;
@@ -422,3 +441,44 @@ MODx.window.UpdatePropertySet = function(config) {
 };
 Ext.extend(MODx.window.UpdatePropertySet,MODx.Window);
 Ext.reg('modx-window-property-set-update',MODx.window.UpdatePropertySet);
+
+
+
+/**
+ * @class MODx.window.DuplicatePropertySet
+ * @extends MODx.Window
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-window-property-set-duplicate
+ */
+MODx.window.DuplicatePropertySet = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('propertyset_duplicate')
+        ,url: MODx.config.connectors_url+'element/propertyset.php'
+        ,baseParams: {
+            action: 'duplicate'
+        }
+        ,width: 550
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'id'
+            ,id: 'modx-dpropset-id'
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('new_name')
+            ,name: 'new_name'
+            ,width: 200
+            ,value: _('duplicate_of',{name:config.record.name})
+        },{
+            xtype: 'checkbox'
+            ,boxLabel: _('propertyset_duplicate_copyels')
+            ,labelSeparator: ''
+            ,name: 'copyels'
+            ,id: 'modx-dpropset-copyels'
+            ,checked: true
+        }]
+    });
+    MODx.window.DuplicatePropertySet.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.DuplicatePropertySet,MODx.Window);
+Ext.reg('modx-window-property-set-duplicate',MODx.window.DuplicatePropertySet);
