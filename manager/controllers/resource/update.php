@@ -23,10 +23,10 @@ if (file_exists($delegateView)) {
 
 
 if (!$resource->checkPolicy('save')) {
-	?><br /><br /><div class="sectionHeader"><?php echo $modx->lexicon('access_permissions'); ?></div><div class="sectionBody">
+    ?><br /><br /><div class="sectionHeader"><?php echo $modx->lexicon('access_permissions'); ?></div><div class="sectionBody">
     <p><?php echo $modx->lexicon('access_permission_denied'); ?></p>
     <?php
-	exit;
+    exit;
 }
 
 
@@ -43,11 +43,11 @@ $modx->smarty->assign('onDocFormPrerender',$onDocFormPrerender);
 /* handle default parent */
 $parentname = $modx->config['site_name'];
 $resource->set('parent',0);
-if (isset ($_REQUEST['id'])) {
-    if ($_REQUEST['id'] == 0) {
+if (isset ($_REQUEST['parent'])) {
+    if ($_REQUEST['parent'] == 0) {
         $parentname = $modx->config['site_name'];
     } else {
-        $parent = $modx->getObject('modResource',$_REQUEST['id']);
+        $parent = $modx->getObject('modResource',$_REQUEST['parent']);
         if ($parent != null) {
           $parentname = $parent->get('pagetitle');
           $resource->set('parent',$parent->get('id'));
