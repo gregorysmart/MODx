@@ -13,4 +13,5 @@
 
 <script type="text/javascript">
 var onTempFormRender = '{$onTempFormRender}';
+MODx.perm.unlock_element_properties = {$unlock_element_properties};
 </script>

@@ -44,5 +44,8 @@ if ($modx->config['use_editor'] == 1) {
 	$modx->smarty->assign('onRTEInit',$onRTEInit);
 }
 
+/* check unlock default element properties permission */
+$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+
 /* display template */
 return $modx->smarty->fetch('element/chunk/create.tpl');

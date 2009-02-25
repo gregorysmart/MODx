@@ -33,5 +33,8 @@ $onTVFormRender = $modx->invokeEvent('OnTVFormRender',array('id' => 0));
 if (is_array($onTVFormRender)) $onTVFormRender = implode('',$onTVFormRender);
 $modx->smarty->assign('onTVFormRender',$onTVFormRender);
 
+/* check unlock default element properties permission */
+$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+
 /* display template */
 return $modx->smarty->fetch('element/tv/create.tpl');

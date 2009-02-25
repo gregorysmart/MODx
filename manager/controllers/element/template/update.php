@@ -26,6 +26,9 @@ $onTempFormRender = $modx->invokeEvent('OnTempFormRender',array('id' => $_REQUES
 if (is_array($onTempFormRender)) $onTempFormRender = implode('',$onTempFormRender);
 $modx->smarty->assign('onTempFormRender',$onTempFormRender);
 
+/* check unlock default element properties permission */
+$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+
 /* assign template to parser and display page */
 $modx->smarty->assign('template',$template);
 return $modx->smarty->fetch('element/template/update.tpl');

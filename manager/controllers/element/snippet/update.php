@@ -30,6 +30,9 @@ $onSnipFormRender = $modx->invokeEvent('OnSnipFormRender',array('id' => 0));
 if (is_array($onSnipFormRender)) $onSnipFormRender = implode('',$onSnipFormRender);
 $modx->smarty->assign('onSnipFormRender',$onSnipFormRender);
 
+/* check unlock default element properties permission */
+$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+
 /* assign snippet to parser and display template */
 $modx->smarty->assign('snippet',$snippet);
 return $modx->smarty->fetch('element/snippet/update.tpl');

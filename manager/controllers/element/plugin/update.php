@@ -22,6 +22,9 @@ $onPluginFormRender = $modx->invokeEvent('OnPluginFormRender',array('id' => $_RE
 if (is_array($onPluginFormRender)) $onPluginFormRender = implode('',$onPluginFormRender);
 $modx->smarty->assign('onPluginFormRender',$onPluginFormRender);
 
+/* check unlock default element properties permission */
+$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+
 /* load plugin into parser and display */
 $modx->smarty->assign('plugin',$plugin);
 return $modx->smarty->fetch('element/plugin/update.tpl');

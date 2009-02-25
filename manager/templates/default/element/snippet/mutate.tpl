@@ -12,4 +12,5 @@
 
 <script type="text/javascript">
 var onSnipFormRender = '{$onSnipFormRender}';
+MODx.perm.unlock_element_properties = {$unlock_element_properties|default:0};
 </script>

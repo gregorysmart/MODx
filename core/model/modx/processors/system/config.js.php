@@ -35,17 +35,13 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] != '' && isset($modx->acti
 
 $actions = $modx->request->getAllActionIDs();
 
-$perms = array();
-
 $c = array_merge($modx->config,$c);
 
 $o = "Ext.namespace('MODx'); MODx.config = ";
 $o .= $modx->toJSON($c);
 $o .= '; MODx.action = ';
 $o .= $modx->toJSON($actions);
-$o .= '; MODx.perm = ';
-$o .= $modx->toJSON($perms);
-$o .= ';';
+$o .= '; MODx.perm = {};';
 
 echo $o;
 die();

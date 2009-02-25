@@ -65,14 +65,10 @@ MODx.grid.ElementProperties = function(config) {
         },'-',{
             text: _('properties_default_locked')
             ,id: 'modx-btn-propset-lock'
-            ,handler: function() { 
-                var cb = Ext.getCmp('modx-combo-property-set');
-                if (cb.getValue() == 0) {
-                    this.lockMask.toggle();
-                }
-            }
+            ,handler: this.togglePropertiesLock
             ,enableToggle: true
             ,pressed: true
+            ,disabled: MODx.perm.unlock_element_properties ? false : true
             ,scope: this
         },'->',{
             text: _('propertyset_add')
@@ -190,12 +186,22 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                 },scope:this}
             }
         });
+    }    
+    
+    ,togglePropertiesLock: function() { 
+        var ps = Ext.getCmp('modx-combo-property-set').getValue();
+        if (ps == 0 || ps == _('default')) {
+            Ext.getCmp('modx-btn-propset-lock').setText(this.lockMask.locked ? _('properties_default_unlocked') : _('properties_default_locked'));
+            this.lockMask.toggle();
+        }
     }
     
     ,changePropertySet: function(cb) {
         var ps = cb.getValue();
-        if (ps == 0) {
-            Ext.getCmp('modx-btn-propset-lock').setDisabled(false);
+        if (ps == 0 || ps == _('default')) {
+            if (MODx.perm.unlock_element_properties) {
+                Ext.getCmp('modx-btn-propset-lock').setDisabled(false);
+            }
             if (this.lockMask.locked) {
                 this.lockMask.show();
             }

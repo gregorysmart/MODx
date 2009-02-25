@@ -23,5 +23,8 @@ $onTempFormRender = $modx->invokeEvent('OnTempFormRender',array('id' => 0));
 if (is_array($onTempFormRender)) $onTempFormRender = implode('',$onTempFormRender);
 $modx->smarty->assign('onTempFormRender',$onTempFormRender);
 
+/* check unlock default element properties permission */
+$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+
 /* display template */
 return $modx->smarty->fetch('element/template/create.tpl');

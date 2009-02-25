@@ -9,4 +9,5 @@
 
 <script type="text/javascript">
 var onChunkFormRender = '{$onChunkFormRender}';
+MODx.perm.unlock_element_properties = {$unlock_element_properties};
 </script>
