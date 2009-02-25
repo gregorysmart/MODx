@@ -271,13 +271,14 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
 		var a = Ext.urlEncode(itm.params);
 		switch (MODx.config.stay) {
 			case 'new': /* if user selected 'new', then always redirect */
+                if (MODx.request.parent) a = a+'&parent='+MODx.request.parent;
 				location.href = 'index.php?a='+o.actions['new']+'&'+a;
 				break;
 			case 'stay':
 				/* if Continue Editing, then don't reload the page - just hide the Progress bar
 				   unless the user is on a 'Create' page...if so, then redirect
 				   to the proper Edit page */
-				if ((itm.process === 'create' || itm.process === 'duplicate' || itm.reload) && res.object.id !== null) {
+                if ((itm.process === 'create' || itm.process === 'duplicate' || itm.reload) && res.object.id !== null) {
 					location.href = 'index.php?a='+o.actions.edit+'&id='+res.object.id+'&'+a;
 				} else if (itm.process === 'delete') {
 					location.href = 'index.php?a='+o.actions.cancel+'&'+a;
