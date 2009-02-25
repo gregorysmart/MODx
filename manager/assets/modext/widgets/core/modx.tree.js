@@ -95,7 +95,6 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	    this.on('nodedrop',this._handleDrag,this);
 	    this.on('click',this._saveState,this);
         this.on('contextmenu',this._saveState,this);
-        this.on('expand',this._saveState,this);        
         this.on('click',this._handleClick,this);
 	    
 	    this.root = new Ext.tree.AsyncTreeNode({
@@ -291,10 +290,10 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	
 	/**
 	 * Save the state of the tree's open children for a certain node.
-	 * @param {Object} x The most recent clicked-on node.
+	 * @param {Ext.tree.TreeNode} n The most recent clicked-on node.
 	 */
-	,_saveState: function(x) {
-		Ext.state.Manager.set(this.treestate_id,x.getPath());
+	,_saveState: function(n) {
+		Ext.state.Manager.set(this.treestate_id,n.getPath());
 	}
     
     /**
