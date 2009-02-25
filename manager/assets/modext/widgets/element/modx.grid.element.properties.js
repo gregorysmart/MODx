@@ -65,7 +65,12 @@ MODx.grid.ElementProperties = function(config) {
         },'-',{
             text: _('properties_default_locked')
             ,id: 'modx-btn-propset-lock'
-            ,handler: function() { this.lockMask.toggle(); }
+            ,handler: function() { 
+                var cb = Ext.getCmp('modx-combo-property-set');
+                if (cb.getValue() == 0) {
+                    this.lockMask.toggle();
+                }
+            }
             ,enableToggle: true
             ,pressed: true
             ,scope: this
@@ -188,15 +193,22 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     }
     
     ,changePropertySet: function(cb) {
-        if (cb.getValue() == 0 && this.lockMask.locked) {
-            this.lockMask.show();
-        } else if (this.lockMask.locked) { this.lockMask.hide(); }
+        var ps = cb.getValue();
+        if (ps == 0) {
+            Ext.getCmp('modx-btn-propset-lock').setDisabled(false);
+            if (this.lockMask.locked) {
+                this.lockMask.show();
+            }
+        } else {
+            Ext.getCmp('modx-btn-propset-lock').setDisabled(true);
+            this.lockMask.hide();
+        }
         
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'element/propertyset.php'
             ,params: {
                 action: 'get'
-                ,id: cb.getValue()
+                ,id: ps
                 ,elementId: this.config.elementId
                 ,elementType: this.config.elementType
             }
