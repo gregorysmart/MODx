@@ -21,7 +21,7 @@ $c = array(
     'icons_url' => $template_url.'images/ext/modext/',
     'manager_url' => $modx->config['manager_url'],
     'template_url' => $template_url,
-    'user' => $modx->user->id,
+    'user' => $modx->user->get('id'),
     'version' => $modx->version['full_version'],
 );
 
@@ -35,12 +35,16 @@ if (isset($_REQUEST['action']) && $_REQUEST['action'] != '' && isset($modx->acti
 
 $actions = $modx->request->getAllActionIDs();
 
+$perms = array();
+
 $c = array_merge($modx->config,$c);
 
 $o = "Ext.namespace('MODx'); MODx.config = ";
 $o .= $modx->toJSON($c);
 $o .= '; MODx.action = ';
 $o .= $modx->toJSON($actions);
+$o .= '; MODx.perm = ';
+$o .= $modx->toJSON($perms);
 $o .= ';';
 
 echo $o;

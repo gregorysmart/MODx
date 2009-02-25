@@ -62,6 +62,13 @@ MODx.grid.ElementProperties = function(config) {
             text: _('property_revert_all')
             ,handler: this.revertAll
             ,scope:this
+        },'-',{
+            text: _('properties_default_locked')
+            ,id: 'modx-btn-propset-lock'
+            ,handler: function() { this.lockMask.toggle(); }
+            ,enableToggle: true
+            ,pressed: true
+            ,scope: this
         },'->',{
             text: _('propertyset_add')
             ,handler: this.addPropertySet
@@ -89,6 +96,13 @@ MODx.grid.ElementProperties = function(config) {
     this.on('afteredit', this.propertyChanged, this);
     this.on('afterRemoveRow', this.propertyChanged, this);
     this.on('celldblclick',this.onDirty,this);
+    
+    this.lockMask = MODx.load({
+        xtype: 'modx-lockmask'
+        ,el: this.getGridEl()
+        ,msg: _('properties_default_locked')
+    });
+    this.lockMask.toggle();
 };
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     defaultProperties: []
@@ -174,6 +188,10 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     }
     
     ,changePropertySet: function(cb) {
+        if (cb.getValue() == 0 && this.lockMask.locked) {
+            this.lockMask.show();
+        } else if (this.lockMask.locked) { this.lockMask.hide(); }
+        
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'element/propertyset.php'
             ,params: {

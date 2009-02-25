@@ -33,3 +33,6 @@ textarea.x-form-field {
 .tree ul, .tree ul li { 
     list-style: none;
 }
+
+/* fixes masking issues */
+.x-combo-list, .x-combo-list-item { z-index: 30000 !important; }

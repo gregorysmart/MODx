@@ -73,6 +73,28 @@ MODx.util.Progress = {
     }
 };
 
+/** Adds a lock mask to an element */
+MODx.LockMask = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        msg: _('locked')
+        ,msgCls: 'modx-lockmask'
+    });
+    MODx.LockMask.superclass.constructor.call(this,config.el,config);
+};
+Ext.extend(MODx.LockMask,Ext.LoadMask,{
+    locked: false
+    ,toggle: function() {
+        if (this.locked) {
+            this.hide();
+            this.locked = false;
+        } else {
+            this.show();
+            this.locked = true;
+        }
+    }
+});
+Ext.reg('modx-lockmask',MODx.LockMask);
 
 
 /** 
