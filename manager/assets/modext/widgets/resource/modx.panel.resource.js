@@ -241,7 +241,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
             ,params: {
                 action: 'get'
                 ,id: this.config.resource
-                ,class_key: this.config.class_key
+                ,class_key: this.config.record.class_key
             }
             ,listeners: {
             	'success': {fn:function(r) {
@@ -257,8 +257,6 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     	loadRTE('ta');
                         this.rteLoaded = true;
                     }
-                    
-                    this.onLoad();
                     this.fireEvent('ready');
             	},scope:this}
             }
@@ -300,7 +298,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                         this.tvum.update({
                             url: 'index.php?a='+MODx.action['resource/tvs']
                             ,params: {
-                                class_key: this.config.class_key
+                                class_key: this.config.record.class_key
                                 ,resource: this.config.resource
                                 ,template: t.getValue()
                             }

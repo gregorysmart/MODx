@@ -32,13 +32,15 @@ MODx.page.CreateStatic = function(config) {
             xtype: 'modx-panel-static'
             ,renderTo: 'modx-panel-static'
             ,resource: 0
-            ,class_key: config.class_key
-            ,context_key: config.context_key
+            ,record: {
+                class_key: config.class_key
+                ,context_key: config.context_key
+                ,template: config.template
+                ,parent: config.parent
+            }
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
-            ,template: config.template
-            ,parent: config.parent
         },{
             xtype: 'modx-panel-resource-tv'
             ,class_key: config.class_key

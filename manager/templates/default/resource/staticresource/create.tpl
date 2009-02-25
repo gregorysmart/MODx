@@ -13,6 +13,7 @@ Ext.onReady(function() {
         ,class_key: '{$resource->class_key}'
         ,edit_doc_metatags: {if $modx->hasPermission('edit_doc_metatags')}true{else}false{/if}
         ,access_permissions: {if $modx->hasPermission('access_permissions')}true{else}false{/if}
+        ,parent: '{$smarty.request.parent|default:0}'
     {literal}
     });
 });

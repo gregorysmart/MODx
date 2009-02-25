@@ -117,7 +117,7 @@ MODx.panel.Static = function(config) {
                         ,listeners: {
                             'select': {fn: this.templateWarning,scope: this}
                         }
-                        ,value: config.template
+                        ,value: config.record.template
                     },{
                         xtype: 'modx-field-parent-change'
                         ,fieldLabel: _('resource_parent')
@@ -126,11 +126,11 @@ MODx.panel.Static = function(config) {
                         ,editable: false
                         ,id: 'modx-resource-parent'
                         ,width: 300
-                        ,value: config.parent || 0
+                        ,value: config.record.parent || 0
                     },{
                         xtype: 'hidden'
                         ,name: 'parent'
-                        ,value: config.parent || 0
+                        ,value: config.record.parent || 0
                         ,id: 'modx-resource-parent-hidden'
                     },{
                         xtype: 'textfield'
@@ -207,7 +207,7 @@ MODx.panel.Static = function(config) {
                         xtype: 'hidden'
                         ,name: 'class_key'
                         ,id: 'modx-resource-class-key'
-                        ,value: config.class_key || 'modStaticResource'
+                        ,value: config.record.class_key || 'modStaticResource'
                         
                     },{
                         xtype: 'hidden'
@@ -218,7 +218,7 @@ MODx.panel.Static = function(config) {
                         xtype: 'hidden'
                         ,name: 'context_key'
                         ,id: 'modx-resource-context-key'
-                        ,value: config.context_key || 'web'
+                        ,value: config.record.context_key || 'web'
                     },{
                         xtype: 'modx-combo-content-type'
                         ,fieldLabel: _('resource_content_type')
@@ -257,8 +257,8 @@ MODx.panel.Static = function(config) {
                 },{
                     xtype: 'modx-panel-resource-tv'
                     ,resource: config.resource
-                    ,class_key: config.class_key
-                    ,template: config.template
+                    ,class_key: config.record.class_key
+                    ,template: config.record.template
                     
                 },(config.access_permissions ? {
                     id: 'modx-resource-access-permissions'
@@ -285,9 +285,13 @@ MODx.panel.Static = function(config) {
         }
     });
     MODx.panel.Static.superclass.constructor.call(this,config);
+    setTimeout("Ext.getCmp('modx-panel-static').onLoad();",1000);
 };
 Ext.extend(MODx.panel.Static,MODx.FormPanel,{
-    setup: function() {
+    onLoad: function() {
+        this.getForm().setValues(this.config.record);
+    }
+    ,setup: function() {
         if (this.config.resource === '' || this.config.resource === 0) {
             this.fireEvent('ready');
             return false;
@@ -297,7 +301,7 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
             ,params: {
                 action: 'get'
                 ,id: this.config.resource
-                ,class_key: this.config.class_key
+                ,class_key: this.config.record.class_key
             }
             ,scope: this
             ,success: function(r) {
@@ -305,6 +309,8 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
                 if (r.success) {
                     if (r.object.pub_date == '0') { r.object.pub_date = ''; }
                     if (r.object.unpub_date == '0') { r.object.unpub_date = ''; }
+                    r.object['parent-cmb'] = r.object.parent;
+                    
                     this.getForm().setValues(r.object);
                     this.fireEvent('ready');
                 } else { MODx.form.Handler.errorJSON(r); }
@@ -341,7 +347,7 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
                         this.tvum.update({
                             url: 'index.php?a='+MODx.action['resource/tvs']
                             ,params: {
-                                class_key: this.config.class_key
+                                class_key: this.config.record.class_key
                                 ,resource: this.config.resource
                                 ,template: t.getValue()
                             }

@@ -43,7 +43,7 @@ if ($resource->get('parent') != 0) {
         $parentname = $parent->get('pagetitle');
     }
 }
-$modx->smarty->assign('parent',$parent->get('id'));
+$modx->smarty->assign('parent',$resource->get('parent'));
 $modx->smarty->assign('parentname',$parentname);
 
 
