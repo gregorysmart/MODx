@@ -20,7 +20,7 @@ if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 20;
 if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'name';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
-if (isset($_REQUEST['tv'])) {
+if (isset($_REQUEST['tv']) && $_REQUEST['tv'] != 0) {
     $tv = $modx->getObject('modTemplateVar',$_REQUEST['tv']);
     if ($tv == null) return $modx->error->failure($modx->lexicon('tv_err_nf'));
 }
@@ -35,7 +35,7 @@ $count = $modx->getCount('modResourceGroup');
 
 $ts = array();
 foreach ($groups as $group) {
-    if (isset($_REQUEST['tv'])) {
+    if (isset($_REQUEST['tv']) && $_REQUEST['tv'] != 0) {
         $rgtv = $modx->getObject('modTemplateVarResourceGroup',array(
             'tmplvarid' => $tv->get('id'),
             'documentgroup' => $group->get('id'),
