@@ -81,6 +81,7 @@ Ext.extend(MODx.window.PackageDownloader,Ext.Window,{
             this.getBottomToolbar().items.item(0).setDisabled(false);
             this.getBottomToolbar().items.item(1).setText(_('next'));
         }
+        this.doLayout();
         this.center();
     }
 });
@@ -105,20 +106,17 @@ MODx.panel.PDFirst = function(config) {
             ,xtype: 'radio'
             ,inputValue: 'selprov'
             ,name: 'method'
-            ,id: 'modx-pdfm-selprov'
             ,checked: true
         },{
             boxLabel: _('provider_add')
             ,xtype: 'radio'
             ,inputValue: 'newprov'
             ,name: 'method'
-            ,id: 'modx-pdfm-newprov'
         },{
             boxLabel: _('package_search_local_title')
             ,xtype: 'radio'
             ,inputValue: 'local'
             ,name: 'method'
-            ,id: 'modx-pdfm-local'
         }]
     });
     MODx.panel.PDFirst.superclass.constructor.call(this,config);
@@ -172,7 +170,6 @@ MODx.panel.PDSelProv = function(config) {
         },{
             fieldLabel: _('provider')
             ,xtype: 'modx-combo-provider'
-            ,id: 'modx-pdsp-provider'
             ,allowBlank: false
         },{
             text: _('provider_add_or')
@@ -218,20 +215,17 @@ MODx.panel.PDNewProv = function(config) {
             fieldLabel: _('name')
             ,xtype: 'textfield'
             ,name: 'name'
-            ,id: 'modx-pdnp-name'
             ,allowBlank: false
             ,width: 200
         },{
             fieldLabel: _('description')
             ,xtype: 'textarea'
             ,name: 'description'
-            ,id: 'modx-pdnp-description'
             ,width: 200
         },{
             fieldLabel: _('provider_url')
             ,xtype: 'textfield'
             ,name: 'service_url'
-            ,id: 'modx-pdnp-service-url'
             ,vtype: 'url'
             ,allowBlank: false
             ,width: 300

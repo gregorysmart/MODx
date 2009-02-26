@@ -18,6 +18,7 @@ MODx.panel.PackageDownload = function(config) {
             ,width: Ext.isIE ? 300 : '60%'
             ,height: 270
             ,autoHeight: false
+            ,preventRender: true
         },{
             columnWidth: 0.3
             ,height: 270
