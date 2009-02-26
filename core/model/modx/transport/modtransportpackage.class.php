@@ -250,7 +250,7 @@ class modTransportPackage extends xPDOObject {
             }
             if ($content) {
                 if ($cacheManager= $this->xpdo->getCacheManager()) {
-                    $filename= basename($source);
+                    $filename= $this->signature.'.transport.zip';
                     $target= $targetDir . $filename;
                     $transferred= $cacheManager->writeFile($target, $content);
                 }
