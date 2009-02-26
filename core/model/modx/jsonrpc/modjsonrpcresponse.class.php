@@ -5,7 +5,7 @@ require_once(MODX_CORE_PATH . 'model/modx/jsonrpc/jsonrpcs.inc');
 
 /**
  * Extends modXMLRPCResponse to support servicing JSON-RPC client requests.
- * 
+ *
  * @package modx
  * @subpackage jsonrpc
  */
@@ -19,6 +19,7 @@ class modJSONRPCResponse extends modXMLRPCResponse {
 
     function outputContent($options= array()) {
         if (!isset($options['rpc_type'])) $options['rpc_type']= 'JSON';
+
         parent :: outputContent($options);
     }
 
@@ -29,4 +30,3 @@ class modJSONRPCResponse extends modXMLRPCResponse {
         return is_a($this->server, 'jsonrpc_server');
     }
 }
-?>

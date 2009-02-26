@@ -49,6 +49,7 @@ class modXMLRPCResponse extends modResponse {
             $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load ' . $options['rpc_type'] . '-RPC Server class.');
         }
 
+        $this->modx->resource->process();
         $this->modx->resource->_output= $this->modx->resource->_content;
 
         /* collect any uncached element tags in the content and process them */
