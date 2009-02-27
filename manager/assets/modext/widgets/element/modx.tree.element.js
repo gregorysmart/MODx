@@ -75,7 +75,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
         var r = {
             id: id
             ,type: type
-            ,name: _('duplicate_of')+this.cm.activeNode.text
+            ,name: _('duplicate_of',{name: this.cm.activeNode.text})
         };
         
         if (!this.windows.duplicateElement) {

@@ -20,6 +20,7 @@ MODx.grid.ElementProperties = function(config) {
         ,sortBy: 'name'
         ,width: '100%'
         ,sm: new Ext.grid.RowSelectionModel({singleSelect:false})
+        ,lockProperties: true
         ,plugins: [this.exp]
         ,columns: [this.exp,{
             header: _('name')
@@ -98,12 +99,14 @@ MODx.grid.ElementProperties = function(config) {
     this.on('afterRemoveRow', this.propertyChanged, this);
     this.on('celldblclick',this.onDirty,this);
     
-    this.lockMask = MODx.load({
-        xtype: 'modx-lockmask'
-        ,el: this.getGridEl()
-        ,msg: _('properties_default_locked')
-    });
-    this.lockMask.toggle();
+    if (this.config.lockProperties) {
+        this.lockMask = MODx.load({
+            xtype: 'modx-lockmask'
+            ,el: this.getGridEl()
+            ,msg: _('properties_default_locked')
+        });
+        this.lockMask.toggle();
+    }
 };
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
     defaultProperties: []

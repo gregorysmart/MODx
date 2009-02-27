@@ -258,7 +258,7 @@ MODx.panel.SymLink = function(config) {
         }
     });
     MODx.panel.SymLink.superclass.constructor.call(this,config);
-    setTimeout("Ext.getCmp('modx-panel-static').onLoad();",1000);
+    setTimeout("Ext.getCmp('modx-panel-symlink').onLoad();",1000);
 };
 Ext.extend(MODx.panel.SymLink,MODx.FormPanel,{
     onLoad: function() {

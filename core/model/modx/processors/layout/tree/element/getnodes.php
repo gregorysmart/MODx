@@ -356,7 +356,7 @@ switch ($g[0]) {
                         array(
                             'text' => $modx->lexicon('duplicate').' '.$elementType,
                             'handler' => 'function(itm,e) {
-                                this.duplicateElement(itm,e,"'.$elementType.'");
+                                this.duplicateElement(itm,e,'.$element->get('id').',"'.strtolower($elementType).'");
                             }',
                         ),
                         '-',
