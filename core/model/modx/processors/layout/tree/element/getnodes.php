@@ -322,7 +322,7 @@ switch ($g[0]) {
 
         $c = $modx->newQuery($ar_typemap[$g[0]]);
         $c->where(array('category' => $cat_id));
-        $c->sortby('name','ASC');
+        $c->sortby($g[0] == 'template' ? 'templatename' : 'name','ASC');
 		$elements = $modx->getCollection($ar_typemap[$g[0]],$c);
         $elementType = ucfirst($g[0]);
 		foreach ($elements as $element) {
