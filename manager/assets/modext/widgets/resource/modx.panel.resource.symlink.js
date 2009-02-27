@@ -219,7 +219,7 @@ MODx.panel.SymLink = function(config) {
                         xtype: 'hidden'
                         ,name: 'class_key'
                         ,id: 'modx-resource-class-key'
-                        ,value: config.record.class_key || 'modDocument'
+                        ,value: config.record.class_key || 'modSymLink'
                         
                     },{
                         xtype: 'hidden'

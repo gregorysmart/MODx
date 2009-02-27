@@ -36,9 +36,10 @@ MODx.panel.PropertySet = function(config) {
                     ,style:'padding:10px;'
                     ,layout: 'form'
                     ,border: false
+                    ,autoHeight: true
                     ,items: [{
-                        xtype: 'modx-grid-property-set-properties'
-                        ,preventRender: true
+                        id: 'modx-grid-property-set-properties-ct'
+                        ,autoHeight: true
                     }]
                 }]
             }]
@@ -46,6 +47,17 @@ MODx.panel.PropertySet = function(config) {
     });
     MODx.panel.PropertySet.superclass.constructor.call(this,config);
     Ext.getCmp('modx-element-tree-panel').expand();
+    
+    /* load after b/c of safari/ie focus bug */
+    (function() {
+    MODx.load({
+        xtype: 'modx-grid-property-set-properties'
+        ,id: 'modx-grid-element-properties'
+        ,xtype: 'modx-grid-property-set-properties'
+        ,autoHeight: true
+        ,renderTo: 'modx-grid-property-set-properties-ct'
+    });
+    }).defer(50,this);
 };
 Ext.extend(MODx.panel.PropertySet,MODx.FormPanel);
 Ext.reg('modx-panel-property-sets',MODx.panel.PropertySet);
