@@ -85,7 +85,6 @@ MODx.panel.SymLink = function(config) {
                         ,id: 'modx-symlink-content'
                         ,width: 300
                         ,maxLength: 255
-                        ,value: 'http://'
                         
                     },{
                         xtype: 'textarea'
