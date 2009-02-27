@@ -367,6 +367,18 @@ MODx.loadAccordionPanels = function() {
             'focus': {fn:oc,scope:this}
         }
         
+    },{
+        xtype: 'datetimefield'
+        ,fieldLabel: _('resource_publishedon')
+        ,description: _('resource_publishedon_help')
+        ,name: 'publishedon'
+        ,id: 'modx-resource-publishedon'
+        ,allowBlank: true
+        ,dateWidth: 80
+        ,timeWidth: 80
+        ,listeners: {
+            'focus': {fn:oc,scope:this}
+        }     
     });
     if (MODx.config.publish_document) {
         va.push({

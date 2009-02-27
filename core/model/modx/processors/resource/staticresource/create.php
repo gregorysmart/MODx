@@ -163,7 +163,11 @@ if (!$modx->hasPermission('publish_document')) {
 	$_POST['published'] = 0;
 }
 
-$_POST['publishedon'] = $_POST['published'] ? time() : 0;
+if (!isset($_POST['publishedon']) || $_POST['publishedon'] == '') {
+    $_POST['publishedon'] = $_POST['published'] ? time() : 0;
+} else {
+    $_POST['publishedon'] = strtotime($_POST['publishedon']);
+}
 $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 
 /* set fields */

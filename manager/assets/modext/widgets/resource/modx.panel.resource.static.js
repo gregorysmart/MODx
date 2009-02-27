@@ -167,6 +167,15 @@ MODx.panel.Static = function(config) {
                         ,inputValue: 1
                         ,checked: MODx.config.publish_default == '1' ? true : false
                         
+                    },{
+                        xtype: 'datetimefield'
+                        ,fieldLabel: _('resource_publishedon')
+                        ,description: _('resource_publishedon_help')
+                        ,name: 'publishedon'
+                        ,id: 'modx-static-resource-publishedon'
+                        ,allowBlank: true
+                        ,dateWidth: 80
+                        ,timeWidth: 80
                     },(config.publish_document ? {
                         xtype: 'datefield'
                         ,fieldLabel: _('resource_publishdate')
