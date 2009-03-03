@@ -52,7 +52,7 @@ if ($type == 'root') {
         'namespace' => $id,
     ));
     $c->sortby('controller','ASC');
-    $c->limit($_REQUEST['limit'],$_REQUEST['start']);
+    /*$c->limit($_REQUEST['limit'],$_REQUEST['start']);*/
 
     $actions = $modx->getCollection('modAction',$c);
 
@@ -104,7 +104,7 @@ if ($type == 'root') {
         'parent' => $id,
     ));
     $c->sortby('controller','ASC');
-    $c->limit($_REQUEST['limit'],$_REQUEST['start']);
+    /*$c->limit($_REQUEST['limit'],$_REQUEST['start']);*/
 
     $actions = $modx->getCollection('modAction',$c);
     $cc = $modx->newQuery('modAction');

@@ -32,7 +32,7 @@ if ($_POST['parent'] == 0) {
 }
 
 if (!isset($_POST['namespace'])) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
-$namespace = $modx->getObject('modNamespace',$_POST['context']);
+$namespace = $modx->getObject('modNamespace',$_POST['namespace']);
 if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 $action = $modx->newObject('modAction');

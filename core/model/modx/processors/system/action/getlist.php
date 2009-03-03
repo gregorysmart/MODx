@@ -19,7 +19,7 @@ if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'controller';
 if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
 
 $c = $modx->newQuery('modAction');
-$c->sortby('context_key,'.$_REQUEST['sort'],$_REQUEST['dir']);
+$c->sortby('namespace,'.$_REQUEST['sort'],$_REQUEST['dir']);
 /* $c->limit($_REQUEST['limit'],$_REQUEST['start']); */
 $actions = $modx->getCollection('modAction',$c);
 
@@ -40,7 +40,7 @@ foreach ($actions as $action) {
 		}
 	}
 
-    $aa['controller'] = $aa['context_key'].' - '.$aa['controller'];
+    $aa['controller'] = $aa['namespace'].' - '.$aa['controller'];
 
 	$as[] = $aa;
 }

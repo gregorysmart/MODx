@@ -54,9 +54,8 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
                             ,success: this.refresh
                             ,record: r.object
                         });
-                    } else {
-                        this.windows.create_action.setValues(r.object);
                     }
+                    this.windows.create_action.setValues(r.object);
                     this.windows.create_action.show(e.target);
 				},scope:this}
 				,'failure': {fn:function(r) {
@@ -70,9 +69,8 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
                                 ,success: this.refresh
                                 ,record: r.object
                             });
-                        } else {
-                            this.windows.create_action.setValues(r.object);
                         }
+                        this.windows.create_action.setValues(r.object);
                         this.windows.create_action.show(e.target);
                         return false;
 					}
@@ -111,9 +109,8 @@ Ext.extend(MODx.tree.Action,MODx.tree.Tree,{
                             ,success: this.refresh
                             ,record: r.object
                         });
-                    } else {
-                        this.windows.update_action.setValues(r.object);
                     }
+                    this.windows.update_action.setValues(r.object);
                     this.windows.update_action.show(e.target);
 				},scope:this}
 			}
@@ -189,6 +186,7 @@ MODx.window.CreateAction = function(config) {
             ,id: 'modx-cact-loadheaders'
             ,xtype: 'checkbox'
             ,checked: true
+            ,inputValue: 1
         },{
             fieldLabel: _('lang_topics')
             ,description: _('lang_topics_desc')
