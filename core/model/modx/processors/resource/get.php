@@ -56,5 +56,9 @@ if ($ra['pub_date'] != '0' && $ra['pub_date'] != '' && $ra['pub_date'] != '0000-
 if ($ra['unpub_date'] != '0' && $ra['unpub_date'] != '' && $ra['unpub_date'] != '0000-00-00 00:00:00') {
     $ra['unpub_date'] = strftime('%Y-%m-%d %H:%M:%S',strtotime($ra['unpub_date']));
 } else $ra['unpub_date'] = '';
+if ($ra['publishedon'] != '0' && $ra['publishedon'] != '' && $ra['publishedon'] != '0000-00-00 00:00:00') {
+    $ra['publishedon'] = strftime('%Y-%m-%d %H:%M:%S',strtotime($ra['publishedon']));
+} else $ra['publishedon'] = '';
+
 
 return $modx->error->success('',$ra);
