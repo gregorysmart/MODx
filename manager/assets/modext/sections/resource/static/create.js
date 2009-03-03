@@ -41,10 +41,6 @@ MODx.page.CreateStatic = function(config) {
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
-        },{
-            xtype: 'modx-panel-resource-tv'
-            ,class_key: config.class_key
-            ,resource: 0
         }]
     });
     MODx.page.CreateStatic.superclass.constructor.call(this,config);

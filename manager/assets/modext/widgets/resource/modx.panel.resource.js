@@ -6,6 +6,7 @@
  */
 MODx.panel.Resource = function(config) {
     config = config || {};
+    
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
@@ -195,7 +196,6 @@ MODx.panel.Resource = function(config) {
                     ,resource: config.resource
                     ,class_key: config.record.class_key
                     ,template: config.record.template
-                    
                 },(config.access_permissions ? {
                     id: 'modx-resource-access-permissions'
                     ,collapsed: false
@@ -287,19 +287,17 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     ,templateWarning: function() {
         var t = Ext.getCmp('modx-resource-template');
         if (!t) { return false; }
-        // if selection isn't the current value (originalValue), then show dialog
         if(t.getValue() != t.originalValue) {
             Ext.Msg.confirm(_('warning'), _('resource_change_template_confirm'), function(e) {
                 if (e == 'yes') {
                     var tvpanel = Ext.getCmp('modx-panel-resource-tv');
                     if(tvpanel && tvpanel.body) {
-                        // update the Template Variables tab
                         this.tvum = tvpanel.body.getUpdater();
                         this.tvum.update({
                             url: 'index.php?a='+MODx.action['resource/tvs']
                             ,params: {
                                 class_key: this.config.record.class_key
-                                ,resource: this.config.resource
+                                ,resource: (this.config.resource ? this.config.resource : 0)
                                 ,template: t.getValue()
                             }
                             ,discardUrl: true
@@ -307,7 +305,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                             ,nocache: true
                         });
                     }
-                    t.originalValue = t.getValue(); // so that the next reset will work logically
+                    t.originalValue = t.getValue();
                 } else {
                     t.reset();
                 }

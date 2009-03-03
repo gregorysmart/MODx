@@ -50,10 +50,6 @@ MODx.page.CreateResource = function(config) {
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
             ,publish_document: config.publish_document
-        },{
-            xtype: 'modx-panel-resource-tv'
-            ,class_key: config.class_key
-            ,resource: 0
         }]
     });
     MODx.page.CreateResource.superclass.constructor.call(this,config);
