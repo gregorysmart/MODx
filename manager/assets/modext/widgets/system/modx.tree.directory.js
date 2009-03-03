@@ -25,6 +25,10 @@ MODx.tree.Directory = function(config) {
         ,primaryKey: 'dir'
 	});
 	MODx.tree.Directory.superclass.constructor.call(this,config);
+    this.addEvents({
+        'beforeUpload': true
+        ,'afterUpload': true
+    });
 };
 Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 	windows: {}
@@ -76,6 +80,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
     ,onAllFinished:function() {
         var node = this.cm.activeNode;
         (node.isLeaf() ? node.parentNode : node).reload();
+        this.fireEvent('afterUpload',node);
     } // eo function onAllFinished
     
     ,onBeforeUpload:function(uploadPanel) {
@@ -85,7 +90,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
             path = path.replace(/\/[^\/]+$/, '', path);
         }
         this.uploader.setPath(path);
-
+        this.fireEvent('beforeUpload',node);
     } // eo function onBeforeUpload
     
     ,getPath:function(node) {

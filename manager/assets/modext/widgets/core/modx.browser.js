@@ -55,6 +55,9 @@ MODx.browser.Window = function(config) {
         ,hideFiles: config.hideFiles || false
         ,ident: this.ident
         ,rootVisible: config.rootVisible
+        ,listeners: {
+            'afterUpload': {fn:function() { this.view.run(); },scope:this}
+        }
     });
     this.tree.on('click',function(node,e) {
         this.load(node.id);

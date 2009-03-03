@@ -24,6 +24,7 @@ MODx.panel.ImageTV = function(config) {
             ,name: 'tv'+config.tv
             ,id: 'tv'+config.tv
             ,value: config.value
+            ,hideFiles: true
             ,listeners: {
                 'change': {fn:triggerDirtyField,scope:this}
                 ,'select': {fn:function(data) {
