@@ -100,54 +100,52 @@ if (empty($_POST['unpub_date'])) {
 }
 
 
-$tmplvars = array();
-$c = new xPDOCriteria($modx,'
-    SELECT
-        DISTINCT tv.*,
-        tv.default_text AS value
-    FROM '.$modx->getTableName('modTemplateVar').' AS tv
-        INNER JOIN '.$modx->getTableName('modTemplateVarTemplate').' AS tvtpl
-        ON tvtpl.tmplvarid = tv.id
-    WHERE
-        tvtpl.templateid = :template
-    ORDER BY tv.rank
-',array(
-    ':template' => $_POST['template']
-));
-$tvs = $modx->getCollection('modTemplateVar',$c);
+if ($_POST['template'] && ($template = $modx->getObject('modTemplate', $_POST['template']))) {
+    $tmplvars = array();
+    $c = $modx->newQuery('modTemplateVar');
+    $c->select('DISTINCT modTemplateVar.*, modTemplateVar.default_text AS value');
+    $c->innerJoin('modTemplateVarTemplate','modTemplateVarTemplate');
+    $c->where(array(
+        'modTemplateVarTemplate.templateid' => $_POST['template'],
+    ));
+    $c->sortby('modTemplateVar.rank');
 
-foreach ($tvs as $tv) {
-    $tmplvar = '';
-    if ($tv->get('type') == 'url') {
-        $tmplvar = $_POST['tv'.$tv->get('id')];
-        if ($_POST["tv" . $row['name'] . '_prefix'] != '--') {
-            $tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
-            $tmplvar = $_POST['tv'.$tv->get('id').'_prefix'].$tmplvar;
-        }
-    } elseif ($tv->get('type') == 'file') {
-        $tmplvar = $_POST['tv'.$tv->get('id')];
-    } else {
-        if (is_array($_POST['tv'.$tv->get('id')])) {
-            /* handles checkboxes & multiple selects elements */
-            $feature_insert = array ();
-            $lst = $_POST['tv'.$tv->get('id')];
-            while (list($featureValue, $feature_item) = each($lst)) {
-                $feature_insert[count($feature_insert)] = $feature_item;
+    $tvs = $modx->getCollection('modTemplateVar',$c);
+
+    foreach ($tvs as $tv) {
+        $tmplvar = '';
+        if ($tv->get('type') == 'url') {
+            $tmplvar = $_POST['tv'.$tv->get('id')];
+            if ($_POST['tv' . $row['name'] . '_prefix'] != '--') {
+                $tmplvar = str_replace(array('ftp://','http://'),'', $tmplvar);
+                $tmplvar = $_POST['tv'.$tv->get('id').'_prefix'].$tmplvar;
             }
-            $tmplvar = implode('||',$feature_insert);
+        } elseif ($tv->get('type') == 'file') {
+            $tmplvar = $_POST['tv'.$tv->get('id')];
         } else {
-            $tmplvar = $_POST['tv'.$tv->id];
+            if (is_array($_POST['tv'.$tv->get('id')])) {
+                /* handles checkboxes & multiple selects elements */
+                $feature_insert = array ();
+                $lst = $_POST['tv'.$tv->get('id')];
+                while (list($featureValue, $feature_item) = each($lst)) {
+                    $feature_insert[count($feature_insert)] = $feature_item;
+                }
+                $tmplvar = implode('||',$feature_insert);
+            } else {
+                $tmplvar = $_POST['tv'.$tv->get('id')];
+            }
+        }
+        /* save value if it was modified */
+        if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
+            $tvr = $modx->newObject('modTemplateVarResource');
+            $tvr->set('tmplvarid',$tv->get('id'));
+            $tvr->set('value',$tmplvar);
+            $tmplvars[] = $tvr;
         }
     }
-    /* save value if it was mopdified */
-    if (in_array($tv->get('id'), $_POST['variablesmodified'])) {
-        if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
-            $tmplvars[$tv->get('id')] = array (
-                $tv->get('id'),
-                $tmplvar,
-            );
-        } else $tmplvars[$tv->get('id')] = $tv->get('id');
-    }
+    $resource->addMany($tmplvars);
+} else {
+    $_POST['template'] = 0;
 }
 
 /* invoke OnBeforeDocFormSave event */
@@ -189,19 +187,6 @@ if ($resource->save() == false) {
     return $modx->error->failure($modx->lexicon('resource_err_save'));
 }
 
-
-/* handle tmplvars */
-foreach ($tmplvars as $field => $value) {
-	if (is_array($value)) {
-		$tvId = $value[0];
-		$tvVal = $value[1];
-		$tvc = $modx->newObject('modTemplateVarResource');
-		$tvc->set('tmplvarid',$value[0]);
-		$tvc->set('contentid',$resource->get('id'));
-		$tvc->set('value',$value[1]);
-		$tvc->save();
-	}
-}
 
 if (is_array($_POST['docgroups'])) {
     foreach ($_POST['docgroups'] as $dgkey => $value) {

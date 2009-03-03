@@ -194,15 +194,14 @@ if ($_POST['template'] && ($template = $modx->getObject('modTemplate', $_POST['t
             }
         }
         /* save value if it was modified */
-        if (in_array($tv->get('id'), $_POST['variablesmodified'])) {
-            if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
-                $tmplvars[$tv->get('id')] = array (
-                    $tv->get('id'),
-                    $tmplvar,
-                );
-            } else $tmplvars[$tv->get('id')] = $tv->get('id');
+        if (strlen($tmplvar) > 0 && $tmplvar != $tv->get('default_text')) {
+            $tvr = $modx->newObject('modTemplateVarResource');
+            $tvr->set('tmplvarid',$tv->get('id'));
+            $tvr->set('value',$tmplvar);
+            $tmplvars[] = $tvr;
         }
     }
+    $resource->addMany($tmplvars);
 } else {
     $_POST['template'] = 0;
 }
@@ -269,21 +268,6 @@ if (isset($_POST['resource_groups'])) {
             if ($rgr == null) continue;
             $rgr->remove();
         }
-    }
-}
-
-/* save TVs */
-if (isset($tmplvars) && !empty($tmplvars)) {
-    foreach ($tmplvars as $field => $value) {
-    	if (is_array($value)) {
-    		$tvId = $value[0];
-    		$tvVal = $value[1];
-    		$tvc = $modx->newObject('modTemplateVarResource');
-    		$tvc->set('tmplvarid',$value[0]);
-    		$tvc->set('contentid',$resource->get('id'));
-    		$tvc->set('value',$value[1]);
-    		$tvc->save();
-    	}
     }
 }
 
