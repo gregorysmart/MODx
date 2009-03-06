@@ -83,8 +83,52 @@ class modStaticResource extends modResource {
         $byte_limit= $this->_bytes($memory_limit) * .5;
         $filesize= filesize($file);
         if ($this->getOne('ContentType')) {
+            $type= $this->ContentType->get('mime_type') ? $this->ContentType->get('mime_type') : 'text/html';
+            $header= 'Content-Type: ' . $type;
+            if (!$this->ContentType->get('binary')) {
+                $charset= isset ($this->xpdo->config['modx_charset']) ? $this->xpdo->config['modx_charset'] : 'UTF-8';
+                $header .= '; charset=' . $charset;
+            }
+            header($header);
+            if ($this->ContentType->get('binary')) {
+                header('Content-Transfer-Encoding: binary');
+            }
+            if ($filesize > 0) {
+                $header= 'Content-Length: ' . $filesize;
+                header($header);
+            }
             if ($this->ContentType->get('binary') || $filesize > $byte_limit) {
-                while (ob_end_clean()) {}
+                if ($alias= array_search($this->xpdo->resourceIdentifier, $this->xpdo->aliasMap)) {
+                    $name= basename($alias);
+                } elseif ($this->get('alias')) {
+                    $name= $this->get('alias');
+                    if ($ext= $this->ContentType->getExtension()) {
+                        $name .= ".{$ext}";
+                    }
+                } elseif ($name= $this->get('pagetitle')) {
+                    $name= $this->cleanAlias($name);
+                    if ($ext= $this->ContentType->getExtension()) {
+                        $name .= ".{$ext}";
+                    }
+                } else {
+                    $name= 'download';
+                    if ($ext= $this->ContentType->getExtension()) {
+                        $name .= ".{$ext}";
+                    }
+                }
+                $header= 'Cache-Control: public';
+                header($header);
+                $header= 'Content-Disposition: ' . $this->get('content_dispo') ? 'inline' : 'attachment' . '; filename=' . $name;
+                header($header);
+                $header= 'Vary: User-Agent';
+                header($header);
+                if ($customHeaders= $this->ContentType->get('headers')) {
+                    foreach ($customHeaders as $headerKey => $headerString) {
+                        header($headerString);
+                        if (strpos($headerString, 'Content-Disposition:') !== false) $dispositionSet= true;
+                    }
+                }
+                while (@ob_end_clean()) {}
                 readfile($file);
                 die();
             }
