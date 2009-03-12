@@ -57,6 +57,10 @@ function getSubMenus($m) {
 }
 $modx->smarty->assign('menus',$menus);
 
+if (!empty($modx->sjscripts)) {
+    $modx->smarty->assign('cssjs',$modx->sjscripts);
+}
+
 $welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
 $modx->smarty->assign('welcome_back',$welcome_back);
 

@@ -46,6 +46,9 @@
 
 <script src="{$_config.manager_url}assets/modext/core/modx.layout.js" type="text/javascript"></script>
 
+{foreach from=$cssjs item=scr}
+{$scr}
+{/foreach}
 
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/ie.css" />
@@ -87,8 +90,8 @@ Ext.onReady(function() {
             <div class="tl"></div><div class="tr"></div>
             <div id="modx-accordion-content">                    
                 <div id="modx_rt_div"><div id="modx_resource_tree"></div></div>
-	            <div id="modx_et_div"><div id="modx_element_tree"></div></div>
-	            <div id="modx_ft_div"><div id="modx_file_tree"></div></div>                
+                <div id="modx_et_div"><div id="modx_element_tree"></div></div>
+                <div id="modx_ft_div"><div id="modx_file_tree"></div></div>                
             </div>            
             <div class="bl"></div><div class="br"></div> 
         </div>

@@ -43,17 +43,13 @@ class modManagerResponse extends modResponse {
                 $this->modx->smarty->assign('_ctx',$this->modx->context->get('key'));
 
                 $this->body = '';
-                if ($act['haslayout']) {
-                    $this->body .= include $this->modx->config['manager_path'] . 'controllers/header.php';
-                }
 
                 /* find context path */
                 if (!isset($act['namespace']) || $act['namespace'] == 'core') {
                     $f = $act['namespace_path'].'controllers/'.$act['controller'];
 
                 } else { /* if a custom 3rd party path */
-                     $this->modx->smarty->setTemplatePath($act['namespace_path'].'core/templates/');
-                     $f = $act['namespace_path'].'core/controllers/'.$act['controller'];
+                     $f = $act['namespace_path'].$act['controller'];
                 }
 
                 /* set context url and path */
@@ -64,14 +60,24 @@ class modManagerResponse extends modResponse {
                     $f .= 'index';
                 }
                 /* append .php */
+                $cbody = '';
                 if (file_exists($f.'.php')) {
                     $f = $f.'.php';
-                    $this->body .= include $f;
+                    $cbody .= include $f;
                 /* for actions that don't have trailing / but reference index */
                 } elseif (file_exists($f.'/index.php')) {
                     $f = $f.'/index.php';
-                    $this->body .= include $f;
+                    $cbody .= include $f;
+                } else {
+                    $this->modx->log(MODX_LOG_LEVEL_FATAL,'Could not find action file at: '.$f);
                 }
+
+                if ($act['haslayout']) {
+                    $this->body .= include $this->modx->config['manager_path'] . 'controllers/header.php';
+                }
+                /* assign later to allow for css/js registering */
+                $this->body .= $cbody;
+
                 if ($act['haslayout']) {
                     /* reset path to core modx path for header/footer */
                     $this->modx->smarty->setTemplatePath($modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/');
