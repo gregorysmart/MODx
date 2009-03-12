@@ -1041,7 +1041,7 @@ class modX extends xPDO {
         if (strpos(strtolower($src), "<style") !== false || strpos(strtolower($src), "<link") !== false) {
             $this->sjscripts[count($this->sjscripts)]= $src;
         } else {
-            $this->sjscripts[count($this->sjscripts)]= '<!-- MODx registered -->' . "\n" . '  <link rel="stylesheet" href="' . $src . '" type="text/css" />';
+            $this->sjscripts[count($this->sjscripts)]= '<link rel="stylesheet" href="' . $src . '" type="text/css" />';
         }
     }
 
@@ -1058,11 +1058,13 @@ class modX extends xPDO {
             if (isset ($this->loadedjscripts[$src]))
                 return '';
             $this->loadedjscripts[$src]= true;
-            if ($plaintext == true)
+            if ($plaintext == true) {
                 $this->sjscripts[count($this->sjscripts)]= $src;
-            elseif (strpos(strtolower($src), "<script") !== false) $this->sjscripts[count($this->sjscripts)]= $src;
-            else
-                $this->sjscripts[count($this->sjscripts)]= '<!-- MODx registered -->' . "\n" . '  <script type="text/javascript" src="' . $src . '"></script>';
+            } elseif (strpos(strtolower($src), "<script") !== false) {
+                $this->sjscripts[count($this->sjscripts)]= $src;
+            } else {
+                $this->sjscripts[count($this->sjscripts)]= '<script type="text/javascript" src="' . $src . '"></script>';
+            }
         }
     }
 
@@ -1078,11 +1080,13 @@ class modX extends xPDO {
         if (isset ($this->loadedjscripts[$src]))
             return '';
         $this->loadedjscripts[$src]= true;
-        if ($plaintext == true)
+        if ($plaintext == true) {
             $this->jscripts[count($this->jscripts)]= $src;
-        elseif (strpos(strtolower($src), "<script") !== false) $this->jscripts[count($this->jscripts)]= $src;
-        else
-            $this->jscripts[count($this->jscripts)]= '<!-- MODx registered -->' . "\n" . '  <script type="text/javascript" src="' . $src . '"></script>';
+        } elseif (strpos(strtolower($src), "<script") !== false) {
+            $this->jscripts[count($this->jscripts)]= $src;
+        } else {
+            $this->jscripts[count($this->jscripts)]= '<script type="text/javascript" src="' . $src . '"></script>';
+        }
     }
 
     /**
