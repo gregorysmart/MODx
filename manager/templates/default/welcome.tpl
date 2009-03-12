@@ -86,23 +86,3 @@
 	</tbody>
 	</table>
 </div>
-
-<script type="text/javascript" src="assets/modext/widgets/modx.panel.welcome.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.user.recent.resource.js"></script>
-<script type="text/javascript" src="assets/modext/sections/welcome.js"></script>
-{literal}
-<script type="text/javascript">
-// <![CDATA[
-Ext.onReady(function() {
-	MODx.load({
-	{/literal}
-		xtype: 'modx-page-welcome'
-		,site_name: '{$_config.site_name|escape}'
-		,config_display: {if $config_display}true{else}false{/if}
-		,user: '{$modx->user->id}'
-	{literal}
-	});
-});
-// ]]>
-</script>
-{/literal}

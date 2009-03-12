@@ -66,6 +66,28 @@ if (is_array($_POST['user_groups'])) {
 $modx->smarty->assign('usergroups',$usergroups);
 $modx->smarty->assign('groupsarray',$groupsarray);
 
-
+/* assign user to smarty */
 $modx->smarty->assign('user',$user);
+
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.grid.settings.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/security/modx.grid.user.settings.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/security/modx.grid.user.group.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/security/modx.panel.user.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/security/user/update.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-user-update"
+        ,user: "'.$user->get('id').'"
+        ,manager_language: "'.$user->get('language').'"
+        ,which_editor: "'.$user->settings['which_editor'].'"
+    });
+});
+// ]]>
+</script>');
+
 return $modx->smarty->fetch('security/user/update.tpl');

@@ -106,7 +106,3 @@
         </table>
     </div>
 </div>
-
-<script type="text/javascript" src="assets/modext/widgets/system/modx.grid.databasetables.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.grid.resource.active.js"></script>
-<script type="text/javascript" src="assets/modext/sections/system/info.js"></script>

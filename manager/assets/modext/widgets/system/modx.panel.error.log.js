@@ -1,6 +1,5 @@
 MODx.panel.ErrorLog = function(config) {
     config = config || {};
-    Ext.getCmp('modx-layout').removeAccordion();
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'system/errorlog.php'
         ,id: 'modx-panel-error-log'
@@ -36,6 +35,7 @@ MODx.panel.ErrorLog = function(config) {
         }]
     });
     MODx.panel.ErrorLog.superclass.constructor.call(this,config);
+    setTimeout("Ext.getCmp('modx-layout').removeAccordion();",1000);
     this.setup();
 };
 Ext.extend(MODx.panel.ErrorLog,MODx.FormPanel,{

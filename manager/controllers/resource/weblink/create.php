@@ -96,6 +96,44 @@ if (is_array($onDocFormRender)) {
 }
 $modx->smarty->assign('onDocFormRender',$onDocFormRender);
 
+/* assign resource to smarty */
 $modx->smarty->assign('resource',$resource);
+
+
+/* check permissions */
+$publish_document = $modx->hasPermission('publish_document');
+$edit_doc_metatags = $modx->hasPermission('edit_doc_metatags');
+$access_permissions = $modx->hasPermission('access_permissions');
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/core/modx.view.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/util/datetime.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.browser.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/system/modx.tree.directory.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.tv.renders.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.grid.resource.security.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.panel.resource.tv.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.panel.resource.weblink.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/resource/weblink/create.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+MODx.config.publish_document = "'.$publish_document.'";
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-weblink-create"
+        ,template: "'.($parent != null ? $parent->get('template') : $modx->config['default_template']).'"
+        ,content_type: "1"
+        ,class_key: "'.(isset($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modWebLink').'"
+        ,context_key: "'.(isset($_REQUEST['context_key']) ? $_REQUEST['context_key'] : 'web').'"
+        ,parent: "'.(isset($_REQUEST['parent']) ? $_REQUEST['parent'] : '0').'"
+        ,which_editor: "'.$which_editor.'"
+        ,edit_doc_metatags: "'.$edit_doc_metatags.'"
+        ,access_permissions: "'.$access_permissions.'"
+        ,publish_document: "'.$publish_document.'"
+    });
+});
+// ]]>
+</script>');
 
 return $modx->smarty->fetch('resource/weblink/create.tpl');

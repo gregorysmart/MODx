@@ -115,7 +115,7 @@ MODx.panel.Template = function(config) {
         }
     });
     MODx.panel.Template.superclass.constructor.call(this,config);
-    Ext.getCmp('modx-element-tree-panel').expand();
+    setTimeout("Ext.getCmp('modx-element-tree-panel').expand();",1000);
 };
 Ext.extend(MODx.panel.Template,MODx.FormPanel,{
     initialized: false

@@ -9,7 +9,6 @@
 MODx.panel.Lexicon = function(config) {
     config = config || {};
     
-    Ext.getCmp('modx-layout').removeAccordion();
     Ext.applyIf(config,{
         id: 'modx-panel-system-settings'
         ,bodyStyle: ''

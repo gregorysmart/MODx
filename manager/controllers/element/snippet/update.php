@@ -14,12 +14,6 @@ if ($snippet->get('locked') && !$modx->hasPermission('edit_locked')) {
     return $modx->error->failure($modx->lexicon('snippet_err_locked'));
 }
 
-$snippet->category = $snippet->getOne('modCategory');
-
-/* get collection of categories */
-$categories = $modx->getCollection('modCategory');
-$modx->smarty->assign('categories',$categories);
-
 /* invoke OnSnipFormPrerender event */
 $onSnipFormPrerender = $modx->invokeEvent('OnSnipFormPrerender',array('id' => 0));
 if (is_array($onSnipFormPrerender)) $onSnipFormPrerender = implode('',$onSnipFormPrerender);
@@ -31,8 +25,31 @@ if (is_array($onSnipFormRender)) $onSnipFormRender = implode('',$onSnipFormRende
 $modx->smarty->assign('onSnipFormRender',$onSnipFormRender);
 
 /* check unlock default element properties permission */
-$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+$unlock_element_properties = $modx->hasPermission('unlock_element_properties') ? 1 : 0;
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.grid.local.property.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.snippet.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/snippet/common.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/snippet/update.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-snippet-update"
+        ,id: "'.$snippet->get('id').'"
+        ,category: "'.$snippet->get('category').'"
+    });
+});
+var onSnipFormRender = "'.$onSnipFormRender.'";
+MODx.perm.unlock_element_properties = "'.$unlock_element_properties.'";
+// ]]>
+</script>');
 
 /* assign snippet to parser and display template */
 $modx->smarty->assign('snippet',$snippet);
+
 return $modx->smarty->fetch('element/snippet/update.tpl');

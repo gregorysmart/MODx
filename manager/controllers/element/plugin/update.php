@@ -25,6 +25,33 @@ $modx->smarty->assign('onPluginFormRender',$onPluginFormRender);
 /* check unlock default element properties permission */
 $modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
 
-/* load plugin into parser and display */
+/* load plugin into parser */
 $modx->smarty->assign('plugin',$plugin);
+
+/* check unlock default element properties permission */
+$unlock_element_properties = $modx->hasPermission('unlock_element_properties') ? 1 : 0;
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.grid.local.property.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.plugin.event.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.plugin.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/plugin/common.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/plugin/update.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-plugin-update"
+        ,id: "'.$plugin->get('id').'"
+        ,category: "'.$plugin->get('category').'"
+    });
+});
+var onPluginFormRender = "'.$onPluginFormRender.'";
+MODx.perm.unlock_element_properties = "'.$unlock_element_properties.'";
+// ]]>
+</script>');
+
 return $modx->smarty->fetch('element/plugin/update.tpl');

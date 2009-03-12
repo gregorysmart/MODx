@@ -11,7 +11,7 @@ if (!$modx->hasPermission('new_template')) return $modx->error->failure($modx->l
 if (isset($_REQUEST['category'])) {
 	$category = $modx->getObject('modCategory',$_REQUEST['category']);
 	if ($category != null) $modx->smarty->assign('category',$category);
-}
+} else { $category = null; }
 
 /* invoke OnTempFormPrerender event */
 $onTempFormPrerender = $modx->invokeEvent('OnTempFormPrerender',array('id' => 0));
@@ -24,7 +24,28 @@ if (is_array($onTempFormRender)) $onTempFormRender = implode('',$onTempFormRende
 $modx->smarty->assign('onTempFormRender',$onTempFormRender);
 
 /* check unlock default element properties permission */
-$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+$unlock_element_properties = $modx->hasPermission('unlock_element_properties') ? 1 : 0;
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.grid.local.property.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.template.tv.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.template.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/template/create.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-template-create"
+        ,category: "'.($category != null ? $category->get('id') : ''). '"
+    });
+});
+var onTempFormRender = "'.$onTempFormRender.'";
+MODx.perm.unlock_element_properties = "'.$unlock_element_properties.'";
+// ]]>
+</script>');
 
 /* display template */
 return $modx->smarty->fetch('element/template/create.tpl');

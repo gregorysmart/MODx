@@ -112,7 +112,7 @@ MODx.panel.Snippet = function(config) {
         }
     });
     MODx.panel.Snippet.superclass.constructor.call(this,config);
-    Ext.getCmp('modx-element-tree-panel').expand();
+    setTimeout("Ext.getCmp('modx-element-tree-panel').expand();",1000);
 };
 Ext.extend(MODx.panel.Snippet,MODx.FormPanel,{
     initialized: false

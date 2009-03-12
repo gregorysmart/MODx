@@ -60,5 +60,3 @@
 </div>
 
 </div>
-
-<script type="text/javascript" src="assets/modext/sections/system/help.js"></script>

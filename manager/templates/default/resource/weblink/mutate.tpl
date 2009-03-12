@@ -1,17 +1,6 @@
 <div id="modx-panel-weblink"></div>
 
 {include file='resource/_javascript.tpl'}
-<script type="text/javascript" src="{$_config.manager_url}assets/modext/util/datetime.js"></script>
-<script type="text/javascript" src="{$_config.manager_url}assets/modext/core/modx.view.js"></script>
-<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/core/modx.browser.js"></script>
-<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/system/modx.tree.directory.js"></script>
-<script type="text/javascript" src="{$_config.manager_url}assets/modext/widgets/element/modx.panel.tv.renders.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.tv.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.panel.resource.weblink.js"></script>
-<script type="text/javascript" src="assets/modext/widgets/resource/modx.grid.resource.security.js"></script>
-
-<form id="mutate_document" method="post" enctype="multipart/form-data" action="{$_config.connectors_url}resource/index.php" onsubmit="return false;">
-
 
 {modblock name='ab'}{/modblock}
 
@@ -42,4 +31,3 @@
 <br /><br />
 
 {$onDocFormRender}
-</form>

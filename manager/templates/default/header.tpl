@@ -56,17 +56,6 @@
 </head>
 <body>
 
-
-<script type="text/javascript">
-{literal}
-Ext.onReady(function() {    
-    MODx.load({ 
-        xtype: 'modx-layout'
-        ,accordionPanels: MODx.accordionPanels || [] 
-    });
-});
-{/literal}
-</script>
 <div id="modx-container">
     <div id="modx-topbar">
         <div id="modx-logo"><img src="templates/{$_config.manager_theme}/images/style/modx_logo_header.png" alt="" /></div>

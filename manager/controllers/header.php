@@ -57,11 +57,25 @@ function getSubMenus($m) {
 }
 $modx->smarty->assign('menus',$menus);
 
+$welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
+$modx->smarty->assign('welcome_back',$welcome_back);
+
+
+/* register JS scripts */
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-layout"
+        ,accordionPanels: MODx.accordionPanels || []
+    });
+});
+</script>');
+
+
+
 if (!empty($modx->sjscripts)) {
     $modx->smarty->assign('cssjs',$modx->sjscripts);
 }
-
-$welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
-$modx->smarty->assign('welcome_back',$welcome_back);
 
 return $modx->smarty->fetch('header.tpl');

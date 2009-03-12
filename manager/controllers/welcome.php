@@ -69,4 +69,23 @@ foreach (array_keys($rss->items) as $key) {
 }
 $modx->smarty->assign('securefeed',$rss->items);
 
+/* load JS scripts for page */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/modx.panel.welcome.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/security/modx.grid.user.recent.resource.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/welcome.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-welcome"
+        ,site_name: "'.htmlentities($modx->config['site_name']).'"
+        ,config_display: '.($config_display ? 'true': 'false').'
+        ,user: "'.$modx->user->get('id').'"
+    });
+});
+// ]]>
+</script>');
+
+
 return $modx->smarty->fetch('welcome.tpl');

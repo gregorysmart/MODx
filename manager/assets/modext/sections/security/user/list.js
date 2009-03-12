@@ -12,7 +12,6 @@ Ext.onReady(function() {
  */
 MODx.page.Users = function(config) {
 	config = config || {};
-    Ext.getCmp('modx-layout').removeAccordion();
 	Ext.applyIf(config,{
 		components: [{
             xtype: 'modx-panel-users'
@@ -20,6 +19,7 @@ MODx.page.Users = function(config) {
         }]
 	});
 	MODx.page.Users.superclass.constructor.call(this,config);
+    setTimeout("Ext.getCmp('modx-layout').removeAccordion();",1000);
 };
 Ext.extend(MODx.page.Users,MODx.Component);
 Ext.reg('modx-page-users',MODx.page.Users);

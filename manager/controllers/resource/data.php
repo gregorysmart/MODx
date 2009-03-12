@@ -57,6 +57,26 @@ if (file_exists($cache_file)) {
     }
 }
 
+/* assign resource to smarty */
 $modx->smarty->assign('resource',$resource);
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.panel.resource.data.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/resource/data.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-resource-data"
+        ,id: "'.$resource->get('id').'"
+        ,context_key: "'.$resource->get('context_key').'"
+        ,class_key: "'.$resource->get('class_key').'"
+        ,pagetitle: "'.$resource->get('pagetitle').'"
+        ,show_preview: "'.($modx->config['show_preview'] ? 'true' : 'false').'"
+    });
+});
+// ]]>
+</script>');
 
 return $modx->smarty->fetch('resource/data.tpl');

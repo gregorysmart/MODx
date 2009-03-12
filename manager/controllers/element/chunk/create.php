@@ -11,7 +11,7 @@ if (!$modx->hasPermission('new_chunk')) return $modx->error->failure($modx->lexi
 if (isset($_REQUEST['category'])) {
 	$category = $modx->getObject('modCategory',$_REQUEST['category']);
 	if ($category != null) $modx->smarty->assign('category',$category);
-}
+} else { $category = null; }
 
 /* if RTE is being reset, switch */
 $which_editor = isset($_POST['which_editor']) ? $_POST['which_editor'] : 'none';
@@ -44,8 +44,27 @@ if ($modx->config['use_editor'] == 1) {
 	$modx->smarty->assign('onRTEInit',$onRTEInit);
 }
 
-/* check unlock default element properties permission */
-$modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.grid.local.property.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.chunk.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/chunk/create.js');
+
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-chunk-create"
+        ,category: "'.(isset($category) && $category != null ? $category->get('id') : '').'"
+    });
+});
+var onChunkFormRender = "'.$onChunkFormRender.'";
+MODx.perm.unlock_element_properties = '.($modx->hasPermission('unlock_element_properties') ? 1 : 0).';
+// ]]>
+</script>');
+
 
 /* display template */
 return $modx->smarty->fetch('element/chunk/create.tpl');

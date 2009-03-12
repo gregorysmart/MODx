@@ -15,8 +15,6 @@ if ($tv->get('locked') && !$modx->hasPermission('edit_locked')) {
     return $modx->error->failure($modx->lexicon('tv_err_locked'));
 }
 
-$tv->category = $tv->getOne('modCategory');
-
 /* load templates */
 $templates = $modx->getCollection('modTemplate');
 foreach ($templates as $template) {
@@ -64,6 +62,32 @@ $modx->smarty->assign('onTVFormRender',$onTVFormRender);
 /* check unlock default element properties permission */
 $modx->smarty->assign('unlock_element_properties',$modx->hasPermission('unlock_element_properties') ? 1 : 0);
 
-/* assign TV to parser and display template */
+/* assign TV to parser */
 $modx->smarty->assign('tv',$tv);
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.grid.local.property.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.tv.template.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.grid.tv.security.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.element.properties.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.tv.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/tv/common.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/element/tv/update.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-tv-update"
+        ,id: "'.$tv->get('id').'"
+        ,category: "'.$tv->get('category'). '"
+        ,type: "'.$tv->get('type').'"
+    });
+});
+var onTVFormRender = "'.$onTVFormRender.'";
+MODx.perm.unlock_element_properties = "'.$unlock_element_properties.'";
+// ]]>
+</script>');
+
 return $modx->smarty->fetch('element/tv/update.tpl');

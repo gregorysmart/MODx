@@ -43,4 +43,11 @@ foreach ($ausers as $user) {
 $modx->smarty->assign('ausers',$ausers);
 $modx->smarty->assign('now',strftime('%b %d, %Y %I:%M %p',time()));
 
+
+/* register JS scripts */
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/system/modx.grid.databasetables.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.grid.resource.active.js');
+$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/system/info.js');
+
+
 return $modx->smarty->fetch('system/info.tpl');

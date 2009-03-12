@@ -31,10 +31,6 @@ MODx.page.UpdateWebLink = function(config) {
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
-        },{
-            xtype: 'modx-grid-resource-security'
-            ,renderTo: 'modx-grid-resource-security'
-            ,resource: config.id
         }]
     	,loadStay: true
         ,buttons: [{

@@ -13,18 +13,3 @@
 </div>
 
 </div>
-
-<script type="text/javascript" src="assets/modext/widgets/security/modx.grid.user.recent.resource.js"></script>
-<script type="text/javascript" src="assets/modext/sections/security/profile/update.js"></script>
-{literal}
-<script type="text/javascript">
-// <![CDATA[
-Ext.onReady(function() {
-	MODx.load({
-		xtype: 'modx-page-profile'
-		,user: '{/literal}{$user->id}{literal}'
-	});
-});
-// ]]>
-</script>
-{/literal}
