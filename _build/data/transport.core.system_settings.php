@@ -760,3 +760,66 @@ $collection['81']->fromArray(array (
   'area' => 'caching',
   'editedon' => NULL,
 ), '', true, true);
+$collection['82']= $xpdo->newObject('modSystemSetting');
+$collection['82']->fromArray(array (
+  'key' => 'cache_handler',
+  'value' => 'xPDOFileCache',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
+$collection['83']= $xpdo->newObject('modSystemSetting');
+$collection['83']->fromArray(array (
+  'key' => 'cache_lexicon_topics',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
+$collection['84']= $xpdo->newObject('modSystemSetting');
+$collection['84']->fromArray(array (
+  'key' => 'cache_system_settings',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
+$collection['85']= $xpdo->newObject('modSystemSetting');
+$collection['85']->fromArray(array (
+  'key' => 'cache_context_settings',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
+$collection['86']= $xpdo->newObject('modSystemSetting');
+$collection['86']->fromArray(array (
+  'key' => 'cache_scripts',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
+$collection['87']= $xpdo->newObject('modSystemSetting');
+$collection['87']->fromArray(array (
+  'key' => 'cache_expires',
+  'value' => '0',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);
+$collection['88']= $xpdo->newObject('modSystemSetting');
+$collection['88']->fromArray(array (
+  'key' => 'cache_action_map',
+  'value' => '1',
+  'xtype' => 'combo-boolean',
+  'namespace' => 'core',
+  'area' => 'caching',
+  'editedon' => NULL,
+), '', true, true);

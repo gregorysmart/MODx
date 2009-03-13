@@ -7,7 +7,7 @@
 class modResource extends modAccessibleSimpleObject {
     /**
      * Represents the cacheable content for a resource.
-     * 
+     *
      * Note that this is not the raw source content, but the content that is the
      * result of processing cacheable tags within the raw source content.
      * @var string
@@ -35,7 +35,7 @@ class modResource extends modAccessibleSimpleObject {
      * The cache filename for the resource in the context.
      * @var string
      */
-    var $_cacheFileName= null;
+    var $_cacheKey= null;
     /**
      * Indicates if the site cache should be refreshed when saving changes.
      * @var boolean
@@ -48,7 +48,7 @@ class modResource extends modAccessibleSimpleObject {
     function __construct(& $xpdo) {
         parent :: __construct($xpdo);
         $this->_contextKey= isset ($this->xpdo->context) ? $this->xpdo->context->get('key') : 'web';
-        $this->_cacheFileName= "[contextKey]/resources/[id].cache.php";
+        $this->_cacheKey= "[contextKey]/resources/[id]";
     }
 
     /**
@@ -80,7 +80,7 @@ class modResource extends modAccessibleSimpleObject {
 
     /**
      * Gets the raw, unprocessed source content for a resource.
-     * 
+     *
      * @param array $options An array of options implementations can use to
      * accept language, revision identifiers, or other information to alter the
      * behavior of the method.
@@ -98,7 +98,7 @@ class modResource extends modAccessibleSimpleObject {
 
     /**
      * Set the raw source content for this element.
-     * 
+     *
      * @param mixed $content The source content; implementations can decide if
      * it can only be a string, or some other source from which to retrieve it.
      * @param array $options An array of options implementations can use to
@@ -133,16 +133,18 @@ class modResource extends modAccessibleSimpleObject {
     }
 
     /**
-     * Returns the cache filename for this instance in the current context.
+     * Returns the cache key for this instance in the current context.
      *
-     * @return string The cache filename.
+     * @return string The cache key.
      */
-    function getCacheFileName() {
-        if ($this->get('id') && $this->_contextKey && strpos($this->_cacheFileName, '[') !== false) {
-            $this->_cacheFileName= str_replace('[contextKey]', $this->_contextKey, $this->_cacheFileName);
-            $this->_cacheFileName= str_replace('[id]', $this->get('id'), $this->_cacheFileName);
+    function getCacheKey() {
+        $id = $this->get('id') ? (string) $this->get('id') : '0';
+        $context = $this->_contextKey ? $this->_contextKey : 'web';
+        if (strpos($this->_cacheKey, '[') !== false) {
+            $this->_cacheKey= str_replace('[contextKey]', $this->_contextKey, $this->_cacheKey);
+            $this->_cacheKey= str_replace('[id]', (string) $this->get('id'), $this->_cacheKey);
         }
-        return $this->_cacheFileName;
+        return $this->_cacheKey;
     }
 
     /**
@@ -173,7 +175,7 @@ class modResource extends modAccessibleSimpleObject {
                 '`tvc`.contentid' => $this->id,
             ));
             $c->sortby('`tvtpl`.`rank`,`modTemplateVar`.`rank`');
-                        
+
             $collection = $this->xpdo->getCollection('modTemplateVar', $c);
         } else {
             $collection= parent :: getMany($class, $criteria);

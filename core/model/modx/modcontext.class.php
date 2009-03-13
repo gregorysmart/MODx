@@ -13,7 +13,7 @@ class modContext extends modAccessibleObject {
     var $documentMap= null;
     var $eventMap= null;
     var $pluginCache= null;
-    var $_cacheFileName= '[contextKey]/context.cache.php';
+    var $_cacheKey= '[contextKey]/context';
 
     function modContext(& $xpdo) {
         $this->__construct($xpdo);
@@ -22,7 +22,7 @@ class modContext extends modAccessibleObject {
         parent :: __construct($xpdo);
         $this->documentListing= & $this->resourceListing;
     }
-    
+
     /**
      * Prepare a context for use.
      *
@@ -35,22 +35,22 @@ class modContext extends modAccessibleObject {
      * @return boolean Indicates if the context was successfully prepared.
      */
     function prepare($regenerate= false) {
-        $rv= false;
+        $prepared= false;
         if ($this->config === null || $regenerate) {
-            $cacheManager= $this->xpdo->getCacheManager();
-            if (!$cacheFileName= $this->getCacheFileName()) {
-                return false;
-            }
-            if (!file_exists($this->xpdo->cachePath . $cacheFileName) || $regenerate) {
-                if ($cacheManager) {
-                    $cacheManager->generateContext($this->get('key'));
+            if ($this->xpdo->getCacheManager()) {
+                $context = array();
+                if ($regenerate || !($context = $this->xpdo->cacheManager->get($this->getCacheKey()))) {
+                    $context = $this->xpdo->cacheManager->generateContext($this->get('key'));
+                }
+                if (!empty($context)) {
+                    foreach ($context as $var => $val) {
+                        $this->$var = $val;
+                    }
+                    $prepared= true;
                 }
             }
-            if (!$rv= include ($this->xpdo->cachePath . $this->getCacheFileName())) {
-                $this->xpdo->log(XPDO_LOG_LEVEL_ERROR, 'Could not load context configuration file: ' . $this->xpdo->cachePath . $this->_cacheFileName);
-            }
         }
-        return (boolean) $rv;
+        return $prepared;
     }
 
     /**
@@ -58,11 +58,15 @@ class modContext extends modAccessibleObject {
      *
      * @return string The cache filename.
      */
-    function getCacheFileName() {
-        $this->_cacheFileName= str_replace('[contextKey]', $this->get('key'), $this->_cacheFileName);
-        return $this->_cacheFileName;
+    function getCacheKey() {
+        if ($this->get('key')) {
+            $this->_cacheKey= str_replace('[contextKey]', $this->get('key'), $this->_cacheKey);
+        } else {
+            $this->_cacheKey= str_replace('[contextKey]', uniqid('ctx_'), $this->_cacheKey);
+        }
+        return $this->_cacheKey;
     }
-    
+
     /**
      * Loads the access control policies applicable to this element.
      *
@@ -97,10 +101,10 @@ class modContext extends modAccessibleObject {
         }
         return $policy;
     }
-    
+
     /**
      * Generates a URL representing a specified resource in this context.
-     * 
+     *
      * Note that if this method is called from a context other than the one
      * initialized for the modX instance, and the scheme is not specified, an
      * empty string, or abs, the method will force the scheme to full.
@@ -170,13 +174,13 @@ class modContext extends modAccessibleObject {
                         $args= '&' . substr($args, 1);
                     elseif ($c != '&') $args= '&' . $args;
                 }
-                
+
                 if ($config['friendly_urls'] == 1) {
                     $url= $alias . $args;
                 } else {
                     $url= $config['request_controller'] . '?' . $config['request_param_id'] . '=' . $id . $args;
                 }
-                
+
                 $host= '';
                 if ($scheme !== -1 && $scheme !== '') {
                     if ($scheme === 1 || $scheme === 0) {

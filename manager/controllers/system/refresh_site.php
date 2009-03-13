@@ -7,13 +7,27 @@
  */
 if (!$modx->hasPermission('empty_cache')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-/* clear cache */
-$cacheManager= $modx->getCacheManager();
-
 /* invoke OnBeforeCacheUpdate event */
 $modx->invokeEvent('OnBeforeCacheUpdate');
 
-$results= $cacheManager->clearCache(array(), array('objects' => '*', 'publishing' => 1));
+$paths = array(
+    'config.cache.php',
+    'sitePublishing.idx.php',
+    'registry/mgr/workspace/',
+    'lexicon/',
+);
+$contexts = $modx->getCollection('modContext');
+foreach ($contexts as $context) {
+    $paths[] = $context->get('key') . '/';
+}
+
+$options = array(
+    'publishing' => 1,
+    'extensions' => array('.cache.php', '.msg.php')
+);
+if ($modx->getOption('cache_db')) $options['objects'] = '*';
+
+$results= $modx->cacheManager->clearCache($paths, $options);
 
 /* invoke OnSiteRefresh event */
 $modx->invokeEvent('OnSiteRefresh');
@@ -22,11 +36,6 @@ $num_rows_pub = isset($results['publishing']['published']) ? $results['publishin
 $num_rows_unpub = isset($results['publishing']['unpublished']) ? $results['publishing']['unpublished'] : 0;
 $modx->smarty->assign('published',sprintf($modx->lexicon('refresh_published'), $num_rows_pub));
 $modx->smarty->assign('unpublished',sprintf($modx->lexicon('refresh_unpublished'), $num_rows_unpub));
-
-/* clear registry cache */
-$p = $modx->cachePath.'registry/mgr/workspace/';
-$r = $cacheManager->deleteTree($p,false,false,array('.msg.php'));
-$results[] = $p;
 
 $modx->smarty->assign('results', $results);
 

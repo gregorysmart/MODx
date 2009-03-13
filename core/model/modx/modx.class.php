@@ -277,10 +277,10 @@ class modX extends xPDO {
         return $target;
     }
 
-    function modX($configPath= '') {
+    function modX($configPath= '', $options = array()) {
         $this->__construct($configPath);
     }
-    function __construct($configPath= '') {
+    function __construct($configPath= '', $options = array()) {
         global $database_type, $database_server, $dbase, $database_user,
                $database_password, $database_connection_charset, $table_prefix;
         modX :: protect();
@@ -290,10 +290,7 @@ class modX extends xPDO {
         if (@ include ($configPath . MODX_CONFIG_KEY . '.inc.php')) {
             $cachePath= MODX_CORE_PATH . 'cache/';
             if (MODX_CONFIG_KEY !== 'config') $cachePath .= MODX_CONFIG_KEY . '/';
-            parent :: __construct(
-                $database_type . ':host=' . $database_server . ';dbname=' . trim($dbase,'`') . ';charset=' . $database_connection_charset,
-                $database_user,
-                $database_password,
+            $options = array_merge(
                 array (
                     XPDO_OPT_CACHE_PATH => $cachePath,
                     XPDO_OPT_TABLE_PREFIX => $table_prefix,
@@ -303,7 +300,15 @@ class modX extends xPDO {
                     XPDO_OPT_LOADER_CLASSES => array('modAccessibleObject'),
                     XPDO_OPT_VALIDATOR_CLASS => 'validation.modValidator',
                     XPDO_OPT_VALIDATE_ON_SAVE => true,
+                    'cache_system_settings' => true
                 ),
+                $options
+            );
+            parent :: __construct(
+                $database_type . ':host=' . $database_server . ';dbname=' . trim($dbase,'`') . ';charset=' . $database_connection_charset,
+                $database_user,
+                $database_password,
+                $options,
                 array (
                     PDO_ATTR_ERRMODE => PDO_ERRMODE_SILENT,
                     PDO_ATTR_PERSISTENT => false,
@@ -347,6 +352,7 @@ class modX extends xPDO {
             $this->loadClass('modPrincipal');
             $this->loadClass('modUser');
 
+            $this->getCacheManager();
             $this->getConfig();
             $this->_initContext($contextKey);
 
@@ -408,16 +414,9 @@ class modX extends xPDO {
      * @return object A modCacheManager registered for this modX instance.
      */
     function getCacheManager() {
-        if (isset ($this->config['cache_disabled']) && $this->config['cache_disabled']) {
-            $this->_cacheEnabled= false;
-            return null;
-        } elseif (MODX_CACHE_DISABLED) {
-            $this->_cacheEnabled= false;
-            return null;
-        }
         if ($this->cacheManager === null) {
-            if ($this->loadClass('cache.xPDOCacheManager', '', true, true)) {
-                $cacheManagerClass= isset ($this->config['modCacheManager.class']) ? $this->config['modCacheManager.class'] : 'modCacheManager';
+            if ($this->loadClass('cache.xPDOCacheManager', XPDO_CORE_PATH, true, true)) {
+                $cacheManagerClass= $this->getOption('modCacheManager.class', array(), 'modCacheManager');
                 if ($className= $this->loadClass($cacheManagerClass, '', false, true)) {
                     if ($this->cacheManager= new $className ($this)) {
                         $this->_cacheEnabled= true;
@@ -453,7 +452,7 @@ class modX extends xPDO {
                 }
             }
         }
-        if (isset ($this->services[$name])) {
+        if (array_key_exists($name, $this->services)) {
             $service= & $this->services[$name];
         } else {
             $this->log(MODX_LOG_LEVEL_ERROR, "Problem getting service {$name}, instance of class {$class}, from path {$path}, with params " . print_r($params, true));
@@ -1169,7 +1168,8 @@ class modX extends xPDO {
                 $this->event->_resetEventObject();
                 $this->event->name= $eventName;
                 if (isset ($this->pluginCache[$pluginId])) {
-                    $plugin= $this->pluginCache[$pluginId];
+                    $plugin= $this->newObject('modPlugin');
+                    $plugin->fromArray($this->pluginCache[$pluginId], '', true, true);
                     $plugin->_processed = false;
                     if ($plugin->get('disabled')) {
                         $plugin= null;
@@ -2502,21 +2502,19 @@ class modX extends xPDO {
      */
     function _loadConfig() {
         $this->config= $this->_config;
-        $cachePath= $this->getCachePath();
-        $fileName= "{$cachePath}config.cache.php";
-        if (!file_exists($fileName)) {
-            if ($cacheManager= $this->getCacheManager()) {
-                $fileName= $cacheManager->generateConfig();
-            }
+        if (!$config = $this->cacheManager->get('config')) {
+            $config = $this->cacheManager->generateConfig();
         }
-        if (!@ include ($fileName)) {
+        if (empty($config)) {
+            $config = array();
             if (!$settings= $this->getCollection('modSystemSetting')) {
                 return false;
             }
             foreach ($settings as $setting) {
-                $this->config[$setting->get('key')]= $setting->get('value');
+                $config[$setting->get('key')]= $setting->get('value');
             }
         }
+        $this->config = array_merge($this->config, $config);
         $this->_systemConfig= $this->config;
         return true;
     }
@@ -2583,9 +2581,7 @@ class modX extends xPDO {
         if (isset ($this->config['cache_resource']) && $this->config['cache_resource']) {
             if ($this->cacheManager && $this->documentGenerated && is_a($this->resource, 'modResource') && $this->resource->get('cacheable')) {
                 $this->invokeEvent('OnBeforeSaveWebPageCache');
-                if (!$this->cacheManager->generateResource($this->resource)) {
-                    $this->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $this->resource->get('id'));
-                }
+                $this->cacheManager->generateResource($this->resource);
             }
         }
         $this->invokeEvent('OnWebPageComplete');

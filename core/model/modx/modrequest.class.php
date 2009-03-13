@@ -150,13 +150,27 @@ class modRequest {
             $this->modx->sendErrorPage();
         }
 
-        $cacheFile = "{$this->modx->cachePath}" . $this->modx->context->get('key') . "/resources/{$resourceId}.cache.php";
-        $included = false;
-        if (file_exists($cacheFile)) {
-            $included = include ($cacheFile);
+        $cacheKey = $this->modx->context->get('key') . "/resources/{$resourceId}";
+        if ($cachedResource = $this->modx->cacheManager->get($cacheKey)) {
+            $resource = $this->modx->newObject($cachedResource['resourceClass']);
+            if ($resource) {
+                $resource->fromArray($cachedResource['resource'], '', true, true, true);
+                if (isset($cachedResource['resourceGroups'])) {
+                    $rGroups = array();
+                    foreach ($cachedResource['resourceGroups'] as $rGroupKey => $rGroup) {
+                        $rGroups[$rGroupKey]= $this->modx->newObject('modResourceGroupResource', $rGroup);
+                    }
+                    $resource->addMany($rGroups);
+                }
+                if (isset($cachedResource['elementCache'])) $this->modx->elementCache = $cachedResource['elementCache'];
+                if (isset($cachedResource['sjscripts'])) $this->modx->sjscripts = $cachedResource['sjscripts'];
+                if (isset($cachedResource['jscripts'])) $this->modx->jscripts = $cachedResource['jscripts'];
+                if (isset($cachedResource['loadedjscripts'])) $this->modx->loadedjscripts = $cachedResource['loadedjscripts'];
+            }
+            $fromCache = true;
         }
-        $this->modx->resourceGenerated = (boolean) !$included;
-        if (!$included || !is_object($resource)) {
+        $this->modx->resourceGenerated = (boolean) !$fromCache;
+        if (!$fromCache || !is_object($resource)) {
             $criteria = array('id' => $resourceId, 'deleted' => '0');
             if (!$this->modx->hasPermission('view_unpublished')) $criteria['published']= 1;
             if ($resource = $this->modx->getObject('modResource', $criteria, true)) {
@@ -180,7 +194,7 @@ class modRequest {
                     }
                 }
             }
-        } elseif ($included && is_object($resource) && !$resource->get('deleted')) {
+        } elseif ($fromCache && is_object($resource) && !$resource->get('deleted')) {
             if ($resource->get('published') || $this->modx->hasPermission('view_unpublished')) {
                 if ($resource->get('context_key') !== $this->modx->context->get('key')) {
                     if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {

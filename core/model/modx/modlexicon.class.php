@@ -68,8 +68,7 @@ class modLexicon {
      */
     function clearCache($path = '') {
         $path = 'lexicon/'.$path;
-        $cacheManager = $this->modx->getCacheManager();
-        return $cacheManager->clearCache(array($path));
+        return $this->modx->cacheManager->clearCache(array($path));
     }
 
     /**
@@ -91,6 +90,16 @@ class modLexicon {
      */
     function fetch() {
         return $this->_lexicon;
+    }
+
+    /**
+     * Return the cache key representing the specified lexicon topic.
+     */
+    function getCacheKey($namespace = 'core',$topic = 'default',$language = '') {
+        if (empty($namespace)) $namespace = 'core';
+        if (empty($topic)) $topic = 'default';
+        if (empty($language)) $language = $this->modx->cultureKey;
+        return 'lexicon/'.$language.'/'.$namespace.'/'.$topic;
     }
 
     /**
@@ -146,25 +155,15 @@ class modLexicon {
      * @param string $language The language to load. Defaults to 'en'.
      * @return array The loaded lexicon array.
      */
-    function loadCache($namespace = 'core',$topic = 'default',$language = '') {
-        if ($language == '') $language = $this->modx->cultureKey;
-
-        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace.'/'.$topic.'.cache.php';
-
-        $_lang = array();
-        if (file_exists($fileName)) {
-            @include $fileName;
-        } else { /* if cache files don't exist, generate */
-            $cacheManager = $this->modx->getCacheManager();
-            $cacheManager->generateLexiconCache($namespace,$topic,$language);
-
-            if (file_exists($fileName)) {
-                @include $fileName;
-            } else {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR,"An error occurred while trying to load and create the cache file for the namespace ".$namespace." with topic: ".$topic);
-            }
+    function loadCache($namespace = 'core', $topic = 'default', $language = '') {
+        $key = $this->getCacheKey($namespace, $topic, $language);
+        if (!$cached = $this->modx->cacheManager->get($key)) {
+            $cached = $this->modx->cacheManager->generateLexiconTopic($this, $namespace, $topic, $language);
         }
-        return $_lang;
+        if (empty($cached)) {
+            $this->modx->log(MODX_LOG_LEVEL_ERROR, "An error occurred while trying to cache {$key} (lexicon/language/namespace/topic)");
+        }
+        return $cached;
     }
 
     /**

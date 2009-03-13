@@ -56,19 +56,10 @@ if ($resource->EditedBy) {
 $ra['template'] = $resource->modTemplate ? $resource->modTemplate->get('templatename') : '-';
 
 /* source */
-$buffer = '';
 $resource->_contextKey= $resource->get('context_key');
-$cache_file = $modx->getCachePath() . $resource->getCacheFileName();
-if (file_exists($cache_file)) {
-    $handle = @fopen($cache_file, 'r');
-    if ($handle) {
-        while (!feof($handle)) {
-            $buffer .= fgets($handle, 4096);
-        }
-        fclose ($handle);
-        $buffer = htmlspecialchars($buffer);
-    }
+if ($buffer = $modx->cacheManager->get($resource->getCacheKey())) {
+    $buffer = htmlspecialchars($buffer['resource']['_content']);
 }
-$ra['buffer'] = $buffer ? $buffer : $modx->lexicon('resource_notcached');
+$ra['buffer'] = !empty($buffer) ? $buffer : $modx->lexicon('resource_notcached');
 
 return $modx->error->success('',$ra);

@@ -9,7 +9,7 @@
  */
 class modScript extends modElement {
     var $_scriptName= null;
-    var $_scriptFileName= null;
+    var $_scriptCacheKey= null;
 
     function modScript(& $xpdo) {
         $this->__construct($xpdo);
@@ -37,14 +37,7 @@ class modScript extends modElement {
         if (!$this->_processed) {
             $scriptName= $this->getScriptName();
             if (!$this->_result= function_exists($scriptName)) {
-                if (!file_exists($this->getScriptFileName())) {
-                    if ($cacheManager= $this->xpdo->getCacheManager()) {
-                        $cacheManager->generateScriptFile($this);
-                    }
-                }
-                if (file_exists($this->getScriptFileName())) {
-                    $this->_result= include ($this->_scriptFileName);
-                }
+                $this->_result= $this->loadScript();
             }
             if ($this->_result) {
                 $this->xpdo->event->params= $this->_properties; /* store params inside event object */
@@ -74,12 +67,11 @@ class modScript extends modElement {
      * @return string The filename containing the function generated from the
      * script element.
      */
-    function getScriptFileName() {
-        if ($this->_scriptFileName === null) {
-            $scriptPath= str_replace('_', '/', $this->getScriptName());
-            $this->_scriptFileName= $this->xpdo->cachePath . $scriptPath . '.cache.php';
+    function getScriptCacheKey() {
+        if ($this->_scriptCacheKey === null) {
+            $this->_scriptCacheKey= str_replace('_', '/', $this->getScriptName());
         }
-        return $this->_scriptFileName;
+        return $this->_scriptCacheKey;
     }
 
     /**
@@ -90,8 +82,19 @@ class modScript extends modElement {
     function getScriptName() {
         if ($this->_scriptName === null) {
             $className= $this->_class;
-            $this->_scriptName= $this->xpdo->context->get('key') . '_elements_' . $className . '_' . $this->get('id');
+            $this->_scriptName= $this->xpdo->context->get('key') . '_elements_' . strtolower($className) . '_' . $this->get('id');
         }
         return $this->_scriptName;
+    }
+
+    function loadScript() {
+        $result = false;
+        if (!$script= $this->xpdo->cacheManager->get($this->getScriptCacheKey())) {
+            $script= $this->xpdo->cacheManager->generateScript($this);
+        }
+        if (!empty($script)) {
+            $result = eval($script);
+        }
+        return ($result !== false);
     }
 }

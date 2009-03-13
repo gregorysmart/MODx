@@ -45,18 +45,10 @@ $resource->set('editedon_adjusted',strftime('%c', $resource->get('editedon') + $
 
 $buffer = '';
 $resource->_contextKey= $resource->get('context_key');
-$cache_file = $modx->getCachePath() . $resource->getCacheFileName();
-if (file_exists($cache_file)) {
-    $handle = @fopen($cache_file, 'r');
-    if ($handle) {
-    	while (!feof($handle)) {
-    		$buffer .= fgets($handle, 4096);
-    	}
-    	fclose ($handle);
-    	$modx->smarty->assign('buffer', htmlspecialchars($buffer));
-    }
+if ($buffer = $modx->cacheManager->get($resource->getCacheKey())) {
+    $modx->smarty->assign('buffer', htmlspecialchars($buffer['resource']['_content']));
 }
-
+/* assign resource to smarty */
 /* assign resource to smarty */
 $modx->smarty->assign('resource',$resource);
 

@@ -91,8 +91,8 @@ class modSessionHandler {
     }
 
     function gc($max) {
-        if (isset ($this->config['gc.maxlifetime'])) {
-            $max= $this->config['gc.maxlifetime'];
+        if (isset ($this->modx->config['session_gc_maxlifetime'])) {
+            $max= $this->modx->config['session_gc_maxlifetime'];
         }
         $maxtime= time() - $max;
         $query= $this->modx->newQuery('modSession');

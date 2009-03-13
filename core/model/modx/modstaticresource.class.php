@@ -125,7 +125,6 @@ class modStaticResource extends modResource {
                 if ($customHeaders= $this->ContentType->get('headers')) {
                     foreach ($customHeaders as $headerKey => $headerString) {
                         header($headerString);
-                        if (strpos($headerString, 'Content-Disposition:') !== false) $dispositionSet= true;
                     }
                 }
                 while (@ob_end_clean()) {}

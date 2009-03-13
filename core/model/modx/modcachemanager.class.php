@@ -24,39 +24,37 @@
 class modCacheManager extends xPDOCacheManager {
     var $modx= null;
 
-    function modCacheManager(& $xpdo) {
-        $this->__construct($xpdo);
+    function modCacheManager(& $xpdo, $options = array()) {
+        $this->__construct($xpdo, $options);
     }
-    function __construct(& $xpdo) {
-        parent :: __construct($xpdo);
-        $this->modx= & $xpdo;
+    function __construct(& $xpdo, $options = array()) {
+        parent :: __construct($xpdo, $options);
+        $this->modx= & $this->xpdo;
     }
 
     /**
-     * Generates a cache file for a MODx site Context.
+     * Generates a cache entry for a MODx site Context.
      *
-     * Context cache files can override site configuration settings and are
-     * responsible for loading the various lisitings and maps in the modX class,
-     * including documentListing, documentMap, and eventMap.  It can also be
-     * used to setup or transform any other modX properties.
+     * Context cache entries can override site configuration settings and are responsible for
+     * loading the various lisitings and maps in the modX class, including documentListing,
+     * documentMap, and eventMap.  It can also be used to setup or transform any other modX
+     * properties.
      *
      * @todo Refactor the generation of documentMap, aliasMap, and
      * resourceListing so it uses less memory/file size.
      *
      * @param modContext $obj  The modContext instance to be cached.
-     * @return boolean true if the modContext is successfully cached.
+     * @param array $options Options for system settings generation.
+     * @return array An array containing all the context variable values.
      */
-    function generateContext($key) {
-        $written= false;
+    function generateContext($key, $options = array()) {
+        $results = array();
         $obj= $this->modx->getObject('modContext', $key, true);
         if (is_object($obj) && is_a($obj, 'modContext') && $obj->get('key')) {
-            $fileName= $this->modx->getCachePath() . $obj->getCacheFileName();
-            $content= "<?php \n";
-
             $contextConfig= $this->modx->config;
 
             // generate the ContextSettings
-            $content .= "\$this->config= array();\n";
+            $results['config']= array();
             if ($settings= $obj->getMany('modContextSetting')) {
                 foreach ($settings as $setting) {
                     $k= $setting->get('key');
@@ -73,8 +71,8 @@ class modCacheManager extends xPDOCacheManager {
                             $v= str_replace($match[0], $matchValue, $v);
                         }
                     }
-                    $content .= "\$this->config['{$k}']= " . var_export($v, true) . ";\n";
-                    $contextConfig["{$k}"]= $v;
+                    $results['config'][$k]= $v;
+                    $contextConfig[$k]= $v;
                 }
             }
 
@@ -100,22 +98,18 @@ class modCacheManager extends xPDOCacheManager {
                 $collResources= & $criteria->stmt;
             }
             if ($collResources) {
-                $content .= "\$this->resourceMap= array ();\n";
-                $content .= "\$this->resourceListing= array ();\n";
-                $content .= "\$this->aliasMap= array ();\n";
-//                if (defined('MODX_COMPATMODE') && MODX_COMPATMODE == '0.9.5')
-                    $content .= "\$this->documentMap= array ();\n";
-//                if (defined('MODX_COMPATMODE') && MODX_COMPATMODE == '0.9.5')
-                    $content .= "\$this->documentListing= & \$this->resourceListing;\n";
+                $results['resourceMap']= array ();
+                $results['resourceListing']= array ();
+                $results['aliasMap']= array ();
+                $results['documentMap']= array ();
                 $containerSuffix= isset ($contextConfig['container_suffix']) ? $contextConfig['container_suffix'] : '';
                 $localMap= array ();
                 while ($r = $collResources->fetch(PDO_FETCH_OBJ)) {
                     $parentId= isset($r->parent) ? strval($r->parent) : "0";
-//                        if (defined('MODX_COMPATMODE') && MODX_COMPATMODE == '0.9.5')
-                        $content .= "\$this->documentMap[]= array('{$parentId}' => '" . $r->id . "');\n";
-                    $content .= "\$this->resourceMap['{$parentId}'][]= " . $r->id . ";\n";
+                    $results['documentMap']= array("{$parentId}" => (string) $r->id);
+                    $results['resourceMap']["{$parentId}"][] = (string) $r->id;
                     $resourceValues= get_object_vars($r);
-                    $content .= "\$this->resourceListing['" . $r->id . "']= " . var_export($resourceValues, true) . ";\n";
+                    $results['resourceListing'][(string) $r->id]= $resourceValues;
                     $resAlias= '';
                     $resPath= '';
                     $contentType= isset ($collContentTypes[$r->content_type]) ? $collContentTypes[$r->content_type] : $collContentTypes['1'];
@@ -161,7 +155,7 @@ class modCacheManager extends xPDOCacheManager {
                     } else {
                         $resAlias= $r->id;
                     }
-                    $content .= "\$this->resourceListing['" . $r->id . "']['path']= '{$resPath}';\n";
+                    $results['resourceListing'][(string) $r->id]['path']= $resPath;
                     if (!empty ($resPath)) {
                         $resPath .= '/';
                     }
@@ -170,53 +164,54 @@ class modCacheManager extends xPDOCacheManager {
                         continue;
                     }
                     $localMap[$resPath . $resAlias]= $r->id;
-                    $content .= "\$this->aliasMap['{$resPath}{$resAlias}']= " . $r->id . ";\n";
+                    $results['aliasListing']["{$resPath}{$resAlias}"]= (string) $r->id;
                 }
             }
 
             // generate the eventMap and pluginCache
+            $results['eventMap'] = array();
+            $results['pluginCache'] = array();
             $eventMap= $this->modx->getEventMap($obj->get('key'));
-            if (is_array ($eventMap)) {
-                $content .= "\$this->eventMap= " . var_export($eventMap, true) . ";\n";
-                if ($eventMap) {
-                    $pluginIds= array ();
-                    $this->modx->loadClass('modScript');
-                    foreach ($eventMap as $pluginKeys) {
-                        foreach ($pluginKeys as $pluginKey) {
-                            if (isset ($pluginIds[$pluginKey])) {
-                                continue;
-                            }
-                            $pluginIds[$pluginKey]= $pluginKey;
-                            $plugins[$pluginKey]= $this->modx->getObject('modPlugin', $pluginKey, true);
+            if (is_array ($eventMap) && !empty($eventMap)) {
+                $results['eventMap'] = $eventMap;
+                $pluginIds= array ();
+                $this->modx->loadClass('modScript');
+                foreach ($eventMap as $pluginKeys) {
+                    foreach ($pluginKeys as $pluginKey) {
+                        if (isset ($pluginIds[$pluginKey])) {
+                            continue;
                         }
+                        $pluginIds[$pluginKey]= $pluginKey;
+                        $plugins[$pluginKey]= $this->modx->getObject('modPlugin', $pluginKey, true);
                     }
-                    if (!empty ($plugins)) {
-                        foreach ($plugins as $pluginId => $plugin) {
-                            if (!is_object($plugin)) {
-                                continue;
-                            }
-                            $pluginName= $plugin->getScriptName();
-                            $content .= $this->generateObject($plugin, $pluginName);
-                            $content .= "\$this->pluginCache[" . $pluginId . "]= & \${$pluginName};\n";
+                }
+                if (!empty ($plugins)) {
+                    foreach ($plugins as $pluginId => $plugin) {
+                        if (!is_object($plugin)) {
+                            continue;
                         }
+                        $results['pluginCache'][(string) $pluginId]= $plugin->toArray('', true);
                     }
                 }
             }
-            $written= $this->writeFile($fileName, $content);
+            if ($this->getOption('cache_context_settings', $options, true)) {
+                $lifetime = intval($this->getOption(XPDO_OPT_CACHE_EXPIRES, $options, 0));
+                if (!$this->set($obj->getCacheKey(), $results, $lifetime, $options)) {
+                    $this->modx->log(MODX_LOG_LEVEL_ERROR, 'Could not cache context settings for ' . $obj->get('key') . '.');
+                }
+            }
         }
-        return $written;
+        return $results;
     }
 
     /**
-     * Generates a cache file for the a MODx site.
+     * Generates the system settings cache for a MODx site.
      *
-     * @param Resource $obj  The Resource instance to be cached.
-     * @return string  The cache filename.
+     * @param array $options Options for system settings generation.
+     * @return array The generated system settings array.
      */
-    function generateConfig() {
-        $fileName= $this->modx->getCachePath() . "config.cache.php";
-        $content= "<?php \n";
-        $content .= "\$this->config= is_array(\$this->config) ? \$this->config : array();\n";
+    function generateConfig($options = array()) {
+        $config = array();
         if ($collection= $this->modx->getCollection('modSystemSetting')) {
             foreach ($collection as $setting) {
                 $k= $setting->get('key');
@@ -233,121 +228,121 @@ class modCacheManager extends xPDOCacheManager {
                         $v= str_replace($match[0], $matchValue, $v);
                     }
                 }
-                $content .= "\$this->config['{$k}']= " . var_export($v, true) . ";\n";
+                $config[$k]= $v;
             }
         }
-        $written= $this->writeFile($fileName, $content);
-        return $fileName;
+        if (!empty($config) && $this->getOption('cache_system_settings', $options, true)) {
+            $lifetime = intval($this->getOption(XPDO_OPT_CACHE_EXPIRES, $options, 0));
+            if (!$this->set('config', $config, $lifetime, $options)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, 'Could not cache system settings.');
+            }
+        }
+        return $config;
     }
 
     /**
-     * Generates a cache file for a Resource or Resource-derived object.
+     * Generates a cache entry for a Resource or Resource-derived object.
      *
-     * Resource classes can define their own cacheFileName.
+     * Resource classes can define their own cacheKey.
      *
      * @param modResource $obj  The Resource instance to be cached.
-     * @return boolean  True if the cache file was successfully written.
+     * @param array $options Options for resource generation.
+     * @return array The generated resource representation.
      */
-    function generateResource($obj) {
-        $written= false;
-        if (isset ($this->modx->config['cache_disabled']) && $this->modx->config['cache_disabled']) {
-            return false;
-        }
-        if (isset ($this->modx->config['cache_resource']) && $this->modx->config['cache_resource']) {
+    function generateResource(& $obj, $options = array()) {
+        $results= array();
+        if ($this->getOption('cache_resource', $options)) {
             if (is_object($obj) && is_a($obj, 'modResource') && $obj->_processed && $obj->get('cacheable')) {
-                $fileName= $this->modx->getCachePath() . $obj->getCacheFileName();
-                $objArray= $obj->toArray('', true);
-                $content= "<?php \n";
-                $content .= "\$resource= \$this->modx->newObject('" . $obj->_class . "');\n";
-                $content .= "\$resource->fromArray(" . var_export($objArray, true) . ", '', true, true);\n";
-                $content .= "\$resource->_content= " . var_export($obj->_content, true) . ";\n";
-                $content .= "\$resource->_processed= " . ($obj->_processed ? 'true' : 'false') . ";\n";
+                $results['resourceClass']= $obj->_class;
+                $results['resource']= $obj->toArray('', true);
+                $results['resource']['_content']= $obj->_content;
+                $results['resource']['_processed']= $obj->_processed;
                 /* TODO: remove legacy docGroups and cache ABAC policies instead */
                 if ($docGroups= $obj->getMany('modResourceGroupResource')) {
-                    $content.= "\$docGroups= array ();\n";
-                    foreach ($docGroups as $docGroup) {
-                        $content.= $this->generateObject($docGroup, 'docGroup', false, false, 'this->modx');
-                        $content.= "\$docGroups[]= \$docGroup;\n";
+                    $groups= array();
+                    foreach ($docGroups as $docGroupPk => $docGroup) {
+                        $groups[(string) $docGroupPk] = $docGroup->toArray('', true);
                     }
-                    $content.= "\$resource->addMany(\$docGroups);\n";
+                    $results['resourceGroups']= $groups;
                 }
-                if (is_array($this->modx->elementCache)) {
-                    foreach ($this->modx->elementCache as $tag => $out) {
-                        $content .= "\$this->modx->elementCache['" .$tag . "']= " . var_export($out, true) . ";\n";
-                    }
+                if (!empty($this->modx->elementCache)) {
+                    $results['elementCache']= $this->modx->elementCache;
                 }
                 if (!empty($this->modx->sjscripts)) {
-                    $content .= "\$this->modx->sjscripts= " . var_export($this->modx->sjscripts, true) . ";\n";
+                    $results['sjscripts']= $this->modx->sjscripts;
                 }
                 if (!empty($this->modx->jscripts)) {
-                    $content .= "\$this->modx->jscripts= " . var_export($this->modx->jscripts, true) . ";\n";
+                    $results['jscripts']= $this->modx->jscripts;
                 }
                 if (!empty($this->modx->loadedjscripts)) {
-                    $content .= "\$this->modx->loadedjscripts= " . var_export($this->modx->loadedjscripts, true) . ";\n";
+                    $results['loadedjscripts']= $this->modx->loadedjscripts;
                 }
-                $written= $this->writeFile($fileName, $content);
+            }
+            $lifetime = intval($this->getOption(XPDO_OPT_CACHE_EXPIRES, $options, 0));
+            if (empty($results) || !$this->set($obj->getCacheKey(), $results, $lifetime, $options)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $obj->get('id'));
             }
         }
-        return $written;
+        return $results;
     }
 
-    function generateLexiconCache($namespace = 'core',$topic = 'default',$language = '') {
+    function generateLexiconTopic(& $lexicon, $namespace = 'core', $topic = 'default', $language = '', $options = array()) {
         if ($language == '') $language = $this->modx->config['manager_language'];
-        $written= false;
+        $results= false;
 
-        $namespace = $this->modx->getObject('modNamespace',$namespace);
-        if ($namespace == null) {
+        $namespaceObj = $this->modx->getObject('modNamespace', $namespace);
+        if ($namespaceObj == null) {
             $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find the namespace "'.$namespace.'" to generate the lexicon cache."');
             return false;
         }
 
-        $topic = $this->modx->getObject('modLexiconTopic',array(
-            'namespace' => $namespace->get('name'),
+        $topicObj = $this->modx->getObject('modLexiconTopic',array(
+            'namespace' => $namespaceObj->get('name'),
             'name' => $topic,
         ));
-        if ($topic == null) {
+        if ($topicObj == null) {
             $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find topic "'.$topic.'" to generate lexicon cache.');
             return false;
         }
 
-        $fileName = $this->modx->getCachePath().'lexicon/'.$language.'/'.$namespace->get('name').'/'.$topic->get('name').'.cache.php';
-
-        $content= "<?php \n";
         $c= $this->modx->newQuery('modLexiconEntry');
         $c->where(array(
-            'topic' => $topic->get('id'),
+            'topic' => $topicObj->get('id'),
             'language' => $language,
         ));
         $c->sortby('name','ASC');
-        $entries= $this->modx->getCollection('modLexiconEntry',$c);
-
-        foreach ($entries as $entry) {
-        	$v = str_replace("'","\'",$entry->get('value'));
-            $content .= '$_lang[\''.$entry->get('name').'\'] = \''.$v.'\';'."\n";
+        if ($entries= $this->modx->getCollection('modLexiconEntry',$c)) {
+            $results= array();
+            foreach ($entries as $entry) {
+                $results[$entry->get('name')]= $entry->get('value');
+            }
         }
 
-        $written= $this->writeFile($fileName, $content);
-        return $written;
+        if (!empty($results) && $this->getOption('cache_lexicon_topics', $options, true)) {
+            $lifetime = intval($this->getOption(XPDO_OPT_CACHE_EXPIRES, $options, 0));
+            if (!$this->set($lexicon->getCacheKey($namespace, $topic, $language), $results, $lifetime, $options)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching lexicon topic " . $lexicon->getCacheKey($namespace, $topic, $language));
+            }
+        }
+        return $results;
     }
 
-	 /**
+     /**
      * Generates a cache file for the manager actions.
      *
      * @access public
-     * @param modResource $obj  The Actions
-     * @return boolean  True if the cache file was successfully written.
+     * @param string $cacheKey The key to use when caching the action map.
+     * @return array An array representing the action map.
      */
-    function generateActionMap($fileName) {
-        $written= false;
-		$c = $this->modx->newQuery('modAction');
-		$c->sortby('namespace','ASC');
-		$c->sortby('controller','ASC');
-		$actions = $this->modx->getCollection('modAction',$c);
+    function generateActionMap($cacheKey, $options = array()) {
+        $results= array();
+        $c = $this->modx->newQuery('modAction');
+        $c->sortby('namespace','ASC');
+        $c->sortby('controller','ASC');
+        $actions = $this->modx->getCollection('modAction',$c);
 
-		$content = "<?php \n";
-		$content .= " \$this->modx->actionMap = array(";
-		foreach ($actions as $action) {
-			$objArray = $action->toArray('',true);
+        foreach ($actions as $action) {
+            $objArray = $action->toArray('',true);
             $objArray['namespace_path'] = $this->modx->config['manager_path'];
             $ns = $action->getOne('modNamespace');
             if ($ns != null && $ns->get('name') != 'core') {
@@ -358,12 +353,15 @@ class modCacheManager extends xPDOCacheManager {
                     $objArray['namespace_path'] = $bp;
                 }
             }
-
-			$content .= '"'.$action->get('id').'" => '.var_export($objArray, true).",\n";
-		}
-		$content .= ");";
-		$written= $this->writeFile($fileName, $content);
-        return $written;
+            $results[$action->get('id')] = $objArray;
+        }
+        if (!empty($results) && $this->getOption('cache_action_map', $options, true)) {
+            $lifetime = intval($this->getOption(XPDO_OPT_CACHE_EXPIRES, $options, 0));
+            if (!$this->set($cacheKey, $results, $lifetime, $options)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching action map {$cacheKey}");
+            }
+        }
+        return $results;
     }
 
     /**
@@ -373,34 +371,36 @@ class modCacheManager extends xPDOCacheManager {
      * script file for.
      * @param string $objContent Optional script content to override the
      * persistent instance.
-     * @param boolean $returnFunction Indicates if the function should be
-     * returned as content rather than written to file.
+     * @param array $options An array of additional options for the operation.
      * @return boolean|string true if the file is successfully written, or the
      * actual generated content of the function if $returnFunction is true;
      * false otherwise.
      */
-    function generateScriptFile($objElement, $objContent= null, $returnFunction= false) {
-        $written= false;
+    function generateScript($objElement, $objContent= null, $options= array()) {
+        $results= false;
         if (is_object($objElement) && is_a($objElement, 'modScript')) {
             $scriptContent= $objElement->getContent(is_string($objContent) ? array('content' => $objContent) : array());
-            $fileName= $objElement->getScriptFileName();
             $scriptName= $objElement->getScriptName();
 
-            $content= '';
-            if (!$returnFunction) $content.= "<?php \n";
-            $content .= "function {$scriptName}(\$scriptProperties= array()) {\n";
+            $content = "function {$scriptName}(\$scriptProperties= array()) {\n";
             $content .= "global \$modx;\n";
             $content .= "if (is_array(\$scriptProperties)) {\n";
             $content .= "extract(\$scriptProperties, EXTR_SKIP);\n";
             $content .= "}\n";
             $content .= $scriptContent . "\n";
             $content .= "}\n";
-            if ($returnFunction) {
+            if ($this->getOption('returnFunction', $options, false)) {
                 return $content;
             }
-            $written= $this->writeFile($fileName, $content);
+            $results = $content;
+            if ($this->getOption('cache_scripts', $options)) {
+                $lifetime = $this->getOption(XPDO_OPT_CACHE_EXPIRES) ? intval($this->getOption(XPDO_OPT_CACHE_EXPIRES)) : 0;
+                if (empty($results) || !$this->set($objElement->getScriptCacheKey(), $results, $lifetime, $options)) {
+                    $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $obj->get('id'));
+                }
+            }
         }
-        return $written;
+        return $results;
     }
 
     /**
@@ -412,44 +412,41 @@ class modCacheManager extends xPDOCacheManager {
      * <li><strong>extensions</strong>: an array of file extensions to match when deleting the cache directories</li>
      * </ul>
      */
-    function clearCache($paths= array(), $options= array('objects' => '*')) {
+    function clearCache($paths= array(), $options= array()) {
         $results= array();
         $delObjs= array();
-        if (isset($options['objects'])) {
+        if ($clearObjects = $this->getOption('objects', $options)) {
+            $objectOptions = array_merge($options, array('cache_prefix' => $this->getOption('cache_db_prefix', $options, XPDO_CACHE_DIR)));
             // clear object cache by key, or * = flush entire object cache
-            if (is_array($options['objects'])) {
-                foreach ($options['objects'] as $key) {
-                    if ($this->delete($key))
+            if (is_array($clearObjects)) {
+                foreach ($clearObjects as $key) {
+                    if ($this->delete($key, $objectOptions))
                         $delObjs[]= $key;
                 }
             }
-            elseif (is_string($options['objects']) && $options['objects'] == '*') {
-                $delObjs= $this->clean();
+            elseif (is_string($clearObjects) && $clearObjects == '*') {
+                $delObjs= $this->clean($objectOptions);
             }
         }
         $results['deleted_objects']= $delObjs;
-        if (!isset($options['extensions']) || empty($options['extensions'])) {
-            $extensions= array('.cache.php');
-        } else {
-            $extensions= $options['extensions'];
-        }
+        $extensions= $this->getOption('extensions', $options, array('.cache.php'));
         if (empty($paths)) {
             $paths= array('');
         }
         $delFiles= array();
-        while (list($pathIdx, $path)= each($paths)) {
+        foreach ($paths as $pathIdx => $path) {
             $deleted= false;
             $abspath= $this->modx->cachePath . $path;
             if (file_exists($abspath)) {
                 if (is_dir($abspath)) {
                     $deleted= $this->deleteTree($abspath, false, true, $extensions);
                 } else {
-                    if (@unlink($abspath)) {
+                    if (unlink($abspath)) {
                         $deleted= array($path);
                     }
                 }
                 if (is_array($deleted))
-                    $delFiles= $delFiles + $deleted;
+                    $delFiles= array_merge($delFiles, $deleted);
             }
             if ($path == '') break;
         }

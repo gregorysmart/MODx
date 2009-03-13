@@ -74,6 +74,8 @@ $package= 'modx';
 $generator->parseSchema(XPDO_CORE_PATH . '../model/schema/modx.mysql.schema.xml', XPDO_CORE_PATH . '../model/');
 $package= 'modx.transport';
 $generator->parseSchema(XPDO_CORE_PATH . '../model/schema/modx.transport.mysql.schema.xml', XPDO_CORE_PATH . '../model/');
+$package= 'modx.registry.db';
+$generator->parseSchema(XPDO_CORE_PATH . '../model/schema/modx.registry.db.mysql.schema.xml', XPDO_CORE_PATH . '../model/');
 
 $mtime= microtime();
 $mtime= explode(" ", $mtime);

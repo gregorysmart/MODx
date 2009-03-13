@@ -160,16 +160,14 @@ class modManagerRequest extends modRequest {
      */
     function loadActionMap() {
         $loaded = false;
-        $fileName= $this->modx->cachePath . 'mgr/actions.cache.php';
-        if (file_exists($fileName)) { /* if action map cache found, load it */
-            include_once $fileName;
+        $cacheKey= $this->modx->context->get('key') . '/actions';
+        $map = $this->modx->cacheManager->get($cacheKey);
+        if (!$map) {
+            $map = $this->modx->cacheManager->generateActionMap($cacheKey);
+        }
+        if ($map) {
+            $this->modx->actionMap = $map;
             $loaded = true;
-        } else { /* otherwise, generate map to cache from DB */
-            if ($cacheManager = $this->modx->getCacheManager()) {
-                $cacheManager->generateActionMap($fileName);
-                include_once $fileName;
-                $loaded = true;
-            }
         }
         return $loaded;
     }
