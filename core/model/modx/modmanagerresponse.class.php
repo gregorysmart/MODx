@@ -72,6 +72,9 @@ class modManagerResponse extends modResponse {
                     $this->modx->log(MODX_LOG_LEVEL_FATAL,'Could not find action file at: '.$f);
                 }
 
+                /* reset path to core modx path for header/footer */
+                $this->modx->smarty->setTemplatePath($modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/');
+
                 if ($act['haslayout']) {
                     $this->body .= include $this->modx->config['manager_path'] . 'controllers/header.php';
                 }
@@ -79,8 +82,6 @@ class modManagerResponse extends modResponse {
                 $this->body .= $cbody;
 
                 if ($act['haslayout']) {
-                    /* reset path to core modx path for header/footer */
-                    $this->modx->smarty->setTemplatePath($modx->config['manager_path'] . 'templates/' . $this->modx->config['manager_theme'] . '/');
                     $this->body .= include_once $this->modx->config['manager_path'].'controllers/footer.php';
                 }
             } else {
