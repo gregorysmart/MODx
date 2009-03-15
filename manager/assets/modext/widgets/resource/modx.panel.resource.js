@@ -253,8 +253,8 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     Ext.getCmp('modx-resource-settings-fp').getForm().setValues(r.object);
                     Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('document')+': '+r.object.pagetitle+'</h2>');
                     
-                    if (r.object.richtext && MODx.config.use_editor && loadRTE !== null && !this.rteLoaded) {
-                    	loadRTE('ta');
+                    if (r.object.richtext && MODx.config.use_editor && MODx.loadRTE !== null && !this.rteLoaded) {
+                    	MODx.loadRTE('ta');
                         this.rteLoaded = true;
                     }
                     this.fireEvent('ready');
@@ -319,10 +319,9 @@ Ext.reg('modx-panel-resource',MODx.panel.Resource);
 var triggerDirtyField = function(fld) {
     Ext.getCmp('modx-panel-resource').fieldChangeEvent(fld);
 };
-var triggerRTEOnChange = function(i) {
+MODx.triggerRTEOnChange = function() {
 	triggerDirtyField(Ext.getCmp('ta'));
 }
-var loadRTE = null;
 
 
 MODx.loadAccordionPanels = function() {

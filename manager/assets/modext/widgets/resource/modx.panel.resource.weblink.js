@@ -329,7 +329,6 @@ Ext.reg('modx-panel-weblink',MODx.panel.WebLink);
 var triggerDirtyField = function(fld) {
     Ext.getCmp('modx-panel-weblink').fieldChangeEvent(fld);
 };
-var triggerRTEOnChange = function(i) {
+MODx.triggerRTEOnChange = function(i) {
     triggerDirtyField(Ext.getCmp('ta'));
 }
-var loadRTE = null;

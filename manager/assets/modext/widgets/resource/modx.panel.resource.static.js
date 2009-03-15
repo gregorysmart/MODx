@@ -380,7 +380,6 @@ Ext.reg('modx-panel-static',MODx.panel.Static);
 var triggerDirtyField = function(fld) {
     Ext.getCmp('modx-panel-static').fieldChangeEvent(fld);
 };
-var triggerRTEOnChange = function(i) {
+MODx.triggerRTEOnChange = function(i) {
     triggerDirtyField(Ext.getCmp('ta'));
 }
-var loadRTE = null;

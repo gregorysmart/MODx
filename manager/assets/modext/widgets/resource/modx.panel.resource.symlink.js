@@ -341,7 +341,6 @@ Ext.reg('modx-panel-symlink',MODx.panel.SymLink);
 var triggerDirtyField = function(fld) {
     Ext.getCmp('modx-panel-symlink').fieldChangeEvent(fld);
 };
-var triggerRTEOnChange = function(i) {
+MODx.triggerRTEOnChange = function(i) {
     triggerDirtyField(Ext.getCmp('ta'));
 }
-var loadRTE = null;
