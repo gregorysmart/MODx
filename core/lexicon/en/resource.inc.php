@@ -71,6 +71,8 @@ $_lang['resource_link_attributes'] = 'Link Attributes';
 $_lang['resource_link_attributes_help'] = 'Attributes for the link for this resource, such as target= or rel=.';
 $_lang['resource_longtitle'] = 'Long Title';
 $_lang['resource_longtitle_help'] = 'This is a longer title for your resource. It is handy for search engines, and might be more descriptive for the resource.';
+$_lang['resource_menuindex'] = 'Menu Index';
+$_lang['resource_menuindex_help'] = 'This is the order of the resource in the tree. It is usually used for ordering purposes in displaying resources dynamically. Some components might choose to ignore this setting.';
 $_lang['resource_menutitle'] = 'Menu title';
 $_lang['resource_menutitle_help'] = 'Menu title is a field you can use to display a short title for the resource inside your menu snippet(s).';
 $_lang['resource_new'] = 'New Resource';
