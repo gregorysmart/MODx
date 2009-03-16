@@ -139,7 +139,6 @@ MODx.panel.SymLink = function(config) {
                         ,description: _('resource_menuindex_help')
                         ,name: 'menuindex'
                         ,id: 'modx-resource-menuindex'
-                        ,allowBlank: false
                         ,width: 60
                         
                     },{
