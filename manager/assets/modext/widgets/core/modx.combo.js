@@ -475,14 +475,15 @@ MODx.combo.ContentDisposition = function(config) {
             ,data: [[_('inline'),0],[_('attachment'),1]]
         })
         ,name: 'content_dispo'
+        ,hiddenName: 'content_dispo'
         ,width: 200
         ,displayField: 'd'
         ,valueField: 'v'
-        ,value: 0
         ,mode: 'local'
         ,triggerAction: 'all'
         ,editable: false
         ,selectOnFocus: false
+        ,preventRender: true
     });
     MODx.combo.ContentDisposition.superclass.constructor.call(this,config);
 };
