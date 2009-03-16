@@ -134,6 +134,15 @@ MODx.panel.SymLink = function(config) {
                         ,maxLength: 255
                         
                     },{
+                        xtype: 'numberfield'
+                        ,fieldLabel: _('resource_menuindex')
+                        ,description: _('resource_menuindex_help')
+                        ,name: 'menuindex'
+                        ,id: 'modx-resource-menuindex'
+                        ,allowBlank: false
+                        ,width: 60
+                        
+                    },{
                         xtype: 'checkbox'
                         ,fieldLabel: _('resource_hide_from_menus')
                         ,description: _('resource_hide_from_menus_help')
