@@ -278,7 +278,7 @@ class modX extends xPDO {
     }
 
     function modX($configPath= '', $options = array()) {
-        $this->__construct($configPath);
+        $this->__construct($configPath, $options);
     }
     function __construct($configPath= '', $options = array()) {
         global $database_type, $database_server, $dbase, $database_user,
@@ -1162,7 +1162,7 @@ class modX extends xPDO {
         $results= array ();
         if (count($this->eventMap[$eventName])) {
             $this->event= new modSystemEvent();
-            foreach ($this->eventMap[$eventName] as $pluginId) {
+            foreach ($this->eventMap[$eventName] as $pluginId => $pluginPropset) {
                 $plugin= null;
                 $this->Event= & $this->event;
                 $this->event->_resetEventObject();
@@ -1180,6 +1180,7 @@ class modX extends xPDO {
                 if ($plugin) {
                     $this->event->activated= true;
                     $this->event->activePlugin= $plugin->get('name');
+                    $this->event->propertySet= (($pspos = strpos($pluginPropset, ':')) > 1) ? substr($pluginPropset, $pspos + 1) : '';
                     $msg= $plugin->process($params);
                     $results[]= $this->event->_output;
                     if ($msg && is_string($msg)) {
@@ -1188,6 +1189,7 @@ class modX extends xPDO {
                         $this->log(MODX_LOG_LEVEL_ERROR, '[' . $this->event->name . '] Plugin failed!');
                     }
                     $this->event->activePlugin= '';
+                    $this->event->propertySet= '';
                     if ($this->event->_propagate != true) {
                         break;
                     }
@@ -2251,11 +2253,12 @@ class modX extends xPDO {
             $eeTbl= $this->getTableName('modPluginEvent');
             $eventTbl= $this->getTableName('modEvent');
             $pluginTbl= $this->getTableName('modPlugin');
-            $sql= "SELECT ev.`name` AS `event`, ee.`pluginid` FROM {$eeTbl} ee INNER JOIN {$pluginTbl} pl ON pl.`id` = ee.`pluginid` AND pl.`disabled` = 0 INNER JOIN {$eventTbl} ev ON {$service} ev.`id` = ee.`evtid` ORDER BY ev.`name`, ee.`priority` ASC";
+            $propsetTbl= $this->getTableName('modPropertySet');
+            $sql= "SELECT ev.`name` AS `event`, ee.`pluginid`, ps.`name` AS `propertyset` FROM {$eeTbl} ee INNER JOIN {$pluginTbl} pl ON pl.`id` = ee.`pluginid` AND pl.`disabled` = 0 INNER JOIN {$eventTbl} ev ON {$service} ev.`id` = ee.`evtid` LEFT JOIN {$propsetTbl} ps ON ee.`propertyset` = ps.`id` ORDER BY ev.`name`, ee.`priority` ASC";
             $stmt= $this->prepare($sql);
             if ($stmt && $stmt->execute()) {
                 while ($ee = $stmt->fetch(PDO_FETCH_ASSOC)) {
-                    $eventElementMap[$ee['event']][]= $ee['pluginid'];
+                    $eventElementMap[$ee['event']][(string) $ee['pluginid']]= $ee['pluginid'] . (!empty($ee['propertyset']) ? ':' . $ee['propertyset'] : '');
                 }
             }
         }
@@ -2598,6 +2601,8 @@ class modSystemEvent {
      * @var string
      */
     var $name = '';
+    var $activePlugin = '';
+    var $propertySet = '';
     /**
      * @var boolean
      */
@@ -2607,7 +2612,6 @@ class modSystemEvent {
      * @var boolean
      */
     var $activated;
-    var $activePlugin;
     /**
      * @var mixed
      */
