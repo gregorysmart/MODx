@@ -15,6 +15,7 @@ MODx.panel.ResourceTV = function(config) {
         ,class_key: ''
         ,resource: ''
         ,autoLoad: this.autoload(config)
+        ,templateField: 'modx-resource-template'
     });
     MODx.panel.ResourceTV.superclass.constructor.call(this,config);
 };
@@ -24,7 +25,7 @@ Ext.extend(MODx.panel.ResourceTV,MODx.Panel,{
      * @param {Object} config
      */
     autoload: function(config) {
-        var t = Ext.getCmp('modx-resource-template');
+        var t = Ext.getCmp(config.templateField);
         if (!t) { return false; }
         var template = config.template ? config.template : t.getValue();
         var a = {
