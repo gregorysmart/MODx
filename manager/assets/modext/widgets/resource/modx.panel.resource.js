@@ -261,7 +261,7 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     Ext.getCmp('modx-resource-settings-fp').getForm().setValues(r.object);
                     Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('document')+': '+r.object.pagetitle+'</h2>');
                     
-                    if (r.object.richtext && MODx.config.use_editor && MODx.loadRTE !== null && !this.rteLoaded) {
+                    if (r.object.richtext && MODx.config.use_editor && MODx.loadRTE && !this.rteLoaded) {
                     	MODx.loadRTE('ta');
                         this.rteLoaded = true;
                     }
