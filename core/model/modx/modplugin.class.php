@@ -35,5 +35,12 @@ class modPlugin extends modScript {
     function setContent($content, $options = array()) {
         return $this->set('plugincode', $content);
     }
+
+    function getPropertySet($setName = null) {
+        if (empty($setName) && !empty($this->xpdo->event->propertySet)) {
+            $setName = $this->xpdo->event->propertySet;
+        }
+        return parent :: getPropertySet($setName);
+    }
 }
 ?>

@@ -30,11 +30,11 @@ class modUser extends modPrincipal {
             $context = !empty($context) ? $context : $this->xpdo->context->get('key');
             if ($this->_attributes === null || $reload) {
                 $this->_attributes = array();
-                if (isset($_SESSION["modx.principal.attributes"])) {
+                if (isset($_SESSION["modx.user.{$this->id}.attributes"])) {
                     if ($reload) {
-                        unset($_SESSION["modx.principal.attributes"]);
+                        unset($_SESSION["modx.user.{$this->id}.attributes"]);
                     } else {
-                        $this->_attributes = $_SESSION["modx.principal.attributes"];
+                        $this->_attributes = $_SESSION["modx.user.{$this->id}.attributes"];
                     }
                 }
             }
@@ -124,7 +124,7 @@ class modUser extends modPrincipal {
                 if (!isset($this->_attributes[$context][$target])) {
                     $this->_attributes[$context][$target] = array();
                 }
-                $_SESSION["modx.principal.attributes"] = $this->_attributes;
+                $_SESSION["modx.user.{$this->id}.attributes"] = $this->_attributes;
             }
         }
     }
@@ -428,8 +428,8 @@ class modUser extends modPrincipal {
 
     function getResourceGroups() {
         $resourceGroups= array ();
-        if (isset($_SESSION['modx.user.resourceGroups'])) {
-            $resourceGroups= $_SESSION['modx.user.resourceGroups'];
+        if (isset($_SESSION["modx.user.{$this->id}.resourceGroups"])) {
+            $resourceGroups= $_SESSION["modx.user.{$this->id}.resourceGroups"];
         } else {
             if ($memberships= $this->getMany('modUserGroupMember')) {
                 foreach ($memberships as $membership) {
@@ -440,35 +440,35 @@ class modUser extends modPrincipal {
                     }
                 }
             }
-            $_SESSION['modx.user.resourceGroups']= $resourceGroups;
+            $_SESSION["modx.user.{$this->id}.resourceGroups"]= $resourceGroups;
         }
         return $resourceGroups;
     }
 
     function getUserGroups() {
         $groups= array();
-        if (isset($_SESSION['modx.user.userGroups'])) {
-            $groups= $_SESSION['modx.user.userGroups'];
+        if (isset($_SESSION["modx.user.{$this->id}.userGroups"])) {
+            $groups= $_SESSION["modx.user.{$this->id}.userGroups"];
         } else {
             $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"modUserGroupMember":{}}', array('`modUserGroupMember`.`member`' => $this->get('id')));
             if ($memberGroups) {
                 foreach ($memberGroups as $group) $groups[]= $group->get('id');
             }
-            $_SESSION['modx.user.userGroups']= $groups;
+            $_SESSION["modx.user.{$this->id}.userGroups"]= $groups;
         }
         return $groups;
     }
 
     function getUserGroupNames() {
         $groupNames= array();
-        if (isset($_SESSION['modx.user.userGroupNames'])) {
-            $groupNames= $_SESSION['modx.user.userGroupNames'];
+        if (isset($_SESSION["modx.user.{$this->id}.userGroupNames"])) {
+            $groupNames= $_SESSION["modx.user.{$this->id}.userGroupNames"];
         } else {
             $memberGroups= $this->xpdo->getCollectionGraph('modUserGroup', '{"modUserGroupMember":{}}', array('`modUserGroupMember`.`member`' => $this->get('id')));
             if ($memberGroups) {
                 foreach ($memberGroups as $group) $groupNames[]= $group->get('name');
             }
-            $_SESSION['modx.user.userGroupNames']= $groupNames;
+            $_SESSION["modx.user.{$this->id}.userGroupNames"]= $groupNames;
         }
         return $groupNames;
     }

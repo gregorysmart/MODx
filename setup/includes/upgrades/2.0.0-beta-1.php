@@ -42,12 +42,12 @@ unset($roletopic);
 /* add category field to property sets */
 $class = 'modPropertySet';
 $table = $this->install->xpdo->getTableName($class);
-$sql = "ALTER TABLE `{$table}` ADD `category` INT( 10 ) UNSIGNED NOT NULL AFTER `name`;";
+$sql = "ALTER TABLE {$table} ADD `category` INT( 10 ) UNSIGNED NOT NULL AFTER `name`;";
 $description = 'Added new column `category` to '.$table.'.';
 $this->processResults($class, $description, $sql);
 
 /* add index to category field for property sets */
-$sql = "ALTER TABLE `{$table}` ADD INDEX `category` ( `category` )";
+$sql = "ALTER TABLE {$table} ADD INDEX `category` ( `category` )";
 $description = 'Added index for field `category` to '.$table.'.';
 $this->processResults($class, $description, $sql);
 unset($class,$description,$sql,$table);
@@ -64,7 +64,7 @@ unset($class,$description,$sql,$table);
 /* change modAction context_key to namespace */
 $class = 'modAction';
 $table = $this->install->xpdo->getTableName($class);
-$sql = "ALTER TABLE `modx_actions` CHANGE `context_key` `namespace` VARCHAR( 100 ) NOT NULL DEFAULT 'core'";
+$sql = "ALTER TABLE {$table} CHANGE `context_key` `namespace` VARCHAR( 100 ) NOT NULL DEFAULT 'core'";
 $description = 'Changed column `context_key` to `namespace` on '.$table.'.';
 $this->processResults($class,$description,$sql);
 unset($class,$description,$sql,$table);
@@ -155,3 +155,10 @@ $this->results[] = array(
     'msg' => '<p class="ok">Successfully fixed xtypes for modSystemSettings.</small></p>'
 );
 unset($cbtypes,$xt,$cbs,$cb);
+
+/* add property set foreign key to PluginEvents table */
+$class = 'modPluginEvent';
+$table = $this->install->xpdo->getTableName($class);
+$sql = "ALTER TABLE {$table} ADD `propertyset` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `priority`;";
+$description = 'Added new column `propertyset` to '.$table.'.';
+$this->processResults($class, $description, $sql);

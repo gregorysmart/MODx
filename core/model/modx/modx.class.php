@@ -2456,12 +2456,12 @@ class modX extends xPDO {
                 if ($shClass= $this->loadClass($this->config['session_handler_class'], '', false, true)) {
                     if ($sh= new $shClass($this)) {
                         session_set_save_handler(
-                            array ($sh, 'open'),
-                            array ($sh, 'close'),
-                            array ($sh, 'read'),
-                            array ($sh, 'write'),
-                            array ($sh, 'destroy'),
-                            array ($sh, 'gc')
+                            array (& $sh, 'open'),
+                            array (& $sh, 'close'),
+                            array (& $sh, 'read'),
+                            array (& $sh, 'write'),
+                            array (& $sh, 'destroy'),
+                            array (& $sh, 'gc')
                         );
                     }
                 }
@@ -2470,17 +2470,17 @@ class modX extends xPDO {
                 if (isset ($this->config['session_save_path']) && is_writable($this->config['session_save_path'])) {
                     session_save_path($this->config['session_save_path']);
                 }
-                if (isset ($this->config['session_gc_maxlifetime'])) {
-                    @ini_set('session.gc_maxlifetime', (integer) $this->config['session_gc_maxlifetime']);
-                }
+            }
+            if (isset ($this->config['session_gc_maxlifetime'])) {
+                ini_set('session.gc_maxlifetime', (integer) $this->config['session_gc_maxlifetime']);
             }
             $cookieLifetime= 0;
             if (isset ($this->config['session_cookie_lifetime'])) {
                 $cookieLifetime= intval($this->config['session_cookie_lifetime']);
             }
             $cookiePath= isset ($this->config['session_cookie_path']) ? $this->config['session_cookie_path'] : $this->config['base_path'];
-            @ini_set('session.cookie_lifetime', $cookieLifetime);
-            @ini_set('session.cookie_path', $cookiePath);
+            ini_set('session.cookie_lifetime', $cookieLifetime);
+            ini_set('session.cookie_path', $cookiePath);
             $site_sessionname= isset ($this->config['session_name']) ? $this->config['session_name'] : $GLOBALS['site_sessionname'];
             session_name($site_sessionname);
             session_start();
