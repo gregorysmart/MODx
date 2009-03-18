@@ -657,6 +657,31 @@ Ext.extend(MODx.combo.Country,MODx.combo.ComboBox);
 Ext.reg('modx-combo-country',MODx.combo.Country);
 
 
+/**
+ * Displays a dropdown list of property sets.
+ * 
+ * @class MODx.combo.PropertySet
+ * @extends MODx.combo.ComboBox
+ * @param {Object} config An object of configuration properties
+ * @xtype modx-combo-property-set
+ */
+MODx.combo.PropertySet = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        name: 'propertyset'
+        ,hiddenName: 'propertyset'
+        ,url: MODx.config.connectors_url+'element/propertyset.php'
+        ,displayField: 'name'
+        ,valueField: 'id'
+        ,fields: ['id','name']
+        ,editable: false
+        ,value: 0
+    });
+    MODx.combo.PropertySet.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.PropertySet,MODx.combo.ComboBox);
+Ext.reg('modx-combo-property-set',MODx.combo.PropertySet);
+
 
 MODx.ChangeParentField = function(config) {
     config = config || {};

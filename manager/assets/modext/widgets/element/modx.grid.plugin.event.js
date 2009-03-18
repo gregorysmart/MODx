@@ -23,12 +23,12 @@ MODx.grid.PluginEvent = function(config) {
         ,url: MODx.config.connectors_url+'element/plugin/event.php'
         ,baseParams: {
             action: 'getList'
-            ,id: config.plugin
+            ,plugin: config.plugin
         }
         ,saveParams: {
             plugin: config.plugin
         }
-        ,fields: ['id','name','service','groupname','enabled','priority','menu']
+        ,fields: ['id','name','service','groupname','enabled','priority','propertyset','menu']
         ,paging: true
         ,remoteSort: true
         ,plugins: ec
@@ -45,6 +45,11 @@ MODx.grid.PluginEvent = function(config) {
         },
         ec
         ,{
+            header: _('propertyset')
+            ,dataIndex: 'propertyset'
+            ,width: 150
+            ,editor: { xtype: 'modx-combo-property-set' ,renderer: true }
+        },{
             header: _('priority')
             ,dataIndex: 'priority'
             ,width: 100

@@ -95,6 +95,7 @@ if (isset($_POST['events'])) {
             $pe->set('pluginid',$plugin->get('id'));
             $pe->set('evtid',$event['id']);
             $pe->set('priority',$event['priority']);
+            $pe->set('propertyset',$event['propertyset']);
             $pe->save();
         } else {
             $pe = $modx->getObject('modPluginEvent',array(

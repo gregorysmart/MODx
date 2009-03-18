@@ -32,14 +32,15 @@ $es = array();
 foreach ($events as $event) {
     $ea = $event->toArray();
 
-    if (isset($_REQUEST['id'])) {
+    if (isset($_REQUEST['plugin'])) {
         $pe = $modx->getObject('modPluginEvent',array(
-            'pluginid' => $_REQUEST['id'],
-            'evtid' => $event->id,
+            'pluginid' => $_REQUEST['plugin'],
+            'evtid' => $event->get('id'),
         ));
     } else $pe = null;
     $ea['enabled'] = $pe != null;
     $ea['priority'] = $pe == null ? '' : $pe->get('priority');
+    $ea['propertyset'] = $pe == null ? '' : $pe->get('propertyset');
 
     $es[] = $ea;
 }
