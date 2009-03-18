@@ -2505,6 +2505,8 @@ class modX extends xPDO {
      */
     function _loadConfig() {
         $this->config= $this->_config;
+
+        $this->getCacheManager();
         if (!$config = $this->cacheManager->get('config')) {
             $config = $this->cacheManager->generateConfig();
         }

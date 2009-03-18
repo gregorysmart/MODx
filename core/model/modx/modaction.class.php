@@ -45,6 +45,7 @@ class modAction extends modAccessibleSimpleObject {
         if (is_a($this->xpdo, 'modX')) {
             $this->modx =& $this->xpdo;
             $cacheKey= $this->modx->context->get('key') . '/actions';
+            $this->modx->getCacheManager();
             if ($this->modx->cacheManager->generateActionMap($cacheKey, $options)) {
                 $rebuilt = true;
             }
@@ -52,4 +53,3 @@ class modAction extends modAccessibleSimpleObject {
         return $rebuilt;
     }
 }
-?>
