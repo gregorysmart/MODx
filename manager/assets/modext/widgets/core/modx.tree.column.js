@@ -125,6 +125,8 @@ MODx.tree.ColumnTree = function(config) {
     });
     MODx.tree.ColumnTree.superclass.constructor.call(this,config);
     this.on('contextmenu',this._showContextMenu,this);
+    this.on('nodedragover',this._handleDrop,this);
+    this.on('nodedrop',this._handleDrag,this);
     this.cm = new Ext.menu.Menu(Ext.id(),{});
     this.config = config;
 };
@@ -159,6 +161,69 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
         }
     }
     
+    
+    /**
+     * Handles all drag events into the tree.
+     * @param {Object} dropEvent The node dropped on the parent node.
+     */
+    ,_handleDrag: function(dropEvent) {
+        Ext.Msg.show({
+            title: _('please_wait')
+            ,msg: _('saving')
+            ,width: 240
+            ,progress:true
+            ,closable:false
+        });
+        
+        MODx.util.Progress.reset();
+        for(var i = 1; i < 20; i++) {
+            setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
+        }
+        
+        /**
+         * Simplify nodes into JSON format.
+         * @param {Object} node
+         */
+        function simplifyNodes(node) {
+            var resultNode = {};
+            var kids = node.childNodes;
+            var len = kids.length;
+            for (var i = 0; i < len; i++) {
+                resultNode[kids[i].id] = simplifyNodes(kids[i]);
+            }
+            return resultNode;
+        }
+        
+        // JSON-encode our tree
+        var encNodes = Ext.encode(simplifyNodes(dropEvent.tree.root));
+        
+        // send it to the backend to save
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                data: encodeURIComponent(encNodes)
+                ,action: this.config.sortAction || 'sort'
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    MODx.util.Progress.reset();
+                    Ext.Msg.hide();
+                    this.reloadNode(dropEvent.target.parentNode);
+                },scope:this}
+                ,'failure': {fn:function(r) {
+                    MODx.util.Progress.reset();
+                    Ext.Msg.hide();
+                    MODx.form.Handler.errorJSON(r);
+                    return false;
+                },scope:this}
+            }
+        });
+    }
+    
+    /**
+     * Abstract definition to handle drop events.
+     */
+    ,_handleDrop: function() { }
     
     ,loadWindow: function(btn,e,win) {
         var r = win.record || this.cm.record;
