@@ -208,7 +208,7 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
                 'success': {fn:function(r) {
                     MODx.util.Progress.reset();
                     Ext.Msg.hide();
-                    this.reloadNode(dropEvent.target.parentNode);
+                    this.reloadNode(dropEvent.target);
                 },scope:this}
                 ,'failure': {fn:function(r) {
                     MODx.util.Progress.reset();
@@ -218,6 +218,11 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
                 },scope:this}
             }
         });
+    }
+    
+    ,reloadNode: function(n) {
+        this.getLoader().load(n);
+        n.expand();
     }
     
     /**
