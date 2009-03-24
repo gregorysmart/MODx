@@ -329,7 +329,7 @@ switch ($g[0]) {
             $name = $g[0] == 'template' ? $element->get('templatename') : $element->get('name');
 
             $resources[] = array(
-                'text' => $name,
+                'text' => $name . ' (' . $element->get('id') . ')',
                 /* setup g[], 1: 'element', 2: type of el, 3: el ID, 4: cat ID */
                 'id' => 'n_'.$g[0].'_element_'.$element->get('id').'_'.$element->get('category'),
                 'leaf' => 1,
