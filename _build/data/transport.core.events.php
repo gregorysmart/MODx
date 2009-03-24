@@ -58,7 +58,7 @@ $collection['8']->fromArray(array (
 $collection['9']= $xpdo->newObject('modEvent');
 $collection['9']->fromArray(array (
   'id' => 9,
-  'name' => 'OnWebChangePassword ',
+  'name' => 'OnWebChangePassword',
   'service' => 3,
   'groupname' => '',
 ), '', true, true);
@@ -93,7 +93,7 @@ $collection['13']->fromArray(array (
 $collection['14']= $xpdo->newObject('modEvent');
 $collection['14']->fromArray(array (
   'id' => 14,
-  'name' => 'OnManagerSaveUser ',
+  'name' => 'OnManagerSaveUser',
   'service' => 2,
   'groupname' => '',
 ), '', true, true);
@@ -107,7 +107,7 @@ $collection['15']->fromArray(array (
 $collection['16']= $xpdo->newObject('modEvent');
 $collection['16']->fromArray(array (
   'id' => 16,
-  'name' => 'OnManagerChangePassword ',
+  'name' => 'OnManagerChangePassword',
   'service' => 2,
   'groupname' => '',
 ), '', true, true);
