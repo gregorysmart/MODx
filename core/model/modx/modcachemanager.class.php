@@ -103,7 +103,6 @@ class modCacheManager extends xPDOCacheManager {
                 $results['aliasMap']= array ();
                 $results['documentMap']= array ();
                 $containerSuffix= isset ($contextConfig['container_suffix']) ? $contextConfig['container_suffix'] : '';
-                $localMap= array ();
                 while ($r = $collResources->fetch(PDO_FETCH_OBJ)) {
                     $parentId= isset($r->parent) ? strval($r->parent) : "0";
                     $results['documentMap']= array("{$parentId}" => (string) $r->id);
@@ -159,11 +158,11 @@ class modCacheManager extends xPDOCacheManager {
                     if (!empty ($resPath)) {
                         $resPath .= '/';
                     }
-                    if (isset ($localMap[$resPath . $resAlias])) {
-                        $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Resource alias {$resPath}{$resAlias} already exists for resource id = {$localMap[$resPath . $resAlias]}; skipping duplicate resource alias for resource id = {$r->id}");
+                    if (isset ($results['aliasMap'][$resPath . $resAlias])) {
+                        $this->modx->log(XPDO_LOG_LEVEL_ERROR, "Resource alias {$resPath}{$resAlias} already exists for resource id = {$results['aliasMap'][$resPath . $resAlias]}; skipping duplicate resource alias for resource id = {$r->id}");
                         continue;
                     }
-                    $localMap[$resPath . $resAlias]= $r->id;
+                    $results['aliasMap'][$resPath . $resAlias]= $r->id;
                     $results['aliasListing']["{$resPath}{$resAlias}"]= (string) $r->id;
                 }
             }
