@@ -93,7 +93,7 @@ $xpdo_meta_map['modTransportPackage']= array (
     ),
     'manifest' => 
     array (
-      'dbtype' => 'mediumtext',
+      'dbtype' => 'text',
       'phptype' => 'array',
     ),
     'attributes' => 

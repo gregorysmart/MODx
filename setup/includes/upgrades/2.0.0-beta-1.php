@@ -162,3 +162,10 @@ $table = $this->install->xpdo->getTableName($class);
 $sql = "ALTER TABLE {$table} ADD `propertyset` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `priority`;";
 $description = 'Added new column `propertyset` to '.$table.'.';
 $this->processResults($class, $description, $sql);
+
+/* modify modTransportPackage.manifest from mediumtext to text */
+$class = 'transport.modTransportPackage';
+$table = $this->install->xpdo->getTableName($class);
+$sql = "ALTER TABLE {$table} CHANGE `manifest` TEXT NULL;";
+$description = 'Modified column `manifest` to TEXT from MEDIUMTEXT on '.$table.'.';
+$this->processResults($class, $description, $sql);

@@ -125,11 +125,11 @@ class modTransportPackage extends xPDOObject {
                                     $this->set('state', XPDO_TRANSPORT_STATE_UNPACKED);
                                 }
                                 $this->set('source', $sourceFile);
-                                $this->set('manifest', array(
-                                    XPDO_TRANSPORT_MANIFEST_VERSION => $this->package->manifestVersion,
-                                    XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes,
-                                    XPDO_TRANSPORT_MANIFEST_VEHICLES => $this->package->vehicles
-                                ));
+//                                $this->set('manifest', array(
+//                                    XPDO_TRANSPORT_MANIFEST_VERSION => $this->package->manifestVersion,
+//                                    XPDO_TRANSPORT_MANIFEST_ATTRIBUTES => $this->package->attributes,
+//                                    XPDO_TRANSPORT_MANIFEST_VEHICLES => $this->package->vehicles
+//                                ));
                                 $this->set('attributes', $this->package->attributes);
                                 $this->save();
                             }
