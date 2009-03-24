@@ -105,7 +105,7 @@ class modCacheManager extends xPDOCacheManager {
                 $containerSuffix= isset ($contextConfig['container_suffix']) ? $contextConfig['container_suffix'] : '';
                 while ($r = $collResources->fetch(PDO_FETCH_OBJ)) {
                     $parentId= isset($r->parent) ? strval($r->parent) : "0";
-                    $results['documentMap']= array("{$parentId}" => (string) $r->id);
+                    $results['documentMap'][]= array("{$parentId}" => (string) $r->id);
                     $results['resourceMap']["{$parentId}"][] = (string) $r->id;
                     $resourceValues= get_object_vars($r);
                     $results['resourceListing'][(string) $r->id]= $resourceValues;
