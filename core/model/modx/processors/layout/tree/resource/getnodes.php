@@ -23,16 +23,29 @@ if (!isset($_REQUEST['id'])) {
     $node = isset($parts[1]) ? intval($parts[1]) : 0;
 }
 if (isset($_REQUEST['debug'])) echo '<p style="width: 800px; font-family: \'Lucida Console\'; font-size: 11px">';
-$docgrp = '';
-$orderby = 'context, '.$_REQUEST['sortBy'].' ASC, isfolder, pagetitle';
 
 /* grab resources */
 if (empty($context) || $context == 'root') {
     $itemClass= 'modContext';
-    $c= '`key` != \'mgr\'';
+    $c= $modx->newQuery($itemClass, array("`key` != 'mgr'"));
 } else {
     $itemClass= 'modResource';
-    $c= $modx->newQuery('modResource');
+    $c= $modx->newQuery($itemClass);
+    $c->select(array(
+        'id'
+        ,'pagetitle'
+        ,'longtitle'
+        ,'alias'
+        ,'description'
+        ,'parent'
+        ,'published'
+        ,'deleted'
+        ,'isfolder'
+        ,'menuindex'
+        ,'hidemenu'
+        ,'class_key'
+        ,'context_key'
+    ));
     $c->where(array(
         'parent' => $node,
         'context_key' => $context,
@@ -44,8 +57,10 @@ if (empty($context) || $context == 'root') {
 $actions = $modx->request->getAllActionIDs();
 
 $collection = $modx->getCollection($itemClass, $c);
+
 $items = array();
-foreach ($collection as $item) {
+$item = reset($collection);
+while ($item) {
     $canList = $item->checkPolicy('list');
     if ($canList) {
         if ($itemClass == 'modContext') {
@@ -131,16 +146,16 @@ foreach ($collection as $item) {
             );
         } else {
             $class = '';
-            if ($item->get('class_key') == 'modWebLink') {
+            if ($item->class_key == 'modWebLink') {
                 $class = 'weblink';
             } else {
-                $class = $item->get('isfolder') ? 'folder' : 'file';
+                $class = $item->isfolder ? 'folder' : 'file';
             }
-            $class .= ($item->get('published') ? '' : ' unpublished').($item->get('deleted') ? ' deleted' : '').($item->get('hidemenu') == 1 ? ' hidemenu' : '');
+            $class .= ($item->published ? '' : ' unpublished').($item->deleted ? ' deleted' : '').($item->hidemenu == 1 ? ' hidemenu' : '');
             $menu = array(
                 array(
                     'id' => 'cm-resource-header',
-                    'text' => '<b>'.$item->get('pagetitle').'</b> <i>('.$item->get('id').')</i>',
+                    'text' => '<b>'.$item->pagetitle.'</b> <i>('.$item->id.')</i>',
                     'params' => '',
                     'handler' => 'function() { return false; }',
                     'header' => true,
@@ -171,7 +186,7 @@ foreach ($collection as $item) {
                     'id' => 'cm-resource-refresh',
                     'text' => $modx->lexicon('resource_refresh'),
                     'handler' => 'function() {
-                        this.refreshNode("'.$item->get('context_key').'_'.$item->get('id').'");
+                        this.refreshNode("'.$item->context_key.'_'.$item->id.'");
                     }',
                 ),
                 '-',
@@ -191,8 +206,8 @@ foreach ($collection as $item) {
                             'handler' => 'function() {
                                 Ext.getCmp("modx_resource_tree").loadAction("'
                                     . 'a=' . $actions['resource/create']
-                                    . '&parent=' . $item->get('id')
-                                    . '&context_key=' . $item->get('context_key')
+                                    . '&parent=' . $item->id
+                                    . '&context_key=' . $item->context_key
                                  . '");
                             }',
                         ),
@@ -203,8 +218,8 @@ foreach ($collection as $item) {
                                 Ext.getCmp("modx_resource_tree").loadAction("'
                                     . 'a=' . $actions['resource/create']
                                     . '&class_key=' . 'modWebLink'
-                                    . '&parent=' . $item->get('id')
-                                    . '&context_key=' . $item->get('context_key') . '");
+                                    . '&parent=' . $item->id
+                                    . '&context_key=' . $item->context_key . '");
                             }',
                         ),
                         array(
@@ -214,8 +229,8 @@ foreach ($collection as $item) {
                                 Ext.getCmp("modx_resource_tree").loadAction("'
                                     . 'a=' . $actions['resource/create']
                                     . '&class_key=' . 'modSymLink'
-                                    . '&parent=' . $item->get('id')
-                                    . '&context_key=' . $item->get('context_key') . '");
+                                    . '&parent=' . $item->id
+                                    . '&context_key=' . $item->context_key . '");
                             }',
                         ),
                         array(
@@ -225,8 +240,8 @@ foreach ($collection as $item) {
                                 Ext.getCmp("modx_resource_tree").loadAction("'
                                     . 'a=' . $actions['resource/create']
                                     . '&class_key=' . 'modStaticResource'
-                                    . '&parent=' . $item->get('id')
-                                    . '&context_key=' . $item->get('context_key') . '");
+                                    . '&parent=' . $item->id
+                                    . '&context_key=' . $item->context_key . '");
                             }',
                         ),
                     ),
@@ -235,7 +250,7 @@ foreach ($collection as $item) {
 
             $menu[] = '-';
 
-            if ($item->get('published')) {
+            if ($item->published) {
                 $menu[] = array(
                     'id' => 'cm-resource-unpublish',
                     'text' => $modx->lexicon('resource_unpublish'),
@@ -252,7 +267,7 @@ foreach ($collection as $item) {
                     }',
                 );
             }
-            if ($item->get('deleted')) {
+            if ($item->deleted) {
                 $menu[] = array(
                     'id' => 'cm-resource-undelete',
                     'text' => $modx->lexicon('resource_undelete'),
@@ -278,23 +293,24 @@ foreach ($collection as $item) {
                 }',
             );
 
-            $qtip = ($item->get('longtitle') != '' ? '<b>'.$item->get('longtitle').'</b><br />' : '').'<i>'.$item->get('description').'</i>';
+            $qtip = ($item->longtitle != '' ? '<b>'.$item->longtitle.'</b><br />' : '').'<i>'.$item->description.'</i>';
 
             $items[] = array(
-                'text' => $item->get('pagetitle').' ('.$item->get('id').')',
-                'id' => $item->get('context_key') . '_'.$item->get('id'),
-                'leaf' => $item->get('isfolder') ? 0 : 1,
+                'text' => $item->pagetitle.' ('.$item->id.')',
+                'id' => $item->context_key . '_'.$item->id,
+                'leaf' => $item->isfolder ? 0 : 1,
                 'cls' => $class,
                 'type' => 'modResource',
                 'qtip' => $qtip,
-                'href' => 'index.php?a='.$actions['resource/data'].'&id='.$item->get('id'),
+                'href' => 'index.php?a='.$actions['resource/data'].'&id='.$item->id,
                 'menu' => array(
                     'items' => $menu,
                 ),
             );
         }
     }
+    $item = next($collection);
 }
-
+unset($collection, $item, $actions);
 
 return $this->toJSON($items);
