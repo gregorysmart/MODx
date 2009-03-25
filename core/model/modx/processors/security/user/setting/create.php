@@ -13,7 +13,11 @@
  * @package modx
  * @subpackage processors.context.setting
  */
-$modx->lexicon->load('setting');
+$modx->lexicon->load('setting','namespace');
+
+if (!isset($_POST['namespace'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
+$namespace = $modx->getObject('modNamespace',$_POST['namespace']);
+if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 $_POST['user'] = isset($_POST['fk']) ? $_POST['fk'] : 0;
 
