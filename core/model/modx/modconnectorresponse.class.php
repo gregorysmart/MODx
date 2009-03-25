@@ -11,6 +11,7 @@ require_once(MODX_CORE_PATH . 'model/modx/modresponse.class.php');
 class modConnectorResponse extends modResponse {
     /**
      * The base location of the processors called by the connectors.
+     *
      * @var string
      * @access private
      */
@@ -76,23 +77,26 @@ class modConnectorResponse extends modResponse {
     }
 
     /**
-     * Used for outputting arrays of objects to the output buffer, for
-     * list results and such.
+     * Return arrays of objects (with count) converted to JSON.
+     *
+     * The JSON result includes two main elements, total and results. This format is used for list
+     * results.
      *
      * @access public
-     * @param array $array An array of files.
-     * @count mixed The total number of objects. Used for pagination.
+     * @param array $array An array of data objects.
+     * @param mixed $count The total number of objects. Used for pagination.
+     * @return string The JSON output.
      */
     function outputArray($array,$count = false) {
         if (!is_array($array)) return false;
         if ($count === false) { $count = count($array); }
-
         return '({"total":"'.$count.'","results":'.$this->modx->toJSON($array).'})';
     }
 
     /**
-     * Set the request handler's processor directory. This allows for dynamic
-     * processor locations.
+     * Set the physical location of the processor directory for the response handler.
+     *
+     * This allows for dynamic processor locations.
      *
      * @access public
      * @param string $dir The directory to set as the processors directory.
@@ -106,52 +110,53 @@ class modConnectorResponse extends modResponse {
     }
 
     /**
-     * Converts PHP structure to JSON format and properly handles string
-     * literals
+     * Converts PHP to JSON with JavaScript literals left in-tact.
+     *
+     * JSON does not allow JavaScript literals, but this function encodes certain identifiable
+     * literals and decodes them back into literals after modX::toJSON() formats the data.
      *
      * @access public
-     * @param mixed $data
-     * @return string The JSON-encoded string
+     * @param mixed $data The PHP data to be converted.
+     * @return string The extended JSON-encoded string.
      */
     function toJSON($data) {
-        $vals = array();
-        $rkeys = array();
-        foreach ($data as $key => &$value){
-            $this->_parseLiterals($key,$value,$vals,$rkeys);
-        }
-
-        $o = $this->modx->toJSON($data);
-        $o = str_replace($rkeys, $vals, $o);
-        return $o;
+        array_walk_recursive($data, array(&$this, '_encodeLiterals'));
+        return $this->_decodeLiterals($this->modx->toJSON($data));
     }
 
     /**
-     * Parses Javascript literals out of a JSON string, making them properly
-     * executable for the JS, which makes JS eval statements unnecessary.
+     * Encodes certain JavaScript literal strings for later decoding.
      *
-     * @access private
-     * @param string $key The current array index key
-     * @param mixed &$value The value of the current array index
-     * @param array &$vals The stored values to be translated
-     * @param array &$rkeys The stored keys to map to the values to translate
+     * @access protected
+     * @param mixed &$value A reference to the value to be encoded if it is identified as a literal.
+     * @param integer|string $key The array key corresponding to the value.
      */
-    function _parseLiterals($key,&$value,&$vals,&$rkeys) {
-        if (is_array($value)) {
-            foreach ($value as $key => &$v) {
-                $this->_parseLiterals($key,$v,$vals,$rkeys);
-            }
-        } else {
+    function _encodeLiterals(&$value, $key) {
+        if (is_string($value)) {
             /* properly handle common literal structures */
             if (strpos($value, 'function(') === 0
              || strpos($value, 'this.') === 0
              || strpos($value, 'new Function(') === 0
              || strpos($value, 'Ext.') === 0) {
-                $uid = uniqid();
-                $v = $value;
-                $vals[] = $v;
-                $value = '%' . $uid . '%';
-                $rkeys[] = '"' . $value . '"';
-            }
+                $value = '@@' . base64_encode($value) . '@@';
+             }
         }
+    }
+
+    /**
+     * Decodes strings encoded by _encodeLiterals to restore JavaScript literals.
+     *
+     * @access protected
+     * @param string $string The JSON-encoded string with encoded literals.
+     * @return string The JSON-encoded string with literals restored.
+     */
+    function _decodeLiterals($string) {
+        $pattern = '/"@@(.*?)@@"/';
+        $string = preg_replace_callback(
+            $pattern,
+            create_function('$matches', 'return base64_decode($matches[1]);'),
+            $string
+        );
+        return $string;
     }
 }
