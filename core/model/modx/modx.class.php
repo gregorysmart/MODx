@@ -907,7 +907,7 @@ class modX extends xPDO {
      */
     function getVersionData() {
         if ($this->version === null) {
-            $this->version= @ include_once MODX_CORE_PATH . "config/version.inc.php";
+            $this->version= @ include_once MODX_CORE_PATH . "docs/version.inc.php";
         }
         return $this->version;
     }

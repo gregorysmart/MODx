@@ -379,7 +379,7 @@ class modInstall {
             /* if new install */
             if ($mode == MODX_INSTALL_MODE_NEW) {
                 /* add settings_version */
-                $currentVersion = include MODX_CORE_PATH . 'config/version.inc.php';
+                $currentVersion = include MODX_CORE_PATH . 'docs/version.inc.php';
 
                 $settings_version = $this->xpdo->newObject('modSystemSetting');
                 $settings_version->set('key','settings_version');
@@ -447,7 +447,7 @@ class modInstall {
                     $settings_version->set('namespace','core');
                     $settings_version->set('area','system');
                 }
-                $currentVersion = include MODX_CORE_PATH . 'config/version.inc.php';
+                $currentVersion = include MODX_CORE_PATH . 'docs/version.inc.php';
                 $settings_version->set('value', $currentVersion['full_version']);
                 $settings_version->save();
 
