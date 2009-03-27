@@ -12,7 +12,6 @@ MODx.toolbar.TopMenu = function(config) {
     Ext.applyIf(config,{
         id: 'modx-topmenu'
         ,renderTo: 'modx_tm'
-        ,cls: 'modx-topmenu'
     });
 	MODx.toolbar.TopMenu.superclass.constructor.call(this,config);
 	this.config = config;

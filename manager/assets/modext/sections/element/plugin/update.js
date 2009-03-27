@@ -4,12 +4,12 @@
  * @class MODx.page.UpdatePlugin
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-page-plugin-update
+ * @xtype page-plugin-update
  */
 MODx.page.UpdatePlugin = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		formpanel: 'modx-panel-plugin'
+		formpanel: 'panel-plugin'
 		,actions: {
             'new': MODx.action['element/plugin/create']
             ,edit: MODx.action['element/plugin/update']
@@ -21,7 +21,7 @@ MODx.page.UpdatePlugin = function(config) {
             ,method: 'remote'
             ,checkDirty: true
             ,keys: [{
-                key: 's'
+                key: "s"
                 ,alt: true
                 ,ctrl: true
             }]
@@ -32,8 +32,9 @@ MODx.page.UpdatePlugin = function(config) {
         }]
 		,loadStay: true
         ,components: [{
-            xtype: 'modx-panel-plugin'
-            ,renderTo: 'modx-panel-plugin'
+            xtype: 'panel-plugin'
+            ,id: 'panel-plugin'
+            ,renderTo: 'panel-plugin'
             ,plugin: config.id
             ,category: config.category
             ,name: ''
@@ -42,4 +43,4 @@ MODx.page.UpdatePlugin = function(config) {
 	MODx.page.UpdatePlugin.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.UpdatePlugin,MODx.Component);
-Ext.reg('modx-page-plugin-update',MODx.page.UpdatePlugin);
+Ext.reg('page-plugin-update',MODx.page.UpdatePlugin);

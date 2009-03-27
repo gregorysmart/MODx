@@ -19,12 +19,10 @@ MODx.panel.ImageTV = function(config) {
         }
         ,width: 400
         ,items: [{
-            xtype: 'modx-combo-browser'
+            xtype: 'combo-browser'
             ,browserEl: 'tvbrowser'+config.tv
             ,name: 'tv'+config.tv
-            ,id: 'tv'+config.tv
             ,value: config.value
-            ,hideFiles: true
             ,listeners: {
                 'change': {fn:triggerDirtyField,scope:this}
                 ,'select': {fn:function(data) {
@@ -37,4 +35,4 @@ MODx.panel.ImageTV = function(config) {
     MODx.panel.ImageTV.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.ImageTV,MODx.Panel);
-Ext.reg('modx-panel-tv-image',MODx.panel.ImageTV);
+Ext.reg('panel-tv-image',MODx.panel.ImageTV);

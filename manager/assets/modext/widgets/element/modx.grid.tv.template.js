@@ -3,20 +3,14 @@
  * 
  * @class MODx.grid.TemplateVarTemplate
  * @extends MODx.grid.Grid
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-grid-tv-template
+ * @xtype grid-templatevartemplate
  */
 MODx.grid.TemplateVarTemplate = function(config) {
     config = config || {};
-    var tt = MODx.load({
-        xtype: 'checkbox-column'
-        ,header: _('access')
-        ,dataIndex: 'access'
-        ,width: 40
-        ,sortable: false
-    });
     Ext.applyIf(config,{
-        id: 'modx-grid-tv-template'
+        title: _('tv_tmpl_access')
         ,url: MODx.config.connectors_url+'element/tv/template.php'
         ,fields: ['id','templatename','description','rank','access','menu']
         ,baseParams: {
@@ -28,16 +22,22 @@ MODx.grid.TemplateVarTemplate = function(config) {
         }
         ,width: 800
         ,paging: true
-        ,plugins: tt
         ,columns: [{
             header: _('name')
             ,dataIndex: 'templatename'
             ,width: 150
+            ,editor: { xtype: 'textfield' ,allowBlank: false }
         },{
             header: _('description')
             ,dataIndex: 'description'
             ,width: 350
-        },tt,{
+            ,editor: { xtype: 'textfield' }
+        },{
+            header: _('has_access')
+            ,dataIndex: 'access'
+            ,width: 100
+            ,editor: { xtype: 'combo-boolean', renderer: 'boolean' }
+        },{
             header: _('rank')
             ,dataIndex: 'rank'
             ,width: 100
@@ -47,4 +47,4 @@ MODx.grid.TemplateVarTemplate = function(config) {
     MODx.grid.TemplateVarTemplate.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.TemplateVarTemplate,MODx.grid.Grid);
-Ext.reg('modx-grid-tv-template',MODx.grid.TemplateVarTemplate);
+Ext.reg('grid-tv-template',MODx.grid.TemplateVarTemplate);

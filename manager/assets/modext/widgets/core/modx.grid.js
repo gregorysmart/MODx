@@ -23,13 +23,18 @@ MODx.grid.Grid = function(config) {
 		,autoHeight: true
         ,collapsible: true
         ,stripeRows: true
-        ,cls: 'modx-grid'
 		,viewConfig: {
 			forceFit: true
 			,enableRowBody: true
             ,autoFill: true
 			,showPreview: true
 		}
+        ,tools: [{ 
+            id: 'help'
+            ,qtip: _('help')
+            ,handler: this.help
+            ,scope: this
+        }]
 	});
 	if (config.paging) {
 		Ext.applyIf(config,{
@@ -135,7 +140,7 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
      */
     ,loadWindow: function(btn,e,win,or) {
         var r = this.menu.record;
-        if (!this.windows[win.xtype] || win.force) {  
+        if (!this.windows[win.xtype]) {  
             Ext.applyIf(win,{
                 record: win.blankValues ? {} : r
                 ,grid: this
@@ -384,6 +389,16 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
     }
     
     /**
+     * If set for the grid, displays a help dialog.
+     * 
+     * @access public
+     * @abstract
+     */
+    ,help: function() {
+        Ext.Msg.alert(_('help'),_('help_not_yet'));
+    }
+    
+    /**
      * Render the row to a colored Yes/No value.
      * 
      * @access public
@@ -439,22 +454,6 @@ Ext.extend(MODx.grid.Grid,Ext.grid.EditorGridPanel,{
             rs[p[i].data.id] = p[i].data;
         }
         return Ext.encode(rs);
-    }
-    
-    ,expandAll: function() {
-        if (!this.exp) return false;
-        
-        this.exp.expandAll(); 
-        this.tools['plus'].hide();
-        this.tools['minus'].show();
-    }
-    
-    ,collapseAll: function() {
-        if (!this.exp) return false;
-        
-        this.exp.collapseAll();
-        this.tools['minus'].hide();
-        this.tools['plus'].show();
     }
 });
 
@@ -595,54 +594,4 @@ Ext.extend(Ext.grid.RowExpander, Ext.util.Observable, {
             this.fireEvent('collapse', this, record, body, row.rowIndex);
         }
     }
-    
-    // Expand all rows
-    ,expandAll : function() {
-        var aRows = this.grid.getView().getRows();
-        for(var i = 0; i < aRows.length; i++) {
-            this.expandRow(aRows[i]);
-        }
-    }
-
-    // Collapse all rows
-    ,collapseAll : function() {
-        var aRows = this.grid.getView().getRows();
-        for(var i = 0; i < aRows.length; i++) {
-            this.collapseRow(aRows[i]);
-        }
-    }
 });
-
-Ext.grid.CheckColumn = function(config){
-    Ext.apply(this, config);
-    if(!this.id){
-        this.id = Ext.id();
-    }
-    this.renderer = this.renderer.createDelegate(this);
-    Ext.grid.CheckColumn.superclass.constructor.call(this,config);
-};
-Ext.extend(Ext.grid.CheckColumn,Ext.Component,{
-    init : function(grid){
-        this.grid = grid;
-        this.grid.on('render', function(){
-            var view = this.grid.getView();
-            view.mainBody.on('mousedown', this.onMouseDown, this);
-        }, this);
-    },
-
-    onMouseDown : function(e, t){
-        if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) != -1){
-            e.stopEvent();
-            var index = this.grid.getView().findRowIndex(t);
-            var record = this.grid.store.getAt(index);
-            record.set(this.dataIndex, !record.data[this.dataIndex]);
-            this.grid.fireEvent('afteredit');
-        }
-    },
-
-    renderer : function(v, p, record){
-        p.css += ' x-grid3-check-col-td'; 
-        return '<div class="x-grid3-check-col'+(v?'-on':'')+' x-grid3-cc-'+this.id+'">&#160;</div>';
-    }
-});
-Ext.reg('checkbox-column',Ext.grid.CheckColumn);

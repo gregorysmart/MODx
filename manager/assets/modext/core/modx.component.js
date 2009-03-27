@@ -86,13 +86,11 @@ Ext.extend(MODx.Component,Ext.Component,{
      */
 	,_loadTabs: function() {
 		if (!this.config.tabs) { return false; }
-        var o = this.config.tabOptions || {};
-        Ext.applyIf(o,{
+        MODx.load({
             xtype: 'modx-tabs'
             ,renderTo: this.config.tabs_div || 'tabs_div'
             ,items: this.config.tabs
         });
-        MODx.load(o);
 	}
     
     /**

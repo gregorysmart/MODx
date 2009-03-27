@@ -3,8 +3,9 @@
  * 
  * @class MODx.grid.AccessResourceGroup
  * @extends MODx.grid.Grid
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-grid-access-resource-group
+ * @xtype grid-accessresourcegroup
  */
 MODx.grid.AccessResourceGroup = function(config) {
     config = config || {};
@@ -40,7 +41,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         var r = this.menu.record;
         if (!this.windows.create_arg) {
             this.windows.create_arg = MODx.load({
-                xtype: 'modx-window-access-resource-group'
+                xtype: 'window-access-resourcegroup'
                 ,record: r
                 ,listeners: {
                 	'success': {fn: function(frm,a) {
@@ -65,7 +66,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         var r = this.menu.record;
         if (!this.windows.update_arg) {
             this.windows.update_arg = MODx.load({
-                xtype: 'modx-window-access-resource-group'
+                xtype: 'window-access-resourcegroup'
                 ,id: r.id
                 ,record: r
                 ,listeners: {
@@ -108,7 +109,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
     }
     
     ,getToolbar: function() {
-        this.combos.ug = MODx.load({ xtype: 'modx-combo-usergroup' });
+        this.combos.ug = MODx.load({ xtype: 'combo-usergroup' });
         this.combos.ug.on('select',function(btn,e) {
             this.getStore().baseParams = {
                 action: 'getList'
@@ -119,7 +120,7 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
             this.getStore().reload();
         },this);
         
-        this.combos.rg = MODx.load({ xtype: 'modx-combo-resourcegroup' });
+        this.combos.rg = MODx.load({ xtype: 'combo-resourcegroup' });
         this.combos.rg.on('select',function(btn,e) {
             this.getStore().baseParams = {
                 action: 'getList'
@@ -151,15 +152,16 @@ Ext.extend(MODx.grid.AccessResourceGroup,MODx.grid.Grid,{
         ];
     }
 });
-Ext.reg('modx-grid-access-resource-group',MODx.grid.AccessResourceGroup);
+Ext.reg('grid-accessresourcegroup',MODx.grid.AccessResourceGroup);
 
 /** 
  * Generates the modAccessResourceGroup window.
  *  
  * @class MODx.window.AccessResourceGroup
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-window-access-resource-group
+ * @xtype window-access-resourcegroup
  */
 MODx.window.AccessResourceGroup = function(config) {
     config = config || {};
@@ -215,15 +217,13 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     fieldLabel: _('resource_group')
                     ,name: 'target'
                     ,hiddenName: 'target'
-                    ,id: 'modx-arg-target'
-                    ,xtype: 'modx-combo-resourcegroup'
+                    ,xtype: 'combo-resourcegroup'
                     ,value: data.target
                 },{
                     fieldLabel: _('user_group')
                     ,name: 'principal'
                     ,hiddenName: 'principal'
-                    ,id: 'modx-arg-principal'
-                    ,xtype: 'modx-combo-usergroup'
+                    ,xtype: 'combo-usergroup'
                     ,value: data.principal || ''
                     ,baseParams: {
                         action: 'getList'
@@ -232,7 +232,6 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                 },{
                     fieldLabel: _('authority')
                     ,name: 'authority'
-                    ,id: 'modx-arg-authority'
                     ,xtype: 'textfield'
                     ,width: 40
                     ,value: data.authority
@@ -240,8 +239,7 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     fieldLabel: _('policy')
                     ,name: 'policy'
                     ,hiddenName: 'policy'
-                    ,id: 'modx-arg-policy'
-                    ,xtype: 'modx-combo-policy'
+                    ,xtype: 'combo-policy'
                     ,value: data.policy || ''
                     ,baseParams: {
                         action: 'getList'
@@ -251,17 +249,14 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
                     fieldLabel: _('context')
                     ,name: 'context_key'
                     ,hiddenName: 'context_key'
-                    ,id: 'modx-arg-context-key'
-                    ,xtype: 'modx-combo-context'
+                    ,xtype: 'combo-context'
                     ,value: data.context_key || ''
                 },{
                     name: 'principal_class'
-                    ,id: 'modx-arg-principal-class'
                     ,xtype: 'hidden'
                     ,value: 'modUserGroup'
                 },{
                     name: 'id'
-                    ,id: 'modx-arg-id'
                     ,xtype: 'hidden'
                     ,value: data.id
                 }
@@ -271,4 +266,4 @@ Ext.extend(MODx.window.AccessResourceGroup,MODx.Window,{
         this.renderForm();
     }
 });
-Ext.reg('modx-window-access-resource-group',MODx.window.AccessResourceGroup);
+Ext.reg('window-access-resourcegroup',MODx.window.AccessResourceGroup);

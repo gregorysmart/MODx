@@ -1,12 +1,11 @@
 /**
  * Loads a grid of Role and User pairs.
  * 
- * @deprecated
- * 
  * @class MODx.grid.AccessResourceGroup
  * @extends MODx.grid.Grid
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-grid-roleuser
+ * @xtype grid-roleuser
  */
 MODx.grid.RoleUser = function(config) {
 	config = config || {};
@@ -92,7 +91,7 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
 		return [
 			_('role_user_add')+': '
 			,{
-                xtype: 'modx-combo-user'
+                xtype: 'combo-user'
                 ,id: 'rugrid-combo-user'
             },{
 				xtype: 'button'
@@ -103,7 +102,7 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
 			,'->'
 			,_('group')+': '
 			,{
-                xtype: 'modx-combo-usergroup'
+                xtype: 'combo-usergroup'
                 ,id: 'rugrid-combo-usergroup'
                 ,listeners: {
                     'select': {fn:function(btn,e) {
@@ -133,4 +132,4 @@ Ext.extend(MODx.grid.RoleUser,MODx.grid.Grid,{
 		];
 	}
 });
-Ext.reg('modx-grid-roleuser',MODx.grid.RoleUser);
+Ext.reg('grid-roleuser',MODx.grid.RoleUser);

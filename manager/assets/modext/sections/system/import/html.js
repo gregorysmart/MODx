@@ -1,53 +1,53 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-import-html' });
+    MODx.load({ xtype: 'page-import-html' });
 });
 
 /**
  * @class MODx.page.ImportHTML
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype modx-page-import-html
+ * @xtype import-html
  */
 MODx.page.ImportHTML = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        form: 'modx-import-site'
+        form: 'import_site'
         ,fields: {
             import_element: {
                 xtype: 'textfield'
-                ,id: 'modx-import-element'
+                ,id: 'import_element'
                 ,width: 200
-                ,applyTo: 'modx-import-element'
+                ,applyTo: 'import_element'
                 ,value: 'body'
             }
             ,import_context: {
                 xtype: 'hidden'
-                ,id: 'modx-import-context'
-                ,applyTo: 'modx-import-context'
+                ,id: 'import_context'
+                ,applyTo: 'import_context'
                 ,value: 'web'
             }
             ,import_parent: {
                 xtype: 'hidden'
-                ,id: 'modx-import-parent'
-                ,applyTo: 'modx-import-parent'
+                ,id: 'import_parent'
+                ,applyTo: 'import_parent'
                 ,value: '0'
             }
         }
         ,buttons: [{
             process: 'import', text: _('import_site'), method: 'remote'
             ,onComplete: function(o, itm, res) {
-                Ext.get('modx-import-results').update(res.message);
+                Ext.get('import_results').update(res.message);
             }
         },{
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]
         ,components: [{
-            xtype: 'modx-tree-resource-simple'
+            xtype: 'tree-resource-simple'
             ,title: _('resources')
-            ,url: MODx.config.connectors_url+'resource/index.php'
-            ,el: 'modx-ih-resource-tree'
-            ,id: 'modx-ih-resource-tree'
-            ,tb_id: 'modx-ih-resource-tree-tb'
+            ,url: MODx.config.connectors_url+'resource/document.php'
+            ,el: 'modx_resource_tree'
+            ,id: 'ih_resource_tree'
+            ,tb_id: 'modx_resource_tree_tb'
             ,enableDrop: false
             ,rootVisible: false
         }]
@@ -58,7 +58,7 @@ MODx.page.ImportHTML = function(config) {
 Ext.extend(MODx.page.ImportHTML,MODx.Component,{
     setup: function() {
         Ext.Ajax.timeout = 0;
-        var t = Ext.getCmp('modx-ih-resource-tree');
+        var t = Ext.getCmp('ih_resource_tree');
         t.getSelectionModel().on('selectionchange',this.handleClick,t);
     }
     
@@ -73,8 +73,8 @@ Ext.extend(MODx.page.ImportHTML,MODx.Component,{
                 iPar = spl[1];
             }
         }
-        Ext.getCmp('modx-import-parent').setValue(iPar);
-        Ext.getCmp('modx-import-context').setValue(iCxt);
+        Ext.getCmp('import_parent').setValue(iPar);
+        Ext.getCmp('import_context').setValue(iCxt);
     }
 });
-Ext.reg('modx-page-import-html',MODx.page.ImportHTML);
+Ext.reg('page-import-html',MODx.page.ImportHTML);

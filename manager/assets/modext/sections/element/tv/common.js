@@ -3,7 +3,8 @@
  * 
  * @class MODx.combo.TVWidget
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-tv-widget
+ * @constructor
+ * @xtype combo-tv-widget
  */
 MODx.combo.TVWidget = function(config) {
     config = config || {};
@@ -23,14 +24,15 @@ MODx.combo.TVWidget = function(config) {
     MODx.combo.TVWidget.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.TVWidget,MODx.combo.ComboBox);
-Ext.reg('modx-combo-tv-widget',MODx.combo.TVWidget);
+Ext.reg('combo-tv-widget',MODx.combo.TVWidget);
 
 /**
  * Displays a tv input type
  * 
  * @class MODx.combo.TVInputType
  * @extends Ext.form.ComboBox
- * @xtype modx-combo-tv-input-type
+ * @constructor
+ * @xtype combo-tv-input-type
  */
 MODx.combo.TVInputType = function(config) {
     config = config || {};
@@ -43,11 +45,12 @@ MODx.combo.TVInputType = function(config) {
         ,fields: ['value','name']
         ,url: MODx.config.connectors_url+'element/tv/renders.php'
         ,baseParams: {
-            action: 'getInputs'
+        	action: 'getInputs'
+        	,ctx: 'mgr'
         }
         ,value: 'text'
     });
     MODx.combo.TVInputType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.TVInputType,MODx.combo.ComboBox);
-Ext.reg('modx-combo-tv-input-type',MODx.combo.TVInputType);
+Ext.reg('combo-tv-input-type',MODx.combo.TVInputType);

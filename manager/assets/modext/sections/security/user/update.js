@@ -4,12 +4,12 @@
  * @class MODx.page.UpdateUser
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-page-user-update
+ * @xtype page-user-update
  */
 MODx.page.UpdateUser = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-       formpanel: 'modx-panel-user'
+       formpanel: 'panel-user'
        ,actions: {
             'new': MODx.action['security/user/create']
             ,edit: MODx.action['security/user/update']
@@ -24,8 +24,9 @@ MODx.page.UpdateUser = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'modx-panel-user'
-            ,renderTo: 'modx-panel-user'
+            xtype: 'panel-user'
+            ,id: 'panel-user'
+            ,renderTo: 'panel-user'
             ,user: config.user
             ,name: ''
         }]
@@ -33,4 +34,4 @@ MODx.page.UpdateUser = function(config) {
 	MODx.page.UpdateUser.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.UpdateUser,MODx.Component);
-Ext.reg('modx-page-user-update',MODx.page.UpdateUser);
+Ext.reg('page-user-update',MODx.page.UpdateUser);

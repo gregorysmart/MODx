@@ -25,7 +25,6 @@ MODx.combo.ComboBox = function(config,getStore) {
         ,typeAhead: true
         ,forceSelection: false
         ,minChars: 3
-        ,cls: 'modx-combo'
     });
     Ext.applyIf(config,{
         store: new Ext.data.JsonStore({
@@ -44,11 +43,6 @@ MODx.combo.ComboBox = function(config,getStore) {
 	}
 	MODx.combo.ComboBox.superclass.constructor.call(this,config);
     this.config = config;
-    if (!config.preventRender) {
-        this.on('render',function() {
-            this.store.load();
-        },this);
-    }
 };
 Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
 	/**
@@ -60,7 +54,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
 	 * @param {Object} v The value to set.
      * @param {boolean} b True to bypass check
 	 */
-	/*,setValue: function(v,b) {
+	,setValue: function(v,b) {
         if (this.isLoaded || b === true || this.mode == 'local' || v === '') {
             MODx.combo.ComboBox.superclass.setValue.call(this,v);
         } else {
@@ -74,7 +68,7 @@ Ext.extend(MODx.combo.ComboBox,Ext.form.ComboBox,{
                 ,scope: this
             });
         }
-    }*/
+    }
 });
 Ext.reg('modx-combo',MODx.combo.ComboBox);
 
@@ -108,7 +102,8 @@ MODx.combo.Renderer = function(combo) {
  * 
  * @class MODx.combo.Boolean
  * @extends Ext.form.ComboBox
- * @xtype modx-combo-boolean
+ * @constructor
+ * @xtype combo-boolean
  */
 MODx.combo.Boolean = function(config) {
     config = config || {};
@@ -123,20 +118,19 @@ MODx.combo.Boolean = function(config) {
         ,triggerAction: 'all'
         ,editable: false
         ,selectOnFocus: false
-        ,preventRender: true
     });
     MODx.combo.Boolean.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Boolean,MODx.combo.ComboBox);
 Ext.reg('combo-boolean',MODx.combo.Boolean);
-Ext.reg('modx-combo-boolean',MODx.combo.Boolean);
 
 /**
  * Displays a dropdown list of modUsers
  * 
  * @class MODx.combo.User
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-user
+ * @constructor
+ * @xtype combo-user
  */
 MODx.combo.User = function(config) {
 	config = config || {};
@@ -151,14 +145,15 @@ MODx.combo.User = function(config) {
 	MODx.combo.User.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.User,MODx.combo.ComboBox);
-Ext.reg('modx-combo-user',MODx.combo.User);
+Ext.reg('combo-user',MODx.combo.User);
 
 /**
  * Displays a dropdown list of modUsers
  * 
  * @class MODx.combo.User
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-usergroup
+ * @constructor
+ * @xtype combo-usergroup
  */
 MODx.combo.UserGroup = function(config) {
 	config = config || {};
@@ -174,14 +169,15 @@ MODx.combo.UserGroup = function(config) {
 	MODx.combo.UserGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.UserGroup,MODx.combo.ComboBox);
-Ext.reg('modx-combo-usergroup',MODx.combo.UserGroup);
+Ext.reg('combo-usergroup',MODx.combo.UserGroup);
 
 /**
  * Displays a dropdown list of modUserGroupRoles.
  * 
  * @class MODx.combo.UserGroupRole
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-usergrouprole
+ * @constructor
+ * @xtype combo-usergrouprole
  */
 MODx.combo.UserGroupRole = function(config) {
 	config = config || {};
@@ -196,14 +192,15 @@ MODx.combo.UserGroupRole = function(config) {
 	MODx.combo.UserGroupRole.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.UserGroupRole,MODx.combo.ComboBox);
-Ext.reg('modx-combo-usergrouprole',MODx.combo.UserGroupRole);
+Ext.reg('combo-usergrouprole',MODx.combo.UserGroupRole);
 
 /**
  * Displays a dropdown list of modResourceGroups.
  * 
  * @class MODx.combo.ResourceGroup
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-resourcegroup
+ * @constructor
+ * @xtype combo-resourcegroup
  */
 MODx.combo.ResourceGroup = function(config) {
 	config = config || {};
@@ -218,14 +215,15 @@ MODx.combo.ResourceGroup = function(config) {
     MODx.combo.ResourceGroup.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ResourceGroup,MODx.combo.ComboBox);
-Ext.reg('modx-combo-resourcegroup',MODx.combo.ResourceGroup);
+Ext.reg('combo-resourcegroup',MODx.combo.ResourceGroup);
 
 /**
  * Displays a dropdown list of modContexts.
  * 
  * @class MODx.combo.Context
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-context
+ * @constructor
+ * @xtype combo-context
  */
 MODx.combo.Context = function(config) {
 	config = config || {};
@@ -240,14 +238,15 @@ MODx.combo.Context = function(config) {
     MODx.combo.Context.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Context,MODx.combo.ComboBox);
-Ext.reg('modx-combo-context',MODx.combo.Context);
+Ext.reg('combo-context',MODx.combo.Context);
 
 /**
  * Displays a dropdown list of modPolicies.
  * 
  * @class MODx.combo.Policy
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-policy
+ * @constructor
+ * @xtype combo-policy
  */
 MODx.combo.Policy = function(config) {
 	config = config || {};
@@ -264,14 +263,15 @@ MODx.combo.Policy = function(config) {
     MODx.combo.Policy.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Policy,MODx.combo.ComboBox);
-Ext.reg('modx-combo-policy',MODx.combo.Policy);
+Ext.reg('combo-policy',MODx.combo.Policy);
 
 /**
  * Displays a dropdown list of modTemplates.
  * 
  * @class MODx.combo.Template
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-template
+ * @constructor
+ * @xtype combo-template
  */
 MODx.combo.Template = function(config) {
 	config = config || {};
@@ -291,7 +291,7 @@ MODx.combo.Template = function(config) {
 	MODx.combo.Template.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Template,MODx.combo.ComboBox);
-Ext.reg('modx-combo-template',MODx.combo.Template);
+Ext.reg('combo-template',MODx.combo.Template);
 
 /**
  * Displays a dropdown list of modCategories.
@@ -325,14 +325,15 @@ Ext.extend(MODx.combo.Category,MODx.combo.ComboBox,{
         this.setValue(v,true);
     }
 });
-Ext.reg('modx-combo-category',MODx.combo.Category);
+Ext.reg('combo-category',MODx.combo.Category);
 
 /**
  * Displays a dropdown list of languages.
  * 
  * @class MODx.combo.Language
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-language
+ * @constructor
+ * @xtype combo-language
  */
 MODx.combo.Language = function(config) {
 	config = config || {};
@@ -351,7 +352,7 @@ MODx.combo.Language = function(config) {
 	MODx.combo.Language.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Language,MODx.combo.ComboBox);
-Ext.reg('modx-combo-language',MODx.combo.Language);
+Ext.reg('combo-language',MODx.combo.Language);
 
 /**
  * Displays a dropdown list of available charsets.
@@ -379,7 +380,7 @@ MODx.combo.Charset = function(config) {
 	MODx.combo.Charset.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Charset,MODx.combo.ComboBox);
-Ext.reg('modx-combo-charset',MODx.combo.Charset);
+Ext.reg('combo-charset',MODx.combo.Charset);
 
 /**
  * Displays a dropdown list of available RTEs.
@@ -407,13 +408,14 @@ MODx.combo.RTE = function(config) {
 	MODx.combo.RTE.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.RTE,MODx.combo.ComboBox);
-Ext.reg('modx-combo-rte',MODx.combo.RTE);
+Ext.reg('combo-rte',MODx.combo.RTE);
 
 /**
  * Displays a dropdown list of available Roles.
  * 
  * @class MODx.combo.Role
  * @extends MODx.combo.ComboBox
+ * @constructor
  * @xtype combo-role
  */
 MODx.combo.Role = function(config) {
@@ -432,14 +434,15 @@ MODx.combo.Role = function(config) {
     MODx.combo.Role.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Role,MODx.combo.ComboBox);
-Ext.reg('modx-combo-role',MODx.combo.Role);
+Ext.reg('combo-role',MODx.combo.Role);
 
 /**
  * Displays a dropdown list of available Content Types.
  * 
  * @class MODx.combo.ContentType
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-content-type
+ * @constructor
+ * @xtype combo-contenttype
  */
 MODx.combo.ContentType = function(config) {
     config = config || {};
@@ -457,7 +460,7 @@ MODx.combo.ContentType = function(config) {
     MODx.combo.ContentType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ContentType,MODx.combo.ComboBox);
-Ext.reg('modx-combo-content-type',MODx.combo.ContentType);
+Ext.reg('combo-contenttype',MODx.combo.ContentType);
 
 /**
  * Displays a content disposition combo
@@ -475,20 +478,19 @@ MODx.combo.ContentDisposition = function(config) {
             ,data: [[_('inline'),0],[_('attachment'),1]]
         })
         ,name: 'content_dispo'
-        ,hiddenName: 'content_dispo'
         ,width: 200
         ,displayField: 'd'
         ,valueField: 'v'
+        ,value: 0
         ,mode: 'local'
         ,triggerAction: 'all'
         ,editable: false
         ,selectOnFocus: false
-        ,preventRender: true
     });
     MODx.combo.ContentDisposition.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ContentDisposition,Ext.form.ComboBox);
-Ext.reg('modx-combo-content-disposition',MODx.combo.ContentDisposition);
+Ext.reg('combo-content-disposition',MODx.combo.ContentDisposition);
 
 
 /**
@@ -496,8 +498,9 @@ Ext.reg('modx-combo-content-disposition',MODx.combo.ContentDisposition);
  * 
  * @class MODx.combo.ClassKey
  * @extends MODx.combo.ComboBox
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-combo-class-key
+ * @xtype combo-class-key
  */
 MODx.combo.ClassKey = function(config) {
     config = config || {};
@@ -516,7 +519,7 @@ MODx.combo.ClassKey = function(config) {
     MODx.combo.ClassKey.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.ClassKey,MODx.combo.ComboBox);
-Ext.reg('modx-combo-class-key',MODx.combo.ClassKey);
+Ext.reg('combo-class-key',MODx.combo.ClassKey);
 
 
 /**
@@ -525,8 +528,9 @@ Ext.reg('modx-combo-class-key',MODx.combo.ClassKey);
  * 
  * @class MODx.combo.Object
  * @extends MODx.combo.ComboBox
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-combo-object
+ * @xtype combo-object
  */
 MODx.combo.Object = function(config) {
     config = config || {};
@@ -547,14 +551,15 @@ MODx.combo.Object = function(config) {
     MODx.combo.Object.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Object,MODx.combo.ComboBox);
-Ext.reg('modx-combo-object',MODx.combo.Object);
+Ext.reg('combo-object',MODx.combo.Object);
 
 /**
  * Displays a dropdown list of available Content Types.
  * 
  * @class MODx.combo.ContentType
  * @extends MODx.combo.ComboBox
- * @xtype modx-combo-namespace
+ * @constructor
+ * @xtype combo-contenttype
  */
 MODx.combo.Namespace = function(config) {
     config = config || {};
@@ -575,7 +580,7 @@ MODx.combo.Namespace = function(config) {
     MODx.combo.Namespace.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Namespace,MODx.combo.ComboBox);
-Ext.reg('modx-combo-namespace',MODx.combo.Namespace);
+Ext.reg('combo-namespace',MODx.combo.Namespace);
 
 
 
@@ -585,7 +590,7 @@ Ext.reg('modx-combo-namespace',MODx.combo.Namespace);
  * @class MODx.combo.Browser
  * @extends Ext.form.TriggerField
  * @param {Object} config An object of configuration properties
- * @xtype modx-combo-browser
+ * @xtype combo-browser
  */
 MODx.combo.Browser = function(config) {
     config = config || {};
@@ -625,10 +630,10 @@ Ext.extend(MODx.combo.Browser,Ext.form.TriggerField,{
     }
     
     ,onDestroy: function(){
-        MODx.combo.Browser.superclass.onDestroy.call(this);
+        MODx.combo.Catalog.superclass.onDestroy.call(this);
     }
 });
-Ext.reg('modx-combo-browser',MODx.combo.Browser);
+Ext.reg('combo-browser',MODx.combo.Browser);
 
 
 /**
@@ -637,7 +642,7 @@ Ext.reg('modx-combo-browser',MODx.combo.Browser);
  * @class MODx.combo.Country
  * @extends MODx.combo.ComboBox
  * @param {Object} config An object of configuration properties
- * @xtype modx-combo-country
+ * @xtype combo-country
  */
 MODx.combo.Country = function(config) {
     config = config || {};
@@ -654,83 +659,4 @@ MODx.combo.Country = function(config) {
     MODx.combo.Country.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.Country,MODx.combo.ComboBox);
-Ext.reg('modx-combo-country',MODx.combo.Country);
-
-
-/**
- * Displays a dropdown list of property sets.
- * 
- * @class MODx.combo.PropertySet
- * @extends MODx.combo.ComboBox
- * @param {Object} config An object of configuration properties
- * @xtype modx-combo-property-set
- */
-MODx.combo.PropertySet = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        name: 'propertyset'
-        ,hiddenName: 'propertyset'
-        ,url: MODx.config.connectors_url+'element/propertyset.php'
-        ,displayField: 'name'
-        ,valueField: 'id'
-        ,fields: ['id','name']
-        ,editable: false
-        ,value: 0
-    });
-    MODx.combo.PropertySet.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.combo.PropertySet,MODx.combo.ComboBox);
-Ext.reg('modx-combo-property-set',MODx.combo.PropertySet);
-
-
-MODx.ChangeParentField = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        triggerAction: 'all'
-        ,editable: false
-        ,readOnly: true
-    });    
-    MODx.ChangeParentField.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.ChangeParentField,Ext.form.TriggerField,{
-    onTriggerClick: function() {
-        if (this.disabled) {
-            return false;
-        }
-        
-        var t = Ext.getCmp('modx_resource_tree');
-        if (!t) return;
-        
-        this.setValue(_('resource_parent_select_node'));
-        
-        Ext.getCmp('modx-resource-tree-panel').expand();
-        
-        t.removeListener('click',t._handleClick,t);
-        t.on('click',this.handleChangeParent,this);
-    }
-    
-    
-    ,handleChangeParent: function(node,e) {
-        e.preventDefault();
-        e.stopEvent();
-        
-        var t = Ext.getCmp('modx_resource_tree');
-        if (!t) return;
-        
-        var id = node.id.split('_'); id = id[1];
-        if (id == MODx.request.id) {
-            MODx.msg.alert('',_('resource_err_own_parent'));            
-            return;
-        }
-        
-        Ext.getCmp('modx-resource-parent-hidden').setValue(id);
-        this.setValue(node.text);
-        
-        t.removeListener('click',this.handleChangeParent,this);
-        t.on('click',t._handleClick,t);
-        
-        Ext.getCmp('modx-panel-resource').fireEvent('fieldChange');
-        return false;
-    }
-});
-Ext.reg('modx-field-parent-change',MODx.ChangeParentField);
+Ext.reg('combo-country',MODx.combo.Country);

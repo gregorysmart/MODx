@@ -9,13 +9,12 @@
 MODx.panel.ResourceTV = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        contentEl: 'modx-tab-tvs'
-        ,id: 'modx-panel-resource-tv'
+        contentEl: 'tab_tvs'
+        ,id: 'panel-resource-tv'
         ,title: _('settings_templvars')
         ,class_key: ''
         ,resource: ''
         ,autoLoad: this.autoload(config)
-        ,templateField: 'modx-resource-template'
     });
     MODx.panel.ResourceTV.superclass.constructor.call(this,config);
 };
@@ -25,8 +24,8 @@ Ext.extend(MODx.panel.ResourceTV,MODx.Panel,{
      * @param {Object} config
      */
     autoload: function(config) {
-        var t = Ext.getCmp(config.templateField);
-        if (!t && !config.template) { return false; }
+        var t = Ext.getCmp('tpl');
+        if (!t) { return false; }
         var template = config.template ? config.template : t.getValue();
         var a = {
             url: MODx.config.manager_url+'index.php?a='+MODx.action['resource/tvs']
@@ -42,4 +41,4 @@ Ext.extend(MODx.panel.ResourceTV,MODx.Panel,{
         return a;        	
     }
 });
-Ext.reg('modx-panel-resource-tv',MODx.panel.ResourceTV);
+Ext.reg('panel-resource-tv',MODx.panel.ResourceTV);

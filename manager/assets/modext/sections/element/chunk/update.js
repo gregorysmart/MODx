@@ -4,12 +4,12 @@
  * @class MODx.page.UpdateChunk
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-page-chunk-update
+ * @xtype page-chunk-update
  */
 MODx.page.UpdateChunk = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-	   formpanel: 'modx-panel-chunk'
+	   formpanel: 'panel-chunk'
 	   ,actions: {
             'new': MODx.action['element/chunk/create']
             ,edit: MODx.action['element/chunk/update']
@@ -20,7 +20,7 @@ MODx.page.UpdateChunk = function(config) {
             ,text: _('save')
             ,method: 'remote'
             ,keys: [{
-                key: 's'
+                key: "s"
                 ,alt: true
                 ,ctrl: true
             }]
@@ -31,8 +31,9 @@ MODx.page.UpdateChunk = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'modx-panel-chunk'
-            ,renderTo: 'modx-panel-chunk'
+            xtype: 'panel-chunk'
+            ,id: 'panel-chunk'
+            ,renderTo: 'panel-chunk'
             ,chunk: config.id
             ,name: config.name
         }]
@@ -40,4 +41,4 @@ MODx.page.UpdateChunk = function(config) {
 	MODx.page.UpdateChunk.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.UpdateChunk,MODx.Component);
-Ext.reg('modx-page-chunk-update',MODx.page.UpdateChunk);
+Ext.reg('page-chunk-update',MODx.page.UpdateChunk);

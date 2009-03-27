@@ -4,13 +4,13 @@
  * @class MODx.page.CreateWebLink
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype modx-page-weblink-create
+ * @xtype page-weblink-create
  */
 MODx.page.CreateWebLink = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
-        ,formpanel: 'modx-panel-weblink'
+        ,formpanel: 'panel-weblink'
         ,which_editor: 'none'
         ,actions: {
             'new': MODx.action['resource/weblink/create']
@@ -21,9 +21,6 @@ MODx.page.CreateWebLink = function(config) {
             process: 'create'
             ,text: _('save')
             ,method: 'remote'
-            ,params: {
-                class_key: 'modWebLink'
-            }
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
         },{
             process: 'cancel'
@@ -32,21 +29,27 @@ MODx.page.CreateWebLink = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'modx-panel-weblink'
-            ,renderTo: 'modx-panel-weblink'
+            xtype: 'panel-weblink'
+            ,renderTo: 'panel-weblink'
             ,resource: 0
-            ,record: {
-                class_key: config.class_key
-                ,context_key: config.context_key
-                ,template: config.template
-                ,parent: config.parent
-            }
+            ,class_key: config.class_key
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
-            ,access_permissions: config.access_permissions            
+            ,access_permissions: config.access_permissions
+            ,template: config.template
+            ,parent: config.parent
+        },{
+            xtype: 'grid-resource-security'
+            ,renderTo: 'grid-resource-security'
+            ,id: 'grid-resource-security'
+        },{
+            xtype: 'panel-resource-tv'
+            ,id: 'panel-resource-tv'
+            ,class_key: config.class_key
+            ,resource: 0
         }]
     });
     MODx.page.CreateWebLink.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateWebLink,MODx.Component);
-Ext.reg('modx-page-weblink-create',MODx.page.CreateWebLink);
+Ext.reg('page-weblink-create',MODx.page.CreateWebLink);

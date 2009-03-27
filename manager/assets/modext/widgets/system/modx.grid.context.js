@@ -4,7 +4,7 @@
  * @class MODx.grid.Context
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype modx-grid-contexts
+ * @xtype grid-context
  */
 MODx.grid.Context = function(config) {
 	config = config || {};
@@ -12,6 +12,7 @@ MODx.grid.Context = function(config) {
 		title: _('contexts')
         ,url: MODx.config.connectors_url+'context/index.php'
 		,fields: ['key','description','menu']
+        ,width: 800
 		,paging: true
         ,autosave: true
         ,remoteSort: true
@@ -30,7 +31,7 @@ MODx.grid.Context = function(config) {
         }]
 		,tbar: [{
 			text: _('create_new')
-			,handler: { xtype: 'modx-window-context-create' ,blankValues: true }
+			,handler: { xtype: 'window-context-create' ,blankValues: true }
 		}]
 	});
 	MODx.grid.Context.superclass.constructor.call(this,config);
@@ -40,15 +41,16 @@ Ext.extend(MODx.grid.Context,MODx.grid.Grid,{
         location.href = 'index.php?a='+MODx.action['context/update']+'&key='+this.menu.record.key;
     }
 });
-Ext.reg('modx-grid-contexts',MODx.grid.Context);
+Ext.reg('grid-context',MODx.grid.Context);
 
 /**
  * Generates the create context window.
  *  
  * @class MODx.window.CreateContext
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-window-context-create
+ * @xtype window-context-create
  */
 MODx.window.CreateContext = function(config) {
     config = config || {};
@@ -73,40 +75,5 @@ MODx.window.CreateContext = function(config) {
     MODx.window.CreateContext.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateContext,MODx.Window);
-Ext.reg('modx-window-context-create',MODx.window.CreateContext);
+Ext.reg('window-context-create',MODx.window.CreateContext);
 
-/**
- * Loads the Contexts panel
- * 
- * @class MODx.panel.Contexts
- * @extends MODx.FormPanel
- * @param {Object} config An object of configuration options
- * @xtype modx-panel-contexts
- */
-MODx.panel.Contexts = function(config) {
-    config = config || {};
-    Ext.applyIf(config,{
-        id: 'modx-panel-contexts'
-        ,bodyStyle: ''
-        ,defaults: { collapsible: false ,autoHeight: true }
-        ,items: [{
-            html: '<h2>'+_('contexts')+'</h2>'
-            ,border: false
-            ,id: 'modx-contexts-header'
-            ,cls: 'modx-page-header'
-        },{
-            layout: 'form'
-            ,bodyStyle: 'padding: 1.5em'
-            ,items: [{
-                html: '<p>'+_('context_management_message')+'</p>'
-                ,border: false
-            },{
-                xtype: 'modx-grid-contexts'
-                ,preventRender: true
-            }]
-        }]
-    });
-    MODx.panel.Contexts.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.panel.Contexts,MODx.FormPanel);
-Ext.reg('modx-panel-contexts',MODx.panel.Contexts);

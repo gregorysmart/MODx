@@ -1,69 +1,69 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'modx-page-import-resource' });
+    MODx.load({ xtype: 'page-import-resource' });
 });
 
 /**
  * @class MODx.page.ImportResource
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype modx-page-import-resource
+ * @xtype page-import-resource
  */
 MODx.page.ImportResource = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        form: 'modx-import-site'
+        form: 'import_site'
         ,fields: {
             import_element: {
                 xtype: 'textfield'
                 ,width: 200
-                ,applyTo: 'modx-import-element'
+                ,applyTo: 'import_element'
                 ,value: 'body'
             }
             ,import_base_path: {
                 xtype: 'textfield'
                 ,width: 200
-                ,applyTo: 'modx-import-base-path'
+                ,applyTo: 'import_base_path'
                 ,value: ''
             }
             ,import_resource_class: {
                 xtype: 'textfield'
                 ,width: 200
-                ,applyTo: 'modx-import-resource-class'
+                ,applyTo: 'import_resource_class'
                 ,value: 'modStaticResource'
             }
             ,import_allowed_extensions: {
                 xtype: 'textfield'
                 ,width: 200
-                ,applyTo: 'modx-import-allowed-extensions'
+                ,applyTo: 'import_allowed_extensions'
                 ,value: ''
             }
             ,import_context: {
                 xtype: 'hidden'
-                ,id: 'modx-import-context'
-                ,applyTo: 'modx-import-context'
+                ,id: 'import_context'
+                ,applyTo: 'import_context'
                 ,value: 'web'
             }
             ,import_parent: {
                 xtype: 'hidden'
-                ,id: 'modx-import-parent'
-                ,applyTo: 'modx-import-parent'
+                ,id: 'import_parent'
+                ,applyTo: 'import_parent'
                 ,value: '0'
             }
         }
         ,buttons: [{
             process: 'import', text: _('import_resources'), method: 'remote'
             ,onComplete: function(o,i,r) {
-                Ext.get('modx-import-results').update(r.message);
+                Ext.get('import_results').update(r.message);
             }
         },{
             process: 'cancel', text: _('cancel'), params: {a:MODx.action['welcome']}
         }]
         ,components: [{
-            xtype: 'modx-tree-resource-simple'
+            xtype: 'tree-resource-simple'
             ,title: _('resources')
-            ,id: 'modx-import-tree'
-            ,el: 'modx-import-resource-tree'
-            ,url: MODx.config.connectors_url+'resource/index.php'
+            ,id: 'import_tree'
+            ,el: 'import_resource_tree'
+            ,url: MODx.config.connectors_url+'resource/document.php'
             ,enableDrop: false
             ,rootVisible: false
         }]
@@ -74,7 +74,7 @@ MODx.page.ImportResource = function(config) {
 Ext.extend(MODx.page.ImportResource,MODx.Component,{
     setup: function() {
         Ext.Ajax.timeout = 0;
-        var t = Ext.getCmp('modx-import-tree');
+        var t = Ext.getCmp('import_tree');
         t.getSelectionModel().on('selectionchange',this.handleClick,t);
     }
     
@@ -89,8 +89,8 @@ Ext.extend(MODx.page.ImportResource,MODx.Component,{
                 iPar = spl[1];
             }
         }
-        Ext.getCmp('modx-import-parent').setValue(iPar);
-        Ext.getCmp('modx-import-context').setValue(iCxt);
+        Ext.getCmp('import_parent').setValue(iPar);
+        Ext.getCmp('import_context').setValue(iCxt);
     }
 });
-Ext.reg('modx-page-import-resource',MODx.page.ImportResource);
+Ext.reg('page-import-resource',MODx.page.ImportResource);

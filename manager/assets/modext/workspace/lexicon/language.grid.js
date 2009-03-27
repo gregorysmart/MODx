@@ -4,13 +4,12 @@
  * @class MODx.grid.Language
  * @extends MODx.grid.Grid
  * @param {Object} config An object of configuration properties
- * @xtype modx-grid-language
+ * @xtype grid-language
  */
 MODx.grid.Language = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('languages')
-        ,id: 'modx-grid-language'
         ,url: MODx.config.connectors_url+'system/language.php'
         ,fields: ['id','name','menu']
         ,width: '97%'
@@ -25,22 +24,23 @@ MODx.grid.Language = function(config) {
         }]
         ,tbar: [{
             text: _('language_create')
-            ,handler: { xtype: 'modx-window-language-create' }
+            ,handler: { xtype: 'window-language-create' }
             ,scope: this
         }]
     });
     MODx.grid.Language.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.Language,MODx.grid.Grid);
-Ext.reg('modx-grid-language',MODx.grid.Language);
+Ext.reg('grid-language',MODx.grid.Language);
 
 /**
  * Generates the create language window.
  *  
  * @class MODx.window.CreateLanguage
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-window-language-create
+ * @xtype window-language-create
  */
 MODx.window.CreateLanguage = function(config) {
     config = config || {};
@@ -60,4 +60,4 @@ MODx.window.CreateLanguage = function(config) {
     MODx.window.CreateLanguage.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateLanguage,MODx.Window);
-Ext.reg('modx-window-language-create',MODx.window.CreateLanguage);
+Ext.reg('window-language-create',MODx.window.CreateLanguage);

@@ -3,8 +3,9 @@
  * 
  * @class MODx.grid.Message
  * @extends MODx.grid.Grid
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-grid-message
+ * @xtype grid-message
  */
 MODx.grid.Message = function(config) {
     config = config || {};
@@ -21,11 +22,12 @@ MODx.grid.Message = function(config) {
     exp.on('expand',this.read,this);
     Ext.applyIf(config,{
         title: _('messages')
-        ,id: 'modx-grid-message'
+        ,id: 'grid-message'
         ,url: MODx.config.connectors_url+'security/message.php'
         ,fields: ['id','type','subject','message','sender','recipient','private'
             ,'date_sent'
             ,'read','sender_name','menu']
+        ,width: 800
         ,autosave: true
         ,paging: true
         ,plugins: exp
@@ -37,7 +39,7 @@ MODx.grid.Message = function(config) {
             header: _('sender')
             ,dataIndex: 'sender'
             ,width: 120
-            ,editor: { xtype: 'modx-combo-user' ,renderer: true }
+            ,editor: { xtype: 'combo-user' ,renderer: true }
             ,editable: false
         },{
             header: _('subject')
@@ -57,7 +59,7 @@ MODx.grid.Message = function(config) {
         ,tbar: [{
             text: _('message_new')
             ,scope: this
-            ,handler: { xtype: 'modx-window-message-create' ,blankValues: true }
+            ,handler: { xtype: 'window-message-create' ,blankValues: true }
         }]
     });
     MODx.grid.Message.superclass.constructor.call(this,config);
@@ -97,15 +99,16 @@ Ext.extend(MODx.grid.Message,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('modx-grid-message',MODx.grid.Message);
+Ext.reg('grid-message',MODx.grid.Message);
 
 /**
  * Generates the new message window.
  *  
  * @class MODx.window.CreateMessage
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-window-message-create
+ * @xtype window-message-create
  */
 MODx.window.CreateMessage = function(config) {
     config = config || {};
@@ -135,17 +138,17 @@ MODx.window.CreateMessage = function(config) {
                 'select': {fn:this.showRecipient,scope:this}
             }
         },{
-            xtype: 'modx-combo-user'
+            xtype: 'combo-user'
             ,id: 'mc-recipient-user'
             ,fieldLabel: _('user')
             ,allowBlank: true
         },{
-            xtype: 'modx-combo-usergroup'
+            xtype: 'combo-usergroup'
             ,id: 'mc-recipient-usergroup'
             ,fieldLabel: _('usergroup')
             ,allowBlank: true
         },{
-            xtype: 'modx-combo-role'
+            xtype: 'combo-role'
             ,id: 'mc-recipient-role'
             ,fieldLabel: _('role')
             ,allowBlank: true
@@ -194,4 +197,4 @@ Ext.extend(MODx.window.CreateMessage,MODx.Window,{
         if (fd) { this.showField(fd); }
     }
 });
-Ext.reg('modx-window-message-create',MODx.window.CreateMessage);
+Ext.reg('window-message-create',MODx.window.CreateMessage);

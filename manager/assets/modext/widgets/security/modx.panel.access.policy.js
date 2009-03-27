@@ -3,7 +3,7 @@
  * @class MODx.panel.AccessPolicy
  * @extends MODx.FormPanel
  * @param {Object} config An object of config properties
- * @xtype modx-panel-access-policy
+ * @xtype panel-access-policy
  */
 MODx.panel.AccessPolicy = function(config) {
     config = config || {};
@@ -12,68 +12,54 @@ MODx.panel.AccessPolicy = function(config) {
         ,baseParams: {
             action: 'update'
         }
-        ,id: 'modx-panel-access-policy'
+        ,id: 'panel-access-policy'
         ,class_key: 'modAccessPolicy'
         ,plugin: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
-            html: '<h2>'+_('chunk_new')+'</h2>'
+            html: '<h2>'+_('policy')+': '+config.name+'</h2>'
+            ,id: 'policy-name'
             ,border: false
-            ,cls: 'modx-page-header'
-            ,id: 'modx-policy-header'
         },{
-            xtype: 'portal'
-            ,items: [{
-                columnWidth: 1
-                ,items: [{
-                    title: _('policy')
-                    ,layout: 'form'
-                    ,bodyStyle: 'padding: 1.5em;'
-                    ,items: [{
-                        html: '<p>'+_('policy_desc')+'</p>'
-                        ,border: false
-                    },{
-                        xtype: 'hidden'
-                        ,name: 'id'
-                        ,value: config.plugin
-                    },{
-                        xtype: 'textfield'
-                        ,fieldLabel: _('name')
-                        ,name: 'name'
-                        ,width: 300
-                        ,maxLength: 255
-                        ,enableKeyEvents: true
-                        ,allowBlank: false
-                        ,listeners: {
-                            'keyup': {scope:this,fn:function(f,e) {
-                                Ext.getCmp('modx-policy-header').getEl().update('<h2>'+_('policy')+': '+f.getValue()+'</h2>');
-                            }}
-                        }
-                    },{
-                        xtype: 'textarea'
-                        ,fieldLabel: _('description')
-                        ,name: 'description'
-                        ,width: 300
-                        ,grow: true
-                    },{
-                        xtype: 'button'
-                        ,text: _('save')
-                        ,handler: this.submit
-                        ,scope: this
-                    }]
-                },{
-                    title: _('policy_data')
-                    ,layout: 'form'
-                    ,bodyStyle: ''
-                    ,items: [{
-                        xtype: 'modx-grid-policy-property'
-                        ,policy: null
-                        ,source: null
-                        ,autoHeight: true
-                    }]
-                }]
-            }]
+            html: '<p>'+_('policy_desc')+'</p>'
+            ,border: false
+        },{
+            xtype: 'hidden'
+            ,name: 'id'
+            ,value: config.plugin
+        },{
+            xtype: 'textfield'
+            ,fieldLabel: _('name')
+            ,name: 'name'
+            ,width: 300
+            ,maxLength: 255
+            ,enableKeyEvents: true
+            ,allowBlank: false
+            ,listeners: {
+                'keyup': {scope:this,fn:function(f,e) {
+                    Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+f.getValue()+'</h2>');
+                }}
+            }
+        },{
+            xtype: 'textarea'
+            ,fieldLabel: _('description')
+            ,name: 'description'
+            ,width: 300
+            ,grow: true
+        },{
+            xtype: 'button'
+            ,text: _('save')
+            ,handler: this.submit
+            ,scope: this
+        },{
+            html: '<br /><h2>'+_('policy_data')+'</h2>'
+            ,border: false
+        },{
+            xtype: 'grid-policy-property'
+            ,id: 'grid-policy-property'
+            ,policy: null
+            ,source: null
         }]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
@@ -97,19 +83,19 @@ Ext.extend(MODx.panel.AccessPolicy,MODx.FormPanel,{
             	'success':{fn:function(r) {
                     this.getForm().setValues(r.object);
                     var data = Ext.util.JSON.decode(r.object.policy_data);
-                    var g = Ext.getCmp('modx-grid-policy-property');
+                    var g = Ext.getCmp('grid-policy-property');
                     g.setSource(data);
                     g.config.policy = r.object.id;
                     g.getView().refresh();
                     
-                    Ext.getCmp('modx-policy-header').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
+                    Ext.getCmp('policy-name').getEl().update('<h2>'+_('policy')+': '+r.object.name+'</h2>');
                     this.fireEvent('ready');
             	},scope:this}
             }
         });
     }
 });
-Ext.reg('modx-panel-access-policy',MODx.panel.AccessPolicy);
+Ext.reg('panel-access-policy',MODx.panel.AccessPolicy);
 
 
 
@@ -119,14 +105,14 @@ Ext.reg('modx-panel-access-policy',MODx.panel.AccessPolicy);
  * 
  * @class MODx.grid.PolicyProperty
  * @extends Ext.grid.PropertyGrid
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-grid-policy-property
+ * @xtype grid-policyproperty
  */
 MODx.grid.PolicyProperty = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        id: 'modx-grid-policy-property'
-        ,source: null
+        source: null
         ,height: 300
         ,maxHeight: 300
         ,autoHeight: true
@@ -222,4 +208,4 @@ Ext.extend(MODx.grid.PolicyProperty,Ext.grid.PropertyGrid,{
         this.menu.show(e.target);
     }
 });
-Ext.reg('modx-grid-policy-property',MODx.grid.PolicyProperty);
+Ext.reg('grid-policy-property',MODx.grid.PolicyProperty);

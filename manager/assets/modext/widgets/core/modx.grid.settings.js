@@ -4,12 +4,13 @@
  * 
  * @class MODx.grid.SettingsGrid
  * @extends MODx.grid.Grid
+ * @constructor
  * @param {Object} config An object of config options.
  * @xtype modx-grid-settings
  */
 MODx.grid.SettingsGrid = function(config) {
     config = config || {};
-    this.exp = new Ext.grid.RowExpander({
+    var exp = new Ext.grid.RowExpander({
         tpl : new Ext.Template(
             '<p style="padding: .7em 1em .3em;"><i>{description}</i></p>'
         )
@@ -19,33 +20,24 @@ MODx.grid.SettingsGrid = function(config) {
             text: _('setting_create')
             ,scope: this
             ,handler: { 
-                xtype: 'modx-window-setting-create'
+                xtype: 'window-setting-create'
                 ,url: config.url || MODx.config.connectors_url+'system/settings.php'
                 ,blankValues: true
             }
         }];
     }
     config.tbar.push('->',{
-        xtype: 'modx-combo-namespace'
-        ,name: 'namespace'
-        ,id: 'modx-filter-namespace'
-        ,emptyText: _('namespace_filter')
-        ,allowBlank: true
-        ,listeners: {
-            'select': {fn: this.filterByNamespace, scope:this}
-        }
-    },'-',{
         xtype: 'textfield'
         ,name: 'filter_key'
-        ,id: 'modx-filter-key'
-        ,emptyText: _('search_by_key')+'...'
+        ,id: 'filter_key'
+        ,emptyText: _('search')+'...'
         ,listeners: {
             'change': {fn: this.filterByKey, scope: this}
             ,'render': {fn: this._addEnterKeyHandler}
         }
     },{
         xtype: 'button'
-        ,id: 'modx-filter-clear'
+        ,id: 'filter_clear'
         ,text: _('filter_clear')
         ,listeners: {
         	'click': {fn: this.clearFilter, scope: this}
@@ -59,7 +51,6 @@ MODx.grid.SettingsGrid = function(config) {
         }
         ,fields: ['key','name','value','description','xtype','namespace','area','area_text','editedon','oldkey','menu']
         ,paging: true
-        ,pageSize: 50
         ,autosave: true
         ,remoteSort: true
         ,primaryKey: 'key'
@@ -73,8 +64,8 @@ MODx.grid.SettingsGrid = function(config) {
         ,groupBy: 'area_text'
         ,singleText: _('setting')
         ,pluralText: _('settings')
-        ,plugins: this.exp
-        ,columns: [this.exp,{
+        ,plugins: exp
+        ,columns: [exp,{
             header: _('name')
             ,dataIndex: 'name'
             ,width: 250
@@ -102,19 +93,6 @@ MODx.grid.SettingsGrid = function(config) {
             ,width: 100
             ,sortable: true
         }]
-        ,collapseFirst: false
-        ,tools: [{
-            id: 'plus'
-            ,qtip: _('expand_all')
-            ,handler: this.expandAll
-            ,scope: this
-        },{
-            id: 'minus'
-            ,hidden: true
-            ,qtip: _('collapse_all')
-            ,handler: this.collapseAll
-            ,scope: this
-        }]
     });
     MODx.grid.SettingsGrid.superclass.constructor.call(this,config);
     this.removeListener('celldblclick',this.onCellDblClick,this);
@@ -137,8 +115,6 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
     	this.getStore().baseParams = {
     		action: 'getList'
     	};
-        Ext.getCmp('modx-filter-namespace').setValue('');
-        Ext.getCmp('modx-filter-key').setValue('');
     	this.refresh();
     	this.getBottomToolbar().changePage(1);
     }
@@ -147,15 +123,10 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
      * Filters the grid by the key column.
      */
     ,filterByKey: function(tf,newValue,oldValue) {
-        this.getStore().baseParams.key = newValue;
-        this.refresh();
-        this.getBottomToolbar().changePage(1);
-    }
-    /**
-     * Filters the grid by the namespace column
-     */
-    ,filterByNamespace: function(cb,rec,ri) {
-        this.getStore().baseParams['namespace'] = rec.data['name'];
+        this.getStore().baseParams = {
+        	action: 'getList'
+        	,key: newValue
+        };
         this.refresh();
         this.getBottomToolbar().changePage(1);
     }
@@ -218,7 +189,7 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
                 if(!ed.rendered){
                     ed.render(this.view.getEditorParent(ed));
                 }
-                (function(){ /* complex but required for focus issues in safari, ie and opera */
+                (function(){ // complex but required for focus issues in safari, ie and opera
                     ed.row = row;
                     ed.col = col;
                     ed.record = r;
@@ -251,7 +222,7 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
         } else if (r.xtype === 'datefield') {
             f = Ext.util.Format.dateRenderer('Y-m-d');
             return f(v);
-        } else if (r.xtype.substr(0,5) == 'combo' || r.xtype.substr(0,9) == 'modx-combo') {
+        } else if (r.xtype.substr(0,5) == 'combo') {
             var cm = g.getColumnModel();
             var ed = cm.getCellEditor(ci,ri);
             if (!ed) {
@@ -272,74 +243,61 @@ Ext.reg('modx-grid-settings',MODx.grid.SettingsGrid);
  * 
  * @class MODx.window.CreateSetting
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of config options.
- * @xtype modx-window-setting-create
+ * @xtype window-setting-create
  */
 MODx.window.CreateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         title: _('setting_create')
-        ,width: 500
+        ,width: 450
         ,url: config.url
         ,action: 'create'
         ,fields: [{
             xtype: 'hidden'
             ,name: 'fk'
-            ,id: 'modx-cs-fk'
             ,value: config.fk || 0
         },{
             xtype: 'textfield'
             ,fieldLabel: _('key')
             ,name: 'key'
-            ,id: 'modx-cs-key'
             ,maxLength: 100
-            ,width: 200
         },{
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
-            ,id: 'modx-cs-name'
             ,allowBlank: false
-            ,width: 200
         },{
-            xtype: 'modx-combo-xtype-spec'
+            xtype: 'combo-xtype-spec'
             ,fieldLabel: _('xtype')
             ,description: _('xtype_desc')
-            ,id: 'modx-cs-xtype'
-            ,width: 200
         },{
-            xtype: 'modx-combo-namespace'
+            xtype: 'combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
-            ,id: 'modx-cs-namespace'
             ,value: 'core'
-            ,width: 200
         },{
             xtype: 'textfield'
             ,fieldLabel: _('area_lexicon_string')
             ,description: _('area_lexicon_string_msg')
             ,name: 'area'
-            ,id: 'modx-cs-area'
-            ,width: 200
         },{
             xtype: 'textfield'
             ,fieldLabel: _('value')
             ,name: 'value'
-            ,id: 'modx-cs-value'
-            ,width: 200
         },{
             xtype: 'textarea'
             ,fieldLabel: _('description')
             ,name: 'description'
-            ,id: 'modx-cs-description'
             ,allowBlank: true
-            ,width: 250
+            ,width: 225
         }]
     });
     MODx.window.CreateSetting.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateSetting,MODx.Window);
-Ext.reg('modx-window-setting-create',MODx.window.CreateSetting);
+Ext.reg('window-setting-create',MODx.window.CreateSetting);
 
 
 /**
@@ -364,7 +322,8 @@ Ext.override(Ext.PagingToolbar,{
  * 
  * @class MODx.combo.xType
  * @extends Ext.form.ComboBox
- * @xtype modx-combo-xtype-spec
+ * @constructor
+ * @xtype combo-xtype
  */
 MODx.combo.xType = function(config) {
     config = config || {};
@@ -386,7 +345,7 @@ MODx.combo.xType = function(config) {
     MODx.combo.xType.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
-Ext.reg('modx-combo-xtype-spec',MODx.combo.xType);
+Ext.reg('combo-xtype-spec',MODx.combo.xType);
 
 
 
@@ -395,8 +354,9 @@ Ext.reg('modx-combo-xtype-spec',MODx.combo.xType);
  * 
  * @class MODx.window.UpdateSetting
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of config options.
- * @xtype modx-window-setting-update
+ * @xtype window-setting-update
  */
 MODx.window.UpdateSetting = function(config) {
     config = config || {};
@@ -408,55 +368,46 @@ MODx.window.UpdateSetting = function(config) {
         ,fields: [{
             xtype: 'hidden'
             ,name: 'fk'
-            ,id: 'modx-us-fk'
             ,value: config.fk || 0
         },{
             xtype: 'statictextfield'
             ,fieldLabel: _('key')
             ,name: 'key'
-            ,id: 'modx-us-key'
             ,submitValue: true
         },{
             xtype: 'textfield'
             ,fieldLabel: _('name')
             ,name: 'name'
-            ,id: 'modx-us-name'
             ,allowBlank: false
         },{
-            xtype: 'modx-combo-xtype-spec'
+            xtype: 'combo-xtype-spec'
             ,name: 'xtype'
             ,hiddenName: 'xtype'
-            ,id: 'modx-us-xtype'
             ,fieldLabel: _('xtype')
             ,description: _('xtype_desc')
         },{
-            xtype: 'modx-combo-namespace'
+            xtype: 'combo-namespace'
             ,fieldLabel: _('namespace')
             ,name: 'namespace'
-            ,id: 'modx-us-namespace'
             ,value: 'core'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('area_lexicon_string')
             ,description: _('area_lexicon_string_msg')
             ,name: 'area'
-            ,id: 'modx-us-area'
         },{
             xtype: 'textfield'
             ,fieldLabel: _('value')
             ,name: 'value'
-            ,id: 'modx-us-value'
-            ,width: 250
         },{
             xtype: 'textarea'
             ,fieldLabel: _('description')
             ,name: 'description'
-            ,id: 'modx-us-description'
             ,allowBlank: true
-            ,width: 250
+            ,width: 225
         }]
     });
     MODx.window.UpdateSetting.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.UpdateSetting,MODx.Window);
-Ext.reg('modx-window-setting-update',MODx.window.UpdateSetting);
+Ext.reg('window-setting-update',MODx.window.UpdateSetting);

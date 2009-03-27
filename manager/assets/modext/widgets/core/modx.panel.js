@@ -11,7 +11,7 @@ Ext.namespace('MODx.panel');
 MODx.Panel = function(config) {
     config = config || {};
     Ext.applyIf(config,{
-        cls: 'modx-panel'
+        collapsible: true
     });
     MODx.Panel.superclass.constructor.call(this,config);
     this.config = config;
@@ -36,7 +36,6 @@ MODx.FormPanel = function(config) {
         ,bodyStyle: 'padding: 1em'
         ,border: false
         ,method: 'POST'
-        ,cls: 'modx-form'
         ,errorReader: MODx.util.JSONReader
         ,checkDirty: true
     });
@@ -96,7 +95,7 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
                             ,options:o
                             ,config:this.config
                         });
-                        this.clearDirty();
+                        this.getForm().clearDirty();
                         this.fireEvent('setup',this.config);
                     }
                 });
@@ -133,25 +132,22 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
         }
     }
     
-    ,fieldChangeEvent: function(fld,nv,ov,f) {
+    ,fieldChangeEvent: function(fld,nv,ov) {
         if (!this.isReady) { return false; }
-        var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
         this.fireEvent('fieldChange',{
             field: fld
             ,nv: nv
             ,ov: ov
-            ,form: f
+            ,form: this.getForm()
         });
     }
     
     ,isDirty: function() {
-        var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
-    	return f.isDirty();
+    	return this.getForm().isDirty();
     }
     
     ,clearDirty: function() {
-        var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
-    	return f.clearDirty();
+    	return this.getForm().clearDirty();
     }
     
     ,onReady: function(r) {
