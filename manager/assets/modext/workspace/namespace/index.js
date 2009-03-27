@@ -1,22 +1,22 @@
 Ext.onReady(function() {
-    MODx.load({ xtype: 'page-namespace' });
+    MODx.load({ xtype: 'modx-page-namespaces' });
 });
 
 /**
- * @class MODx.page.Namespace
+ * @class MODx.page.Namespaces
  * @extends MODx.Component
  * @param {Object} config An object of configuration properties
- * @xtype page-namespace
+ * @xtype modx-page-namespaces
  */
-MODx.page.Namespace = function(config) {
+MODx.page.Namespaces = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         components: [{
-            xtype: 'grid-namespace'
-            ,renderTo: 'grid-namespace'
+            xtype: 'modx-panel-namespaces'
+            ,renderTo: 'modx-panel-namespaces'
         }]
     });
-    MODx.page.Namespace.superclass.constructor.call(this,config);
+    MODx.page.Namespaces.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.Namespace,MODx.Component);
-Ext.reg('page-namespace',MODx.page.Namespace);
+Ext.extend(MODx.page.Namespaces,MODx.Component);
+Ext.reg('modx-page-namespaces',MODx.page.Namespaces);

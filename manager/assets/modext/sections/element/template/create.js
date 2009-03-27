@@ -4,12 +4,12 @@
  * @class MODx.page.CreateTemplate
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-template-create
+ * @xtype modx-page-template-create
  */
 MODx.page.CreateTemplate = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		formpanel: 'panel-template'
+		formpanel: 'modx-panel-template'
 		,actions: {
             'new': MODx.action['element/template/create']
             ,edit: MODx.action['element/template/update']
@@ -21,7 +21,7 @@ MODx.page.CreateTemplate = function(config) {
             ,method: 'remote'
             ,checkDirty: true
             ,keys: [{
-                key: "s"
+                key: 's'
                 ,alt: true
                 ,ctrl: true
             }]
@@ -32,14 +32,14 @@ MODx.page.CreateTemplate = function(config) {
         }]
 		,loadStay: true
         ,components: [{
-            xtype: 'panel-template'
-            ,id: 'panel-template'
-            ,renderTo: 'panel-template'
-            ,template: config.id
+            xtype: 'modx-panel-template'
+            ,renderTo: 'modx-panel-template'
+            ,template: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});
 	MODx.page.CreateTemplate.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateTemplate,MODx.Component);
-Ext.reg('page-template-create',MODx.page.CreateTemplate);
+Ext.reg('modx-page-template-create',MODx.page.CreateTemplate);

@@ -19,6 +19,7 @@ MODx.Window = function(config) {
         ,maximizable: true
 		,autoHeight: true
 		,width: 450
+        ,cls: 'modx-window'
 		,buttons: [{
 			text: config.cancelBtnText || _('cancel')
 			,scope: this
@@ -28,13 +29,13 @@ MODx.Window = function(config) {
 			,scope: this
 			,handler: this.submit
 		}]
-        ,tools: [{ 
-            id: 'help'
-            ,qtip: _('help')
-            ,handler: this.help
+		,record: {}
+       ,keys: [{
+            key: Ext.EventObject.ENTER,
+            fn: this.submit
             ,scope: this
         }]
-		,record: {}
+
 	});
 	MODx.Window.superclass.constructor.call(this,config);
 	this.options = config;
@@ -101,7 +102,9 @@ Ext.extend(MODx.Window,Ext.Window,{
 	}
     
     ,_onShow: function() {
-        this.center();
+        /*if (Ext.isSafari) return false;
+        var p = this.getPosition();
+        this.setPosition(p[0],10);*/
     }
 	
 	/**

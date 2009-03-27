@@ -17,6 +17,7 @@ MODx.Wizard = function(config) {
         ,width: '90%'
         ,defaults: { border: false }
         ,modal: Ext.isIE ? false : true
+        ,cls: 'modx-window'
         ,bbar: [{
             id: 'pi-btn-bck'
             ,text: _('back')

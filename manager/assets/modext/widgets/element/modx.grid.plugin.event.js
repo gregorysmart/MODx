@@ -3,25 +3,35 @@
  * 
  * @class MODx.grid.PluginEvent
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-plugin-event
+ * @xtype modx-grid-plugin-event
  */
 MODx.grid.PluginEvent = function(config) {
     config = config || {};
+    var ec = MODx.load({
+        xtype: 'checkbox-column'
+        ,header: _('enabled')
+        ,dataIndex: 'enabled'
+        ,editable: true
+        ,width: 50
+        ,sortable: false
+    });
+
     Ext.applyIf(config,{
         title: _('system_events')
+        ,id: 'modx-grid-plugin-event'
         ,url: MODx.config.connectors_url+'element/plugin/event.php'
         ,baseParams: {
             action: 'getList'
-            ,id: config.plugin
+            ,plugin: config.plugin
         }
         ,saveParams: {
             plugin: config.plugin
         }
-        ,fields: ['id','name','service','groupname','enabled','priority','menu']
+        ,fields: ['id','name','service','groupname','enabled','priority','propertyset','menu']
         ,paging: true
         ,remoteSort: true
+        ,plugins: ec
         ,columns: [{
             header: _('id')
             ,dataIndex: 'id'
@@ -32,11 +42,13 @@ MODx.grid.PluginEvent = function(config) {
             ,dataIndex: 'name'
             ,width: 150
             ,sortable: true
-        },{
-            header: _('enabled')
-            ,dataIndex: 'enabled'
-            ,width: 100
-            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
+        },
+        ec
+        ,{
+            header: _('propertyset')
+            ,dataIndex: 'propertyset'
+            ,width: 150
+            ,editor: { xtype: 'modx-combo-property-set' ,renderer: true }
         },{
             header: _('priority')
             ,dataIndex: 'priority'
@@ -77,4 +89,4 @@ Ext.extend(MODx.grid.PluginEvent,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-plugin-event',MODx.grid.PluginEvent);
+Ext.reg('modx-grid-plugin-event',MODx.grid.PluginEvent);

@@ -3,14 +3,21 @@
  * 
  * @class MODx.grid.TemplateTV
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-template-tv
+ * @xtype modx-grid-template-tv
  */
 MODx.grid.TemplateTV = function(config) {
     config = config || {};
+    var tt = MODx.load({
+        xtype: 'checkbox-column'
+        ,header: _('access')
+        ,dataIndex: 'access'
+        ,width: 40
+        ,sortable: false
+    });
 	Ext.applyIf(config,{
         title: _('template_assignedtv_tab')
+        ,id: 'modx-grid-template-tv'
         ,url: MODx.config.connectors_url+'element/template/tv.php'
 		,fields: ['id','name','description','rank','access','menu']
         ,baseParams: {
@@ -22,6 +29,7 @@ MODx.grid.TemplateTV = function(config) {
         }
 		,width: 800
         ,paging: true
+        ,plugins: tt
         ,columns: [{
             header: _('name')
             ,dataIndex: 'name'
@@ -32,12 +40,7 @@ MODx.grid.TemplateTV = function(config) {
             ,dataIndex: 'description'
             ,width: 350
             ,editor: { xtype: 'textfield' }
-        },{
-            header: _('access')
-            ,dataIndex: 'access'
-            ,width: 100
-            ,editor: { xtype: 'combo-boolean', renderer: 'boolean' }
-        },{
+        },tt,{
             header: _('rank')
             ,dataIndex: 'rank'
             ,width: 100
@@ -45,6 +48,9 @@ MODx.grid.TemplateTV = function(config) {
         }]
 	});
 	MODx.grid.TemplateTV.superclass.constructor.call(this,config);
+    this.on('afteredit',function(e) {
+         Ext.getCmp('modx-panel-template').fireEvent('fieldChange');
+    },this);
 };
 Ext.extend(MODx.grid.TemplateTV,MODx.grid.Grid);
-Ext.reg('grid-template-tv',MODx.grid.TemplateTV);
+Ext.reg('modx-grid-template-tv',MODx.grid.TemplateTV);

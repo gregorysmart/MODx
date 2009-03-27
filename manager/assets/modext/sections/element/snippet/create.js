@@ -4,12 +4,12 @@
  * @class MODx.page.CreateSnippet
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-snippet-create
+ * @xtype modx-page-snippet-create
  */
 MODx.page.CreateSnippet = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
-		formpanel: 'panel-snippet'
+		formpanel: 'modx-panel-snippet'
 		,actions: {
             'new': MODx.action['element/snippet/create']
             ,edit: MODx.action['element/snippet/update']
@@ -28,14 +28,14 @@ MODx.page.CreateSnippet = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-snippet'
-            ,id: 'panel-snippet'
-            ,renderTo: 'panel-snippet'
+            xtype: 'modx-panel-snippet'
+            ,renderTo: 'modx-panel-snippet'
             ,snippet: 0
+            ,category: config.category || 0
             ,name: ''
         }]
 	});
 	MODx.page.CreateSnippet.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateSnippet,MODx.Component);
-Ext.reg('page-snippet-create',MODx.page.CreateSnippet);
+Ext.reg('modx-page-snippet-create',MODx.page.CreateSnippet);

@@ -3,9 +3,8 @@
  * 
  * @class MODx.grid.RecentlyEditedResourcesByUser
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-user-recent-resource
+ * @xtype modx-grid-user-recent-resource
  */
 MODx.grid.RecentlyEditedResourcesByUser = function(config) {
     config = config || {};
@@ -57,4 +56,4 @@ Ext.extend(MODx.grid.RecentlyEditedResourcesByUser,MODx.grid.Grid,{
         window.open(MODx.config.base_url+'index.php?id='+this.menu.record.id);
     }
 });
-Ext.reg('grid-user-recent-resource',MODx.grid.RecentlyEditedResourcesByUser);
+Ext.reg('modx-grid-user-recent-resource',MODx.grid.RecentlyEditedResourcesByUser);

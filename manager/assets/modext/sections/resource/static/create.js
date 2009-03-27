@@ -4,13 +4,13 @@
  * @class MODx.page.CreateStatic
  * @extends MODx.Component
  * @param {Object} config An object of config properties
- * @xtype page-static-create
+ * @xtype modx-page-static-create
  */
 MODx.page.CreateStatic = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
-        ,formpanel: 'panel-static'
+        ,formpanel: 'modx-panel-static'
         ,which_editor: 'none'
         ,actions: {
             'new': MODx.action['resource/staticresource/create']
@@ -29,27 +29,21 @@ MODx.page.CreateStatic = function(config) {
         }]
         ,loadStay: true
         ,components: [{
-            xtype: 'panel-static'
-            ,renderTo: 'panel-static'
+            xtype: 'modx-panel-static'
+            ,renderTo: 'modx-panel-static'
             ,resource: 0
-            ,class_key: config.class_key
+            ,record: {
+                class_key: config.class_key
+                ,context_key: config.context_key
+                ,template: config.template
+                ,parent: config.parent
+            }
             ,publish_document: config.publish_document
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
-            ,template: config.template
-            ,parent: config.parent
-        },{
-            xtype: 'grid-resource-security'
-            ,renderTo: 'grid-resource-security'
-            ,id: 'grid-resource-security'
-        },{
-            xtype: 'panel-resource-tv'
-            ,id: 'panel-resource-tv'
-            ,class_key: config.class_key
-            ,resource: 0
         }]
     });
     MODx.page.CreateStatic.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.CreateStatic,MODx.Component);
-Ext.reg('page-static-create',MODx.page.CreateStatic);
+Ext.reg('modx-page-static-create',MODx.page.CreateStatic);

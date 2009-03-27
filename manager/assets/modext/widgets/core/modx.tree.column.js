@@ -9,7 +9,7 @@
 Ext.tree.ColumnTree = Ext.extend(Ext.tree.TreePanel, {
     lines:false,
     borderWidth: Ext.isBorderBox ? 0 : 2, // the combined left/right border for each cell
-    cls:'x-column-tree',
+    cls:'x-column-tree modx-tree',
     
     onRender : function(){
         Ext.tree.ColumnTree.superclass.onRender.apply(this, arguments);
@@ -125,6 +125,8 @@ MODx.tree.ColumnTree = function(config) {
     });
     MODx.tree.ColumnTree.superclass.constructor.call(this,config);
     this.on('contextmenu',this._showContextMenu,this);
+    this.on('nodedragover',this._handleDrop,this);
+    this.on('nodedrop',this._handleDrag,this);
     this.cm = new Ext.menu.Menu(Ext.id(),{});
     this.config = config;
 };
@@ -142,8 +144,8 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
         this.cm.record = node.attributes;
         this.cm.record.id = node.attributes.pk;
         this.cm.removeAll();
-        if (node.attributes.menu) {
-            this._addContextMenuItem(node.attributes.menu);
+        if (node.attributes.menu && node.attributes.menu.items) {
+            this._addContextMenuItem(node.attributes.menu.items);
             this.cm.show(node.ui.getEl(),'t?');
         }
     }
@@ -154,46 +156,79 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
     ,_addContextMenuItem: function(items) {
         var a = items, l = a.length;
         for(var i = 0; i < l; i++) {
-            var o = a[i];
-            
-            if (o == '-') {
-                this.cm.add('-');
-                continue;
-            }
-            var h = Ext.emptyFn;
-            if (o.handler) {
-                h = eval(o.handler);
-                if (h && typeof(h) == 'object' && h.xtype) {
-                    h = this.loadWindow.createDelegate(this,[h],true);
-                }
-            } else {
-                h = function(itm,e) {
-                    var op = itm.o;    
-                    if (op.confirm) {
-                        Ext.Msg.confirm('',op.confirm,function(e) {
-                            if (e == 'yes') {
-                                var a = Ext.urlEncode(op.params || {action: op.action});
-                                var s = 'index.php?&a='+RM.request.a;
-                                location.href = s;
-                            }
-                        },this);
-                    } else {
-                        var a = Ext.urlEncode(op.params);
-                        var s = 'index.php?&a='+RM.request.a;
-                        location.href = s;
-                    }
-                };
-            }
-            this.cm.add({
-                id: o.id
-                ,text: o.text
-                ,scope: this
-                ,options: o
-                ,handler: h
-            });
+            a[i].scope = this;
+            this.cm.add(a[i]);
         }
     }
     
+    
+    /**
+     * Handles all drag events into the tree.
+     * @param {Object} dropEvent The node dropped on the parent node.
+     */
+    ,_handleDrag: function(dropEvent) {
+        Ext.Msg.show({
+            title: _('please_wait')
+            ,msg: _('saving')
+            ,width: 240
+            ,progress:true
+            ,closable:false
+        });
+        
+        MODx.util.Progress.reset();
+        for(var i = 1; i < 20; i++) {
+            setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
+        }
+        
+        /**
+         * Simplify nodes into JSON format.
+         * @param {Object} node
+         */
+        function simplifyNodes(node) {
+            var resultNode = {};
+            var kids = node.childNodes;
+            var len = kids.length;
+            for (var i = 0; i < len; i++) {
+                resultNode[kids[i].id] = simplifyNodes(kids[i]);
+            }
+            return resultNode;
+        }
+        
+        // JSON-encode our tree
+        var encNodes = Ext.encode(simplifyNodes(dropEvent.tree.root));
+        
+        // send it to the backend to save
+        MODx.Ajax.request({
+            url: this.config.url
+            ,params: {
+                data: encodeURIComponent(encNodes)
+                ,action: this.config.sortAction || 'sort'
+            }
+            ,listeners: {
+                'success': {fn:function(r) {
+                    MODx.util.Progress.reset();
+                    Ext.Msg.hide();
+                    this.reloadNode(dropEvent.target);
+                },scope:this}
+                ,'failure': {fn:function(r) {
+                    MODx.util.Progress.reset();
+                    Ext.Msg.hide();
+                    MODx.form.Handler.errorJSON(r);
+                    return false;
+                },scope:this}
+            }
+        });
+    }
+    
+    ,reloadNode: function(n) {
+        this.getLoader().load(n);
+        n.expand();
+    }
+    
+    /**
+     * Abstract definition to handle drop events.
+     */
+    ,_handleDrop: function() { }
     
     ,loadWindow: function(btn,e,win) {
         var r = win.record || this.cm.record;
@@ -227,9 +262,9 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
     }
     
     ,_getToolbar: function() {
-        var iu = MODx.config.template_url+'images/icons/';
+        var iu = MODx.config.template_url+'images/restyle/icons/';
         return [{
-            icon: iu+'sort.png'
+            icon: iu+'refresh.png'
             ,cls: 'x-btn-icon'
             ,tooltip: {text: _('tree_refresh')}
             ,handler: this.refresh

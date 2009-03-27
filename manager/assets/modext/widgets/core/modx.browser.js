@@ -14,6 +14,7 @@ MODx.Browser = function(config) {
     Ext.applyIf(config,{
         onSelect: function(data) {}
         ,scope: this
+        ,cls: 'modx-browser'
     });
     MODx.Browser.superclass.constructor.call(this,config);
     this.config = config;
@@ -47,13 +48,16 @@ MODx.browser.Window = function(config) {
         ,ident: this.ident
     });
     this.tree = MODx.load({
-        xtype: 'tree-directory'
+        xtype: 'modx-tree-directory'
         ,onUpload: function() { this.view.run(); }
         ,scope: this
         ,prependPath: config.prependPath || null
         ,hideFiles: config.hideFiles || false
         ,ident: this.ident
         ,rootVisible: config.rootVisible
+        ,listeners: {
+            'afterUpload': {fn:function() { this.view.run(); },scope:this}
+        }
     });
     this.tree.on('click',function(node,e) {
         this.load(node.id);
@@ -291,7 +295,7 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         var detailEl = Ext.getCmp(this.config.ident+'-img-detail-panel').body;
         if(selNode && selNode.length > 0){
             selNode = selNode[0];
-            Ext.getCmp('ok-btn').enable();
+            Ext.getCmp(this.ident+'-ok-btn').enable();
             var data = this.lookup[selNode.id];
             detailEl.hide();
             this.templates.details.overwrite(detailEl, data);

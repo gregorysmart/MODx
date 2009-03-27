@@ -3,31 +3,31 @@
  * 
  * @class MODx.grid.Package
  * @extends MODx.grid.Grid
- * @constructor
  * @param {Object} config An object of options.
- * @xtype grid-package
+ * @xtype modx-grid-package
  */
 MODx.grid.Package = function(config) {
     config = config || {};
+    this.exp = new Ext.grid.RowExpander({
+        tpl : new Ext.Template(
+            '<p style="padding: .7em 1em .3em;"><i>{readme}</i></p>'
+        )
+    });
     Ext.applyIf(config,{
         title: _('packages')
-        ,id: 'grid-package'
+        ,id: 'modx-grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
-        ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','menu']
-        ,columns: [
-            { header: _('package_signature') ,dataIndex: 'signature' }
+        ,fields: ['signature','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','readme','menu']
+        ,plugins: [this.exp]
+        ,columns: [this.exp,{
+               header: _('package_signature') ,dataIndex: 'signature' }
             ,{ header: _('created') ,dataIndex: 'created' }
             ,{ header: _('updated') ,dataIndex: 'updated' }
             ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }
             ,{ 
-               header: _('workspace')
-               ,dataIndex: 'workspace'
-               ,editor: { xtype:'combo-workspace' ,renderer: true }
-               ,editable: false
-            },{ 
-                header: _('provisioner')
+                header: _('provider')
                 ,dataIndex: 'provider'
-                ,editor: { xtype: 'combo-provider' ,renderer: true }
+                ,editor: { xtype: 'modx-combo-provider' ,renderer: true }
                 ,editable: false
             },{
                 header: _('disabled')
@@ -40,7 +40,19 @@ MODx.grid.Package = function(config) {
         ,autosave: true
         ,tbar: [{
             text: _('package_add')
-            ,handler: { xtype: 'window-package-downloader' }
+            ,handler: { xtype: 'modx-window-package-downloader' }
+        }]
+        ,tools: [{
+            id: 'plus'
+            ,qtip: _('expand_all')
+            ,handler: this.expandAll
+            ,scope: this
+        },{
+            id: 'minus'
+            ,hidden: true
+            ,qtip: _('collapse_all')
+            ,handler: this.collapseAll
+            ,scope: this
         }]
     });
     MODx.grid.Package.superclass.constructor.call(this,config);
@@ -48,29 +60,28 @@ MODx.grid.Package = function(config) {
 Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     console: null
     
-    ,update: function(btn,e) {
-    	var r = this.menu.record;
-        var topic = '/workspace/package/update/'+r.signature+'/';
-        this.loadConsole(btn,topic);
-        
+    ,update: function(btn,e) {        
         MODx.Ajax.request({
             url: this.config.url
             ,params: {
                 action: 'update'
-                ,signature: r.signature
-                ,register: 'mgr'
-                ,topic: topic
+                ,signature: this.menu.record.signature
             }
             ,listeners: {
-                'success': {fn:function(r) {
-                    this.console.complete();
-                    Ext.Msg.hide();
-                    this.refresh();
-                },scope:this}
-                ,'failure': {fn:function(r) {
-                	this.console.complete();
-                	Ext.Msg.hide();
-                	return false;
+                'success': {fn:function(r) {           
+                    this.loadWindow(btn,e,{
+                        xtype: 'modx-window-package-update'
+                        ,packages: r.object
+                        ,record: this.menu.record
+                        ,force: true
+                        ,listeners: {
+                            'success': {fn: function(o) {
+                                this.refresh();
+                                this.menu.record = o.a.result.object;
+                                this.install(btn,e);
+                            },scope:this}
+                        }
+                    });
                 },scope:this}
             }
         });
@@ -106,30 +117,42 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
     }
     
     ,uninstall: function(btn,e) {
-    	var r = this.menu.record;
+        this.loadWindow(btn,e,{
+            xtype: 'modx-window-package-uninstall'
+            ,listeners: {
+                'success': {fn: function(va) { this._uninstall(this.menu.record,va,btn); },scope:this}
+            }
+        });
+    }
+    
+    ,_uninstall: function(r,va,btn) {
+        var r = this.menu.record;
+        va = va || {};
         var topic = '/workspace/package/uninstall/'+r.signature+'/';
         this.loadConsole(btn,topic);
+        Ext.apply(va,{
+            action: 'uninstall'
+            ,signature: r.signature
+            ,register: 'mgr'
+            ,topic: topic
+        });
         
         MODx.Ajax.request({
             url: this.config.url
-            ,params: {
-                action: 'uninstall'
-                ,signature: r.signature
-                ,register: 'mgr'
-                ,topic: topic
-            }
+            ,params: va
             ,listeners: {
-            	'success': {fn:function(r) {
+                'success': {fn:function(r) {
                     this.console.complete();
                     Ext.Msg.hide();
                     this.refresh();
+                    parent.Ext.getCmp('modx-layout').refreshTrees();
                 },scope:this}
                 ,'failure': {fn:function(r) {
                     this.console.complete();
                     Ext.Msg.hide();
                     this.refresh();
                 },scope:this}
-        	}
+            }
         });
     }
     
@@ -138,7 +161,7 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         var topic = '/workspace/package/remove/'+r.signature+'/';
         
         this.loadWindow(btn,e,{
-            xtype: 'window-package-remove'
+            xtype: 'modx-window-package-remove'
             ,record: {
                 signature: r.signature
                 ,topic: topic
@@ -147,32 +170,34 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         });
     }
     
-    ,install: function(btn,e) {
+    ,install: function(btn,e,r) {
         this.loadWindow(btn,e,{
-            xtype: 'window-package-installer'
+            xtype: 'modx-window-package-installer'
             ,listeners: {
-                'finish': {fn: function() { this._install(this.menu.record); },scope:this}
+                'finish': {fn: function(va) { this._install(this.menu.record,va); },scope:this}
             }
         });
     }
     
-    ,_install: function(r) {
+    ,_install: function(r,va) {
         var topic = '/workspace/package/install/'+r.signature+'/';
         this.loadConsole(Ext.getBody(),topic);
+        Ext.apply(va,{
+            action: 'install'
+            ,signature: r.signature
+            ,register: 'mgr'
+            ,topic: topic
+        });
         
         MODx.Ajax.request({
             url: this.config.url
-            ,params: {
-                action: 'install'
-                ,signature: r.signature
-                ,register: 'mgr'
-                ,topic: topic
-            }
+            ,params: va
             ,listeners: {
                 'success': {fn:function() {
-                    Ext.getCmp('window-package-installer').hide();
+                    Ext.getCmp('modx-window-package-installer').hide();
                     this.console.complete();
                     this.refresh();
+                    parent.Ext.getCmp('modx-layout').refreshTrees();
                 },scope:this}
                 ,'failure': {fn:function() {
                     this.console.complete();
@@ -183,8 +208,14 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
         });
     }
 });
-Ext.reg('grid-package',MODx.grid.Package);
+Ext.reg('modx-grid-package',MODx.grid.Package);
 
+/**
+ * @class MODx.window.RemovePackage
+ * @extends MODx.Window
+ * @param {Object} config An object of configuration parameters
+ * @xtype modx-window-package-remove
+ */
 MODx.window.RemovePackage = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -197,6 +228,7 @@ MODx.window.RemovePackage = function(config) {
         ,fields: [{
             xtype: 'hidden'
             ,name: 'signature'
+            ,id: 'modx-rpack-signature'
             ,value: config.signature
         },{
             html: _('package_remove_confirm')
@@ -207,7 +239,7 @@ MODx.window.RemovePackage = function(config) {
             xtype: 'checkbox'
             ,name: 'force'
             ,boxLabel: _('package_remove_force')
-            ,id: 'pr-force'
+            ,id: 'modx-rpack-force'
             ,labelSeparator: ''
             ,inputValue: 'true'
         }]
@@ -219,13 +251,13 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
     submit: function() {
         var r = this.config.record;
         if (this.fp.getForm().isValid()) {            
-            Ext.getCmp('grid-package').loadConsole(Ext.getBody(),r.topic);
+            Ext.getCmp('modx-grid-package').loadConsole(Ext.getBody(),r.topic);
             this.fp.getForm().baseParams = {
                 action: 'remove'
                 ,signature: r.signature
                 ,register: 'mgr'
                 ,topic: r.topic
-                ,force: Ext.getCmp('pr-force').getValue()
+                ,force: Ext.getCmp('modx-rpack-force').getValue()
             };
             
             this.fp.getForm().submit({ 
@@ -233,7 +265,7 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
                 ,scope: this
                 ,failure: function(frm,a) {
                     this.fireEvent('failure',frm,a);
-                    var g = Ext.getCmp('grid-package');
+                    var g = Ext.getCmp('modx-grid-package');
                     g.getConsole().complete();
                     g.refresh();
                     Ext.Msg.hide();
@@ -241,7 +273,7 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
                 }
                 ,success: function(frm,a) {
                     this.fireEvent('success',{f:frm,a:a});
-                    var g = Ext.getCmp('grid-package');
+                    var g = Ext.getCmp('modx-grid-package');
                     g.getConsole().complete();
                     g.refresh();
                     Ext.Msg.hide();
@@ -251,4 +283,4 @@ Ext.extend(MODx.window.RemovePackage,MODx.Window,{
         }
     }
 });
-Ext.reg('window-package-remove',MODx.window.RemovePackage);
+Ext.reg('modx-window-package-remove',MODx.window.RemovePackage);

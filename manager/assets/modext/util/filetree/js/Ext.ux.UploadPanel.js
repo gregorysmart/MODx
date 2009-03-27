@@ -109,7 +109,7 @@ Ext.ux.UploadPanel = Ext.extend(Ext.Panel, {
 	 * @cfg {Number} maxFileSize Maximum upload file size in bytes
 	 * This config property is propagated down to uploader for convenience
 	 */
-	,maxFileSize:524288
+	,maxFileSize:10485760
 
 	/**
 	 * @cfg {Number} Maximum file name length for short file names

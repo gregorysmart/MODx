@@ -4,7 +4,7 @@
  * @class MODx.combo.LexiconTopic
  * @extends MODx.combo.ComboBox
  * @param {Object} config An object of config properties
- * @xtype combo-lexicon-topic
+ * @xtype modx-combo-lexicon-topic
  */
 MODx.combo.LexiconTopic = function(config) {
     config = config || {};
@@ -22,10 +22,10 @@ MODx.combo.LexiconTopic = function(config) {
         ,valueField: 'id'
         ,baseParams: { 
             action: 'getList'
-            ,namespace: 'core'
+            ,'namespace': 'core'
         }
     });
     MODx.combo.LexiconTopic.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.combo.LexiconTopic,MODx.combo.ComboBox);
-Ext.reg('combo-lexicon-topic',MODx.combo.LexiconTopic);
+Ext.reg('modx-combo-lexicon-topic',MODx.combo.LexiconTopic);

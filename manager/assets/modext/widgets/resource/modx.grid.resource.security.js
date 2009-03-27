@@ -9,8 +9,16 @@
  */
 MODx.grid.ResourceSecurity = function(config) {
     config = config || {};
+    var ac = MODx.load({
+        xtype: 'checkbox-column'
+        ,header: _('access')
+        ,dataIndex: 'access'
+        ,width: 40
+        ,sortable: false
+    });
+
     Ext.applyIf(config,{
-        title: _('security')
+        id: 'modx-grid-resource-security'
         ,url: MODx.config.connectors_url+'resource/resourcegroup.php'
         ,baseParams: {
             action: 'getList'
@@ -22,21 +30,15 @@ MODx.grid.ResourceSecurity = function(config) {
         ,fields: ['id','name','access','menu']
         ,paging: true
         ,remoteSort: true
+        ,plugins: ac
         ,columns: [{
             header: _('name')
             ,dataIndex: 'name'
             ,width: 200
             ,sortable: true
-        },{
-            header: _('access')
-            ,dataIndex: 'access'
-            ,width: 80
-            ,sortable: true
-            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
-        }]
-        
+        },ac]
     });
     MODx.grid.ResourceSecurity.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.ResourceSecurity,MODx.grid.Grid);
-Ext.reg('grid-resource-security',MODx.grid.ResourceSecurity);
+Ext.reg('modx-grid-resource-security',MODx.grid.ResourceSecurity);

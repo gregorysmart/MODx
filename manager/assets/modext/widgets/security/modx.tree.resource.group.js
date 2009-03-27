@@ -3,9 +3,8 @@
  * 
  * @class MODx.tree.ResourceGroup
  * @extends MODx.tree.Tree
- * @constructor
  * @param {Object} config An object of options.
- * @xtype tree-resourcegroup
+ * @xtype modx-tree-resourcegroup
  */
 MODx.tree.ResourceGroup = function(config) {
 	config = config || {};
@@ -70,7 +69,7 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 	,create: function(itm,e) {
 		if (!this.windows.create) {
 			this.windows.create = MODx.load({
-				xtype: 'window-resourcegroup-create'
+				xtype: 'modx-window-resourcegroup-create'
 				,listeners: {
 				    'success': {fn:this.refresh,scope:this}
 				}
@@ -82,7 +81,6 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 	,_handleDrop:  function(e){
         var n = e.dropNode;
 
-        // copy node from usergroup tree
         if(this.isDocCopy(e,n)) {
             var copy = new Ext.tree.TreeNode(
                 Ext.apply({leaf: true,allowDelete:true,expanded:true}, n.attributes)
@@ -140,7 +138,6 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 			setTimeout('MODx.util.Progress.time('+i+','+MODx.util.Progress.id+')',i*1000);
 		}
 		
-		// send it to the backend to save
 		MODx.Ajax.request({
 			url: this.config.url
 			,scope: this
@@ -164,4 +161,4 @@ Ext.extend(MODx.tree.ResourceGroup,MODx.tree.Tree,{
 		});
 	}
 });
-Ext.reg('tree-resourcegroup',MODx.tree.ResourceGroup);
+Ext.reg('modx-tree-resource-group',MODx.tree.ResourceGroup);

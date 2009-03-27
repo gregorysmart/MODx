@@ -4,12 +4,13 @@
  * @class MODx.grid.ActiveResources
  * @extends MODx.grid.Grid
  * @param {Object} config An object of options.
- * @xtype grid-resource-active
+ * @xtype modx-grid-resource-active
  */
 MODx.grid.ActiveResources = function(config) {
     config = config || {};
 	Ext.applyIf(config,{
 		title: _('resources_active')
+        ,id: 'modx-grid-resource-active'
         ,url: MODx.config.connectors_url+'system/activeresource.php'
 		,fields: ['id','pagetitle','user','editedon']
         ,columns: [
@@ -22,4 +23,4 @@ MODx.grid.ActiveResources = function(config) {
 	MODx.grid.ActiveResources.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.grid.ActiveResources,MODx.grid.Grid);
-Ext.reg('grid-resource-active',MODx.grid.ActiveResources);
+Ext.reg('modx-grid-resource-active',MODx.grid.ActiveResources);
