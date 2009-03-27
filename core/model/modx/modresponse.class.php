@@ -218,7 +218,7 @@ class modResponse {
             exit();
         }
         else {
-            if (strpos($url, '://') === false && (substr($url, 0, 1) !== '/' || substr($url, 0, 2) !== './' || substr($url, 0, 3) !== '../')) {
+            if (strpos($url, '://') === false && !(substr($url, 0, 1) === '/' || substr($url, 0, 2) === './' || substr($url, 0, 3) === '../')) {
                 $url= $this->modx->config['site_url'] . $url;
             }
             $header= 'Location: ' . $url;
