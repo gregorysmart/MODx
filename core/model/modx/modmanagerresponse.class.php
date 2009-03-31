@@ -63,11 +63,11 @@ class modManagerResponse extends modResponse {
                 $cbody = '';
                 if (file_exists($f.'.php')) {
                     $f = $f.'.php';
-                    $cbody .= include $f;
+                    $cbody = include $f;
                 /* for actions that don't have trailing / but reference index */
                 } elseif (file_exists($f.'/index.php')) {
                     $f = $f.'/index.php';
-                    $cbody .= include $f;
+                    $cbody = include $f;
                 } else {
                     $this->modx->log(MODX_LOG_LEVEL_FATAL,'Could not find action file at: '.$f);
                 }
@@ -79,6 +79,10 @@ class modManagerResponse extends modResponse {
                     $this->body .= include $this->modx->config['manager_path'] . 'controllers/header.php';
                 }
                 /* assign later to allow for css/js registering */
+                if (is_array($cbody)) {
+                    $this->modx->smarty->assign('_e', $cbody);
+                    $cbody = $this->modx->smarty->fetch('error.tpl');
+                }
                 $this->body .= $cbody;
 
                 if ($act['haslayout']) {
