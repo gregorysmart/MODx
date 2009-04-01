@@ -261,6 +261,24 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
         return true;
     }
     
+    ,refreshActiveNode: function() {
+        if (this.cm.activeNode) {
+            this.getLoader().load(this.cm.activeNode);
+            this.cm.activeNode.expand();
+        } else { this.refresh(); }
+    }
+    ,refreshParentNode: function() { this.refreshNode(this.cm.activeNode.id); }
+    ,refreshNode: function(id,self) {
+        var node = this.getNodeById(id);
+        if (node) {
+            var n = self ? node : node.parentNode;
+            var l = this.getLoader().load(n);
+            n.expand();
+        }
+    }
+    
+    
+    
     ,_getToolbar: function() {
         var iu = MODx.config.template_url+'images/restyle/icons/';
         return [{
