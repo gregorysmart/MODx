@@ -142,7 +142,7 @@ Ext.extend(MODx.tree.ColumnTree,Ext.tree.ColumnTree,{
         node.select();
         this.cm.activeNode = node;
         this.cm.record = node.attributes;
-        this.cm.record.id = node.attributes.pk;
+        /*this.cm.record.id = node.attributes.pk;*/
         this.cm.removeAll();
         if (node.attributes.menu && node.attributes.menu.items) {
             this._addContextMenuItem(node.attributes.menu.items);
