@@ -78,13 +78,17 @@ class modCacheManager extends xPDOCacheManager {
 
             // generate the documentMap, aliasMap, and resourceListing
             $tblResource= $this->modx->getTableName('modResource');
+            $tblContextResource= $this->modx->getTableName('modContextResource');
             $resourceFields= 'id,parent,alias,isfolder,content_type';
             if (isset ($contextConfig['cache_context_resourceFields']) && $contextConfig['cache_context_resourceFields']) {
                 $resourceFields= $contextConfig['cache_context_resourceFields'];
             }
-            $resourceCols= $this->modx->getSelectColumns('modResource', '', '', explode(',', $resourceFields));
-            $bindings= array (':context_key' => array('value' => $obj->get('key'), 'type' => PDO_PARAM_STR));
-            $criteria= new xPDOCriteria($this->modx, "SELECT {$resourceCols} FROM {$tblResource} WHERE `id` != `parent` AND (`context_key` = :context_key OR `context_key` IS NULL) AND `deleted` = 0 ORDER BY `parent` ASC, `menuindex` ASC", $bindings, false);
+            $resourceCols= $this->modx->getSelectColumns('modResource', 'r', '', explode(',', $resourceFields));
+            $bindings= array (
+                ':context_key1' => array('value' => $obj->get('key'), 'type' => PDO_PARAM_STR)
+                ,':context_key2' => array('value' => $obj->get('key'), 'type' => PDO_PARAM_STR)
+            );
+            $criteria= new xPDOCriteria($this->modx, "SELECT {$resourceCols} FROM {$tblResource} `r` LEFT JOIN {$tblContextResource} `cr` ON `cr`.`context_key` = :context_key1 AND `r`.`id` = `cr`.`resource` WHERE `r`.`id` != `r`.`parent` AND (`r`.`context_key` = :context_key2 OR `cr`.`context_key` IS NOT NULL) AND `r`.`deleted` = 0 GROUP BY `r`.`id` ORDER BY `r`.`parent` ASC, `r`.`menuindex` ASC", $bindings, false);
             if (!$collContentTypes= $this->modx->getCollection('modContentType')) {
                 $htmlContentType= $this->modx->newObject('modContentType');
                 $htmlContentType->set('name', 'HTML');
@@ -121,7 +125,7 @@ class modCacheManager extends xPDOCacheManager {
                                 $pathParentId= $parentId;
                                 $parentResources= array ();
                                 $currResource= $r;
-                                $parentSql= "SELECT {$resourceCols} FROM {$tblResource} WHERE `id` = :parent AND `id` != `parent` LIMIT 1";
+                                $parentSql= "SELECT {$resourceCols} FROM {$tblResource}`r` WHERE `r`.`id` = :parent AND `r`.`id` != `r`.`parent` LIMIT 1";
                                 $hasParent= (boolean) $pathParentId;
                                 if ($hasParent) {
                                     if ($parentStmt= $this->modx->prepare($parentSql)) {
