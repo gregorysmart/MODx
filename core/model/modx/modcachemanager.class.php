@@ -125,7 +125,7 @@ class modCacheManager extends xPDOCacheManager {
                                 $pathParentId= $parentId;
                                 $parentResources= array ();
                                 $currResource= $r;
-                                $parentSql= "SELECT {$resourceCols} FROM {$tblResource}`r` WHERE `r`.`id` = :parent AND `r`.`id` != `r`.`parent` LIMIT 1";
+                                $parentSql= "SELECT {$resourceCols} FROM {$tblResource} `r` WHERE `r`.`id` = :parent AND `r`.`id` != `r`.`parent` LIMIT 1";
                                 $hasParent= (boolean) $pathParentId;
                                 if ($hasParent) {
                                     if ($parentStmt= $this->modx->prepare($parentSql)) {
