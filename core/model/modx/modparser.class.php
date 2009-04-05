@@ -1,7 +1,7 @@
 <?php
 /*
  * MODx Revolution
- * 
+ *
  * Copyright 2006, 2007, 2008 by the MODx Team.
  * All rights reserved.
  *
@@ -215,7 +215,7 @@ class modParser {
                 $properties = $this->parsePropertyString($propSource, true);
             } elseif (is_array($propSource)) {
                 foreach ($propSource as $propName => $property) {
-                    if (is_array($property) && isset($property['value'])) {
+                    if (is_array($property) && array_key_exists('value', $property)) {
                         $properties[$propName]= $property['value'];
                     } else {
                         $properties[$propName]= $property;
@@ -223,12 +223,13 @@ class modParser {
                 }
             }
         }
+        $this->modx->log(MODX_LOG_LEVEL_ERROR, 'modParser->parseProperties() returning ' . print_r($properties, 1));
         return $properties;
     }
 
     /**
      * Parses an element/tag property string and returns an array of properties.
-     * 
+     *
      * @param string $string The property string to parse.
      * @param boolean $valuesOnly Indicates only the property value should be
      * returned.
@@ -247,7 +248,7 @@ class modParser {
                 $propType= 'textfield';
                 $propDesc= '';
                 $propOptions= array();
-                $pvTmp= explode(';', $propValue);
+                $pvTmp= xPDO :: escSplit(';', $propValue);
                 if ($pvTmp && isset ($pvTmp[1])) {
                     $propDesc= $pvTmp[0];
                     if (($pvTmp[1]=='list' || $pvTmp[1]=='combo') && isset($pvTmp[3]) && $pvTmp[3]) {
@@ -289,7 +290,7 @@ class modParser {
 
     /**
      * Converts legacy property string types to xtypes.
-     * 
+     *
      * @access private
      * @param string $type A property type string.
      * @return string A valid xtype.
@@ -510,8 +511,8 @@ class modTag {
         $value = null;
         if (array_key_exists($k, $this->_fields)) {
             if ($k == 'properties') {
-                $value = is_string($this->_fields[$k]) && !empty($this->_fields[$k]) 
-                    ? unserialize($this->_fields[$k]) 
+                $value = is_string($this->_fields[$k]) && !empty($this->_fields[$k])
+                    ? unserialize($this->_fields[$k])
                     : array();
             } else {
                 $value = $this->_fields[$k];
@@ -650,7 +651,7 @@ class modTag {
 
     /**
      * Get the raw source content of the tag element.
-     * 
+     *
      * @param array $options An array of options implementations can use to
      * accept language, revision identifiers, or other information to alter the
      * behavior of the method.
@@ -666,7 +667,7 @@ class modTag {
         }
         return $this->_content;
     }
-    
+
     /**
      * Set the raw source content for the tag element.
      */
@@ -676,7 +677,7 @@ class modTag {
 
     /**
      * Get the properties for this element instance for processing.
-     * 
+     *
      * @param array|string $properties An array or string of properties to
      * apply.
      * @return array A simple array of properties ready to use for processing.
@@ -691,7 +692,7 @@ class modTag {
 
     /**
      * Set default properties for this element instance.
-     * 
+     *
      * @param array|string $properties A property array or property string.
      * @param boolean $merge Indicates if properties should be merged with
      * existing ones.
@@ -726,7 +727,7 @@ class modTag {
                         'name' => $propKey,
                         'desc' => '',
                         'type' => 'textfield',
-                        'options' => array(), 
+                        'options' => array(),
                         'value' => $property
                     );
                 }
@@ -744,17 +745,17 @@ class modTag {
 
     /**
      * Indicates if the element is cacheable.
-     * 
+     *
      * @return boolean True if the element can be stored to or retrieved from
      * the element cache.
      */
     function isCacheable() {
         return $this->_cacheable;
     }
-    
+
     /**
      * Sets the runtime cacheability of the element.
-     * 
+     *
      * @param boolean $cacheable Indicates the value to set for cacheability of
      * this element.
      */
@@ -870,16 +871,16 @@ class modPlaceholderTag extends modTag {
         }
         return $this->_content;
     }
-    
+
     /**
      * modPlaceholderTag instances cannot be cacheable.
-     * 
+     *
      * @return boolean Always returns false.
      */
     function isCacheable() {
         return false;
     }
-    
+
     /**
      * modPlaceholderTag instances cannot be cacheable.
      */
