@@ -223,7 +223,6 @@ class modParser {
                 }
             }
         }
-        $this->modx->log(MODX_LOG_LEVEL_ERROR, 'modParser->parseProperties() returning ' . print_r($properties, 1));
         return $properties;
     }
 
