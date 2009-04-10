@@ -46,7 +46,7 @@ while(false !== ($name = $odir->read())) {
 		$files[] = array(
 			'name' => $name,
 			'cls' => 'file',
-			'url' => $url,
+			'url' => $modx->config['base_url'].$url,
 			'ext' => $fileExtension,
 			'pathname' => $fullname,
 			'lastmod' => filemtime($fullname),
