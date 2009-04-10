@@ -46,12 +46,12 @@ if ($topic == null) {
 
 
 $entry = $modx->getObject('modLexiconEntry',array(
-    'namespace' => $namespace->name,
+    'namespace' => $setting->get('namespace'),
     'name' => 'setting_'.$_POST['key'],
 ));
 if ($entry == null) {
     $entry = $modx->newObject('modLexiconEntry');
-    $entry->set('namespace',$namespace->name);
+    $entry->set('namespace',$setting->get('namespace'));
     $entry->set('name','setting_'.$_POST['key']);
     $entry->set('topic',$topic->get('id'));
 }
@@ -60,12 +60,12 @@ $entry->save();
 $entry->clearCache();
 
 $description = $modx->getObject('modLexiconEntry',array(
-    'namespace' => $namespace->name,
+    'namespace' => $setting->get('namespace'),
     'name' => 'setting_'.$_POST['key'].'_desc',
 ));
 if ($description == null) {
     $description = $modx->newObject('modLexiconEntry');
-    $description->set('namespace',$namespace->name);
+    $description->set('namespace',$setting->get('namespace'));
     $description->set('name','setting_'.$_POST['key'].'_desc');
     $description->set('topic',$topic->get('id'));
 }
