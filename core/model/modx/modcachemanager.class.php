@@ -185,7 +185,7 @@ class modCacheManager extends xPDOCacheManager {
                             continue;
                         }
                         $pluginIds[$pluginKey]= $pluginKey;
-                        $plugins[$pluginKey]= $this->modx->getObject('modPlugin', $pluginKey, true);
+                        $plugins[$pluginKey]= $this->modx->getObject('modPlugin', intval($pluginKey), true);
                     }
                 }
                 if (!empty ($plugins)) {
