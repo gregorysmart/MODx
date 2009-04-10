@@ -23,7 +23,7 @@ $_POST['context_key'] = isset($_POST['fk']) ? $_POST['fk'] : 0;
 if (!$context = $modx->getObject('modContext', $_POST['context_key'])) return $modx->error->failure($modx->lexicon('setting_err_nf'));
 if (!$context->checkPolicy('save')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-$ae = $modx->getObject('modSystemSetting',array(
+$ae = $modx->getObject('modContextSetting',array(
     'key' => $_POST['key'],
     'context_key' => $_POST['context_key'],
 ));
