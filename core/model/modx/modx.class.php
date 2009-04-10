@@ -1175,7 +1175,7 @@ class modX extends xPDO {
                         $plugin= null;
                     }
                 } else {
-                    $plugin= $this->getObject('modPlugin', array ('id' => $pluginId, 'disabled' => '0'), true);
+                    $plugin= $this->getObject('modPlugin', array ('id' => intval($pluginId), 'disabled' => '0'), true);
                 }
                 if ($plugin) {
                     $this->event->activated= true;
