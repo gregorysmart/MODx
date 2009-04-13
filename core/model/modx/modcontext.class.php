@@ -49,6 +49,8 @@ class modContext extends modAccessibleObject {
                     $prepared= true;
                 }
             }
+        } else {
+            $prepared= true;
         }
         return $prepared;
     }
