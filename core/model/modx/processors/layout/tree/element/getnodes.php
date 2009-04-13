@@ -37,6 +37,7 @@ $resources = array();
 switch ($g[0]) {
     case 'type': /* if in the element, but not in a category */
         $elementType = ucfirst($g[1]);
+        $elementClassKey = $ar_typemap[$g[1]];
         /* 1: type - eg. category_templates */
         $c = $modx->newQuery('modCategory');
         $c->where(array(
@@ -46,16 +47,21 @@ switch ($g[0]) {
         $categories = $modx->getCollection('modCategory',$c);
 
         foreach ($categories as $category) {
-            $els = $category->getMany($ar_typemap[$g[1]]);
-            if (count($els) <= 0) {
+            $elCount = $modx->getCount($elementClassKey,array(
+                'category' => $category->get('id'),
+            ));
+            if ($elCount == 0) {
                 $childCats = $modx->getCount('modCategory',array('parent' => $category->get('id')));
-                if ($childCats <= 0) {
+                if ($childCats <= 0 && $category->get('id') != 0) {
                     continue;
                 }
             }
+
             $resources[] = array(
                 'text' => $category->get('category') . ' (' . $category->get('id') . ')',
                 'id' => 'n_'.$g[1].'_category_'.($category->get('id') != null ? $category->get('id') : 0),
+                'pk' => $category->get('id'),
+                'category' => $category->get('id'),
                 'leaf' => false,
                 'cls' => 'folder',
                 'href' => '',
@@ -77,6 +83,12 @@ switch ($g[0]) {
                         ),
                         '-',
                         array(
+                            'text' => $modx->lexicon('category_create'),
+                            'handler' => 'function(itm,e) {
+                                this.createCategory(itm,e);
+                            }',
+                        ),
+                        array(
                             'text' => $modx->lexicon('remove_category'),
                             'handler' => 'function(itm,e) {
                                 this.removeCategory(itm,e);
@@ -85,8 +97,8 @@ switch ($g[0]) {
                     ),
                 ),
             );
+            unset($elCount,$childCats);
         }
-
 
         $c = $modx->newQuery($ar_typemap[$g[1]]);
         $c->where(array('category' => 0));
@@ -97,6 +109,7 @@ switch ($g[0]) {
             $resources[] = array(
                 'text' => $name . ' (' . $element->get('id') . ')',
                 'id' => 'n_'.$g[1].'_element_'.$element->get('id').'_0',
+                'category' => $category->get('id'),
                 'leaf' => true,
                 'cls' => 'file',
                 'href' => 'index.php?a='.$ar_actionmap[$g[1]].'&id='.$element->get('id'),
@@ -309,6 +322,8 @@ switch ($g[0]) {
             $resources[] = array(
                 'text' => $category->get('category') . ' (' . $category->get('id') . ')',
                 'id' => 'n_category_'.$category->get('id'),
+                'pk' => $category->get('id'),
+                'category' => $category->get('id'),
                 'leaf' => false,
                 'cls' => 'file',
                 'href' => '',
@@ -353,12 +368,15 @@ switch ($g[0]) {
         $categories = $modx->getCollection('modCategory',$c);
 
         foreach ($categories as $category) {
-            $els = $category->getMany($elementClassKey);
-            if (count($els) <= 0) continue;
+            $elCount = $modx->getCount($elementClassKey,array(
+                'category' => $cat_id,
+            ));
+            if ($elCount <= 0) continue;
             $resources[] = array(
                 'text' => $category->get('category') . ' (' . $category->get('id') . ')',
                 'id' => 'n_'.$g[0].'_category_'.($category->get('id') != null ? $category->get('id') : 0),
                 'pk' => $category->get('id'),
+                'category' => $category->get('id'),
                 'leaf' => false,
                 'cls' => 'folder',
                 'href' => '',
@@ -380,6 +398,12 @@ switch ($g[0]) {
                         ),
                         '-',
                         array(
+                            'text' => $modx->lexicon('category_create'),
+                            'handler' => 'function(itm,e) {
+                                this.createCategory(itm,e);
+                            }',
+                        ),
+                        array(
                             'text' => $modx->lexicon('remove_category'),
                             'handler' => 'function(itm,e) {
                                 this.removeCategory(itm,e);
@@ -391,10 +415,12 @@ switch ($g[0]) {
         }
 
         /* all elements in category */
-        $c = $modx->newQuery($ar_typemap[$g[0]]);
+
+        $c = $modx->newQuery($elementClassKey);
         $c->where(array('category' => $cat_id));
         $c->sortby($g[0] == 'template' ? 'templatename' : 'name','ASC');
-        $elements = $modx->getCollection($ar_typemap[$g[0]],$c);
+
+        $elements = $modx->getCollection($elementClassKey,$c);
         $elementType = ucfirst($g[0]);
         foreach ($elements as $element) {
             $name = $g[0] == 'template' ? $element->get('templatename') : $element->get('name');
@@ -403,9 +429,10 @@ switch ($g[0]) {
                 'text' => $name . ' (' . $element->get('id') . ')',
                 /* setup g[], 1: 'element', 2: type of el, 3: el ID, 4: cat ID */
                 'id' => 'n_'.$g[0].'_element_'.$element->get('id').'_'.$element->get('category'),
+                'pk' => $element->get('id'),
+                'category' => $cat_id,
                 'leaf' => 1,
                 'cls' => 'file',
-                'pk' => $element->get('id'),
                 'href' => 'index.php?a='.$ar_actionmap[$g[0]].'&id='.$element->get('id'),
                 'type' => $g[0],
                 'menu' => array(

@@ -184,6 +184,13 @@ MODx.window.CreateCategory = function(config) {
             ,id: 'modx-ccat-category'
             ,xtype: 'textfield'
             ,width: 150
+        },{
+        	fieldLabel: 'Parent'
+        	,name: 'parent'
+        	,hiddenName: 'parent'
+        	,id: 'modx-ccat-parent'
+    		,xtype: 'modx-combo-category'
+        	,width: 200
         }]
 	});
 	MODx.window.CreateCategory.superclass.constructor.call(this,config);

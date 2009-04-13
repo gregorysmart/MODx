@@ -23,16 +23,20 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 	,stores: {}
 		
 	,createCategory: function(node,e) {
-		var id = this.cm.activeNode.id.substr(2);
+		var r = {
+			'parent': this.cm.activeNode.attributes.category
+		};
 		
 		if (!this.windows.createCategory) {
 			this.windows.createCategory = MODx.load({
 				xtype: 'modx-window-category-create'
+				,record: r
 				,listeners: {
 					'success': {fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
 				}
 			});
 		}
+		this.windows.createCategory.setValues(r);
 		this.windows.createCategory.show(e.target);
 	}
 
