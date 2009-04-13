@@ -74,12 +74,11 @@ $modx->smarty->assign('hasdocgroups',count($docgroups) > 0);
 
 
 /* invoke OnDocFormRender event */
-$onDocFormRender = $modx->invokeEvent('OnDocFormRender',array('id' => 0));
+$onDocFormRender = $modx->invokeEvent('OnDocFormRender',array('id' => $resource->get('id')));
 if (is_array($onDocFormRender)) {
     $onDocFormRender = implode('',$onDocFormRender);
 }
 $modx->smarty->assign('onDocFormRender',$onDocFormRender);
-
 
 /*
  *  Initialize RichText Editor
