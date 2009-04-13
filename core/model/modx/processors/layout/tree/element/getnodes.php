@@ -39,12 +39,20 @@ switch ($g[0]) {
         $elementType = ucfirst($g[1]);
         /* 1: type - eg. category_templates */
         $c = $modx->newQuery('modCategory');
+        $c->where(array(
+            'parent' => 0,
+        ));
         $c->sortby('category','ASC');
         $categories = $modx->getCollection('modCategory',$c);
 
         foreach ($categories as $category) {
             $els = $category->getMany($ar_typemap[$g[1]]);
-            if (count($els) <= 0) continue;
+            if (count($els) <= 0) {
+                $childCats = $modx->getCount('modCategory',array('parent' => $category->get('id')));
+                if ($childCats <= 0) {
+                    continue;
+                }
+            }
             $resources[] = array(
                 'text' => $category->get('category') . ' (' . $category->get('id') . ')',
                 'id' => 'n_'.$g[1].'_category_'.($category->get('id') != null ? $category->get('id') : 0),
@@ -280,13 +288,28 @@ switch ($g[0]) {
             ),
         );
         break;
-    case 'category': /* if trying to grab all categories */
-        $categories = $modx->getCollection('modCategory');
+    case 'category':
+        if (isset($g[1]) && $g[1] != '' && $g[1] != 0) {
+            $c = $modx->newQuery('modCategory');
+            $c->where(array(
+                'parent' => $g[1],
+            ));
+            $c->sortby('category','ASC');
+        } else {
+            /* if trying to grab all root categories */
+            $c = $modx->newQuery('modCategory');
+            $c->where(array(
+                'parent' => 0,
+            ));
+            $c->sortby('category','ASC');
+        }
+
+        $categories = $modx->getCollection('modCategory',$c);
         foreach ($categories as $category) {
             $resources[] = array(
                 'text' => $category->get('category') . ' (' . $category->get('id') . ')',
                 'id' => 'n_category_'.$category->get('id'),
-                'leaf' => true,
+                'leaf' => false,
                 'cls' => 'file',
                 'href' => '',
                 'type' => 'category',
@@ -319,7 +342,55 @@ switch ($g[0]) {
     default: /* if clicking a node in a category */
         /* 0: type,  1: element/category  2: elID  3: catID */
         $cat_id = isset($g[3]) ? $g[3] : ($g[1] == 'category' ? $g[2] : 0);
+        $elementClassKey = $ar_typemap[$g[0]];
 
+        /* first handle subcategories */
+        $c = $modx->newQuery('modCategory');
+        $c->where(array(
+            'parent' => $cat_id,
+        ));
+        $c->sortby('category','ASC');
+        $categories = $modx->getCollection('modCategory',$c);
+
+        foreach ($categories as $category) {
+            $els = $category->getMany($elementClassKey);
+            if (count($els) <= 0) continue;
+            $resources[] = array(
+                'text' => $category->get('category') . ' (' . $category->get('id') . ')',
+                'id' => 'n_'.$g[0].'_category_'.($category->get('id') != null ? $category->get('id') : 0),
+                'pk' => $category->get('id'),
+                'leaf' => false,
+                'cls' => 'folder',
+                'href' => '',
+                'type' => $g[0],
+                'menu' => array(
+                    'items' => array(
+                        array(
+                            'text' => '<b>'.$category->get('category').'</b>',
+                            'params' => '',
+                            'handler' => 'function() { return false; }',
+                            'header' => true,
+                        )
+                        ,'-',
+                        array(
+                            'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
+                            'handler' => 'function(itm,e) {
+                                this._createElement(itm,e);
+                            }',
+                        ),
+                        '-',
+                        array(
+                            'text' => $modx->lexicon('remove_category'),
+                            'handler' => 'function(itm,e) {
+                                this.removeCategory(itm,e);
+                            }',
+                        )
+                    ),
+                ),
+            );
+        }
+
+        /* all elements in category */
         $c = $modx->newQuery($ar_typemap[$g[0]]);
         $c->where(array('category' => $cat_id));
         $c->sortby($g[0] == 'template' ? 'templatename' : 'name','ASC');
@@ -334,6 +405,7 @@ switch ($g[0]) {
                 'id' => 'n_'.$g[0].'_element_'.$element->get('id').'_'.$element->get('category'),
                 'leaf' => 1,
                 'cls' => 'file',
+                'pk' => $element->get('id'),
                 'href' => 'index.php?a='.$ar_actionmap[$g[0]].'&id='.$element->get('id'),
                 'type' => $g[0],
                 'menu' => array(

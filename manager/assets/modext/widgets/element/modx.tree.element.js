@@ -134,10 +134,14 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
     
     ,isCorrectType: function(dropNode,targetNode) {
         var r = false;
-        // types must be the same
+        /* types must be the same */
         if(targetNode.attributes.type == dropNode.attributes.type) {
-            // don't allow nesting of categories or anything to be dropped on an element
-            if(! (targetNode.parentNode && ((dropNode.attributes.cls == 'folder' && targetNode.attributes.cls == 'folder' && dropNode.parentNode.id == targetNode.parentNode.id) || targetNode.attributes.cls == 'file'))) {
+            /* do not allow nesting of categories or anything to be dropped on an element */
+            if(!(targetNode.parentNode && 
+        		((dropNode.attributes.cls == 'folder' 
+    				&& targetNode.attributes.cls == 'folder'
+    				&& dropNode.parentNode.id == targetNode.parentNode.id
+    			) || targetNode.attributes.cls == 'file'))) {
                 r = true;
             }
         }

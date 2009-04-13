@@ -298,7 +298,6 @@ Ext.reg('modx-combo-template',MODx.combo.Template);
  * 
  * @class MODx.combo.Category
  * @extends MODx.combo.ComboBox
- * @constructor
  * @xtype combo-category
  */
 MODx.combo.Category = function(config) {
@@ -306,9 +305,10 @@ MODx.combo.Category = function(config) {
 	Ext.applyIf(config,{
 		name: 'category'
 		,hiddenName: 'category'
-		,displayField: 'category'
+		,displayField: 'name'
+		,valueField: 'id'
 		,mode: 'remote'
-		,fields: ['id','category']
+		,fields: ['id','category','parent','name']
 		,forceSelection: true
 		,typeAhead: false
 		,allowBlank: true

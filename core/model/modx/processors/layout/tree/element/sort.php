@@ -12,54 +12,48 @@ $modx->lexicon->load('category');
 $data = urldecode($_POST['data']);
 $data = $modx->fromJSON($data);
 
-/* setup uncategorized category */
-$uncategorized = $modx->newObject('modCategory');
-$uncategorized->set('category',$modx->lexicon('uncategorized'));
-
-sortNodes('modTemplate','template',$data,$error);
-sortNodes('modTemplateVar','tv',$data,$error);
-sortNodes('modChunk','chunk',$data,$error);
-sortNodes('modSnippet','snippet',$data,$error);
-sortNodes('modPlugin','plugin',$data,$error);
+sortNodes('modTemplate','template',$data);
+sortNodes('modTemplateVar','tv',$data);
+sortNodes('modChunk','chunk',$data);
+sortNodes('modSnippet','snippet',$data);
+sortNodes('modPlugin','plugin',$data);
 
 
-function sortNodes($xname,$type,$data,&$error) {
-	global $modx;
-	global $uncategorized;
-
-
+function sortNodes($xname,$type,$data) {
 	$s = $data['n_type_'.$type];
-
 	if (is_array($s)) {
-	foreach ($s as $id => $objs) {
-		$car = split('_',$id);
+        sortNodesHelper($s,$xname);
+    }
+}
 
-		/* $car: [1]: template   [2]: element/category    [3]: catID/elID    [4]: *catID */
 
-		if ($car[1] != $type) return $modx->error->failure('Invalid drag!');
+function sortNodesHelper($objs,$xname,$currentCategoryId = 0) {
+    global $modx;
 
-		if ($car[2] == 'category') {
-			$category = $modx->getObject('modCategory',$car[3]);
-			if ($category == null) $category = $uncategorized;
+    foreach ($objs as $objar => $kids) {
+        $oar = split('_',$objar);
+        $nodeArray = processID($oar);
 
-			foreach ($objs as $objar => $kids) {
-				$oar = split('_',$objar);
+        if ($nodeArray['type'] == 'category') {
+            sortNodesHelper($kids,$xname,$nodeArray['pk']);
 
-				if ($oar[1] != $type) return $modx->error->failure('Invalid drag type!');
+        } elseif ($nodeArray['type'] == 'element') {
+            $element = $modx->getObject($xname,$nodeArray['pk']);
+            if ($element == null) continue;
 
-				$obj = $modx->getObject($xname,$oar[3]);
-				$obj->set('category',$category->get('id') != null ? $category->get('id') : 0);
-				$obj->save();
-			}
-		} elseif ($car[2] == 'element') {
-			$element = $modx->getObject($xname,$car[3]);
-			if ($element == null) continue;
+            $element->set('category',$currentCategoryId);
+            $element->save();
+        }
+    }
+}
 
-			$element->set('category',0);
-			$element->save();
-		}
-	}
-	}
+function processID($ar) {
+    return array(
+        'elementType' => $ar[1],
+        'type' => $ar[2],
+        'pk' => $ar[3],
+        'elementCatId' => isset($ar[4]) ? $ar[4] : 0,
+    );
 }
 
 return $modx->error->success();

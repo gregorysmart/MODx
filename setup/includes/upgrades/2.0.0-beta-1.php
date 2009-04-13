@@ -169,3 +169,10 @@ $table = $this->install->xpdo->getTableName($class);
 $sql = "ALTER TABLE {$table} CHANGE `manifest` TEXT NULL;";
 $description = 'Modified column `manifest` to TEXT from MEDIUMTEXT on '.$table.'.';
 $this->processResults($class, $description, $sql);
+
+/* add parent key to modCategory table */
+$class = 'modCategory';
+$table = $this->install->xpdo->getTableName($class);
+$sql = "ALTER TABLE {$table} ADD `parent` INT( 10 ) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;";
+$description = 'Added new column `parent` to '.$table.'.';
+$this->processResults($class, $description, $sql);

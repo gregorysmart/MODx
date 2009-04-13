@@ -8,10 +8,20 @@ $xpdo_meta_map['modCategory']= array (
   'table' => 'categories',
   'fields' => 
   array (
+    'parent' => 0,
     'category' => '',
   ),
   'fieldMeta' => 
   array (
+    'parent' => 
+    array (
+      'dbtype' => 'int',
+      'precision' => '10',
+      'phptype' => 'integer',
+      'attributes' => 'unsigned',
+      'default' => 0,
+      'index' => 'index',
+    ),
     'category' => 
     array (
       'dbtype' => 'varchar',
@@ -22,8 +32,27 @@ $xpdo_meta_map['modCategory']= array (
       'index' => 'unique',
     ),
   ),
+  'composites' => 
+  array (
+    'Children' => 
+    array (
+      'class' => 'modCategory',
+      'local' => 'id',
+      'foreign' => 'parent',
+      'cardinality' => 'many',
+      'owner' => 'local',
+    ),
+  ),
   'aggregates' => 
   array (
+    'Parent' => 
+    array (
+      'class' => 'modCategory',
+      'local' => 'parent',
+      'foreign' => 'id',
+      'cardinality' => 'one',
+      'owner' => 'foreign',
+    ),
     'modChunk' => 
     array (
       'class' => 'modChunk',
@@ -36,7 +65,6 @@ $xpdo_meta_map['modCategory']= array (
     'modSnippet' => 
     array (
       'class' => 'modSnippet',
-      'key' => 'id',
       'local' => 'id',
       'foreign' => 'category',
       'cardinality' => 'many',
@@ -45,7 +73,6 @@ $xpdo_meta_map['modCategory']= array (
     'modPlugin' => 
     array (
       'class' => 'modPlugin',
-      'key' => 'id',
       'local' => 'id',
       'foreign' => 'category',
       'cardinality' => 'many',
@@ -54,7 +81,6 @@ $xpdo_meta_map['modCategory']= array (
     'modTemplate' => 
     array (
       'class' => 'modTemplate',
-      'key' => 'id',
       'local' => 'id',
       'foreign' => 'category',
       'cardinality' => 'many',
@@ -63,7 +89,6 @@ $xpdo_meta_map['modCategory']= array (
     'modTemplateVar' => 
     array (
       'class' => 'modTemplateVar',
-      'key' => 'id',
       'local' => 'id',
       'foreign' => 'category',
       'cardinality' => 'many',
@@ -96,4 +121,5 @@ $xpdo_meta_map['modCategory']= array (
   ),
 );
 if (XPDO_PHP4_MODE) $xpdo_meta_map['modCategory']['aggregates']= array_merge($xpdo_meta_map['modCategory']['aggregates'], array_change_key_case($xpdo_meta_map['modCategory']['aggregates']));
+if (XPDO_PHP4_MODE) $xpdo_meta_map['modCategory']['composites']= array_merge($xpdo_meta_map['modCategory']['composites'], array_change_key_case($xpdo_meta_map['modCategory']['composites']));
 $xpdo_meta_map['modcategory']= & $xpdo_meta_map['modCategory'];
