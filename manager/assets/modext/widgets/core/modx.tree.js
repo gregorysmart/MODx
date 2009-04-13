@@ -104,7 +104,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	    });
 	    this.setRootNode(this.root);
 	    
-	    this.treestate_id = Ext.id();
+	    this.treestate_id = this.config.id || Ext.id();
 	    this.on('load',this._initExpand,this,{single: true});
 	    this.root.expand();
 	    
