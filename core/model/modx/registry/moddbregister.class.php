@@ -232,7 +232,7 @@ class modDbRegister extends modRegister {
                                 $payload = '';
                                 if ($expires > 0) $payload.= "if (time() > {$expires}) return null;\n";
                                 $payload.= 'return ' . var_export($msg, true) . ";\n";
-                                if (!$messageObj = $this->modx->getObject('registry.db.modDbRegisterMessage', array('topic' => $topicObj->get('id'), 'id' => 'msgKey'))) {
+                                if (!$messageObj = $this->modx->getObject('registry.db.modDbRegisterMessage', array('topic' => $topicObj->get('id'), 'id' => $msgKey))) {
                                     $messageObj = $this->modx->newObject('registry.db.modDbRegisterMessage');
                                     $messageObj->set('topic', $topicObj->get('id'));
                                     $messageObj->set('id', $msgKey);
