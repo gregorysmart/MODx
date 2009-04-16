@@ -157,7 +157,7 @@ class modDbRegister extends modRegister {
         $message = null;
         if (is_object($obj) && !empty($obj->payload)) {
             $message = eval($obj->payload);
-            if ($remove) {
+            if ($remove || ($obj->expires > 1 && $obj->expires < time())) {
                 $this->modx->removeObject('modDbRegisterMessage', array('topic' => $obj->topic, 'id' => $obj->id));
             }
             if ($obj->kill) $this->__kill = true;
@@ -252,6 +252,7 @@ class modDbRegister extends modRegister {
                 $this->modx->log(MODX_LOG_LEVEL_ERROR, "Could not send message to queue {$queueId}, topic {$topic}. Message payload is " . print_r($message, 1));
             }
         }
+        if (!$sent) $this->modx->log(MODX_LOG_LEVEL_ERROR, "Could not send message to queue {$queueId}, topic {$topic}. Message payload is " . print_r($message, 1));
         return $sent;
     }
 }
