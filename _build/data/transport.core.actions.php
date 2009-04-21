@@ -436,7 +436,7 @@ $collection['50']->fromArray(array (
   'parent' => 46,
   'controller' => 'security/role',
   'haslayout' => 1,
-  'lang_topics' => 'role',
+  'lang_topics' => 'user',
   'assets' => '',
 ), '', true, true);
 $collection['51']= $xpdo->newObject('modAction');
@@ -446,7 +446,7 @@ $collection['51']->fromArray(array (
   'parent' => 50,
   'controller' => 'security/role/create',
   'haslayout' => 1,
-  'lang_topics' => 'role',
+  'lang_topics' => 'user',
   'assets' => '',
 ), '', true, true);
 $collection['52']= $xpdo->newObject('modAction');
@@ -456,7 +456,7 @@ $collection['52']->fromArray(array (
   'parent' => 50,
   'controller' => 'security/role/update',
   'haslayout' => 1,
-  'lang_topics' => 'role',
+  'lang_topics' => 'user',
   'assets' => '',
 ), '', true, true);
 $collection['53']= $xpdo->newObject('modAction');
@@ -596,7 +596,7 @@ $collection['66']->fromArray(array (
   'parent' => 46,
   'controller' => 'security/permission',
   'haslayout' => 1,
-  'lang_topics' => 'role,user',
+  'lang_topics' => 'user',
   'assets' => '',
 ), '', true, true);
 $collection['67']= $xpdo->newObject('modAction');
