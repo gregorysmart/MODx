@@ -29,7 +29,7 @@ MODx.panel.Context = function(config) {
                     ,items: [{
                         xtype: 'statictextfield'
                         ,fieldLabel: _('key')
-                        ,name: 'newkey'
+                        ,name: 'key'
                         ,width: 300
                         ,maxLength: 255
                         ,enableKeyEvents: true
