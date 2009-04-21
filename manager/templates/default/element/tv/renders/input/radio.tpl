@@ -6,7 +6,7 @@
 		{if $item.checked} checked="checked"{/if}
 		onchange="javascript:triggerDirtyField(this);" 
 	/>
-	{$item.text} 44
+	{$item.text}
 </label>
 <br />
 {/foreach}
