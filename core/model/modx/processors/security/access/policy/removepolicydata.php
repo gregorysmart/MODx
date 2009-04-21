@@ -19,7 +19,7 @@ $policy = $modx->getObject('modAccessPolicy',$_REQUEST['id']);
 if ($policy == null) return $modx->error->failure('Policy not found!');
 
 /* parse data from JSON */
-$ar = $modx->fromJSON($policy->get('data'));
+$ar = $policy->get('data');
 if (!isset($ar[$_REQUEST['key']])) return $modx->error->failure('Policy property not found!');
 
 /* set policy value */
