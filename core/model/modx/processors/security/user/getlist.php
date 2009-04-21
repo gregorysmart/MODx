@@ -44,12 +44,12 @@ $users = $modx->getCollectionGraph('modUser', '{"modUserProfile":{}}', $c);
 
 $count = $modx->getCount('modUser');
 
-$us = array();
-foreach ($users as $u) {
-	$up = $u->modUserProfile->toArray();
-	$uu = $u->toArray();
-	$ua = array_merge($up,$uu);
-    $ua['menu'] = array(
+$list = array();
+foreach ($users as $user) {
+	$profileArray = $user->modUserProfile->toArray();
+	$userArray = $user->toArray();
+	$userArray = array_merge($profileArray,$userArray);
+    $userArray['menu'] = array(
         array(
             'text' => $modx->lexicon('user_update'),
             'handler' => 'this.update',
@@ -60,6 +60,6 @@ foreach ($users as $u) {
             'handler' => 'this.remove',
         ),
     );
-	$us[] = $ua;
+	$list[] = $userArray;
 }
-return $this->outputArray($us,$count);
+return $this->outputArray($list,$count);

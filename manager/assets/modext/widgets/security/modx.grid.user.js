@@ -118,9 +118,6 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
         location.href = 'index.php?a='+MODx.action['security/user/create'];
     }
     
-    /**
-     * Prompts a confirm dialog to remove the user
-     */
     ,remove: function() {
         MODx.msg.confirm({
             title: _('user_remove')
@@ -136,18 +133,10 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
         });
     }
     
-    /**
-     * Loads the update screen for the user
-     */
     ,update: function() {
         location.href = 'index.php?a='+MODx.action['security/user/update']+'&id='+this.menu.record.id;
     }
-    
-	/**
-     * Render the row to a specific gender title.
-     * @param {Object} d The data record
-     * @param {Object} c The dom properties
-     */				
+    				
 	,rendGender: function(d,c) {
 		switch(d.toString()) {
 			case '0':
@@ -159,12 +148,6 @@ Ext.extend(MODx.grid.User,MODx.grid.Grid,{
 		}
 	}
     
-    /**
-     * Filters the grid by the specified name
-     * @param {Ext.form.Textfield} tf
-     * @param {String} newValue
-     * @param {String} oldValue
-     */
     ,filterByName: function(tf,newValue,oldValue) {
         this.getStore().baseParams = {
             action: 'getList'
