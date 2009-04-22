@@ -85,7 +85,7 @@ $modx->invokeEvent('OnChunkFormSave',array(
 /* log manager action */
 $modx->logManagerAction('chunk_create','modChunk',$chunk->get('id'));
 
-/* empty cache [TODO: make this optional] */
+/* empty cache */
 $cacheManager= $modx->getCacheManager();
 $cacheManager->clearCache();
 

@@ -80,6 +80,14 @@ MODx.panel.Chunk = function(config) {
                         ,id: 'modx-chunk-locked'
                         ,inputValue: true
                     },{
+                        xtype: 'checkbox'
+                        ,fieldLabel: _('clear_cache_on_save')
+                        ,description: _('clear_cache_on_save_msg')
+                        ,name: 'clearCache'
+                        ,id: 'modx-chunk-clear-cache'
+                        ,inputValue: 1
+                        ,checked: true
+                    },{
                         html: onChunkFormRender
                         ,border: false
                     },{

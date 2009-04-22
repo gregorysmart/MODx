@@ -307,6 +307,14 @@ MODx.window.QuickUpdateChunk = function(config) {
             ,width: 300
             ,rows: 2
         },{
+            xtype: 'checkbox'
+            ,name: 'clearCache'
+            ,id: 'modx-quc-clearcache'
+            ,fieldLabel: _('clear_cache_on_save')
+            ,description: _('clear_cache_on_save_msg')
+            ,inputValue: 1
+            ,checked: true
+        },{
             xtype: 'textarea'
             ,name: 'snippet'
             ,id: 'modx-quc-snippet'

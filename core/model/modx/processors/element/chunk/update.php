@@ -110,7 +110,9 @@ $modx->invokeEvent('OnChunkFormSave',array(
 $modx->logManagerAction('chunk_update','modChunk',$chunk->get('id'));
 
 /* empty cache */
-$cacheManager= $modx->getCacheManager();
-$cacheManager->clearCache();
+if (isset($_POST['clearCache']) && $_POST['clearCache']) {
+    $cacheManager= $modx->getCacheManager();
+    $cacheManager->clearCache();
+}
 
 return $modx->error->success();
