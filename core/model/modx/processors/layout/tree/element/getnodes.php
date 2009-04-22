@@ -109,7 +109,7 @@ switch ($g[0]) {
             $resources[] = array(
                 'text' => $name . ' (' . $element->get('id') . ')',
                 'id' => 'n_'.$g[1].'_element_'.$element->get('id').'_0',
-                'category' => $category->get('id'),
+                'category' => 0,
                 'leaf' => true,
                 'cls' => 'file',
                 'href' => 'index.php?a='.$ar_actionmap[$g[1]].'&id='.$element->get('id'),
