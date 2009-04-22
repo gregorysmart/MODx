@@ -114,6 +114,49 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 			}
 		});
 	}
+    
+    ,quickCreateChunk: function(itm,e) {
+        var r = {
+            category: this.cm.activeNode.attributes.pk || ''
+        };
+        
+        if (!this.windows.quickCreateChunk) {
+            this.windows.quickCreateChunk = MODx.load({
+                xtype: 'modx-window-quick-create-chunk'
+                ,record: r
+                ,listeners: {
+                    'success':{fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
+                }
+            });
+        }
+        this.windows.quickCreateChunk.setValues(r);
+        this.windows.quickCreateChunk.show(e.target);
+    }
+    
+    ,quickUpdateChunk: function(itm,e) {
+        MODx.Ajax.request({
+            url: MODx.config.connectors_url+'element/chunk.php'
+            ,params: {
+                action: 'get'
+                ,id: this.cm.activeNode.attributes.pk
+            }
+            ,listeners: {
+                'success': {fn:function(r) {                           
+                    if (!this.windows.quickUpdateChunk) {
+                        this.windows.quickUpdateChunk = MODx.load({
+                            xtype: 'modx-window-quick-update-chunk'
+                            ,record: r.object
+                            ,listeners: {
+                                'success':{fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
+                            }
+                        });
+                    }
+                    this.windows.quickUpdateChunk.setValues(r);
+                    this.windows.quickUpdateChunk.show(e.target);
+                },scope:this}
+            }
+        });
+    }
 	
 	,_createElement: function(item,e) {
 		var id = this.cm.activeNode.id.substr(2);

@@ -235,3 +235,88 @@ MODx.window.CreateNamespace = function(config) {
 };
 Ext.extend(MODx.window.CreateNamespace,MODx.Window);
 Ext.reg('modx-window-namespace-create',MODx.window.CreateNamespace);
+
+
+MODx.window.QuickCreateChunk = function(config) {
+	config = config || {};
+	Ext.applyIf(config,{
+		title: _('chunk_create_quick')
+		,width: 600
+		,url: MODx.config.connectors_url+'element/chunk.php'
+		,action: 'create'
+		,fields: [{
+			xtype: 'hidden'
+			,name: 'category'
+			,id: 'modx-qcc-category'
+		},{
+            xtype: 'textfield'
+            ,name: 'name'
+            ,id: 'modx-qcc-name'
+            ,fieldLabel: _('name')
+            ,width: 300
+		},{
+            xtype: 'textarea'
+            ,name: 'description'
+            ,id: 'modx-qcc-description'
+            ,fieldLabel: _('description')
+            ,width: 300
+            ,rows: 2
+        },{
+            xtype: 'textarea'
+            ,name: 'snippet'
+            ,id: 'modx-qcc-snippet'
+            ,fieldLabel: _('code')
+            ,width: 400
+            ,grow: true
+        }]
+        ,keys: []
+	});
+	MODx.window.QuickCreateChunk.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.QuickCreateChunk,MODx.Window);
+Ext.reg('modx-window-quick-create-chunk',MODx.window.QuickCreateChunk);
+
+
+
+MODx.window.QuickUpdateChunk = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        title: _('chunk_update_quick')
+        ,width: 600
+        ,url: MODx.config.connectors_url+'element/chunk.php'
+        ,action: 'update'
+        ,fields: [{
+            xtype: 'hidden'
+            ,name: 'id'
+            ,id: 'modx-quc-id'
+        },{
+            xtype: 'hidden'
+            ,name: 'category'
+            ,id: 'modx-quc-category'
+        },{
+            xtype: 'textfield'
+            ,name: 'name'
+            ,id: 'modx-quc-name'
+            ,fieldLabel: _('name')
+            ,width: 300
+        },{
+            xtype: 'textarea'
+            ,name: 'description'
+            ,id: 'modx-quc-description'
+            ,fieldLabel: _('description')
+            ,width: 300
+            ,rows: 2
+        },{
+            xtype: 'textarea'
+            ,name: 'snippet'
+            ,id: 'modx-quc-snippet'
+            ,fieldLabel: _('code')
+            ,width: 400
+            ,grow: true
+        }]
+        ,keys: []
+    });
+    MODx.window.QuickUpdateChunk.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.QuickUpdateChunk,MODx.Window);
+Ext.reg('modx-window-quick-update-chunk',MODx.window.QuickUpdateChunk);

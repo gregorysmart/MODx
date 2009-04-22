@@ -7,7 +7,7 @@
  * @package modx
  * @subpackage processors.layout.tree.element
  */
-$modx->lexicon->load('category');
+$modx->lexicon->load('category','element');
 
 $_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : (substr($_REQUEST['id'],0,2) == 'n_' ? substr($_REQUEST['id'],2) : $_REQUEST['id']);
 
@@ -81,6 +81,12 @@ switch ($g[0]) {
                                 this._createElement(itm,e);
                             }',
                         ),
+                        array(
+                            'text' => $modx->lexicon('chunk_create_quick'),
+                            'handler' => 'function(itm,e) {
+                                this.quickCreateChunk(itm,e);
+                            }',
+                        ),
                         '-',
                         array(
                             'text' => $modx->lexicon('category_create'),
@@ -106,9 +112,62 @@ switch ($g[0]) {
         $elements = $modx->getCollection($ar_typemap[$g[1]],$c);
         foreach ($elements as $element) {
             $name = $g[1] == 'template' ? $element->get('templatename') : $element->get('name');
+
+            $menu = array();
+            $menu[] = array(
+                'text' => '<b>'.$name.'</b>',
+                'params' => '',
+                'handler' => 'function() { return false; }',
+                'header' => true,
+            );
+            $menu[] = '-';
+            $menu[] = array(
+                'text' => $modx->lexicon('edit').' '.$elementType,
+                'handler' => 'function() {
+                    location.href = "index.php?'
+                        . 'a=' . $actions['element/'.strtolower($elementType).'/update']
+                        . '&id=' . $element->get('id')
+                     . '";
+                }',
+            );
+            if ($g[1] == 'chunk') {
+                $menu[] = array(
+                    'text' => $modx->lexicon('chunk_update_quick'),
+                    'handler' => 'function(itm,e) {
+                        this.quickUpdateChunk(itm,e);
+                    }',
+                );
+            }
+            $menu[] = array(
+                'text' => $modx->lexicon('duplicate').' '.$elementType,
+                'handler' => 'function(itm,e) {
+                    this.duplicateElement(itm,e,'.$element->get('id').',"'.strtolower($elementType).'");
+                }',
+            );
+            $menu[] = array(
+                'text' => $modx->lexicon('remove').' '.$elementType,
+                'handler' => 'function(itm,e) {
+                    this.removeElement(itm,e);
+                }',
+            );
+            $menu[] = '-';
+            $menu[] = array(
+                'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
+                'handler' => 'function(itm,e) {
+                    this._createElement(itm,e);
+                }',
+            );
+            $menu[] = array(
+                'text' => $modx->lexicon('new_category'),
+                'handler' => 'function(itm,e) {
+                    this.createCategory(itm,e);
+                }',
+            );
+
             $resources[] = array(
                 'text' => $name . ' (' . $element->get('id') . ')',
                 'id' => 'n_'.$g[1].'_element_'.$element->get('id').'_0',
+                'pk' => $element->get('id'),
                 'category' => 0,
                 'leaf' => true,
                 'cls' => 'file',
@@ -116,54 +175,10 @@ switch ($g[0]) {
                 'type' => $g[1],
                 'qtip' => $element->get('description'),
                 'menu' => array(
-                    'items' => array(
-                        array(
-                            'text' => '<b>'.$name.'</b>',
-                            'params' => '',
-                            'handler' => 'function() { return false; }',
-                            'header' => true,
-                        )
-                        ,'-',
-                        array(
-                            'text' => $modx->lexicon('edit').' '.$elementType,
-                            'handler' => 'function() {
-                                location.href = "index.php?'
-                                    . 'a=' . $actions['element/'.strtolower($elementType).'/update']
-                                    . '&id=' . $element->get('id')
-                                 . '";
-                            }',
-                        ),
-                        array(
-                            'text' => $modx->lexicon('duplicate').' '.$elementType,
-                            'handler' => 'function(itm,e) {
-                                this.duplicateElement(itm,e,'.$element->get('id').',"'.strtolower($elementType).'");
-                            }',
-                        ),
-                        array(
-                            'text' => $modx->lexicon('remove').' '.$elementType,
-                            'handler' => 'function(itm,e) {
-                                this.removeElement(itm,e);
-                            }',
-                        ),
-                        '-',
-                        array(
-                            'text' => sprintf($modx->lexicon('add_to_category_this'),$elementType),
-                            'handler' => 'function(itm,e) {
-                                this._createElement(itm,e);
-                            }',
-                        ),
-                        array(
-                            'text' => $modx->lexicon('new_category'),
-                            'handler' => 'function(itm,e) {
-                                this.createCategory(itm,e);
-                            }',
-                        ),
-                    ),
+                    'items' => $menu,
                 ),
             );
         }
-
-
         break;
     case 'root': /* if clicking one of the root nodes */
         $elementType = ucfirst($g[0]);
@@ -226,6 +241,12 @@ switch ($g[0]) {
                         'text' => $modx->lexicon('new').' '.$modx->lexicon('chunk'),
                         'handler' => 'function(itm,e) {
                             this._createElement(itm,e);
+                        }',
+                    ),
+                    array(
+                        'text' => $modx->lexicon('chunk_create_quick'),
+                        'handler' => 'function(itm,e) {
+                            this.quickCreateChunk(itm,e);
                         }',
                     ),
                     '-',
@@ -344,6 +365,13 @@ switch ($g[0]) {
                         ),
                         '-',
                         array(
+                            'text' => $modx->lexicon('chunk_create_quick'),
+                            'handler' => 'function(itm,e) {
+                                this.quickCreateChunk(itm,e);
+                            }',
+                        ),
+                        '-',
+                        array(
                             'text' => $modx->lexicon('category_remove'),
                             'handler' => 'function(itm,e) {
                                 this.removeCategory(itm,e);
@@ -396,6 +424,12 @@ switch ($g[0]) {
                                 this._createElement(itm,e);
                             }',
                         ),
+                        array(
+                            'text' => $modx->lexicon('chunk_create_quick'),
+                            'handler' => 'function(itm,e) {
+                                this.quickCreateChunk(itm,e);
+                            }',
+                        ),
                         '-',
                         array(
                             'text' => $modx->lexicon('category_create'),
@@ -425,6 +459,45 @@ switch ($g[0]) {
         foreach ($elements as $element) {
             $name = $g[0] == 'template' ? $element->get('templatename') : $element->get('name');
 
+            $menu = array(
+                array(
+                    'text' => '<b>'.$name.'</b>',
+                    'params' => '',
+                    'handler' => 'function() { return false; }',
+                    'header' => true,
+                ),'-',
+                array(
+                    'text' => $modx->lexicon('edit').' '.$elementType,
+                    'handler' => 'function() {
+                        location.href = "index.php?'
+                            . 'a=' . $actions['element/'.strtolower($elementType).'/update']
+                            . '&id=' . $element->get('id')
+                         . '";
+                    }',
+                ),
+            );
+            if ($elementType == 'Chunk') {
+                $menu[] = array(
+                    'text' => $modx->lexicon('chunk_update_quick'),
+                    'handler' => 'function(itm,e) {
+                        this.quickUpdateChunk(itm,e);
+                    }',
+                );
+            }
+            $menu[] = array(
+                'text' => $modx->lexicon('duplicate').' '.$elementType,
+                'handler' => 'function(itm,e) {
+                    this.duplicateElement(itm,e,'.$element->get('id').',"'.strtolower($elementType).'");
+                }',
+            );
+            $menu[] = '-';
+            $menu[] = array(
+                'text' => $modx->lexicon('remove').' '.$elementType,
+                'handler' => 'function(itm,e) {
+                    this.removeElement(itm,e);
+                }',
+            );
+
             $resources[] = array(
                 'text' => $name . ' (' . $element->get('id') . ')',
                 /* setup g[], 1: 'element', 2: type of el, 3: el ID, 4: cat ID */
@@ -436,36 +509,7 @@ switch ($g[0]) {
                 'href' => 'index.php?a='.$ar_actionmap[$g[0]].'&id='.$element->get('id'),
                 'type' => $g[0],
                 'menu' => array(
-                    'items' => array(
-                         array(
-                            'text' => '<b>'.$name.'</b>',
-                            'params' => '',
-                            'handler' => 'function() { return false; }',
-                            'header' => true,
-                        ),'-',
-                        array(
-                            'text' => $modx->lexicon('edit').' '.$elementType,
-                            'handler' => 'function() {
-                                location.href = "index.php?'
-                                    . 'a=' . $actions['element/'.strtolower($elementType).'/update']
-                                    . '&id=' . $element->get('id')
-                                 . '";
-                            }',
-                        ),
-                        array(
-                            'text' => $modx->lexicon('duplicate').' '.$elementType,
-                            'handler' => 'function(itm,e) {
-                                this.duplicateElement(itm,e,'.$element->get('id').',"'.strtolower($elementType).'");
-                            }',
-                        ),
-                        '-',
-                        array(
-                            'text' => $modx->lexicon('remove').' '.$elementType,
-                            'handler' => 'function(itm,e) {
-                                this.removeElement(itm,e);
-                            }',
-                        )
-                    ),
+                    'items' => $menu
                 ),
             );
         }
