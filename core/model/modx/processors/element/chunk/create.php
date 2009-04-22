@@ -15,19 +15,26 @@
  */
 $modx->lexicon->load('chunk');
 
-if (!$modx->hasPermission('new_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('new_chunk')) {
+    return $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
 /* default values */
-if ($_POST['name'] == '') $_POST['name'] = $modx->lexicon('chunk_untitled');
-
+if ($_POST['name'] == '') { $_POST['name'] = $modx->lexicon('chunk_untitled'); }
 /* get rid of invalid chars */
 $_POST['name'] = str_replace('>','',$_POST['name']);
 $_POST['name'] = str_replace('<','',$_POST['name']);
 
+/* verify chunk with that name does not already exist */
 $name_exists = $modx->getObject('modChunk',array('name' => $_POST['name']));
-if ($name_exists != null) return $modx->error->failure($modx->lexicon('chunk_err_exists_name'));
+if ($name_exists != null) {
+    return $modx->error->failure($modx->lexicon('chunk_err_exists_name'));
+}
 
-if ($modx->error->hasError()) return $modx->error->failure();
+/* if has any errors, return */
+if ($modx->error->hasError()) {
+    return $modx->error->failure();
+}
 
 /* category */
 if (is_numeric($_POST['category'])) {
@@ -53,9 +60,11 @@ $modx->invokeEvent('OnBeforeChunkFormSave',array(
 
 /* save the new chunk */
 $chunk = $modx->newObject('modChunk', $_POST);
+$chunk->fromArray($_POST);
 $chunk->set('locked',isset($_POST['locked']));
-$chunk->set('snippet',$_POST['snippet']);
 $chunk->set('category',$category->get('id'));
+
+/* set properties */
 $properties = null;
 if (isset($_POST['propdata'])) {
     $properties = $_POST['propdata'];
@@ -68,11 +77,10 @@ if ($chunk->save() == false) {
 }
 
 /* invoke OnChunkFormSave event */
-$modx->invokeEvent('OnChunkFormSave',
-	array(
-		'mode' => 'new',
-		'id' => $chunk->get('id'),
-	));
+$modx->invokeEvent('OnChunkFormSave',array(
+	'mode' => 'new',
+	'id'   => $chunk->get('id'),
+));
 
 /* log manager action */
 $modx->logManagerAction('chunk_create','modChunk',$chunk->get('id'));

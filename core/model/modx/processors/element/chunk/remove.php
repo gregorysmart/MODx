@@ -1,6 +1,6 @@
 <?php
 /**
- * Deletes a chunk.
+ * Removes a chunk.
  *
  * @param integer $id The ID of the chunk
  *
@@ -9,16 +9,22 @@
  */
 $modx->lexicon->load('chunk');
 
-if (!$modx->hasPermission('delete_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_chunk')) {
+    return $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
+/* get the chunk */
 $chunk = $modx->getObject('modChunk',$_POST['id']);
-if ($chunk == null) return $modx->error->failure($modx->lexicon('chunk_err_not_found'));
+if ($chunk == null) {
+    return $modx->error->failure($modx->lexicon('chunk_err_not_found'));
+}
 
 /* invoke OnBeforeChunkFormDelete event */
 $modx->invokeEvent('OnBeforeChunkFormDelete',array('id' => $chunk->get('id')));
 
 /* remove chunk */
 if ($chunk->remove() == false) {
+    $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('chunk_err_remove').print_r($chunk->toArray(),true));
     return $modx->error->failure($modx->lexicon('chunk_err_remove'));
 }
 

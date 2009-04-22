@@ -16,45 +16,63 @@
  */
 $modx->lexicon->load('chunk','category');
 
-if (!$modx->hasPermission('save_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('save_chunk')) {
+    return $modx->error->failure($modx->lexicon('permission_denied'));
+}
 
-/* JSON Error processing */
-if ($_POST['name'] == '') $modx->error->addField('name',$modx->lexicon('chunk_err_not_specified_name'));
-/* get rid of invalid chars */
+/* make sure a name was specified */
+if ($_POST['name'] == '') {
+    $modx->error->addField('name',$modx->lexicon('chunk_err_not_specified_name'));
+}
+/* get rid of invalid chars in name */
 $_POST['name'] = str_replace('>','',$_POST['name']);
 $_POST['name'] = str_replace('<','',$_POST['name']);
 
-$chunk = $modx->getObject('modChunk',$_REQUEST['id']);
-if ($chunk == null) return $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_REQUEST['id']));
+/* grab chunk */
+$chunk = $modx->getObject('modChunk',$_POST['id']);
+if ($chunk == null) {
+    return $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_POST['id']));
+}
 
+/* if chunk is locked */
 if ($chunk->get('locked') && $modx->hasPermission('edit_locked') == false) {
     return $modx->error->failure($modx->lexicon('chunk_err_locked'));
 }
 
+/* if changing name, but new one already exists */
 $name_exists = $modx->getObject('modChunk',array(
     'id:!=' => $chunk->get('id'),
     'name' => $_POST['name'],
 ));
-if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('chunk_err_exists_name'));
+if ($name_exists != null) {
+    $modx->error->addField('name',$modx->lexicon('chunk_err_exists_name'));
+}
 
-if ($modx->error->hasError()) return $modx->error->failure();
+/* if has any errors, send back */
+if ($modx->error->hasError()) {
+    return $modx->error->failure();
+}
 
 /* category */
-if (is_numeric($_POST['category'])) {
-    $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
-} else {
-    $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
-}
-if ($category == null) {
-    $category = $modx->newObject('modCategory');
-    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-        $category->set('id',0);
-    } else {
-        $category->set('category',$_POST['category']);
-        if ($category->save() == false) {
-            return $modx->error->failure($modx->lexicon('category_err_save'));
+if (isset($_POST['category'])) {
+    $categoryPk = $_POST['category'];
+    $c = is_numeric($categoryPk)
+        ? array('id' => $categoryPk)
+        : array('name' => $categoryPk);
+    $category = $modx->getObject('modCategory',$c);
+    if ($category == null) {
+        $category = $modx->newObject('modCategory');
+        if ($categoryPk == '' || $categoryPk == 'null') {
+            $category->set('id',0);
+        } else {
+            $category->set('category',$categoryPk);
+            if ($category->save() == false) {
+                $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('category_error_save').print_r($category->toArray(),true));
+                return $modx->error->failure($modx->lexicon('category_err_save'));
+            }
         }
     }
+    unset($categoryPk,$c);
 }
 
 /* invoke OnBeforeChunkFormSave event */
@@ -63,19 +81,22 @@ $modx->invokeEvent('OnBeforeChunkFormSave',array(
     'id' => $_POST['id'],
 ));
 
-/* save the edited chunk */
+/* propogate values */
 $chunk->fromArray($_POST);
-$chunk->set('snippet',$_POST['snippet']);
 $chunk->set('locked',isset($_POST['locked']));
 $chunk->set('category',$category->get('id'));
+
+/* set properties */
 $properties = null;
 if (isset($_POST['propdata'])) {
     $properties = $_POST['propdata'];
     $properties = $modx->fromJSON($properties);
 }
-if (is_array($properties)) $chunk->setProperties($properties);
+if (is_array($properties)) { $chunk->setProperties($properties); }
 
+/* save the chunk */
 if ($chunk->save() == false) {
+    $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('chunk_err_save').print_r($chunk->toArray(),true));
     return $modx->error->failure($modx->lexicon('chunk_err_save'));
 }
 
