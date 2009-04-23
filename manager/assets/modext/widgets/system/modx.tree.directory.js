@@ -1,10 +1,11 @@
 /**
- * Generates the Directory Tree
+ * Generates the Directory Tree in Ext
  * 
  * @class MODx.tree.Directory
  * @extends MODx.tree.Tree
+ * @constructor
  * @param {Object} config An object of options.
- * @xtype modx-tree-directory
+ * @xtype tree-directory
  */
 MODx.tree.Directory = function(config) {
 	config = config || {};
@@ -26,9 +27,23 @@ MODx.tree.Directory = function(config) {
 	});
 	MODx.tree.Directory.superclass.constructor.call(this,config);
     this.addEvents({
-        'beforeUpload': true
-        ,'afterUpload': true
+        'upload': true
+        ,'beforeUpload': true
     });
+	this.treeEditor = new Ext.tree.TreeEditor(this, new Ext.form.Field({
+        cancelOnEsc: true
+        ,completeOnEnter: true
+        ,ignoreNoChange: true
+        ,allowBlank: false
+        ,stateEvents:[{
+          change:{scope:this, fn:this.renameNode}
+        }]
+    }));
+    this.treeEditor.on('beforestartedit',function(){
+        if(!this.treeEditor.editNode.attributes.allowEdit === false){
+            return false;
+        }
+    },this);
 };
 Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 	windows: {}
@@ -41,14 +56,13 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         
         m.removeAll();
         if (node.attributes.menu) {
-            this.addContextMenuItem(node.attributes.menu.items);
+            this.addContextMenuItem(node.attributes.menu);
         }
         this.uploader = new Ext.ux.UploadPanel({
              contextmenu: this.cm
             ,buttonsAt: 'tbar'
             ,singleUpload: false
             ,enableProgress: true
-            ,maxFileSize: 10485760
             ,baseParams: {
                 action: 'upload'
                 ,prependPath: this.config.prependPath || null
@@ -62,12 +76,6 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         this.uploader.setUrl(MODx.config.connectors_url+'browser/file.php');
         
         m.add('-');
-        m.add({
-            text: 'Refresh Directory'
-            ,scope: this
-            ,handler: this.refreshActiveNode
-        });
-        m.add('-');
         m.add(new Ext.menu.Adapter(this.uploader,{
              hideOnClick:false
             ,cmd:'upload-panel'
@@ -80,17 +88,18 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
     ,onAllFinished:function() {
         var node = this.cm.activeNode;
         (node.isLeaf() ? node.parentNode : node).reload();
-        this.fireEvent('afterUpload',node);
+        this.fireEvent('upload');
     } // eo function onAllFinished
     
     ,onBeforeUpload:function(uploadPanel) {
+        this.fireEvent('beforeUpload');
         var node = this.cm.activeNode;
         var path = this.getPath(node);
         if(node.isLeaf()) {
             path = path.replace(/\/[^\/]+$/, '', path);
         }
         this.uploader.setPath(path);
-        this.fireEvent('beforeUpload',node);
+
     } // eo function onBeforeUpload
     
     ,getPath:function(node) {
@@ -141,7 +150,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         var r = {parent: node.id};
         if (!this.windows.create) {
     		this.windows.create = MODx.load({
-    			xtype: 'modx-window-directory-create'
+    			xtype: 'window-directory-create'
     			,record: r
                 ,prependPath: this.config.prependPath || null
                 ,listeners: {
@@ -159,7 +168,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         var r = {dir: node.id};
         if (!this.windows.chmod) {
             this.windows.chmod = MODx.load({
-    			xtype: 'modx-window-directory-chmod'
+    			xtype: 'window-directory-chmod'
     			,record: r
                 ,prependPath: this.config.prependPath || null
                 ,listeners: {
@@ -188,15 +197,16 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         });
     }
 });
-Ext.reg('modx-tree-directory',MODx.tree.Directory);
+Ext.reg('tree-directory',MODx.tree.Directory);
 
 /** 
  * Generates the Create Directory window
  * 
  * @class MODx.window.CreateDirectory
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of configuration options.
- * @xtype modx-window-directory-create
+ * @xtype window-directory-create
  */
 MODx.window.CreateDirectory = function(config) {
     config = config || {};
@@ -226,15 +236,16 @@ MODx.window.CreateDirectory = function(config) {
 	MODx.window.CreateDirectory.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.CreateDirectory,MODx.Window);
-Ext.reg('modx-window-directory-create',MODx.window.CreateDirectory);
+Ext.reg('window-directory-create',MODx.window.CreateDirectory);
 
 /** 
  * Generates the Chmod Directory window
  * 
  * @class MODx.window.ChmodDirectory
  * @extends MODx.Window
+ * @constructor
  * @param {Object} config An object of configuration options.
- * @xtype modx-window-directory-chmod
+ * @xtype window-directory-chmod
  */
 MODx.window.ChmodDirectory = function(config) {
     config = config || {};
@@ -263,4 +274,4 @@ MODx.window.ChmodDirectory = function(config) {
 	MODx.window.ChmodDirectory.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.window.ChmodDirectory,MODx.Window);
-Ext.reg('modx-window-directory-chmod',MODx.window.ChmodDirectory);
+Ext.reg('window-directory-chmod',MODx.window.ChmodDirectory);
