@@ -28,7 +28,7 @@
 
 <!-- system check -->
 <div id="modx-config">
-	<img src="templates/{$_config.manager_theme}/images/icons/event2.gif" />
+	<!--<img src="templates/{$_config.manager_theme}/images/icons/event2.gif" />-->
 	{$config_check_results}
 </div>
 
