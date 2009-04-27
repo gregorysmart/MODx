@@ -216,6 +216,7 @@ class modDbRegister extends modRegister {
                     $message = array($message);
                 }
                 foreach ($message as $msgIdx => $msg) {
+                    $payload = '';
                     if (is_scalar($msg) || is_array($msg) || is_object($msg)) {
                         switch ($messageType) {
                             //TODO: implement more message types
@@ -229,10 +230,10 @@ class modDbRegister extends modRegister {
                                 } else {
                                     $msgKey = strftime('%Y%m%dT%H%M%S', $timestamp) . '-' . sprintf("%03d", $msgIdx);
                                 }
-                                $payload = '';
                                 if ($expires > 0) $payload.= "if (time() > {$expires}) return null;\n";
                                 $payload.= 'return ' . var_export($msg, true) . ";\n";
-                                if (!$messageObj = $this->modx->getObject('registry.db.modDbRegisterMessage', array('topic' => $topicObj->get('id'), 'id' => $msgKey))) {
+                                $messageObj = $this->modx->getObject('registry.db.modDbRegisterMessage', array('topic' => $topicObj->get('id'), 'id' => $msgKey));
+                                if (!$messageObj) {
                                     $messageObj = $this->modx->newObject('registry.db.modDbRegisterMessage');
                                     $messageObj->set('topic', $topicObj->get('id'));
                                     $messageObj->set('id', $msgKey);
