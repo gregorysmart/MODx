@@ -458,6 +458,7 @@ MODx.loadAccordionPanels = function() {
         ,fieldLabel: _('resource_content_type')
         ,description: _('resource_content_type_help')
         ,name: 'content_type'
+        ,hiddenName: 'content_type'
         ,id: 'modx-resource-content-type'
         ,width: 100
         ,value: 1
@@ -470,6 +471,7 @@ MODx.loadAccordionPanels = function() {
         ,fieldLabel: _('resource_contentdispo')
         ,description: _('resource_contentdispo_help')
         ,name: 'content_dispo'
+        ,hiddenName: 'content_dispo'
         ,id: 'modx-resource-content-dispo'
         ,width: 100
         ,listeners: {
@@ -490,6 +492,7 @@ MODx.loadAccordionPanels = function() {
     });
     return [{
         title: _('page_settings')
+        ,id: 'modx-page-settings'
         ,items: [{
             xtype: 'modx-formpanel'
             ,bodyStyle: 'padding: .3em;'
