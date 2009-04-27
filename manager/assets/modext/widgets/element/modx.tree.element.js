@@ -151,7 +151,8 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
                             }
                         });
                     }
-                    this.windows.quickUpdateChunk.setValues(r);
+                    alert(r.toSource());
+                    this.windows.quickUpdateChunk.setValues(r.object);
                     this.windows.quickUpdateChunk.show(e.target);
                 },scope:this}
             }
