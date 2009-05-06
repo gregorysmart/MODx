@@ -5,6 +5,9 @@
  * @package modx
  * @subpackage processors.security
  */
+if (!isset($modx->lexicon) || !is_object($modx->lexicon)) {
+    $modx->getService('lexicon','modLexicon');
+}
 $modx->lexicon->load('login');
 
 $username = $_POST['username'];
