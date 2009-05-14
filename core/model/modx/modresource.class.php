@@ -68,7 +68,7 @@ class modResource extends modAccessibleSimpleObject {
                 }
             } else {
                 $this->_content= $this->getContent();
-                $maxIterations= isset ($this->xpdo->config['parser_max_iterations']) ? intval($this->xpdo->config['parser_max_iterations']) : 10;
+                $maxIterations= intval($this->xpdo->getOption('parser_max_iterations',null,10));
                 $this->xpdo->parser->processElementTags('', $this->_content, false, false, '[[', ']]', array(), $maxIterations);
                 $this->_processed= true;
             }
@@ -164,7 +164,8 @@ class modResource extends modAccessibleSimpleObject {
             $c = $this->xpdo->newQuery('modTemplateVar');
             $c->select('
                 DISTINCT modTemplateVar.*,
-                IF(ISNULL(tvc.value),modTemplateVar.default_text,tvc.value) AS value
+                IF(ISNULL(tvc.value),modTemplateVar.default_text,tvc.value) AS value,
+                IF(ISNULL(tvc.value),0,'.$this->id.') AS resourceId
             ');
             $c->innerJoin('modTemplateVarTemplate','tvtpl',array(
                 '`tvtpl`.`tmplvarid` = `modTemplateVar`.`id`',
@@ -250,7 +251,8 @@ class modResource extends modAccessibleSimpleObject {
      * @return string The sanitized string.
      */
     function cleanAlias($alias) {
-        if (!isset ($this->xpdo->config['modx_charset']) || strtoupper($this->xpdo->config['modx_charset']) == 'UTF-8') {
+        $charset = $this->xpdo->getOption('modx_charset',null,'UTF-8');
+        if (!empty($charset) || strtoupper($charset) == 'UTF-8') {
             $alias= utf8_decode($alias);
         }
         $alias= strtr($alias, array (chr(196) => 'Ae', chr(214) => 'Oe', chr(220) => 'Ue', chr(228) => 'ae', chr(246) => 'oe', chr(252) => 'ue', chr(223) => 'ss'));
@@ -286,9 +288,60 @@ class modResource extends modAccessibleSimpleObject {
      * Resolve isfolder for the resource based on if it has children.
      */
     function checkChildren() {
-        $kids = $this->getMany('Children');
-        $this->set('isfolder',count($kids) > 0);
+        $kids = $this->xpdo->getCount('modResource', array('parent' => $this->get('id')));
+        $this->set('isfolder', $kids > 0);
         $this->save();
+    }
+
+    function addLock($user = 0, $options = array()) {
+        $locked = false;
+        if (is_a($this->xpdo, 'modX')) {
+            if (!$user) {
+                $user = $this->xpdo->user->get('id');
+            }
+            $lockedBy = $this->getLock();
+            if (empty($lockedBy) || ($lockedBy == $user)) {
+                $this->xpdo->registry->locks->subscribe('/resource/');
+                $this->xpdo->registry->locks->send('/resource/', array(md5($this->get('id')) => $user), array('ttl' => $this->xpdo->getOption('lock_ttl', $options, 360)));
+                $locked = true;
+            } elseif ($lockedBy != $user) {
+                $locked = $lockedBy;
+            }
+        }
+        return $locked;
+    }
+
+    function getLock() {
+        $lock = 0;
+        if (is_a($this->xpdo, 'modX')) {
+            if ($this->xpdo->getService('registry', 'registry.modRegistry')) {
+                $this->xpdo->registry->addRegister('locks', 'registry.modDbRegister', array('directory' => 'locks'));
+                $this->xpdo->registry->locks->connect();
+                $this->xpdo->registry->locks->subscribe('/resource/' . md5($this->get('id')));
+                if ($msgs = $this->xpdo->registry->locks->read(array('remove_read' => false, 'poll_limit' => 1))) {
+                    $msg = reset($msgs);
+                    $lock = intval($msg);
+                }
+            }
+        }
+        return $lock;
+    }
+
+    function removeLock($user = 0) {
+        $removed = false;
+        if (is_a($this->xpdo, 'modX')) {
+            if (!$user) {
+                $user = $this->xpdo->user->get('id');
+            }
+            if ($this->xpdo->getService('registry', 'registry.modRegistry')) {
+                $this->xpdo->registry->addRegister('locks', 'registry.modDbRegister', array('directory' => 'locks'));
+                $this->xpdo->registry->locks->connect();
+                $this->xpdo->registry->locks->subscribe('/resource/' . md5($this->get('id')));
+                $this->xpdo->registry->locks->read(array('remove_read' => true, 'poll_limit' => 1));
+                $removed = true;
+            }
+        }
+        return $removed;
     }
 
     /**

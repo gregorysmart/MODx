@@ -34,6 +34,7 @@ body, html {
 #modx-site-name {
     padding: .3em 0 0 1em;
     }
+    
 .modx-version {
     display: block;
     clear: left;
@@ -57,15 +58,13 @@ body, html {
 #modx-navbar {
     background-color: #555;
     height: 31px;
-		position: relative;
-    /*background-image:url(../../images/restyle/header_sub.jpg);
-    background-repeat:repeat-x;*/
-    
+    background-image:url(../../images/restyle/header_sub.jpg);
+    background-repeat:repeat-x;
 }
 
 #rightlogin {
     line-height: 25px;
-		padding-top: 6px;
+	padding-top: 6px;
     float: right;
     text-align: right;
     vertical-align: middle;
@@ -94,6 +93,7 @@ body, html {
 }
 
 /* content div */
+
 #modx-content {
     width: 74%;
     padding: .5%;

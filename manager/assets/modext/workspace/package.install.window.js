@@ -89,6 +89,7 @@ Ext.extend(MODx.panel.PILicense,MODx.panel.WizardPanel,{
                         b.setValue(a);
                     } else {
                         b.setValue('');
+                        Ext.getCmp('modx-window-package-installer').fireEvent('proceed','modx-pi-readme');
                     }
                 },scope:this}
             }
@@ -143,6 +144,7 @@ Ext.extend(MODx.panel.PIReadme,MODx.panel.WizardPanel,{
                         b.setValue(a);
                     } else {
                         b.setValue('');
+                        Ext.getCmp('modx-window-package-installer').fireEvent('proceed','modx-pi-install');
                     }
                 },scope:this}
             }
@@ -161,9 +163,11 @@ MODx.panel.PIInstall = function(config) {
         ,bodyStyle: 'padding: 3em 3em'
         ,items: [{
             html: '<h2>'+_('setup_options')+'</h2>'
+            ,id: 'modx-setup-options-header'
         },{
             html: '<p>'+_('setup_options_desc')+'</p>'   
             ,style: 'padding-bottom: 2em'
+            ,id: 'modx-setup-options-desc'
         },{
             html: ''
             ,id: 'modx-setup-options'

@@ -57,6 +57,24 @@ if (!$modx->hasPermission('save_document') || !$resource->checkPolicy('save')) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 
+$locked = $resource->addLock();
+if ($locked !== true) {
+    if (isset($_REQUEST['steal_lock']) && !empty($_REQUEST['steal_lock'])) {
+        if (!$modx->hasPermission('steal_locks') || !$resource->checkPolicy('steal_lock')) {
+            return $modx->error->failure($modx->lexicon('permission_denied'));
+        }
+        if ($locked > 0 && $locked != $modx->user->get('id')) {
+            $resource->removeLock($locked);
+            $locked = $resource->addLock($modx->user->get('id'));
+        }
+    }
+    if ($locked !== true) {
+        $lockedBy = intval($locked);
+        $user = $modx->getObject('modUser', $lockedBy);
+        if ($lockedBy) $modx->error->failure($modx->lexicon('resource_locked_by', array('id' => $resource->get('id'), 'user' => $user->get('username'))));
+    }
+}
+
 $resourceClass = isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
 $resourceDir= strtolower(substr($resourceClass, 3));
 
@@ -90,9 +108,9 @@ $_POST['searchable'] = !isset($_POST['searchable']) ? 0 : 1;
 $_POST['syncsite'] = !isset($_POST['syncsite']) ? 0 : 1;
 
 /* friendly url alias checks */
-if ($modx->config['friendly_alias_urls']) {
+if ($modx->getOption('friendly_alias_urls')) {
     /* auto assign alias */
-    if ($_POST['alias'] == '' && $modx->config['automatic_alias']) {
+    if ($_POST['alias'] == '' && $modx->getOption('automatic_alias')) {
         $_POST['alias'] = $resource->cleanAlias(strtolower(trim($_POST['pagetitle'])));
     } else {
         $_POST['alias'] = $resource->cleanAlias($_POST['alias']);
@@ -104,7 +122,7 @@ if ($modx->config['friendly_alias_urls']) {
     $fullAlias= $_POST['alias'];
     $isHtml= true;
     $extension= '';
-    $containerSuffix= isset ($modx->config['container_suffix']) ? $modx->config['container_suffix'] : '';
+    $containerSuffix= $modx->getOption('container_suffix',null,'');
     if (isset ($_POST['content_type']) && $contentType= $modx->getObject('modContentType', $_POST['content_type'])) {
         $extension= $contentType->getExtension();
         $isHtml= (strpos($contentType->get('mime_type'), 'html') !== false);
@@ -113,7 +131,7 @@ if ($modx->config['friendly_alias_urls']) {
         $extension= $containerSuffix;
     }
     $aliasPath= '';
-    if ($modx->config['use_alias_path']) {
+    if ($modx->getOption('use_alias_path')) {
         $pathParentId= intval($_POST['parent']);
         $parentResources= array ();
         $currResource= $modx->getObject('modResource', $pathParentId);
@@ -228,15 +246,15 @@ $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 
 /* get parent */
 $oldparent_id = $resource->get('parent');
-if ($resource->get('id') == $modx->config['site_start'] && $_POST['published'] == 0) {
+if ($resource->get('id') == $modx->getOption('site_start') && $_POST['published'] == 0) {
     return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart'));
 }
-if ($resource->get('id') == $modx->config['site_start'] && ($_POST['pub_date'] != 0 || $_POST['unpub_date'] != 0)) {
+if ($resource->get('id') == $modx->getOption('site_start') && ($_POST['pub_date'] != 0 || $_POST['unpub_date'] != 0)) {
     return $modx->error->failure($modx->lexicon('resource_err_unpublish_sitestart_dates'));
 }
 
-$count_children = $modx->getCount('modResource',array('parent' => $resource->get('id')));
-$_POST['isfolder'] = $count_children > 0;
+//$count_children = $modx->getCount('modResource',array('parent' => $resource->get('id')));
+//$_POST['isfolder'] = $count_children > 0;
 
 /* Keep original publish state, if change is not permitted */
 if (!$modx->hasPermission('publish_document')) {
@@ -389,6 +407,10 @@ if ($_POST['syncsite'] == 1) {
             'publishing' => true
         )
     );
+}
+
+if (!isset($_POST['modx-ab-stay']) || $_POST['modx-ab-stay'] !== 'stay') {
+    $resource->removeLock();
 }
 
 return $modx->error->success('', $resource->get(array('id')));

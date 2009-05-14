@@ -258,12 +258,15 @@ class modCacheManager extends xPDOCacheManager {
      */
     function generateResource(& $obj, $options = array()) {
         $results= array();
-        if ($this->getOption('cache_resource', $options)) {
+        if ($this->getOption('cache_resource', $options, true)) {
             if (is_object($obj) && is_a($obj, 'modResource') && $obj->_processed && $obj->get('cacheable') && $obj->get('id')) {
                 $results['resourceClass']= $obj->_class;
                 $results['resource']= $obj->toArray('', true);
                 $results['resource']['_content']= $obj->_content;
                 $results['resource']['_processed']= $obj->_processed;
+                if ($contentType = $obj->getOne('ContentType')) {
+                    $results['contentType']= $contentType->toArray('', true);
+                }
                 /* TODO: remove legacy docGroups and cache ABAC policies instead */
                 if ($docGroups= $obj->getMany('modResourceGroupResource')) {
                     $groups= array();
@@ -295,47 +298,25 @@ class modCacheManager extends xPDOCacheManager {
         return $results;
     }
 
-    function generateLexiconTopic(& $lexicon, $namespace = 'core', $topic = 'default', $language = '', $options = array()) {
-        if ($language == '') $language = $this->modx->config['manager_language'];
-        $results= false;
-
-        $namespaceObj = $this->modx->getObject('modNamespace', $namespace);
-        if ($namespaceObj == null) {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find the namespace "'.$namespace.'" to generate the lexicon cache."');
-            return false;
-        }
-
-        $topicObj = $this->modx->getObject('modLexiconTopic',array(
-            'namespace' => $namespaceObj->get('name'),
-            'name' => $topic,
-        ));
-        if ($topicObj == null) {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR,'Could not find topic "'.$topic.'" to generate lexicon cache.');
-            return false;
-        }
-
-        $c= $this->modx->newQuery('modLexiconEntry');
-        $c->where(array(
-            'topic' => $topicObj->get('id'),
-            'language' => $language,
-        ));
-        $c->sortby('name','ASC');
-        if ($entries= $this->modx->getCollection('modLexiconEntry',$c)) {
-            $results= array();
-            foreach ($entries as $entry) {
-                $results[$entry->get('name')]= $entry->get('value');
-            }
-        }
-
-        if (!empty($results) && $this->getOption('cache_lexicon_topics', $options, true)) {
+    /**
+     * Generates a lexicon topic cache file from a collection of entries
+     *
+     * @access public
+     * @param string $cacheKey The key to use when caching the lexicon topic.
+     * @param array $entries An array of key => value pairs of lexicon entries.
+     * @param array $options An optional array of caching options.
+     * @return array An array representing the lexicon topic cache.
+     */
+    function generateLexiconTopic($cacheKey, $entries = array(), $options = array()) {
+        if (!empty($entries) && $this->getOption('cache_lexicon_topics', $options, true)) {
             $options[XPDO_OPT_CACHE_KEY] = $this->getOption('cache_lexicon_topics_key', $options, 'default');
             $options[XPDO_OPT_CACHE_HANDLER] = $this->getOption('cache_lexicon_topics_handler', $options);
             $lifetime = intval($this->getOption(XPDO_OPT_CACHE_EXPIRES, $options, 0));
-            if (!$this->set($lexicon->getCacheKey($namespace, $topic, $language), $results, $lifetime, $options)) {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching lexicon topic " . $lexicon->getCacheKey($namespace, $topic, $language));
+            if (!$this->set($cacheKey, $entries, $lifetime, $options)) {
+                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching lexicon topic " . $cacheKey);
             }
         }
-        return $results;
+        return $entries;
     }
 
      /**
@@ -411,7 +392,7 @@ class modCacheManager extends xPDOCacheManager {
                 $options[XPDO_OPT_CACHE_HANDLER] = $this->getOption('cache_scripts_handler', $options);
                 $lifetime = $this->getOption(XPDO_OPT_CACHE_EXPIRES) ? intval($this->getOption(XPDO_OPT_CACHE_EXPIRES)) : 0;
                 if (empty($results) || !$this->set($objElement->getScriptCacheKey(), $results, $lifetime, $options)) {
-                    $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching resource " . $obj->get('id'));
+                    $this->modx->log(MODX_LOG_LEVEL_ERROR, "Error caching script " . $objElement->getScriptCacheKey());
                 }
             }
         }

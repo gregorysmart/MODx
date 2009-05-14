@@ -1,30 +1,8 @@
 <?php
 /**
- *
+ * @package modx
+ * @subpackage controllers.resource.weblink
  */
-if (!$modx->hasPermission('edit_document')) return $modx->error->failure($modx->lexicon('access_denied'));
-
-$resource = $modx->getObject('modWebLink',$_REQUEST['id']);
-if ($resource == null) return $modx->error->failure($modx->lexicon('resource_err_nf'));
-
-$resourceClass= isset ($_REQUEST['class_key']) ? $_REQUEST['class_key'] : $resource->get('class_key');
-$resourceDir= strtolower(substr($resourceClass, 3));
-
-$delegateView= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__);
-if (file_exists($delegateView)) {
-    $overridden= include_once ($delegateView);
-    if ($overridden !== false) {
-        return true;
-    }
-}
-
-if (!$resource->checkPolicy('save')) {
-	?><br /><br /><div class="sectionHeader"><?php echo $modx->lexicon('access_permissions'); ?></div><div class="sectionBody">
-    <p><?php echo $modx->lexicon('access_permission_denied'); ?></p>
-    <?php
-	exit;
-}
-
 if (isset($_REQUEST['template'])) $resource->set('template',$_REQUEST['template']);
 
 /* invoke OnDocFormPrerender event */
@@ -35,7 +13,7 @@ if (is_array($onDocFormPrerender)) {
 $modx->smarty->assign('onDocFormPrerender',$onDocFormPrerender);
 
 /* handle default parent */
-$parentname = $modx->config['site_name'];
+$parentname = $modx->getOption('site_name');
 if ($resource->get('parent') != 0) {
     $parent = $modx->getObject('modResource',$resource->get('parent'));
     if ($parent != null) {
@@ -45,17 +23,10 @@ if ($resource->get('parent') != 0) {
 $modx->smarty->assign('parent',$resource->get('parent'));
 $modx->smarty->assign('parentname',$parentname);
 
-
-
-/* set permissions on the resource based on the permissions of the parent resource
- * TODO: get working in revo, move to get processor
- */
 $groupsarray = array ();
-if (!empty ($_REQUEST['parent'])) {
-    $dgds = $modx->getCollection('modResourceGroupResource',array('document' => $_REQUEST['parent']));
-    foreach ($dgds as $dgd) {
-        $groupsarray[$dgd->get('id')] = $dgd->get('document_group');
-    }
+$dgds = $modx->getCollection('modResourceGroupResource',array('document' => $resource->get('id')));
+foreach ($dgds as $dgd) {
+    $groupsarray[$dgd->get('id')] = $dgd->get('document_group');
 }
 $c = $modx->newQuery('modResourceGroup');
 $c->sortby('name','ASC');
@@ -85,15 +56,15 @@ $edit_doc_metatags = $modx->hasPermission('edit_doc_metatags');
 $access_permissions = $modx->hasPermission('access_permissions');
 
 /* register JS scripts */
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/core/modx.view.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/util/datetime.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/core/modx.browser.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/system/modx.tree.directory.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/element/modx.panel.tv.renders.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.grid.resource.security.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.panel.resource.tv.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/widgets/resource/modx.panel.resource.weblink.js');
-$modx->regClientStartupScript($modx->config['manager_url'].'assets/modext/sections/resource/weblink/update.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/core/modx.view.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/util/datetime.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/core/modx.browser.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/system/modx.tree.directory.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/element/modx.panel.tv.renders.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.grid.resource.security.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.tv.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.weblink.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/sections/resource/weblink/update.js');
 $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
 // <![CDATA[

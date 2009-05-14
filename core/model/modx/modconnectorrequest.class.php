@@ -37,8 +37,9 @@ class modConnectorRequest extends modManagerRequest {
     }
 
     function initialize() {
-        if (!empty($this->modx->config['manager_language'])) {
-            $this->modx->cultureKey= $this->modx->config['manager_language'];
+        $ml = $this->modx->getOption('manager_language');
+        if (!empty($ml)) {
+            $this->modx->cultureKey= $this->modx->getOption('manager_language');
         }
 
         /* load default core cache file of lexicon strings */

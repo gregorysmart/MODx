@@ -316,10 +316,9 @@ class modX extends xPDO {
                 )
             );
             $this->setPackage('modx', MODX_CORE_PATH . 'model/');
-            $this->setLogTarget('HTML');
+            $this->setLogTarget($this->getOption('log_target', null, 'FILE'));
         } else {
-            include (MODX_CORE_PATH . 'error/unavailable.include.php');
-            die('Could not find the configuration file!');
+            $this->sendError($this->getOption('error_type', null, 'unavailable'), $options);
         }
     }
 
@@ -455,7 +454,11 @@ class modX extends xPDO {
         if (array_key_exists($name, $this->services)) {
             $service= & $this->services[$name];
         } else {
-            $this->log(MODX_LOG_LEVEL_ERROR, "Problem getting service {$name}, instance of class {$class}, from path {$path}, with params " . print_r($params, true));
+            if ($this->getDebug() === true) {
+                $this->log(MODX_LOG_LEVEL_DEBUG, "Problem getting service {$name}, instance of class {$class}, from path {$path}, with params " . print_r($params, true));
+            } else {
+                $this->log(MODX_LOG_LEVEL_ERROR, "Problem getting service {$name}, instance of class {$class}, from path {$path}");
+            }
         }
         return $service;
     }
@@ -694,7 +697,8 @@ class modX extends xPDO {
      */
     function makeUrl($id, $context= '', $args= '', $scheme= -1) {
         $url= '';
-        if ($id = intval($id)) {
+        if ($validid = intval($id)) {
+            $id = $validid;
             if ($context == '' || $this->context->get('key') == $context) {
                 $url= $this->context->makeUrl($id, $args, $scheme);
             }
@@ -715,13 +719,32 @@ class modX extends xPDO {
                 }
             }
 
-            if (!empty($url) && isset ($this->config['xhtml_urls']) && $this->config['xhtml_urls'] == 1) {
+            if (!empty($url) && $this->getOption('xhtml_urls', array(), '0')) {
                 $url= preg_replace("/&(?!amp;)/","&amp;", $url);
             }
         } else {
-            $this->log(MODX_LOG_LEVEL_ERROR, '`' . $id . '` is not numeric and may not be passed to makeUrl()');
+            $this->log(MODX_LOG_LEVEL_ERROR, '`' . $id . '` is not a valid integer and may not be passed to makeUrl()');
         }
         return $url;
+    }
+
+    /**
+     * Send the user to a type-specific core error page and halt PHP execution.
+     *
+     * @param string $type The type of error to present.
+     * @param array $options An array of options to provide for the error file.
+     */
+    function sendError($type = '', $options = array()) {
+        if (!is_string($type) || empty($type)) $type = $this->getOption('error_type', $options, 'unavailable');
+        while (@ob_end_clean()) {}
+        if (file_exists(MODX_CORE_PATH . "error/{$type}.include.php")) {
+            @include(MODX_CORE_PATH . "error/{$type}.include.php");
+        }
+        header($this->getOption('error_header', $options, 'HTTP/1.1 503 Service Unavailable'));
+        $errorPageTitle = $this->getOption('error_pagetitle', $options, 'Error 503: Site temporarily unavailable');
+        $errorMessage = $this->getOption('error_message', $options, '<h1>' . $this->getOption('site_name', $options, 'Error 503') . '</h1><p>Site temporarily unavailable.</p>');
+        echo "<html><head><title>{$errorPageTitle}</title></head><body>{$errorMessage}</body></html>";
+        exit();
     }
 
     /**
@@ -749,50 +772,88 @@ class modX extends xPDO {
      * Forwards the request to another resource without changing the URL.
      *
      * @param integer $id The resource identifier.
-     * @param string $responseCode An optional response code to send with
-     * the response to the browser.
+     * @param string $options An array of options for the process.
      */
-    function sendForward($id, $responseCode= '') {
+    function sendForward($id, $options = null) {
         if (!$this->getRequest()) {
             $this->log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
         }
-        $this->resource= $this->request->getResource('id', $id);
-        if (!$this->resource) {
-            $id= $this->config['error_page'] ? $this->config['error_page'] : $this->config['site_start'];
-            if (!$this->resource= $this->request->getResource('id', $id)) {
-                $this->resource= $this->newObject('modDocument');
-                $this->resource->set('cacheable', true);
-                $this->resource->_output= "<html><body><h1>404 Not Found</h1></body></html>";
+        $idInt = intval($id);
+        if (is_string($options) && !empty($options)) {
+            $options = array('response_code' => $options);
+        } elseif (!is_array($options)) {
+            $options = array();
+        }
+        if ($idInt > 0) {
+            $this->resource= $this->request->getResource('id', $idInt);
+            if ($this->resource) {
+                $this->resourceIdentifier= $idInt;
+                $this->resourceMethod= 'id';
+                if (isset($options['response_code']) && !empty($options['response_code'])) {
+                    header($options['response_code']);
+                }
+                $this->request->prepareResponse();
+                exit();
             }
-            $responseCode= 'HTTP/1.0 404 Not Found';
+            $options= array_merge(
+                array(
+                    'error_type' => '404'
+                    ,'error_header' => $this->getOption('error_page_header', null, 'HTTP/1.1 404 Not Found')
+                    ,'error_pagetitle' => $this->getOption('error_page_pagetitle', null, 'Error 404: Page not found')
+                    ,'error_message' => $this->getOption('error_page_message', null, '<h1>Page not found</h1><p>The page you requested was not found.</p>')
+                ),
+                $options
+            );
         }
-        $this->resourceIdentifier= $id;
-        $this->resourceMethod= 'id';
-        if ($responseCode) {
-            header($responseCode);
-        }
-        $this->request->preserveRequest('referrer.forwarded');
-        $this->request->prepareResponse();
-        exit();
+        $this->sendError($id, $options);
     }
 
     /**
-     * Send the user to the error page, with the referring URL stored in $_REQUEST['refurl'].
-     */
-    function sendErrorPage() {
-        $this->invokeEvent('OnPageNotFound');
-        $this->sendForward($this->config['error_page'], 'HTTP/1.0 404 Not Found');
-    }
-
-    /**
-     * Send the user to the unauthorized page, with the referring URL stored in $_REQUEST['refurl'].
+     * Send the user to a MODx virtual error page.
      *
-     * @return void
+     * @uses invokeEvent() The OnPageNotFound event is invoked before the error page is forwarded
+     * to.
+     * @param array $options An array of options to provide for the OnPageNotFound event and error
+     * page.
      */
-    function sendUnauthorizedPage() {
-        $unauthorizedPage= isset ($this->config['unauthorized_page']) ? $this->config['unauthorized_page'] : $this->config['start_page'];
-        $this->invokeEvent('OnPageUnauthorized');
-        $this->sendForward($unauthorizedPage, 'HTTP/1.0 401 Unauthorized');
+    function sendErrorPage($options = null) {
+        if (!is_array($options)) $options = array();
+        $options= array_merge(
+            array(
+                'response_code' => $this->getOption('error_page_header', $options, 'HTTP/1.1 404 Not Found')
+                ,'error_type' => '404'
+                ,'error_header' => $this->getOption('error_page_header', null, 'HTTP/1.1 404 Not Found')
+                ,'error_pagetitle' => $this->getOption('error_page_pagetitle', null, 'Error 404: Page not found')
+                ,'error_message' => $this->getOption('error_page_message', null, '<h1>Page not found</h1><p>The page you requested was not found.</p>')
+            ),
+            $options
+        );
+        $this->invokeEvent('OnPageNotFound', $options);
+        $this->sendForward($this->getOption('error_page', $options, '404'), $options);
+    }
+
+    /**
+     * Send the user to the MODx unauthorized page.
+     *
+     * @uses invokeEvent() The OnPageNotFound event is invoked before the unauthorized page is
+     * forwarded to.
+     * @param array $options An array of options to provide for the OnPageUnauthorized
+     * event and unauthorized page.
+     */
+    function sendUnauthorizedPage($options = null) {
+        if (!is_array($options)) $options = array();
+        $options= array_merge(
+            array(
+                'response_code' => $this->getOption('unauthorized_page_header' ,$options ,'HTTP/1.1 401 Unauthorized')
+                ,'error_type' => '401'
+                ,'error_header' => $this->getOption('unauthorized_page_header', null, 'HTTP/1.1 401 Unauthorized')
+                ,'error_pagetitle' => $this->getOption('unauthorized_page_pagetitle', null, 'Error 401: Unauthorized')
+                ,'error_message' => $this->getOption('unauthorized_page_message', null, '<h1>Unauthorized</h1><p>You are not authorized to view the requested content.</p>')
+            ),
+            $options
+        );
+        $this->invokeEvent('OnPageUnauthorized', $options);
+        $this->sendForward($this->getOption('unauthorized_page', $options, '401'), $options);
     }
 
     /**
@@ -1352,13 +1413,7 @@ class modX extends xPDO {
      * Legacy fatal error message.
      */
     function messageQuit($msg='unspecified error', $query='', $is_error=true, $nr='', $file='', $source='', $text='', $line='') {
-        $version= '';
-        $code_name= '';
-        if ($v= $this->getVersionData()) {
-            $version= $v['version'] . '.' . $v['small_version'] . '.' . $v['patch_level'];
-            $code_name= isset($v['code_name'])? $v['code_name']: $code_name;
-        }
-        $this->log(MODX_LOG_LEVEL_FATAL, '<pre>msg: ' . $msg . "\n" . 'query: ' . $query . "\n" . 'nr: ' . $nr . "\n" . 'file: ' . $file . "\n" . 'source: ' . $source . "\n" . 'text: ' . $text . "\n" . 'msg: ' . $line . "</pre>\n");
+        $this->log(MODX_LOG_LEVEL_FATAL, 'msg: ' . $msg . "\n" . 'query: ' . $query . "\n" . 'nr: ' . $nr . "\n" . 'file: ' . $file . "\n" . 'source: ' . $source . "\n" . 'text: ' . $text . "\n" . 'line: ' . $line . "\n");
     }
 
 
@@ -2533,21 +2588,31 @@ class modX extends xPDO {
         if (empty($target)) {
             $target = $this->logTarget;
         }
+        $targetOptions = array();
+        if (is_array($target)) {
+            if (isset($target['options'])) $targetOptions = $target['options'];
+            $target = isset($target['target']) ? $target['target'] : 'ECHO';
+        }
         if (is_object($target) && is_a($target, 'modRegister')) {
             if ($level === XPDO_LOG_LEVEL_FATAL) {
                 if (empty ($file)) $file= (isset ($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : (isset ($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '');
                 $this->_logInRegister($target, $level, $msg, $def, $file, $line);
-                while (@ob_end_flush()) {}
-                if (!empty ($def)) $def= " in {$def}";
-                if (!empty ($file)) $file= " @ {$file}";
-                if (!empty ($line)) $line= " : {$line}";
-                exit ('[' . strftime('%Y-%m-%d %H:%M:%S') . '] (' . $this->_getLogLevel($level) . $def . $file . $line . ') ' . $msg . "\n" . ($this->getDebug() === true ? '<pre>' . "\n" . print_r(debug_backtrace(), true) . "\n" . '</pre>' : ''));
+                $this->sendError('fatal');
             }
             if ($this->_debug === true || $level <= $this->logLevel) {
                 if (empty ($file)) $file= (isset ($_SERVER['PHP_SELF'])) ? $_SERVER['PHP_SELF'] : (isset ($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : '');
                 $this->_logInRegister($target, $level, $msg, $def, $file, $line);
             }
         } else {
+            if ($level === XPDO_LOG_LEVEL_FATAL) {
+                while (@ob_end_clean()) {}
+                if ($target == 'FILE' && $cacheManager= $this->getCacheManager()) {
+                    $filename = isset($targetOptions['filename']) ? $targetOptions['filename'] : 'error.log';
+                    $filepath = isset($targetOptions['filepath']) ? $targetOptions['filepath'] : $this->getCachePath() . XPDO_LOG_DIR;
+                    $cacheManager->writeFile($filepath . $filename, '[' . strftime('%Y-%m-%d %H:%M:%S') . '] (' . $this->_getLogLevel($level) . $def . $file . $line . ') ' . $msg . "\n" . ($this->getDebug() === true ? '<pre>' . "\n" . print_r(debug_backtrace(), true) . "\n" . '</pre>' : ''), 'a');
+                }
+                $this->sendError('fatal');
+            }
             parent :: _log($level, $msg, $target, $def, $file, $line);
         }
     }
@@ -2583,8 +2648,8 @@ class modX extends xPDO {
      * @access protected
      */
     function _postProcess() {
-        if (isset ($this->config['cache_resource']) && $this->config['cache_resource']) {
-            if ($this->cacheManager && $this->documentGenerated && is_a($this->resource, 'modResource') && $this->resource->get('cacheable')) {
+        if ($this->getOption('cache_resource', array(), true)) {
+            if (is_object($this->resource) && $this->resource->get('cacheable')) {
                 $this->invokeEvent('OnBeforeSaveWebPageCache');
                 $this->cacheManager->generateResource($this->resource);
             }
