@@ -1,14 +1,3 @@
-#modx-home-icon {
-    width: 24px;
-    height: 24px;
-    float: left;
-    position: absolute;
-    left: 1.3em;
-    top: 44px;
-    background: transparent url(../../images/restyle/i/home.png) no-repeat top left;
-    opacity: .5;
-}
-
 #modx-home-icon:hover {
     opacity: 1;
 }
@@ -22,7 +11,7 @@
 #modx-topnav-div {
     background: transparent;
     padding: 6px 0 0;
-    margin-left: 4em;
+    margin-left: 1em;
     position: relative;
     z-index: 55555800;
     width: 78%;
@@ -87,8 +76,7 @@ li.top li.last span {
     position: absolute;
     bottom: 0;
     left: 24px;
-    background: transparent url(../../images/restyle/i/bg-drop-last.png) no-repeat
-        100% 0;
+    background: transparent url(../../images/restyle/i/bg-drop-last.png) no-repeat 100% 0;
 }
 
 #modx-topnav-div li:hover .zone {
@@ -113,7 +101,6 @@ li.top li.last span {
     display: block;
     float: none;
     width: 200px;
-    #margin-top: -5px;
 }
 
 li.top .zone {

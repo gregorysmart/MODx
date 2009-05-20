@@ -7,6 +7,8 @@
  * @package modx
  * @subpackage processors.security.documentgroup
  */
+$modx->lexicon->load('access');
+
 if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 $_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : str_replace('n_dg_','',$_REQUEST['id']);
@@ -23,18 +25,18 @@ if ($g == null) {
 			'id' => 'n_dg_'.$group->get('id'),
 			'leaf' => 0,
 			'type' => 'modResourceGroup',
-			'cls' => 'folder',
+			'cls' => 'icon-resourcegroup',
             'menu' => array(
                 'items' => array(
                     array(
-                        'text' => $modx->lexicon('create_document_group'),
+                        'text' => $modx->lexicon('resource_group_create'),
                         'handler' => 'function(itm,e) {
                             this.create(itm,e);
                         }',
                     ),
                     '-',
                     array(
-                        'text' => $modx->lexicon('delete_document_group'),
+                        'text' => $modx->lexicon('resource_group_remove'),
                         'handler' => 'function(itm,e) {
                             this.remove(itm,e);
                         }',
@@ -51,11 +53,11 @@ if ($g == null) {
 			'id' => 'n_'.$resource->get('id'),
 			'leaf' => 1,
 			'type' => 'modResource',
-			'cls' => '',
+			'cls' => 'icon-'.$resource->get('class_key'),
             'menu' => array(
                 'items' => array(
                     array(
-                        'text' => $modx->lexicon('delete_document_group_document'),
+                        'text' => $modx->lexicon('resource_group_access_remove'),
                         'handler' => 'function(itm,e) {
                             this.removeResource(itm,e);
                         }',

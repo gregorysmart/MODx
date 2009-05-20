@@ -11,16 +11,16 @@ $_POST['variablesmodified'] = isset($_POST['variablesmodified'])
     : array();
 
 /* default pagetitle */
-if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_document');
+if ($_POST['pagetitle'] == '') $_POST['pagetitle'] = $modx->lexicon('untitled_resource');
 
-$_POST['hidemenu'] = !isset($_POST['hidemenu']) ? 0 : 1;
-$_POST['isfolder'] = !isset($_POST['isfolder']) ? 0 : 1;
-$_POST['richtext'] = !isset($_POST['richtext']) ? 0 : 1;
-$_POST['donthit'] = !isset($_POST['donthit']) ? 0 : 1;
-$_POST['published'] = !isset($_POST['published']) ? 0 : 1;
-$_POST['cacheable'] = !isset($_POST['cacheable']) ? 0 : 1;
-$_POST['searchable'] = !isset($_POST['searchable']) ? 0 : 1;
-$_POST['syncsite'] = !isset($_POST['syncsite']) ? 0 : 1;
+$_POST['hidemenu'] = empty($_POST['hidemenu']) ? 0 : 1;
+$_POST['isfolder'] = empty($_POST['isfolder']) ? 0 : 1;
+$_POST['richtext'] = empty($_POST['richtext']) ? 0 : 1;
+$_POST['donthit'] = empty($_POST['donthit']) ? 0 : 1;
+$_POST['published'] = empty($_POST['published']) ? 0 : 1;
+$_POST['cacheable'] = empty($_POST['cacheable']) ? 0 : 1;
+$_POST['searchable'] = empty($_POST['searchable']) ? 0 : 1;
+$_POST['syncsite'] = empty($_POST['syncsite']) ? 0 : 1;
 
 
 /* friendly url alias checks */
@@ -65,7 +65,10 @@ if ($modx->getOption('friendly_alias_urls')) {
     if (isset ($resourceContext->aliasMap[$fullAlias])) {
         $duplicateId= $resourceContext->aliasMap[$fullAlias];
         if ($duplicateId != $resource->get('id')) {
-            $err = sprintf($modx->lexicon('duplicate_alias_found'), $duplicateId, $fullAlias);
+            $err = $modx->lexicon('duplicate_alias_found',array(
+                'id' => $duplicateId,
+                'alias' => $fullAlias,
+            ));
             $modx->error->addField('alias', $err);
         }
     }
