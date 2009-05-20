@@ -927,23 +927,6 @@ class modLinkTag extends modTag {
         /* finally, return the processed element content */
         return $this->_output;
     }
-
-    /**
-     * Get the raw source content of the link.
-     */
-    function getContent($options = array()) {
-        if (!is_string($this->_content) || $this->_content === '') {
-            if (isset($options['content'])) {
-                $this->_content = $options['content'];
-            } else {
-                if (!$this->get('name')) {
-                    $this->set('name', $this->modx->getOption('error_page',null,$this->getOption('site_start',null,$this->getOption('base_url'))));
-                }
-                $this->_content= $this->get('name');
-            }
-        }
-        return $this->_content;
-    }
 }
 
 /**
