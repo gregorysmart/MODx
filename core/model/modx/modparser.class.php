@@ -916,7 +916,24 @@ class modLinkTag extends modTag {
                 if (isset ($this->modx->aliasMap[$this->_output])) {
                     $this->_output= $this->modx->aliasMap[$this->_output];
                 }
-                if (!empty($this->_output)) $this->_output= $this->modx->makeUrl($this->_output);
+                if (!empty($this->_output)) {
+                    $context = '';
+                    if (is_array($this->_properties) && !empty($this->_properties)) {
+                        $qs = array();
+                        if (array_key_exists('context', $this->_properties)) {
+                            $context = $this->_properties['context'];
+                            unset($this->_properties['context']);
+                        }
+                        foreach ($this->_properties as $propertyKey => $propertyValue) {
+                            if ($propertyKey === 'context') continue;
+                            $qs[]= "{$propertyKey}={$propertyValue}";
+                        }
+                        if ($qs= implode('&', $qs)) {
+                            $qs= urlencode($qs);
+                        }
+                    }
+                    $this->_output= $this->modx->makeUrl($this->_output, $context, $qs);
+                }
             }
             if (!empty($this->_output)) {
                 $this->filterOutput();
