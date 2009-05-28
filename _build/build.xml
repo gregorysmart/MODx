@@ -50,7 +50,7 @@
           target: complete              
          ================================= -->
     <target name="complete" description="--> Complete Build">
-        <antcall target="svn-export-build-image-wc"></antcall>
+        <antcall target="svn-export-build-image"></antcall>
         <antcall target="modext-minify"></antcall>
         <antcall target="modext-concat-min"></antcall>
         <antcall target="modext-concat"></antcall>
