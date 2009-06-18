@@ -15,6 +15,7 @@
 <script src="{$_config.connectors_url}lang.js.php?topic=topmenu,file,resource,{$_lang_topics}&action={$smarty.get.a}" type="text/javascript"></script>
 <script src="{$_config.connectors_url}layout/modx.config.js.php?action={$smarty.get.a}" type="text/javascript"></script>
 
+<script src="{$_config.manager_url}assets/modext/core/modx.localization.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/util/spotlight.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/util/utilities.js" type="text/javascript"></script>
 <script src="{$_config.manager_url}assets/modext/util/switchbutton.js" type="text/javascript"></script>
@@ -56,6 +57,7 @@
 </head>
 <body>
 
+<div id="modx-browser"></div>
 <div id="modx-container">
     <div id="modx-topbar">
         <div id="modx-logo"><a href="http://modxcms.com"><img src="templates/{$_config.manager_theme}/images/style/modx_logo_header.png" target="_blank" alt="" /></a></div>

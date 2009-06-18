@@ -20,48 +20,40 @@ $modx->lexicon->load('template','category');
 
 if (!$modx->hasPermission('save_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-$template = $modx->getObject('modTemplate',$_REQUEST['id']);
-if ($template == null) return $modx->error->failure($modx->lexicon('template_not_found'));
+/* get template */
+if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('template_err_ns'));
+$template = $modx->getObject('modTemplate',$_POST['id']);
+if ($template == null) return $modx->error->failure($modx->lexicon('template_err_not_found'));
 
+/* check locked status */
 if ($template->get('locked') && $modx->hasPermission('edit_locked') == false) {
     return $modx->error->failure($modx->lexicon('template_err_locked'));
 }
 
 /* Validation and data escaping */
-if ($_POST['templatename'] == '') {
+if (empty($_POST['templatename'])) {
     $modx->error->addField('templatename',$modx->lexicon('template_err_not_specified_name'));
 }
 
-/* sanity check on the name */
-$_POST['templatename'] = str_replace('>','',$_POST['templatename']);
-$_POST['templatename'] = str_replace('<','',$_POST['templatename']);
+/* get rid of invalid chars */
+$invchars = array('!','@','#','$','%','^','&','*','(',')','+','=',
+    '[',']','{','}','\'','"',':',';','\\','/','<','>','?',' ',',','`','~');
+$_POST['templatename'] = str_replace($invchars,'',$_POST['templatename']);
 
+/* check to see if name already exists */
 $name_exists = $modx->getObject('modTemplate',array(
     'id:!=' => $template->get('id'),
     'templatename' => $_POST['templatename']
 ));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('template_err_exists_name'));
 
-if ($modx->error->hasError()) return $modx->error->failure();
-
 /* category */
-if (is_numeric($_POST['category'])) {
+if (!empty($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
-} else {
-    $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
-}
-if ($category == null) {
-    $category = $modx->newObject('modCategory');
-    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-        $category->set('id',0);
-    } else {
-        $category->set('category',$_POST['category']);
-        if ($category->save() == false) {
-            return $modx->error->failure($modx->lexicon('category_err_save'));
-        }
-    }
+    if ($category == null) $modx->error->addField('category',$modx->lexicon('category_err_nf'));
 }
 
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* invoke OnBeforeTempFormSave event */
 $modx->invokeEvent('OnBeforeTempFormSave',array(
@@ -70,8 +62,7 @@ $modx->invokeEvent('OnBeforeTempFormSave',array(
 ));
 
 $template->fromArray($_POST);
-$template->set('locked', isset($_POST['locked']));
-$template->set('category',$category->get('id'));
+$template->set('locked',!empty($_POST['locked']));
 $properties = null;
 if (isset($_POST['propdata'])) {
     $properties = $_POST['propdata'];
@@ -122,7 +113,9 @@ $modx->invokeEvent('OnTempFormSave',array(
 $modx->logManagerAction('template_update','modTemplate',$template->get('id'));
 
 /* empty cache */
-$cacheManager= $modx->getCacheManager();
-$cacheManager->clearCache();
+if (!empty($_POST['clearCache'])) {
+    $cacheManager= $modx->getCacheManager();
+    $cacheManager->clearCache();
+}
 
 return $modx->error->success();

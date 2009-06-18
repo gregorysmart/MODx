@@ -24,14 +24,18 @@ if (!$modx->hasPermission('save_chunk')) {
 if ($_POST['name'] == '') {
     $modx->error->addField('name',$modx->lexicon('chunk_err_not_specified_name'));
 }
-/* get rid of invalid chars in name */
-$_POST['name'] = str_replace('>','',$_POST['name']);
-$_POST['name'] = str_replace('<','',$_POST['name']);
+/* get rid of invalid chars */
+$invchars = array('!','@','#','$','%','^','&','*','(',')','+','=',
+    '[',']','{','}','\'','"',':',';','\\','/','<','>','?',' ',',','`','~');
+$_POST['name'] = str_replace($invchars,'',$_POST['name']);
 
 /* grab chunk */
+if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('chunk_err_ns'));
 $chunk = $modx->getObject('modChunk',$_POST['id']);
 if ($chunk == null) {
-    return $modx->error->failure(sprintf($modx->lexicon('chunk_err_id_not_found'),$_POST['id']));
+    return $modx->error->failure($modx->lexicon('chunk_err_nfs',array(
+        'id' => $_POST['id'],
+    )));
 }
 
 /* if chunk is locked */
@@ -48,31 +52,16 @@ if ($name_exists != null) {
     $modx->error->addField('name',$modx->lexicon('chunk_err_exists_name'));
 }
 
+
+/* category */
+if (!empty($_POST['category'])) {
+    $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
+    if ($category == null) $modx->error->addField('category',$modx->lexicon('category_err_nf'));
+}
+
 /* if has any errors, send back */
 if ($modx->error->hasError()) {
     return $modx->error->failure();
-}
-
-/* category */
-if (isset($_POST['category'])) {
-    $categoryPk = $_POST['category'];
-    $c = is_numeric($categoryPk)
-        ? array('id' => $categoryPk)
-        : array('name' => $categoryPk);
-    $category = $modx->getObject('modCategory',$c);
-    if ($category == null) {
-        $category = $modx->newObject('modCategory');
-        if ($categoryPk == '' || $categoryPk == 'null') {
-            $category->set('id',0);
-        } else {
-            $category->set('category',$categoryPk);
-            if ($category->save() == false) {
-                $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('category_error_save').print_r($category->toArray(),true));
-                return $modx->error->failure($modx->lexicon('category_err_save'));
-            }
-        }
-    }
-    unset($categoryPk,$c);
 }
 
 /* invoke OnBeforeChunkFormSave event */
@@ -83,8 +72,7 @@ $modx->invokeEvent('OnBeforeChunkFormSave',array(
 
 /* propogate values */
 $chunk->fromArray($_POST);
-$chunk->set('locked',isset($_POST['locked']));
-$chunk->set('category',$category->get('id'));
+$chunk->set('locked',!empty($_POST['locked']));
 
 /* set properties */
 $properties = null;
@@ -96,7 +84,6 @@ if (is_array($properties)) { $chunk->setProperties($properties); }
 
 /* save the chunk */
 if ($chunk->save() == false) {
-    $modx->log(MODX_LOG_LEVEL_ERROR,$modx->lexicon('chunk_err_save').print_r($chunk->toArray(),true));
     return $modx->error->failure($modx->lexicon('chunk_err_save'));
 }
 
@@ -110,7 +97,7 @@ $modx->invokeEvent('OnChunkFormSave',array(
 $modx->logManagerAction('chunk_update','modChunk',$chunk->get('id'));
 
 /* empty cache */
-if (isset($_POST['clearCache']) && $_POST['clearCache']) {
+if (!empty($_POST['clearCache'])) {
     $cacheManager= $modx->getCacheManager();
     $cacheManager->clearCache();
 }

@@ -11,12 +11,17 @@ $modx->lexicon->load('lexicon');
 
 if (!$modx->hasPermission('languages')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_POST['name'])) return $modx->error->failure($modx->lexicon('language_err_ns'));
+/* get language */
+if (empty($_POST['name'])) return $modx->error->failure($modx->lexicon('language_err_ns'));
 $language = $modx->getObject('modLexiconLanguage',$_POST['name']);
 if ($language == null) return $modx->error->failure($modx->lexicon('language_err_nf'));
 
-if ($language->get('name') == 'en') return $modx->error->failure($modx->lexicon('language_err_remove_english'));
+/* prevent removing english language */
+if ($language->get('name') == 'en') {
+    return $modx->error->failure($modx->lexicon('language_err_remove_english'));
+}
 
+/* remove language */
 if ($language->remove() === false) {
     return $modx->error->failure($modx->lexicon('language_err_remove'));
 }

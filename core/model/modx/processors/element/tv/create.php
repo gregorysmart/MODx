@@ -26,24 +26,12 @@ $modx->lexicon->load('tv','category');
 
 if (!$modx->hasPermission('new_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-if (!isset($_POST['template'])) $_POST['template'] = array();
+if (empty($_POST['template'])) $_POST['template'] = array();
 
 /* category */
-if (is_numeric($_POST['category'])) {
+if (!empty($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
-} else {
-    $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
-}
-if ($category == null) {
-    $category = $modx->newObject('modCategory');
-    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-        $category->set('id',0);
-    } else {
-        $category->set('category',$_POST['category']);
-        if ($category->save() == false) {
-            return $modx->error->failure($modx->lexicon('category_err_save'));
-        }
-    }
+    if ($category == null) $modx->error->addField('category',$modx->lexicon('category_err_nf'));
 }
 
 /* invoke OnBeforeTVFormSave event */
@@ -55,9 +43,14 @@ $modx->invokeEvent('OnBeforeTVFormSave',array(
 $name_exists = $modx->getObject('modTemplateVar',array('name' => $_POST['name']));
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('tv_err_exists_name'));
 
-if (!isset($_POST['name']) || $_POST['name'] == '') $_POST['name'] = $modx->lexicon('untitled_tv');
-if ($_POST['caption'] == '')
-    $_POST['caption'] = $_POST['name'];
+if (empty($_POST['name'])) $_POST['name'] = $modx->lexicon('untitled_tv');
+
+/* get rid of invalid chars */
+$invchars = array('!','@','#','$','%','^','&','*','(',')','+','=',
+    '[',']','{','}','\'','"',':',';','\\','/','<','>','?',' ',',','`','~');
+$_POST['name'] = str_replace($invchars,'',$_POST['name']);
+
+if (empty($_POST['caption'])) { $_POST['caption'] = $_POST['name']; }
 
 if ($modx->error->hasError()) return $modx->error->failure();
 
@@ -75,9 +68,8 @@ $tv = $modx->newObject('modTemplateVar');
 $tv->fromArray($_POST);
 $tv->set('elements',$_POST['els']);
 $tv->set('display_params',$display_params);
-$tv->set('rank',isset($_POST['rank']) ? $_POST['rank'] : 0);
-$tv->set('locked',isset($_POST['locked']));
-$tv->set('category', $category->get('id'));
+$tv->set('rank',!empty($_POST['rank']) ? $_POST['rank'] : 0);
+$tv->set('locked',!empty($_POST['locked']));
 $properties = null;
 if (isset($_POST['propdata'])) {
     $properties = $_POST['propdata'];
@@ -157,8 +149,10 @@ $modx->invokeEvent('OnTVFormSave',array(
 $modx->logManagerAction('tv_create','modTemplateVar',$tv->get('id'));
 
 /* empty cache */
-$cacheManager= $modx->getCacheManager();
-$cacheManager->clearCache();
+if (!empty($_POST['clearCache'])) {
+    $cacheManager= $modx->getCacheManager();
+    $cacheManager->clearCache();
+}
 
 
 return $modx->error->success('',$tv->get(array('id')));

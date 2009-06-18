@@ -12,14 +12,9 @@ $modx->lexicon->load('template','tv');
 if (!$modx->hasPermission('delete_template')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get template and related tables */
-$template = $modx->getObject('modTemplate',$_REQUEST['id']);
+if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('template_err_ns'));
+$template = $modx->getObject('modTemplate',$_POST['id']);
 if ($template == null) return $modx->error->failure($modx->lexicon('template_err_not_found'));
-
-/* remove template var maps */
-$template->ttvs = $template->getMany('modTemplateVarTemplate');
-foreach ($template->ttvs as $ttv) {
-	if (!$ttv->remove()) return $modx->error->failure($modx->lexicon('tvt_err_remove'));
-}
 
 
 /* check to make sure it doesn't have any resources using it */
@@ -43,6 +38,12 @@ if ($template->get('id') == $default_template) {
 
 /* invoke OnBeforeTempFormDelete event */
 $modx->invokeEvent('OnBeforeTempFormDelete',array('id' => $template->get('id')));
+
+/* remove template var maps */
+$template->ttvs = $template->getMany('modTemplateVarTemplate');
+foreach ($template->ttvs as $ttv) {
+	if (!$ttv->remove()) return $modx->error->failure($modx->lexicon('tvt_err_remove'));
+}
 
 /* delete template */
 if ($template->remove() == false) {

@@ -362,11 +362,12 @@ MODx.triggerRTEOnChange = function() {
 }
 
 
+MODx.fireResourceFormChange = function(f,nv,ov) {
+    Ext.getCmp('modx-panel-resource').fireEvent('fieldChange');
+};
 MODx.loadAccordionPanels = function() {
     var va = [];
-    var oc = function(f,nv,ov) {
-        Ext.getCmp('modx-panel-resource').fireEvent('fieldChange');
-    };
+    var oc = MODx.fireResourceFormChange;
     va.push({
         xtype: 'checkbox'
         ,fieldLabel: _('resource_folder')
@@ -514,7 +515,7 @@ MODx.loadAccordionPanels = function() {
         ,name: 'class_key'
         ,id: 'modx-resource-class-key'
         ,allowBlank: false
-        ,value: 'modDocument'    
+        ,value: 'modDocument'
         ,width: 100
         ,listeners: {
             'focus': {fn:oc,scope:this}

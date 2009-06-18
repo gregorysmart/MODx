@@ -1,4 +1,11 @@
 <?php
+/**
+ * Category English lexicon topic
+ *
+ * @language en
+ * @package modx
+ * @subpackage lexicon
+ */
 $_lang['categories'] = 'Categories';
 $_lang['category_confirm_delete'] = 'Are you sure you want to remove this category? All elements in this category will be filed to uncategorized.';
 $_lang['category_create'] = 'Create Category';

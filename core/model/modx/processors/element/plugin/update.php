@@ -22,42 +22,43 @@ $modx->lexicon->load('plugin','category');
 
 if (!$modx->hasPermission('save_plugin')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
-$plugin = $modx->getObject('modPlugin',$_REQUEST['id']);
+/* get plugin */
+if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('plugin_err_ns'));
+$plugin = $modx->getObject('modPlugin',$_POST['id']);
 if ($plugin == null) return $modx->error->failure($modx->lexicon('plugin_err_not_found'));
 
+/* check for locks */
 if ($plugin->get('locked') && $modx->hasPermission('edit_locked') == false) {
     return $modx->error->failure($modx->lexicon('plugin_err_locked'));
 }
 
 /* Validation and data escaping */
-if ($_POST['name'] == '') $modx->error->addField('name',$modx->lexicon('plugin_err_not_specified_name'));
+if (empty($_POST['name'])) {
+    $modx->error->addField('name',$modx->lexicon('plugin_err_not_specified_name'));
+}
 
+/* get rid of invalid chars */
+$invchars = array('!','@','#','$','%','^','&','*','(',')','+','=',
+    '[',']','{','}','\'','"',':',';','\\','/','<','>','?',' ',',','`','~');
+$_POST['name'] = str_replace($invchars,'',$_POST['name']);
+
+/* check to see if name exists */
 $name_exists = $modx->getObject('modPlugin',array(
     'id:!=' => $plugin->get('id'),
-    'name' => $_POST['name']
+    'name' => $_POST['name'],
 ));
-
 if ($name_exists != null) $modx->error->addField('name',$modx->lexicon('plugin_err_exists_name'));
 
-if ($modx->error->hasError()) return $modx->error->failure();
+
 
 /* category */
-if (is_numeric($_POST['category'])) {
+if (!empty($_POST['category'])) {
     $category = $modx->getObject('modCategory',array('id' => $_POST['category']));
-} else {
-    $category = $modx->getObject('modCategory',array('category' => $_POST['category']));
+    if ($category == null) $modx->error->addField('category',$modx->lexicon('category_err_nf'));
 }
-if ($category == null) {
-    $category = $modx->newObject('modCategory');
-    if ($_POST['category'] == '' || $_POST['category'] == 'null') {
-        $category->set('id',0);
-    } else {
-        $category->set('category',$_POST['category']);
-        if ($category->save() == false) {
-            return $modx->error->failure($modx->lexicon('category_err_save'));
-        }
-    }
-}
+
+
+if ($modx->error->hasError()) return $modx->error->failure();
 
 /* invoke OnBeforeTempFormSave event */
 $modx->invokeEvent('OnBeforePluginFormSave',array(
@@ -66,9 +67,8 @@ $modx->invokeEvent('OnBeforePluginFormSave',array(
 ));
 
 $plugin->fromArray($_POST);
-$plugin->set('locked', isset($_POST['locked']));
-$plugin->set('category',$category->get('id'));
-$plugin->set('disabled',isset($_POST['disabled']));
+$plugin->set('locked',!empty($_POST['locked']));
+$plugin->set('disabled',!empty($_POST['disabled']));
 $properties = null;
 if (isset($_POST['propdata'])) {
     $properties = $_POST['propdata'];
@@ -118,7 +118,9 @@ $modx->invokeEvent('OnPluginFormSave',array(
 $modx->logManagerAction('plugin_update','modPlugin',$plugin->get('id'));
 
 /* empty cache */
-$cacheManager= $modx->getCacheManager();
-$cacheManager->clearCache();
+if (!empty($_POST['clearCache'])) {
+    $cacheManager= $modx->getCacheManager();
+    $cacheManager->clearCache();
+}
 
 return $modx->error->success('', $plugin->get(array('id', 'name')));

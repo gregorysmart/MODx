@@ -4,6 +4,51 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-2 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Fixed some issues with persistent settings for Quick Update Resource
+- Fixed issue with Quick Update Resource content field being too long
+- Fixed invalid lexicon entry reference for quick create resource
+- Added Quick Create/Update Resource
+- Preview context menu option now is "smart" and builds FURLs and separate context references
+- Fixed invalid topic reference issue with modLexiconEntry::clearCache()
+- Fixed headers for connector responses
+- Added Quick Create/Update for all Element types
+- Fixed bugs with category setting in Element processors
+- Added Clear Cache checkbox option to all Element type forms
+- Fixed bug with Category dropdown
+- Fixed tv input properties forms from double-rendering 
+- [#MODX-804] TV fields now fire resource change event
+- Fixed bug in Safari with TV fields being uneditable if panel is dragged 
+- [#MODX-745] Added 'cancel' button to go back to policy page when updating a policy 
+- [#MODX-573] Removed no-longer-applicable 'role' column from users grid, fixed capitalization issues in processors
+- [#MODX-762] Added in missing lexicon entries to hardcoded strings
+- Added modx.localization.js for i18n translations
+- Added indexes on modLexiconEntry table
+- Properly formatted lexicon strings still using sprintf
+- Fixed bug where created was not set on transport package creation
+- Made sure package grid paginates correctly if number of packages installed exceeds 20
+- Fixed Last Modified On on Lexicon grid
+- Optimized action, menu, language, content-type, lexicon, namespace processors
+- [#MODX-765] Added fix to prevent creation of blank system settings
+- Fixed bug in Safari with TV widget properties rendering
+- Consolidated resource getNodes processor, added access policy checks
+- Added sanity check to toJSON function in modConnectorResponse
+- Properly refactor element tree to point to correct processor
+- Added delegate processors for different modes in element tree
+- Updated Context policy attributes for missing attributes 
+- Fixed invalid category reference on chunk update processor
+- Added log error messages if save()/remove() fails on modElement derivatives
+- [#MODX-771] Fixed invalid lexicon string reference in element tree
+- Added WARN log message when executing a system event that doesn't exist
+- Filled out missing access policy checks in element processors
+- Fixed incorrect and missing permission check in snippet get/getList processors
+- Fixed invalid lexicon reference in template processors
+- Optimized templateTV getList processor to use only one query
+- Optimized plugin event getList processor to use only one query
+- [#MODX-194] Added sanity checks to element names
+- [#MODX-792] Added check to prevent user from creating blank context, other sanity checks
+- [#MODX-475] Prevented adding contexts with _ in name; will auto-strip
+- [#MODX-796] Fixed check for valid passwords in setup
+- Fixed problematic reference to $_lang
 - Fixed improper log message reference in lexicon's reloadFromBase processor
 - Additional access control defects and warning messages resolved for anonymous users.
 - Fixed access control defect which prevented multiple policies from being respected per principal.

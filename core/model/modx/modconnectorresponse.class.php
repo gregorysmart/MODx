@@ -1,6 +1,10 @@
 <?php
-require_once(MODX_CORE_PATH . 'model/modx/modresponse.class.php');
-
+/**
+ * modConnectorResponse
+ *
+ * @package modx
+ */
+require_once MODX_CORE_PATH . 'model/modx/modresponse.class.php';
 /**
  * Encapsulates an HTTP response from the MODx manager.
  *
@@ -16,20 +20,33 @@ class modConnectorResponse extends modResponse {
      * @access private
      */
     var $_directory;
+
+    /**#@+
+     * Creates a modConnectorResponse object.
+     *
+     * {@inheritDoc}
+     */
     function modConnectorResponse(& $modx) {
         $this->__construct($modx);
     }
+    /** @ignore */
     function __construct(& $modx) {
         parent :: __construct($modx);
         $this->setDirectory();
     }
+    /**#@-*/
 
+    /**
+     * Overrides modResponse::outputContent to provide connector-specific
+     * processing.
+     *
+     * {@inheritDoc}
+     */
     function outputContent($options = array()) {
         /* variable pointer for easier access */
         $modx =& $this->modx;
 
         /* backwards compat */
-        $_lang =& $this->modx->lexicon;
         $error =& $this->modx->error;
 
         /* verify the location and action */
@@ -55,7 +72,7 @@ class modConnectorResponse extends modResponse {
                 $this->body = include $file;
             }
         }
-        //header("Content-Type: text/json; charset=UTF-8");
+        header("Content-Type: text/json; charset=UTF-8");
         if (is_array($this->header)) {
             foreach ($this->header as $header) header($header);
         }
@@ -120,7 +137,9 @@ class modConnectorResponse extends modResponse {
      * @return string The extended JSON-encoded string.
      */
     function toJSON($data) {
-        array_walk_recursive($data, array(&$this, '_encodeLiterals'));
+        if (is_array($data)) {
+            array_walk_recursive($data, array(&$this, '_encodeLiterals'));
+        }
         return $this->_decodeLiterals($this->modx->toJSON($data));
     }
 
