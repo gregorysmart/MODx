@@ -1,6 +1,5 @@
 /**
- * Abstraction for Ext.Msg, adds connector handling ability
- * and spotlight features.
+ * Abstraction for Ext.Msg, adds connector handling ability.
  *  
  * @class MODx.msg
  * @extends Ext.Component
@@ -9,32 +8,16 @@
  */
 MODx.Msg = function(config) {
     config = config || {};
-    
-    this.sl = new Ext.Spotlight({
-        easing: 'easeOut'
-        ,duration: '.3'
-    });
     MODx.Msg.superclass.constructor.call(this,config);
     this.addEvents({
         'success': true
         ,'failure': true
         ,'cancel': true
     });
+    Ext.MessageBox.minWidth = 200;
 };
 Ext.extend(MODx.Msg,Ext.Component,{
-    /**
-     * @var {Ext.Spotlight} sl The spotlight object
-     * @access private
-     */
-    sl: null
-    
-    /**
-     * Loads a confirm dialog that, if proceeding, will post to a connector.
-     * 
-     * @access public
-     * @param {Object} options An object of options to initialize with.
-     */
-    ,confirm: function(config) {
+    confirm: function(config) {
     	this.purgeListeners();
     	if (config.listeners) {
     		for (var i in config.listeners) {
@@ -43,7 +26,6 @@ Ext.extend(MODx.Msg,Ext.Component,{
     		}
     	}
         Ext.Msg.confirm(config.title || _('warning'),config.text,function(e) {
-            this.sl.hide();
             if (e == 'yes') {
                 MODx.Ajax.request({
                     url: config.url
@@ -63,33 +45,16 @@ Ext.extend(MODx.Msg,Ext.Component,{
             	this.fireEvent('cancel',config);
             }
         },this);
-        this.sl.show(this.getWindow().getEl());
     }
     
-    /**
-     * Gets the Ext.Window being shown
-     *
-     * @access public
-     * @return {Ext.Window} The window of the dialog
-     */
     ,getWindow: function() {
         return Ext.Msg.getDialog();
     }
     
-    /**
-     * Displays a spotlighted alert box
-     * 
-     * @access public
-     */
     ,alert: function(title,text,fn,scope) {
+        fn = fn || Ext.emptyFn;
         scope = scope || this;
-        if (typeof(fn) != 'function') {
-            fn = function() { this.sl.hide(); };
-        } else {
-            fn = fn.createInterceptor(function() { this.sl.hide(); return true; },this);
-        }
         Ext.Msg.alert(title,text,fn,scope);
-        this.sl.show(this.getWindow().getEl());
     }
 });
 Ext.reg('modx-msg',MODx.Msg);

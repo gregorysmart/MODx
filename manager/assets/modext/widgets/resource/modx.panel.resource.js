@@ -232,6 +232,8 @@ MODx.panel.Resource = function(config) {
     Ext.get('ta').on('keydown',this.fieldChangeEvent,this);
     /* to deal with combobox bug */
     setTimeout("Ext.getCmp('modx-panel-resource').onLoad();",1000);
+    
+    
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     rteLoaded: false

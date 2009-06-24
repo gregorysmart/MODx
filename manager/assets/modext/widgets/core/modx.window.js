@@ -18,6 +18,7 @@ MODx.Window = function(config) {
         ,collapsible: true
         ,maximizable: true
 		,autoHeight: true
+        ,allowDrop: true
 		,width: 450
         ,cls: 'modx-window'
 		,buttons: [{
@@ -44,8 +45,12 @@ MODx.Window = function(config) {
     this.addEvents({
         success: true
         ,failure: true
+        ,beforeSubmit: true
     });
 	this._loadForm();
+    this.on('show',function() {
+        if (this.config.allowDrop) { this.loadDropZones(); }
+    },this);
 };
 Ext.extend(MODx.Window,Ext.Window,{
 	/**
@@ -81,8 +86,9 @@ Ext.extend(MODx.Window,Ext.Window,{
 	 * Default handler for Window Form submissions. Allows for callbacks.
 	 */
 	,submit: function() {
-		if (this.fp.getForm().isValid()) {
-			this.fp.getForm().submit({ 
+        var f = this.fp.getForm();
+		if (f.isValid() && this.fireEvent('beforeSubmit',f.getValues())) {
+			f.submit({ 
 				waitMsg: _('saving')
 				,scope: this
 				,failure: function(frm,a) {
@@ -176,6 +182,23 @@ Ext.extend(MODx.Window,Ext.Window,{
      */
     ,help: function() {
         Ext.Msg.alert(_('help'),_('help_not_yet'));
+    }
+    
+    ,loadDropZones: function() {
+        if (this._dzLoaded) return false;
+        var flds = this.fp.getForm().items;
+        flds.each(function(fld) {
+            if (fld.isFormField && (
+                fld.isXType('textfield') || fld.isXType('textarea')
+            ) && !fld.isXType('combo')) {
+                new MODx.load({
+                    xtype: 'modx-treedrop'
+                    ,target: fld
+                    ,targetEl: fld.getEl().dom
+                });
+            }
+        });
+        this._dzLoaded = true;
     }
 });
 Ext.reg('modx-window',MODx.Window);

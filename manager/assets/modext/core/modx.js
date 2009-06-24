@@ -23,6 +23,14 @@ Ext.extend(MODx,Ext.Component,{
         Ext.override(Ext.form.Field,{
             defaultAutoCreate: {tag: "input", type: "text", size: "20", autocomplete: "on" }
         });
+        this.addEvents({
+            beforeClearCache: true
+            ,beforeLogout: true
+            ,beforeReleaseLocks: true
+            ,afterClearCache: true
+            ,afterLogout: true
+            ,afterReleaseLocks: true
+        });
     }
     
     ,load: function() {
@@ -61,27 +69,51 @@ Ext.extend(MODx,Ext.Component,{
     ,loadAccordionPanels: function() { return []; }
     
     ,clearCache: function() {
+        if (!this.fireEvent('beforeClearCache')) return false;
+        
+        var topic = '/clearcache/';
+        if (this.console == null || this.console == undefined) {
+            this.console = MODx.load({
+               xtype: 'modx-console'
+               ,register: 'mgr'
+               ,topic: topic
+               ,listeners: {
+                    'shutdown': {fn:function() {
+                        if (this.fireEvent('afterClearCache')) {
+                            Ext.getCmp('modx-layout').refreshTrees();
+                        }
+                    }}
+               }
+            });
+        } else {
+            this.console.setRegister('mgr',topic);
+        }
+        this.console.show(Ext.getBody());
+        
         MODx.Ajax.request({
             url: MODx.config.connectors_url+'system/index.php'
-            ,params: { action: 'clearCache' }
+            ,params: { action: 'clearCache',register: 'mgr' ,topic: topic }
             ,listeners: {
-                'success':{fn:function(r) {
-                    MODx.msg.alert(_('success'),r.message,function() {
-                        Ext.getCmp('modx-layout').refreshTrees();
-                    },this);
+                'success':{fn:function() {
+                    this.console.fireEvent('complete');
                 },scope:this}
             }
         });
     }
     
     ,releaseLock: function(id) {
-        MODx.Ajax.request({
-            url: MODx.config.connectors_url+'resource/locks.php'
-            ,params: {
-                action: 'release'
-                ,id: id
-            }
-        });
+        if (this.fireEvent('beforeReleaseLocks')) {
+            MODx.Ajax.request({
+                url: MODx.config.connectors_url+'resource/locks.php'
+                ,params: {
+                    action: 'release'
+                    ,id: id
+                }
+                ,listeners: {
+                    'success':{fn:function(r) { this.fireEvent('afterReleaseLocks',r); },scope:this}
+                }
+            });
+        }
     }
     
     ,sleep: function(ms) {
@@ -94,18 +126,24 @@ Ext.extend(MODx,Ext.Component,{
     }
     
     ,logout: function() {
-        MODx.msg.confirm({
-            title: _('logout')
-            ,text: _('logout_confirm')
-            ,url: MODx.config.connectors_url+'security/logout.php'
-            ,params: {
-                action: 'logout'
-                ,login_context: 'mgr'
-            }
-            ,listeners: {
-                'success': {fn:function() { location.href = './'; },scope:this}
-            }
-        });
+        if (this.fireEvent('beforeLogout')) {
+            MODx.msg.confirm({
+                title: _('logout')
+                ,text: _('logout_confirm')
+                ,url: MODx.config.connectors_url+'security/logout.php'
+                ,params: {
+                    action: 'logout'
+                    ,login_context: 'mgr'
+                }
+                ,listeners: {
+                    'success': {fn:function(r) {
+                        if (this.fireEvent('afterLogout',r)) {
+                            location.href = './'; 
+                        }
+                    },scope:this}
+                }
+            });
+        }
     }
 });
 Ext.reg('modx',MODx);

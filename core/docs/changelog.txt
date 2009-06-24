@@ -4,6 +4,35 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-2 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- Added some key-events: CTRL+H for hiding accordion, CTRL+Z for clearing cache, CTRL+N for Quick Create Resource (PC users will need to add SHIFT to all those calls)
+- Fixed portal issues with Safari
+- Added a few events to MODx. JS object, cleaned up code
+- Added sanity checks to context/category create/update processors
+- [#MODX-766] Added check to prevent settings starting with numbers
+- Added ability to update plugin events and dynamically manage plugins associated with them by right-clicking on them in the Plugin Event grid
+- Added 'beforeSubmit' listener to MODx.Window
+- Adjusted TreeDrop code to allow for RTEs to utilize drag/drop features
+- [#MODX-827] Fixed typo in resource container help string
+- Added prevention fix to prevent dragging of non-elements/resources into content panes
+- [#MODX-770] Fixed bug with creating Symlink
+- Fixed issues with creating and editing a static resource
+- Fixed bug with treedrop that set boolean values to string representations; changed to 1/0
+- Fixed missing context menu item to remove new properties in a property set
+- Added functionality for Element Tag Builder to use descriptions of properties
+- [#MODX-817] Redid Clear Cache window to use MODx.Console
+- Lexiconized missing "Copy to Clipboard" string
+- Slight tweaks to MODx.Console to get messages to display final ending messages properly
+- Changed invokeEvent missing event warning to debug msg to prevent it from logging in every console output
+- [#MODX-818] Fixed issues with Quick Create where it didnt work in FF, missing lexicon strings
+- Added Visual Element tag builder when you drag/drop an element into a field
+- Resources/Elements can now be dragged from tree straight to Resource Content pane.
+- Removed Spotlight effect on dialogs; was unnecessary.
+- Fixed bug in Namespace creation window that was preventing namespace from creating
+- Added refreshes to comboboxes in Lexicon Management to refresh combos on Namespace/Topic creation to keep panels up-to-date
+- Fixed Safari issue with Element tree displaying funky on certain pages
+- Fixed issue in Safari where combobox trigger was on left side
+- Only set lexicon entries for context/user settings if they dont exist as system settings
+- Fixed issue with Actions panel causing accordion DOM to bug
 - Fixed issue with Quick Update not persisting class_key
 - Fixed some issues with persistent settings for Quick Update Resource
 - Fixed issue with Quick Update Resource content field being too long

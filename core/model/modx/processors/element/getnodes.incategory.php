@@ -134,13 +134,15 @@ foreach ($elements as $element) {
 
     $nodes[] = array(
         'text' => $name . ' (' . $element->get('id') . ')',
-        'id' => 'n_'.$elementIdentifer.'_element_'.$element->get('id').'_'.$element->get('category'),
+        'id' => 'n_'.$elementIdentifier.'_element_'.$element->get('id').'_'.$element->get('category'),
         'pk' => $element->get('id'),
         'category' => $cat_id,
         'leaf' => 1,
+        'name' => $name,
         'cls' => 'icon-'.$elementIdentifier,
         'href' => 'index.php?a='.$ar_actionmap[$elementIdentifier].'&id='.$element->get('id'),
         'type' => $elementIdentifier,
+        'classKey' => $elementClassKey,
         'menu' => array('items' => $menu),
     );
 }
