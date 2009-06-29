@@ -35,9 +35,11 @@ MODx.panel.PILicense = function(config) {
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('license_agreement')+'</h2>'
+            ,autoHeight: true
         },{
             html: '<p>'+_('license_agreement_desc')+'</p>'   
             ,style: 'padding-bottom: 2em'
+            ,autoHeight: true
         },{
             xtype: 'textarea'
             ,style: 'font: arial; font-size: .9em'
@@ -107,9 +109,11 @@ MODx.panel.PIReadme = function(config) {
         ,defaults: { labelSeparator: '', border: false }
         ,items: [{
             html: '<h2>'+_('readme')+'</h2>'
+            ,autoHeight: true
         },{
             html: '<p>'+_('readme_desc')+'</p>'   
             ,style: 'padding-bottom: 2em'
+            ,autoHeight: true
         },{
             xtype: 'textarea'
             ,style: 'font: arial; font-size: .9em'
@@ -194,10 +198,11 @@ Ext.extend(MODx.panel.PIInstall,MODx.panel.WizardPanel,{
                 'success': {fn:function(r) {
                     var a = r.object.attr;
                     var el = Ext.getCmp('modx-setup-options').getEl();
-                    if (a !== null && a !== 'null') {
+                    if (a !== null && a !== 'null' && a !== '') {
                         el.update(a);
                     } else {
-                        el.update('');
+                        var va = this.getForm().getValues();
+                        Ext.getCmp('modx-window-package-installer').fireEvent('finish',va);
                     }
                 },scope:this}
             }

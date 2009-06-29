@@ -4,7 +4,22 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-2 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
-- Added some key-events: CTRL+H for hiding accordion, CTRL+Z for clearing cache, CTRL+N for Quick Create Resource (PC users will need to add SHIFT to all those calls)
+- Fixed some DOM issues with Package Management
+- [#MODX-833] Temporary fix for modManagerLog message showing up in console
+- [#MODX-853] Changed source caption of view resource data
+- [#MODX-809] Adjusted formatting of View Resource data fields 
+- Fixed bugs with Resource data page not loading fully, glitching tree
+- [#MODX-772] Fixed bug where plugin events were not showing enabled if filtered by name
+- Fixed user system event calls to pass proper arguments
+- Fixed bug where you could only load 1 Quick window at a time
+- Fixed bug with duplicate resource
+- [#MODX-845] If no setup options are specified, package installation will automatically proceed
+- Added parameter to the getNodes processor for resources/elements called 'stringLiterals' which, when true, does not encode the JS literals
+- Layout can now be toggled between tabs (default) and portal panels via the setting 'manager_use_tabs'
+- Nuked the Loading Box in MODExt
+- Changed clearCache key shortcut to CTRL+U (CTRL+SHIFT+U for PC users)
+- Fixed issue where folder resources couldnt be drag/dropped
+- Added some key-events: CTRL+H for hiding accordion, CTRL+U for clearing cache, CTRL+N for Quick Create Resource (PC users will need to add SHIFT to all those calls)
 - Fixed portal issues with Safari
 - Added a few events to MODx. JS object, cleaned up code
 - Added sanity checks to context/category create/update processors

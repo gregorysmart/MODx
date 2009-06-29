@@ -11,16 +11,19 @@ MODx.Tabs = function(config) {
 	config = config || {};
 	Ext.applyIf(config,{
 		enableTabScroll: true
-		,resizeTabs: true
         ,layoutOnTabChange: true
         ,plain: true
+        ,deferredRender: true
 		,defaults: {
 			autoScroll: true
 			,autoHeight: true
             ,hideMode: 'offsets'
+            ,border: true
+            ,autoWidth: true
 		}
 	    ,activeTab: 0
         ,border: false
+        ,autoHeight: true
         ,cls: 'modx-tabs'
 	});
 	MODx.Tabs.superclass.constructor.call(this,config);

@@ -20,6 +20,7 @@ MODx.grid.ElementProperties = function(config) {
         ,sortBy: 'name'
         ,width: '100%'
         ,sm: new Ext.grid.RowSelectionModel({singleSelect:false})
+        ,loadMask: true
         ,lockProperties: true
         ,plugins: [this.exp]
         ,columns: [this.exp,{
@@ -40,6 +41,7 @@ MODx.grid.ElementProperties = function(config) {
             ,id: 'value'
             ,width: 250
             ,renderer: this.renderDynField.createDelegate(this,[this],true)
+            ,editor: { xtype: 'textfield' }
             ,sortable: true
         }]
         ,tbar: [{
@@ -57,12 +59,16 @@ MODx.grid.ElementProperties = function(config) {
             }
         },{
             text: _('property_create')
+            ,id: 'modx-btn-property-create'
             ,handler: this.create
             ,scope: this
+            ,disabled: true
         },'-',{
             text: _('property_revert_all')
+            ,id: 'modx-btn-property-revert-all'
             ,handler: this.revertAll
             ,scope:this
+            ,disabled: true
         },'-',{
             text: _('properties_default_locked')
             ,id: 'modx-btn-propset-lock'
@@ -109,12 +115,14 @@ MODx.grid.ElementProperties = function(config) {
     this.on('celldblclick',this.onDirty,this);
     
     if (this.config.lockProperties) {
-        this.lockMask = MODx.load({
-            xtype: 'modx-lockmask'
-            ,el: this.getGridEl()
-            ,msg: _('properties_default_locked')
-        });
-        this.lockMask.toggle();
+        this.on('render',function() {
+            this.lockMask = MODx.load({
+                xtype: 'modx-lockmask'
+                ,el: this.getGridEl()
+                ,msg: _('properties_default_locked')
+            });
+            this.lockMask.toggle();
+        },this);
     }
 };
 Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
@@ -205,7 +213,13 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
         if (ps == 0 || ps == _('default')) {
             Ext.getCmp('modx-btn-propset-lock').setText(this.lockMask.locked ? _('properties_default_unlocked') : _('properties_default_locked'));
             this.lockMask.toggle();
+            this.toggleButtons(this.lockMask.locked);
         }
+    }
+    
+    ,toggleButtons: function(v) {
+        Ext.getCmp('modx-btn-property-create').setDisabled(v);
+        Ext.getCmp('modx-btn-property-revert-all').setDisabled(v);
     }
     
     ,changePropertySet: function(cb) {
@@ -216,10 +230,12 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
             }
             if (this.lockMask.locked) {
                 this.lockMask.show();
+                this.toggleButtons(true);
             }
         } else {
             Ext.getCmp('modx-btn-propset-lock').setDisabled(true);
             this.lockMask.hide();
+            this.toggleButtons(false);
         }
         
         MODx.Ajax.request({
