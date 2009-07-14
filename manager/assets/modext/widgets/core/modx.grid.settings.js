@@ -41,7 +41,13 @@ MODx.grid.SettingsGrid = function(config) {
         ,emptyText: _('search_by_key')+'...'
         ,listeners: {
             'change': {fn: this.filterByKey, scope: this}
-            ,'render': {fn: this._addEnterKeyHandler}
+            ,'render': {fn: function(cmp) {
+                new Ext.KeyMap(cmp.getEl(), {
+                    key: Ext.EventObject.ENTER
+                    ,fn: function() { this.fireEvent('change',this.getValue()); }
+                    ,scope: cmp
+                });
+            },scope:this}
         }
     },{
         xtype: 'button'
@@ -147,7 +153,8 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
      * Filters the grid by the key column.
      */
     ,filterByKey: function(tf,newValue,oldValue) {
-        this.getStore().baseParams.key = newValue;
+        var nv = newValue || tf;
+        this.getStore().baseParams.key = nv;
         this.refresh();
         this.getBottomToolbar().changePage(1);
     }
@@ -341,22 +348,6 @@ MODx.window.CreateSetting = function(config) {
 Ext.extend(MODx.window.CreateSetting,MODx.Window);
 Ext.reg('modx-window-setting-create',MODx.window.CreateSetting);
 
-
-/**
- * Fixes problem with PagingToolbar and loading different renderers for each row
- */
-Ext.override(Ext.PagingToolbar,{
-    doLoad : function(start){
-        var o = {}, pn = this.paramNames;
-        o[pn.start] = start;
-        o[pn.limit] = this.pageSize;
-        this.store.load({
-            params:o
-            ,scope: this
-            ,callback: function() { this.store.reload(); }
-        });
-    }
-});
 
 
 /**

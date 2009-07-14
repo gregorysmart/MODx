@@ -25,7 +25,7 @@ MODx.page.Login = function(config) {
     Ext.applyIf(config,{
        components: [{
            xtype: 'modx-panel-login'
-           ,renderTo: 'modx-panel-login'
+           ,renderTo: 'modx-panel-login-div'
        }]
     });
     MODx.page.Login.superclass.constructor.call(this,config);
@@ -57,6 +57,7 @@ MODx.panel.Login = function(config) {
        ,defaults: { 
            labelSeparator: ''
        }
+       ,saveMsg: _('loading')
        ,items: [{
            html: '<h2>'+SITE_NAME+'</h2>'
            ,border: false

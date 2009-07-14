@@ -4,6 +4,46 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-2 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- login processor does not return site_url in response by default.
+- modResponse->outputContent() allows programmatic options to configure max_parser_iterations.
+- Updated xPDO to revision 341: package uninstall preserves and restores file resolver data
+- Changed key shortcuts to always require ctrl+shift to prevent browser collisions
+- Added in field for description key in modMenu windows
+- [#MODX-931] Added isequal, isequalto, and notequalto as modifier aliases to default Output Filter
+- Fixed issues with pagination on settings grids
+- Fixed ENTER key issues on quick create/update windows
+- Added &language option to lexicon tags.
+- Added ability to load lexicon topics via tag: [[%key? &namespace=`mynamespace` &topic=`mytopic`]]
+- [#MODX-910] Fixed issues with gte/lte/gt/lt output filters
+- [#MODX-921] Added "isempty" as an alias of "ifempty" in output filters
+- [#MODX-920] Fixed wordwrap output filter
+- [#MODX-914] Added isnotempty and hide output filters
+- [#MODX-913] Added isloggedin and isnotloggedin to output filters
+- Upgraded ExtJS from 2.2 to 3.0
+- [#MODX-925] Fixed issue where name couldnt be changed on duplicate resource window with resources with children
+- [#MODX-911] Fixed dragability issue when assigning resources to resource groups
+- [#MODX-901] System Settings grid search now searches descriptions 
+- Added 'afterLayout', 'loadKeyMap', and 'loadAccordion' events to MODx.Layout
+- Fixed bugs with File TV input renders
+- [#MODX-887] Properly standardized POST/REQUEST access methods for element processors
+- Fixed issues with user emails being sent in plaintext with no linebreaks; now HTML-based for the time being
+- Package Download tree now disables already downloaded packages.
+- [#MODX-885] Fixed missing break statement in cat output filter
+- [#MODX-844] Fixed ucfirst output filter, added ucwords output filter
+- [#MODX-869] Added missing descriptions for certain menu items
+- [#MODX-868] Fixed bug on settings grid where filter box was not firing on enter key
+- Fixed bug where hidemenu was not persisting in Quick Update Resource
+- Fixed bug with tree mask rendering before panel is rendered
+- [#MODX-747] Fixed issues with access grids update windows
+- [#MODX-803] Fixed DOM issues with TV mgr input property renders
+- [#MODX-805] Fixed attribute issues with TV web output renders
+- [#MODX-859] Changed login page loader box to say 'Loading...' instead of 'Saving...'
+- [#MODX-860] Fixed z-index issues across manager
+- Added a custom loadMask to MODx.tree.Tree objects to display when they're loading but not affect page focus
+- Added a custom loadMask to the Package Management download tree to display while loading the remote provider payload
+- Added in icon for package files
+- Added fsockopen as a fallback for transport package if allow_url_fopen or cURL is not enabled
+- [#MODX-856] Added cURL method of grabbing transport packages when allow_url_fopen is set to false
 - Fixed bug in property update where list grid was not hiding if list xtype was previously selected but not now
 - Fixed import properties where it was not properly handling descriptions
 - Fixed bug where ExtJS couldnt handle text/json header responses with fileUpload set to true in form panels

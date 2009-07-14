@@ -8,80 +8,59 @@
  */
 MODx.Layout = function(config){
     config = config || {};
-    this.config = config;
-    Ext.BLANK_IMAGE_URL = MODx.config.manager_url+'assets/ext2/resources/images/default/s.gif';
-    
-    this.loadTrees();
-    
+    Ext.BLANK_IMAGE_URL = MODx.config.manager_url+'assets/ext3/resources/images/default/s.gif';
     Ext.applyIf(config,{
         id: 'modx-layout'
-    });
-    MODx.Layout.superclass.constructor.call(this,config);
-    this.loadKeys();
-};
-Ext.extend(MODx.Layout,Ext.Component,{    
-    loadTrees: function() {
-        var a = Ext.get('modx-accordion');
-        if (!a) return;
-        
-        this.rtree = MODx.load({
-            xtype: 'modx-tree-resource'
-            ,el: 'modx_resource_tree'
-            ,id: 'modx_resource_tree'
-        });
-        this.eltree = MODx.load({
-            xtype: 'modx-tree-element'
-            ,el: 'modx_element_tree'
-            ,id: 'modx_element_tree' 
-        });
-        this.ftree = MODx.load({
-            xtype: 'modx-tree-directory'
-            ,el: 'modx_file_tree'
-            ,id: 'modx_file_tree'
-            ,hideFiles: false
-            ,title: ''
-        });
-        
-        MODx.load({
-            xtype: 'panel'
-            ,applyTo: 'modx-accordion-content'
-            ,minSize: 100
-            ,minHeight: 300
-            ,maxHeight: 400
-            ,split: true
-            ,collapsible: true
-            ,hideBorders: true
-            ,resizable: true
-            ,stateful: false
+        ,renderTo: 'modx-accordion-content'
+        ,minSize: 100
+        ,minHeight: 300
+        ,maxHeight: 400
+        ,split: true
+        ,collapsible: true
+        ,hideBorders: true
+        ,resizable: true
+        ,stateful: false
+        ,autoHeight: true
+        ,layout: 'accordion'
+        ,border: false
+        ,layoutConfig: { 
+            animate: true
+            ,autoScroll: true
+            ,titleCollapse: true
+            ,fill: true
+        }
+        ,defaults: {
+            autoScroll: true
+            ,fitToFrame: true
             ,autoHeight: true
-            ,layout: 'accordion'
-            ,border: false
-            ,layoutConfig: { 
-                animate: true
-                ,autoWidth: true
-                ,autoScroll: true
-                ,titleCollapse: true
-                ,fill: true
-            }
-            ,defaults: {
-                autoScroll: true
-                ,fitToFrame: true
-                ,autoHeight: true
-                ,maxHeight: 450
-                ,height: 450
-                ,cls: 'modx-accordion-panel'
-            }
-            ,items: this.setupAccordion()
-        });
-    }
+            ,titleCollapse: true
+            ,maxHeight: 450
+            ,height: 450
+            ,cls: 'modx-accordion-panel'
+        }
+        ,items: this.setupAccordion()
+    });
+        
+    MODx.Layout.superclass.constructor.call(this,config);
+    this.config = config;
     
-    ,loadKeys: function() {
+    this.addEvents({
+        'afterLayout': true
+        ,'loadKeyMap': true
+        ,'loadAccordion': true
+    });
+    this.loadKeys();
+    this.fireEvent('afterLayout');
+};
+Ext.extend(MODx.Layout,Ext.Panel,{
+    
+    loadKeys: function() {
         Ext.KeyMap.prototype.stopEvent = true;
         var k = new Ext.KeyMap(Ext.get(document));        
         k.addBinding({
             key: Ext.EventObject.H
             ,ctrl: true
-            ,shift: Ext.isMac ? false : true
+            ,shift: true
             ,fn: this.toggleAccordion
             ,scope: this
             ,stopEvent: true
@@ -89,7 +68,7 @@ Ext.extend(MODx.Layout,Ext.Component,{
         k.addBinding({
             key: Ext.EventObject.N
             ,ctrl: true
-            ,shift: Ext.isMac ? false : true
+            ,shift: true
             ,fn: function() {
                 Ext.getCmp('modx_resource_tree').quickCreate(document,{},'modResource','web',0);
             }
@@ -98,17 +77,21 @@ Ext.extend(MODx.Layout,Ext.Component,{
         k.addBinding({
             key: Ext.EventObject.U
             ,ctrl: true
-            ,shift: Ext.isMac ? false : true
+            ,shift: true
             ,fn: MODx.clearCache
             ,scope: this
             ,stopEvent: true
         });
+        
+        this.fireEvent('loadKeyMap',{
+            keymap: k
+        });
     }
     
     ,refreshTrees: function() {
-        this.rtree.refresh();
-        this.eltree.refresh();
-        this.ftree.refresh();
+        Ext.getCmp('modx_resource_tree').refresh();
+        Ext.getCmp('modx_element_tree').refresh();
+        Ext.getCmp('modx_file_tree').refresh();
     }
     
     ,setupAccordion: function() {
@@ -119,25 +102,29 @@ Ext.extend(MODx.Layout,Ext.Component,{
                 it.push(lps[x]);
             }
         }
-        
-        it.push({                
-            title: _('web_resources')
-            ,contentEl: 'modx_rt_div'
+        it.push({
+            xtype: 'modx-tree-resource'
+            ,title: _('web_resources')
             ,resizeEl: 'modx_resource_tree'
-            ,id: 'modx-resource-tree-panel'
+            ,id: 'modx_resource_tree'
         });
         it.push({
-            title: _('content_elements')
-            ,contentEl: 'modx_et_div'
+            xtype: 'modx-tree-element'
+            ,title: _('content_elements')
             ,resizeEl: 'modx_element_tree'
-            ,id: 'modx-element-tree-panel'
+            ,id: 'modx_element_tree'
         });
         it.push({
-            title: _('files')
-            ,contentEl: 'modx_ft_div'
+            xtype: 'modx-tree-directory'
+            ,title: _('files')
             ,resizeEl: 'modx_file_tree'
-            ,id: 'modx-file-tree-panel'
+            ,id: 'modx_file_tree'
+            ,hideFiles: false
         });
+        
+        if (MODx.onAccordionLoad) {
+            it = MODx.onAccordionLoad(it);
+        }
         
         return it;
     }

@@ -4,12 +4,12 @@
 	<title>{$_lang.login_title}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset={$_config.modx_charset}" />
 	<link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/index.css" />
-	<link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/ext-all.css" />
-    <link rel="stylesheet" type="text/css" href="assets/ext2/resources/css/xtheme-gray.css" />
+	<link rel="stylesheet" type="text/css" href="assets/ext3/resources/css/ext-all.css" />
+    <link rel="stylesheet" type="text/css" href="assets/ext3/resources/css/xtheme-gray-extend.css" />
     <link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/login.css" />
     
-    <script src="assets/ext2/adapter/ext/ext-base.js" type="text/javascript"></script>
-    <script src="assets/ext2/ext-all.js" type="text/javascript"></script>
+    <script src="assets/ext3/adapter/ext/ext-base.js" type="text/javascript"></script>
+    <script src="assets/ext3/ext-all.js" type="text/javascript"></script>
     <script src="assets/modext/core/modx.js" type="text/javascript"></script>
 	<script src="{$_config.connectors_url}lang.js.php?topic=login" type="text/javascript"></script>
 		
@@ -45,7 +45,7 @@ var onManagerLoginFormRender = '{$onManagerLoginFormRender}';
 <div id="mx_loginbox">
     {$onManagerLoginFormPrerender}
     <br />
-    <div id="modx-panel-login"></div>
+    <div id="modx-panel-login-div"></div>
     <form id="modx-login-form" method="post">
     <input type="text" id="modx-login-username" name="username" />
     <input type="password" id="modx-login-password" name="password" />

@@ -245,31 +245,53 @@ class modTransportPackage extends xPDOObject {
         $content= '';
         if (is_dir($targetDir) && is_writable($targetDir)) {
             $source= $this->get('service_url') . $sourceFile;
-            if ($handle= @ fopen($source, 'rb')) {
-                $filesize= @ filesize($source);
-                $memory_limit= @ ini_get('memory_limit');
-                if (!$memory_limit) $memory_limit= '8M';
-                $byte_limit= $this->_bytes($memory_limit) * .5;
-                if (strpos($source, '://') !== false || $filesize > $byte_limit) {
-                    $content= @ file_get_contents($source);
+
+            /* see if user has allow_url_fopen on */
+            if (ini_get('allow_url_fopen')) {
+                if ($handle= @ fopen($source, 'rb')) {
+                    $filesize= @ filesize($source);
+                    $memory_limit= @ ini_get('memory_limit');
+                    if (!$memory_limit) $memory_limit= '8M';
+                    $byte_limit= $this->_bytes($memory_limit) * .5;
+                    if (strpos($source, '://') !== false || $filesize > $byte_limit) {
+                        $content= @ file_get_contents($source);
+                    } else {
+                        $content= @ fread($handle, $filesize);
+                    }
+                    @ fclose($handle);
                 } else {
-                    $content= @ fread($handle, $filesize);
+                    $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_file_read',array(
+                        'source' => $source,
+                    )));
                 }
-                @ fclose($handle);
+
+            /* if not, try curl */
+            } else if (function_exists('curl_init')) {
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $source);
+                curl_setopt($ch, CURLOPT_HEADER, 0);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                curl_setopt($ch, CURLOPT_TIMEOUT,120);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                $content = curl_exec($ch);
+                curl_close($ch);
+
+            /* and as last-ditch resort, try fsockopen */
             } else {
-                $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_file_read',array(
-                    'source' => $source,
-                )));
+                $content = $this->_getByFsockopen($source);
             }
+
             if ($content) {
                 if ($cacheManager= $this->xpdo->getCacheManager()) {
                     $filename= $this->signature.'.transport.zip';
                     $target= $targetDir . $filename;
                     $transferred= $cacheManager->writeFile($target, $content);
                 }
+            } else {
+                $this->xpdo->log(MODX_LOG_LEVEL_ERROR,'MODx could not download the file. You must enable allow_url_fopen, cURL or fsockopen to use remote transport packaging.');
             }
         } else {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_target_write',array(
+             $this->xpdo->log(MODX_LOG_LEVEL_ERROR,$this->xpdo->lexicon('package_err_target_write',array(
                 'targetDir' => $targetDir,
             )));
         }
@@ -304,4 +326,49 @@ class modTransportPackage extends xPDOObject {
         }
         return $value;
     }
+
+    /**
+     * If for some reason the server does not have allow_url_fopen or cURL
+     * enabled, use this function to get the file via fsockopen.
+     *
+     * @access private
+     * @param string $url The source URL to retrieve
+     * @return string The response from the server
+     */
+    function _getByFsockopen($url) {
+        $purl = parse_url($url);
+        $host = $purl['host'];
+        $path = !empty($purl['path']) ? $purl['path'] : '/';
+        if (!empty($purl['query'])) { $path .= '?'.$purl['query']; }
+        $port = !empty($purl['port']) ? $purl['port'] : '80';
+
+        $timeout = 10;
+        $response = '';
+        $fp = @fsockopen($host,$port,$errno,$errstr,$timeout);
+
+        if( !$fp ) {
+            $this->xpdo->log(MODX_LOG_LEVEL_ERROR,'Could not retrieve from '.$url);
+        } else {
+            fwrite($fp, "GET $path HTTP/1.0\r\n" .
+                "Host: $host\r\n" .
+                "User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.3) Gecko/20060426 Firefox/1.5.0.3\r\n" .
+                "Accept: */*\r\n" .
+                "Accept-Language: en-us,en;q=0.5\r\n" .
+                "Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7\r\n" .
+                "Keep-Alive: 300\r\n" .
+                "Connection: keep-alive\r\n" .
+                "Referer: http://$host\r\n\r\n");
+
+          while ($line = fread($fp, 4096)) {
+             $response .= $line;
+          }
+          fclose($fp);
+
+          $pos = strpos($response, "\r\n\r\n");
+          $response = substr($response, $pos + 4);
+       }
+       return $response;
+    }
+
+
 }
