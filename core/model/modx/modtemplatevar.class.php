@@ -203,10 +203,10 @@ class modTemplateVar extends modElement {
 
         $param= array ();
         if ($paramstring= $this->get('display_params')) {
-            $cp= split("&", $paramstring);
+            $cp= explode("&", $paramstring);
             foreach ($cp as $p => $v) {
                 $v= trim($v);
-                $ar= split("=", $v);
+                $ar= explode("=", $v);
                 if (is_array($ar) && count($ar) == 2) {
                     $params[$ar[0]]= $this->decodeParamValue($ar[1]);
                 }
@@ -259,10 +259,10 @@ class modTemplateVar extends modElement {
 
         $param= array ();
         if ($paramstring= $this->get('display_params')) {
-            $cp= split("&", $paramstring);
+            $cp= explode("&", $paramstring);
             foreach ($cp as $p => $v) {
                 $v= trim($v);
-                $ar= split("=", $v);
+                $ar= explode("=", $v);
                 if (is_array($ar) && count($ar) == 2) {
                     $params[$ar[0]]= $this->decodeParamValue($ar[1]);
                 }
