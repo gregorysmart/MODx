@@ -2,7 +2,49 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
-MODx Revolution 2.0.0-beta-3 ($LastChangedRevision$, $LastChangedDate$)
+MODx Revolution 2.0.0-beta-4 ($LastChangedRevision$, $LastChangedDate$)
+====================================
+- [#MODX-1203] Now preserves state of open tabs in left bar
+- Added "Form Customization" page, which emulates Evolution ManagerManager functionality and integrates it into the core
+- Revamped modMenu DB structure to allow for more proper dynamic menus; 3PCs will need to now refer to the Components menu as 'components', as the "id" field has been dropped and "text" is now the PK
+- Fixed DOM issue with Profile page
+- Improved core transport build script, lowered build times
+- Fixed issue where hiding the alias field would cause it to be erased
+- [#MODX-1169] Fixed issue where unchecking Container on a Resource that had children would hide them from the tree
+- [#MODX-1125] Fixed issue where Properties were being lost on new Elements
+- Fixed some dirty field problems in Element/Resource forms
+- [#MODX-1167] Improved isFolder checkbox tooltip
+- [#MODX-929] Changed default click functionality in Tree menu to edit Resources, unless does not have permission to, will then go to View
+- Fixed navbar structure on main menu to properly handle infinitely deep nested menus. Needs help from a CSS guru on the CSS end.
+- [#MODX-1161] Fixed bug with height argument on modX::getParentIds
+- Documentation updates to modResource class
+- [#MODX-1189] Fixed issue with TV values not setting properly with modTemplateVar->setValue
+- Added modResource->getTVValue, which gets the value of a specified TV for the Resource
+- [#MODX-1177] Adjusted Lexicon Management text to properly represent functionality
+- Added more metadata to Lexicon Topic exports
+- [#MODX-1191] Fixed issue where Namespace combo was conflicting with other DOM IDs in Lexicon Management
+- Changed Accordion to Tabs in left menu
+- In all Resource panels, Moved Page Settings back to right side, moved Template to top, moved Published to top right 
+- [#MODX-1173] Added modResource->hasChildren() function. Returns # of children for the Resource.
+- [#MODX-689] Fixed error when using @SELECT binding with Template Variable Input Option values.
+- Fixed issues with modMenu creation/editing
+- [#MODX-1132] Various fixes to the user editing page
+- [#MODX-1123] Fixed bug where properties were not saving on new elements
+- [#MODX-683] Changed title for 1st tab on Resource edit screen
+- [#MODX-1118] Tweaked MODx.combo.ComboBox and other store references to possibly fix local store bug
+- Fixed issue with Sort By dropdown in the Resource Tree
+- Fixed issues with User Group update page
+- Added modAccessPermission class to properly handle access policy permissions
+- Adjusted UI to handle model change
+- Added logic in setup install to clear sessions table after install to prevent access permission changing problems (and is a good general practice anyway); users will have to re-login after setup/ is run.
+- Cleaned up access policy grid
+- Default sort roles by authority
+- Removed no-longer needed Security pages; now done in Access Control and User Group edit screens
+- Started cleanup of Security system; changed 'Authority' listing on User Group page to a more correct "Minimum Role".
+- Added some IDs to resource edit page
+- [#MODX-1124] Took Templates off the list of attachable elements in Tools | Property Sets
+
+MODx Revolution 2.0.0-beta-3 (LastChangedRevision: 5593, LastChangedDate: 2009-07-30 11:14:17 -0500 (Thu, 30 Jul 2009))
 ====================================
 - Fixed issue with scrollbars and height in tree context menus
 - [#MODX-963] Fixed issue with scrollbars and height in grid context menus

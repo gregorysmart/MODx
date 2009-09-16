@@ -9,8 +9,7 @@ Ext.namespace('MODx.tree');
  * @xtype modx-tree
  */
 MODx.tree.Tree = function(config) {
-	config = config || {};    
-	Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+	config = config || {};
     Ext.applyIf(config,{
         baseParams: {}
         ,action: 'getNodes'
@@ -72,6 +71,7 @@ MODx.tree.Tree = function(config) {
 		,bodyBorder: false
         ,cls: 'modx-tree'
         ,root: root
+        ,preventRender: false
 	});
 	if (config.remoteToolbar === true && (config.tbar === undefined || config.tbar === null)) {
 		Ext.Ajax.request({
@@ -129,9 +129,9 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	    
 	    this.treestate_id = this.config.id || Ext.id();
 	    this.on('load',this._initExpand,this,{single: true});
-        this.root.expand();
-	    
+        
         this.on('render',function() {
+            this.root.expand();
             var tl = this.getLoader();
             Ext.apply(tl,{fullMask : new Ext.LoadMask(this.getEl(),{msg:_('loading')}) });
             tl.fullMask.removeMask=false;

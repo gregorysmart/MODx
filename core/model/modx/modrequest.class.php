@@ -19,7 +19,6 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
-
 /**
  * Encapsulates the interaction of MODx with an HTTP request.
  *
@@ -189,7 +188,7 @@ class modRequest {
                         $this->modx->sendUnauthorizedPage();
                     }
                     $this->modx->documentObject = & $resource->_fields;
-                    if ($tvs = $resource->getMany('modTemplateVar', 'all')) {
+                    if ($tvs = $resource->getMany('TemplateVars', 'all')) {
                         foreach ($tvs as $tv) {
                             $this->modx->documentObject[$tv->get('name')] = array (
                                 $tv->get('name'),

@@ -315,7 +315,7 @@ class modX extends xPDO {
                     PDO_MYSQL_ATTR_USE_BUFFERED_QUERY => true
                 )
             );
-            $this->setPackage('modx', MODX_CORE_PATH . 'model/');
+            $this->setPackage('modx', MODX_CORE_PATH . 'model/', $table_prefix);
             $this->setLogTarget($this->getOption('log_target', null, 'FILE'));
         } else {
             $this->sendError($this->getOption('error_type', null, 'unavailable'), $options);
@@ -487,7 +487,7 @@ class modX extends xPDO {
     function getParentIds($id= null, $height= 10) {
         $parentId= 0;
         $parents= array ();
-        if ($id && $height >= 0) {
+        if ($id && $height > 0) {
             foreach ($this->resourceMap as $parentId => $mapNode) {
                 if (array_search($id, $mapNode) !== false) {
                     $parents[]= $parentId;
@@ -495,7 +495,8 @@ class modX extends xPDO {
                 }
             }
             if ($parentId && !empty($parents)) {
-                $parents= array_merge($parents, $this->getParentIds($parentId, $height--));
+                $height--;
+                $parents= array_merge($parents, $this->getParentIds($parentId,$height));
             }
         }
         return $parents;
@@ -880,7 +881,7 @@ class modX extends xPDO {
                 if (isset ($_SESSION["modx.{$contextKey}.user.config"])) {
                     $this->_userConfig= $_SESSION["modx.{$contextKey}.user.config"];
                 } else {
-                    $settings= $this->user->getMany('modUserSetting');
+                    $settings= $this->user->getMany('UserSettings');
                     if (is_array($settings) && !empty ($settings)) {
                         foreach ($settings as $setting) {
                             $v= $setting->get('value');
@@ -1370,9 +1371,9 @@ class modX extends xPDO {
         $grpNames= isset ($_SESSION['webUserGroupNames']) ? $_SESSION['webUserGroupNames'] : false;
         if (!is_array($grpNames)) {
             if ($user= $this->getUser('web')) {
-                if ($groupMemberships= $user->getMany('modWebGroupMember')) {
+                if ($groupMemberships= $user->getMany('UserGroupMembers')) {
                     foreach ($groupMemberships as $gm) {
-                        if ($group= $gm->getOne('modWebGroup')) {
+                        if ($group= $gm->getOne('UserGroup')) {
                             $grpNames[]= $group->get('name');
                         }
                     }
@@ -1655,7 +1656,7 @@ class modX extends xPDO {
         if ($objCollection = $this->getCollection('modResource', $criteria)) {
             foreach ($objCollection as $obj) {
                 $objArray= $obj->toArray();
-                $tvs= $obj->getMany('modTemplateVar');
+                $tvs= $obj->getMany('TemplateVars');
                 foreach ($tvs as $tv) {
                     if (!$all) {
                         if ($byName) {
@@ -1892,7 +1893,7 @@ class modX extends xPDO {
         $userInfo= false;
         if ($user= $this->getObject('modUser', $uid, true)) {
             $userInfo= $user->get(array ('username', 'password'));
-            if ($userProfile= $user->getOne('modUserProfile')) {
+            if ($userProfile= $user->getOne('Profile')) {
                 $userInfo= array_merge($userInfo, $userProfile->toArray());
             }
         }
@@ -2052,7 +2053,7 @@ class modX extends xPDO {
      */
     function logManagerAction($action,$class_key,$item) {
         $ml = $this->newObject('modManagerLog');
-        $ml->set('user',$this->user->id);
+        $ml->set('user',$this->user->get('id'));
         $ml->set('occurred',date('Y-m-d H:i:s'));
         $ml->set('action',$action);
         $ml->set('class_key',$class_key);

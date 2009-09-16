@@ -160,7 +160,7 @@ MODx.panel.TV = function(config) {
                 ,preventRender: true
                 ,width: '100%'
                 ,listeners: {
-                    'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                    'rowclick': {fn:this.fieldChangeEvent,scope:this}
                 }
             }]
         },{
@@ -177,7 +177,7 @@ MODx.panel.TV = function(config) {
                 ,tv: config.tv
                 ,preventRender: true
                 ,listeners: {
-                    'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                    'rowclick': {fn:this.fieldChangeEvent,scope:this}
                 }
             }]
         }])]
@@ -188,7 +188,7 @@ MODx.panel.TV = function(config) {
         }
     });
     MODx.panel.TV.superclass.constructor.call(this,config);
-    setTimeout("Ext.getCmp('modx_element_tree').expand();",1000);
+    setTimeout("Ext.getCmp('modx-element-tree').expand();",1000);
     this.on('render',function() { this.showParameters(); },this);
 };
 Ext.extend(MODx.panel.TV,MODx.FormPanel,{
@@ -229,14 +229,15 @@ Ext.extend(MODx.panel.TV,MODx.FormPanel,{
         Ext.apply(o.form.baseParams,{
             templates: g.encodeModified()
             ,resource_groups: rg.encodeModified()
+            ,propdata: Ext.getCmp('modx-grid-element-properties').encode()
         });
     }
     ,success: function(o) {
         Ext.getCmp('modx-grid-tv-template').getStore().commitChanges();
         Ext.getCmp('modx-grid-tv-security').getStore().commitChanges();
-        Ext.getCmp('modx-grid-element-properties').save();
+        if (MODx.request.id) Ext.getCmp('modx-grid-element-properties').save();
         
-        var t = parent.Ext.getCmp('modx_element_tree');
+        var t = parent.Ext.getCmp('modx-element-tree');
         var c = Ext.getCmp('modx-tv-category').getValue();
         var u = c != '' && c != null ? 'n_tv_category_'+c : 'n_type_tv'; 
         t.refreshNode(u,true);

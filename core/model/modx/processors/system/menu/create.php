@@ -34,11 +34,12 @@ if (!empty($_POST['parent'])) {
 }
 
 /* get new menuindex */
-$count = $modx->getCount('modMenu',array('parent' => $parent->get('id')));
+$count = $modx->getCount('modMenu',array('parent' => $parent->get('text')));
 
 /* create menu */
 $menu = $modx->newObject('modMenu');
-$menu->fromArray($_POST);
+$menu->fromArray($_POST,'',true,true);
+$menu->set('action',$_POST['action_id']);
 $menu->set('menuindex',$count);
 
 /* save menu */
@@ -47,6 +48,6 @@ if ($menu->save() == false) {
 }
 
 /* log manager action */
-$modx->logManagerAction('menu_create','modMenu',$menu->get('id'));
+$modx->logManagerAction('menu_create','modMenu',$menu->get('text'));
 
 return $modx->error->success();

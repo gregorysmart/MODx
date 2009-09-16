@@ -1,7 +1,6 @@
 <?php
 /**
  * @package modx
- * @subpackage mysql
  */
 class modLexiconLanguage extends xPDOObject {
     function modLexiconLanguage(& $xpdo) {
@@ -30,8 +29,10 @@ class modLexiconLanguage extends xPDOObject {
      * {@inheritdoc}
      */
     function save($cacheFlag= null) {
-        $rt= parent :: save($cacheFlag);
-        $this->clearCache();
-        return $rt;
+        $saved = parent :: save($cacheFlag);
+        if ($saved && empty($this->xpdo->config[XPDO_OPT_SETUP])) {
+            $this->clearCache();
+        }
+        return $saved;
     }
 }

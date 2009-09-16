@@ -61,7 +61,7 @@ class modResource extends modAccessibleSimpleObject {
             $this->_content= '';
             $this->_output= '';
             $this->xpdo->getParser();
-            if ($baseElement= $this->getOne('modTemplate')) {
+            if ($baseElement= $this->getOne('Template')) {
                 if ($baseElement->process()) {
                     $this->_content= $baseElement->_output;
                     $this->_processed= true;
@@ -110,6 +110,12 @@ class modResource extends modAccessibleSimpleObject {
         return $this->set('content', $content);
     }
 
+    /**
+     * Merge in Keywords into content.
+     *
+     * @access public
+     * @deprecated 2.0
+     */
     function mergeKeywords() {
         if ($this->get('haskeywords')) {
             $keywords = implode(", ",$this->xpdo->getKeywords());
@@ -118,6 +124,12 @@ class modResource extends modAccessibleSimpleObject {
         }
     }
 
+    /**
+     * Merge in META tags to content.
+     *
+     * @access public
+     * @deprecated 2.0
+     */
     function mergeMetaTags() {
         if ($this->get('hasmetatags')) {
             if ($tags = $this->xpdo->getMETATags()) {
@@ -160,7 +172,7 @@ class modResource extends modAccessibleSimpleObject {
      */
     function getMany($class, $criteria= null, $cacheFlag= false) {
         $collection= array ();
-        if ($class === 'modTemplateVar' && ($criteria === null || strtolower($criteria) === 'all')) {
+        if ($class === 'TemplateVars' || $class === 'modTemplateVar' && ($criteria === null || strtolower($criteria) === 'all')) {
             $c = $this->xpdo->newQuery('modTemplateVar');
             $c->select('
                 DISTINCT modTemplateVar.*,
@@ -293,6 +305,14 @@ class modResource extends modAccessibleSimpleObject {
         $this->save();
     }
 
+    /**
+     * Adds a lock on the Resource
+     *
+     * @access public
+     * @param integer $user
+     * @param array $options An array of options for the lock.
+     * @return boolean True if the lock was successful.
+     */
     function addLock($user = 0, $options = array()) {
         $locked = false;
         if (is_a($this->xpdo, 'modX')) {
@@ -311,6 +331,12 @@ class modResource extends modAccessibleSimpleObject {
         return $locked;
     }
 
+    /**
+     * Gets the lock on the Resource.
+     *
+     * @access public
+     * @return int
+     */
     function getLock() {
         $lock = 0;
         if (is_a($this->xpdo, 'modX')) {
@@ -327,6 +353,12 @@ class modResource extends modAccessibleSimpleObject {
         return $lock;
     }
 
+    /**
+     * Removes all locks on a Resource.
+     *
+     * @access public
+     * @return boolean True if locks were removed.
+     */
     function removeLock($user = 0) {
         $removed = false;
         if (is_a($this->xpdo, 'modX')) {
@@ -383,5 +415,35 @@ class modResource extends modAccessibleSimpleObject {
         }
         return $policy;
     }
+
+    /**
+     * Checks to see if the Resource has children or not. Returns the number of
+     * children.
+     *
+     * @access public
+     * @return integer The number of children of the Resource
+     */
+    function hasChildren() {
+        $c = $this->xpdo->newQuery('modResource');
+        $c->where(array(
+            'parent' => $this->get('id'),
+        ));
+        return $this->xpdo->getCount('modResource',$c);
+    }
+
+    /**
+     * Gets the value of a TV for the Resource.
+     *
+     * @access public
+     * @param mixed $pk Either the ID of the TV, or the name of the TV.
+     * @return null/mixed The value of the TV for the Resource, or null if the
+     * TV is not found.
+     */
+    function getTVValue($pk) {
+        if (is_string($pk)) {
+            $pk = array('name' => $pk);
+        }
+        $tv = $this->xpdo->getObject('modTemplateVar',$pk);
+        return $tv == null ? null : $tv->renderOutput($this->get('id'));
+    }
 }
-?>

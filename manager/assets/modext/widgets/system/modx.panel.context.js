@@ -55,6 +55,16 @@ MODx.panel.Context = function(config) {
                 ,preventRender: true
                 ,context_key: config.context
             }]
+        },{
+            title: _('access_permissions')
+            ,bodyStyle: 'padding: 1.5em'
+            ,autoHeight: true
+            ,items:[{
+                xtype: 'modx-grid-access-context'
+                ,title: ''
+                ,preventRender: true
+                ,context_key: config.context
+            }]
         }])]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
@@ -93,7 +103,7 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
     ,success: function(o) {
         Ext.getCmp('modx-grid-context-settings').getStore().commitChanges();
         
-        var t = parent.Ext.getCmp('modx_element_tree');        
+        var t = parent.Ext.getCmp('modx-resource-tree');        
         t.refreshNode(this.config.context+'_0',true);
     }
 });

@@ -115,7 +115,7 @@ MODx.panel.Plugin = function(config) {
                 ,preventRender: true
                 ,plugin: config.plugin
                 ,listeners: {
-                    'afteredit': {fn:this.fieldChangeEvent,scope:this}
+                    'rowclick': {fn:this.fieldChangeEvent,scope:this}
                 }
             }]
         },{
@@ -131,7 +131,7 @@ MODx.panel.Plugin = function(config) {
         }
     });
     MODx.panel.Plugin.superclass.constructor.call(this,config);
-    setTimeout("Ext.getCmp('modx_element_tree').expand();",1000);
+    setTimeout("Ext.getCmp('modx-element-tree').expand();",1000);
 };
 Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
     initialized: false
@@ -167,6 +167,7 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         var g = Ext.getCmp('modx-grid-plugin-event');
         Ext.apply(o.form.baseParams,{
             events: g.encodeModified()
+            ,propdata: Ext.getCmp('modx-grid-element-properties').encode()
         });
         this.cleanupEditor();
         return this.fireEvent('save',{
@@ -175,10 +176,10 @@ Ext.extend(MODx.panel.Plugin,MODx.FormPanel,{
         });
     }
     ,success: function(o) {
-        Ext.getCmp('modx-grid-element-properties').save();
+        if (MODx.request.id) Ext.getCmp('modx-grid-element-properties').save();
         Ext.getCmp('modx-grid-plugin-event').getStore().commitChanges();
         
-        var t = parent.Ext.getCmp('modx_element_tree');
+        var t = parent.Ext.getCmp('modx-element-tree');
         var c = Ext.getCmp('modx-plugin-category').getValue();
         var u = c != '' && c != null ? 'n_plugin_category_'+c : 'n_type_plugin'; 
         t.refreshNode(u,true);

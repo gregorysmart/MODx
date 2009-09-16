@@ -11,6 +11,7 @@ $classes= array (
     'modAccessContext',
     'modAccessElement',
     'modAccessMenu',
+    'modAccessPermission',
     'modAccessPolicy',
     'modAccessResource',
     'modAccessResourceGroup',
@@ -61,9 +62,10 @@ $classes= array (
     'modLexiconEntry',
     'modLexiconLanguage',
     'modLexiconTopic',
+    'modAccessActionDom',
+    'modActionDom',
 );
 
-$this->xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
 $this->xpdo->getManager();
 /* $this->xpdo->setLogLevel(XPDO_LOG_LEVEL_INFO); */
 $connected= $this->xpdo->connect();

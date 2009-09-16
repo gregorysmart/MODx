@@ -131,11 +131,14 @@ Ext.extend(MODx.panel.UserGroup,MODx.FormPanel,{
                     Ext.get('modx-user-group-header').update('<h2>'+_('user_group')+': '+r.object.name+'</h2>');
                     
                     var d = Ext.decode(r.object.users);
-                    var s = Ext.getCmp('modx-grid-user-group-users').getStore().loadData(d);
+                    Ext.getCmp('modx-grid-user-group-users').getStore().loadData(d);
+                    
                     d = Ext.decode(r.object.contexts);
-                    var s = Ext.getCmp('modx-grid-user-group-contexts').getStore().loadData(d);
+                    Ext.getCmp('modx-grid-user-group-contexts').getStore().loadData(d);
+                    
                     d = Ext.decode(r.object.resourcegroups);
-                    var s = Ext.getCmp('modx-grid-user-group-resource-groups').getStore().loadData(d);
+                    Ext.getCmp('modx-grid-user-group-resource-groups').getStore().loadData(d);
+                    
                     this.fireEvent('ready',r.object);
                 },scope:this}
             }
@@ -335,3 +338,23 @@ Ext.extend(MODx.window.AddUserToUserGroup,MODx.Window,{
     }
 });
 Ext.reg('modx-window-user-group-adduser',MODx.window.AddUserToUserGroup);
+
+
+
+MODx.combo.Authority = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        name: 'authority'
+        ,hiddenName: 'authority'
+        ,forceSelection: true
+        ,typeAhead: false
+        ,editable: false
+        ,allowBlank: false
+        ,listWidth: 300
+        ,url: MODx.config.connectors_url+'security/role.php'
+        ,baseParams: { action: 'getAuthorityList', addNone: true }
+    });
+    MODx.combo.Authority.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.Authority,MODx.combo.ComboBox);
+Ext.reg('modx-combo-authority',MODx.combo.Authority);

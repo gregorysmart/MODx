@@ -36,6 +36,7 @@ MODx.combo.ComboBox = function(config,getStore) {
             ,errorReader: MODx.util.JSONReader
             ,baseParams: config.baseParams || {}
             ,remoteSort: config.remoteSort || false
+            ,autoDestroy: true
         })
     });
 	if (getStore === true) {
@@ -61,19 +62,17 @@ Ext.reg('modx-combo',MODx.combo.ComboBox);
 MODx.combo.Renderer = function(combo) {
     var loaded = false;
     return (function(v) {
-        if (!combo.store || !combo.store.proxy) { return v; }
         var idx,rec;
-        if (!loaded) { 
-           combo.store.load();
-           loaded = true;
-           idx = combo.store.find(combo.valueField,v);
-           rec = combo.store.getAt(idx);
-           return (rec === undefined || rec === null ? v : rec.get(combo.displayField));
-        } else {
-           idx = combo.store.find(combo.valueField,v);
-           rec = combo.store.getAt(idx);
-           return (rec === undefined || rec === null ? v : rec.get(combo.displayField));
+        if (!combo.store) return v;
+        if (!loaded) {
+            if (combo.store.proxy !== undefined && combo.store.proxy !== null) {
+                combo.store.load();
+            }
+            loaded = true;
         }
+        idx = combo.store.find(combo.valueField,v);
+        rec = combo.store.getAt(idx);
+        return (rec === undefined || rec === null ? v : rec.get(combo.displayField));
     });
 };
 
@@ -671,7 +670,7 @@ Ext.extend(MODx.ChangeParentField,Ext.form.TriggerField,{
             return false;
         }
         
-        var t = Ext.getCmp('modx_resource_tree');
+        var t = Ext.getCmp('modx-resource-tree');
         if (!t) return;
         
         this.setValue(_('resource_parent_select_node'));
@@ -681,13 +680,12 @@ Ext.extend(MODx.ChangeParentField,Ext.form.TriggerField,{
         t.on('click',this.handleChangeParent,this);
         t.disableHref = true;
     }
-    
-    
+        
     ,handleChangeParent: function(node,e) {
         e.preventDefault();
         e.stopEvent();
         
-        var t = Ext.getCmp('modx_resource_tree');
+        var t = Ext.getCmp('modx-resource-tree');
         if (!t) return;
         t.disableHref = true;
         
@@ -750,3 +748,18 @@ MODx.combo.TVInputType = function(config) {
 };
 Ext.extend(MODx.combo.TVInputType,MODx.combo.ComboBox);
 Ext.reg('modx-combo-tv-input-type',MODx.combo.TVInputType);
+
+MODx.combo.Action = function(config) {
+    config = config || {};
+    Ext.applyIf(config,{
+        name: 'action'
+        ,hiddenName: 'action'
+        ,displayField: 'controller'
+        ,valueField: 'id'
+        ,fields: ['id','controller']
+        ,url: MODx.config.connectors_url+'system/action.php'
+    });
+    MODx.combo.Action.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.combo.Action,MODx.combo.ComboBox);
+Ext.reg('modx-combo-action',MODx.combo.Action);

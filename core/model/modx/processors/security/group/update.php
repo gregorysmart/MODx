@@ -22,14 +22,14 @@ $ug->set('name',$_POST['name']);
 $ug->set('parent',$_POST['parent']);
 
 /* users */
-$ous = $ug->getMany('modUserGroupMember');
+$ous = $ug->getMany('UserGroupMembers');
 foreach ($ous as $ou) { $ou->remove(); }
 $users = $modx->fromJSON($_POST['users']);
 foreach ($users as $ua) {
     $ugm = $modx->newObject('modUserGroupMember');
     $ugm->set('user_group',$ug->get('id'));
     $ugm->set('member',$ua['id']);
-    $ugm->set('role',$ua['role']);
+    $ugm->set('role',empty($ua['role']) ? 0 : $ua['role']);
 
     $ugm->save();
 }

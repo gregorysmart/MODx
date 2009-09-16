@@ -1,7 +1,6 @@
 <?php
 /**
  * @package modx
- * @subpackage mysql
  */
 class modResourceGroup extends modAccessibleSimpleObject {
     function modResourceGroup(& $xpdo) {
@@ -28,7 +27,7 @@ class modResourceGroup extends modAccessibleSimpleObject {
         ));
         $dgs= array ();
         foreach ($ugdgs as $ugdg) {
-            $dgs[$ugdg->membergroup]= $ugdg->getOne('modUserGroup');
+            $dgs[$ugdg->membergroup]= $ugdg->getOne('Target');
         }
         return $dgs;
     }

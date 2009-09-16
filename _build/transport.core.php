@@ -9,6 +9,7 @@ $mtime = microtime();
 $mtime = explode(" ", $mtime);
 $mtime = $mtime[1] + $mtime[0];
 $tstart = $mtime;
+unset($mtime);
 /* get rid of time limit */
 set_time_limit(0);
 echo '<pre>';
@@ -74,12 +75,17 @@ if (file_exists($packageDirectory . 'core.transport.zip')) {
     unlink($packageDirectory . 'core.transport.zip');
 }
 if (file_exists($packageDirectory . 'core') && is_dir($packageDirectory . 'core')) {
-    $cacheManager->deleteTree($packageDirectory . 'core', true);
+    $cacheManager->deleteTree($packageDirectory . 'core',array(
+        'deleteTop' => true,
+        'skipDirs' => false,
+        'extensions' => '*',
+    ));
 }
 $xpdo->log(XPDO_LOG_LEVEL_INFO,'Removed pre-existing core/ and core.transport.zip.'); flush();
 
 /* create core transport package */
 $package = new xPDOTransport($xpdo, 'core', $packageDirectory);
+unset($packageDirectory);
 
 $xpdo->setPackage('modx', MODX_CORE_PATH . 'model/');
 $xpdo->loadClass('modAccess');
@@ -109,17 +115,6 @@ unset ($collection, $c, $attributes);
 $xpdo->log(XPDO_LOG_LEVEL_INFO,'Default workspace packaged.'); flush();
 
 /* modxcms.com extras provisioner */
-$c = $xpdo->newQuery('transport.modTransportProvider');
-$c->where(array(
-    'service_url' => 'http://wtf.modxcms.com/addons2.js ',
-));
-$c->orCondition(array(
-    'service_url' => 'http://wtf.modxcms.com/repos/addons.js',
-));
-$oldProviders = $xpdo->getCollection('transport.modTransportProvider',$c);
-if (!empty($oldProviders)) {
-    foreach ($oldProviders as $k => $p) { $p->remove(); }
-}
 $collection = array ();
 $collection['1'] = $xpdo->newObject('transport.modTransportProvider');
 $collection['1']->fromArray(array (
@@ -142,32 +137,77 @@ unset ($collection, $c, $attributes);
 $xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in modxcms.com provisioner reference.'); flush();
 
 /* modAction */
-$collection= array();
-include dirname(__FILE__).'/data/transport.core.actions.php';
-$attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => true,
-);
-foreach ($collection as $c) {
-    $package->put($c, $attributes);
-}
-unset ($collection, $c, $attributes);
+$collection = include dirname(__FILE__).'/data/transport.core.actions.php';
+if (!empty($collection)) {
+    $attributes = array (
+        XPDO_TRANSPORT_PRESERVE_KEYS => false,
+        XPDO_TRANSPORT_UPDATE_OBJECT => true,
+        XPDO_TRANSPORT_UNIQUE_KEY => array ('namespace','controller'),
+    );
+    foreach ($collection as $c) {
+        $package->put($c, $attributes);
+    }
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all modActions.'); flush();
+    $xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' modActions.'); flush();
+    unset ($collection, $c, $attributes);
+} else {
+    $xpdo->log(XPDO_LOG_LEVEL_ERROR,'Could not load modActions.'); flush();
+}
 
 /* modMenu */
-$collection= array();
-include dirname(__FILE__).'/data/transport.core.menus.php';
-$attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => true,
-);
-foreach ($collection as $c) {
-    $package->put($c, $attributes);
-}
-unset ($collection, $c, $attributes);
+$collection = include dirname(__FILE__).'/data/transport.core.menus.php';
+if (!empty($collection)) {
+    $attributes = array (
+        XPDO_TRANSPORT_PRESERVE_KEYS => true,
+        XPDO_TRANSPORT_UPDATE_OBJECT => true,
+        XPDO_TRANSPORT_UNIQUE_KEY => 'text',
+        XPDO_TRANSPORT_RELATED_OBJECTS => true,
+        XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array(
+            'Action' => array (
+                XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                XPDO_TRANSPORT_UNIQUE_KEY => array ('namespace','controller'),
+                XPDO_TRANSPORT_RELATED_OBJECTS => true,
+                XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array(
+                    'Children' => array(
+                        XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                        XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                        XPDO_TRANSPORT_UNIQUE_KEY => array ('namespace','controller'),
+                    ),
+                ),
+            ),
+            'Children' => array(
+                XPDO_TRANSPORT_PRESERVE_KEYS => true,
+                XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                XPDO_TRANSPORT_UNIQUE_KEY => 'text',
+                XPDO_TRANSPORT_RELATED_OBJECTS => true,
+                XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array(
+                    'Action' => array (
+                        XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                        XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                        XPDO_TRANSPORT_UNIQUE_KEY => array ('namespace','controller'),
+                        XPDO_TRANSPORT_RELATED_OBJECTS => true,
+                        XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array(
+                            'Children' => array(
+                                XPDO_TRANSPORT_PRESERVE_KEYS => false,
+                                XPDO_TRANSPORT_UPDATE_OBJECT => true,
+                                XPDO_TRANSPORT_UNIQUE_KEY => array ('namespace','controller'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    );
+    foreach ($collection as $c) {
+        $package->put($c, $attributes);
+    }
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all modMenus.'); flush();
+    $xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' modMenus.'); flush();
+    unset ($collection, $c, $attributes);
+} else {
+    $xpdo->log(XPDO_LOG_LEVEL_ERROR,'Could not load modMenus.'); flush();
+}
 
 /* modContentTypes */
 $collection = array ();
@@ -321,14 +361,14 @@ $collection = array ();
 include dirname(__FILE__).'/data/transport.core.events.php';
 $attributes = array (
     XPDO_TRANSPORT_PRESERVE_KEYS => true,
-    XPDO_TRANSPORT_UPDATE_OBJECT => true
+    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+    XPDO_TRANSPORT_UNIQUE_KEY => array ('name'),
 );
 foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
-unset ($c, $attributes);
-
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default events.'); flush();
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default events.'); flush();
+unset ($collection, $c, $attributes);
 
 /* modSystemSetting collection */
 $collection = array ();
@@ -355,9 +395,9 @@ foreach ($collection as $c) {
     }
     $package->put($c, $attributes);
 }
-unset ($collection, $c, $attributes);
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default system settings.'); flush();
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default system settings.'); flush();
+unset ($collection, $c, $attributes);
 
 /* modContextSetting collection */
 $collection = array ();
@@ -369,9 +409,9 @@ $attributes= array(
 foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
-unset ($collection, $c, $attributes);
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged all default context settings.'); flush();
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default context settings.'); flush();
+unset ($collection, $c, $attributes);
 
 /* modUserGroup */
 $collection = array ();
@@ -383,9 +423,9 @@ $attributes = array (
 foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
-unset ($collection, $c, $attributes);
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default user groups.'); flush();
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default user groups.'); flush();
+unset ($collection, $c, $attributes);
 
 /* modUserGroupRole */
 $collection = array ();
@@ -397,9 +437,9 @@ $attributes = array (
 foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
-unset ($collection, $c, $attributes);
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default roles Member and SuperUser.'); flush();
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default roles Member and SuperUser.'); flush();
+unset ($collection, $c, $attributes);
 
 /* modAccessPolicy */
 $collection = array ();
@@ -408,13 +448,36 @@ $attributes = array (
     XPDO_TRANSPORT_PRESERVE_KEYS => false,
     XPDO_TRANSPORT_UNIQUE_KEY => array('name'),
     XPDO_TRANSPORT_UPDATE_OBJECT => true,
+    XPDO_TRANSPORT_RELATED_OBJECTS => true,
+    XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array (
+        'Permissions' => array (
+            XPDO_TRANSPORT_PRESERVE_KEYS => false,
+            XPDO_TRANSPORT_UPDATE_OBJECT => true,
+            XPDO_TRANSPORT_UNIQUE_KEY => array ('policy','name'),
+        )
+    )
 );
 foreach ($collection as $c) {
     $package->put($c, $attributes);
 }
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default access policies.'); flush();
 unset ($collection, $c, $attributes);
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default access policies.'); flush();
+/* modAccessContext */
+$collection = array ();
+include dirname(__FILE__).'/data/transport.core.access_contexts.php';
+$attributes = array (
+    XPDO_TRANSPORT_PRESERVE_KEYS => false,
+    XPDO_TRANSPORT_UNIQUE_KEY => array('target', 'principal_class', 'principal'),
+    XPDO_TRANSPORT_UPDATE_OBJECT => true,
+);
+foreach ($collection as $c) {
+    $package->put($c, $attributes);
+}
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in '.count($collection).' default access context permissions.'); flush();
+unset ($collection, $c, $attributes);
 
 /* Lexicon stuff */
 $entries = array ();
@@ -435,7 +498,7 @@ foreach ($topics as $t) {
         XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'namespace'),
         XPDO_TRANSPORT_RELATED_OBJECTS => true,
         XPDO_TRANSPORT_RELATED_OBJECT_ATTRIBUTES => array (
-            'modLexiconEntry' => array (
+            'Entries' => array (
                 XPDO_TRANSPORT_PRESERVE_KEYS => false,
                 XPDO_TRANSPORT_UPDATE_OBJECT => true,
                 XPDO_TRANSPORT_UNIQUE_KEY => array ('name', 'topic', 'language'),
@@ -449,25 +512,11 @@ foreach ($languages as $l) {
         XPDO_TRANSPORT_UPDATE_OBJECT => true,
     ));
 }
+
+$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged core lexicon entries ('.count($entries).') and topics ('.count($topics).').'); flush();
 unset ($entries, $languages, $topics, $c, $t, $l);
 
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged core lexicon entries and topics.'); flush();
-
-/* modAccessContext */
-$collection = array ();
-include dirname(__FILE__).'/data/transport.core.access_contexts.php';
-$attributes = array (
-    XPDO_TRANSPORT_PRESERVE_KEYS => false,
-    XPDO_TRANSPORT_UNIQUE_KEY => array('target', 'principal_class', 'principal'),
-    XPDO_TRANSPORT_UPDATE_OBJECT => true,
-);
-foreach ($collection as $c) {
-    $package->put($c, $attributes);
-}
-unset ($collection, $c, $attributes);
-
-$xpdo->log(XPDO_LOG_LEVEL_INFO,'Packaged in default access context permissions.'); flush();
-
+/* zip up package */
 $xpdo->log(XPDO_LOG_LEVEL_INFO,'Beginning to zip up transport package...'); flush();
 $package->pack();
 $xpdo->log(XPDO_LOG_LEVEL_INFO,'Transport zip created. Build script finished.'); flush();

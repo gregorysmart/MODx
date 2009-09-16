@@ -166,24 +166,26 @@ class modTemplateVar extends modElement {
     function setValue($resourceId= 0, $value= null) {
         $oldValue= '';
         if (intval($resourceId)) {
-            $tvd = $this->xpdo->getObject('modTemplateVarResource',array(
+            $templateVarResource = $this->xpdo->getObject('modTemplateVarResource',array(
                 'tmplvarid' => $this->get('id'),
                 'contentid' => $resourceId,
             ),true);
 
-            if (!$tvd) {
-                $tvd= $this->xpdo->newObject('modTemplateVarResource');
+            if (!$templateVarResource) {
+                $templateVarResource= $this->xpdo->newObject('modTemplateVarResource');
             }
+
             if ($value !== $this->get('default_text')) {
-                if (!$tvd->_new) {
-                    $tvd->set('value', $value);
+                if (!$templateVarResource->isNew()) {
+                    $templateVarResource->set('value', $value);
                 } else {
-                    $tvd->set('contentid', $resourceId);
-                    $tvd->set('value', $value);
-                    $this->addOne($tvd);
+                    $templateVarResource->set('contentid', $resourceId);
+                    $templateVarResource->set('value', $value);
                 }
-            } elseif (!$tvd->_new && ($value === null || $value === $this->get('default_text'))) {
-                $tvd->remove();
+                $this->addMany($templateVarResource);
+            } elseif (!$templateVarResource->isNew()
+                  && ($value === null || $value === $this->get('default_text'))) {
+                $templateVarResource->remove();
             }
         }
     }
@@ -300,7 +302,7 @@ class modTemplateVar extends modElement {
     /**
      * Returns an string if a delimiter is present. Returns array if is a recordset is present.
      *
-     * @param mixed $src Source object, either a recordset, PDO object, array or string.
+     * @param mixed $src Source object, either a recordset, PDOStatement, array or string.
      * @param string $delim Delimiter for string parsing.
      * @param string $type Type to return, either 'string' or 'array'.
      *
@@ -337,7 +339,7 @@ class modTemplateVar extends modElement {
     /**
      * Parses input options sent through postback.
      *
-     * @param mixed $v The options to parse, either a resource, array or string.
+     * @param mixed $v The options to parse, either a recordset, PDOStatement, array or string.
      * @return mixed The parsed options.
      */
     function parseInputOptions($v) {
@@ -345,6 +347,8 @@ class modTemplateVar extends modElement {
         if(is_array($v)) return $v;
         else if(is_resource($v)) {
             while ($cols = mysql_fetch_row($v)) $a[] = $cols;
+        } else if (is_object($v)) {
+            $a = $v->fetchAll(PDO_FETCH_ASSOC);
         }
         else $a = explode("||", $v);
         return $a;
@@ -386,8 +390,7 @@ class modTemplateVar extends modElement {
                     $dbtags['PREFIX'] = $this->xpdo->db->config['table_prefix'];
                     foreach($dbtags as $key => $pValue)
                         $param = str_replace('[[+'.$key.']]', $pValue, $param);
-                    $rs = $this->xpdo->db->query('SELECT '.$param);
-                    $output = $rs;
+                    $output = $this->xpdo->db->query('SELECT '.$param);
                     break;
 
                 case 'EVAL':        /* evaluates text as php codes return the results */
