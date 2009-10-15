@@ -7,18 +7,28 @@
  * @package modx
  * @subpackage processors.security.documentgroup
  */
+if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('user','access');
 
-if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
+/* get resource group */
+if (empty($_POST['id'])) return $modx->error->failure($modx->lexicon('resource_group_err_ns'));
+$resourceGroup = $modx->getObject('modResourceGroup',$_POST['id']);
+if ($resourceGroup == null) return $modx->error->failure($modx->lexicon('resource_group_err_nf'));
 
-if (!isset($_POST['id'])) return $modx->error->failure($modx->lexicon('resource_group_err_ns'));
+$modx->invokeEvent('OnBeforeDocGroupRemove',array(
+    'group' => &$resourceGroup,
+));
 
-$dg = $modx->getObject('modResourceGroup',$_POST['id']);
-if ($dg == null) return $modx->error->failure($modx->lexicon('resource_group_err_nf'));
+/* remove resource group */
+if ($resourceGroup->remove() == false) {
+    return $modx->error->failure($modx->lexicon('resource_group_err_remove'));
+}
 
-if (!$dg->remove()) return $modx->error->failure($modx->lexicon('resource_group_err_remove'));
+$modx->invokeEvent('OnDocGroupRemove',array(
+    'group' => &$resourceGroup,
+));
 
 /* log manager action */
-$modx->logManagerAction('delete_resource_group','modResourceGroup',$dg->get('id'));
+$modx->logManagerAction('delete_resource_group','modResourceGroup',$resourceGroup->get('id'));
 
-return $modx->error->success();
+return $modx->error->success('',$resourceGroup);

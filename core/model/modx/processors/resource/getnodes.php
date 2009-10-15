@@ -185,9 +185,9 @@ while ($item) {
                 'pk' => $item->get('key'),
                 'leaf' => false,
                 'cls' => $class,
-                'qtip' => $item->get('description'),
+                'qtip' => $item->get('description') != '' ? $item->get('description') : '',
                 'type' => 'context',
-                'href' => '?a='.$actions['context/update'].'&key='.$item->get('key'),
+                'page' => empty($_REQUEST['nohref']) ? '?a='.$actions['context/update'].'&key='.$item->get('key') : '',
                 'menu' => array('items' => $menu),
             );
         } else {
@@ -392,20 +392,34 @@ while ($item) {
             $class .= ($item->get('published') ? '' : ' unpublished')
                 .($item->get('deleted') ? ' deleted' : '')
                 .($item->get('hidemenu') == 1 ? ' hidemenu' : '');
-            $qtip = ($item->longtitle != '' ? '<b>'.$item->longtitle.'</b><br />' : '').'<i>'.$item->description.'</i>';
 
-            $items[] = array(
+            $qtip = '';
+            if ($item->longtitle != '') {
+                $qtip = '<b>'.$item->longtitle.'</b><br />';
+            }
+            if ($item->description != '') {
+                $qtip = '<i>'.$item->description.'</i>';
+            }
+
+            $hasChildren = $item->hasChildren() ? false : true;
+            $itemArray = array(
                 'text' => $item->pagetitle.' ('.$item->id.')',
                 'id' => $item->context_key . '_'.$item->id,
                 'pk' => $item->id,
-                'leaf' => $item->hasChildren() ? false : true,//$item->isfolder ? 0 : 1,
                 'cls' => $class,
                 'type' => 'modResource',
                 'qtip' => $qtip,
                 'preview_url' => $modx->makeUrl($item->get('id')),
-                'href' => '?a='.($hasEditPerm ? $actions['resource/update'] : $actions['resource/data']).'&id='.$item->id,
+                'page' => empty($_REQUEST['nohref']) ? '?a='.($hasEditPerm ? $actions['resource/update'] : $actions['resource/data']).'&id='.$item->id : '',
+                'allowDrop' => true,
                 'menu' => array('items' => $menu),
             );
+            if ($hasChildren) {
+                $itemArray['children'] = array();
+                $itemArray['expanded'] = true;
+            }
+            $items[] = $itemArray;
+            unset($qtip,$class,$menu,$itemArray,$hasChildren);
         }
     }
     $item = next($collection);

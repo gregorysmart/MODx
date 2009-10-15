@@ -851,3 +851,30 @@ $collection['90']->fromArray(array (
   'area' => 'manager',
   'editedon' => null,
 ), '', true, true);
+$collection['91']= $xpdo->newObject('modSystemSetting');
+$collection['91']->fromArray(array (
+  'key' => 'site_unavailable_page',
+  'value' => '0',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'site',
+  'editedon' => NULL,
+), '', true, true);
+$collection['92']= $xpdo->newObject('modSystemSetting');
+$collection['92']->fromArray(array (
+  'key' => 'password_generated_length',
+  'value' => '8',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'authentication',
+  'editedon' => null,
+), '', true, true);
+$collection['93']= $xpdo->newObject('modSystemSetting');
+$collection['93']->fromArray(array (
+  'key' => 'password_min_length',
+  'value' => '8',
+  'xtype' => 'textfield',
+  'namespace' => 'core',
+  'area' => 'authentication',
+  'editedon' => null,
+), '', true, true);

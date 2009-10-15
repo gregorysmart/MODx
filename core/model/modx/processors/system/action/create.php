@@ -13,22 +13,18 @@
  * @package modx
  * @subpackage processors.system.action
  */
+if (!$modx->hasPermission('actions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('action','menu','namespace');
 
-if (!$modx->hasPermission('actions')) return $modx->error->failure($modx->lexicon('permission_denied'));
-
+/* verify/format data */
 $_POST['haslayout'] = !empty($_POST['haslayout']);
-
-/* verify controller */
-if (!isset($_POST['controller']) || $_POST['controller'] == '') {
-	return $modx->error->failure($modx->lexicon('controller_err_ns'));
-}
+if (empty($_POST['controller'])) return $modx->error->failure($modx->lexicon('controller_err_ns'));
 
 /* verify parent */
 if (!isset($_POST['parent'])) return $modx->error->failure($modx->lexicon('action_parent_err_ns'));
 if (!empty($_POST['parent'])) {
-	$parent = $modx->getObject('modAction',$_POST['parent']);
-	if ($parent == null) return $modx->error->failure($modx->lexicon('action_parent_err_nf'));
+    $parent = $modx->getObject('modAction',$_POST['parent']);
+    if ($parent == null) return $modx->error->failure($modx->lexicon('action_parent_err_nf'));
 }
 
 /* verify namespace */
@@ -48,4 +44,4 @@ if ($action->save() == false) {
 /* log manager action */
 $modx->logManagerAction('action_create','modAction',$action->get('id'));
 
-return $modx->error->success();
+return $modx->error->success('',$action);

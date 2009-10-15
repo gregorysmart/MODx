@@ -5,10 +5,11 @@
 {literal}
 MODx.load({
 {/literal}
-    xtype: 'modx-panel-tv-image'
+    xtype: 'modx-panel-tv-file'
     ,renderTo: 'tvpanel{$tv->id}'
     ,tv: '{$tv->id}'
-    ,value: '{$tv->value}' 
+    ,value: '{$tv->value|escape}'
+    ,width: 300
 {literal}
 });
 {/literal}

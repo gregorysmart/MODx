@@ -3,10 +3,31 @@
  * @package modx
  * @subpackage controllers.resource.weblink
  */
+if (!$modx->hasPermission('edit_document')) return $modx->error->failure($modx->lexicon('access_denied'));
+
+$resource = $modx->getObject('modResource',$_REQUEST['id']);
+if ($resource == null) return $modx->error->failure(sprintf($modx->lexicon('resource_with_id_not_found'), $_REQUEST['id']));
+
+if (!$resource->checkPolicy('save')) {
+    return $modx->error->failure($modx->lexicon('access_permission_denied'));
+}
+
+$lockedBy = $resource->addLock($modx->user->get('id'));
+if (!empty($lockedBy) && $lockedBy !== true) {
+    if ($user = $modx->getObject('modUser', $lockedBy)) {
+        $lockedBy = $user->get('username');
+    }
+    return $modx->error->failure($modx->lexicon('resource_locked_by', array('user' => $lockedBy, 'id' => $resource->get('id'))));
+}
+
 if (isset($_REQUEST['template'])) $resource->set('template',$_REQUEST['template']);
 
 /* invoke OnDocFormPrerender event */
-$onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array('id' => 0));
+$onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array(
+    'id' => $resource->get('id'),
+    'resource' => &$resource,
+    'mode' => 'upd',
+));
 if (is_array($onDocFormPrerender)) {
     $onDocFormPrerender = implode('',$onDocFormPrerender);
 }
@@ -40,11 +61,18 @@ $modx->smarty->assign('hasdocgroups',count($docgroups) > 0);
 
 
 /* invoke OnDocFormRender event */
-$onDocFormRender = $modx->invokeEvent('OnDocFormRender',array('id' => 0));
+$onDocFormRender = $modx->invokeEvent('OnDocFormRender',array(
+    'id' => $resource->get('id'),
+    'resource' => &$resource,
+    'mode' => 'upd',
+));
 if (is_array($onDocFormRender)) {
     $onDocFormRender = implode('',$onDocFormRender);
 }
 $modx->smarty->assign('onDocFormRender',$onDocFormRender);
+
+/* get url for resource for preview window */
+$url = $modx->makeUrl($resource->get('id'));
 
 /* assign weblink to smarty */
 $modx->smarty->assign('resource',$resource);
@@ -84,6 +112,7 @@ Ext.onReady(function() {
         ,edit_doc_metatags: "'.$edit_doc_metatags.'"
         ,access_permissions: "'.$access_permissions.'"
         ,publish_document: "'.$publish_document.'"
+        ,preview_url: "'.$url.'"
     });
 });
 // ]]>

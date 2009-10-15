@@ -5,6 +5,18 @@
  * @package modx
  * @subpackage manager
  */
+function getStrBtwn($str,$start,$end) {
+        $r = explode($start,$str);
+        if (!empty($r[1])) {
+            $r = explode($end, $r[1]);
+            return $r[0];
+        }
+        return false;
+}
+$clog = file_get_contents($modx->getOption('core_path').'docs/changelog.txt');
+$rev = getStrBtwn($clog,'$LastChangedRevision: ',' $');
+$modx->smarty->assign('revision',$rev);
+
 /* get top navbar */
 $menus = $modx->cacheManager->get('mgr/menus');
 if ($menus == null) {
@@ -69,18 +81,31 @@ $welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUse
 $modx->smarty->assign('welcome_back',$welcome_back);
 unset($welcome_back);
 
-/* register JS scripts */
-$modx->regClientStartupHTMLBlock('
-<script type="text/javascript">
-Ext.onReady(function() {
-    MODx.load({
-        xtype: "modx-layout"
-        ,accordionPanels: MODx.accordionPanels || []
-    });
-});
-</script>');
-if (!empty($modx->sjscripts)) {
-    $modx->smarty->assign('cssjs',$modx->sjscripts);
+/* if true, use compressed JS */
+if ($modx->getOption('compress_js',null,false)) {
+    foreach ($modx->sjscripts as &$scr) {
+        $pos = strpos($scr,'.js');
+        if ($pos) {
+            $newUrl = substr($scr,0,$pos).'-min'.substr($scr,$pos,strlen($scr));
+        } else { continue; }
+        $pos = strpos($newUrl,'modext/');
+        if ($pos) {
+            $pos = $pos+7;
+            $newUrl = substr($newUrl,0,$pos).'build/'.substr($newUrl,$pos,strlen($newUrl));
+        }
+
+        $path = str_replace(array(
+            $modx->getOption('manager_url').'assets/modext/',
+            '<script type="text/javascript" src="',
+            '"></script>',
+        ),'',$newUrl);
+
+        if (file_exists($modx->getOption('manager_path').'assets/modext/'.$path)) {
+            $scr = $newUrl;
+        }
+    }
 }
+/* assign css/js to header */
+$modx->smarty->assign('cssjs',$modx->sjscripts);
 
 return $modx->smarty->fetch('header.tpl');

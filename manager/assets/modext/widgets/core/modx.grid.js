@@ -23,6 +23,7 @@ MODx.grid.Grid = function(config) {
 		,autoHeight: true
         ,collapsible: true
         ,stripeRows: true
+        ,header: false
         ,cls: 'modx-grid'
 		,viewConfig: {
 			forceFit: true
@@ -733,11 +734,13 @@ Ext.ux.grid.CheckColumn.prototype ={
     },
 
     onMouseDown : function(e, t){
+        this.grid.fireEvent('rowclick');
         if(t.className && t.className.indexOf('x-grid3-cc-'+this.id) != -1){
             e.stopEvent();
             var index = this.grid.getView().findRowIndex(t);
             var record = this.grid.store.getAt(index);
             record.set(this.dataIndex, !record.data[this.dataIndex]);
+            this.grid.fireEvent('afteredit');
         }
     },
 

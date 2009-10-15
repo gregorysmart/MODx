@@ -56,15 +56,19 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
                 MODx.toolbar.ActionButtons.superclass.add.call(this,el);
                 continue;
             }
+            
+            var id = el.id || Ext.id();
             Ext.applyIf(el,{
                 xtype: 'button'
                 ,cls: (el.icon ? 'x-btn-icon bmenu' : 'x-btn-text bmenu')
                 ,scope: this
+                ,disabled: el.checkDirty ? true : false
+                ,listeners: {}
+                ,id: id
             });
             if (el.button) {
                 MODx.toolbar.ActionButtons.superclass.add.call(this,el);
-            }
-            
+            }            
             
             if (el.handler === null && el.menu === null) {
                 el.handler = this.checkConfirm;
@@ -75,23 +79,23 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
                     },el.scope || this);
                 };
             } else if (el.handler) {} else { el.handler = this.handleClick; }
-                                        
-            /* create the button */
-            var b = new Ext.Toolbar.Button(el);        
-            
-            /* if checkDirty, disable until field change */
-            if (el.checkDirty) {
-                b.setDisabled(true);
-                this.checkDirtyBtns.push(b);
-            }
             
             /* if javascript is specified, run it when button is click, before this.checkConfirm is run */
             if (el.javascript) {
-                b.addListener('click',this.evalJS,this);
+                el.listeners['click'] = {fn:this.evalJS,scope:this};
+            }
+            
+            /* if checkDirty, disable until field change */
+            if (el.xtype == 'button') {
+                el.listeners['render'] = {fn:function(btn) {
+                    if (el.checkDirty && btn) {
+                        this.checkDirtyBtns.push(btn);
+                    }
+                },scope:this}
             }
             
             /* add button to toolbar */
-            MODx.toolbar.ActionButtons.superclass.add.call(this,b);
+            MODx.toolbar.ActionButtons.superclass.add.call(this,el);
             
             if (el.keys) {
                 var map = new Ext.KeyMap(Ext.get(document));
@@ -101,11 +105,15 @@ Ext.extend(MODx.toolbar.ActionButtons,Ext.Toolbar,{
                     Ext.applyIf(k,{
                         scope: this
                         ,stopEvent: true
-                        ,fn: function(e) { this.checkConfirm(b,e); }
+                        ,fn: function(e) {
+                            var b = Ext.getCmp(id);
+                            if (b) this.checkConfirm(b,e);
+                        }
                     });
                     map.addBinding(k);
                 }
             }
+            delete el;
         }
     }
     

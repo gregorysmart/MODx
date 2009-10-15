@@ -23,7 +23,11 @@ if (!empty($lockedBy) && $lockedBy !== true) {
 if (isset($_REQUEST['template'])) $resource->set('template',$_REQUEST['template']);
 
 /* invoke OnDocFormPrerender event */
-$onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array('id' => 0));
+$onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array(
+    'id' => $resource->get('id'),
+    'resource' => &$resource,
+    'mode' => 'upd',
+));
 if (is_array($onDocFormPrerender)) {
     $onDocFormPrerender = implode('',$onDocFormPrerender);
 }
@@ -57,7 +61,11 @@ $modx->smarty->assign('hasdocgroups',count($docgroups) > 0);
 
 
 /* invoke OnDocFormRender event */
-$onDocFormRender = $modx->invokeEvent('OnDocFormRender',array('id' => 0));
+$onDocFormRender = $modx->invokeEvent('OnDocFormRender',array(
+    'id' => $resource->get('id'),
+    'resource' => &$resource,
+    'mode' => 'upd',
+));
 if (is_array($onDocFormRender)) {
     $onDocFormRender = implode('',$onDocFormRender);
 }
@@ -89,6 +97,8 @@ if ($modx->getOption('use_editor')) {
         $modx->smarty->assign('onRichTextEditorInit',$onRichTextEditorInit);
     }
 }
+/* get url for resource for preview window */
+$url = $modx->makeUrl($resource->get('id'));
 
 /* assign static resource to smarty */
 $modx->smarty->assign('resource',$resource);
@@ -128,6 +138,7 @@ Ext.onReady(function() {
         ,edit_doc_metatags: "'.$edit_doc_metatags.'"
         ,access_permissions: "'.$access_permissions.'"
         ,publish_document: "'.$publish_document.'"
+        ,preview_url: "'.$url.'"
     });
 });
 // ]]>

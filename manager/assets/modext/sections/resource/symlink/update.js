@@ -38,6 +38,11 @@ MODx.page.UpdateSymLink = function(config) {
             ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
             ,text: _('save')
             ,method: 'remote'
+            ,keys: [{
+                key: 's'
+                ,alt: true
+                ,ctrl: true
+            }]
         }
         ,'-'
         ,{
@@ -50,7 +55,7 @@ MODx.page.UpdateSymLink = function(config) {
         ,{
             process: 'preview'
             ,text: _('preview')
-            ,handler: this.preview.createDelegate(this,[config.id])
+            ,handler: this.preview
             ,scope: this
         },{
             process: 'cancel'
@@ -62,8 +67,8 @@ MODx.page.UpdateSymLink = function(config) {
     MODx.page.UpdateSymLink.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.page.UpdateSymLink,MODx.Component,{
-    preview: function(id) {
-        window.open(MODx.config.base_url+'index.php?id='+id);
+    preview: function() {
+        window.open(this.config.preview_url);
         return false;
     }
     

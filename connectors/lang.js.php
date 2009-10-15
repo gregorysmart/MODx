@@ -55,14 +55,14 @@ if ($modx->getOption('cache_lang_js',null,false)) {
     } else {
         header("ETag: \"{$hash}\"");
         header('Accept-Ranges: bytes');
-        header('Content-Length: '.strlen($output));
+        //header('Content-Length: '.strlen($output));
         header('Content-Type: application/x-javascript');
 
         echo $output;
     }
 } else {
     /* just output JS with no server caching */
-    header('Content-Length: '.strlen($output));
+    //header('Content-Length: '.strlen($output));
     header('Content-Type: application/x-javascript');
     echo $output;
 }

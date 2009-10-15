@@ -4,6 +4,56 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-beta-4 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-902] Fixed empty warning message for removing category
+- Fixed bug with removing categories
+- Fixed issue where couldn't drag a resource onto a resource with no children
+- [#MODX-1130] Fixed issue with parent triggerfield; also redid how tree hrefs load so that clicking on a node in the tree to load url can be disabled
+- [#MODX-1133] Fixed issues with hotkey behavior
+- [#MODX-1230] Fixed issue where drag Resource to symlink/weblink content field would add tags as well
+- [#MODX-1273] Added OnLoadWebPageCache event invocation to modRequest->getResource().
+- [#MODX-1273] Fixed events in User update/create form
+- Enabled compression of manager JS scripts by changing the Setting "compress_js" to true.
+- Upgraded ExtJS to ExtJS 3.0.2
+- [#MODX-1270] OnManagerCreateGroup and OnWebCreateGroup events now fire
+- [#MODX-1237] Fixed warning in modParser with regards to uninitialized variable
+- [#MODX-979] Added password_generated_length (the length of the auto-generated password) and password_min_length (the minimum length for a password)
+- Cleaned up usergroup processors
+- Added sanity checks to usergroup processors
+- Prevent possible issue on usergroup update that would wipe related objects
+- Prevent possible issue that would allow user to remove Administrator group
+- Removed some legacy todo statements
+- Moved Element category reset on modCategory object remove to modCategory class
+- Cleaned up modResourceGroup, modTemplate helper methods
+- Added modUser::joinGroup(group,(optional)role) and modUser::leaveGroup(group) for easier development 
+- Optimized getrecentlyeditedresources processor
+- Make sure config.js.php outputs proper headers
+- Commented out Content-Length headers on lang.js.php, for some reason was slowing down servers
+- [#MODX-1256] Fixed issue with Resource tree not being visible in Resource Groups page
+- Fixed issues with Import HTML/Resources pages; properly convert to MODExt
+- [#MODX-1202] Fixed issue where Element name was missing in Duplicate window
+- [#MODX-1233] Fixed bug where categories could only be renamed once before needing to reload page
+- [#MODX-1248] Fix bug that could wipe TV values if tab wasnt loaded
+- [#MODX-1241] Fixed Preview button on update panels
+- Prettying up of TV fields
+- Now display SVN revision number with version in top left of mgr header
+- Fixed issues with TVs setting values incorrectly
+- Added "Set to Default" button on TVs that will reset the TV's value to it's default value. TV Resource values can now be set to blank as a valid value.
+- [#MODX-924] Fixed errors in various system setting descriptions
+- [#MODX-935] Tooltips in Resource tree now do not show if no description or longtitle is set
+- [#MODX-1120] Now shows TV names in tag form below the caption in the TV editing panel in Resource editing 
+- Fixes to plugin event calls in controllers
+- Fixes to filetree to enable in Ext3
+- [#MODX-1112] Fixed issue where checkboxes in grids werent firing dirty statuses
+- [#MODX-1229] Fixed issue where default hidemenu setting in Create Static Resource was setting incorrectly to true
+- Added some extra variables for RTE firing; also made sure MODx.loadRTE fires on new resource creation. Fixes [#TINYMCE-9], [#TINYMCE-8]
+- [#MODX-523] Fixed copy issue in console by providing "Download to File" link
+- [#MODX-649] Fixed issue where comboboxes were not loading proper displayValue when first rendered
+- Added category combobox to quick update/create windows
+- [#MODX-1019] Added missing site_unavailable_page System Setting.
+- [#MODX-1226] Removed modResource->checkChildren() method; isfolder should not be set based on presence/absence of children.
+- [#MODX-1213] Fixed issues with WebLink creation and loading
+- [#MODX-1178] Fixed issue where checkbox TVs were unable to be set to false; properly rendered values into a hidden field
+- [#MODX-1204] Implemented $matchAll for modUser::isMember, that allows exclusive and inclusive group membership checks
 - [#MODX-1203] Now preserves state of open tabs in left bar
 - Added "Form Customization" page, which emulates Evolution ManagerManager functionality and integrates it into the core
 - Revamped modMenu DB structure to allow for more proper dynamic menus; 3PCs will need to now refer to the Components menu as 'components', as the "id" field has been dropped and "text" is now the PK

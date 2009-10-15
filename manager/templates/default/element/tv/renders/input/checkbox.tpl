@@ -1,12 +1,23 @@
-{foreach from=$opts item=item}
+{foreach from=$opts item=item key=k}
 	<label>
-	<input id="tv{$tv->id}" name="tv{$tv->id}[]"
-		type="checkbox" 
+	<input id="tv{$tv->id}-{$k}" name="tv{$tv->id}[]"
+		type="checkbox"
 		value="{$item.value}"
-		{if $item.checked} checked="checked"{/if}
-		onchange="MODx.fireResourceFormChange();"
+        onchange="MODx.fireResourceFormChange();"
 	/>
-	{$item.text}
 	</label>
 	<br />
+	<script type="text/javascript">
+	{literal}
+	MODx.load({
+	{/literal}
+	    xtype: 'checkbox'
+	    ,applyTo: 'tv{$tv->id}-{$k}'
+	    ,boxLabel: '{$item.text|escape:'javascript'}'
+	    ,width: 300
+	    ,checked: {if $item.checked}true{else}false{/if}    
+	{literal}
+	});
+	{/literal}
+	</script>
 {/foreach}
