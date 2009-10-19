@@ -6,6 +6,7 @@
  * @package modx
  * @subpackage lexicon
  */
+$_lang['active'] = 'Active';
 $_lang['administrator'] = 'Administrator';
 $_lang['authority'] = 'Authority';
 $_lang['change_password'] = 'Change Password';
@@ -52,7 +53,7 @@ $_lang['user_block'] = 'Blocked';
 $_lang['user_blockedafter'] = 'Blocked After';
 $_lang['user_blockeduntil'] = 'Blocked Until';
 $_lang['user_changeddata'] = 'Your data has been changed. Please log in again.';
-$_lang['user_created_password_message'] = 'The User has been created. The password is: ';
+$_lang['user_created_password_message'] = 'The User has been created. The password is: [[+password]]';
 $_lang['user_confirm_remove'] = 'Are you sure you want to permanently remove this user?';
 $_lang['user_country'] = 'Country';
 $_lang['user_dob'] = 'Date of birth';

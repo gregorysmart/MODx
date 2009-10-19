@@ -124,6 +124,7 @@ MODx.panel.SymLink = function(config) {
             ,editable: false
             ,id: 'modx-symlink-parent'
             ,value: config.record.parent || 0
+            ,formpanel: 'modx-panel-symlink'
         },{
             xtype: 'hidden'
             ,name: 'parent'
@@ -369,7 +370,7 @@ Ext.extend(MODx.panel.SymLink,MODx.FormPanel,{
 
     ,success: function(o) {
         Ext.getCmp('modx-grid-resource-security').getStore().commitChanges();
-        var t = parent.Ext.getCmp('modx-resource-tree');
+        var t = Ext.getCmp('modx-resource-tree');
         var ctx = Ext.getCmp('modx-symlink-context-key').getValue();
         var pa = Ext.getCmp('modx-symlink-parent').getValue();
         t.refreshNode(ctx+'_'+pa,true);

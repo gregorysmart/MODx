@@ -650,3 +650,38 @@ $collection['112']->fromArray(array (
   'service' => 1,
   'groupname' => 'modResourceGroup',
 ), '', true, true);
+$collection['113']= $xpdo->newObject('modEvent');
+$collection['113']->fromArray(array (
+  'id' => 113,
+  'name' => 'OnCreateUser',
+  'service' => 1,
+  'groupname' => 'modUser',
+), '', true, true);
+$collection['114']= $xpdo->newObject('modEvent');
+$collection['114']->fromArray(array (
+  'id' => 114,
+  'name' => 'OnDeleteUser',
+  'service' => 1,
+  'groupname' => 'modUser',
+), '', true, true);
+$collection['115']= $xpdo->newObject('modEvent');
+$collection['115']->fromArray(array (
+  'id' => 115,
+  'name' => 'OnUpdateUser',
+  'service' => 1,
+  'groupname' => 'modUser',
+), '', true, true);
+$collection['116']= $xpdo->newObject('modEvent');
+$collection['116']->fromArray(array (
+  'id' => 116,
+  'name' => 'OnBeforeUserActivate',
+  'service' => 1,
+  'groupname' => 'modUser',
+), '', true, true);
+$collection['117']= $xpdo->newObject('modEvent');
+$collection['117']->fromArray(array (
+  'id' => 117,
+  'name' => 'OnUserActivate',
+  'service' => 1,
+  'groupname' => 'modUser',
+), '', true, true);
