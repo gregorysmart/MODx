@@ -70,8 +70,8 @@ class modInstallTest {
         $ml = ini_get('memory_limit');
         $bytes = $this->return_bytes($ml);
 
-        if ($bytes < 67108864) { /* 32M = 33554432, 64M = 67108864 */
-            $success = @ini_set('memory_limit','128M');
+        if ($bytes < 25165824) { /* 24M = 25165824, 32M = 33554432, 64M = 67108864 */
+            $success = @ini_set('memory_limit','24M');
             $success = $success !== false ? true : false;
         } else {
             $success = true;
@@ -261,39 +261,6 @@ class modInstallTest {
                 file_exists($this->install->config['connectors_path'] . 'config.core.php') &&
                 file_exists($this->install->config['mgr_path'] . 'config.core.php')) {
                 $coreConfigsExist = true;
-            }
-        }
-
-
-        if ($this->mode == MODX_INSTALL_MODE_NEW || !$coreConfigsExist) {
-            /* web_path */
-            $this->results['context_web_writable']['msg'] = '<p>'.sprintf($this->install->lexicon['test_directory_writable'],$this->install->config['web_path']);
-            if (!$this->_inWritableContainer($this->install->config['web_path'])) {
-                $this->results['context_web_writable']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></p>';
-                $this->results['context_web_writable']['class'] = 'testFailed';
-            } else {
-                $this->results['context_web_writable']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
-                $this->results['context_web_writable']['class'] = 'testPassed';
-            }
-
-            /* mgr_path */
-            $this->results['context_mgr_writable']['msg'] = '<p>'.sprintf($this->install->lexicon['test_directory_writable'],$this->install->config['mgr_path']);
-            if (!$this->_inWritableContainer($this->install->config['mgr_path'])) {
-                $this->results['context_mgr_writable']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></p>';
-                $this->results['context_mgr_writable']['class'] = 'testFailed';
-            } else {
-                $this->results['context_mgr_writable']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
-                $this->results['context_mgr_writable']['class'] = 'testPassed';
-            }
-
-            /* connectors_path */
-            $this->results['context_connectors_writable']['msg'] = '<p>'.sprintf($this->install->lexicon['test_directory_writable'],$this->install->config['connectors_path']);
-            if (!$this->_inWritableContainer($this->install->config['connectors_path'])) {
-                $this->results['context_connectors_writable']['msg'] .= '<span class="notok">'.$this->install->lexicon['failed'].'</span></p>';
-                $this->results['context_connectors_writable']['class'] = 'testFailed';
-            } else {
-                $this->results['context_connectors_writable']['msg'] .= '<span class="ok">'.$this->install->lexicon['ok'].'</span></p>';
-                $this->results['context_connectors_writable']['class'] = 'testPassed';
             }
         }
     }
