@@ -12,10 +12,31 @@ $modx->lexicon->load('user');
 
 $_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : str_replace('n_ug_','',$_REQUEST['id']);
 
+$showAnonymous = $modx->getOption('showAnonymous',$_REQUEST,true);
+
 $usergroup = $modx->getObject('modUserGroup',$_REQUEST['id']);
 $groups = $modx->getCollection('modUserGroup',array('parent' => $_REQUEST['id']));
 
 $list = array();
+if ($showAnonymous && empty($_REQUEST['id'])) {
+    $menu = array();
+    $menu[] = array(
+        'text' => $modx->lexicon('user_group_update'),
+        'handler' => 'function(itm,e) {
+            this.update(itm,e);
+        }',
+    );
+    $list[] = array(
+        'text' => '('.$modx->lexicon('anonymous').')',
+        'id' => 'n_ug_0',
+        'leaf' => true,
+        'type' => 'usergroup',
+        'cls' => 'icon-group',
+        'menu' => array(
+            'items' => $menu,
+        ),
+    );
+}
 foreach ($groups as $group) {
     $menu = array();
     $menu[] = array(
@@ -58,7 +79,7 @@ foreach ($groups as $group) {
         ),
 	);
 }
-if ($usergroup != null) {
+if ($usergroup) {
 	$users = $usergroup->getMany('Users');
 	foreach ($users as $user) {
         $menu = array();
@@ -71,7 +92,7 @@ if ($usergroup != null) {
 
 		$list[] = array(
 			'text' => $user->get('username'),
-			'id' => 'n_user_'.$user->get('id'),
+			'id' => 'n_user_'.$user->get('id').'_'.$usergroup->get('id'),
 			'leaf' => 1,
 			'type' => 'user',
 			'cls' => 'icon-user',

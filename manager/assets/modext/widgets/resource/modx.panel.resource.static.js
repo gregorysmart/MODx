@@ -177,6 +177,8 @@ MODx.panel.Static = function(config) {
             ,name: 'context_key'
             ,id: 'modx-static-context-key'
             ,value: 'web'
+        },{
+            html: MODx.onDocFormRender, border: false
         }]
     });
     
@@ -329,7 +331,7 @@ MODx.panel.Static = function(config) {
             ,id: 'modx-static-header'
             ,cls: 'modx-page-header'
             ,border: false
-        },MODx.getPageStructure(it)]
+        },MODx.getPageStructure(it,{id:'modx-resource-tabs' ,forceLayout: true ,deferredRender: false })]
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}

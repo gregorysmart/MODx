@@ -1,12 +1,33 @@
-{foreach from=$opts item=item}
-<label>
-	<input id="tv{$tv->id}" name="tv{$tv->id}"
-		type="radio"
-		value="{$item.value}"
-		{if $item.checked} checked="checked"{/if}
-		onchange="MODx.fireResourceFormChange();" 
-	/>
-	{$item.text}
-</label>
-<br />
+<div id="tv{$tv->id}-cb"></div>
+
+<script type="text/javascript">
+{literal}
+MODx.load({
+{/literal}
+    xtype: 'radiogroup'
+    ,id: 'tv{$tv->id}'
+    ,width: 300
+    ,vertical: true
+    ,columns: 3
+    ,renderTo: 'tv{$tv->id}-cb'
+    ,name: 'tv-{$tv->id}'
+    ,autoHeight: true
+    
+    ,items: [{foreach from=$opts item=item key=k name=cbs}
+    {literal}{{/literal}
+        name: 'tv{$tv->id}'
+        ,id: 'tv{$tv->id}-{$k}'
+        ,boxLabel: '{$item.text|escape:"javascript"}'
+        ,checked: {if $item.checked}true{else}false{/if}
+        ,inputValue: '{$item.value}'
+        ,value: '{$item.value}'        
+    {literal}}{/literal}{if NOT $smarty.foreach.cbs.last},{/if}
+    {/foreach}]
+{literal}}{/literal});
+
+{foreach from=$opts item=item key=k name=cbs}
+Ext.getCmp('tv{$tv->id}-{$k}').on('check',MODx.fireResourceFormChange);
 {/foreach}
+
+Ext.get('tvdef{$tv->id}').dom.value = "{$cbdefaults}";
+</script>

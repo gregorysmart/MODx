@@ -24,7 +24,9 @@ $xpdo_meta_map['modUserProfile']= array (
     'sessionid' => '',
     'dob' => 0,
     'gender' => 0,
+    'address' => '',
     'country' => '',
+    'city' => '',
     'state' => '',
     'zip' => '',
     'fax' => '',
@@ -163,10 +165,25 @@ $xpdo_meta_map['modUserProfile']= array (
       'null' => false,
       'default' => 0,
     ),
+    'address' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
     'country' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '5',
+      'precision' => '255',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
+    ),
+    'city' => 
+    array (
+      'dbtype' => 'varchar',
+      'precision' => '255',
       'phptype' => 'string',
       'null' => false,
       'default' => '',
@@ -232,5 +249,3 @@ $xpdo_meta_map['modUserProfile']= array (
     ),
   ),
 );
-if (XPDO_PHP4_MODE) $xpdo_meta_map['modUserProfile']['aggregates']= array_merge($xpdo_meta_map['modUserProfile']['aggregates'], array_change_key_case($xpdo_meta_map['modUserProfile']['aggregates']));
-$xpdo_meta_map['moduserprofile']= & $xpdo_meta_map['modUserProfile'];

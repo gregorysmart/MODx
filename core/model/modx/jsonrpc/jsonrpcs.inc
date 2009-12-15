@@ -67,7 +67,7 @@
 			{
 				$methName = $m;
 			}
-			$sysCall = $this->allow_system_funcs && ereg("^system\.", $methName);
+			$sysCall = $this->allow_system_funcs && @ereg("^system\.", $methName);
 			$dmap = $sysCall ? $GLOBALS['_xmlrpcs_dmap'] : $this->dmap;
 
 			if(!isset($dmap[$methName]['function']))
@@ -134,11 +134,10 @@
 				{
 					$r = call_user_func($func, $m);
 				}
-				if (!is_a($r, 'xmlrpcresp'))
+				if (!($r instanceof xmlrpcresp))
 				{
 					error_log("XML-RPC: jsonrpc_server::execute: function $func registered as method handler does not return an xmlrpcresp object");
-					if (is_a($r, 'xmlrpcval'))
-					{
+					if ($r instanceof xmlrpcval) {
 						$r = new jsonrpcresp($r);
 					}
 					else
@@ -169,13 +168,13 @@
 						// an eror response
 						if (is_array($r) && array_key_exists('faultCode', $r) && array_key_exists('faultString', $r))
 						{
-							$r =& new jsonrpcresp(0, (integer)$r['faultCode'], (string)$r['faultString']);
+							$r = new jsonrpcresp(0, (integer)$r['faultCode'], (string)$r['faultString']);
 						}
 						else
 						{
 							// functions using EPI api should NOT return resp objects,
 							// so make sure we encode the return type correctly
-							$r =& new jsonrpcresp(php_xmlrpc_encode($r, array('extension_api')));
+							$r = new jsonrpcresp(php_xmlrpc_encode($r, array('extension_api')));
 						}
 					}
 					else
@@ -184,7 +183,7 @@
 					}
 				}
 				// the return type can be either an xmlrpcresp object or a plain php value...
-				if (!is_a($r, 'xmlrpcresp'))
+				if (!($r instanceof xmlrpcresp))
 				{
 					// what should we assume here about automatic encoding of datetimes
 					// and php classes instances???
@@ -192,7 +191,7 @@
 				}
 			}
 			// here $r is either an xmlrpcresp or jsonrpcresp
-			if (!is_a($r, 'jsonrpcresp'))
+			if (!($r instanceof jsonrpcresp))
 			{
 
 				// dirty trick: user has given us back an xmlrpc response,
@@ -233,7 +232,7 @@
 
 			if (!jsonrpc_parse_req($data, $this->functions_parameters_type == 'phpvals' || $this->functions_parameters_type == 'epivals', false, $content_encoding))
 			{
-				$r =& new jsonrpcresp(0,
+				$r = new jsonrpcresp(0,
 					$GLOBALS['xmlrpcerr']['invalid_request'],
 					$GLOBALS['xmlrpcstr']['invalid_request'] . ' ' . $GLOBALS['_xh']['isf_reason']);
 			}
@@ -250,7 +249,7 @@
 				else
 				{
 					// build an xmlrpcmsg object with data parsed from xml
-					$m =& new jsonrpcmsg($GLOBALS['_xh']['method'], 0, $GLOBALS['_xh']['id']);
+					$m = new jsonrpcmsg($GLOBALS['_xh']['method'], 0, $GLOBALS['_xh']['id']);
 					// now add parameters in
 					/// @todo for more speeed, we could just substitute the array...
 					for($i = 0; $i < sizeof($GLOBALS['_xh']['params']); $i++)

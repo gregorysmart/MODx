@@ -28,14 +28,11 @@
  * @package modx
  */
 class modResponse {
-    var $modx= null;
-    var $header= null;
-    var $body= null;
+    public $modx= null;
+    public $header= null;
+    public $body= null;
 
-    function modResponse(& $modx) {
-        $this->__construct($modx);
-    }
-    function __construct(& $modx) {
+    function __construct(modX &$modx) {
         $this->modx= & $modx;
     }
 
@@ -44,12 +41,12 @@ class modResponse {
      *
      * @param array $options Various options that can be set.
      */
-    function outputContent($options = array()) {
+    public function outputContent(array $options = array()) {
         if (!($contentType = $this->modx->resource->getOne('ContentType'))) {
             if ($this->modx->getDebug() === true) {
-                $this->modx->log(MODX_LOG_LEVEL_DEBUG, "No valid content type for RESOURCE: " . print_r($this->modx->resource->toArray(), true));
+                $this->modx->log(modX::LOG_LEVEL_DEBUG, "No valid content type for RESOURCE: " . print_r($this->modx->resource->toArray(), true));
             }
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, "The requested resource has no valid content type specified.");
+            $this->modx->log(modX::LOG_LEVEL_FATAL, "The requested resource has no valid content type specified.");
         }
 
         if (!$contentType->get('binary')) {
@@ -77,11 +74,11 @@ class modResponse {
                 }
             }
 
-            $this->modx->_beforeRender();
+            $this->modx->beforeRender();
 
             /* invoke OnWebPagePrerender event */
             if (!isset($options['noEvent']) || empty($options['noEvent'])) {
-                $this->modx->invokeEvent("OnWebPagePrerender");
+                $this->modx->invokeEvent('OnWebPagePrerender');
             }
 
             $mtime= microtime();
@@ -90,7 +87,7 @@ class modResponse {
             $totalTime= ($mtime - $this->modx->startTime);
             $queries= 0;
             $queryTime= 0;
-            if ($this->modx->db !== null && is_a($this->modx->db, 'DBAPI')) {
+            if ($this->modx->db !== null && $this->modx->db instanceof DBAPI) {
                 $queryTime= $this->modx->queryTime;
                 $queryTime= sprintf("%2.4f s", $queryTime);
                 $queries= isset ($this->modx->executedQueries) ? $this->modx->executedQueries : 0;
@@ -105,7 +102,7 @@ class modResponse {
             $this->modx->resource->_output= str_replace("[^t^]", $totalTime, $this->modx->resource->_output);
             $this->modx->resource->_output= str_replace("[^s^]", $source, $this->modx->resource->_output);
         } else {
-            $this->modx->_beforeRender();
+            $this->modx->beforeRender();
 
             /* invoke OnWebPagePrerender event */
             if (!isset($options['noEvent']) || empty($options['noEvent'])) {
@@ -165,9 +162,12 @@ class modResponse {
             "_postProcess"
         ));
 
-        if ($contentType->get('binary')) {
+        if ($this->modx->resource instanceof modStaticResource && $contentType->get('binary')) {
             $this->modx->resource->process();
         } else {
+            if ($contentType->get('binary')) {
+                $this->modx->resource->_output = $this->modx->resource->process();
+            }
             echo $this->modx->resource->_output;
             while (@ ob_end_flush()) {}
             exit();
@@ -188,20 +188,20 @@ class modResponse {
      * @param integer $count_attempts The number of times to attempt redirection.
      * @param string $type The type of redirection to attempt.
      */
-    function sendRedirect($url, $count_attempts= 0, $type= '') {
+    public function sendRedirect($url, $count_attempts= 0, $type= '') {
         if (empty ($url)) {
-            $this->modx->log(MODX_LOG_LEVEL_ERROR, "Attempted to redirect to an empty URL.");
+            $this->modx->log(modX::LOG_LEVEL_ERROR, "Attempted to redirect to an empty URL.");
             return false;
         }
         if (!$this->modx->getRequest()) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, "Could not load request class.");
+            $this->modx->log(modX::LOG_LEVEL_FATAL, "Could not load request class.");
         }
         $this->modx->request->preserveRequest('referrer.redirected');
         if ($count_attempts == 1) {
             /* append the redirect count string to the url */
             $currentNumberOfRedirects= isset ($_REQUEST['err']) ? $_REQUEST['err'] : 0;
             if ($currentNumberOfRedirects > 3) {
-                $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Redirection attempt failed - please ensure the resource you\'re trying to redirect to exists. <p>Redirection URL: <i>' . $url . '</i></p>');
+                $this->modx->log(modX::LOG_LEVEL_FATAL, 'Redirection attempt failed - please ensure the resource you\'re trying to redirect to exists. <p>Redirection URL: <i>' . $url . '</i></p>');
             } else {
                 $currentNumberOfRedirects += 1;
                 if (strpos($url, "?") > 0) {
@@ -234,7 +234,7 @@ class modResponse {
      *
      * @return boolean
      */
-    function checkPreview() {
+    public function checkPreview() {
         $preview= false;
         if ($this->modx->checkSession('mgr') === true) {
             if (isset ($_REQUEST['z']) && $_REQUEST['z'] == 'manprev') {

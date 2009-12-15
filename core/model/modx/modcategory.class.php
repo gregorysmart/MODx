@@ -5,11 +5,28 @@
  * @package modx
  */
 class modCategory extends xPDOSimpleObject {
-    function modCategory(& $xpdo) {
-        $this->__construct($xpdo);
-    }
-    function __construct(& $xpdo) {
-        parent :: __construct($xpdo);
+
+    /**
+     * @var array A list of invalid characters in the name of an Element.
+     * @access protected
+     */
+    protected $_invalidCharacters = array('!','@','#','$','%','^','&','*',
+    '(',')','+','=','[',']','{','}','\'','"',':',';','\\','/','<','>','?'
+    ,',','`','~');
+
+    /**
+     * Overrides xPDOObject::set to strip invalid characters from element names.
+     *
+     * {@inheritDoc}
+     */
+    public function set($k, $v= null, $vType= '') {
+        switch ($k) {
+            case 'category':
+                $v = str_replace($this->_invalidCharacters,'',$v);
+                break;
+            default: break;
+        }
+        return parent::set($k,$v,$vType);
     }
 
     /**
@@ -17,7 +34,7 @@ class modCategory extends xPDOSimpleObject {
      *
      * {@inheritDoc}
      */
-    function remove($ancestors = array()) {
+    public function remove(array $ancestors = array()) {
         $removed = parent::remove($ancestors);
         if ($removed) {
             $elementClasses = array(

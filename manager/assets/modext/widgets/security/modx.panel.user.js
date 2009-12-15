@@ -180,7 +180,6 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                         ,xtype: 'textfield'
                         ,inputType: 'password'
                         ,width: 175
-                        ,minLength: 6
                     },{
                         id: 'modx-user-confirmpassword'
                         ,name: 'confirmpassword'
@@ -188,7 +187,6 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                         ,xtype: 'textfield'
                         ,inputType: 'password'
                         ,width: 175
-                        ,minLength: 6
                     }]
                 }]
             },{
@@ -234,6 +232,20 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,fieldLabel: _('user_mobile')
                     ,xtype: 'textfield'
                     ,width: 200
+                    ,maxLength: 255
+                },{
+                    id: 'modx-user-address'
+                    ,name: 'address'
+                    ,fieldLabel: _('address')
+                    ,xtype: 'textarea'
+                    ,width: 300
+                    ,grow: true
+                },{
+                    id: 'modx-user-city'
+                    ,name: 'city'
+                    ,fieldLabel: _('city')
+                    ,xtype: 'textfield'
+                    ,width: 300
                     ,maxLength: 255
                 },{
                     id: 'modx-user-fax'

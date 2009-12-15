@@ -22,7 +22,9 @@ $_POST['blocked'] = empty($_POST['blocked']) ? 0 : 1;
 $_POST['active'] = empty($_POST['active']) ? 0 : 1;
 
 $newPassword= false;
-include_once $modx->getOption('processors_path').'security/user/_validation.php';
+$result = include_once $modx->getOption('processors_path').'security/user/_validation.php';
+if ($result !== true) return $result;
+
 if ($_POST['passwordnotifymethod'] == 'e') {
 	sendMailMessage($_POST['email'], $_POST['username'],$newPassword,$_POST['fullname']);
 }
@@ -31,7 +33,7 @@ if ($_POST['passwordnotifymethod'] == 'e') {
 $modx->invokeEvent('OnBeforeUserFormSave',array(
 	'mode' => 'upd',
     'user' => &$user,
-	'id' => $_POST['id'],
+	'id' => $user->get('id'),
 ));
 
 
@@ -122,11 +124,11 @@ function sendMailMessage($email, $uid, $pwd, $ufn) {
 	$message = str_replace("[[+surl]]", $modx->getOption('url_scheme') . $modx->getOption('http_host') . $modx->getOption('manager_url'), $message);
 
     $modx->getService('mail', 'mail.modPHPMailer');
-    $modx->mail->set(MODX_MAIL_BODY, $message);
-    $modx->mail->set(MODX_MAIL_FROM, $modx->getOption('emailsender'));
-    $modx->mail->set(MODX_MAIL_FROM_NAME, $modx->getOption('site_name'));
-    $modx->mail->set(MODX_MAIL_SENDER, $modx->getOption('emailsender'));
-    $modx->mail->set(MODX_MAIL_SUBJECT, $modx->getOption('emailsubject'));
+    $modx->mail->set(modMail::MAIL_BODY, $message);
+    $modx->mail->set(modMail::MAIL_FROM, $modx->getOption('emailsender'));
+    $modx->mail->set(modMail::MAIL_FROM_NAME, $modx->getOption('site_name'));
+    $modx->mail->set(modMail::MAIL_SENDER, $modx->getOption('emailsender'));
+    $modx->mail->set(modMail::MAIL_SUBJECT, $modx->getOption('emailsubject'));
     $modx->mail->address('to', $email, $ufn);
     $modx->mail->address('reply-to', $modx->getOption('emailsender'));
     $modx->mail->setHTML(true);

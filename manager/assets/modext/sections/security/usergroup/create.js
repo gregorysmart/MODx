@@ -29,15 +29,17 @@ MODx.page.CreateUserGroup = function(config) {
                 ,alt: true
                 ,ctrl: true
             }]
-        },{
+        },'-',{
             process: 'cancel'
             ,text: _('cancel')
             ,params: {a:MODx.action['security/permission']}
+        },'-',{
+            text: _('help_ex')
+            ,handler: MODx.loadHelpPane
         }]
         ,components: [{
             xtype: 'modx-panel-user-group'
             ,renderTo: 'modx-panel-user-group-div'
-            ,usergroup: 0
         }]
     });
     MODx.page.CreateUserGroup.superclass.constructor.call(this,config);

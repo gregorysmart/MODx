@@ -472,21 +472,21 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
         return [{
             icon: iu+'arrow_down.png'
             ,cls: 'x-btn-icon'
-            ,scope: this
             ,tooltip: {text: _('tree_expand')}
-            ,handler: this.expand
+            ,handler: function() { this.getRootNode().expandChildNodes(); }
+            ,scope: this
         },{
             icon: iu+'arrow_up.png'
             ,cls: 'x-btn-icon'
-            ,scope: this
             ,tooltip: {text: _('tree_collapse')}
-            ,handler: this.collapse
+            ,handler: function() { this.getRootNode().collapseChildNodes(); }
+            ,scope: this
         },'-',{
             icon: iu+'refresh.png'
             ,cls: 'x-btn-icon'
-            ,scope: this
             ,tooltip: {text: _('tree_refresh')}
             ,handler: this.refresh
+            ,scope: this
         }];
     }
 	
@@ -508,13 +508,5 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 		}
 		return a;
 	}
-	
-    /**
-     * If set for the tree, displays a help dialog.
-     * @abstract
-     */
-    ,help: function() {
-        MODx.msg.alert(_('help'),_('help_not_yet'));
-    }
 });
 Ext.reg('modx-tree',MODx.tree.Tree);

@@ -31,15 +31,12 @@
  * @package modx
  */
 class modRequest {
-    var $modx = null;
-    var $method = null;
-    var $parameters = null;
-    var $headers = null;
+    public $modx = null;
+    public $method = null;
+    public $parameters = null;
+    public $headers = null;
 
-    function modRequest(& $modx) {
-        $this->__construct($modx);
-    }
-    function __construct(& $modx) {
+    function __construct(modX &$modx) {
         $this->modx = & $modx;
     }
 
@@ -48,20 +45,20 @@ class modRequest {
      *
      * @return boolean True if a request is handled without interruption.
      */
-    function handleRequest() {
+    public function handleRequest() {
         $this->loadErrorHandler();
 
         $this->sanitizeRequest();
         $this->modx->invokeEvent('OnHandleRequest');
-        if (!$this->modx->_checkSiteStatus()) {
+        if (!$this->modx->checkSiteStatus()) {
             header('HTTP/1.1 503 Service Unavailable');
-            if (!$this->modx->config['site_unavailable_page']) {
+            if (!$this->modx->getOption('site_unavailable_page',null,1)) {
                 $this->modx->resource = $this->modx->newObject('modDocument');
                 $this->modx->resource->template = 0;
-                $this->modx->resource->content = $this->modx->config['site_unavailable_message'];
+                $this->modx->resource->content = $this->modx->getOption('site_unavailable_message');
             } else {
                 $this->modx->resourceMethod = "id";
-                $this->modx->resourceIdentifier = $this->modx->config['site_unavailable_page'];
+                $this->modx->resourceIdentifier = $this->modx->getOption('site_unavailable_page');
             }
         } else {
             $this->checkPublishStatus();
@@ -80,7 +77,7 @@ class modRequest {
             }
             $this->modx->resourceMethod = 'id';
         }
-        $this->modx->_beforeRequest();
+        $this->modx->beforeRequest();
         $this->modx->invokeEvent("OnWebPageInit");
 
         if (is_array($this->modx->config)) {
@@ -103,12 +100,12 @@ class modRequest {
      * @param array $options An array of options
      * @return boolean True if the response is properly prepared.
      */
-    function prepareResponse($options = array()) {
-        $this->modx->_beforeProcessing();
+    public function prepareResponse(array $options = array()) {
+        $this->modx->beforeProcessing();
         $this->modx->invokeEvent("OnLoadWebDocument");
 
         if (!$this->modx->getResponse()) {
-            $this->modx->log(MODX_LOG_LEVEL_FATAL, 'Could not load response class.');
+            $this->modx->log(modX::LOG_LEVEL_FATAL, 'Could not load response class.');
         }
         $this->modx->response->outputContent($options);
     }
@@ -118,7 +115,7 @@ class modRequest {
      *
      * @return string 'alias', 'id', or an empty string.
      */
-    function getResourceMethod() {
+    public function getResourceMethod() {
         $method = '';
         if (isset ($_REQUEST[$this->modx->getOption('request_param_alias', null, 'q')]))
             $method = "alias";
@@ -137,7 +134,7 @@ class modRequest {
      * @return modResource The requested modResource instance or request
      * is forwarded to the error page, or unauthorized page.
      */
-    function getResource($method, $identifier) {
+    public function getResource($method, $identifier) {
         $resource = null;
         if ($method == 'alias') {
             $resourceId = $this->modx->aliasMap[$identifier];
@@ -154,6 +151,7 @@ class modRequest {
             $resource = $this->modx->newObject($cachedResource['resourceClass']);
             if ($resource) {
                 $resource->fromArray($cachedResource['resource'], '', true, true, true);
+                $this->modx->documentObject = & $resource->_fields;
                 if (isset($cachedResource['contentType'])) {
                     $contentType = $this->modx->newObject('modContentType');
                     $contentType->fromArray($cachedResource['contentType'], '', true, true, true);
@@ -178,7 +176,7 @@ class modRequest {
             $criteria = array('id' => $resourceId, 'deleted' => '0');
             if (!$this->modx->hasPermission('view_unpublished')) $criteria['published']= 1;
             if ($resource = $this->modx->getObject('modResource', $criteria)) {
-                if (is_object($resource)) {
+                if ($resource instanceof modResource) {
                     if ($resource->get('context_key') !== $this->modx->context->get('key')) {
                         if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {
                             return null;
@@ -195,13 +193,13 @@ class modRequest {
                                 $tv->getValue($resource->get('id')),
                                 $tv->get('display'),
                                 $tv->get('display_params'),
-                                $tv->get('type')
+                                $tv->get('type'),
                             );
                         }
                     }
                 }
             }
-        } elseif ($fromCache && is_object($resource) && !$resource->get('deleted')) {
+        } elseif ($fromCache && $resource instanceof modResource && !$resource->get('deleted')) {
             if ($resource->get('published') || $this->modx->hasPermission('view_unpublished')) {
                 if ($resource->get('context_key') !== $this->modx->context->get('key')) {
                     if (!$this->modx->getCount('modContextResource', array($this->modx->context->get('key'), $resourceId))) {
@@ -225,17 +223,19 @@ class modRequest {
      * @param string $method 'alias' or 'id'.
      * @return string The identifier for the requested resource.
      */
-    function getResourceIdentifier($method) {
+    public function getResourceIdentifier($method) {
         $identifier = '';
         switch ($method) {
             case 'alias' :
-                $identifier = isset ($_REQUEST[$this->modx->config['request_param_alias']]) ? $_REQUEST[$this->modx->config['request_param_alias']] : $identifier;
+                $rAlias = $this->modx->getOption('request_param_alias',null,'q');
+                $identifier = isset ($_REQUEST[$rAlias]) ? $_REQUEST[$rAlias] : $identifier;
                 break;
             case 'id' :
-                $identifier = isset ($_REQUEST[$this->modx->config['request_param_id']]) ? $_REQUEST[$this->modx->config['request_param_id']] : $identifier;
+                $rId = $this->modx->getOption('request_param_id',null,'id');
+                $identifier = isset ($_REQUEST[$rId]) ? $_REQUEST[$rId] : $identifier;
                 break;
             default :
-                $identifier = $this->modx->config['site_start'];
+                $identifier = $this->modx->getOption('site_start',null,1);
         }
         return $identifier;
     }
@@ -246,13 +246,13 @@ class modRequest {
      * @param string $identifier The raw identifier.
      * @return string|integer The cleansed identifier.
      */
-    function _cleanResourceIdentifier($identifier) {
+    public function _cleanResourceIdentifier($identifier) {
         if (empty ($identifier)) {
-            $identifier = $this->modx->config['site_start'];
+            $identifier = $this->modx->getOption('site_start',null,1);
             $this->modx->resourceMethod = 'id';
         }
-        elseif ($this->modx->config['friendly_urls']) {
-            $containerSuffix = isset ($this->modx->config['container_suffix']) ? trim($this->modx->config['container_suffix']) : '';
+        elseif ($this->modx->getOption('friendly_urls',null,false)) {
+            $containerSuffix = trim($this->modx->getOption('container_suffix',null,''));
             if (!isset ($this->modx->aliasMap[$identifier])) {
                 if (!empty ($containerSuffix)) {
                     $suffixPos = strpos($identifier, $containerSuffix);
@@ -271,8 +271,8 @@ class modRequest {
                     $this->modx->resourceMethod = 'alias';
                 }
             }
-            elseif ($this->modx->config['site_start'] == $this->modx->aliasMap[$identifier]) {
-                $this->modx->sendRedirect($this->modx->config['site_url']);
+            elseif ($this->modx->getOption('site_start',null,1) == $this->modx->aliasMap[$identifier]) {
+                $this->modx->sendRedirect($this->modx->getOption('site_url'));
             } else {
                 $this->modx->resourceMethod = 'alias';
             }
@@ -285,18 +285,19 @@ class modRequest {
     /**
      * Harden GPC variables by removing any MODx tags, Javascript, or entities.
      */
-    function sanitizeRequest() {
+    public function sanitizeRequest() {
         $modxtags = array_values($this->modx->sanitizePatterns);
         modX :: sanitize($_GET, $modxtags, 0);
-        if (isset ($this->modx->config['allow_tags_in_post']) && (boolean) $this->modx->config['allow_tags_in_post']) {
+        if ($this->modx->getOption('allow_tags_in_post',null,true)) {
             modX :: sanitize($_POST);
         } else {
             modX :: sanitize($_POST, $modxtags);
         }
         modX :: sanitize($_COOKIE, $modxtags);
         modX :: sanitize($_REQUEST, $modxtags);
-        if (isset ($_GET[$this->modx->config['request_param_alias']])) {
-            $_GET[$this->modx->config['request_param_alias']] = preg_replace("/[^A-Za-z0-9_\-\.\/]/", "", $_GET[$this->modx->config['request_param_alias']]);
+        $rAlias = $this->modx->getOption('request_param_alias',null,'q');
+        if (isset ($_GET[$rAlias])) {
+            $_GET[$rAlias] = preg_replace("/[^A-Za-z0-9_\-\.\/]/", "", $_GET[$rAlias]);
         }
     }
 
@@ -305,11 +306,11 @@ class modRequest {
      *
      * @param string $class The class to use as the error handler.
      */
-    function loadErrorHandler($class = 'modError') {
+    public function loadErrorHandler($class = 'modError') {
         if ($className = $this->modx->loadClass('error.'.$class,'',false,true)) {
             $this->modx->error = new $className($this->modx);
         } else {
-            $this->modx->log(XPDO_LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
+            $this->modx->log(modX::LOG_LEVEL_FATAL,'Error handling class could not be loaded: '.$class);
         }
     }
 
@@ -329,13 +330,13 @@ class modRequest {
      * @param array $options An array containing all the options required to
      * initiate and configure logging to a modRegister instance.
      */
-    function registerLogging($options = array()) {
+    public function registerLogging(array $options = array()) {
         if (isset($options['register']) && isset($options['topic'])) {
             if ($this->modx->getService('registry','registry.modRegistry')) {
                 $register_class = isset($options['register_class']) ? $options['register_class'] : 'registry.modFileRegister';
                 $register = $this->modx->registry->getRegister($options['register'], $register_class);
                 if ($register) {
-                    $level = isset($options['log_level']) ? $options['log_level'] : MODX_LOG_LEVEL_INFO;
+                    $level = isset($options['log_level']) ? $options['log_level'] : modX::LOG_LEVEL_INFO;
                     $this->modx->registry->setLogging($register, $options['topic'], $level);
                 }
             }
@@ -347,7 +348,7 @@ class modRequest {
      *
      * @param string $key A key to save the $_REQUEST as; default is 'referrer'.
      */
-    function preserveRequest($key = 'referrer') {
+    public function preserveRequest($key = 'referrer') {
         if (isset ($_SESSION)) {
             $_SESSION['modx.request.' . $key] = $_REQUEST;
         }
@@ -358,7 +359,7 @@ class modRequest {
      *
      * @param string $key A key to identify a specific $_REQUEST; default is 'referrer'.
      */
-    function retrieveRequest($key = 'referrer') {
+    public function retrieveRequest($key = 'referrer') {
         $request = null;
         if (isset ($_SESSION['modx.request.' . $key])) {
             $request = $_SESSION['modx.request.' . $key];
@@ -366,7 +367,7 @@ class modRequest {
         return $request;
     }
 
-    function getHeaders($ucKeys = false) {
+    public function getHeaders($ucKeys = false) {
         if (!isset($this->headers)) {
             $headers = array ();
             foreach ($_SERVER as $name => $value) {
@@ -386,19 +387,19 @@ class modRequest {
      * Checks the current status of timed publishing events.
      * @todo refactor checkPublishStatus...offload to cachemanager?
      */
-    function checkPublishStatus() {
+    public function checkPublishStatus() {
         $cacheRefreshTime= 0;
-        if (file_exists($this->modx->cachePath . "sitePublishing.idx.php"))
-            include ($this->modx->cachePath . "sitePublishing.idx.php");
-        $timeNow= time() + $this->modx->config['server_offset_time'];
+        if (file_exists($this->modx->getOption(xPDO::OPT_CACHE_PATH) . "sitePublishing.idx.php"))
+            include ($this->modx->getOption(xPDO::OPT_CACHE_PATH) . "sitePublishing.idx.php");
+        $timeNow= time() + $this->modx->getOption('server_offset_time',null,0);
         if ($cacheRefreshTime != 0 && $cacheRefreshTime <= strtotime($timeNow)) {
             /* FIXME: want to find a better way to handle this publishing check without mass updates to the database! */
             $tblResource= $this->modx->getTableName('modResource');
             if (!$result= $this->modx->exec("UPDATE {$tblResource} SET published=1,publishedon={$timeNow} WHERE pub_date < {$timeNow} AND pub_date > 0")) {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->modx->errorInfo(), true));
+                $this->modx->log(modX::LOG_LEVEL_ERROR, 'Error while refreshing resource publishing data: ' . print_r($this->modx->errorInfo(), true));
             }
             if (!$result= $this->modx->exec("UPDATE $tblResource SET published=0,publishedon={$timeNow} WHERE unpub_date < {$timeNow} AND unpub_date IS NOT NULL AND unpub_date > 0")) {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->modx->errorInfo(), true));
+                $this->modx->log(modX::LOG_LEVEL_ERROR, 'Error while refreshing resource unpublishing data: ' . print_r($this->modx->errorInfo(), true));
             }
             if ($this->modx->getCacheManager()) {
                 $this->modx->cacheManager->clearCache();
@@ -406,21 +407,21 @@ class modRequest {
             $timesArr= array ();
             $sql= "SELECT MIN(pub_date) AS minpub FROM $tblResource WHERE pub_date>$timeNow AND pub_date IS NOT NULL";
             if (!$result= $this->modx->query($sql)) {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+                $this->modx->log(modX::LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
             } else {
-                $result= $result->fetchAll(PDO_FETCH_ASSOC);
+                $result= $result->fetchAll(PDO::FETCH_ASSOC);
                 $minpub= $result[0]['minpub'];
-                if ($minpub != NULL) {
+                if ($minpub != null) {
                     $timesArr[]= $minpub;
                 }
             }
             $sql= "SELECT MIN(unpub_date) AS minunpub FROM $tblResource WHERE unpub_date>$timeNow AND unpub_date IS NOT NULL";
             if (!$result= $this->modx->query($sql)) {
-                $this->modx->log(MODX_LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
+                $this->modx->log(modX::LOG_LEVEL_ERROR, "Failed to find publishing timestamps\n" . $sql);
             } else {
-                $result= $result->fetchAll(PDO_FETCH_ASSOC);
+                $result= $result->fetchAll(PDO::FETCH_ASSOC);
                 $minunpub= $result[0]['minunpub'];
-                if ($minunpub != NULL) {
+                if ($minunpub != null) {
                     $timesArr[]= $minunpub;
                 }
             }
@@ -429,7 +430,7 @@ class modRequest {
             } else {
                 $nextevent= 0;
             }
-            $fp= @ fopen($this->modx->cachePath . "sitePublishing.idx.php", "wb");
+            $fp= @ fopen($this->modx->getOption(xPDO::OPT_CACHE_PATH) . "sitePublishing.idx.php", "wb");
             if ($fp) {
                 @ flock($fp, LOCK_EX);
                 @ fwrite($fp, "<?php \$cacheRefreshTime=$nextevent; ?>");
@@ -439,19 +440,18 @@ class modRequest {
         }
     }
 
-    function getAllActionIDs($namespace = '') {
+    public function getAllActionIDs($namespace = '') {
         $c = array();
-        if ($namespace != '') $c['namespace'] = $namespace;
+        if (!empty($namespace)) $c['namespace'] = $namespace;
         $actions = $this->modx->getCollection('modAction',$c);
 
-        $as = array();
+        $actionList = array();
         foreach ($actions as $action) {
-            $as[$action->get('controller')] = $action->get('id');
+            $actionList[$action->get('controller')] = $action->get('id');
         }
-        return $as;
+        return $actionList;
     }
-    function getActionIDs($actions = array(), $namespace = 'core') {
-        if (!is_array($actions)) return false;
+    public function getActionIDs(array $actions = array(), $namespace = 'core') {
         $as = array();
         foreach ($actions as $action) {
             $act = $this->modx->getObject('modAction',array(

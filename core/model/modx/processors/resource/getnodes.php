@@ -10,6 +10,7 @@
  * @package modx
  * @subpackage processors.layout.tree.resource
  */
+if (!$modx->hasPermission('list')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('resource','context');
 
 $_REQUEST['sortBy'] = !empty($_REQUEST['sortBy']) ? $_REQUEST['sortBy'] : 'menuindex';
@@ -144,7 +145,7 @@ while ($item) {
                         'items' => array(
                             array(
                                // 'id' => 'cm-context-resource-qcreate',
-                                'text' => $modx->lexicon('resource'),
+                                'text' => $modx->lexicon('document'),
                                 'scope' => 'this',
                                 'handler' => 'function(itm,e) {
                                     Ext.getCmp("modx-resource-tree").quickCreate(itm,e,"modResource","'.$item->get('key').'",0);
@@ -307,10 +308,10 @@ while ($item) {
                         'items' => array(
                             array(
                               //  'id' => 'cm-resource-qcreate',
-                                'text' => $modx->lexicon('resource'),
+                                'text' => $modx->lexicon('document'),
                                 'scope' => 'this',
                                 'handler' => 'function(itm,e) {
-                                    Ext.getCmp("modx-resource-tree").quickCreate(itm,e,"modResource","'.$item->context_key.'","'.$item->get('id').'");
+                                    Ext.getCmp("modx-resource-tree").quickCreate(itm,e,"modDocument","'.$item->context_key.'","'.$item->get('id').'");
                                 }',
                             ),
                             array(

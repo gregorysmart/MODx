@@ -1,8 +1,6 @@
-<select id="tv{$tv->id}" name="tv{$tv->id}"
-	class="combobox"
-	onchange="MODx.fireResourceFormChange();">
+<select id="tv{$tv->id}" name="tv{$tv->id}" class="combobox">
 {foreach from=$tvitems item=item}
-	<option value="{$item.value}" {if $item.value EQ $tv->get('value')} selected="selected"{/if}>{$item.text}</option>
+	<option value="{$item.value}" {if $item.selected} selected="selected"{/if}>{$item.text}</option>
 {/foreach}
 </select>
 
@@ -19,6 +17,7 @@ MODx.load({
     ,editable: false
     ,width: 300
 {literal}
+    ,listeners: { 'select': { fn:MODx.fireResourceFormChange, scope:this}}
 });
 {/literal}
 </script>

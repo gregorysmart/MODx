@@ -35,28 +35,25 @@ class modInstallRequest {
      * @var modInstall $install A reference to the modInstall object.
      * @access public
      */
-    var $install = null;
+    public $install = null;
 
-    /**#@+
+    /**
      * Initializes the modInstallRequest object.
      *
      * @constructor
-     * @param modInstall &$modInstall A reference to the modInstall object.
+     * @param modInstall &$installer A reference to the modInstall object.
      */
-    function modInstallRequest(&$modInstall) {
-        $this->__construct($modInstall);
+    function __construct(modInstall &$installer) {
+        $this->install =& $installer;
     }
-    /** @ignore */
-    function __construct(&$modInstall) {
-        $this->install =& $modInstall;
-    }
-    /**@#- */
 
     /**
      * Handles the request and loads the appropriate controller.
      */
-    function handle() {
+    public function handle() {
         $install =& $this->install;
+        $install->loadSettings();
+        $this->parser->assign('config',$install->settings->fetch());
 
         $currentVersion = include MODX_CORE_PATH . 'docs/version.inc.php';
 
@@ -69,15 +66,19 @@ class modInstallRequest {
         $this->action= isset ($_REQUEST['action']) ? $_REQUEST['action'] : 'language';
         $this->parser->assign('action',$this->action);
         $this->parser->assign('_lang',$this->install->lexicon);
-        @include (MODX_SETUP_PATH . 'controllers/' . $this->action . '.php');
-        exit;
+
+        $output = $this->parser->fetch('header.tpl');
+        $output .= include MODX_SETUP_PATH . 'controllers/' . $this->action . '.php';
+        $output .= $this->parser->fetch('footer.tpl');
+
+        return $output;
     }
 
     /**
      * Loads the Smarty parser
      * @return boolean True if successful.
      */
-    function loadParser() {
+    public function loadParser() {
         $loaded = false;
         if (!@require_once (MODX_SETUP_PATH . 'includes/modinstallsmarty.class.php')) {
             if (!@include (MODX_SETUP_PATH . 'provisioner/bootstrap.php')) {
@@ -87,5 +88,14 @@ class modInstallRequest {
         $this->parser = new modInstallSmarty();
         $this->parser->caching= false;
         return $loaded;
+    }
+
+    public function proceed($action) {
+        $this->sendRedirect('?action='.$action);
+    }
+    public function sendRedirect($url) {
+        $header= 'Location: ' . $url;
+        header($header);
+        exit();
     }
 }

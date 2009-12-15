@@ -30,7 +30,7 @@ $collection['5']->fromArray(array (
   'namespace' => 'core',
   'parent' => 0,
   'controller' => 'browser',
-  'haslayout' => 1,
+  'haslayout' => 0,
   'lang_topics' => 'file',
   'assets' => '',
 ), '', true, true);
@@ -43,6 +43,7 @@ $collection['7']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'context,setting,access,policy,user',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Contexts',
 ), '', true, true);
 $collection['8']= $xpdo->newObject('modAction');
 $collection['8']->fromArray(array (
@@ -53,6 +54,7 @@ $collection['8']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'context,setting,access,policy,user',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Contexts',
 ), '', true, true);
 $collection['9']= $xpdo->newObject('modAction');
 $collection['9']->fromArray(array (
@@ -63,6 +65,7 @@ $collection['9']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'context',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Contexts',
 ), '', true, true);
 $collection['10']= $xpdo->newObject('modAction');
 $collection['10']->fromArray(array (
@@ -83,6 +86,7 @@ $collection['11']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'chunk,category,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Chunks',
 ), '', true, true);
 $collection['12']= $xpdo->newObject('modAction');
 $collection['12']->fromArray(array (
@@ -93,6 +97,7 @@ $collection['12']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'chunk,category,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Chunks',
 ), '', true, true);
 $collection['13']= $xpdo->newObject('modAction');
 $collection['13']->fromArray(array (
@@ -103,6 +108,7 @@ $collection['13']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'chunk,category,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Chunks',
 ), '', true, true);
 $collection['20']= $xpdo->newObject('modAction');
 $collection['20']->fromArray(array (
@@ -113,6 +119,7 @@ $collection['20']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'plugin,category,system_events,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Plugins',
 ), '', true, true);
 $collection['21']= $xpdo->newObject('modAction');
 $collection['21']->fromArray(array (
@@ -123,6 +130,7 @@ $collection['21']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'plugin,category,system_events,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Plugins',
 ), '', true, true);
 $collection['22']= $xpdo->newObject('modAction');
 $collection['22']->fromArray(array (
@@ -133,16 +141,7 @@ $collection['22']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'plugin,category,system_events,propertyset,element',
   'assets' => '',
-), '', true, true);
-$collection['23']= $xpdo->newObject('modAction');
-$collection['23']->fromArray(array (
-  'id' => 23,
-  'namespace' => 'core',
-  'parent' => 20,
-  'controller' => 'element/plugin/sortpriority',
-  'haslayout' => 1,
-  'lang_topics' => 'plugin,category,system_events,propertyset,element',
-  'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Plugins',
 ), '', true, true);
 $collection['25']= $xpdo->newObject('modAction');
 $collection['25']->fromArray(array (
@@ -153,6 +152,7 @@ $collection['25']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'snippet,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Snippets',
 ), '', true, true);
 $collection['26']= $xpdo->newObject('modAction');
 $collection['26']->fromArray(array (
@@ -163,6 +163,7 @@ $collection['26']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'snippet,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Snippets',
 ), '', true, true);
 $collection['27']= $xpdo->newObject('modAction');
 $collection['27']->fromArray(array (
@@ -173,6 +174,7 @@ $collection['27']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'snippet,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Snippets',
 ), '', true, true);
 $collection['28']= $xpdo->newObject('modAction');
 $collection['28']->fromArray(array (
@@ -183,6 +185,7 @@ $collection['28']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'template,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Templates',
 ), '', true, true);
 $collection['29']= $xpdo->newObject('modAction');
 $collection['29']->fromArray(array (
@@ -193,6 +196,7 @@ $collection['29']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'template,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Templates',
 ), '', true, true);
 $collection['30']= $xpdo->newObject('modAction');
 $collection['30']->fromArray(array (
@@ -203,6 +207,7 @@ $collection['30']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'template,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Templates',
 ), '', true, true);
 $collection['31']= $xpdo->newObject('modAction');
 $collection['31']->fromArray(array (
@@ -219,10 +224,11 @@ $collection['32']->fromArray(array (
   'id' => 32,
   'namespace' => 'core',
   'parent' => 10,
-  'controller' => 'element/tv,propertyset,element',
+  'controller' => 'element/tv',
   'haslayout' => 1,
-  'lang_topics' => 'tv',
+  'lang_topics' => 'tv,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Template+Variables',
 ), '', true, true);
 $collection['33']= $xpdo->newObject('modAction');
 $collection['33']->fromArray(array (
@@ -233,6 +239,7 @@ $collection['33']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'tv,tv_widget,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Template+Variables',
 ), '', true, true);
 $collection['34']= $xpdo->newObject('modAction');
 $collection['34']->fromArray(array (
@@ -243,6 +250,7 @@ $collection['34']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'tv,tv_widget,propertyset,element',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Template+Variables',
 ), '', true, true);
 $collection['35']= $xpdo->newObject('modAction');
 $collection['35']->fromArray(array (
@@ -273,6 +281,7 @@ $collection['38']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'user,access,policy,context',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/User+Groups',
 ), '', true, true);
 $collection['39']= $xpdo->newObject('modAction');
 $collection['39']->fromArray(array (
@@ -283,6 +292,7 @@ $collection['39']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'user,access,policy,context',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/User+Groups',
 ), '', true, true);
 $collection['40']= $xpdo->newObject('modAction');
 $collection['40']->fromArray(array (
@@ -293,6 +303,7 @@ $collection['40']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Resource',
 ), '', true, true);
 $collection['41']= $xpdo->newObject('modAction');
 $collection['41']->fromArray(array (
@@ -313,6 +324,7 @@ $collection['43']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Resource',
 ), '', true, true);
 $collection['46']= $xpdo->newObject('modAction');
 $collection['46']->fromArray(array (
@@ -333,6 +345,7 @@ $collection['50']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'user',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Roles',
 ), '', true, true);
 $collection['54']= $xpdo->newObject('modAction');
 $collection['54']->fromArray(array (
@@ -343,6 +356,7 @@ $collection['54']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'user,setting,access',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Users',
 ), '', true, true);
 $collection['55']= $xpdo->newObject('modAction');
 $collection['55']->fromArray(array (
@@ -353,6 +367,7 @@ $collection['55']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'user,setting,access',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Users',
 ), '', true, true);
 $collection['56']= $xpdo->newObject('modAction');
 $collection['56']->fromArray(array (
@@ -433,6 +448,7 @@ $collection['75']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'user,policy',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Policies',
 ), '', true, true);
 $collection['76']= $xpdo->newObject('modAction');
 $collection['76']->fromArray(array (
@@ -443,6 +459,7 @@ $collection['76']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Weblink',
 ), '', true, true);
 $collection['77']= $xpdo->newObject('modAction');
 $collection['77']->fromArray(array (
@@ -453,6 +470,7 @@ $collection['77']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Weblink',
 ), '', true, true);
 $collection['78']= $xpdo->newObject('modAction');
 $collection['78']->fromArray(array (
@@ -463,6 +481,7 @@ $collection['78']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Symlink',
 ), '', true, true);
 $collection['79']= $xpdo->newObject('modAction');
 $collection['79']->fromArray(array (
@@ -473,6 +492,7 @@ $collection['79']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Symlink',
 ), '', true, true);
 $collection['80']= $xpdo->newObject('modAction');
 $collection['80']->fromArray(array (
@@ -483,6 +503,7 @@ $collection['80']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Static+Resource',
 ), '', true, true);
 $collection['81']= $xpdo->newObject('modAction');
 $collection['81']->fromArray(array (
@@ -493,17 +514,7 @@ $collection['81']->fromArray(array (
   'haslayout' => 1,
   'lang_topics' => 'resource',
   'assets' => '',
-), '', true, true);
-
-$collection['83']= $xpdo->newObject('modAction');
-$collection['83']->fromArray(array (
-  'id' => 83,
-  'namespace' => 'core',
-  'parent' => 46,
-  'controller' => 'security/forms',
-  'haslayout' => 1,
-  'lang_topics' => 'formcustomization,user,access,policy',
-  'assets' => '',
+  'help_url' => 'http://svn.modxcms.com/docs/display/revolution/Static+Resource',
 ), '', true, true);
 
 return $collection;

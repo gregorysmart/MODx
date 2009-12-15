@@ -59,11 +59,14 @@ MODx.page.UpdateWebLink = function(config) {
             ,text: _('preview')
             ,handler: this.preview
             ,scope: this
-        },{
+        },'-',{
             process: 'cancel'
             ,text: _('cancel')
             ,handler: this.cancel
             ,scope: this
+        },'-',{
+            text: _('help_ex')
+            ,handler: MODx.loadHelpPane
         }]
     });
     MODx.page.UpdateWebLink.superclass.constructor.call(this,config);
@@ -92,34 +95,17 @@ Ext.extend(MODx.page.UpdateWebLink,MODx.Component,{
 
     ,cancel: function(btn,e) {
         var fp = Ext.getCmp(this.config.formpanel);
-        if (fp != 'undefined' && fp.isDirty()) {
-            MODx.msg.confirm({
-                text: _('resource_cancel_dirty_confirm')
-                ,url: MODx.config.connectors_url+'resource/locks.php'
-                ,params: {
-                    action: 'release'
-                    ,id: this.config.resource
+        if (fp && fp.isDirty()) {
+            Ext.Msg.confirm(_('warning'),_('resource_cancel_dirty_confirm'),function(e) {
+                if (e == 'yes') {
+                    MODx.releaseLock(MODx.request.id);
+                    MODx.sleep(400);
+                    location.href = '?a='+MODx.action['welcome'];                    
                 }
-                ,listeners: {
-                    success: {fn:function(r) {
-                        location.href = '?a='+MODx.action['welcome'];
-                    },scope:this}
-                }
-            });
+            },this);
         } else {
-            MODx.Ajax.request({
-                url: MODx.config.connectors_url+'resource/locks.php'
-                ,params: {
-                    action: 'release'
-                    ,id: this.config.resource
-                }
-                ,listeners: {
-                    success: {fn:function(r) {
-                        location.href = '?a='+MODx.action['welcome'];
-                    },scope:this}
-                }
-            });
-        }
+            MODx.releaseLock(MODx.request.id);
+        };
     }
 });
 Ext.reg('modx-page-weblink-update',MODx.page.UpdateWebLink);

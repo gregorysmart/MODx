@@ -62,6 +62,9 @@ MODx.page.UpdateResource = function(config) {
             ,text: _('cancel')
             ,handler: this.cancel
             ,scope: this
+        },'-',{
+            text: _('help_ex')
+            ,handler: MODx.loadHelpPane
         }]
     });
     MODx.page.UpdateResource.superclass.constructor.call(this,config);
@@ -98,13 +101,13 @@ Ext.extend(MODx.page.UpdateResource,MODx.Component,{
         if (fp && fp.isDirty()) {
             Ext.Msg.confirm(_('warning'),_('resource_cancel_dirty_confirm'),function(e) {
                 if (e == 'yes') {
-                    MODx.releaseLock(id);
+                    MODx.releaseLock(MODx.request.id);
                     MODx.sleep(400);
                     location.href = '?a='+MODx.action['welcome'];                    
                 }
             },this);
         } else {
-            MODx.releaseLock(id);
+            MODx.releaseLock(MODx.request.id);
         };
     }
 });

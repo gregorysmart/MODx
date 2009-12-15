@@ -10,8 +10,8 @@ if (empty($_POST['username'])) {
     $modx->error->addField('username',$modx->lexicon('user_err_not_specified_username'));
 
 } else if (!empty($_POST['username']) && $_POST['username'] != $user->get('username')) {
-	$alreadyExists = $modx->getObject('modUser',array('username' => $_POST['newusername']));
-	if ($alreadyExists) $modx->error->addField('new_user_name',$modx->lexicon('user_err_already_exists'));
+	$alreadyExists = $modx->getObject('modUser',array('username' => $_POST['username']));
+	if ($alreadyExists) $modx->error->addField('username',$modx->lexicon('user_err_already_exists'));
 	$user->set('username',$_POST['username']);
 }
 
@@ -44,10 +44,12 @@ if (isset($_POST['newpassword']) && $_POST['newpassword'] != 'false' || empty($_
 if (empty($_POST['email'])) $modx->error->addField('email',$modx->lexicon('user_err_not_specified_email'));
 
 /* check if the email address already exists */
-$emailExists = $modx->getObject('modUserProfile',array('email' => $_POST['email']));
-if ($emailExists) {
-	if ($user_email->get('internalKey') != $_POST['id']) {
-		$modx->error->addField('email',$modx->lexicon('user_err_already_exists_email'));
+if (!$modx->getOption('allow_multiple_users_per_email',null,true)) {
+    $emailExists = $modx->getObject('modUserProfile',array('email' => $_POST['email']));
+    if ($emailExists) {
+    	if ($emailExists->get('internalKey') != $_POST['id']) {
+    		$modx->error->addField('email',$modx->lexicon('user_err_already_exists_email'));
+        }
     }
 }
 
@@ -111,11 +113,12 @@ if (!empty($fs)) {
 $fields .= '</ul>';
 
 if ($modx->error->hasError() && !empty($fs)) {
-	return $modx->error->failure(sprintf($modx->lexicon('check_fields_error').$fields));
+	return $modx->error->failure($fields);
 }
 
 /* END VALIDATION */
 
+return true;
 
 /* Generate password */
 function generate_password($length = 10) {

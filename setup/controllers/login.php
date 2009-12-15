@@ -4,8 +4,8 @@
  *
  * @package setup
  */
-if (isset($_POST['cleanup']) && $_POST['cleanup']) {
-    $install->removeSetupDirectory($_POST);
+if ($install->settings->get('cleanup')) {
+    $install->removeSetupDirectory();
 }
 $managerUrl= $install->getManagerLoginUrl();
 header('Location: ' . $managerUrl);

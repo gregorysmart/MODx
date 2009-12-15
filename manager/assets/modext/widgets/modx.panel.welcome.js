@@ -8,7 +8,6 @@ MODx.panel.Welcome = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'modx-panel-welcome'
-        ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
         ,items: [{
             html: '<h2>'+MODx.config.site_name+'</h2>'
@@ -27,7 +26,7 @@ MODx.panel.Welcome = function(config) {
             xtype: 'portal'
             ,id: 'modx-welcome-portal'
             ,items: [{
-                columnWidth: .46
+                columnWidth: .47
                 ,id: 'modx-welcome-col-left'
                 ,defaults: {
                     height: 300
@@ -38,11 +37,12 @@ MODx.panel.Welcome = function(config) {
                 ,items: [{
                     title: _('modx_news')
                     ,contentEl: 'modx-news'
+					,cls: 'x-panel-header x-portal-space'
                 },{
                     title: _('recent_docs')
                     ,id: 'modx-recent'
+					,cls: 'x-panel-header x-portal-space'
                     ,collapsed: true
-                    ,bodyStyle: 'padding: 1.5em;'
                     ,items: [{
                         html: '<p>'+_('activity_message')
                         ,border: false
@@ -55,10 +55,10 @@ MODx.panel.Welcome = function(config) {
                     title: _('online')
                     ,contentEl: 'modx-online'
                     ,collapsed: true
-                    ,bodyStyle: 'padding: 1.5em;'
+					,cls: 'x-panel-header x-portal-space'
                 }]
             },{
-                columnWidth: .46
+                columnWidth: .47
                 ,id: 'modx-welcome-col-right'
                 ,defaults: {
                     height: 300
@@ -69,10 +69,12 @@ MODx.panel.Welcome = function(config) {
                 ,items: [{
                     title: _('security_notices')
                     ,contentEl: 'modx-security'
+					,cls: 'x-panel-header x-portal-space'
                 },{
                     title: _('info')
                     ,contentEl: 'modx-info'
-                    ,bodyStyle: 'padding: 1.5em;'
+					,cls: 'x-panel-header x-panel-footer x-portal-space'
+					,style: ''
                     ,collapsed: true
                 }]
             }]

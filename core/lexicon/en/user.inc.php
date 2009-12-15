@@ -7,6 +7,7 @@
  * @subpackage lexicon
  */
 $_lang['active'] = 'Active';
+$_lang['address'] = 'Address';
 $_lang['administrator'] = 'Administrator';
 $_lang['authority'] = 'Authority';
 $_lang['change_password'] = 'Change Password';
@@ -151,7 +152,7 @@ $_lang['user_settings_desc'] = 'Here you can change specific settings for the us
 $_lang['user_state'] = 'State';
 $_lang['user_title'] = 'Create/Edit user';
 $_lang['user_update'] = 'Update User';
-$_lang['user_updated_password_message'] = 'The User has been updated. The password is: ';
+$_lang['user_updated_password_message'] = 'The User has been updated. The password is: [[+password]]';
 $_lang['user_upload_message'] = ' If you wish to stop this user uploading any filetypes in this category, make sure that the \'Use Main Configuration Setting\' checkbox is not ticked and leave the field blank.';
 $_lang['user_use_config'] = 'Use System Configuration Setting';
 $_lang['user_zip'] = 'Zip';

@@ -2,34 +2,43 @@
 /**
  * @package setup
  */
+/* parse language selection */
+if (!empty($_POST['proceed'])) {
+    $language= 'en';
+    if (isset ($_REQUEST['language'])) {
+        $language= $_REQUEST['language'];
+    }
+    setcookie('modx_setup_language', $language, 0, dirname(dirname($_SERVER['REQUEST_URI'])) . '/');
+    unset($_POST['proceed']);
+
+    $settings = $install->getConfig();
+    $settings = array_merge($settings,$_POST);
+    $install->settings->store($settings);
+    $this->proceed('welcome');
+}
+
+$install->settings->erase();
+
 $langs = array();
 $path = dirname(dirname(__FILE__)).'/lang/';
-if ($handle = dir($path)) {
-	while (false !== ($file = $handle->read())) {
-		if (!in_array($file, array('.', '..','.htaccess','.svn')) && is_dir($path.$file)) {
-			if (file_exists($path.$file.'/default.inc.php')) {
-				$langs[] = $file;
-			}
+foreach (new DirectoryIterator($path) as $file) {
+    $basename = $file->getFilename();
+	if (!in_array($basename, array('.', '..','.htaccess','.svn')) && $file->isDir()) {
+		if (file_exists($file->getPathname().'/default.inc.php')) {
+			$langs[] = $basename;
 		}
 	}
-	closedir($handle);
 }
 sort($langs);
 $this->parser->assign('langs', $langs);
 unset($path,$file,$handle);
 
-$navbar= '
-<p class="title">'.$install->lexicon['choose_language'].':
-<select name="language">
-';
+$languages = '';
 foreach ($langs as $language) {
-    $navbar .= '<option value="'.$language.'"'
+    $languages .= '<option value="'.$language.'"'
         .($language == 'en' ? ' selected="selected"' : '')
         .'>' . $language . '</option>' . "\n";
 }
-$navbar .= '</select></p>
-<button name="cmdnext" onclick="return doAction(\'language\');">'.$install->lexicon['select'].'</button>
-';
-$this->parser->assign('navbar', $navbar);
+$this->parser->assign('languages',$languages);
 
-$this->parser->display('language.tpl');
+return $this->parser->fetch('language.tpl');

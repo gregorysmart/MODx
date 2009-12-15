@@ -28,36 +28,36 @@ while (false !== ($culture = $dir->read())) {
             'name' => $culture,
         ),'',true,true);
         $language->save();
-        $modx->log(MODX_LOG_LEVEL_INFO,'Created language: '.$culture);
+        $modx->log(modX::LOG_LEVEL_INFO,'Created language: '.$culture);
     }
 
     /* loop through topics */
     $fdir = $d.$culture.'/';
-    $fd = dir($fdir);
-    while (false !== ($entry = $fd->read())) {
-        if (in_array($entry,$invdirs)) continue;
-        if (is_dir($fdir.$entry)) continue;
+    //$fd = dir($fdir);
+    foreach (new DirectoryIterator($fdir) as $ptr) {
+        $filename = $ptr->getFilename();
+        if (in_array($filename,$invdirs)) continue;
+        if ($ptr->isDir()) continue;
 
-        $top = str_replace('.inc.php','',$entry);
+        $top = str_replace('.inc.php','',$filename);
 
         $topic = $modx->getObject('modLexiconTopic',array(
             'name' => $top,
             'namespace' => 'core',
         ));
-        if ($topic == null) {
+        if (empty($topic)) {
             $topic = $modx->newObject('modLexiconTopic');
             $topic->fromArray(array (
               'name' => $top,
               'namespace' => 'core',
             ), '', true, true);
             $topic->save();
-            $modx->log(MODX_LOG_LEVEL_INFO,'Created topic: '.$top);
+            $modx->log(modX::LOG_LEVEL_INFO,'Created topic: '.$top);
         }
 
-        $f = $fdir.$entry;
-        if (file_exists($f)) {
+        if ($ptr->isReadable()) {
             $_lang = array();
-            @include $f;
+            @include $ptr->getPathname();
 
             foreach ($_lang as $key => $value) {
                 $entry = $modx->getObject('modLexiconEntry',array(
@@ -66,7 +66,7 @@ while (false !== ($culture = $dir->read())) {
                     'namespace' => 'core',
                     'language' => $culture,
                 ));
-                if ($entry == null) {
+                if (empty($entry)) {
                     $entry= $modx->newObject('modLexiconEntry');
                     $entry->fromArray(array (
                       'name' => $key,
@@ -76,13 +76,13 @@ while (false !== ($culture = $dir->read())) {
                       'language' => $culture,
                     ), '', true, true);
                     $entry->save();
-                    $modx->log(MODX_LOG_LEVEL_INFO,'Created lexicon entry: "'.$key.'": '.$value);
+                    $modx->log(modX::LOG_LEVEL_INFO,'Created lexicon entry: "'.$key.'": '.$value);
                     $i++;
                 } else {
                     if ($entry->get('value') != $value) {
                         $entry->set('value',$value);
                         $entry->save();
-                        $modx->log(MODX_LOG_LEVEL_INFO,'Reloaded entry: "'.$entry->get('name').'": '.$value);
+                        $modx->log(modX::LOG_LEVEL_INFO,'Reloaded entry: "'.$entry->get('name').'": '.$value);
                         $i++;
                     }
                 }
@@ -90,7 +90,8 @@ while (false !== ($culture = $dir->read())) {
         }
     }
 }
-$dir->close();
 
-$modx->log(MODX_LOG_LEVEL_WARN,'Successfully reloaded '.$i.' strings.');
+$modx->log(modX::LOG_LEVEL_WARN,'Successfully reloaded '.$i.' strings.');
+sleep(1);
+$modx->log(modX::LOG_LEVEL_INFO,'COMPLETED');
 return $modx->error->success(intval($i));

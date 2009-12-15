@@ -11,23 +11,61 @@ class modStaticResource extends modResource {
      * @var string Path of the file containing the source content, relative to
      * the {@link modStaticResource::$_sourcePath}.
      */
-    var $_sourceFile= '';
+    protected $_sourceFile= '';
     /**
      * @var integer Size of the source file content in bytes.
      */
-    var $_sourceFileSize= 0;
+    protected $_sourceFileSize= 0;
     /**
      * @var string An absolute base filesystem path where the source file
      * exists.
      */
-    var $_sourcePath= '';
+    protected $_sourcePath= '';
 
-    function modStaticResource(& $xpdo) {
-        $this->__construct($xpdo);
-    }
     function __construct(& $xpdo) {
         parent :: __construct($xpdo);
         $this->_fields['class_key']= 'modStaticResource';
+    }
+
+    /**
+     * Get the absolute path to the static source file represented by this instance.
+     *
+     * @param array $options An array of options.
+     * @return string The absolute path to the static source file.
+     */
+    public function getSourceFile(array $options = array()) {
+        if (empty($this->_sourceFile)) {
+            $filename = parent :: getContent($options);
+            if (!file_exists($filename)) {
+                $this->_sourcePath= $this->xpdo->getOption('resource_static_path', $options, $this->xpdo->getOption('base_path'));
+                $this->_sourceFile= $this->_sourcePath . $filename;
+            } else {
+                $this->_sourceFile= $filename;
+            }
+            if (!empty($this->_sourceFile)) {
+                $array = array();
+                if ($this->xpdo->getParser() && $this->xpdo->parser->collectElementTags($this->_sourceFile, $array)) {
+                    $this->xpdo->parser->processElementTags('', $this->_sourceFile);
+                }
+            }
+        }
+        return $this->_sourceFile;
+    }
+
+    /**
+     * Get the filesize of the static source file represented by this instance.
+     *
+     * @param array $options An array of options.
+     * @return integer The filesize of the source file in bytes.
+     */
+    public function getSourceFileSize(array $options = array()) {
+        if (empty($this->_sourceFileSize)) {
+            $this->getSourceFile($options);
+            if (file_exists($this->_sourceFile)) {
+                $this->_sourceFileSize = filesize($this->_sourceFile);
+            }
+        }
+        return $this->_sourceFileSize;
     }
 
     /**
@@ -35,37 +73,21 @@ class modStaticResource extends modResource {
      *
      * {@inheritdoc}
      */
-    function getContent($options = array()) {
+    public function getContent(array $options = array()) {
         $content = '';
-        $filename = parent :: getContent($options);
-        if (!file_exists($filename)) {
-            $sp = $this->xpdo->getOption('resource_static_path',null,$this->xpdo->getOption('base_path'));
-            if (empty($this->_sourcePath) && !empty($sp)) {
-                $this->_sourcePath= $this->xpdo->getOption('resource_static_path');
-            }
-            if (empty ($this->_sourceFile)) {
-                $this->_sourceFile= $this->_sourcePath . $filename;
-            }
-        } else {
-            $this->_sourceFile= $filename;
-        }
+        $this->getSourceFile($options);
         if (!empty ($this->_sourceFile)) {
-            $array = array();
-            if ($this->xpdo->getParser() && $this->xpdo->parser->collectElementTags($this->_sourceFile, $array)) {
-                $this->xpdo->parser->processElementTags('', $this->_sourceFile);
-            }
-
             if (file_exists($this->_sourceFile)) {
                 $content= $this->getFileContent($this->_sourceFile);
                 if ($content === false) {
                     $content = '';
-                    $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
+                    $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "No content could be retrieved from source file: {$this->_sourceFile}");
                 }
             } else {
-                $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "Could not locate source file: {$this->_sourceFile}");
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "Could not locate source file: {$this->_sourceFile}");
             }
         } else {
-            $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "No source file specified.");
+            $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "No source file specified.");
         }
         return $content;
     }
@@ -73,16 +95,17 @@ class modStaticResource extends modResource {
     /**
      * Retrieve the resource content stored in a physical file.
      *
+     * @access public
      * @param string $file A path to the file representing the resource content.
      * @return string The content of the file, of false if it could not be
      * retrieved.
      */
-    function getFileContent($file) {
+    public function getFileContent($file, array $options = array()) {
         $content= false;
         $memory_limit= ini_get('memory_limit');
         if (!$memory_limit) $memory_limit= '8M';
         $byte_limit= $this->_bytes($memory_limit) * .5;
-        $filesize= filesize($file);
+        $filesize= $this->getSourceFileSize($options);
         if ($this->getOne('ContentType')) {
             $type= $this->ContentType->get('mime_type') ? $this->ContentType->get('mime_type') : 'text/html';
             if ($this->ContentType->get('binary') || $filesize > $byte_limit) {
@@ -136,7 +159,7 @@ class modStaticResource extends modResource {
                 $content = file_get_contents($file);
             }
             if (!is_string($content)) {
-                $this->xpdo->log(MODX_LOG_LEVEL_ERROR, "modStaticResource->getFileContent({$file}): Could not get content from file.");
+                $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, "modStaticResource->getFileContent({$file}): Could not get content from file.");
             }
         }
         return $content;
@@ -147,16 +170,16 @@ class modStaticResource extends modResource {
      *
      * PHP ini modifiers for byte values:
      * <ul>
-     * 	<li>G = gigabytes</li>
-     * 	<li>M = megabytes</li>
-     * 	<li>K = kilobytes</li>
+     *  <li>G = gigabytes</li>
+     *  <li>M = megabytes</li>
+     *  <li>K = kilobytes</li>
      * </ul>
      *
-     * @access private
+     * @access protected
      * @param string $value Number of bytes represented in PHP ini value format.
      * @return integer The value converted to bytes.
      */
-    function _bytes($value) {
+    protected function _bytes($value) {
         $value = trim($value);
         $modifier = strtolower($value{strlen($value)-1});
         switch($modifier) {
@@ -170,4 +193,3 @@ class modStaticResource extends modResource {
         return $value;
     }
 }
-?>

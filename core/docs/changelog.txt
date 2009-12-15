@@ -2,7 +2,149 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
-MODx Revolution 2.0.0-beta-4 ($LastChangedRevision$, $LastChangedDate$)
+MODx Revolution 2.0.0-beta-5 ($LastChangedRevision$, $LastChangedDate$)
+====================================
+- Fixed bug where Set to Default on Resource TV panel was hidden unless you clicked Reload
+- Fixed some bugs with Property Sets editing
+- Fixed bug where download wasnt working for package management due to missing provider
+- Fixed bug where quick create Static Resource wasnt loading MODx.Browser
+- [#MODX-1496] Fixed issue with scrolling context menus not working on local grids
+- Fixed styling in welcome panel
+- Shrinking top menu a bit to fit in smaller window resolutions
+- Fixed invalid method reference in modInstallTest derivative classes
+- Fixed styling and JS in TV pane
+- Fixed error with charset reference in setup/
+- Clear Search in Package Browser when clicking on a Tag 
+- Added Search bar to Package Browser, now can search entire repository
+- Fixed height of Package Browser to not go too far down screen
+- Fixed modRestSockClient to properly strip HTTP headers and return only XML
+- Added modStaticResource methods: getSourceFile() and getSourceFileSize()
+- Fixed bug in setup/ script with new transport package fields
+- Fixed modCacheManager to not cache reg* calls that will cause breakage on similar calls to reg* method
+- Added 'package_name' and 'metadata' fields to modTransportPackage for future development
+- Fixed styling commits; also fixed bug on Package Management when not selecting default provider
+- Added help buttons to Resource pages
+- Moved TV categories in Resource edit page to tabpanel, also cleaned up button styling
+- Fixed table styling. This is temporary until all tables are ported to ext grids. This affects welcome pane, system info, and online users.
+- Fixed bug where package browser would close on ESC key
+- [#MODX-1489] Allow spaces in Category names
+- [#MODX-1497] Fixed username not being sent in new user email
+- Fixed NOT NULL error in modManagerLog
+- Revamped Package Management UI, changed Provider hooks to REST-based, massively improved downloading UI
+- Fixed styling on the search page.
+- Fixed styling on the actions page.
+- Fixed styling on the manager logs page.
+- Fixed triggerfields in windows in Safari
+- Changed the text-size and and top margin of the Main Navbar Submenu span for more readability.
+- [#MODX-1426] Added connect check to assist with mysql_get_server_info in setup
+- Few style changes: Changed Button style text color to black - Previously it appeared that buttons were disabled. Changed Text color inside of combo boxes to black - As before it looked like the element was disabled.
+- Modified the date fields to show a drop-down box rather than the date image. Changed the text-size and spacing of the Main Navbar to 12px.
+- Fixed styling of the welcome panels.
+- Fixed some issues with OnDocFormSave, plus standardized how to render fields/html to update forms
+- Fixed bug with default values, @ bindings and other things on checkbox/radio TVs
+- Prevent tree from expanding too much on quick create, cleaned up js
+- Assigned user id/username to [[+modx.user.id]] and [[+modx.user.username]] for easier access
+- Cleaned up last PHP4 remnants to PHP5-only
+- [#MODX-1483] Fixed bug with TV saving in resource create processors
+- Recompiled MODx.Console to use Ext.Direct, now should be a bit more stable. To end a MODx.Console session, pass 'COMPLETED' to the registry.
+- Resizing the left tree now properly resizes content in the right panel and is stateful
+- Added resizability to leftbar tree
+- Removed no-longer-necessary js file references in resource controllers
+- Consolidated filetree css/js into main css/js files
+- Fixed logic error that caused removing setup directory to fail
+- Combined some common JS files, cleaned up login page css, other optimizations
+- Consolidated filetree extension CSS, removed unnecessary filetree files
+- Consolidated CSS files in templates/default/css to one single file to reduce load times from @imports
+- Added rowactions to package grid
+- Improved code in @DIRECTORY binding to be more efficient and take advantage of DirectoryIterator
+- [#MODX-1478] Fixed @SELECT binding
+- [#MODX-1474] Fixed bug with multiple list-boxes
+- [#MODX-1476] Fixed bug with TV default values with non-inherit tvs, also bug with radios/checkboxes and set to default
+- [#MODX-1479] Fixed bug with duplicate DOM ids in User Group tree
+- [#MODX-1480] Fixed bug with wrong permission reference in property set remove processor
+- Added emptyText to local and property grids
+- [#MODX-1477] Added emptyText config param with default 'No data to display' message to empty MODx grids
+- documentObject was not getting set from cached Resources.
+- Added inline help that loads official MODx documentation in a window
+- [#MODX-900] Fixed erroneous text on site_status setting description
+- Added (Inherited Value) flag to TVs that are inheriting their value
+- Added category titles to TV editing panel
+- [#MODX-1354], [#MODX-1475] Fixed @INHERIT and other bindings in TV inputs
+- Fixed bugs with dirty status not firing for certain TV input types 
+- Fixed CSS for login page
+- Fixed issue where default connection charset was not persisting in setup for upgrades
+- CSS tweak to get windows working properly
+- Major styling updates (thanks lossendae!)
+- [#MODX-1473] Fixed bug with modUser and modUserProfile PK's getting mixed, causing errors if PKs for each object were different
+- Added city field to user UI
+- Optimizations to Resource panel
+- [#MODX-1466] Made "back" from Access Policy edit redirect to Access Controls page, made Access Controls tabs stateful
+- [#MODX-1471] Added scrollOffset: 0 to grids to hide empty space on right side
+- [#MODX-1469] Fixed dir handling in setup
+- [#MODX-1388] Updated documentation for modX.getTree and modX.getChildIds
+- [#MODX-1318] Prevent ordering of elements in dragdrop since order defaults to alphanumeric
+- Made charset in setup/ a dropdown of available charsets
+- Fixed collation grabbing for setup/
+- [#MODX-1090] Added 'Rename File' window to directory tree
+- Vast improvements to setup, including removing of mootools, using ExtCore now, simplified UI workflow to remove unnecessary AJAX calls, added in database creation checking, collation specification, etc
+- Fixed bug with modPackageBuilder that would ignore the specified path for a Namespace
+- [#MODX-1207] Changed modSession.id column to varchar(40) to support session.hash_function=1 with session.hash_bytes_per_char=4.
+- Simplified and optimized session handling, removing older PHP workarounds and adjusting preset system settings.
+- Make sure non-static Resources with binary content types get processed and output.
+- [#MODX-1450] Added paging to Template combobox to allow for large numbers of templates
+- [#MODX-1443] Tree sorting now works for modMenus
+- Removed deprecated system settings from build
+- [#MODX-1448] Fixed issue with container checkbox not persisting
+- [#MODX-1426] Fixed issue with MySQL checks on non-standard 
+- [#MODX-1437] Fixed duplicate policy
+- Fixed some issues with Form Customization
+- Added 'address' field to modUserProfile
+- Added ability to edit the (anonymous) user group from the user group editing panels
+- Fixed typo in usergroup get processor
+- [#MODX-1018] Fixed bug with having to click the Clear Filter button in a settings grid twice
+- [#MODX-1380] Fixed bug with expanding node when quick creating a resource in it
+- [#MODX-1326] Fixed the access denied logout form, added styling
+- [#MODX-1423] Fixed error with duplicating a template
+- [#MODX-1409], [#MODX-919] Fixed issue where tag symbols were being stripped in Elements and breaking filtering and nested tag functionality
+- [#MODX-1347] Fixed user validation for username missing error
+- Extrapolated RTE logic to make it generic
+- Added OnRichTextBrowserInit to allow for 3rd Party RTEs to hook into MODx.Browser
+- Added system setting "allow_multiple_users_per_email" to allow users to have a single email shared across users. Defaults to true.
+- [#MODX-972] Fixed bug when property description was changed, grid wasnt updating
+- [#MODX-1390] Fixed docs for $modx->sendUnauthorizedPage();
+- [#MODX-895] Fixed possible rendering issue with error log scroll bar
+- Optimized setup pre-install checks, now checks both mysql client and server versions
+- [#MODX-1404] Fixed mysql version checks to only show a warning if the client/server is incorrectly setup to where PHP cannot determine the versions. 
+- Package Management now restricts downloading/updating Extras to their supported MODx versions (ie, you can't download packages that support only beta-3 if you have beta-4 or beta-2)
+- [#MODX-1310] Fixed expand/collapse toolbar items in trees
+- [#MODX-1361] Make sure cache (including Smarty files) is cleared after install 
+- [#MODX-1372],[#MODX-1376] Marked deprecated functions as so in phpdoc comments
+- [#MODX-1378] Fixed bug with adding a None role to a user group in the User -> Access Permissions tab
+- [#MODX-1375] Fixed documentation for modX.getRequest
+- [#MODX-1374] Fixed documentation for modX.getRegisteredClientScripts
+- [#MODX-1370] Fixed quick create to set modResource type to modDocument properly
+- [#MODX-1373] getLoginUserName and getLoginUserId now return boolean false if no user is logged in
+- [#MODX-1369] Fixed validation errors and possible loophole in error processing for user processor flow
+- Fixed column alignment with radio/checkbox TV inputs
+- [#MODX-1350] Fixed issue where reset to default wasnt working with radio TV inputs 
+- [#MODX-1360] Fixed issue where publishedon was being reset in quick update
+- Sanity fixes to misc processors
+- Added access modifiers to methods in modElement
+- Moved name character sanity checks for Elements to element class.
+- Cleaned up element processors, added missing permission checks, filled out plugin event calls
+- [#MODX-1355] Fixed erroneous label for quick create resource on Contexts
+- [#MODX-1352] Remove stay-buttons from user update screen 
+- [#MODX-1349] onDirty now fires on triggerfield-based TVs
+- Cleanups to getList processors, bugfixes for grids
+- [#MODX-1317] Fixed erroneous label for quick create resource; should be Document
+- [#MODX-1316] Added menu title to quick create/update resource
+- Fixed issues with User grid
+- [#MODX-1325] Fixed console's download to file functionality
+- [#MODX-1327], [#MODX-1340] Fixed issue with generation of new password
+- Fixed locking
+- Lots of PHP5-only optimizations
+
+MODx Revolution 2.0.0-beta-4 (LastChangedRevision: 5880, LastChangedDate: 2009-10-19 09:04:47 -0500 (Mon, 19 Oct 2009))
 ====================================
 - If memory limit is lower than 24M, force to 128M if possible
 - Fixing setup text for memory limit checks.

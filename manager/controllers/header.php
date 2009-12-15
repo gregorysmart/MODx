@@ -27,16 +27,14 @@ if ($menus == null) {
 $output = '';
 $order = 0;
 foreach ($menus as $menu) {
-    $output .= '<li id="limenu'.$menu['id'].'" class="top'.($order == 0 ? ' active' : '').'">'."\n";
+    $output .= '<li id="limenu-'.$menu['text'].'" class="top'.'">'."\n";
     $output .= '<a>'.$menu['text'].'</a>'."\n";
-    $output .= '<div class="zone">'."\n";
 
     if (!empty($menu['children'])) {
         $output .= '<ul class="modx-subnav">'."\n";
         _modProcessMenus($output,$menu['children']);
         $output .= '</ul>'."\n";
     }
-    $output .= '</div>'."\n";
     $output .= '</li>'."\n";
     $order++;
 }
@@ -63,7 +61,6 @@ function _modProcessMenus(&$output,$menus) {
         }
         $output .= '</li>';
     }
-    $output .= '<li class="last"><span>&nbsp;</span></li>'."\n";
 }
 $modx->smarty->assign('navb',$output);
 
@@ -80,32 +77,5 @@ unset($logged_in_as);
 $welcome_back = $modx->lexicon('welcome_back',array('name' => $modx->getLoginUserName()));
 $modx->smarty->assign('welcome_back',$welcome_back);
 unset($welcome_back);
-
-/* if true, use compressed JS */
-if ($modx->getOption('compress_js',null,false)) {
-    foreach ($modx->sjscripts as &$scr) {
-        $pos = strpos($scr,'.js');
-        if ($pos) {
-            $newUrl = substr($scr,0,$pos).'-min'.substr($scr,$pos,strlen($scr));
-        } else { continue; }
-        $pos = strpos($newUrl,'modext/');
-        if ($pos) {
-            $pos = $pos+7;
-            $newUrl = substr($newUrl,0,$pos).'build/'.substr($newUrl,$pos,strlen($newUrl));
-        }
-
-        $path = str_replace(array(
-            $modx->getOption('manager_url').'assets/modext/',
-            '<script type="text/javascript" src="',
-            '"></script>',
-        ),'',$newUrl);
-
-        if (file_exists($modx->getOption('manager_path').'assets/modext/'.$path)) {
-            $scr = $newUrl;
-        }
-    }
-}
-/* assign css/js to header */
-$modx->smarty->assign('cssjs',$modx->sjscripts);
 
 return $modx->smarty->fetch('header.tpl');

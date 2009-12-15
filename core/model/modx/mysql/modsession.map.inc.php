@@ -17,7 +17,7 @@ $xpdo_meta_map['modSession']= array (
     'id' => 
     array (
       'dbtype' => 'varchar',
-      'precision' => '32',
+      'precision' => '40',
       'phptype' => 'string',
       'null' => false,
       'index' => 'pk',
@@ -38,4 +38,3 @@ $xpdo_meta_map['modSession']= array (
     ),
   ),
 );
-$xpdo_meta_map['modsession']= & $xpdo_meta_map['modSession'];

@@ -67,13 +67,12 @@ $classes= array (
 );
 
 $this->xpdo->getManager();
-/* $this->xpdo->setLogLevel(XPDO_LOG_LEVEL_INFO); */
 $connected= $this->xpdo->connect();
 $created= false;
 if (!$connected) {
     $dsnArray= xPDO :: parseDSN($this->xpdo->getOption('dsn'));
-    $containerOptions['charset']= isset ($install->config['database_charset']) ? $install->config['database_charset'] : 'utf8';
-    $containerOptions['collation']= isset ($install->config['database_collation']) ? $install->config['database_collation'] : 'utf8_unicode_ci';
+    $containerOptions['charset']= $install->settings->get('database_charset','utf8');
+    $containerOptions['collation']= $install->setttings->get('database_collation','utf8_unicode_ci');
     $created= $this->xpdo->manager->createSourceContainer($dsnArray, $this->xpdo->config['username'], $this->xpdo->config['password'], $containerOptions);
     if (!$created) {
         $results[]= array ('class' => 'failed', 'msg' => '<p class="notok">'.$this->lexicon['db_err_create'].'</p>');
@@ -86,6 +85,7 @@ if (!$connected) {
     }
 }
 if ($connected) {
+    ob_start();
     $this->xpdo->loadClass('modAccess');
     $this->xpdo->loadClass('modAccessibleObject');
     $this->xpdo->loadClass('modAccessibleSimpleObject');
@@ -101,5 +101,6 @@ if ($connected) {
             $results[]= array ('class' => 'success', 'msg' => '<p class="ok">' . sprintf($this->lexicon['table_created'],$class) . '</p>');
         }
     }
+    ob_end_clean();
 }
 return $results;

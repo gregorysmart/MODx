@@ -237,7 +237,15 @@ Ext.extend(MODx.tree.Resource,MODx.tree.Tree,{
             xtype: 'modx-window-quick-create-modResource'
             ,record: r
             ,listeners: {
-                'success':{fn:function() { this.refreshNode(this.cm.activeNode.id); },scope:this}
+                'success':{fn:function() { 
+                    var node = this.getNodeById(this.cm.activeNode.id);
+                    if (node) {
+                        var n = node.parentNode ? node.parentNode : node;
+                        this.getLoader().load(n,function() {
+                            n.expand();
+                        },this);
+                    }
+                },scope:this}
                 ,'hide':{fn:function() { this.destroy(); }}
                 ,'show':{fn:function() {this.center();}}
             }
@@ -311,6 +319,12 @@ MODx.window.QuickCreateResource = function(config) {
             ,width: 300
             ,rows: 2
         },{
+            xtype: 'textfield'
+            ,name: 'menutitle'
+            ,id: 'modx-'+this.ident+'-menutitle'
+            ,fieldLabel: _('resource_menutitle')
+            ,width: 300
+        },{
             xtype: 'modx-combo-template'
             ,name: 'template'
             ,id: 'modx-'+this.ident+'-template'
@@ -376,6 +390,12 @@ MODx.window.QuickUpdateResource = function(config) {
             ,name: 'alias'
             ,id: 'modx-'+this.ident+'-alias'
             ,fieldLabel: _('alias')
+            ,width: 300
+        },{
+            xtype: 'textfield'
+            ,name: 'menutitle'
+            ,id: 'modx-'+this.ident+'-menutitle'
+            ,fieldLabel: _('resource_menutitle')
             ,width: 300
         },{
             xtype: 'textarea'
@@ -494,6 +514,11 @@ MODx.getQRSettings = function(id,va) {
         ,name: 'class_key'
         ,id: 'modx-'+id+'-class_key'
         ,value: va['class_key']
+    },{
+        xtype: 'hidden'
+        ,name: 'publishedon'
+        ,id: 'modx-'+id+'-publishedon'
+        ,value: va['publishedon']
     },{
         xtype: 'checkbox'
         ,name: 'published'

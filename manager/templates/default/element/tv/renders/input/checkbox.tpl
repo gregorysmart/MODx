@@ -6,9 +6,9 @@ MODx.load({
 {/literal}
     xtype: 'checkboxgroup'
     ,id: 'tv{$tv->id}'
-    ,fieldLabel: 'test'
     ,width: 300
     ,vertical: true
+    ,columns: 3
     ,renderTo: 'tv{$tv->id}-cb'
     ,name: 'tv-{$tv->id}'
     
@@ -22,11 +22,10 @@ MODx.load({
         ,value: '{$item.value}'
     {literal}}{/literal}{if NOT $smarty.foreach.cbs.last},{/if}
     {/foreach}]
-    
-    ,listeners: {literal}{
-        'change': {fn:MODx.fireResourceFormChange}
-    }{/literal}
-});
+{literal}}{/literal});
+{foreach from=$opts item=item key=k name=cbs}
+Ext.getCmp('tv{$tv->id}-{$k}').on('check',MODx.fireResourceFormChange);
+{/foreach}
 
 Ext.get('tvdef{$tv->id}').dom.value = "{$cbdefaults}";
 </script>

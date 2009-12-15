@@ -1,9 +1,3 @@
-/**
- * @class MODx.panel.Resource
- * @extends MODx.FormPanel
- * @param {Object} config An object of config properties
- * @xtype panel-resource
- */
 MODx.panel.Resource = function(config) {
     config = config || {};
     
@@ -200,6 +194,8 @@ MODx.panel.Resource = function(config) {
             xtype: 'hidden'
             ,name: 'content'
             ,id: 'hiddenContent'
+        },{
+            html: MODx.onDocFormRender, border: false
         }]
     });
     if (!MODx.config.manager_use_tabs) {
@@ -318,6 +314,8 @@ MODx.panel.Resource = function(config) {
         id: 'modx-page-settings'
         ,title: _('page_settings')
         ,layout: 'form'
+        ,forceLayout: true
+        ,deferredRender: false
         ,labelWidth: 200
         ,bodyStyle: 'padding: 1.5em;'
         ,autoHeight: true
@@ -361,8 +359,9 @@ MODx.panel.Resource = function(config) {
         ,id: 'modx-resource-header'
         ,cls: 'modx-page-header'
         ,border: false
+        ,forceLayout: true
     });
-    its.push(MODx.getPageStructure(it,{id:'modx-resource-tabs'}));
+    its.push(MODx.getPageStructure(it,{id:'modx-resource-tabs' ,forceLayout: true ,deferredRender: false }));
     
     if (MODx.config.manager_use_tabs) {
         ct.style = 'margin-top: 1.0em;';
@@ -376,6 +375,7 @@ MODx.panel.Resource = function(config) {
         ,resource: ''
         ,bodyStyle: ''
         ,defaults: { collapsible: false ,autoHeight: true }
+        ,forceLayout: true
         ,items: its
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
@@ -392,12 +392,22 @@ MODx.panel.Resource = function(config) {
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     rteLoaded: false
+    ,initialized: false
     ,onLoad: function() {
         this.getForm().setValues(this.config.record);
     }
     ,setup: function() {
-        if (this.config.resource === '' || this.config.resource === 0) {
-            if (MODx.config.use_editor && MODx.loadRTE) MODx.loadRTE('ta');
+        if (this.config.resource === '' || this.config.resource === 0 || this.initialized) {
+            if (MODx.config.use_editor && MODx.loadRTE) {
+                var f = this.getForm().findField('richtext');
+                if (f && f.getValue()) {
+                    MODx.loadRTE('ta');
+                    Ext.get('ta-toggle').show();
+                } else {
+                    if (MODx.unloadRTE) MODx.unloadRTE('ta');
+                    Ext.get('ta-toggle').hide();
+                }
+            }
             this.fireEvent('ready');
             return false;
         }
@@ -420,7 +430,12 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                     if (r.object.richtext && MODx.config.use_editor && MODx.loadRTE && !this.rteLoaded) {
                     	MODx.loadRTE('ta');
                         this.rteLoaded = true;
+                        Ext.get('ta-toggle').show();
+                    } else {
+                        if (MODx.unloadRTE) MODx.unloadRTE('ta');
+                        Ext.get('ta-toggle').hide();
                     }
+                    this.initialized = true;
                     this.fireEvent('ready');
             	},scope:this}
             }

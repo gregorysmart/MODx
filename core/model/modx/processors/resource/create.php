@@ -47,10 +47,10 @@
  * @package modx
  * @subpackage processors.resource
  */
+if (!$modx->hasPermission('new_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 global $resource;
 $modx->lexicon->load('resource');
 
-if (!$modx->hasPermission('new_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* load delegate processor */
 $resourceClass = !empty($_POST['class_key']) ? $_POST['class_key'] : 'modDocument';
@@ -194,7 +194,7 @@ if (!empty($_POST['template']) && ($template = $modx->getObject('modTemplate', $
                     while (list($featureValue, $featureItem) = each($value)) {
                         $featureInsert[count($featureInsert)] = $featureItem;
                     }
-                    $tmplvar = implode('||',$featureInsert);
+                    $value = implode('||',$featureInsert);
                 }
                 break;
         }

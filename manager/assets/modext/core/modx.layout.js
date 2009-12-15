@@ -18,6 +18,8 @@ MODx.Layout = function(config){
         ,width: '100%'
         ,autoHeight: true
         ,border: false
+        ,unstyled: true
+        ,monitorResize: true
         ,items: [{
             xtype: 'modx-tabs'
             ,id: 'modx-leftbar-tabs'
@@ -31,10 +33,24 @@ MODx.Layout = function(config){
             ,deferredRender: false
             ,activeTab: 0
             ,stateful: true
-            ,stateId: 'tabpanel'
-            ,stateEvents: ['tabchange']
+            ,stateId: 'modx-leftbar-tabs'
+            ,stateEvents: ['tabchange','resize']
             ,getState:function() {
-                return {activeTab:this.items.indexOf(this.getActiveTab())};
+                return {
+                    activeTab:this.items.indexOf(this.getActiveTab())
+                    ,width: this.getWidth()
+                };
+            }
+            ,listeners: {
+                'staterestore': {fn:function(c,s) {
+                    var w = s.width;
+                    var wi = Ext.get('modx-body-tag').getWidth();
+                    Ext.get('modx-leftbar').setWidth(w);
+                    Ext.getCmp('modx-leftbar-tabs').setWidth(w);
+                    var ct = Ext.get('modx-content');
+                    ct.setWidth((wi-w)-30);
+                    ct.setStyle('float','left');
+                },scope:this}
             }
             ,items: [{
                 xtype: 'modx-tree-resource'
@@ -51,7 +67,7 @@ MODx.Layout = function(config){
                 ,hideFiles: false
             }]
         }]
-    });        
+    });
     MODx.Layout.superclass.constructor.call(this,config);
     this.config = config;
     
@@ -62,6 +78,26 @@ MODx.Layout = function(config){
     });
     this.loadKeys();
     this.fireEvent('afterLayout');
+    
+    this.resizer = new Ext.Resizable('modx-leftbar', {
+        handles: 'e'
+        ,minWidth: 20
+        ,minHeight: 100
+        ,pinned: false
+        ,animate: true
+    });
+    this.resizer.on('resize',function(r,w,h,e) {
+        var wi = Ext.get('modx-body-tag').getWidth();
+        Ext.get('modx-leftbar').setWidth(w);
+        var tbs = Ext.getCmp('modx-leftbar-tabs');
+        tbs.setWidth(w);
+        tbs.fireEvent('resize');
+        var ct = Ext.get('modx-content');
+        ct.setWidth((wi-w)-20);
+        ct.setStyle('float','left');
+        Ext.getCmp('modx-layout').fireEvent('resize');
+    });
+    
 };
 Ext.extend(MODx.Layout,Ext.Panel,{
     

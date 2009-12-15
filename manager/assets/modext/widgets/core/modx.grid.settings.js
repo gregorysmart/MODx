@@ -1,12 +1,3 @@
-/**
- * A grid created that allows for dynamic editors for each column
- * based upon the data's xtype property, as well as key filtering. 
- * 
- * @class MODx.grid.SettingsGrid
- * @extends MODx.grid.Grid
- * @param {Object} config An object of config options.
- * @xtype modx-grid-settings
- */
 MODx.grid.SettingsGrid = function(config) {
     config = config || {};
     this.exp = new Ext.grid.RowExpander({
@@ -44,7 +35,10 @@ MODx.grid.SettingsGrid = function(config) {
             ,'render': {fn: function(cmp) {
                 new Ext.KeyMap(cmp.getEl(), {
                     key: Ext.EventObject.ENTER
-                    ,fn: function() { this.fireEvent('change',this.getValue()); }
+                    ,fn: function() { 
+                        this.fireEvent('change',this.getValue());
+                        this.blur();
+                        return true; }
                     ,scope: cmp
                 });
             },scope:this}
@@ -74,6 +68,8 @@ MODx.grid.SettingsGrid = function(config) {
             ,autoFill: true
             ,showPreview: true
             ,enableRowBody: true
+            ,scrollOffset: 0
+            ,emptyText: config.emptyText || _('ext_emptymsg')
         }
         ,grouping: true
         ,groupBy: 'area_text'
@@ -127,52 +123,36 @@ MODx.grid.SettingsGrid = function(config) {
     this.on('celldblclick',this.changeEditor,this);
 };
 Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
-    /**
-     * Adds an enter key handler to the object.
-     */
     _addEnterKeyHandler: function() {
         this.getEl().addKeyListener(Ext.EventObject.ENTER,function() {
             this.fireEvent('change'); 
         },this);
     }
-    
-    /**
-     * Resets the filter to empty
-     */
+  
     ,clearFilter: function() {
     	this.getStore().baseParams = {
     		action: 'getList'
     	};
-        Ext.getCmp('modx-filter-namespace').setValue('');
-        Ext.getCmp('modx-filter-key').setValue('');
+        Ext.getCmp('modx-filter-namespace').reset();
+        Ext.getCmp('modx-filter-key').reset();
     	this.refresh();
     	this.getBottomToolbar().changePage(1);
     }
     
-    /**
-     * Filters the grid by the key column.
-     */
     ,filterByKey: function(tf,newValue,oldValue) {
         var nv = newValue || tf;
         this.getStore().baseParams.key = nv;
         this.refresh();
         this.getBottomToolbar().changePage(1);
+        return true;
     }
-    /**
-     * Filters the grid by the namespace column
-     */
+    
     ,filterByNamespace: function(cb,rec,ri) {
         this.getStore().baseParams['namespace'] = rec.data['name'];
         this.refresh();
         this.getBottomToolbar().changePage(1);
     }
-    /**
-     * Dynamically change the editor for the row via its xtype property.
-     * @param {MODx.grid.SettingsGrid} g The grid object
-     * @param {Integer} ri The row index
-     * @param {Integer} ci The column index
-     * @param {Ext.EventObject} e The event object that occurred
-     */
+    
     ,changeEditor: function(g,ri,ci,e) {
         var cm = this.getColumnModel();
         if (cm.getColumnId(ci) != 'value') {
@@ -185,13 +165,6 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
         }
     }
     
-    /**
-     * Initializes the editor for the cell
-     * @param {Ext.grid.ColumnModel} cm The column model for the grid
-     * @param {Integer} ri The row index
-     * @param {Integer} ci The column index
-     * @param {Object} r The data record for the cell
-     */
     ,initEditor: function(cm,ci,ri,r) {
         cm.setEditable(ci,true);
         var o = Ext.ComponentMgr.create({ xtype: r.xtype || 'textfield'});
@@ -199,11 +172,6 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
         cm.setEditor(ci,ed);
     }
     
-    /**
-     * Starts editing the specified for the specified row/column
-     * @param {Number} rowIndex
-     * @param {Number} colIndex
-     */
     ,startEditing : function(row, col){
         this.stopEditing();
         if(this.colModel.isCellEditable(col, row)){
@@ -239,16 +207,6 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
         }
     }
     
-    /**
-     * A custom renderer that renders the custom xtype editor
-     * @param {String} v The raw value
-     * @param {Object} md The metadata for the cell
-     * @param {Object} rec The store data record
-     * @param {Integer} ri The row index
-     * @param {Integer} ci The column index
-     * @param {Ext.data.Store} s The store for the grid
-     * @param {MODx.grid.SettingsGrid} g The grid object 
-     */
     ,renderDynField: function(v,md,rec,ri,ci,s,g) {
         var r = s.getAt(ri).data;
         var f;
@@ -274,14 +232,6 @@ Ext.extend(MODx.grid.SettingsGrid,MODx.grid.Grid,{
 });
 Ext.reg('modx-grid-settings',MODx.grid.SettingsGrid);
 
-/**
- * A window for creating settings
- * 
- * @class MODx.window.CreateSetting
- * @extends MODx.Window
- * @param {Object} config An object of config options.
- * @xtype modx-window-setting-create
- */
 MODx.window.CreateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -350,13 +300,6 @@ Ext.reg('modx-window-setting-create',MODx.window.CreateSetting);
 
 
 
-/**
- * Displays a xtype combobox
- * 
- * @class MODx.combo.xType
- * @extends Ext.form.ComboBox
- * @xtype modx-combo-xtype-spec
- */
 MODx.combo.xType = function(config) {
     config = config || {};
     Ext.applyIf(config,{
@@ -380,15 +323,6 @@ Ext.extend(MODx.combo.xType,Ext.form.ComboBox);
 Ext.reg('modx-combo-xtype-spec',MODx.combo.xType);
 
 
-
-/**
- * A window for updating settings
- * 
- * @class MODx.window.UpdateSetting
- * @extends MODx.Window
- * @param {Object} config An object of config options.
- * @xtype modx-window-setting-update
- */
 MODx.window.UpdateSetting = function(config) {
     config = config || {};
     Ext.applyIf(config,{

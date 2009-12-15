@@ -300,6 +300,7 @@ Ext.extend(MODx.grid.ElementProperties,MODx.grid.LocalProperty,{
                     rec.set('options',r.options);
                     rec.set('value',r.value);
                     rec.set('overridden',r.overridden == 2 ? 2 : (!def ? 1 : 0));
+                    this.getView().refresh();
                     this.onDirty();
                 },scope:this}
             }
@@ -837,6 +838,7 @@ MODx.combo.PropertySet = function(config) {
         ,fields: ['id','name','description','properties']
         ,editable: false
         ,value: 0
+        ,pageSize: 10
     });
     MODx.combo.PropertySet.superclass.constructor.call(this,config);
 };

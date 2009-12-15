@@ -13,7 +13,8 @@ $xpdo_meta_map['modAction']= array (
     'controller' => NULL,
     'haslayout' => 1,
     'lang_topics' => NULL,
-    'assets' => NULL,
+    'assets' => '',
+    'help_url' => '',
   ),
   'fieldMeta' => 
   array (
@@ -64,6 +65,14 @@ $xpdo_meta_map['modAction']= array (
       'dbtype' => 'text',
       'phptype' => 'string',
       'null' => false,
+      'default' => '',
+    ),
+    'help_url' => 
+    array (
+      'dbtype' => 'text',
+      'phptype' => 'string',
+      'null' => false,
+      'default' => '',
     ),
   ),
   'aggregates' => 
@@ -113,6 +122,3 @@ $xpdo_meta_map['modAction']= array (
     ),
   ),
 );
-if (XPDO_PHP4_MODE) $xpdo_meta_map['modAction']['aggregates']= array_merge($xpdo_meta_map['modAction']['aggregates'], array_change_key_case($xpdo_meta_map['modAction']['aggregates']));
-if (XPDO_PHP4_MODE) $xpdo_meta_map['modAction']['composites']= array_merge($xpdo_meta_map['modAction']['composites'], array_change_key_case($xpdo_meta_map['modAction']['composites']));
-$xpdo_meta_map['modaction']= & $xpdo_meta_map['modAction'];

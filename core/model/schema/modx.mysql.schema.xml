@@ -103,7 +103,8 @@
         <field key="controller" dbtype="varchar" precision="255" phptype="string" null="false" index="index" />
         <field key="haslayout" dbtype="tinyint" precision="1" attributes="unsigned" phptype="integer" null="false" default="1" />
         <field key="lang_topics" dbtype="text" phptype="string" null="false" />
-        <field key="assets" dbtype="text" phptype="string" null="false" />
+        <field key="assets" dbtype="text" phptype="string" null="false" default="" />
+        <field key="help_url" dbtype="text" phptype="string" null="false" default="" />
         
         <aggregate alias="Namespace" class="modNamespace" local="namespace" foreign="name" owner="foreign" cardinality="one" />
         <aggregate alias="Parent" class="modAction" local="parent" foreign="id" owner="foreign" cardinality="one" />
@@ -289,7 +290,7 @@
     <object class="modLexiconLanguage" table="lexicon_languages" extends="xPDOObject">
         <field key="name" dbtype="varchar" precision="20" phptype="string" null="false" default="" index="pk" />
         
-        <aggregate alias="Entries" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
+        <composite alias="Entries" class="modLexiconEntry" local="name" foreign="language" cardinality="many" owner="local" />
     </object>
     
     <object class="modLexiconTopic" table="lexicon_topics" extends="xPDOSimpleObject">
@@ -308,7 +309,7 @@
     
     <object class="modManagerLog" table="manager_log" extends="xPDOSimpleObject">
         <field key="user" dbtype="int" precision="10" attributes="unsigned" phptype="integer" null="false" default="0" />
-        <field key="occurred" dbtype="datetime" phptype="datetime" null="false" default="0000-00-00 00:00:00" />
+        <field key="occurred" dbtype="datetime" phptype="datetime" null="true" default="0000-00-00 00:00:00" />
         <field key="action" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="classKey" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="item" dbtype="varchar" precision="255" phptype="integer" null="false" default="0" />
@@ -490,7 +491,7 @@
     </object>
     
     <object class="modSession" table="session" extends="xPDOObject">
-        <field key="id" dbtype="varchar" precision="32" phptype="string" null="false" index="pk" default="" />
+        <field key="id" dbtype="varchar" precision="40" phptype="string" null="false" index="pk" default="" />
         <field key="access" dbtype="int" precision="20" phptype="timestamp" null="true" attributes="unsigned" />
         <field key="data" dbtype="text" phptype="string" />
     </object>
@@ -658,7 +659,9 @@
         <field key="sessionid" dbtype="varchar" precision="100" phptype="string" null="false" default="" />
         <field key="dob" dbtype="int" precision="10" phptype="integer" null="false" default="0" />
         <field key="gender" dbtype="int" precision="1" phptype="integer" null="false" default="0" />
-        <field key="country" dbtype="varchar" precision="5" phptype="string" null="false" default="" />
+        <field key="address" dbtype="text" phptype="string" null="false" default="" />
+        <field key="country" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
+        <field key="city" dbtype="varchar" precision="255" phptype="string" null="false" default="" />
         <field key="state" dbtype="varchar" precision="25" phptype="string" null="false" default="" />
         <field key="zip" dbtype="varchar" precision="25" phptype="string" null="false" default="" />
         <field key="fax" dbtype="varchar" precision="100" phptype="string" null="false" default="" />

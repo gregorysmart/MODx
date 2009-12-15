@@ -29,9 +29,8 @@ $onDocFormPrerender = $modx->invokeEvent('OnDocFormPrerender',array(
     'resource' => &$resource,
     'mode' => 'upd',
 ));
-if (is_array($onDocFormPrerender)) {
-    $onDocFormPrerender = implode('',$onDocFormPrerender);
-}
+if (is_array($onDocFormPrerender)) $onDocFormPrerender = implode('',$onDocFormPrerender);
+$onDocFormRender = str_replace(array('"',"\n","\r"),array('\"','',''),$onDocFormRender);
 $modx->smarty->assign('onDocFormPrerender',$onDocFormPrerender);
 
 /* handle default parent */
@@ -86,10 +85,7 @@ $edit_doc_metatags = $modx->hasPermission('edit_doc_metatags');
 $access_permissions = $modx->hasPermission('access_permissions');
 
 /* register JS scripts */
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/core/modx.view.js');
 $modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/util/datetime.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/core/modx.browser.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/system/modx.tree.directory.js');
 $modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/element/modx.panel.tv.renders.js');
 $modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.grid.resource.security.js');
 $modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.tv.js');
@@ -99,6 +95,7 @@ $modx->regClientStartupHTMLBlock('
 <script type="text/javascript">
 // <![CDATA[
 MODx.config.publish_document = "'.$publish_document.'";
+MODx.onDocFormRender = "'.$onDocFormRender.'";
 Ext.onReady(function() {
     MODx.load({
         xtype: "modx-page-symlink-update"

@@ -4,8 +4,8 @@
 <title>MODx :: {$_config.site_name}</title>
 <meta http-equiv="Content-Type" content="text/html; charset={$_config.modx_charset}" />
 
-<link rel="stylesheet" type="text/css" href="{$_config.manager_url}assets/ext3/resources/css/ext-all.css" />
-<link rel="stylesheet" type="text/css" href="{$_config.manager_url}assets/ext3/resources/css/xtheme-gray-extend.css" />
+<link rel="stylesheet" type="text/css" href="{$_config.manager_url}assets/ext3/resources/css/ext-all-notheme.css" />
+<link rel="stylesheet" type="text/css" href="{$_config.manager_url}assets/ext3/resources/css/xtheme-modx.css" />
 <link rel="stylesheet" type="text/css" href="{$_config.manager_url}templates/{$_config.manager_theme}/css/index.css" />
 
 <script src="{$_config.manager_url}assets/ext3/adapter/ext/ext-base.js" type="text/javascript"></script>
@@ -18,19 +18,11 @@
 {$scr}
 {/foreach}
 
-<script src="{$_config.manager_url}assets/modext/util/filetree/js/Ext.ux.form.BrowseButton.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/util/filetree/js/Ext.ux.FileUploader.js" type="text/javascript"></script>
-<script src="{$_config.manager_url}assets/modext/util/filetree/js/Ext.ux.UploadPanel.js" type="text/javascript"></script>
-<link href="{$_config.manager_url}assets/modext/util/filetree/css/icons.css" rel="stylesheet" type="text/css" />
-<link href="{$_config.manager_url}assets/modext/util/filetree/css/filetype.css" rel="stylesheet" type="text/css" />
-<link href="{$_config.manager_url}assets/modext/util/filetree/css/filetree.css" rel="stylesheet" type="text/css" />
-
-
 <!--[if IE]>
 <link rel="stylesheet" type="text/css" href="templates/{$_config.manager_theme}/css/ie.css" />
 <![endif]-->
 </head>
-<body>
+<body id="modx-body-tag">
 
 <div id="modx-browser"></div>
 <div id="modx-container">

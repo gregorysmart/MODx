@@ -101,7 +101,7 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 			,text: _('remove_this_confirm')+' '+oar[0]+'?'
 			,url: MODx.config.connectors_url+'element/'+oar[0]+'.php'
 			,params: {
-				action: 'delete'
+				action: 'remove'
 				,id: oar[2]
 			}
 			,listeners: {
@@ -162,9 +162,8 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		
 	,_handleDrop: function(e) {
 		var target = e.target;
-		if(e.point == 'above' || e.point == 'below') {
-			target = e.target.parentNode;
-		}
+        if (e.target.attributes.type == 'category' && e.point == 'append') { return true; }
+		if(e.point == 'above' || e.point == 'below') { return false; }
         if (!this.isCorrectType(e.dropNode,target)) { return false; }
 		
 		return e.target.getDepth() > 0;
