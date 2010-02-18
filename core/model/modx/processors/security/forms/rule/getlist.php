@@ -11,11 +11,11 @@
  * @package modx
  * @subpackage processors.security.forms.rule
  */
-if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('customize_forms')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('formcustomization');
 
 /* setup default properties */
-$isLimit = empty($_REQUEST['limit']);
+$isLimit = !empty($_REQUEST['limit']);
 $start = $modx->getOption('start',$_REQUEST,0);
 $limit = $modx->getOption('limit',$_REQUEST,10);
 $sort = $modx->getOption('sort',$_REQUEST,'action');
@@ -23,10 +23,11 @@ $dir = $modx->getOption('dir',$_REQUEST,'ASC');
 
 /* query for rules */
 $c = $modx->newQuery('modActionDom');
-$c->select('modActionDom.*,
-    Action.controller AS controller,
-    Access.principal AS principal,
-    Access.principal_class AS principal_class
+$c->select('
+    `modActionDom`.*,
+    `Action`.`controller` AS `controller`,
+    `Access`.`principal` AS `principal`,
+    `Access`.`principal_class` AS `principal_class`
 ');
 $c->innerJoin('modAction','Action');
 $c->leftJoin('modAccessActionDom','Access');

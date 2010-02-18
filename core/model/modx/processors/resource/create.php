@@ -47,22 +47,8 @@
  * @package modx
  * @subpackage processors.resource
  */
-if (!$modx->hasPermission('new_document')) return $modx->error->failure($modx->lexicon('permission_denied'));
-global $resource;
+if (!$modx->hasPermission('new_document')) return $modx->error->failure($modx->lexicon('resource_create_access_denied'));
 $modx->lexicon->load('resource');
-
-
-/* load delegate processor */
-$resourceClass = !empty($_POST['class_key']) ? $_POST['class_key'] : 'modDocument';
-$resourceDir= strtolower(substr($resourceClass, 3));
-
-$delegateProcessor= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__);
-if (file_exists($delegateProcessor)) {
-    $overridden= include ($delegateProcessor);
-    return $overridden;
-}
-
-$resource = $modx->newObject($resourceClass);
 
 /* default settings */
 $_POST['context_key']= empty($_POST['context_key']) ? 'web' : $_POST['context_key'];
@@ -79,15 +65,38 @@ $_POST['syncsite'] = empty($_POST['syncsite']) ? 0 : 1;
 $_POST['createdon'] = strftime('%Y-%m-%d %H:%M:%S');
 $_POST['menuindex'] = empty($_POST['menuindex']) ? 0 : $_POST['menuindex'];
 
-/* specific data escaping */
-$_POST['pagetitle'] = trim($_POST['pagetitle']);
-$_POST['variablesmodified'] = isset($_POST['variablesmodified'])
-	? explode(',',$_POST['variablesmodified'])
-	: array();
-if (isset($_POST['ta'])) $_POST['content'] = $_POST['ta'];
+/* make sure parent exists and user can add_children to the parent */
+$parent = null;
+if ($_POST['parent'] > 0) {
+    $parent = $modx->getObject('modResource', $_POST['parent']);
+    if ($parent) {
+        if (!$parent->checkPolicy('add_children')) {
+            return $modx->error->failure($modx->lexicon('resource_add_children_access_denied'));
+        }
+    } else {
+        return $modx->error->failure($modx->lexicon('resource_err_nfs', array('id' => $_POST['parent'])));
+    }
+} elseif (!$modx->hasPermission('new_document_in_root')) {
+    return $modx->error->failure($modx->lexicon('resource_add_children_access_denied'));
+}
 
 /* default pagetitle */
 if (empty($_POST['pagetitle'])) $_POST['pagetitle'] = $modx->lexicon('resource_untitled');
+
+/* specific data escaping */
+$_POST['pagetitle'] = trim($_POST['pagetitle']);
+$_POST['variablesmodified'] = isset($_POST['variablesmodified'])
+    ? explode(',',$_POST['variablesmodified'])
+    : array();
+
+/* get the class_key to determine resourceClass and resourceDir */
+$resourceClass = !empty($_POST['class_key']) ? $_POST['class_key'] : 'modDocument';
+$resourceDir= strtolower(substr($resourceClass, 3));
+
+/* create the new resource instance using the indicated class */
+$resource = $modx->newObject($resourceClass);
+if (!$resource) return $modx->error->failure($modx->lexicon('resource_err_create'));
+if (!$resource instanceof $resourceClass) return $modx->error->failure($modx->lexicon('resource_err_class',array('class' => $resourceClass)));
 
 /* friendly url alias checks */
 if ($modx->getOption('friendly_alias_urls')) {
@@ -137,11 +146,7 @@ if ($modx->getOption('friendly_alias_urls')) {
         $modx->error->addField('alias', $err);
     }
 }
-
 if ($modx->error->hasError()) return $modx->error->failure();
-
-
-
 
 /* publish and unpublish dates */
 $now = time();
@@ -164,20 +169,18 @@ if (isset($_POST['unpub_date'])) {
     }
 }
 
-
 if (!empty($_POST['template']) && ($template = $modx->getObject('modTemplate', $_POST['template']))) {
     $tmplvars = array();
     $c = $modx->newQuery('modTemplateVar');
-    $c->select('DISTINCT modTemplateVar.*, modTemplateVar.default_text AS value');
+    $c->select('DISTINCT `modTemplateVar`.*, `modTemplateVar`.`default_text` AS `value`');
     $c->innerJoin('modTemplateVarTemplate','TemplateVarTemplates');
     $c->where(array(
         'TemplateVarTemplates.templateid' => $_POST['template'],
     ));
     $c->sortby('modTemplateVar.rank');
+    $templateVars = $modx->getCollection('modTemplateVar',$c);
 
-    $tvs = $modx->getCollection('modTemplateVar',$c);
-
-    foreach ($tvs as $tv) {
+    foreach ($templateVars as $tv) {
         $value = isset($_POST['tv'.$tv->get('id')]) ? $_POST['tv'.$tv->get('id')] : $tv->get('default_text');
 
         switch ($tv->get('type')) {
@@ -201,28 +204,21 @@ if (!empty($_POST['template']) && ($template = $modx->getObject('modTemplate', $
 
         /* save value if it was modified */
         if ($value != $tv->get('default_text')) {
-            $tvr = $modx->newObject('modTemplateVarResource');
-            $tvr->set('tmplvarid',$tv->get('id'));
-            $tvr->set('value',$value);
-            $tmplvars[] = $tvr;
+            $templateVarResource = $modx->newObject('modTemplateVarResource');
+            $templateVarResource->set('tmplvarid',$tv->get('id'));
+            $templateVarResource->set('value',$value);
+            $tmplvars[] = $templateVarResource;
         }
     }
     $resource->addMany($tmplvars);
 }
 
-/* invoke OnBeforeDocFormSave event */
-$modx->invokeEvent('OnBeforeDocFormSave',array(
-	'mode' => 'new',
-	'id' => 0,
-));
-
 /* deny publishing if not permitted */
 if (!$modx->hasPermission('publish_document')) {
-	$_POST['pub_date'] = 0;
-	$_POST['unpub_date'] = 0;
-	$_POST['published'] = 0;
+    $_POST['pub_date'] = 0;
+    $_POST['unpub_date'] = 0;
+    $_POST['published'] = 0;
 }
-
 
 if (isset($_POST['published'])) {
     if (empty($_POST['publishedon'])) {
@@ -233,18 +229,35 @@ if (isset($_POST['published'])) {
     $_POST['publishedby'] = $_POST['published'] ? $modx->user->get('id') : 0;
 }
 
-/* fill out fields */
+/* load delegate processor */
+$delegateProcessor= dirname(__FILE__) . '/' . $resourceDir . '/' . basename(__FILE__);
+if (file_exists($delegateProcessor)) {
+    $overridden= include ($delegateProcessor);
+    return $overridden;
+}
+
+/* modDocument content is posted as ta */
+if (isset($_POST['ta'])) $_POST['content'] = $_POST['ta'];
+
+/* set fields */
 $resource->fromArray($_POST);
 if (!$resource->get('class_key')) {
     $resource->set('class_key', $resourceClass);
 }
 
 /* increase menu index if this is a new resource */
-$auto_menuindex = $modx->getOption('auto_menuindex');
+$auto_menuindex = $modx->getOption('auto_menuindex',null,true);
 if (!empty($auto_menuindex)) {
     $menuindex = $modx->getCount('modResource',array('parent' => $resource->get('parent')));
 }
 $resource->set('menuindex',!empty($menuindex) ? $menuindex : 0);
+
+/* invoke OnBeforeDocFormSave event */
+$modx->invokeEvent('OnBeforeDocFormSave',array(
+    'mode' => 'new',
+    'id' => 0,
+    'resource' => &$resource,
+));
 
 /* save data */
 if ($resource->save() == false) {
@@ -254,54 +267,62 @@ if ($resource->save() == false) {
 /* add lock */
 $resource->addLock();
 
+/* update parent to be a container if user has save permission */
+if ($parent && $parent instanceof modResource && $parent->checkPolicy('save')) {
+    $parent->set('isfolder', true);
+    $parent->save();
+}
+
 /* save resource groups */
 if (isset($_POST['resource_groups'])) {
-    $_GROUPS = $modx->fromJSON($_POST['resource_groups']);
-    foreach ($_GROUPS as $id => $group) {
-        if ($group['access']) {
-            $rgr = $modx->getObject('modResourceGroupResource',array(
-                'document_group' => $group['id'],
-                'document' => $resource->get('id'),
-            ));
-            if ($rgr == null) {
-                $rgr = $modx->newObject('modResourceGroupResource');
+    $resourceGroups = $modx->fromJSON($_POST['resource_groups']);
+    if (is_array($resourceGroups)) {
+        foreach ($resourceGroups as $id => $resourceGroupAccess) {
+            if (!empty($resourceGroupAccess['access'])) {
+                $resourceGroupResource = $modx->getObject('modResourceGroupResource',array(
+                    'document_group' => $resourceGroupAccess['id'],
+                    'document' => $resource->get('id'),
+                ));
+                if (empty($resourceGroupResource)) {
+                    $resourceGroupResource = $modx->newObject('modResourceGroupResource');
+                }
+                $resourceGroupResource->set('document_group',$resourceGroupAccess['id']);
+                $resourceGroupResource->set('document',$resource->get('id'));
+                $resourceGroupResource->save();
+            } else {
+                $resourceGroupResource = $modx->getObject('modResourceGroupResource',array(
+                    'document_group' => $resourceGroupAccess['id'],
+                    'document' => $resource->get('id'),
+                ));
+                if ($resourceGroupResource instanceof modResourceGroupResource) {
+                    $resourceGroupResource->remove();
+                }
             }
-            $rgr->set('document_group',$group['id']);
-            $rgr->set('document',$resource->get('id'));
-            $rgr->save();
-        } else {
-            $rgr = $modx->getObject('modResourceGroupResource',array(
-                'document_group' => $group['id'],
-                'document' => $resource->get('id'),
-            ));
-            if ($rgr == null) continue;
-            $rgr->remove();
         }
     }
 }
 
-if ($resource->get('parent') != 0) {
-	$parent = $modx->getObject('modResource', $resource->get('parent'));
-	$parent->set('isfolder', 1);
-    $parent->save();
+/* quick check to make sure it's not site_start, if so, publish */
+if ($resource->get('id') == $modx->getOption('site_start')) {
+    $resource->set('published',true);
+    $resource->save();
 }
 
 /* invoke OnDocFormSave event */
 $modx->invokeEvent('OnDocFormSave', array(
-	'mode' => 'new',
-	'id' => $resource->get('id'),
-    'resource' => & $resource
+    'mode' => 'new',
+    'id' => $resource->get('id'),
+    'resource' => &$resource,
 ));
 
 /* log manager action */
-$modx->logManagerAction('save_resource','modDocument',$resource->get('id'));
+$modx->logManagerAction('save_resource', $resourceClass, $resource->get('id'));
 
 if (!empty($_POST['syncsite']) || !empty($_POST['clearCache'])) {
-	/* empty cache */
+    /* empty cache */
     $cacheManager= $modx->getCacheManager();
     $cacheManager->clearCache(array (
-            "{$resource->context_key}/resources/",
-            "{$resource->context_key}/context.cache.php",
+            "{$resource->context_key}/",
         ),
         array(
             'objects' => array('modResource', 'modContext', 'modTemplateVarResource'),
@@ -310,14 +331,7 @@ if (!empty($_POST['syncsite']) || !empty($_POST['clearCache'])) {
     );
 }
 
-/* quick check to make sure it's not site_start, if so, publish */
-if ($resource->get('id') == $modx->getOption('site_start')) {
-	$resource->set('published',true);
-    $resource->save();
-}
-
-if (!isset($_POST['modx-ab-stay']) || $_POST['modx-ab-stay'] !== 'stay') {
-    $resource->removeLock();
-}
+/* remove lock */
+$resource->removeLock();
 
 return $modx->error->success('', array('id' => $resource->get('id')));

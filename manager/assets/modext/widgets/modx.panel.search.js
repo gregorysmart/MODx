@@ -10,7 +10,6 @@ MODx.panel.Search = function(config) {
     config = config || {};
     Ext.applyIf(config,{
         id: 'modx-panel-search'
-        ,bodyStyle: 'padding: 0'
         ,autoHeight: true
         ,items: [{
             html: '<h2>'+_('search')+'</h2>'
@@ -19,15 +18,13 @@ MODx.panel.Search = function(config) {
         },{
             xtype: 'portal'
             ,items: [{
-                columnWidth: .977
+                columnWidth: .97
                 ,items: [{
                     title: _('search_criteria')
 					,cls: 'x-panel-header'
-					,style: 'padding: .5em;'
-					,bodyStyle: 'text-transform: none; font-weight: Normal;'
                     ,layout: 'form'
                     ,border: false
-                    ,defaults: { 
+                    ,defaults: {
                         collapsible: false
                         ,autoHeight: true
                         ,bodyStyle: 'padding: 1.5em;'
@@ -52,21 +49,23 @@ Ext.extend(MODx.panel.Search,MODx.FormPanel,{
             'change': {fn:this.filter,scope: this}
             ,'render': {fn:this._addEnterKeyHandler}
         };
-        var csr = {'check': {fn:this.filter, scope:this}};
         return [{
             xtype: 'textfield'
             ,name: 'id'
             ,fieldLabel: _('id')
+            ,width: 100
             ,listeners: lsr
         },{
             xtype: 'textfield'
             ,name: 'pagetitle'
             ,fieldLabel: _('pagetitle')
+            ,width: 300
             ,listeners: lsr
         },{
             xtype: 'textfield'
             ,name: 'longtitle'
             ,fieldLabel: _('long_title')
+            ,width: 300
             ,listeners: lsr
         },{
             xtype: 'textarea'
@@ -79,33 +78,47 @@ Ext.extend(MODx.panel.Search,MODx.FormPanel,{
             xtype: 'checkbox'
             ,name: 'published'
             ,fieldLabel: _('published')
-            ,listeners: csr
+            ,inputValue: 1
+            ,checked: false
+            ,handler: this.filter
+            ,scope: this
         },{
             xtype: 'checkbox'
             ,name: 'unpublished'
             ,fieldLabel: _('unpublished')
-            ,listeners: csr
+            ,inputValue: 1
+            ,checked: false
+            ,handler: this.filter
+            ,scope: this
         },{
             xtype: 'checkbox'
             ,name: 'deleted'
             ,fieldLabel: _('deleted')
-            ,listeners: csr
+            ,inputValue: 1
+            ,checked: false
+            ,handler: this.filter
+            ,scope: this
         },{
             xtype: 'checkbox'
             ,name: 'undeleted'
             ,fieldLabel: _('undeleted')
-            ,listeners: csr
+            ,inputValue: 1
+            ,checked: false
+            ,handler: this.filter
+            ,scope: this
         }];
     }
     
     ,filter: function(tf,newValue,oldValue) {
         var p = this.getForm().getValues();
-        p.start = 0;
-        p.limit = 20;
-        Ext.getCmp('modx-grid-search').getStore().load({
-            params: p
-            ,scope: this
-        });
+        p.action = 'search';
+        
+        var g = Ext.getCmp('modx-grid-search');
+        if (g) {
+            g.getStore().baseParams = p;
+            g.getBottomToolbar().changePage(1);
+            g.refresh();
+        }
     }
         
     ,_addEnterKeyHandler: function() {

@@ -264,7 +264,7 @@ class modX extends xPDO {
      * target contains values that are arrays.
      * @return array The sanitized array.
      */
-    public function sanitize(array &$target, array $patterns= array(), $depth= 3) {
+    public static function sanitize(array &$target, array $patterns= array(), $depth= 3) {
         while (list($key, $value)= each($target)) {
             if (is_array($value) && $depth > 0) {
                 modX :: sanitize($value, $patterns, $depth--);
@@ -281,7 +281,14 @@ class modX extends xPDO {
         return $target;
     }
 
-    function __construct($configPath= '', array $options = array()) {
+    /**
+     * Construct a new modX instance.
+     *
+     * @param string $configPath An absolute filesystem path to look for the config file.
+     * @param array $options Options that can be passed to the instance.
+     * @return modX A new modX instance.
+     */
+    public function __construct($configPath= '', array $options = array()) {
         global $database_type, $database_server, $dbase, $database_user,
                $database_password, $database_connection_charset, $table_prefix;
         modX :: protect();
@@ -413,9 +420,9 @@ class modX extends xPDO {
      *
      * @return object A modCacheManager registered for this modX instance.
      */
-    public function getCacheManager() {
+    public function getCacheManager($class= 'cache.xPDOCacheManager', $options = array('path' => XPDO_CORE_PATH, 'ignorePkg' => true)) {
         if ($this->cacheManager === null) {
-            if ($this->loadClass('cache.xPDOCacheManager', XPDO_CORE_PATH, true, true)) {
+            if ($this->loadClass($class, $options['path'], $options['ignorePkg'], true)) {
                 $cacheManagerClass= $this->getOption('modCacheManager.class', array(), 'modCacheManager');
                 if ($className= $this->loadClass($cacheManagerClass, '', false, true)) {
                     if ($this->cacheManager= new $className ($this)) {
@@ -1259,6 +1266,10 @@ class modX extends xPDO {
                     $this->event->activated= true;
                     $this->event->activePlugin= $plugin->get('name');
                     $this->event->propertySet= (($pspos = strpos($pluginPropset, ':')) > 1) ? substr($pluginPropset, $pspos + 1) : '';
+
+                    /* merge in plugin properties */
+                    $params = array_merge($plugin->getProperties(),$params);
+
                     $msg= $plugin->process($params);
                     $results[]= $this->event->_output;
                     if ($msg && is_string($msg)) {
@@ -1293,7 +1304,7 @@ class modX extends xPDO {
     public function executeProcessor($options) {
         $result = null;
         if (is_array($options) && !empty($options) && isset($options['action']) && $this->getRequest()) {
-            $processor = isset($options['processors_path']) ? $options['processors_path'] : $this->config['processors_path'];
+            $processor = isset($options['processors_path']) && !empty($options['processors_path']) ? $options['processors_path'] : $this->config['processors_path'];
             if (isset($options['location']) && !empty($options['location'])) $processor .= $options['location'] . '/';
             $processor .= str_replace('../', '', $options['action']) . '.php';
             if (file_exists($processor)) {
@@ -1301,6 +1312,8 @@ class modX extends xPDO {
                 if (!isset($this->error)) $this->request->loadErrorHandler();
                 $modx =& $this;
                 $result = include $processor;
+            } else {
+                $this->log(modX::LOG_LEVEL_ERROR, "Processor {$processor} does not exist; " . print_r($options, true));
             }
         }
         return $result;
@@ -1433,9 +1446,16 @@ class modX extends xPDO {
      */
     public function getDocuments(array $ids=array(), $published=1, $deleted=0, $fields="*", $where='', $sort="menuindex", $dir="ASC", $limit="") {
         $collection = array();
+        if ($fields == '*') {
+            $columns = array_keys($this->getFields('modResource'));
+        } else {
+            $columns = explode(',', $fields);
+            foreach ($columns as $colKey => $column) $columns[$colKey] = trim($column);
+        }
         $criteria = $this->newQuery('modResource');
         $criteria->setClassAlias('sc');
-        $criteria->select($fields);
+        $criteria->select('id');
+        $criteria->select($columns);
         $criteria->where('sc.id IN (' . implode(',', $ids) . ')', array(
             'sc.published' => $published,
             'sc.deleted' => $deleted
@@ -1445,7 +1465,7 @@ class modX extends xPDO {
         if (!empty($limit)) $criteria->limit($limit);
         if ($objCollection = $this->getCollection('modResource', $criteria)) {
             foreach ($objCollection as $obj) {
-                array_push($collection, $obj->toArray());
+                array_push($collection, $obj->get($columns));
             }
         }
         if (empty($collection)) $collection = false;
@@ -1593,13 +1613,20 @@ class modX extends xPDO {
      */
     public function getAllChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
         $collection = array();
+        if ($fields == '*') {
+            $columns = array_keys($this->getFields('modResource'));
+        } else {
+            $columns = explode(',', $fields);
+            foreach ($columns as $colKey => $column) $columns[$colKey] = trim($column);
+        }
         $criteria = $this->newQuery('modResource');
-        $criteria->select($fields);
+        $criteria->select('id');
+        $criteria->select($columns);
         $criteria->where(array('parent' => $id));
         if (!empty($sort)) $criteria->sortby($sort, $dir);
         if ($objCollection = $this->getCollection('modResource', $criteria)) {
             foreach ($objCollection as $obj) {
-                array_push($collection, $obj->toArray());
+                array_push($collection, $obj->get($columns));
             }
         }
         if (empty($collection)) $collection = false;
@@ -1612,9 +1639,16 @@ class modX extends xPDO {
      */
     public function getActiveChildren($id=0, $sort='menuindex', $dir='ASC', $fields='id, pagetitle, description, parent, alias, menutitle, class_key, context_key') {
         $collection = array();
+        if ($fields == '*') {
+            $columns = array_keys($this->getFields('modResource'));
+        } else {
+            $columns = explode(',', $fields);
+            foreach ($columns as $colKey => $column) $columns[$colKey] = trim($column);
+        }
         $criteria = $this->newQuery('modResource');
         $criteria->setClassAlias('sc');
-        $criteria->select($fields);
+        $criteria->select('id');
+        $criteria->select($columns);
         $criteria->where(array(
             'sc.parent' => $id,
             'sc.published' => '1',
@@ -1623,7 +1657,7 @@ class modX extends xPDO {
         if (!empty($sort)) $criteria->sortby($sort, $dir);
         if ($objCollection = $this->getCollection('modResource', $criteria)) {
             foreach ($objCollection as $obj) {
-                array_push($collection, $obj->toArray());
+                array_push($collection, $obj->get($columns));
             }
         }
         if (empty($collection)) $collection = false;
@@ -1636,9 +1670,16 @@ class modX extends xPDO {
      */
     public function getDocumentChildren($parentid= 0, $published= 1, $deleted= 0, $fields= "*", $where= '', $sort= "menuindex", $dir= "ASC", $limit= "") {
         $collection = array();
+        if ($fields == '*') {
+            $columns = array_keys($this->getFields('modResource'));
+        } else {
+            $columns = explode(',', $fields);
+            foreach ($columns as $colKey => $column) $columns[$colKey] = trim($column);
+        }
         $criteria = $this->newQuery('modResource');
         $criteria->setClassAlias('sc');
-        $criteria->select($fields);
+        $criteria->select('id');
+        $criteria->select($columns);
         $criteria->where(array(
             'sc.parent' => $parentid,
             'sc.published' => $published,
@@ -1649,7 +1690,7 @@ class modX extends xPDO {
         if (!empty($limit)) $criteria->limit($limit);
         if ($objCollection = $this->getCollection('modResource', $criteria)) {
             foreach ($objCollection as $obj) {
-                array_push($collection, $obj->toArray());
+                array_push($collection, $obj->get($columns));
             }
         }
         if (empty($collection)) $collection = false;
@@ -1663,7 +1704,15 @@ class modX extends xPDO {
         $collection = array();
         $all= ($tvidnames=="*");
         $byName= (is_numeric($tvidnames[0]) == false);
+        if ($tvfields == '*') {
+            $columns = array_keys($this->getFields('modTemplateVar'));
+            $columns[] = 'value';
+        } else {
+            $columns = explode(',', $tvfields);
+            foreach ($columns as $colKey => $column) $columns[$colKey] = trim($column);
+        }
         $criteria = $this->newQuery('modResource');
+        $criteria->setClassAlias('sc');
         $criteria->where(array(
             'sc.parent' => $parentid,
             'sc.published' => $published,
@@ -1672,7 +1721,7 @@ class modX extends xPDO {
         if (!empty($sort)) $criteria->sortby($docsort, $docsortdir);
         if ($objCollection = $this->getCollection('modResource', $criteria)) {
             foreach ($objCollection as $obj) {
-                $objArray= $obj->toArray();
+                $objArray= array();
                 $tvs= $obj->getMany('TemplateVars');
                 foreach ($tvs as $tv) {
                     if (!$all) {
@@ -1682,9 +1731,19 @@ class modX extends xPDO {
                             if (!in_array($tv->id, $tvidnames)) continue;
                         }
                     }
-                    $objArray= array_merge($objArray, $tv->toArray());
+                    $idx= (integer) $tv->get($tvsort);
+                    while (isset($objArray[$idx])) $idx++;
+                    $objArray[$idx]= $tv->get($columns);
                 }
-                array_push($collection, $objArray);
+                ksort($objArray);
+                if ($tvsortdir == 'DESC') $objArray = array_reverse($objArray);
+                if ($all || $byName) {
+                    foreach ($obj->toArray() as $name => $value) {
+                        if (!$all && $byName && !in_array($name, $tvidnames)) continue;
+                        $objArray[]= array('name' => $name, 'value' => $value);
+                    }
+                }
+                if (!empty($objArray)) array_push($collection, $objArray);
             }
         }
         if (empty($collection)) $collection = false;
@@ -1857,7 +1916,7 @@ class modX extends xPDO {
      */
     public function getParent($pid=-1, $active=1, $fields='id, pagetitle, description, alias, parent, class_key, context_key') {
         if($pid==-1) {
-            $pid = $this->documentObject['parent'];
+            $pid = is_object($this->resource) ? $this->resource->get('parent') : 0;
             return ($pid==0)? false:$this->getPageInfo($pid,$active,$fields);
         }else if($pid==0) {
             return false;
@@ -1884,17 +1943,27 @@ class modX extends xPDO {
             $pageid = is_object($this->resource) && $this->resource->id > 0 ? $this->resource->id : 0;
         }
         if ($pageid > 0) {
-            $criteria= $this->newQuery('modResource');
-            $criteria->select($fields);
-            $criteria->where(array(
-                'id' => $pageid,
-                'published' => !empty($active) ? 1 : '0',
-                'deleted' => '0'
-            ));
-            if ($obj= $this->getObject('modResource', $criteria)) {
-                $data= $obj->toArray();
+            if ($fields == '*') {
+                $columns = array_keys($this->getFields('modResource'));
+            } else {
+                $columns = explode(',', $fields);
+                foreach ($columns as $colKey => $column) $columns[$colKey] = trim($column);
             }
-            if ($data == null) $data = false;
+            if (is_object($this->resource) && $this->resource->id == $pageid) {
+                $data= $this->resource->get($columns);
+            } else {
+                $criteria= $this->newQuery('modResource');
+                $criteria->select('id');
+                $criteria->select($columns);
+                $criteria->where(array(
+                    'id' => $pageid,
+                    'published' => !empty($active) ? 1 : '0',
+                    'deleted' => '0'
+                ));
+                if ($obj= $this->getObject('modResource', $criteria)) {
+                    $data= $obj->get($columns);
+                }
+            }
         }
         return $data;
     }
@@ -1908,10 +1977,10 @@ class modX extends xPDO {
      */
     public function getUserInfo($uid) {
         $userInfo= false;
-        if ($user= $this->getObject('modUser', $uid, true)) {
+        if ($user= $this->getObjectGraph('modUser', '{"Profile":{}}', $uid, true)) {
             $userInfo= $user->get(array ('username', 'password'));
-            if ($userProfile= $user->getOne('Profile')) {
-                $userInfo= array_merge($userInfo, $userProfile->toArray());
+            if ($user->getOne('Profile')) {
+                $userInfo= array_merge($userInfo, $user->Profile->toArray());
             }
         }
         return $userInfo;
@@ -2073,7 +2142,7 @@ class modX extends xPDO {
         $ml->set('user',$this->user->get('id'));
         $ml->set('occurred',strftime('%Y-%m-%d %H:%M:%S'));
         $ml->set('action',$action);
-        $ml->set('class_key',$class_key);
+        $ml->set('classKey',$class_key);
         $ml->set('item',$item);
 
         if (!$ml->save()) {
@@ -2088,7 +2157,7 @@ class modX extends xPDO {
      *
      * @return string The base URL of the 'mgr' context relative to the
      * web server document root.
-     * @deprecated 2007-09-17 Use MODX_MANAGER_URL or modX :: config['manager_url']
+     * @deprecated 2007-09-17 Use MODX_MANAGER_URL or modX->getOption('manager_url')
      */
     public function getManagerPath() {
         return MODX_MANAGER_URL;
@@ -2407,8 +2476,8 @@ class modX extends xPDO {
      *
      * modX::SESSION_STATE_UNINITIALIZED
      * modX::SESSION_STATE_UNAVAILABLE
-     * modX:: SESSION_STATE_EXTERNAL
-     * modX:: SESSION_STATE_INITIALIZED
+     * modX::SESSION_STATE_EXTERNAL
+     * modX::SESSION_STATE_INITIALIZED
      *
      * @return integer Returns an integer representing the session state.
      */

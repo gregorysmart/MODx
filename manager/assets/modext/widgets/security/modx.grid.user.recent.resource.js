@@ -16,16 +16,9 @@ MODx.grid.RecentlyEditedResourcesByUser = function(config) {
             action: 'getRecentlyEditedResources'
             ,user: config.user
         }
+        ,pageSize: 10
         ,fields: ['id','pagetitle','description','editedon','deleted','published','menu']
-        ,columns: this.getColumns()
-        ,paging: true
-        ,autosave: true
-    });
-    MODx.grid.RecentlyEditedResourcesByUser.superclass.constructor.call(this,config);
-};
-Ext.extend(MODx.grid.RecentlyEditedResourcesByUser,MODx.grid.Grid,{
-    getColumns: function() {
-        return [{
+        ,columns: [{
             header: _('id')
             ,dataIndex: 'id'
             ,width: 75
@@ -35,24 +28,18 @@ Ext.extend(MODx.grid.RecentlyEditedResourcesByUser,MODx.grid.Grid,{
             ,width: 150
             ,editor: { xtype: 'textfield' ,allowBlank: false }
         },{
-            header: _('description')
-            ,dataIndex: 'description'
-            ,width: 250            
-            ,editor: { xtype: 'textfield' }
-        },{
             header: _('published')
             ,dataIndex: 'published'
             ,width: 120
             ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
-        },{
-            header: _('deleted')
-            ,dataIndex: 'deleted'
-            ,width: 120
-            ,editor: { xtype: 'combo-boolean' ,renderer: 'boolean' }
-        }];
-    }
-    
-    ,preview: function() {
+        }]
+        ,paging: true
+        ,autosave: true
+    });
+    MODx.grid.RecentlyEditedResourcesByUser.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.grid.RecentlyEditedResourcesByUser,MODx.grid.Grid,{    
+    preview: function() {
         window.open(MODx.config.base_url+'index.php?id='+this.menu.record.id);
     }
 });

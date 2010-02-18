@@ -11,59 +11,50 @@
  * @package modx
  * @subpackage processors.resource
  */
+if (!$modx->hasPermission('search')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('resource');
 
-if (!isset($_REQUEST['start'])) $_REQUEST['start'] = 0;
-if (!isset($_REQUEST['limit'])) $_REQUEST['limit'] = 20;
-if (!isset($_REQUEST['sort'])) $_REQUEST['sort'] = 'pagetitle';
-if (!isset($_REQUEST['dir'])) $_REQUEST['dir'] = 'ASC';
+/* setup default properties */
+$isLimit = !empty($_REQUEST['limit']);
+$start = $modx->getOption('start',$_REQUEST,0);
+$limit = $modx->getOption('limit',$_REQUEST,10);
+$sort = $modx->getOption('sort',$_REQUEST,'pagetitle');
+$dir = $modx->getOption('dir',$_REQUEST,'ASC');
 
+/* setup query */
 $c = $modx->newQuery('modResource');
-
 $where = array();
-if (isset($_REQUEST['id']) && $_REQUEST['id'] != '') {
-    $where['id'] = $_REQUEST['id'];
-}
-if (isset($_REQUEST['pagetitle']) && $_REQUEST['pagetitle'] != '') {
-    $where['pagetitle:LIKE'] = '%'.$_REQUEST['pagetitle'].'%';
-}
-if (isset($_REQUEST['longtitle']) && $_REQUEST['longtitle'] != '') {
-    $where['longtitle:LIKE'] = '%'.$_REQUEST['longtitle'].'%';
-}
-if (isset($_REQUEST['content']) && $_REQUEST['content'] != '') {
-    $where['content:LIKE'] = '%'.$_REQUEST['content'].'%';
-}
-if (isset($_REQUEST['published']) && $_REQUEST['published'] == 'on') {
-    $where['published'] = true;
-}
-if (isset($_REQUEST['unpublished']) && $_REQUEST['unpublished'] == 'on') {
-    $where['published'] = false;
-}
-if (isset($_REQUEST['deleted']) && $_REQUEST['deleted'] == 'on') {
-    $where['deleted'] = true;
-}
-if (isset($_REQUEST['undeleted']) && $_REQUEST['undeleted'] == 'on') {
-    $where['deleted'] = false;
-}
+if (!empty($_REQUEST['id'])) $where['id'] = $_REQUEST['id'];
+if (!empty($_REQUEST['pagetitle'])) $where['pagetitle:LIKE'] = '%'.$_REQUEST['pagetitle'].'%';
+if (!empty($_REQUEST['longtitle'])) $where['longtitle:LIKE'] = '%'.$_REQUEST['longtitle'].'%';
+if (!empty($_REQUEST['content'])) $where['content:LIKE'] = '%'.$_REQUEST['content'].'%';
+
+if (!empty($_REQUEST['published'])) $where['published'] = true;
+if (!empty($_REQUEST['unpublished'])) $where['published'] = false;
+if (!empty($_REQUEST['deleted'])) $where['deleted'] = true;
+if (!empty($_REQUEST['undeleted'])) $where['deleted'] = false;
 
 $c->where($where);
-$c->sortby($_REQUEST['sort'],$_REQUEST['dir']);
-$c->limit($_REQUEST['limit'],$_REQUEST['start']);
+$count = $modx->getCount('modResource',$c);
+$c->sortby($sort,$dir);
+if ($isLimit) $c->limit($limit,$start);
 $resources = $modx->getCollection('modResource',$c);
 $actions = $modx->request->getAllActionIDs();
 
-$rs = array();
+/* iterate */
+$list = array();
 foreach ($resources as $resource) {
     if ($resource->checkPolicy('list')) {
-        $ra = $resource->toArray();
-        $ra['menu'] = array(
-            array(
+        $resourceArray = $resource->toArray();
+        $resourceArray['menu'] = array();
+        if ($modx->hasPermission('edit_document')) {
+            $resourceArray['menu'][] = array(
                 'text' => $modx->lexicon('resource_edit'),
                 'params' => array('a' => $actions['resource/update']),
-            ),
-        );
-        $rs[] = $ra;
+            );
+        }
+        $list[] = $resourceArray;
     }
 }
 
-return $this->outputArray($rs);
+return $this->outputArray($list,$count);

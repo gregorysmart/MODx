@@ -33,7 +33,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
 	
 	,createMenu: function(n,e) {
         var r = {};
-        if (this.cm && this.cm.activeNode) {
+        if (this.cm && this.cm.activeNode && this.cm.activeNode.attributes && this.cm.activeNode.attributes.data) {
             r['parent'] = this.cm.activeNode.attributes.data.text;
         }
         if (!this.windows.create_menu) {
@@ -52,6 +52,7 @@ Ext.extend(MODx.tree.Menu, MODx.tree.Tree, {
         var r = this.cm.activeNode.attributes.data;
         Ext.apply(r,{
             action_id: r.action
+            ,new_text: r.text
         });
         if (!this.windows.update_menu) {
             this.windows.update_menu = MODx.load({
@@ -143,6 +144,12 @@ MODx.window.CreateMenu = function(config) {
             ,xtype: 'textarea'
             ,width: 320
             ,grow: false
+        },{
+            fieldLabel: _('permissions')
+            ,name: 'permissions'
+            ,id: 'modx-cmen-permissions'
+            ,xtype: 'textfield'
+            ,width: 200
         }]
 	});
 	MODx.window.CreateMenu.superclass.constructor.call(this,config);
@@ -172,9 +179,12 @@ MODx.window.UpdateMenu = function(config) {
             ,id: 'modx-umen-parent'
             ,xtype: 'hidden'
         },{
+            name: 'text'
+            ,xtype: 'hidden'
+        },{
             fieldLabel: _('text')
-            ,name: 'text'
-            ,id: 'modx-umen-text'
+            ,name: 'new_text'
+            ,id: 'modx-umen-new_text'
             ,xtype: 'textfield'
             ,allowBlank: false
             ,width: 200
@@ -211,6 +221,12 @@ MODx.window.UpdateMenu = function(config) {
             ,xtype: 'textarea'
             ,width: 320
             ,grow: false
+        },{
+            fieldLabel: _('permissions')
+            ,name: 'permissions'
+            ,id: 'modx-umen-permissions'
+            ,xtype: 'textfield'
+            ,width: 200
         }]
 	});
 	MODx.window.UpdateMenu.superclass.constructor.call(this,config);

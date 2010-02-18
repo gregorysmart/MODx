@@ -20,7 +20,7 @@ class modActionDom extends modAccessibleSimpleObject {
         $constraintClass = $this->get('constraint_class');
         if (!empty($constraintClass) && !empty($constraint) && !empty($constraintField)) {
             $obj = $this->xpdo->getObject($constraintClass,$_REQUEST['id']);
-            if ($obj->get($constraintField) != $constraint) {
+            if ($obj instanceof $constraintClass && $obj->get($constraintField) != $constraint) {
                 return $rule;
             }
         }
@@ -48,27 +48,6 @@ class modActionDom extends modAccessibleSimpleObject {
             case 'tabVisible':
                 if (!$this->get('value')) {
                     $rule = 'Ext.getCmp("'.$this->get('container').'").hideTabStripItem("'.$this->get('name').'");';
-                }
-                break;
-            case 'tvVisible':
-                if (!$this->get('value')) {
-                    $rule = 'Ext.getCmp("modx-panel-resource-tv").on("load",function() {
-    Ext.get("'.$this->get('name').'").up("tr").setDisplayed(false);
-});';
-                }
-                break;
-            case 'tvLabel':
-            case 'tvTitle':
-                $rule = 'Ext.getCmp("modx-panel-resource-tv").on("load",function() {
-    Ext.get("'.$this->get('name').'").up("tr").child("th").update("<label>'.$this->get('value').'</label><br />");
-});';
-                break;
-            case 'tvDefault':
-            case 'tvDefaultValue':
-                if (!$this->get('value')) {
-                    $rule = 'Ext.getCmp("modx-panel-resource-tv").on("load",function() {
-    Ext.get("'.$this->get('name').'").set("value","'.$this->get('value').'");
-});';
                 }
                 break;
             default: break;

@@ -23,21 +23,20 @@ $dir = $modx->getOption('dir',$_REQUEST,'ASC');
 
 /* get content types */
 $c = $modx->newQuery('modContentType');
+$count = $modx->getCount('modContentType',$c);
+
 $c->sortby($sort,$dir);
 if ($isLimit) $c->limit($limit,$start);
 $contentTypes = $modx->getCollection('modContentType',$c);
-$count = $modx->getCount('modContentType');
 
 $list = array();
 foreach ($contentTypes as $contentType) {
     $contentTypeArray = $contentType->toArray();
     $contentTypeArray['menu'] = array();
-    if ($modx->hasPermission('remove')) {
-        $contentTypeArray['menu'][] = array(
-            'text' => $modx->lexicon('content_type_remove'),
-            'handler' => 'this.confirm.createDelegate(this,["remove","'.$modx->lexicon('content_type_remove_confirm').'"])'
-        );
-    }
+    $contentTypeArray['menu'][] = array(
+        'text' => $modx->lexicon('content_type_remove'),
+        'handler' => 'this.confirm.createDelegate(this,["remove","'.$modx->lexicon('content_type_remove_confirm').'"])'
+    );
     if (empty($contentTypeArray['menu'])) unset($contentTypeArray['menu']);
     $list[] = $contentTypeArray;
 }

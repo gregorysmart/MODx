@@ -30,9 +30,14 @@ MODx.panel.ErrorLog = function(config) {
             }]
         }]
         ,buttons: [{
+            text: _('reload')
+            ,handler: this.setup
+            ,scope: this
+        },{
             text: _('clear')
             ,handler: this.clear
             ,scope: this
+            ,hidden: MODx.hasEraseErrorLog ? true : false
         }]
     });
     MODx.panel.ErrorLog.superclass.constructor.call(this,config);

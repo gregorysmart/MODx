@@ -280,7 +280,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,xtype: 'datefield'
                     ,width: 150
                     ,allowBlank: true
-                    ,format: 'm-d-Y'
+                    ,format: MODx.config.manager_date_format
                 },{
                     id: 'modx-user-gender'
                     ,name: 'gender'
@@ -329,7 +329,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,xtype: 'datefield'
                     ,width: 150
                     ,allowBlank: true
-                    ,format: 'm-d-Y'
+                    ,format: MODx.config.manager_date_format
                 },{
                     id: 'modx-user-blockedafter'
                     ,name: 'blockedafter'
@@ -337,7 +337,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,xtype: 'datefield'
                     ,width: 150
                     ,allowBlank: true
-                    ,format: 'm-d-Y'
+                    ,format: MODx.config.manager_date_format
                 }]
             }]
         }];
@@ -346,6 +346,7 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                 title: _('settings')
                 ,autoHeight: true
                 ,defaults: { autoHeight: true }
+                ,hideMode: 'offsets'
                 ,items: [{
                     html: '<h3>'+_('user_settings')+'</h3>'
                     ,border: false
@@ -365,9 +366,10 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
             ,layout: 'form'
             ,bodyStyle: 'padding: 1.5em;'
             ,defaults: { border: false ,autoHeight: true }
+            ,hideMode: 'offsets'
             ,items: [{
                 html: _('access_permissions_user_message')
-            },MODx.PanelSpacer,{            
+            },MODx.PanelSpacer,{
                 xtype: 'modx-grid-user-groups'
                 ,title: ''
                 ,preventRender: true

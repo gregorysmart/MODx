@@ -9,7 +9,6 @@
 			    <th width="20%">{$_lang.modx_version}</th>
 				<th>{$_lang.version_codename}</th>
 				<th>phpInfo()</th>
-				<th>{$_lang.access_permissions}</th>
 				<th>{$_lang.servertime}</th>
 				<th>{$_lang.localtime}</th>
 				<th>{$_lang.serveroffset}</th>
@@ -20,7 +19,6 @@
             <td><strong>{$version}</strong></td>
 			<td><strong>{$code_name}</strong></td>
             <td><strong><a href="javascript:;" onclick="viewPHPInfo();return false;">{$_lang.view}</a></strong></td>
-            <td><strong>{if $_config.use_udperms EQ 1}{$_lang.enabled}{else}{$_lang.disabled}{/if}</strong></td>
 			<td><strong>{$servertime}</strong></td>
 			<td><strong>{$localtime}</strong></td>
 			<td><strong>{$serveroffset}</strong> h</td>
@@ -56,6 +54,7 @@
     <div class="padding x-hide-display" id="modx-tab-resources">
         <h2>{$_lang.recent_docs}</h2>
         <p>{$_lang.sysinfo_activity_message}</p>
+        <br />
         <div id="modx-grid-resource-active-div" style="overflow:hidden; width:100%;"></div>
     </div>
     

@@ -20,7 +20,7 @@ MODx.DataView = function(config) {
         store: this.store
         ,singleSelect: true
         ,overClass: 'x-view-over'
-        ,itemSelector: 'div.thumb-wrap'
+        ,itemSelector: 'div.modx-pb-thumb-wrap'
         ,emptyText: '<div style="padding:10px;">'+_('file_err_filter')+'</div>'
     });
     MODx.DataView.superclass.constructor.call(this,config);
@@ -167,7 +167,7 @@ MODx.browser.Window = function(config) {
     
     Ext.applyIf(config,{
         title: _('modx_browser')
-        ,cls: 'browser-win'
+        ,cls: 'modx-pb-win'
         ,layout: 'border'
         ,minWidth: 500
         ,minHeight: 300
@@ -178,14 +178,15 @@ MODx.browser.Window = function(config) {
         ,border: false
         ,items: [{
             id: this.ident+'-browser-tree'
-            ,cls: 'browser-tree'
+            ,cls: 'modx-pb-browser-tree'
             ,region: 'west'
             ,width: 250
+            ,height: '100%'
             ,items: this.tree
             ,autoScroll: true
         },{
             id: this.ident+'-browser-view'
-            ,cls: 'browser-view'
+            ,cls: 'modx-pb-view-ct'
             ,region: 'center'
             ,autoScroll: true
             ,width: 450
@@ -193,6 +194,7 @@ MODx.browser.Window = function(config) {
             ,tbar: this.getToolbar()
         },{
             id: this.ident+'-img-detail-panel'
+            ,cls: 'modx-pb-details-ct'
             ,region: 'east'
             ,split: true
             ,width: 150
@@ -325,12 +327,14 @@ Ext.reg('modx-browser-window',MODx.browser.Window);
 
 MODx.browser.View = function(config) {
     config = config || {};
+    this.ident = config.ident+'-view' || 'modx-browser-'+Ext.id()+'-view';
     
     this._initTemplates();
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'browser/directory.php'
+        ,id: this.ident
         ,fields: [
-            'name','cls','url','pathname','ext','disabled'
+            'name','cls','url','relativeUrl','image','image_width','image_height','pathname','ext','disabled'
             ,{name:'size', type: 'float'}
             ,{name:'lastmod', type:'date', dateFormat:'timestamp'}
             ,'menu'
@@ -343,7 +347,7 @@ MODx.browser.View = function(config) {
         ,tpl: this.templates.thumb
         ,listeners: {
             'selectionchange': {fn:this.showDetails, scope:this, buffer:100}
-            ,'dblclick': {fn: config.onSelect.fn, scope: config.onSelect.scope }
+            ,'dblclick': config.onSelect || {fn:Ext.emptyFn,scope:this}
         }
         ,prepareData: this.formatData.createDelegate(this)
     });
@@ -399,15 +403,15 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         }
     }
     ,formatData: function(data) {
-        var formatSize = function(data){
-            if(data.size < 1024) {
-                return data.size + " bytes";
+        var formatSize = function(size){
+            if(size < 1024) {
+                return size + " bytes";
             } else {
-                return (Math.round(((data.size*10) / 1024))/10) + " KB";
+                return (Math.round(((size*10) / 1024))/10) + " KB";
             }
         };
-        data.shortName = data.name;
-        data.sizeString = formatSize(data);
+        data.shortName = Ext.util.Format.ellipsis(data.name,18);
+        data.sizeString = formatSize(data.size);
         data.dateString = new Date(data.lastmod).format("m/d/Y g:i a");
         this.lookup[data.name] = data;
         return data;
@@ -415,9 +419,9 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
     ,_initTemplates: function() {
         this.templates.thumb = new Ext.XTemplate(
             '<tpl for=".">'
-                ,'<div class="thumb-wrap" id="{name}">'
-                ,'<div class="thumb"><img src="{url}" title="{name}"></div>'
-                ,'<span>{name}</span></div>'
+                ,'<div class="modx-pb-thumb-wrap" id="{name}">'
+                ,'<div class="modx-pb-thumb"><img src="{image}" title="{name}" width="90" height="90"></div>'
+                ,'<span>{shortName}</span></div>'
             ,'</tpl>'
         );
         this.templates.thumb.compile();
@@ -425,7 +429,8 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
         this.templates.details = new Ext.XTemplate(
             '<div class="details">'
             ,'<tpl for=".">'
-                ,'<img src="{url}" alt="" width="90" height="90" /><div class="details-info">'
+                ,'<div class="modx-pb-detail-thumb"><img src="{image}" alt="" width="80" height="60" onclick="Ext.getCmp(\''+this.ident+'\').showFullView(\'{name}\',\''+this.ident+'\'); return false;" /></div>'
+                ,'<div class="modx-pb-details-info">'
                 ,'<b>'+_('file_name')+':</b>'
                 ,'<span>{name}</span>'
                 ,'<b>'+_('file_size')+':</b>'
@@ -436,6 +441,37 @@ Ext.extend(MODx.browser.View,MODx.DataView,{
             ,'</div>'
         );
         this.templates.details.compile(); 
+    }
+    ,showFullView: function(name,ident) {
+        var data = this.lookup[name];
+        if (!data) return false;
+        
+        if (!this.fvWin) {
+            this.fvWin = new Ext.Window({
+                layout:'fit'
+                ,width: 600
+                ,height: 450
+                ,closeAction:'hide'
+                ,plain: true
+                ,items: [{
+                    id: 'modx-view-item-full'
+                    ,cls: 'modx-pb-fullview'
+                    ,html: ''
+                }]
+                ,buttons: [{
+                    text: _('close')
+                    ,handler: function() { this.fvWin.hide(); }
+                    ,scope: this
+                }]
+            });
+        }
+        this.fvWin.show();
+        var w = data.image_width < 250 ? 250 : data.image_width;
+        var h = data.image_height < 200 ? 200 : data.image_height;
+        this.fvWin.setSize(w,h);
+        this.fvWin.center();
+        this.fvWin.setTitle(data.name);
+        Ext.get('modx-view-item-full').update('<img src="'+data.image+'" alt="" class="modx-pb-fullview-img" onclick="Ext.getCmp(\''+ident+'\').fvWin.hide();" />');
     }
 });
 Ext.reg('modx-browser-view',MODx.browser.View);

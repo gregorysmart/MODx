@@ -223,7 +223,6 @@ class modPackageBuilder {
             xPDOTransport::UPDATE_OBJECT => true,
             xPDOTransport::RESOLVE_FILES => true,
             xPDOTransport::RESOLVE_PHP => true,
-
         );
         if ($packageNamespace) {
             /* create the namespace vehicle */
@@ -351,13 +350,10 @@ class modPackageBuilder {
             if (!is_dir($path . $culture))
                 continue;
 
-            $language = $this->modx->getObject('modLexiconLanguage', $culture);
-            if ($language == null) {
-                $language = $this->modx->newObject('modLexiconLanguage');
-                $language->fromArray(array (
-                    'name' => $culture,
-                ), '', true, true);
-            }
+            $language = $this->modx->newObject('modLexiconLanguage');
+            $language->fromArray(array (
+                'name' => $culture,
+            ), '', true, true);
             $languages[$culture] = $language;
 
             /* loop through topics */
@@ -407,29 +403,8 @@ class modPackageBuilder {
                     }
                 }
                 $topic->addMany($entries);
+                $topics[] = $topic;
 
-                $vehicle = $this->createVehicle($topic, array (
-                    xPDOTransport::PRESERVE_KEYS => false,
-                    xPDOTransport::UPDATE_OBJECT => true,
-                    xPDOTransport::UNIQUE_KEY => array (
-                        'name',
-                        'namespace'
-                    ),
-                    xPDOTransport::RELATED_OBJECTS => true,
-                    xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
-                        'Entries' => array (
-                            xPDOTransport::PRESERVE_KEYS => false,
-                            xPDOTransport::UPDATE_OBJECT => true,
-                            xPDOTransport::UNIQUE_KEY => array (
-                                'name',
-                                'topic',
-                                'namespace',
-                                'language'
-                            ),
-                        ),
-                    ),
-                ));
-                $this->putVehicle($vehicle);
             }
         }
         $dir->close();
@@ -439,10 +414,31 @@ class modPackageBuilder {
             xPDOTransport::UNIQUE_KEY => 'name',
             xPDOTransport::PRESERVE_KEYS => true,
             xPDOTransport::UPDATE_OBJECT => true,
-
+            xPDOTransport::UNINSTALL_OBJECT => false,
+            xPDOTransport::PREEXISTING_MODE => xPDOTransport::PRESERVE_PREEXISTING,
         );
         foreach ($languages as $language) {
             $vehicle = $this->createVehicle($language, $attributes);
+            $this->putVehicle($vehicle);
+        }
+        unset($attributes);
+
+        /* package in topics */
+        $attributes = array (
+            xPDOTransport::PRESERVE_KEYS => false,
+            xPDOTransport::UPDATE_OBJECT => true,
+            xPDOTransport::UNIQUE_KEY => array ('name','namespace'),
+            xPDOTransport::RELATED_OBJECTS => true,
+            xPDOTransport::RELATED_OBJECT_ATTRIBUTES => array (
+                'Entries' => array (
+                    xPDOTransport::PRESERVE_KEYS => false,
+                    xPDOTransport::UPDATE_OBJECT => true,
+                    xPDOTransport::UNIQUE_KEY => array ('name','topic','language'),
+                ),
+            ),
+        );
+        foreach ($topics as $topic) {
+            $vehicle = $this->createVehicle($topic, $attributes);
             $this->putVehicle($vehicle);
         }
 

@@ -5,11 +5,11 @@
  * @package modx
  * @subpackage processors.element.propertyset
  */
-if (!$modx->hasPermission('view')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('view_propertyset')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('propertyset');
 
 /* if getting properties for an element as well */
-if (isset($_REQUEST['elementId']) && isset($_REQUEST['elementType'])) {
+if (!empty($_REQUEST['elementId']) && !empty($_REQUEST['elementType'])) {
     $element = $modx->getObject($_REQUEST['elementType'],$_REQUEST['elementId']);
     if ($element) {
         $default = $element->get('properties');
@@ -67,7 +67,7 @@ foreach ($properties as $property) {
         $overridden = 1;
     }
     /* if completely new value, unique to set */
-    if (!isset($data[$property['name']]) && isset($_POST['elementId'])) {
+    if (!isset($data[$property['name']]) && !empty($_POST['elementId'])) {
         $overridden = 2;
     }
 

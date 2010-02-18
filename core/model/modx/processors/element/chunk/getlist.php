@@ -11,11 +11,11 @@
  * @package modx
  * @subpackage processors.element.chunk
  */
-if (!$modx->hasPermission('view')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('view_chunk')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('chunk');
 
 /* setup default properties */
-$isLimit = empty($_REQUEST['limit']);
+$isLimit = !empty($_REQUEST['limit']);
 $start = $modx->getOption('start',$_REQUEST,0);
 $limit = $modx->getOption('limit',$_REQUEST,20);
 $sort = $modx->getOption('sort',$_REQUEST,'name');
@@ -23,11 +23,11 @@ $dir = $modx->getOption('dir',$_REQUEST,'ASC');
 
 /* query for chunks */
 $c = $modx->newQuery('modChunk');
+$count = $modx->getCount('modChunk');
 $c->sortby($sort,$dir);
 if ($isLimit) $c->limit($limit,$start);
 
 $chunks = $modx->getCollection('modChunk',$c);
-$count = $modx->getCount('modChunk');
 
 /* iterate through chunks */
 $list = array();

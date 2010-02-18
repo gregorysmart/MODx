@@ -3,7 +3,7 @@
  * @package modx
  * @subpackage processors.element.plugin.event
  */
-if (!$modx->hasPermission('remove')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('delete_plugin')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('plugin');
 
 /* get plugin event */
@@ -14,7 +14,7 @@ $pluginEvent = $modx->getObject('modPluginEvent',array(
     'pluginid' => $_POST['plugin'],
     'evtid' => $_POST['event'],
 ));
-if ($pluginEvent == null) return $modx->error->failure($modx->lexicon('plugin_event_err_nf'));
+if (empty($pluginEvent)) return $modx->error->failure($modx->lexicon('plugin_event_err_nf'));
 
 /* remove plugin event */
 if ($pluginEvent->remove() === false) {

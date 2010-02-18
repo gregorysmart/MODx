@@ -45,15 +45,37 @@ if (!$loaded) return $modx->error->failure($modx->lexicon('provider_err_no_clien
 $response = $provider->request('package','GET',array(
     'signature' => $signature,
 ));
-$metadataXml = $provider->handleResponse($response);
-if (!$metadataXml) return $modx->error->failure($modx->lexicon('provider_err_connect'));
-
+if ($response->isError()) {
+    return $modx->error->failure($modx->lexicon('provider_err_connect',array('error' => $response->getError())));
+}
+$metadataXml = $response->toXml();
 
 /* set package metadata */
 $metadata = array();
 $modx->rest->xml2array($metadataXml,$metadata);
 $package->set('metadata',$metadata);
 $package->set('package_name',$sig[0]);
+
+/* set package version data */
+$sig = explode('-',$signature);
+if (is_array($sig)) {
+    $package->set('package_name',$sig[0]);
+    if (!empty($sig[1])) {
+        $v = explode('.',$sig[1]);
+        if (isset($v[0])) $package->set('version_major',$v[0]);
+        if (isset($v[1])) $package->set('version_minor',$v[1]);
+        if (isset($v[2])) $package->set('version_patch',$v[2]);
+    }
+    if (!empty($sig[2])) {
+        $r = preg_split('/([0-9]+)/',$sig[2],-1,PREG_SPLIT_DELIM_CAPTURE);
+        if (is_array($r) && !empty($r)) {
+            $package->set('release',$r[0]);
+            $package->set('release_index',(isset($r[1]) ? $r[1] : '0'));
+        } else {
+            $package->set('release',$sig[2]);
+        }
+    }
+}
 
 /* download package */
 if (!$package->transferPackage($location,$_package_cache)) {

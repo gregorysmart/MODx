@@ -23,8 +23,10 @@ if (!$loaded) return $modx->error->failure($modx->lexicon('provider_err_no_clien
 $response = $provider->request('home','GET',array(
     'supports' => $productVersion,
 ));
-$info = $provider->handleResponse($response);
-if (!$info) return $modx->error->failure($modx->lexicon('provider_err_connect'));
+if ($response->isError()) {
+    return $modx->error->failure($modx->lexicon('provider_err_connect',array('error' => $response->getError())));
+}
+$info = $response->toXml();
 
 /* setup output properties */
 $properties = array(
@@ -36,6 +38,8 @@ $properties = array(
 
 foreach ($info->topdownloaded as $package) {
     $properties['topdownloaded'][] = array(
+        'url' => (string)$info->url,
+        'id' => (string)$package->id,
         'name' => (string)$package->name,
         'downloads' => number_format((string)$package->downloads,0),
     );
@@ -43,6 +47,8 @@ foreach ($info->topdownloaded as $package) {
 
 foreach ($info->newest as $package) {
     $properties['newest'][] = array(
+        'url' => (string)$info->url,
+        'id' => (string)$package->id,
         'name' => (string)$package->name,
         'releasedon' => strftime('%b %d, %Y',strtotime((string)$package->releasedon)),
     );

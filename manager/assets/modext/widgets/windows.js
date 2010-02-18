@@ -45,15 +45,17 @@ Ext.extend(MODx.window.DuplicateResource,MODx.Window,{
                 }
             });
 		}
-		items.push({
-            xtype: 'textfield'
-            ,id: 'modx-'+this.ident+'-name'
-            ,fieldLabel: _('resource_name_new')
-            ,name: 'name'
-            ,width: 150
-            ,value: ''
-            ,disabled: this.config.is_folder ? true : false
-        });
+        if (!this.config.is_folder) {
+    		items.push({
+                xtype: 'textfield'
+                ,id: 'modx-'+this.ident+'-name'
+                ,fieldLabel: _('resource_name_new')
+                ,name: 'name'
+                ,width: 150
+                ,value: ''
+                ,disabled: this.config.is_folder ? true : false
+            });
+        }
 		
 		this.fp = this.createForm({
 			url: this.config.url || MODx.config.connectors_url+'resource/index.php'
@@ -107,16 +109,23 @@ MODx.window.AddUserToUserGroup = function(config) {
         ,id: this.ident
 		,height: 150
 		,width: 375
-        ,url: MODx.config.connectors_url+'security/group.php'
-        ,action: 'addUser'
+        ,url: MODx.config.connectors_url+'security/usergroup/user.php'
+        ,action: 'create'
         ,fields: [{
             fieldLabel: _('name')
-            ,name: 'member'
-            ,hiddenName: 'member'
+            ,name: 'user'
+            ,hiddenName: 'user'
             ,xtype: 'modx-combo-user'
-            ,id: 'modx-'+this.ident+'-member'
+            ,id: 'modx-'+this.ident+'-user'
         },{
-            name: 'user_group'
+            fieldLabel: _('role')
+            ,name: 'role'
+            ,hiddenName: 'role'
+            ,xtype: 'modx-combo-role'
+            ,id: 'modx-'+this.ident+'-role'
+            ,allowBlank: false
+        },{
+            name: 'usergroup'
             ,xtype: 'hidden'
             ,id: 'modx-'+this.ident+'-user-group'
         }]
@@ -563,6 +572,13 @@ MODx.window.QuickCreatePlugin = function(config) {
             ,width: 300
             ,rows: 2
         },{
+            xtype: 'checkbox'
+            ,name: 'disabled'
+            ,id: 'modx-'+this.ident+'-disabled'
+            ,fieldLabel: _('disabled')
+            ,inputValue: 1
+            ,checked: false
+        },{
             xtype: 'textarea'
             ,name: 'plugincode'
             ,id: 'modx-'+this.ident+'-plugincode'
@@ -613,6 +629,13 @@ MODx.window.QuickUpdatePlugin = function(config) {
             ,fieldLabel: _('description')
             ,width: 300
             ,rows: 2
+        },{
+            xtype: 'checkbox'
+            ,name: 'disabled'
+            ,id: 'modx-'+this.ident+'-disabled'
+            ,fieldLabel: _('disabled')
+            ,inputValue: 1
+            ,checked: false
         },{
             xtype: 'checkbox'
             ,name: 'clearCache'
@@ -769,3 +792,35 @@ MODx.window.QuickUpdateTV = function(config) {
 };
 Ext.extend(MODx.window.QuickUpdateTV,MODx.Window);
 Ext.reg('modx-window-quick-update-tv',MODx.window.QuickUpdateTV);
+
+
+MODx.window.DuplicateContext = function(config) {
+    config = config || {};
+    this.ident = config.ident || 'dupctx'+Ext.id();
+    Ext.Ajax.timeout = 0;
+    Ext.applyIf(config,{
+        title: _('context_duplicate')
+        ,id: this.ident
+        ,url: MODx.config.connectors_url+'context/index.php'
+        ,action: 'duplicate'        
+        ,width: 400
+        ,fields: [{
+            xtype: 'statictextfield'
+            ,id: 'modx-'+this.ident+'-key'
+            ,fieldLabel: _('old_key')
+            ,name: 'key'
+            ,width: 200
+            ,submitValue: true
+        },{
+            xtype: 'textfield'
+            ,id: 'modx-'+this.ident+'-newkey'
+            ,fieldLabel: _('new_key')
+            ,name: 'newkey'
+            ,width: 200
+            ,value: ''
+        }]
+    });
+    MODx.window.DuplicateContext.superclass.constructor.call(this,config);
+};
+Ext.extend(MODx.window.DuplicateContext,MODx.Window);
+Ext.reg('modx-window-context-duplicate',MODx.window.DuplicateContext);

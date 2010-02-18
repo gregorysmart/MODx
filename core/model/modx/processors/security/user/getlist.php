@@ -13,42 +13,45 @@
  * @package modx
  * @subpackage processors.security.user
  */
-if (!$modx->hasPermission(array('access_permissions' => true, 'edit_user' => true))) {
+if (!$modx->hasPermission('view_user')) {
     return $modx->error->failure($modx->lexicon('permission_denied'));
 }
 $modx->lexicon->load('user');
 
-
 /* setup default properties */
-$isLimit = isset($_REQUEST['limit']) ? true : false;
+$isLimit = !empty($_REQUEST['limit']);
 $start = $modx->getOption('start',$_REQUEST,0);
 $limit = $modx->getOption('limit',$_REQUEST,10);
 $sort = $modx->getOption('sort',$_REQUEST,'username');
 if ($sort == 'username_link') $sort = 'username';
+if ($sort == 'id') $sort = 'modUser.id';
 $dir = $modx->getOption('dir',$_REQUEST,'ASC');
-$username = $modx->getOption('username',$_REQUEST,'');
 
 /* query for users */
 $c = $modx->newQuery('modUser');
-if (!empty($username)) {
-    $c->where(array(
-        'username LIKE "%'.$_REQUEST['username'].'%"',
-    ));
+$c->leftJoin('modUserProfile','Profile');
+if (!empty($_REQUEST['query'])) {
+    $c->where(array('modUser.username:LIKE' => '%'.$_REQUEST['query'].'%'));
+    $c->orCondition(array('Profile.fullname:LIKE' => '%'.$_REQUEST['query'].'%'));
+    $c->orCondition(array('Profile.email:LIKE' => '%'.$_REQUEST['query'].'%'));
 }
 $count = $modx->getCount('modUser',$c);
-
+$c->select('
+    `modUser`.*,
+    `Profile`.`fullname` AS `fullname`,
+    `Profile`.`email` AS `email`,
+    `Profile`.`blocked` AS `blocked`
+');
 $c->sortby($sort,$dir);
 if ($isLimit) $c->limit($limit,$start);
 
-$c->bindGraph('{"Profile":{}}');
-$users = $modx->getCollectionGraph('modUser', '{"Profile":{}}', $c);
+$users = $modx->getCollection('modUser',$c);
 
 /* iterate through users */
 $list = array();
 foreach ($users as $user) {
-	$profileArray = $user->Profile->toArray();
 	$userArray = $user->toArray();
-	$userArray = array_merge($profileArray,$userArray);
+    $userArray['blocked'] = $user->get('blocked') ? true : false;
     $userArray['menu'] = array(
         array(
             'text' => $modx->lexicon('user_update'),

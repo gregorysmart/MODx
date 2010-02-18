@@ -32,20 +32,18 @@ MODx.grid.Package = function(config) {
         title: _('packages')
         ,id: 'modx-grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
-        ,fields: ['signature','name','version','release','created','updated','installed','state','workspace','provider','disabled','source','manifest','attributes','readme','menu','install','textaction','iconaction']
+        ,fields: ['signature','name','version','release','created','updated','installed','state','workspace'
+                 ,'provider','provider_name','disabled','source','attributes','readme','menu'
+                 ,'install','textaction','iconaction']
         ,plugins: [this.action,this.exp]
         ,pageSize: 20
-        ,columns: [this.exp,{
-              header: _('name') ,dataIndex: 'name' }
-           ,{ header: _('version') ,dataIndex: 'version' }
-           ,{ header: _('release') ,dataIndex: 'release' }
+        ,columns: [this.exp
+            ,{ header: _('name') ,dataIndex: 'name' }
+            ,{ header: _('version') ,dataIndex: 'version' }
+            ,{ header: _('release') ,dataIndex: 'release' }
             ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }
-            ,{ 
-                header: _('provider')
-                ,dataIndex: 'provider'
-                ,editor: { xtype: 'modx-combo-provider' ,renderer: true }
-                ,editable: false
-            },this.action]
+            ,{ header: _('provider') ,dataIndex: 'provider_name' }
+            ,this.action]
         ,primaryKey: 'signature'
         ,paging: true
         ,autosave: true
@@ -105,6 +103,10 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                             g.getStore().removeAll();
                         }
                         
+                        var v = Ext.getCmp('modx-package-browser-thumbs-view');
+                        if (v) {
+                            v.baseParams.provider = p.id;
+                        }
                         pd.fireEvent('proceed','modx-pd-selpackage');
                         pd.setPosition(null,0);
                     },this,{single:true});
@@ -113,6 +115,10 @@ Ext.extend(MODx.grid.Package,MODx.grid.Grid,{
                 },scope:this}
             }
         });
+    }
+    
+    ,viewPackage: function(btn,e) {
+        location.href = 'index.php?a='+MODx.action['workspaces/package/view']+'&signature='+this.menu.record.signature;
     }
     
     ,update: function(btn,e) {        

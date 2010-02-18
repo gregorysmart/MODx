@@ -11,11 +11,11 @@
  * @package modx
  * @subpackage processors.element.category
  */
-if (!$modx->hasPermission('view')) return $modx->error->failure($modx->lexicon('permission_denied'));
+if (!$modx->hasPermission('view_category')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('category');
 
 /* setup default properties */
-$isLimit = empty($_REQUEST['limit']);
+$isLimit = !empty($_REQUEST['limit']);
 $start = $modx->getOption('start',$_REQUEST,0);
 $limit = $modx->getOption('limit',$_REQUEST,20);
 $sort = $modx->getOption('sort',$_REQUEST,'parent,category');
@@ -42,22 +42,23 @@ if ($showNone) {
 
 /* iterate through categories */
 foreach ($categories as $category) {
-    $ca = $category->toArray();
+    $categoryArray = $category->toArray();
 
     $childrenCount = $modx->getCount('modCategory',array('parent' => $category->get('id')));
 
-    $ca['name'] = $category->get('category');
-	$list[] = $ca;
+    $categoryArray['name'] = $category->get('category');
+	$list[] = $categoryArray;
 
+    /* if has subcategories, display here */
     if ($childrenCount > 0) {
         $c = $modx->newQuery('modCategory');
         $c->where(array('parent' => $category->get('id')));
         $c->sortby('category','ASC');
         $children = $category->getMany('Children',$c);
         foreach ($children as $subcat) {
-            $ca = $subcat->toArray();
-            $ca['name'] = $category->get('category').' - '.$subcat->get('category');
-            $list[] = $ca;
+            $categoryArray = $subcat->toArray();
+            $categoryArray['name'] = $category->get('category').' - '.$subcat->get('category');
+            $list[] = $categoryArray;
         }
     }
 }

@@ -2,7 +2,194 @@
 This file shows the changes in recent releases of MODx. The most current release is usually the 
 development release, and is only shown to give an idea of what's currently in the pipeline.
 
-MODx Revolution 2.0.0-beta-5 ($LastChangedRevision$, $LastChangedDate$)
+MODx Revolution 2.0.0-rc-1 ($LastChangedRevision$, $LastChangedDate$)
+====================================
+- Fixes to styling for MODx.Browser window
+- Added 'relativeUrl' parameter to MODx.Browser file data
+- [#MODX-1674] Fixes and stabilization to MODx.Browser, specifically when used by RTEs
+- Changing default editor from TinyMCE to blank value
+- Fixed bug in setup where inplace setting was being forced to 1
+- Cleaned up most processors, fixed wrong permission references, standardized code
+- Fixed welcome panel to only show panels with permission to see
+- Fixed error log view page to restrict viewing and clearing by permission
+- Added descriptive information to Roles grid
+- Lots of permissions fixes, other bugfixes and sanity checks to Element processors/controllers
+- Added propertyset permissions
+- Cleanups to Resource controllers, processors, optimizing of security permission checks
+- Fixed various bugs with search page
+- Fixed bug with adding policies that prevented partial regexp matches in name
+- Fixed bugs when adding new policies or permissions that showed prior added perm/policy in form
+- Properly secured and refactored recently edited resources grid
+- [#MODX-1670] Adjusted permissions to allow restricted user to edit profile
+- [#MODX-1667] Removed unnecessary opacity CSS rule in menus
+- Fixed bug where page wasnt reloading on login in certain situations
+- Make rightlogin div longer to support longer translations
+- [#MODX-1653] Fixed issues with related objects, removal of aggregates, and other packaging bugs. Introduced xPDOTransport::UNINSTALL_OBJECT, which defaults to true. When off, it will prevent an object from being uninstalled. 
+- Updated xPDO to r413
+- [#MODX-761] Fixed language issue in setup, now sets it correctly and loads proper lexicon for login screen
+- Ensure console window appears above other windows
+- [#MODX-1663] Added MODx.msg.status, which shows a fading status message on a successful save. This also solves the issue of user feedback. 
+- Removed unnecessary field from recently-edited-resource grid on welcome screen
+- [#MODX-1660], [#MODX-1037] Revamped login screen to HTML/CSS, basic form processing to allow browsers to save password in their password management systems
+- Revamped UI in new setup options, cleared up text, simplified presented options
+- [#MODX-18] Allow editing of MODX_CONFIG_KEY in setup welcome view
+- [#MODX-18] Prompt user for MODX_CORE_PATH if not found at beginning of setup
+- [#MODX-760], [#MODX-1080], [#MODX-1528] Added setup option to set new_file_permissions and new_folder_permissions in welcome view
+- [#MODX-760], [#MODX-1528] Removed new_file_permissions and new_folder_permissions system settings from setup
+- [#MODX-760], [#MODX-1528] Updated xPDO 2.0 to revision 407: new file and folder permissions determined from umask()
+- [#MODX-878] Stay buttons now action-specific, done through Ext state rather than PHP
+- Redo logic order of modPackageBuilder::buildLexicon to ensure languages are packaged in before topics
+- [#MODX-1647] Added width specification to force width of screen to prevent scrolling off of RTE TVs
+- Cleaned up tvTitle Form Customization rule by moving code from JS to PHP
+- Fixed z-index issue for windows due to IE fix
+- [#MODX-732] Added z-index force to topmenu for IE, fixed rightlogin div on topbar for IE
+- [#MODX-1641] Optimized and cleaned code dealing with Form Customization TV visibility and default values
+- [#MODX-1658] Fixed bug where placing a menu item in a submenu would place it in top level
+- [#MODX-1624] Enabled changing of text field in menu items
+- [#MODX-1656], [#MODX-1654] Fixed CSS gap in install summary in setup
+- [#MODX-1655] Fixed hardcoded lexicon strings in setup
+- [#MODX-1621] Remove unnecessary context menu items from items in Resource Group Resources tree
+- [#MODX-1627] Fixed incorrect menu in resource group tree resources when newly dragged
+- [#MODX-1599] Added manager_date_format system setting for customizing date formats for the manager
+- [#MODX-1651] Increasing width of setup navbar buttons to accommodate translations
+- [#MODX-1649] Fixed bug where Quick Create didn't respect default_template setting
+- [#MODX-1650] Fixed bug with language specification in setup to properly set cookie for Windows machines, and set initial language properly
+- [#MODX-1626] Fixed bug where top menus could not have actions
+- [#MODX-1494] Fixed issue where some settings dont have descriptions, and cleaned up deprecated settings
+- [#MODX-1645] Fixed incorrect lexicon key for setting_site_start_err
+- [#MODX-1646] Fixed issue where download buttons were staying grayed out if there was an error message
+- [#MODX-1644] Added SMTP mail settings to default system settings to allow global SMTP usage for all modMail functions
+- [#MODX-1606] Fixed bug in modRestCurlClient class due to encoded ampersand
+- [#MODX-197] Refactored Action Buttons JS, added 'actionNew', 'actionContinue', and 'actionClose' events to MODx.FormPanel objects, ensured parent/context_key is persisted through add another resources
+- Added a couple sanity checks to modRestCurlClient
+- Added JS to disable install button when clicked in setup to prevent double-clicks
+- controllers/resources/create: Refactored template inheritance to occur before any delegate controller is called.
+- processors/resources/create: Moved OnBeforeDocFormSave event invocation until after POST vars are applied to $resource object.
+- processors/resources/create: Refactored common code to be executed before any delegate processor is called.
+- processors/resources/create: Refactored to respect add_children and new_document_in_root permissions.
+- Added various access_denied lexicons to the resource topic.
+- Added new_document_in_root permission to control access to creating Resources at the root level.
+- Updated to xPDO 2.0 revision 406.
+- [#MODX-1606] Added sanity checks and ID standardization to DOM nodes for Package Browser
+- Fixed possible bug with ta-toggle div in resource panel
+- [#MODX-1628] Fixed FC tvDefault rule by doing setting php-side
+- [#MODX-1636] Added ability to assign Role to User when adding them to a User Group from the User Groups tree 
+- [#MODX-1634] Fixed bug with resource/resourcegroup/getlist processor that prevented showing of resource groups in new resource panels
+- [#MODX-1639] Fixed bug where resource panel JS didnt check for existence of possibly hidden access permissions grid
+- Fixed modUser::removeSessionContext() to call modUser::endSession() if no contexts are left
+- Fixed modUser::endSession() to destroy all SESSION data and the session cookie
+- Fixed bug in Plugin -> System Events tab caused by invalid function call in getlist processor
+- Fixed problems with various deprecated functions to increase compatibility with Evo and avoid performance issues:
+    * modX::getDocuments() and modX::getDocument()
+    * modX::getAllChildren()
+    * modX::getActiveChildren()
+    * modX::getDocumentChildren()
+    * modX::getDocumentChildrenTVars()
+    * modX::getParent()
+    * modX::getPageInfo()
+    * modX::getUserInfo()
+- Fixed modX::__construct() declaration to indicate it properly as a public method; added phpdoc comments.
+- Fixed modX::sanitize() declaration to indicate it properly as a static method.
+- Updated to xPDO 2.0 revision 405
+- [#MODX-1614] Fixed issue with cached pages going to unauthorized_page instead of error_page when user does not have load permission 
+- [#MODX-411] Set system setting: emailsender to the admin email address during install
+- [#MODX-1556] Show class and id for deleted resources or elements in Manager Action Log
+- [#MODX-1552] Create New element Here shows for root elements but not those in categories
+- [#MODX-1625] Fixed bugs with menu tree preventing creating child nodes of new items, restyled menu and action icons
+- Added preventative to make sure packages are only downloaded once when in Package Browser
+- [#MODX-1623] Fixed package installation error: attempting to preserve files fails with error message
+- Updated to xPDO 2.0 revision 404
+- Setup upgrades no longer preserve existing data/files on install
+- Fixed issue with setup trying to write connector files regardless if files are already in place
+- Updated to xPDO 2.0 revision 403
+- Fixed bug where plugin properties were not being injected into the plugin event call
+- [#MODX-1617] Fixed bug with tvDefaultValue Form Customization Rule
+- [#MODX-1619] Added sanity check for modActionDom constraint check
+- [#MODX-1620] Fixed missing or incorrect lexicon entries across ui
+- [#MODX-1612] Fixed bug where Create Menu button was not working
+- [#MODX-1616] Renamed "field" to "name" in Form Customization rule windows
+- Removed any non-essential JS from the top menu items
+- Added additional check and error logging for processor_path option in modX::executeProcessor().
+- Added missing view_sysinfo permission to default Administrator policy
+- [#MODX-1595] Fixed bug regarding hiding top menu items with permissions
+- [#MODX-1596] Fixed bug related to creating a new top menu item
+- Fixed issues related to usergroup panels and anonymous usergroup editing
+- Fixed bug in template viewer for package browser that wasnt paginating right
+- Added modRestServer for generic REST request handling
+- Enable remote sorting and sorting by ID on Users grid
+- Fixed and enhanced search field on Users grid
+- Fixed bug with duplicating a context where only the first level would duplicate
+- Updated to xPDO 2.0 revision 396
+- Fixed bug where package version info wasnt being computed on download/scanlocal
+- Added check for locked status on resources, now shows locked status in tree, as well as who is editing
+- [#MODX-1592] Fixed bug with usergroup create by moving it to a window
+- [#MODX-1590] Fixed missing processors for ACL grids
+- [#MODX-1526] Added permissions resource_tree, element_tree, file_tree that restrict rendering/viewing of the left-side trees. Must be applied to access policies.
+- [#MODX-625] Adjusted text in config.inc.php writable warning message
+- [#MODX-1586] Fixed toolbar rendering bug in user settings due to hidden div, now using hideMode: offsets 
+- Added search for user box in usergroup users grid
+- Changed User Group users grid to a non-local grid, now supports pagination and proper validation
+- Enhanced UI for editing User Group Context/ResourceGroup ACLs
+- [#MODX-1525] Added permissions field to modMenu to define policy permissions required to see Top Menu items
+- Fixed bug in Packages grid to properly show provider name
+- Added modRestResponse class, improved error handling for REST-based package management
+- Added verification for Providers, now check to make sure they can connect before being added or updated
+- Added Package View page to Package Management, allowing you to view more info about a package, view prior installed versions, and remove older package versions
+- Fixed typo in setup script for PM changes
+- Added version_major, version_minor, version_patch, release, and release_index fields to modTransportPackage tables to assist sorting and organization
+- Fixed bug in transport schema
+- [#MODX-1571] Fixed xtype in automatic_alias setting
+- [#MODX-1572] Fixed deprecated error in PHPMailer service
+- [#MODX-1512] Fixed bug with MODx.tree.Tree::refreshNode that caused a strange duplicate node error
+- Updated xPDO to revision 392 to get new nested condition features
+- [#MODX-1515] Fixed date picker CSS
+- [#MODX-923] Added file path to config.inc.php configcheck message on welcome page
+- [#MODX-1579] Added code to prevent invalid characters from being used in admin username/password in setup
+- [#MODX-1575] Fixed bug with Resource Group getList processor
+- Updated to xPDO 2.0 revision 389 
+- Added validation to modContext.key field; must be a valid PHP identifier without underscore characters
+- Modified modError::checkValidation() to call modError::addField() for each validation message
+- [#MODX-1562] Cleaned up Site Schedule grid to properly load baseParams during refresh and adjust pagination
+- Cleaned up processor code, plugin invoking, access permission checks in processors
+- [#MODX-1562] Fixed bug in Site Schedule data
+- Fixed OnDocUnpublished and OnDocPublished calls in processors to pass modResource reference
+- [#MODX-1564] Fixed bug causing combo values to get overridden if they were set before the combo store loaded
+- Move element and resource prerender plugin events to after js registering to allow for proper event execution order
+- [#MODX-986] Added "Duplicate Context" to Resource tree, as well as "Remove Context"
+- Fixed bug with default provider on package management UI
+- [#MODX-1540] Fixed last login display in Welcome page
+- [#MODX-1567] Enabled sorting in Reports -> System Info -> Recently Edited Documents
+- [#MODX-1522] Restricted user editing to just the save_user permission 
+- Added a "reload" button to the error log
+- Fixed Active Resources on Reports - System Info
+- Fixed database version query in Reports - System Info
+- [#MODX-1560] Added a button to truncate manager log
+- Added new browsing view for Templates in Package Management; thumbnail-based browsing.
+- [#MODX-1534] Revamped file edit page to match other page structures
+- [#MODX-1542] Added missing undelete permission to basic Resource policy
+- [#MODX-1539] Added view_user permission to solve dropdown combo users bug that needed "edit_user"; view is more applicable there
+- [#MODX-1553] Show current permissions in chmod window
+- [#MODX-1539] Fixed a few bugs with the manager log page
+- [#MODX-1530] Fixed permission reference in resource create/data
+- [#MODX-1532] Fixed bug in permissions reference when trying to remove element from property set
+- Fixed bug with login page and new controllers location
+- Enhanced provider home page to allow links for newest/most downloaded packages
+- Added sorting to Access Policy grid, cleaned up getList processors across site
+- Fixed Manager Log page to properly display content, log the right class key, and now display the name of the object edited
+- Enhanced Property Sets page to now allow you to edit specific implementations of Property Sets per element, as well as the default set
+- Added "disabled" checkbox to Quick Update Plugin
+- Fixed bug in modManagerResponse dealing with CMPs and templating paths
+- Moved controllers/* files to controllers/default/ to allow for custom manager templating
+- Fixed bugs with Property Sets not showing correctly in dropdowns
+- Updated xPDO to revision 385 to fix cache_db functionality broken by PHP 5 only changes
+- [#MODX-1514] Added css for pointer cursor to top menus
+- [#MODX-1513] Added check for SimpleXML to installer
+- Add sanity check to make sure languages arent erased on package uninstall
+- Removed confirm dialog for remove action on Access Permissions grid
+- Fixed panel layout for Access Policies, User Group editing
+- Fixed E_STRICT warning on modX::getCacheManager() [method signature did not match xPDO::getCacheManager()]
+
+MODx Revolution 2.0.0-beta-5 (LastChangedRevision: 6224, LastChangedDate: 2009-12-15 10:03:36 -0700 (Tue, 15 Dec 2009))
 ====================================
 - Fixed bug where Set to Default on Resource TV panel was hidden unless you clicked Reload
 - Fixed some bugs with Property Sets editing

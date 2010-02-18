@@ -67,7 +67,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
         
         m.add('-');
         m.add({
-            text: 'Refresh Directory'
+            text: _('directory_refresh')
             ,scope: this
             ,handler: this.refreshActiveNode
         });
@@ -177,7 +177,7 @@ Ext.extend(MODx.tree.Directory,MODx.tree.Tree,{
 	
 	,chmodDirectory: function(item,e) {
 		var node = this.cm.activeNode;
-        var r = {dir: node.id};
+        var r = {dir: node.id,mode: node.attributes.perms};
         if (!this.windows.chmod) {
             this.windows.chmod = MODx.load({
     			xtype: 'modx-window-directory-chmod'

@@ -57,8 +57,12 @@ class modManagerRequest extends modRequest {
         }
 
         /* load smarty template engine */
+        $templatePath = $this->modx->getOption('manager_path') . 'templates/' . $this->modx->getOption('manager_theme',null,'default') . '/';
+        if (!file_exists($templatePath)) {
+            $templatePath = $this->modx->getOption('manager_path') . 'templates/default/';
+        }
         $this->modx->getService('smarty', 'smarty.modSmarty', '', array(
-            'template_dir' => $this->modx->getOption('manager_path') . 'templates/' . $this->modx->getOption('manager_theme',null,'default') . '/',
+            'template_dir' => $templatePath,
         ));
         /* load context-specific cache dir */
         $this->modx->smarty->setCachePath($this->modx->context->get('key').'/smarty');
@@ -85,8 +89,17 @@ class modManagerRequest extends modRequest {
 
         /* if not validated, load login page */
         $modx = & $this->modx;
+
+        if ($this->modx->getOption('manager_language')) {
+            $this->modx->cultureKey= $this->modx->getOption('manager_language');
+        }
+
+        /* load default core cache file of lexicon strings */
+        $this->modx->lexicon->load('core:default');
+
         if (!isset($this->modx->user) || !$this->modx->user->isAuthenticated('mgr')) {
-            include_once $this->modx->getOption('manager_path') . 'controllers/security/login.php';
+            $theme = $this->modx->getOption('manager_theme',null,'default');
+            include_once $this->modx->getOption('manager_path') . 'controllers/'.$theme.'/security/login.php';
             exit();
         } else {
             /* log user action */
@@ -116,12 +129,6 @@ class modManagerRequest extends modRequest {
                 }
             }
         }
-        if ($this->modx->getOption('manager_language')) {
-            $this->modx->cultureKey= $this->modx->getOption('manager_language');
-        }
-
-        /* load default core cache file of lexicon strings */
-        $this->modx->lexicon->load('core:default');
 
         if ($this->modx->actionMap === null || !is_array($this->modx->actionMap)) {
             $this->loadActionMap();

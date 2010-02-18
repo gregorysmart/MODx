@@ -275,6 +275,46 @@ class modTemplateVar extends modElement {
             $this->set('processedValue',$value);
         }
 
+        /* if any FC tvDefault rules, set here */
+        if ($this->xpdo->request && $this->xpdo->user instanceof modUser && empty($resourceId)) {
+            $userGroups = $this->xpdo->user->getUserGroups();
+            $c = $this->xpdo->newQuery('modActionDom');
+            $c->leftJoin('modAccessActionDom','Access');
+            $c->where(array(
+                array(
+                    'rule:=' => 'tvDefault',
+                    'OR:rule:=' => 'tvVisible',
+                    'OR:rule:=' => 'tvTitle',
+                ),
+                'name' => 'tv'.$this->get('id'),
+            ));
+            $c->andCondition(array(
+                '((`Access`.`principal_class` = "modUserGroup"
+              AND `Access`.`principal` IN ('.implode(',',$userGroups).'))
+               OR `Access`.`principal` IS NULL)',
+            ),null,2);
+            $domRules = $this->xpdo->getCollection('modActionDom',$c);
+            foreach ($domRules as $rule) {
+                switch ($rule->get('rule')) {
+                    case 'tvVisible':
+                        if ($rule->get('value') == 0) {
+                            return '';
+                        }
+                        break;
+                    case 'tvDefault':
+                        $v = $rule->get('value');
+                        $this->set('value',$v);
+                        $this->set('default_text',$v);
+                        break;
+                    case 'tvTitle':
+                        $v = $rule->get('value');
+                        $this->set('caption',$v);
+                        break;
+                }
+            }
+            unset($domRules,$rule,$userGroups,$v,$c);
+        }
+
         $this->xpdo->smarty->assign('tv',$this);
 
 

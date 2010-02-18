@@ -12,7 +12,7 @@ MODx.grid.ManagerLog = function(config) {
         title: _('manager_log')
         ,id: 'modx-grid-manager-log'
         ,url: MODx.config.connectors_url+'system/log.php'
-        ,fields: ['id','user','username','occurred','action','classKey','item','menu']
+        ,fields: ['id','user','username','occurred','action','classKey','item','name','menu']
         ,autosave: true
         ,paging: true
         ,columns: [{
@@ -27,6 +27,10 @@ MODx.grid.ManagerLog = function(config) {
         },{
             header: _('action')
             ,dataIndex: 'action'
+            ,width: 125
+        },{
+            header: 'Object'
+            ,dataIndex: 'name'
             ,width: 125
         }]
     });
@@ -70,12 +74,15 @@ MODx.panel.ManagerLog = function(config) {
                     ,buttonAlign: 'center'
                     ,buttons: [{
                         text: _('filter_clear')
-						,style: 'margin-top: 12px;'
                         ,scope: this
                         ,handler: function() {
                             this.getForm().reset();
                             this.filter();
                         }
+                    },{
+                        text: _('mgrlog_clear')
+                        ,scope: this
+                        ,handler: this.clearLog
                     }]
                 },{
                     xtype: 'modx-grid-manager-log'
@@ -89,10 +96,6 @@ MODx.panel.ManagerLog = function(config) {
     MODx.panel.ManagerLog.superclass.constructor.call(this,config);
 };
 Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
-    /**
-     * Gets the items for this panel
-     * @return array An array of items 
-     */
     getItems: function() {
         var lsr = {
             'change': {fn:this.filter,scope: this}
@@ -111,43 +114,54 @@ Ext.extend(MODx.panel.ManagerLog,MODx.FormPanel,{
         },{
             xtype: 'textfield'
             ,fieldLabel: _('action')
-            ,name: 'action_type'
+            ,name: 'actionType'
             ,listeners: lsr
         },{
             xtype: 'datefield'
             ,fieldLabel: _('date_start')
-            ,name: 'date_start'
+            ,name: 'dateStart'
             ,allowBlank: true
             ,listeners: lsr
         },{
             xtype: 'datefield'
             ,fieldLabel: _('date_end')
-            ,name: 'date_end'
+            ,name: 'dateEnd'
             ,allowBlank: true
             ,listeners: lsr
         }];
     }
-    /**
-     * Filters the grid via the panel fields
-     * @param {Ext.form.Field} tf
-     * @param {String} newValue
-     * @param {String} oldValue
-     */
+    
     ,filter: function(tf,newValue,oldValue) {
         var p = this.getForm().getValues();
         var g = Ext.getCmp('modx-grid-manager-log');
         p.action = 'getList';
         g.getStore().baseParams = p;
-        g.refresh();
+        g.getStore().load({
+            params: p
+        });
         g.getBottomToolbar().changePage(1);
     }
-    /**
-     * Adds an enter key handler to a field
-     */
+    
     ,_addEnterKeyHandler: function() {
         this.getEl().addKeyListener(Ext.EventObject.ENTER,function() {
             this.fireEvent('change'); 
         },this);
+    }
+    
+    ,clearLog: function(btn,e) {        
+        MODx.msg.confirm({
+            title: _('warning')
+            ,text: _('mgrlog_clear_confirm')
+            ,url: MODx.config.connectors_url+'system/log.php'
+            ,params: {
+                action: 'truncate'
+            }
+            ,listeners: {
+                'success': {fn:function() {
+                    Ext.getCmp('modx-grid-manager-log').refresh();
+                },scope:this}
+            }
+        });
     }
 });
 Ext.reg('modx-panel-manager-log',MODx.panel.ManagerLog);

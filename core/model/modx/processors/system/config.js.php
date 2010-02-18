@@ -10,13 +10,11 @@
  * @package modx
  * @subpackage processors.system
  */
-$stay = isset($_SESSION['modx.stay']) ? $_SESSION['modx.stay'] : 'stay';
 $modx->getVersionData();
 
 if (!$modx->user->isAuthenticated('mgr')) { return ''; }
 $template_url = $modx->getOption('manager_url').'templates/'.$modx->getOption('manager_theme').'/';
 $c = array(
-    'stay' => $stay,
     'base_url' => $modx->getOption('base_url'),
     'connectors_url' => $modx->getOption('connectors_url'),
     'icons_url' => $template_url.'images/ext/modext/',
@@ -47,8 +45,8 @@ $o .= $modx->toJSON($c);
 $o .= '; MODx.action = ';
 $o .= $modx->toJSON($actions);
 $o .= '; MODx.perm = {};';
+if ($modx->user) { $o .= 'MODx.user = {id:"'.$modx->user->get('id').'",username:"'.$modx->user->get('username').'"}'; }
 
 header('Content-Type: application/x-javascript');
-
 echo $o;
 die();

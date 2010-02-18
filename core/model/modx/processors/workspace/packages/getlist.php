@@ -13,48 +13,42 @@
  * @package modx
  * @subpackage processors.workspace.packages
  */
-$modx->lexicon->load('workspace');
 if (!$modx->hasPermission('packages')) return $modx->error->failure($modx->lexicon('permission_denied'));
-
-/* TODO: remove this line when xPDO::getCount is fixed */
+$modx->lexicon->load('workspace');
 $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
 
-$useLimit = !empty($_REQUEST['limit']);
-$start = isset($_REQUEST['start']) ? $_REQUEST['start'] : 0;
-$limit = isset($_REQUEST['limit']) ? $_REQUEST['limit'] : 10;
-$workspace = !empty($_REQUEST['workspace']) ? $_REQUEST['workspace'] : 1;
-$dateFormat = !empty($_REQUEST['dateFormat']) ? $_REQUEST['dateFormat'] : '%b %d, %Y %I:%M %p';
+/* setup default properties */
+$isLimit = !empty($_REQUEST['limit']);
+$start = $modx->getOption('start',$_REQUEST,0);
+$limit = $modx->getOption('limit',$_REQUEST,10);
+$workspace = $modx->getOption('workspace',$_REQUEST,1);
+$dateFormat = $modx->getOption('dateFormat',$_REQUEST,'%b %d, %Y %I:%M %p');
 
 /* get packages */
-$c = $modx->newQuery('modTransportPackage');
+$c = $modx->newQuery('transport.modTransportPackage');
+$c->leftJoin('transport.modTransportProvider','Provider');
 $c->where(array(
     'workspace' => $workspace,
 ));
+$c->where(array(
+    '(SELECT `signature` FROM '.$modx->getTableName('modTransportPackage').' AS `latestPackage`
+      WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
+      ORDER BY
+         `latestPackage`.`version_major` DESC,
+         `latestPackage`.`version_minor` DESC,
+         `latestPackage`.`version_patch` DESC,
+         `latestPackage`.`release` DESC,
+         `latestPackage`.`release_index` DESC
+      LIMIT 1) = `modTransportPackage`.`signature`',
+));
 $count = $modx->getCount('modTransportPackage',$c);
-
+$c->select('
+    `modTransportPackage`.*,
+    `Provider`.`name` AS `provider_name`
+');
 $c->sortby('`modTransportPackage`.`signature`', 'ASC');
-$c->sortby('`modTransportPackage`.`disabled`', 'ASC');
-if ($useLimit) {
-    $c->limit($limit,$start);
-}
-$packages = $modx->getCollection('modTransportPackage',$c);
-
-/* hide prior versions */
-$priorVersions = array();
-foreach ($packages as $key => $package) {
-    $newSig = explode('-',$key);
-    $name = $newSig[0];
-    $newVers = $newSig[1].'-'.(isset($newSig[2]) ? $newSig[2] : '');
-    /* if package already exists, see if later version */
-    if (isset($priorVersions[$name])) {
-        $oldVers = $priorVersions[$name];
-        /* if package is newer and installed, hide old one */
-        if (version_compare($oldVers,$newVers,'<') && $package->get('installed')) {
-            unset($packages[$name.'-'.$oldVers]);
-        }
-    }
-    $priorVersions[$name] = $newVers;
-}
+if ($isLimit) $c->limit($limit,$start);
+$packages = $modx->getCollection('transport.modTransportPackage',$c);
 
 /* now create output array */
 $list = array();
@@ -90,6 +84,12 @@ foreach ($packages as $key => $package) {
     $packageArray['iconaction'] = $not_installed ? 'icon-install' : 'icon-uninstall';
     $packageArray['textaction'] = $not_installed ? $modx->lexicon('install') : $modx->lexicon('uninstall');
     $packageArray['menu'] = array();
+
+    $packageArray['menu'][] = array(
+        'text' => $modx->lexicon('package_view'),
+        'handler' => 'this.viewPackage',
+    );
+    $packageArray['menu'][] = '-';
     if ($package->get('provider') != 0) {
         $packageArray['menu'][] = array(
             'text' => $modx->lexicon('package_check_for_updates'),
@@ -112,13 +112,24 @@ foreach ($packages as $key => $package) {
         'handler' => 'this.remove',
     );
 
-
-    /* setup readme */
-    $transport = $package->getTransport();
-    if ($transport) {
-        $packageArray['readme'] = $transport->getAttribute('readme');
-        $packageArray['readme'] = nl2br($packageArray['readme']);
+    /* setup description, using either metadata or readme */
+    $metadata = $package->get('metadata');
+    if (!empty($metadata)) {
+        foreach ($metadata as $row) {
+            if (!empty($row['name']) && $row['name'] == 'description') {
+                $packageArray['readme'] = nl2br($row['text']);
+                break;
+            }
+        }
+    } else {
+        $transport = $package->getTransport();
+        if ($transport) {
+            $packageArray['readme'] = $transport->getAttribute('readme');
+            $packageArray['readme'] = nl2br($packageArray['readme']);
+        }
     }
+    unset($packageArray['attributes']);
+    unset($packageArray['metadata']);
     $list[] = $packageArray;
 }
 

@@ -32,6 +32,8 @@ class modManagerResponse extends modResponse {
             $action =& $this->modx->request->action;
         }
 
+        $theme = $this->modx->getOption('manager_theme',null,'default');
+
         $this->modx->lexicon->load('dashboard','topmenu','file');
         if ($action == 0) {
             $action = $this->modx->getObject('modAction',array(
@@ -45,6 +47,14 @@ class modManagerResponse extends modResponse {
             if (isset($this->modx->actionMap[$action])) {
                 $this->action = $this->modx->actionMap[$action];
 
+                /* get template path */
+                $templatePath = $this->modx->getOption('manager_path') . 'templates/'.$theme.'/';
+                if (!file_exists($templatePath)) {
+                    $templatePath = $this->modx->getOption('manager_path') . 'templates/default/';
+                    $this->modx->config['manager_theme'] = 'default';
+                    $this->modx->smarty->assign('_config',$this->modx->config);
+                }
+
                 /* assign custom action topics to smarty, so can load custom topics for each page */
                 $this->modx->lexicon->load('action');
                 $topics = explode(',',$this->action['lang_topics']);
@@ -57,7 +67,8 @@ class modManagerResponse extends modResponse {
 
                 $this->body = '';
 
-                $f = $this->prepareNamespacePath();
+
+                $f = $this->prepareNamespacePath($this->action['controller'],$theme);
                 $f = $this->getControllerFilename($f);
 
                 if (file_exists($f)) {
@@ -71,16 +82,22 @@ class modManagerResponse extends modResponse {
                     $cbody = 'Could not find action file at: '.$f;
                 }
 
-
                 $this->registerActionDomRules($action);
                 $this->registerCssJs();
 
                 /* reset path to core modx path for header/footer */
-                $this->modx->smarty->setTemplatePath($modx->getOption('manager_path') . 'templates/' . $this->modx->getOption('manager_theme',null,'default') . '/');
+                if (!isset($this->action['namespace']) || $this->action['namespace'] == 'core') {
+                    $this->modx->smarty->setTemplatePath($templatePath);
+                }
+
 
                 /* load header */
+                $controllersPath = $this->modx->getOption('manager_path').'controllers/'.$theme.'/';
+                if (!file_exists($controllersPath)) {
+                    $controllersPath = $this->modx->getOption('manager_path').'controllers/default/';
+                }
                 if ($this->action['haslayout']) {
-                    $this->body .= include $this->modx->getOption('manager_path') . 'controllers/header.php';
+                    $this->body .= include_once $controllersPath.'header.php';
                 }
 
                 /* assign later to allow for css/js registering */
@@ -90,8 +107,9 @@ class modManagerResponse extends modResponse {
                 }
                 $this->body .= $cbody;
 
+                /* load footer */
                 if ($this->action['haslayout']) {
-                    $this->body .= include_once $this->modx->getOption('manager_path').'controllers/footer.php';
+                    $this->body .= include_once $controllersPath.'footer.php';
                 }
 
 
@@ -105,7 +123,7 @@ class modManagerResponse extends modResponse {
             $this->modx->smarty->assign('_lang',$this->modx->lexicon->fetch());
             $this->modx->smarty->assign('_ctx',$this->modx->context->get('key'));
 
-            $this->body = include_once $this->modx->getOption('manager_path').'controllers/security/logout.php';
+            $this->body = include_once $this->modx->getOption('manager_path').'controllers/'.$theme.'/security/logout.php';
 
         }
         if (empty($this->body)) {
@@ -137,11 +155,9 @@ class modManagerResponse extends modResponse {
             'action' => $action,
         ));
         $c->andCondition(array(
-            'Access.principal_class' => 'modUserGroup',
-            'Access.principal IN ('.implode(',',$userGroups).')',
-        ),null,2);
-        $c->orCondition(array(
-            'Access.principal IS NULL',
+            '((`Access`.`principal_class` = "modUserGroup"
+          AND `Access`.`principal` IN ('.implode(',',$userGroups).'))
+           OR `Access`.`principal` IS NULL)',
         ),null,2);
         $domRules = $this->modx->getCollection('modActionDom',$c);
         $rules = array();
@@ -191,6 +207,9 @@ class modManagerResponse extends modResponse {
             $this->modx->regClientStartupHTMLBlock('
             <script type="text/javascript">
             Ext.onReady(function() {
+                MODx.perm.resource_tree = "'.$this->modx->hasPermission('resource_tree').'";
+                MODx.perm.element_tree = "'.$this->modx->hasPermission('element_tree').'";
+                MODx.perm.file_tree = "'.$this->modx->hasPermission('file_tree').'";
                 MODx.load({
                     xtype: "modx-layout"
                     ,accordionPanels: MODx.accordionPanels || []
@@ -206,18 +225,22 @@ class modManagerResponse extends modResponse {
      * @access protected
      * @return string The formatted Namespace path
      */
-    protected function prepareNamespacePath() {
+    protected function prepareNamespacePath($controller,$theme = 'default') {
         /* set context url and path */
-        $this->modx->config['namespace_path'] = $this->action['namespace_path'];
+        $this->modx->config['namespace_path'] = $controller;
 
         /* find context path */
-        if (!isset($this->action['namespace']) || $this->action['namespace'] == 'core') {
-            $f = $this->action['namespace_path'].'controllers/'.$this->action['controller'];
+        if (isset($this->action['namespace']) && $this->action['namespace'] != 'core') {
+            /* if a custom 3rd party path */
+            $f = $this->action['namespace_path'].$controller;
 
-        } else { /* if a custom 3rd party path */
-            $f = $this->action['namespace_path'].$this->action['controller'];
+        } else {
+            $f = $this->action['namespace_path'].'controllers/'.$theme.'/'.$controller;
+            /* if custom theme doesnt have controller, go to default theme */
+            if (!file_exists($f.'.php')) {
+                $f = $this->action['namespace_path'].'controllers/default/'.$controller;
+            }
         }
-
         return $f;
     }
 

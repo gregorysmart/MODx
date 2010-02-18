@@ -56,12 +56,12 @@ MODx.grid.ResourceSchedule = function(config) {
                 header: _('publish_date')
                 ,dataIndex: 'pub_date'
                 ,width: 150
-                ,editor: { xtype: 'datefield' ,format: 'D M d, Y' }
+                ,editor: { xtype: 'datefield' ,format: MODx.config.manager_date_format }
             },{ 
                 header: _('unpublish_date')
                 ,dataIndex: 'unpub_date'
                 ,width: 150
-                ,editor: { xtype: 'datefield' ,format: 'D M d, Y' }
+                ,editor: { xtype: 'datefield' ,format: MODx.config.manager_date_format }
             }
         ]
         ,tbar: [{
@@ -77,16 +77,17 @@ MODx.grid.ResourceSchedule = function(config) {
 };
 Ext.extend(MODx.grid.ResourceSchedule,MODx.grid.Grid,{
     toggle: function(btn,e) {
-        btn = Ext.getCmp('btn-toggle');
         var s = this.getStore();
         if (btn.pressed) {
-            s.baseParams.mode = 'unpub_date';
+            s.setBaseParam('mode','unpub_date');
             btn.setText(_('showing_unpub'));
         } else {
-            s.baseParams.mode = 'pub_date';
+            s.setBaseParam('mode','pub_date');
             btn.setText(_('showing_pub'));
         }
-        s.reload();
+        this.getBottomToolbar().changePage(1);
+        s.removeAll();
+        this.refresh();
     }
 });
 Ext.reg('modx-grid-resource-schedule',MODx.grid.ResourceSchedule);

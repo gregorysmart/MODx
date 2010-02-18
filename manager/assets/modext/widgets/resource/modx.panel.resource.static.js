@@ -198,6 +198,7 @@ MODx.panel.Static = function(config) {
         ,name: 'publishedon'
         ,id: 'modx-static-publishedon'
         ,allowBlank: true
+        ,dateFormat: MODx.config.manager_date_format
         ,dateWidth: 120
         ,timeWidth: 120
     });
@@ -208,7 +209,7 @@ MODx.panel.Static = function(config) {
             ,description: _('resource_publishdate_help')
             ,name: 'pub_date'
             ,id: 'modx-static-pub-date'
-            ,format: 'd-m-Y H:i:s'
+            ,dateFormat: MODx.config.manager_date_format
             ,allowBlank: true
             ,dateWidth: 120
             ,timeWidth: 120
@@ -221,7 +222,7 @@ MODx.panel.Static = function(config) {
             ,description: _('resource_unpublishdate_help')
             ,name: 'unpub_date'
             ,id: 'modx-static-unpub-date'
-            ,format: 'd-m-Y H:i:s'
+            ,dateFormat: MODx.config.manager_date_format
             ,allowBlank: true
             ,dateWidth: 120
             ,timeWidth: 120   
@@ -375,9 +376,11 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
     }
     ,beforeSubmit: function(o) {        
         var g = Ext.getCmp('modx-grid-resource-security');
-        Ext.apply(o.form.baseParams,{
-            resource_groups: g.encodeModified()
-        });        
+        if (g) { 
+            Ext.apply(o.form.baseParams,{
+                resource_groups: g.encodeModified()
+            });
+        }
         return this.fireEvent('save',{
             values: this.getForm().getValues()
             ,stay: MODx.config.stay
@@ -385,14 +388,17 @@ Ext.extend(MODx.panel.Static,MODx.FormPanel,{
     }
 
     ,success: function(o) {
-        Ext.getCmp('modx-grid-resource-security').getStore().commitChanges();
+        var g = Ext.getCmp('modx-grid-resource-security');
+        if (g) { g.getStore().commitChanges(); }
         var t = Ext.getCmp('modx-resource-tree');
-        var ctx = Ext.getCmp('modx-static-context-key').getValue();
-        var pa = Ext.getCmp('modx-resource-parent-hidden').getValue();
-        var v = ctx+'_'+pa;
-        var n = t.getNodeById(v);
-        n.leaf = false;
-        t.refreshNode(v,true);
+        if (t) {
+            var ctx = Ext.getCmp('modx-static-context-key').getValue();
+            var pa = Ext.getCmp('modx-resource-parent-hidden').getValue();
+            var v = ctx+'_'+pa;
+            var n = t.getNodeById(v);
+            n.leaf = false;
+            t.refreshNode(v,true);
+        }
         Ext.getCmp('modx-page-update-resource').config.preview_url = o.result.object.preview_url;
     }
     
