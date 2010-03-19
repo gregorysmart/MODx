@@ -4,6 +4,7 @@
 >{$tv->get('value')|escape}</textarea>
 
 <script type="text/javascript">
+// <![CDATA[
 {literal}
 MODx.load({
 {/literal}
@@ -16,4 +17,5 @@ MODx.load({
     ,listeners: { 'keydown': { fn:MODx.fireResourceFormChange, scope:this}}
 });
 {/literal}
+// ]]>
 </script>

@@ -74,6 +74,7 @@ MODx.tree.Tree = function(config) {
         ,cls: 'modx-tree'
         ,root: root
         ,preventRender: false
+        ,menuConfig: { defaultAlign: 'tl-b?' ,enableScrolling: false }
 	});
 	if (config.remoteToolbar === true && (config.tbar === undefined || config.tbar === null)) {
 		Ext.Ajax.request({
@@ -81,19 +82,20 @@ MODx.tree.Tree = function(config) {
 			,params: {
                 action: 'getToolbar'
             }
-            ,success:function(r) {
+            ,scope: this
+            ,success: function(r) {
                 r = Ext.decode(r.responseText);
-                var itms = this._formatToolbar(r.results);
-                var tb = this.getTopToolbar();
-                if (tb) {
-                    var l = r.results;
-                    for (var i=0;i<itms.length;i++) {
-                        tb.add(itms[i]);
+                if (r.success) {
+                    var itms = this._formatToolbar(r.object);
+                    var tb = this.getTopToolbar();
+                    if (tb) {
+                        for (var i=0;i<itms.length;i++) {
+                            tb.add(itms[i]);
+                        }
+                        tb.doLayout();
                     }
-                    tb.doLayout();
                 }
             }
-            ,scope:this
         });
         config.tbar = {bodyStyle: 'padding: 0'};
 	} else {
@@ -122,7 +124,8 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	 */
 	,setup: function(config) {
 	    MODx.tree.Tree.superclass.constructor.call(this,config);
-	    this.cm = new Ext.menu.Menu({ defaultAlign: 'tl-b?' ,enableScrolling: false });
+        this.addEvents('afterSort','beforeSort');
+	    this.cm = new Ext.menu.Menu(config.menuConfig);
 	    this.on('contextmenu',this._showContextMenu,this);
 	    this.on('beforenodedrop',this._handleDrop,this);
 	    this.on('nodedragover',this._handleDrop,this);
@@ -359,6 +362,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 		}
 		
 		var encNodes = Ext.encode(simplifyNodes(dropEvent.tree.root));
+        this.fireEvent('beforeSort',encNodes);
 		MODx.Ajax.request({
 			url: this.config.url
 			,params: {
@@ -367,7 +371,9 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 			}
 			,listeners: {
 				'success': {fn:function(r) {
-                    this.reloadNode(dropEvent.target.parentNode);
+                    var el = dropEvent.dropNode.getUI().getTextEl();
+                    if (el) { Ext.get(el).frame(); }
+                    this.fireEvent('afterSort',{event:dropEvent,result:r});
 				},scope:this}
 				,'failure': {fn:function(r) {
                     MODx.form.Handler.errorJSON(r);
@@ -431,8 +437,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
 	 * @access public
 	 */
 	,refreshActiveNode: function() {
-        this.getLoader().load(this.cm.activeNode);
-        this.cm.activeNode.expand();
+        this.getLoader().load(this.cm.activeNode,this.cm.activeNode.expand);
     }
     
     /**
@@ -440,8 +445,7 @@ Ext.extend(MODx.tree.Tree,Ext.tree.TreePanel,{
      * @access public
      */
     ,refreshParentNode: function() {
-        this.getLoader().load(this.cm.activeNode.parentNode);
-        this.cm.activeNode.parentNode.expand();
+        this.getLoader().load(this.cm.activeNode.parentNode,this.cm.activeNode.expand);
     }
     
     /**

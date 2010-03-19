@@ -27,6 +27,7 @@ MODx.FormPanel = function(config) {
         ,allowDrop: true
         ,errorReader: MODx.util.JSONReader
         ,checkDirty: true
+        ,useLoadingMask: false
     });
     if (config.items) { this.addChangeEvent(config.items); }
     
@@ -50,6 +51,10 @@ MODx.FormPanel = function(config) {
         ,failure: true
     });
     this.on('ready',this.onReady);
+    if (this.config.useLoadingMask) {
+        this.mask = new Ext.LoadMask(this.getEl(),{msg:_('loading')});
+        this.mask.show();
+    }
     this.fireEvent('setup',config);
 };
 Ext.extend(MODx.FormPanel,Ext.FormPanel,{
@@ -137,6 +142,10 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
         });
     }
     
+    ,markDirty: function() {
+        this.fireEvent('fieldChange');
+    }
+    
     ,isDirty: function() {
         var f = this.config.onDirtyForm ? Ext.getCmp(this.config.onDirtyForm) : this.getForm();
     	return f.isDirty();
@@ -150,6 +159,9 @@ Ext.extend(MODx.FormPanel,Ext.FormPanel,{
     ,onReady: function(r) {
     	this.isReady = true;
         if (this.config.allowDrop) { this.loadDropZones(); }
+        if (this.config.useLoadingMask && this.mask) {
+            this.mask.hide();
+        }
     }
     
     ,loadDropZones: function() {        
@@ -225,12 +237,14 @@ MODx.panel.Wizard = function(config) {
         ,txtBack: _('back')
         ,bbar: [{
             id: 'pi-btn-bck'
+            ,itemId: 'btn-back'
             ,text: config.txtBack || _('back')
             ,handler: this.navHandler.createDelegate(this,[-1])
             ,scope: this
             ,disabled: true         
         },{
             id: 'pi-btn-fwd'
+            ,itemId: 'btn-fwd'
             ,text: config.txtNext || _('next')
             ,handler: this.navHandler.createDelegate(this,[1])
             ,scope: this

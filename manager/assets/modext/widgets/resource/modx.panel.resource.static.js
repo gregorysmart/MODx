@@ -119,6 +119,7 @@ MODx.panel.Static = function(config) {
                     str = str.replace(MODx.config.base_url,'');
                     if (str.substring(0,1) == '/') str = str.substring(1);
                     Ext.getCmp('modx-static-content').setValue(str);
+                    this.markDirty();
                 },scope:this}
             }
             
@@ -247,6 +248,15 @@ MODx.panel.Static = function(config) {
         ,checked: true        
     });
     va.push({
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_syncsite')
+        ,description: _('resource_syncsite_help')
+        ,name: 'syncsite'
+        ,id: 'modx-weblink-syncsite'
+        ,inputValue: 1
+        ,checked: true 
+    });
+    va.push({
         xtype: 'hidden'
         ,name: 'class_key'
         ,id: 'modx-static-class-key'
@@ -322,7 +332,7 @@ MODx.panel.Static = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
-        ,id: 'modx-panel-static'
+        ,id: 'modx-panel-resource'
         ,class_key: 'modStaticResource'
         ,resource: ''
         ,bodyStyle: ''
@@ -333,6 +343,7 @@ MODx.panel.Static = function(config) {
             ,cls: 'modx-page-header'
             ,border: false
         },MODx.getPageStructure(it,{id:'modx-resource-tabs' ,forceLayout: true ,deferredRender: false })]
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
@@ -340,7 +351,7 @@ MODx.panel.Static = function(config) {
         }
     });
     MODx.panel.Static.superclass.constructor.call(this,config);
-    setTimeout("Ext.getCmp('modx-panel-static').onLoad();",1000);
+    setTimeout("Ext.getCmp('modx-panel-resource').onLoad();",1000);
 };
 Ext.extend(MODx.panel.Static,MODx.FormPanel,{
     onLoad: function() {

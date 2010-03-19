@@ -250,28 +250,107 @@ class modResource extends modAccessibleSimpleObject {
     }
 
     /**
-     * Sanitizes a string to form a valid URL representation.
+     * Transforms a string to form a valid URL representation.
      *
-     * @todo This needs a full code and concept review, as well as
-     * regression testing with current 0.9.6.x branch.
-     *
-     * @param string $alias A string to sanitize.
-     * @return string The sanitized string.
+     * @param string $alias A string to transform into a valid URL representation.
+     * @param array $options Options to append to or override configuration settings.
+     * @return string The transformed string.
      */
-    public function cleanAlias($alias) {
-        $charset = $this->xpdo->getOption('modx_charset',null,'UTF-8');
-        if (!empty($charset) || strtoupper($charset) == 'UTF-8') {
-            $alias= utf8_decode($alias);
-        }
-        $alias= strtr($alias, array (chr(196) => 'Ae', chr(214) => 'Oe', chr(220) => 'Ue', chr(228) => 'ae', chr(246) => 'oe', chr(252) => 'ue', chr(223) => 'ss'));
+    public function cleanAlias($alias, array $options = array()) {
+        /* setup the various options */
+        $iconv = function_exists('iconv');
+        $mbext = function_exists('mb_strlen');
+        $charset = strtoupper((string) $this->xpdo->getOption('modx_charset', $options, 'UTF-8'));
+        $delimiter = $this->xpdo->getOption('friendly_alias_word_delimiter', $options, '-');
+        $delimiters = $this->xpdo->getOption('friendly_alias_word_delimiters', $options, '-_');
+        $maxlength = (integer) $this->xpdo->getOption('friendly_alias_max_length', $options, 0);
+        $stripElementTags = (boolean) $this->xpdo->getOption('friendly_alias_strip_element_tags', $options, true);
+        $trimchars = $this->xpdo->getOption('friendly_alias_trim_chars', $options, '/.' . $delimiters);
+        $restrictchars = $this->xpdo->getOption('friendly_alias_restrict_chars', $options, 'pattern');
+        $restrictcharspattern = $this->xpdo->getOption('friendly_alias_restrict_chars_pattern', $options, '/[\0\x0B\t\n\r\f\a&=+%#<>"~`@\?\[\]\{\}\|\^\'\\\\]/');
+        $lowercase = (boolean) $this->xpdo->getOption('friendly_alias_lowercase_only', $options, true);
+        $translit = $this->xpdo->getOption('friendly_alias_translit', $options, $iconv ? 'iconv' : 'none');
+        $translitClass = $this->xpdo->getOption('friendly_alias_translit_class', $options, 'translit.modTransliterate');
 
-        $alias= strip_tags($alias);
-        //$alias = strtolower($alias);
-        $alias= preg_replace('/&.+?;/', '', $alias); // kill entities
-        $alias= preg_replace('/[^\.%A-Za-z0-9 _-]/', '', $alias);
-        $alias= preg_replace('/\s+/', '-', $alias);
-        $alias= preg_replace('|-+|', '-', $alias);
-        $alias= trim($alias);
+        /* get the strlen of the alias (use mb extension if available) */
+        $length = $mbext ? mb_strlen($alias, $charset) : strlen($alias);
+
+        /* strip html and optionally MODx element tags (stripped by default) */
+        $alias = $this->xpdo->stripTags($alias, '', $stripElementTags ? array() : null);
+
+        /* replace &nbsp; with the specified word delimiter */
+        $alias = str_replace('&nbsp;', $delimiter, $alias);
+
+        /* decode named entities to the appropriate character for the character set */
+        $alias = html_entity_decode($alias, ENT_QUOTES, $charset);
+
+        /* replace any remaining & with a lexicon value if available */
+        if ($this->xpdo->getService('lexicon','modLexicon')) {
+            $alias = str_replace('&', $this->xpdo->lexicon('and') ? ' ' . $this->xpdo->lexicon('and') . ' ' : ' and ', $alias);
+        }
+
+        /* apply transliteration as configured */
+        switch ($translit) {
+            case '':
+            case 'none':
+                /* no transliteration */
+                break;
+            case 'iconv':
+                /* if iconv is available, use the built-in transliteration it provides */
+                $alias = iconv($charset, 'ASCII//TRANSLIT//IGNORE', $alias);
+                break;
+            default:
+                /* otherwise look for a transliteration service class that will accept named transliteration tables */
+                $translitClassPath = $this->xpdo->getOption('friendly_alias_translit_class_path', $options, $this->xpdo->getOption('core_path', $options, MODX_CORE_PATH) . 'components/');
+                if ($this->xpdo->getService('translit', $translitClass, $translitClassPath, $options)) {
+                    $alias = $this->xpdo->translit->translate($alias, $translit);
+                }
+        }
+        /* restrict characters as configured */
+        switch ($restrictchars) {
+            case 'alphanumeric':
+                /* restrict alias to alphanumeric characters only */
+                $alias = preg_replace('/[^\.%A-Za-z0-9 _-]/', '', $alias);
+                break;
+            case 'alpha':
+                /* restrict alias to alpha characters only */
+                $alias = preg_replace('/[^\.%A-Za-z _-]/', '', $alias);
+                break;
+            case 'legal':
+                /* restrict alias to legal URL characters only */
+                $alias = preg_replace('/[\0\x0B\t\n\r\f\a&=+%#<>"~`@\?\[\]\{\}\|\^\'\\\\]/', '', $alias);
+                break;
+            case 'pattern':
+            default:
+                /* restrict alias using regular expression pattern configured (same as legal by default) */
+                $alias = preg_replace($restrictcharspattern, '', $alias);
+        }
+        /* replace one or more space characters with word delimiter */
+        $alias = preg_replace('/\s+/', $delimiter, $alias);
+        /* replace one or more instances of word delimiters with word delimiter */
+        $delimiterTokens = array();
+        for ($d = 0; $d < strlen($delimiters); $d++) {
+            $delimiterTokens[] = $delimiters{$d};
+        }
+        $delimiterPattern = '/[' . implode('|', $delimiterTokens) . ']+/';
+        $alias = preg_replace($delimiterPattern, $delimiter, $alias);
+        /* unless lowercase_only preference is explicitly off, change case to lowercase */
+        if ($lowercase) {
+            if ($mbext) {
+                /* if the mb extension is available use it to protect multi-byte chars */
+                $alias = mb_convert_case($alias, MB_CASE_LOWER, $charset);
+            } else {
+                /* otherwise, just use strtolower */
+                $alias = strtolower($alias);
+            }
+        }
+        /* trim specified chars from both ends of the alias */
+        $alias = trim($alias, $trimchars);
+        /* if maxlength is specified and exceeded, return substr with additional trim applied */
+        if ($maxlength > 0 && $length > $maxlength) {
+            $alias = substr($alias, 0, $maxlength);
+            $alias = trim($alias, $trimchars);
+        }
         return $alias;
     }
 
@@ -384,13 +463,13 @@ class modResource extends modAccessibleSimpleObject {
             $accessTable = $this->xpdo->getTableName('modAccessResourceGroup');
             $policyTable = $this->xpdo->getTableName('modAccessPolicy');
             $resourceGroupTable = $this->xpdo->getTableName('modResourceGroupResource');
-            $sql = "SELECT acl.target, acl.principal, acl.authority, acl.policy, p.data FROM {$accessTable} acl " .
-                    "LEFT JOIN {$policyTable} p ON p.id = acl.policy " .
-                    "JOIN {$resourceGroupTable} rg ON acl.principal_class = 'modUserGroup' " .
-                    "AND (acl.context_key = :context OR acl.context_key IS NULL OR acl.context_key = '') " .
-                    "AND rg.document = :resource " .
-                    "AND rg.document_group = acl.target " .
-                    "GROUP BY acl.target, acl.principal, acl.authority, acl.policy";
+            $sql = "SELECT `Acl`.`target`, `Acl`.`principal`, `Acl`.`authority`, `Acl`.`policy`, `Policy`.`data` FROM {$accessTable} `Acl` " .
+                    "LEFT JOIN {$policyTable} `Policy` ON `Policy`.`id` = `Acl`.`policy` " .
+                    "JOIN {$resourceGroupTable} `ResourceGroup` ON `Acl`.`principal_class` = 'modUserGroup' " .
+                    "AND (`Acl`.`context_key` = :context OR `Acl`.`context_key` IS NULL OR `Acl`.`context_key` = '') " .
+                    "AND `ResourceGroup`.`document` = :resource " .
+                    "AND `ResourceGroup`.`document_group` = `Acl`.`target` " .
+                    "GROUP BY `Acl`.`target`, `Acl`.`principal`, `Acl`.`authority`, `Acl`.`policy`";
             $bindings = array(
                 ':resource' => $this->get('id'),
                 ':context' => $context

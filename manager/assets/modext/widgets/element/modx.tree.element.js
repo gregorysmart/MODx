@@ -16,6 +16,7 @@ MODx.tree.Element = function(config) {
 		,url: MODx.config.connectors_url+'element/index.php'
 	});
 	MODx.tree.Element.superclass.constructor.call(this,config);
+    this.on('afterSort',this.afterSort);
 };
 Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 	forms: {}
@@ -98,7 +99,10 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		var oar = id.split('_');
 		MODx.msg.confirm({
 			title: _('warning')
-			,text: _('remove_this_confirm')+' '+oar[0]+'?'
+			,text: _('remove_this_confirm',{
+                type: oar[0]
+                ,name: this.cm.activeNode.attributes.name
+            })
 			,url: MODx.config.connectors_url+'element/'+oar[0]+'.php'
 			,params: {
 				action: 'remove'
@@ -159,11 +163,19 @@ Ext.extend(MODx.tree.Element,MODx.tree.Tree,{
 		this.cm.hide();
 		return false;
 	}
+    
+    ,afterSort: function(o) {
+        if (o.event.target.attributes.type == 'category') {
+            this.refreshNode('n_category',true);
+            this.refreshNode('n_type_'+o.event.dropNode.attributes.type,true);
+        }
+    }
 		
 	,_handleDrop: function(e) {
 		var target = e.target;
+		if (e.point == 'above' || e.point == 'below') { return false; }
         if (e.target.attributes.type == 'category' && e.point == 'append') { return true; }
-		if(e.point == 'above' || e.point == 'below') { return false; }
+        
         if (!this.isCorrectType(e.dropNode,target)) { return false; }
 		
 		return e.target.getDepth() > 0;
@@ -211,7 +223,7 @@ MODx.window.DuplicateElement = function(config) {
             ,fieldLabel: _('element_name_new')
             ,name: 'name'
             ,id: 'modx-dupel-name'
-            ,width: 250
+            ,anchor: '90%'
         }]
     });
     MODx.window.DuplicateElement.superclass.constructor.call(this,config);
@@ -250,6 +262,7 @@ MODx.window.RenameCategory = function(config) {
             ,id: 'modx-'+this.ident+'-category'
             ,width: 150
             ,value: config.record.category
+            ,anchor: '90%'
         }]
     });
     MODx.window.RenameCategory.superclass.constructor.call(this,config);

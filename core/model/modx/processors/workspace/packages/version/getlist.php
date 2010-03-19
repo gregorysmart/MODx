@@ -10,12 +10,12 @@ $modx->lexicon->load('workspace');
 $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
 
 /* setup default properties */
-$isLimit = !empty($_REQUEST['limit']);
-$start = $modx->getOption('start',$_REQUEST,0);
-$limit = $modx->getOption('limit',$_REQUEST,10);
-$workspace = $modx->getOption('workspace',$_REQUEST,1);
-$dateFormat = $modx->getOption('dateFormat',$_REQUEST,'%b %d, %Y %I:%M %p');
-$signature = $modx->getOption('signature',$_REQUEST,false);
+$isLimit = !empty($scriptProperties['limit']);
+$start = $modx->getOption('start',$scriptProperties,0);
+$limit = $modx->getOption('limit',$scriptProperties,10);
+$workspace = $modx->getOption('workspace',$scriptProperties,1);
+$dateFormat = $modx->getOption('dateFormat',$scriptProperties,'%b %d, %Y %I:%M %p');
+$signature = $modx->getOption('signature',$scriptProperties,false);
 
 if (empty($signature)) return $this->outputArray(array());
 $signatureArray = explode('-',$signature);
@@ -35,7 +35,7 @@ $count = $modx->getCount('modTransportPackage',$c);
 $c->sortby('`modTransportPackage`.`version_major`', 'DESC');
 $c->sortby('`modTransportPackage`.`version_minor`', 'DESC');
 $c->sortby('`modTransportPackage`.`version_patch`', 'DESC');
-$c->sortby('`modTransportPackage`.`release`', 'DESC');
+$c->sortby('IF(`modTransportPackage`.`release` = "" OR `modTransportPackage`.`release` = "ga" OR `modTransportPackage`.`release` = "pl","z",`release`) DESC','');
 $c->sortby('`modTransportPackage`.`release_index`', 'DESC');
 if ($isLimit) $c->limit($limit,$start);
 $packages = $modx->getCollection('transport.modTransportPackage',$c);

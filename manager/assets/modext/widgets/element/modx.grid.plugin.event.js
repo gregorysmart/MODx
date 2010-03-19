@@ -30,7 +30,7 @@ MODx.grid.PluginEvent = function(config) {
         ,enableColumnResize: true
         ,enableColumnMove: true        
         ,fields: ['id','name','service','groupname','enabled','priority','propertyset','menu']
-        ,paging: true
+        ,paging: false
         ,remoteSort: true
         ,viewConfig: {
             forceFit: false
@@ -65,7 +65,7 @@ MODx.grid.PluginEvent = function(config) {
             ,width: 100
             ,editor: { xtype: 'textfield' ,allowBlank: false }
         }]
-        ,tbar: [{
+        /*,tbar: [{
             xtype: 'textfield'
             ,name: 'name_filter'
             ,id: 'modx-'+this.ident+'-filter-name'
@@ -78,9 +78,10 @@ MODx.grid.PluginEvent = function(config) {
                     },this);
                 }}
             }
-        }] 
+        }] */
     });
     MODx.grid.PluginEvent.superclass.constructor.call(this,config);
+    this.addEvents('updateEvent');
 };
 Ext.extend(MODx.grid.PluginEvent,MODx.grid.Grid,{
     filterByName: function(tf,newValue,oldValue) {
@@ -107,7 +108,7 @@ Ext.extend(MODx.grid.PluginEvent,MODx.grid.Grid,{
             ,listeners: {
                 'success': {fn:function(r) {
                     this.refresh();
-                    Ext.getCmp('modx-panel-plugin').fireEvent('fieldChange');
+                    this.fireEvent('updateEvent',r);
                 },scope:this}
             }
         });

@@ -9,7 +9,9 @@
 $_lang['area'] = 'Area';
 $_lang['area_authentication'] = 'Authentication and Security';
 $_lang['area_caching'] = 'Caching';
+$_lang['area_editor'] = 'Rich-Text Editor';
 $_lang['area_file'] = 'File System';
+$_lang['area_filter'] = 'Filter by area...';
 $_lang['area_furls'] = 'Friendly URL';
 $_lang['area_gateway'] = 'Gateway';
 $_lang['area_language'] = 'Lexicon and Language';
@@ -71,6 +73,9 @@ $_lang['setting_allow_tags_in_post_desc'] = 'If false, all POST actions within t
 $_lang['setting_auto_menuindex'] = 'Menu indexing default';
 $_lang['setting_auto_menuindex_desc'] = 'Select \'Yes\' to turn on automatic menu index incrementing by default.';
 
+$_lang['setting_auto_check_pkg_updates'] = 'Automatic Check for Package Updates';
+$_lang['setting_auto_check_pkg_updates_desc'] = 'If \'Yes\', MODx will automatically check for updates for packages in Package Management. This may slow the loading of the grid.';
+
 $_lang['setting_allow_multiple_emails'] = 'Allow Duplicate Emails for Users';
 $_lang['setting_allow_multiple_emails_desc'] = 'If enabled, Users may share the same email address.';
 
@@ -130,11 +135,20 @@ $_lang['setting_cache_scripts_desc'] = 'When enabled, MODx will cache all Script
 $_lang['setting_cache_system_settings'] = 'Enable System Setting Cache';
 $_lang['setting_cache_system_settings_desc'] = 'When enabled, system settings will be cached to reduce load times. MODx recommends leaving this on.';
 
+$_lang['setting_compress_css'] = 'Use Compressed CSS';
+$_lang['setting_compress_css_desc'] = 'When this is enabled, MODx will use a compressed version of its css stylesheets in the manager interface. This greatly reduces load and execution time within the manager. Disable only if you are modifying core elements.';
+
 $_lang['setting_compress_js'] = 'Use Compressed Javascript Libraries';
 $_lang['setting_compress_js_desc'] = 'When this is enabled, MODx will use a compressed version of its custom JavaScript libraries in the manager interface. This greatly reduces load and execution time within the manager. Disable only if you are modifying core elements.';
 
+$_lang['setting_concat_js'] = 'Use Concatenated Javascript Libraries';
+$_lang['setting_concat_js_desc'] = 'When this is enabled, MODx will use a concatenated version of its common JavaScript libraries in the manager interface. This greatly reduces load and execution time within the manager. Disable only if you are modifying core elements.';
+
 $_lang['setting_container_suffix'] = 'Container Suffix';
 $_lang['setting_container_suffix_desc'] = 'The suffix to append to Resources set as containers when using FURLs.';
+
+$_lang['setting_cultureKey'] = 'Language';
+$_lang['setting_cultureKey_desc'] = 'Select the language for all non-manager Contexts, including web.';
 
 $_lang['setting_default_template'] = 'Default Template';
 $_lang['setting_default_template_desc'] = 'Select the default Template you wish to use for new Resources. You can still select a different template in the Resource editor, this setting just pre-selects one of your Templates for you.';
@@ -166,8 +180,14 @@ $_lang['setting_fe_editor_lang_desc'] = 'Choose a language for the editor to use
 $_lang['setting_feed_modx_news'] = 'MODx News Feed URL';
 $_lang['setting_feed_modx_news_desc'] = 'Set the URL for the RSS feed for the MODx News panel in the manager.';
 
+$_lang['setting_feed_modx_news_enabled'] = 'MODx News Feed Enabled';
+$_lang['setting_feed_modx_news_enabled_desc'] = 'If \'No\', MODx will hide the News feed in the welcome section of the manager.';
+
 $_lang['setting_feed_modx_security'] = 'MODx Security Notices Feed URL';
 $_lang['setting_feed_modx_security_desc'] = 'Set the URL for the RSS feed for the MODx Security Notices panel in the manager.';
+
+$_lang['setting_feed_modx_security_enabled'] = 'MODx Security Feed Enabled';
+$_lang['setting_feed_modx_security_enabled_desc'] = 'If \'No\', MODx will hide the Security feed in the welcome section of the manager.';
 
 $_lang['setting_filemanager_path'] = 'File Manager Path';
 $_lang['setting_filemanager_path_desc'] = 'IIS often does not populate the document_root setting properly, which is used by the file manager to determine what you can look at. If you\'re having problems using the file manager, make sure this path points to the root of your MODx installation.';
@@ -175,17 +195,23 @@ $_lang['setting_filemanager_path_err'] = 'Please state the absoulte document roo
 $_lang['setting_filemanager_path_err_invalid'] = 'This filemanager directory either does not exist or cannot be accessed. Please state a valid directory or adjust the permissions of this directory.';
 
 $_lang['setting_friendly_alias_urls'] = 'Use Friendly Aliases';
-$_lang['setting_friendly_alias_urls_desc'] = 'If you are using friendly URLs, and the resource has an alias, the alias will always have precedence over the friendly URL. By setting this option to \'Yes\', the friendly URL prefix and suffix will also be applied to the alias. For example, if your Resource with ID 1 has an alias of `introduction`, and you\'ve set a prefix of `` and a suffix of `.html`, setting this option to `yes` will generate `introduction.html`. If there\'s no alias, MODx will generate `1.html` as link.';
+$_lang['setting_friendly_alias_urls_desc'] = 'If you are using friendly URLs, and the resource has an alias, the alias will always have precedence over the friendly URL. By setting this option to \'Yes\', the Content Type suffix of the Resource will also be applied to the alias. For example, if your Resource with ID 1 has an alias of `introduction`, and you\'ve set a Content Type suffix of `.html`, setting this option to `yes` will generate `introduction.html`. If there\'s no alias, MODx will generate `1.html` as link.';
 
 $_lang['setting_friendly_urls'] = 'Use Friendly URLs';
 $_lang['setting_friendly_urls_desc'] = 'This allows you to use search engine friendly URLs with MODx. Please note, this only works for MODx installations running on Apache, and you\'ll need to write a .htaccess file for this to work. See the .htaccess file included in the distribution for more info.';
 $_lang['setting_friendly_urls_err'] = 'Please state whether or not you want to use friendly URLs.';
 
+$_lang['setting_mail_charset'] = 'Mail Charset';
+$_lang['setting_mail_charset_desc'] = 'The (default) charset for e-mails, e.g. \'iso-8859-1\' or \'UTF-8\'';
+
+$_lang['setting_mail_encoding'] = 'Mail Encoding';
+$_lang['setting_mail_encoding_desc'] = 'Sets the Encoding of the message. Options for this are "8bit", "7bit", "binary", "base64", and "quoted-printable".';
+
 $_lang['setting_mail_use_smtp'] = 'Use SMTP';
 $_lang['setting_mail_use_smtp_desc'] = 'If true, MODx will attempt to use SMTP in mail functions.';
 
 $_lang['setting_mail_smtp_auth'] = 'SMTP Authentication';
-$_lang['setting_mail_smtp_auth_desc'] = 'Sets SMTP authentication. Utilizes the mail_smtp_username and mail_smtp_password settings.';
+$_lang['setting_mail_smtp_auth_desc'] = 'Sets SMTP authentication. Utilizes the mail_smtp_user and mail_smtp_password settings.';
 
 $_lang['setting_mail_smtp_helo'] = 'SMTP Helo Message';
 $_lang['setting_mail_smtp_helo_desc'] = 'Sets the SMTP HELO of the message (Defaults to the hostname).';
@@ -223,7 +249,7 @@ $_lang['setting_manager_date_format_desc'] = 'The format string, in PHP date() f
 $_lang['setting_manager_lang_attribute'] = 'Manager HTML and XML Language Attribute';
 $_lang['setting_manager_lang_attribute_desc'] = 'Enter the language code that best fits with your chosen manager language, this will ensure that the browser can present content in the best format for you.';
 
-$_lang['setting_manager_language'] = 'Language';
+$_lang['setting_manager_language'] = 'Manager Language';
 $_lang['setting_manager_language_desc'] = 'Select the language for the MODx Content Manager.';
 
 $_lang['setting_manager_login_start'] = 'Manager Login Startup';
@@ -278,7 +304,10 @@ $_lang['setting_request_param_id_desc'] = 'The name of the GET parameter to iden
 $_lang['setting_resolve_hostnames'] = 'Resolve hostnames';
 $_lang['setting_resolve_hostnames_desc'] = 'Do you want MODx to try to resolve your visitors\' hostnames when they visit your site? Resolving hostnames may create some extra server load, although your visitors won\'t notice this in any way.';
 
-$_lang['setting_search_default'] = 'Searchable default';
+$_lang['setting_richtext_default'] = 'Richtext Default';
+$_lang['setting_richtext_default_desc'] = 'Select \'Yes\' to make all new Resources use the Richtext Editor by default.';
+
+$_lang['setting_search_default'] = 'Searchable Default';
 $_lang['setting_search_default_desc'] = 'Select \'Yes\' to make all new resources searchable by default.';
 $_lang['setting_search_default_err'] = 'Please specify whether or not you want documents to be searchable by default.';
 

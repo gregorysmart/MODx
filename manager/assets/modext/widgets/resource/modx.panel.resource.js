@@ -1,30 +1,21 @@
 MODx.panel.Resource = function(config) {
     config = config || {};
-    
-    var rte = [{
-        xtype: 'textarea'
-        ,name: 'ta'
-        ,id: 'ta'
-        ,hideLabel: true
-        ,width: '97%'
-        ,height: 400
-        ,grow: false
-    }];
-    if (MODx.config.use_editor) {
-        rte.push({
-            html: '<button class="modx-richtext-content-toggle" id="ta-toggle">'+_('toggle_richtext')+'</button>'
-            ,border: false
-        });
-    }
     var ct = {
         title: _('resource_content')
         ,id: 'modx-resource-content'
         ,layout: 'form'
         ,bodyStyle: 'padding: 1.5em;'
         ,autoHeight: true
-        ,collapsible: true
-        ,titleCollapse: true
-        ,items: rte
+        ,collapsible: false
+        ,items: {
+            xtype: 'textarea'
+            ,name: 'ta'
+            ,id: 'ta'
+            ,hideLabel: true
+            ,anchor: '97%'
+            ,height: 400
+            ,grow: false
+        }
     };
     delete rte;
     var it = [];
@@ -45,14 +36,15 @@ MODx.panel.Resource = function(config) {
             ,fieldLabel: _('id')
             ,name: 'id'
             ,id: 'modx-resource-id'
+            ,anchor: '97%'
             ,value: config.resource
             ,submitValue: true
         },{
             layout:'column'
             ,border: false
-            ,width: '100%'
+            ,anchor: '97%'
             ,items:[{
-                columnWidth: .55
+                columnWidth: .70
                 ,layout: 'form'
                 ,border: false
                 ,items: [{
@@ -61,7 +53,7 @@ MODx.panel.Resource = function(config) {
                     ,description: _('resource_template_help')
                     ,name: 'template'
                     ,id: 'modx-resource-template'
-                    ,width: 300
+                    ,anchor: '97%'
                     ,editable: false
                     ,baseParams: {
                         action: 'getList'
@@ -73,7 +65,7 @@ MODx.panel.Resource = function(config) {
                     ,value: config.record.template
                 }]
             },{
-                columnWidth: .45
+                columnWidth: .30
                 ,layout: 'form'
                 ,hideLabels: true
                 ,labelWidth: 0
@@ -96,6 +88,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'pagetitle'
             ,id: 'modx-resource-pagetitle'
             ,maxLength: 255
+            ,anchor: '75%'
             ,allowBlank: false
             ,enableKeyEvents: true
             ,listeners: {
@@ -111,6 +104,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'longtitle'
             ,id: 'modx-resource-longtitle'
             ,maxLength: 255
+            ,anchor: '75%'
             
         },{
             xtype: 'textfield'
@@ -119,6 +113,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'description'
             ,id: 'modx-resource-description'
             ,maxLength: 255
+            ,anchor: '75%'
             
         },{
             xtype: 'textfield'
@@ -127,6 +122,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'alias'
             ,id: 'modx-resource-alias'
             ,maxLength: 100
+            ,anchor: '75%'
             
         },{
             xtype: 'textfield'
@@ -135,6 +131,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'link_attributes'
             ,id: 'modx-resource-link-attributes'
             ,maxLength: 255
+            ,anchor: '75%'
             
         },{
             xtype: 'textarea'
@@ -143,6 +140,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'introtext'
             ,id: 'modx-resource-introtext'
             ,grow: true
+            ,anchor: '90%'
             
         },{
             xtype: 'modx-field-parent-change'
@@ -151,6 +149,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'parent-cmb'
             ,id: 'modx-resource-parent'
             ,value: config.record.parent || 0
+            ,anchor: '70%'
         },{
             xtype: 'hidden'
             ,name: 'parent'
@@ -163,6 +162,7 @@ MODx.panel.Resource = function(config) {
             ,name: 'menutitle'
             ,id: 'modx-resource-menutitle'
             ,maxLength: 255
+            ,anchor: '70%'
             
         },{
             xtype: 'numberfield'
@@ -292,8 +292,8 @@ MODx.panel.Resource = function(config) {
         ,name: 'content_type'
         ,hiddenName: 'content_type'
         ,id: 'modx-resource-content-type'
-        ,width: 300
         ,value: 1
+        ,anchor: '70%'
         
     },{
         xtype: 'modx-combo-content-disposition'
@@ -302,7 +302,7 @@ MODx.panel.Resource = function(config) {
         ,name: 'content_dispo'
         ,hiddenName: 'content_dispo'
         ,id: 'modx-resource-content-dispo'
-        ,width: 300
+        ,anchor: '70%'
         
     },{
         xtype: 'textfield'
@@ -311,7 +311,7 @@ MODx.panel.Resource = function(config) {
         ,id: 'modx-resource-class-key'
         ,allowBlank: false
         ,value: 'modDocument'
-        ,width: 300
+        ,anchor: '70%'
     });
     it.push({
         id: 'modx-page-settings'
@@ -335,6 +335,7 @@ MODx.panel.Resource = function(config) {
         ,resource: config.resource
         ,class_key: config.record.class_key
         ,template: config.record.template
+        ,anchor: '100%'
     });
     if (config.access_permissions) {
         it.push({
@@ -343,6 +344,7 @@ MODx.panel.Resource = function(config) {
             ,autoHeight: true
             ,title: _('access_permissions')
             ,layout: 'form'
+            ,anchor: '100%'
             ,items: [{
                 html: '<p>'+_('resource_access_message')+'</p>'
                 ,border: false
@@ -363,8 +365,14 @@ MODx.panel.Resource = function(config) {
         ,cls: 'modx-page-header'
         ,border: false
         ,forceLayout: true
+        ,anchor: '100%'
     });
-    its.push(MODx.getPageStructure(it,{id:'modx-resource-tabs' ,forceLayout: true ,deferredRender: false }));
+    its.push(MODx.getPageStructure(it,{
+        id:'modx-resource-tabs'
+        ,forceLayout: true
+        ,deferredRender: false
+        ,collapsible: true
+    }));
     
     if (MODx.config.manager_use_tabs) {
         ct.style = 'margin-top: 1.0em;';
@@ -380,6 +388,8 @@ MODx.panel.Resource = function(config) {
         ,defaults: { collapsible: false ,autoHeight: true }
         ,forceLayout: true
         ,items: its
+        ,fileUpload: true
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -391,8 +401,7 @@ MODx.panel.Resource = function(config) {
     if (ta) { ta.on('keydown',this.fieldChangeEvent,this); }
     /* to deal with combobox bug */
     setTimeout("Ext.getCmp('modx-panel-resource').onLoad();",1000);
-    
-    
+    this.on('ready',this.onReady,this);
 };
 Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     rteLoaded: false
@@ -404,14 +413,14 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
         if (this.config.resource === '' || this.config.resource === 0 || this.initialized) {
             if (MODx.config.use_editor && MODx.loadRTE) {
                 var f = this.getForm().findField('richtext');
-                if (f && f.getValue()) {
+                if (f && f.getValue() == 1 && !this.rteLoaded) {
                     MODx.loadRTE('ta');
-                    var tt = Ext.get('ta-toggle');
-                    if (tt) { tt.show(); }
-                } else {
-                    if (MODx.unloadRTE) MODx.unloadRTE('ta');
-                    var tt = Ext.get('ta-toggle');
-                    if (tt) { tt.hide(); }
+                    this.rteLoaded = true;
+                } else if (f && f.getValue() == 0 && this.rteLoaded) {
+                    if (MODx.unloadRTE) {
+                        MODx.unloadRTE('ta');
+                    }
+                    this.rteLoaded = false;
                 }
             }
             this.fireEvent('ready');
@@ -425,27 +434,28 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
                 ,class_key: this.config.record.class_key
             }
             ,listeners: {
-            	'success': {fn:function(r) {
+                'success': {fn:function(r) {
                     if (r.object.pub_date == '0') { r.object.pub_date = ''; }
                     if (r.object.unpub_date == '0') { r.object.unpub_date = ''; }
                     r.object.ta = r.object.content;
                     this.getForm().setValues(r.object);
-                    
+
                     Ext.getCmp('modx-resource-header').getEl().update('<h2>'+_('document')+': '+r.object.pagetitle+'</h2>');
-                    
-                    if (r.object.richtext && MODx.config.use_editor && MODx.loadRTE && !this.rteLoaded) {
-                    	MODx.loadRTE('ta');
+
+                    if (r.object.richtext == 1 && MODx.config.use_editor == 1 && !this.rteLoaded) {
+                        if (MODx.loadRTE && !this.rteLoaded) {
+                            MODx.loadRTE('ta');
+                        }
                         this.rteLoaded = true;
-                        var tt = Ext.get('ta-toggle');
-                        if (tt) { tt.show(); }
-                    } else {
-                        if (MODx.unloadRTE) MODx.unloadRTE('ta');
-                        var tt = Ext.get('ta-toggle');
-                        if (tt) { tt.hide(); }
+                    } else if (r.object.richtext == 0 && this.rteLoaded) {
+                        if (MODx.unloadRTE) {
+                            MODx.unloadRTE('ta');
+                        }
+                        this.rteLoaded = false;
                     }
                     this.initialized = true;
-                    this.fireEvent('ready');
-            	},scope:this}
+                    this.fireEvent('ready',r);
+                },scope:this}
             }
         });
     }
@@ -453,10 +463,12 @@ Ext.extend(MODx.panel.Resource,MODx.FormPanel,{
     ,beforeSubmit: function(o) {        
         var ta = Ext.get('ta');
         if (!ta) return false;
-        v = ta.dom.value;
+        
+        var v = ta.dom.value;
+        
         var hc = Ext.getCmp('hiddenContent');
         if (hc) { hc.setValue(v); }
-        
+
         var g = Ext.getCmp('modx-grid-resource-security');
         if (g) {
             Ext.apply(o.form.baseParams,{
@@ -537,7 +549,7 @@ var triggerDirtyField = function(fld) {
     Ext.getCmp('modx-panel-resource').fieldChangeEvent(fld);
 };
 MODx.triggerRTEOnChange = function() {
-	triggerDirtyField(Ext.getCmp('ta'));
+    triggerDirtyField(Ext.getCmp('ta'));
 };
 MODx.fireResourceFormChange = function(f,nv,ov) {
     Ext.getCmp('modx-panel-resource').fireEvent('fieldChange');

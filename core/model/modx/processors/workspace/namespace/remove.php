@@ -12,8 +12,8 @@ $modx->lexicon->load('workspace','lexicon');
 if (!$modx->hasPermission('namespaces')) return $modx->error->failure($modx->lexicon('permission_denied'));
 
 /* get namespace */
-if (empty($_POST['name'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
-$namespace = $modx->getObject('modNamespace',$_POST['name']);
+if (empty($scriptProperties['name'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
+$namespace = $modx->getObject('modNamespace',$scriptProperties['name']);
 if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 /* remove namespace */
@@ -22,6 +22,6 @@ if ($namespace->remove() === false) {
 }
 
 /* log manager action */
-$modx->logManagerAction('namespace_remove','modNamespace',$namespace->get('id'));
+$modx->logManagerAction('namespace_remove','modNamespace',$namespace->get('name'));
 
 return $modx->error->success();

@@ -129,6 +129,16 @@ class modInstall {
         if (!is_array($config)) {
             $config = array ();
         }
+
+        /* get http host */
+        $https_port = isset ($_POST['httpsport']) ? $_POST['httpsport'] : '443';
+        $isSecureRequest = ((isset ($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || $_SERVER['SERVER_PORT'] == $https_port);
+        $http_host= $_SERVER['HTTP_HOST'];
+        if ($_SERVER['SERVER_PORT'] != 80) {
+            $http_host= str_replace(':' . $_SERVER['SERVER_PORT'], '', $http_host); /* remove port from HTTP_HOST */
+        }
+        $http_host .= ($_SERVER['SERVER_PORT'] == 80 || $isSecureRequest) ? '' : ':' . $_SERVER['SERVER_PORT'];
+
         switch ($mode) {
             case modInstall::MODE_UPGRADE_EVO :
                 $included = @ include MODX_INSTALL_PATH . 'manager/includes/config.inc.php';
@@ -162,6 +172,7 @@ class modInstall {
             'database_charset' => $database_connection_charset,
             'table_prefix' => $table_prefix,
             'https_port' => isset ($https_port) ? $https_port : '443',
+            'http_host' => defined('MODX_HTTP_HOST') ? MODX_HTTP_HOST : $http_host,
             'site_sessionname' => isset ($site_sessionname) ? $site_sessionname : 'SN' . uniqid(''),
             'cache_disabled' => isset ($cache_disabled) && $cache_disabled ? 'true' : 'false',
             'inplace' => isset ($_POST['inplace']) ? 1 : 0,
@@ -187,8 +198,8 @@ class modInstall {
             $this->xpdo = $this->_connect($this->settings->get('database_type')
                  . ':host=' . $this->settings->get('database_server')
                  . ';dbname=' . trim($this->settings->get('dbase'), '`')
-                 . ';charset=' . $this->settings->get('database_connection_charset')
-                 . ';collation=' . $this->settings->get('database_collation')
+                 . ';charset=' . $this->settings->get('database_connection_charset', 'utf8')
+                 . ';collation=' . $this->settings->get('database_collation', 'utf8_general_ci')
                  ,$this->settings->get('database_user')
                  ,$this->settings->get('database_password')
                  ,$this->settings->get('table_prefix')
@@ -200,7 +211,6 @@ class modInstall {
             $this->xpdo->setOption('cache_path',MODX_CORE_PATH . 'cache/');
         }
         if (is_object($this->xpdo) && $this->xpdo instanceof xPDO) {
-            $this->xpdo->setDebug(E_ALL & ~E_STRICT);
             $this->xpdo->setLogTarget(array(
                 'target' => 'FILE',
                 'options' => array(
@@ -415,6 +425,33 @@ class modInstall {
                     $settings_file_perms->set('value', $this->settings->get('new_file_permissions'));
                     $settings_file_perms->save();
                 }
+
+                /* compress and concat JS on new installs */
+                if (defined('MODX_SETUP_KEY') && MODX_SETUP_KEY != '@svn') {
+                    $concatJavascript = $this->xpdo->getObject('modSystemSetting', array(
+                        'key' => 'concat_js',
+                    ));
+                    if ($concatJavascript) {
+                        $concatJavascript->set('value',1);
+                        $concatJavascript->save();
+                    }
+                    $compressJavascript = $this->xpdo->getObject('modSystemSetting', array(
+                        'key' => 'compress_js',
+                    ));
+                    if ($compressJavascript) {
+                        $compressJavascript->set('value',1);
+                        $compressJavascript->save();
+                    }
+                    $compressCss = $this->xpdo->getObject('modSystemSetting', array(
+                        'key' => 'compress_css',
+                    ));
+                    if ($compressCss) {
+                        $compressCss->set('value',1);
+                        $compressCss->save();
+                    }
+                    unset($concatJavascript,$compressJavascript,$compressCss);
+                }
+
             /* if upgrade */
             } else {
                 /* handle change of manager_theme to default (FIXME: temp hack) */
@@ -571,10 +608,9 @@ class modInstall {
                 }
             }
         }
-        /* try to chmod the config file go-rwx (for suexeced php)
-         * FIXME: need some way to configure the actual permissions to set
-         */
-        $chmodSuccess = @ chmod($configFile, 0600);
+        $perms = $this->settings->get('new_file_permissions', sprintf("%04o", 0666 & (0666 - umask())));
+        if (is_string($perms)) $perms = octdec($perms);
+        $chmodSuccess = @ chmod($configFile, $perms);
         if (!is_array($results)) {
             $results = array ();
         }
@@ -748,7 +784,6 @@ class modInstall {
             if (!is_object($modx) || !($modx instanceof modX)) {
                 $errors[] = '<p>'.$this->lexicon['modx_err_instantiate'].'</p>';
             } else {
-                $modx->setDebug(E_ALL & ~E_NOTICE);
                 $modx->setLogTarget(array(
                     'target' => 'FILE',
                     'options' => array(

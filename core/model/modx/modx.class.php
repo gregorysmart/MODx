@@ -2,7 +2,7 @@
 /*
  * MODx Revolution
  *
- * Copyright 2006, 2007, 2008, 2009 by the MODx Team.
+ * Copyright 2006-2010 by the MODx Team.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -282,6 +282,21 @@ class modX extends xPDO {
     }
 
     /**
+     * Turn an associative array into a valid query string.
+     *
+     * @static
+     * @param array $parameters An associative array of parameters.
+     * @return string A valid query string representing the parameters.
+     */
+    public static function toQueryString(array $parameters = array()) {
+        $qs = array();
+        foreach ($parameters as $paramKey => $paramVal) {
+            $qs[] = urlencode($paramKey) . '=' . urlencode($paramVal);
+        }
+        return implode('&', $qs);
+    }
+
+    /**
      * Construct a new modX instance.
      *
      * @param string $configPath An absolute filesystem path to look for the config file.
@@ -344,9 +359,6 @@ class modX extends xPDO {
     public function initialize($contextKey= 'web') {
         if (!$this->_initialized) {
             if (!$this->startTime) {
-                $mtime= microtime();
-                $mtime= explode(" ", $mtime);
-                $mtime= $mtime[1] + $mtime[0];
                 $this->startTime= $this->getMicroTime();
             }
 
@@ -1268,9 +1280,9 @@ class modX extends xPDO {
                     $this->event->propertySet= (($pspos = strpos($pluginPropset, ':')) > 1) ? substr($pluginPropset, $pspos + 1) : '';
 
                     /* merge in plugin properties */
-                    $params = array_merge($plugin->getProperties(),$params);
+                    $eventParams = array_merge($plugin->getProperties(),$params);
 
-                    $msg= $plugin->process($params);
+                    $msg= $plugin->process($eventParams);
                     $results[]= $this->event->_output;
                     if ($msg && is_string($msg)) {
                         $this->log(modX::LOG_LEVEL_ERROR, '[' . $this->event->name . ']' . $msg);
@@ -1310,6 +1322,15 @@ class modX extends xPDO {
             if (file_exists($processor)) {
                 if (!isset($this->lexicon)) $this->getService('lexicon', 'modLexicon');
                 if (!isset($this->error)) $this->request->loadErrorHandler();
+
+                /* create scriptProperties array from HTTP GPC vars */
+                if (!isset($_POST)) $_POST = array();
+                if (!isset($_GET)) $_GET = array();
+                $scriptProperties = array_merge($_GET,$_POST);
+                if (isset($_FILES) && !empty($_FILES)) {
+                    $scriptProperties = array_merge($scriptProperties,$_FILES);
+                }
+
                 $modx =& $this;
                 $result = include $processor;
             } else {
@@ -1498,12 +1519,12 @@ class modX extends xPDO {
     }
 
     /**
-     * Process and return the output from an HTML chunk by name.
+     * Process and return the output from a Chunk by name.
      *
      * @param string $chunkName The name of the chunk.
      * @param array $properties An associative array of properties to process
-     * the chunk with.
-     * @return string The processed output of the chunk.
+     * the Chunk with, treated as placeholders within the scope of the Element.
+     * @return string The processed output of the Chunk.
      */
     public function getChunk($chunkName, array $properties= array ()) {
         $output= '';

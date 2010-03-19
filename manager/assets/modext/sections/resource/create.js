@@ -18,25 +18,7 @@ MODx.page.CreateResource = function(config) {
             ,edit: MODx.action['resource/update']
             ,cancel: MODx.action['welcome']
         }
-    	,buttons: [{
-            process: 'create'
-            ,text: _('save')
-            ,method: 'remote'
-            ,checkDirty: true
-            ,javascript: config.which_editor != 'none' ? "cleanupRTE('"+config.which_editor+"');" : ';'
-            ,keys: [{
-                key: 's'
-                ,alt: true
-                ,ctrl: true
-            }]
-        },'-',{
-            process: 'cancel'
-            ,text: _('cancel')
-            ,params: { a: MODx.action['welcome'] }
-        },'-',{
-            text: _('help_ex')
-            ,handler: MODx.loadHelpPane
-        }]
+    	,buttons: this.getButtons(config)
     	,loadStay: true
         ,components: [{
             xtype: 'modx-panel-resource'
@@ -45,11 +27,11 @@ MODx.page.CreateResource = function(config) {
             ,record: {
                 context_key: MODx.request.context_key || 'web'
                 ,template: config.template
-                ,parent: config.parent
-                ,'parent-cmb': config.parent
-                ,which_editor: config.which_editor
+                ,'parent': config['parent']
+                ,'parent-cmb': config['parent']
                 ,class_key: config.class_key
                 ,content_type: config.content_type
+                ,richtext: config.richtext
             }
             ,edit_doc_metatags: config.edit_doc_metatags
             ,access_permissions: config.access_permissions
@@ -58,5 +40,34 @@ MODx.page.CreateResource = function(config) {
     });
     MODx.page.CreateResource.superclass.constructor.call(this,config);
 };
-Ext.extend(MODx.page.CreateResource,MODx.Component);
+Ext.extend(MODx.page.CreateResource,MODx.Component,{
+    getButtons: function(cfg) {
+        var btns = [];
+        if (cfg.canSave == 1) {
+            btns.push({
+                process: 'create'
+                ,text: _('save')
+                ,method: 'remote'
+                ,checkDirty: true
+                ,keys: [{
+                    key: 's'
+                    ,alt: true
+                    ,ctrl: true
+                }]
+            });
+            btns.push('-');
+        }
+        btns.push({
+            process: 'cancel'
+            ,text: _('cancel')
+            ,params: { a: MODx.action['welcome'] }
+        });
+        btns.push('-');
+        btns.push({
+            text: _('help_ex')
+            ,handler: MODx.loadHelpPane
+        });
+        return btns;
+    }
+});
 Ext.reg('modx-page-resource-create',MODx.page.CreateResource);

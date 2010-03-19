@@ -28,22 +28,28 @@ MODx.grid.Package = function(config) {
         }
     },this);
     
+    var cols = [];
+    cols.push(this.exp);
+    cols.push({ header: _('name') ,dataIndex: 'name' });
+    cols.push({ header: _('version') ,dataIndex: 'version' });
+    cols.push({ header: _('release') ,dataIndex: 'release' });
+    cols.push({ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins });
+    if (MODx.config.auto_check_pkg_updates == 1) {
+        cols.push({ header: _('updateable') ,dataIndex: 'updateable' ,renderer: this.rendYesNo });
+    }
+    cols.push({ header: _('provider') ,dataIndex: 'provider_name' });
+    cols.push(this.action);
+    
     Ext.applyIf(config,{
         title: _('packages')
         ,id: 'modx-grid-package'
         ,url: MODx.config.connectors_url+'workspace/packages.php'
         ,fields: ['signature','name','version','release','created','updated','installed','state','workspace'
                  ,'provider','provider_name','disabled','source','attributes','readme','menu'
-                 ,'install','textaction','iconaction']
+                 ,'install','textaction','iconaction','updateable']
         ,plugins: [this.action,this.exp]
-        ,pageSize: 20
-        ,columns: [this.exp
-            ,{ header: _('name') ,dataIndex: 'name' }
-            ,{ header: _('version') ,dataIndex: 'version' }
-            ,{ header: _('release') ,dataIndex: 'release' }
-            ,{ header: _('installed') ,dataIndex: 'installed' ,renderer: this._rins }
-            ,{ header: _('provider') ,dataIndex: 'provider_name' }
-            ,this.action]
+        ,pageSize: 10
+        ,columns: cols
         ,primaryKey: 'signature'
         ,paging: true
         ,autosave: true

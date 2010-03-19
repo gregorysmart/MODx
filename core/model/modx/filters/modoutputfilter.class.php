@@ -2,7 +2,7 @@
 /*
  * MODx Revolution
  *
- * Copyright 2006, 2007, 2008, 2009 by the MODx Team.
+ * Copyright 2006-2010 by the MODx Team.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -112,7 +112,7 @@ class modOutputFilter {
                     case 'islowerthan':
                         $condition[]= intval(($output < $m_val));
                         break;
-                    case 'isinrole':
+                    case 'ismember':
                     case 'memberof':
                     case 'mo': /* Is Member Of  (same as inrole but this one can be stringed as a conditional) */
                         if (empty($output) || $output == "&_PHX_INTERNAL_&") {
@@ -202,13 +202,18 @@ class modOutputFilter {
                         break;
                     case 'strip':
                         /* Replaces all linebreaks, tabs and multiple spaces with just one space */
-                        $output= preg_replace("~([\n|\r|\t|\s]+)~", " ", $output);
+                        $output= preg_replace("/\s+/"," ",$output);
                         break;
                     case 'notags':
                     case 'striptags':
+                    case 'stripTags':
                     case 'strip_tags':
                         /* See PHP's strip_tags - http://www.php.net/manual/en/function.strip_tags.php */
-                        $output= strip_tags($output);
+                        if (!empty($m_val)) {
+                            $output= strip_tags($output,$m_val);
+                        } else {
+                            $output= strip_tags($output);
+                        }
                         break;
                     case 'length':
                     case 'len':
@@ -244,7 +249,12 @@ class modOutputFilter {
                         $limit= intval($m_val) ? intval($m_val) : 100;
                         $output= substr($output, 0, $limit);
                         break;
-
+                    case 'ellipsis':
+                        $limit= intval($m_val) ? intval($m_val) : 100;
+                        if (strlen($output) > $limit) {
+                            $output = substr($output,0,$limit).'...';
+                        }
+                        break;
                     /* #####  Special functions */
 
                     case 'tag':

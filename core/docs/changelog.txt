@@ -4,6 +4,143 @@ development release, and is only shown to give an idea of what's currently in th
 
 MODx Revolution 2.0.0-rc-1 ($LastChangedRevision$, $LastChangedDate$)
 ====================================
+- [#MODX-877] Updated confusing text on TV access permissions tab
+- [#MODX-1766] Fixed PHP_SAPI issue to properly work by setting a default value on setup to provide a default http_host value to  properly populate the site_url
+- Fixed bug in setup that didn't catch processors_path in prior configs
+- [#MODX-1759] Fixed bugs with manager log not storing correct PK values, or displaying missing keys in grid
+- [#MODX-1766] Fixed config.inc.tpl to work with non-httpd SAPI's
+- Added title/info for the Reports->System Info->Database page. This is return fixed the CSS styling issue as well.
+- Fixed CSS Styling on Recent Documents. 5px padding was removed.
+- Fixed bugs with modMail class and default attributes that prevented attributes from persisting after a reset()
+- Removing deprecated RTE handler code
+- [#MODX-1762] Increased file uploader window size for translations
+- Dont render unnecessary tabs in Resource TV panel if no TVs assigned to Template for that Resource
+- Sort Template Variables on the Template editing page by name
+- Ensure Element Properties that have HTML in them show markup instead of rendering the html in editing mode in mgr ui 
+- [#MODX-1669] Redid File Uploader in Directory tree to be more cross-browser compatible 
+- Cleaned up and enhanced login CSS
+- Standardizing and adding class constants to modRest* classes
+- Updated copyright data in lexicon entries
+- Fixes to build.xml, css compression command
+- Updated copyright dates
+- [#MODX-1750] Lots of procedural and reference fixes to Lexicon grid UI
+- Cleaned up presentation of modAction records in mgr
+- Added a fix to tree refreshParentNode; enhanced modUserGroup::getUsersIn()
+- Added saving mask to Element Property grid to fire when saving the property set
+- Removed deprecated file reference in login template
+- Added System Settings to toggle news/security feeds in welcome panel
+- Added System Setting to toggle on automatic checking of package updates in Package Management
+- [#MODX-1751] Fixed erroneous reference in friendly alias setting description
+- [#MODX-1752] Fixed bug where topmenu items without children didnt show even if they had an action
+- Some css tweaks to login page
+- Updated to xPDO 2.0.0 r419 to fix xPDOVehicle bug
+- Fixed bug with Download Output button in MODx.Console
+- Ensure forgot login activation email is HTML 
+- Added Forgot Login link and form to manager, sends an activation email to specified email if user forgot login/password
+- Fixed SQL sorting algorithm for package versions, added helper methods for comparing package versions
+- Added $resource to properties passed to OnDocFormDelete in resource/delete processor
+- Updated to xPDO 2.0.0 r417 ([#XPDO-40] Fixed getCount to work when passing a criteria with a class alias set)
+- Enhanced striptags output filter to take a parameter of allowed tags
+- Make sure $paths and $options are passed to OnCacheUpdate
+- Added compression/concat references to login and browser tpls
+- Fixed build.local.xml and build.xml scripts
+- Added compress_css system setting for compressed CSS for releases, moved over modx-theme.css to templates css/ dir. Don't use compress_css without first running _build/build.local.xml Ant task.
+- Cleaned up leftover PHP4 function definitions, unescaped SQL code, added proper accessor methods for private vars, other old code 
+- Fixed bug with modLexiconLanguage::clearCache
+- [#MODX-1738] Fixed issue with FC TV rules not working as expected on Resource Update
+- Fixed bug where plugin event properties were getting merged if more than one plugin was associated with the event
+- Added loading mask to editing panels to prevent accidental editing before data is loaded
+- Added sanity check for OnRichTextBrowserInit event processing
+- Added fix for RTE loading in Resource panel, should fix most RTE saving bugs
+- Added collapsibility to Document panel
+- Added 'concat_js' system setting that will concat all the common JS files into one single file
+- Adjusted lang.js.php to properly use ETag header to cache lang js
+- Added css rule to prevent hidden iframes from being shown
+- Fixed bug where Resource Groups were not editable on Create Resource
+- Added sanity check for packages with missing provider
+- Added "Updates Available" column to packages grid, auto-checks provider for updates
+- [#MODX-1732] Added duplicate language ability to language grid
+- [#MODX-1741] Fixed possible bug with radio/cb tv labels
+- [#MODX-1593] Fixed bug where User could not be added with no role in User Groups tree
+- [#MODX-1735] Properly URL encode link tags while still preserving = and &amp; in query string
+- [#MODX-1736] Fixed bug with assigning TVs to Resource Groups
+- [#MODX-1740] Added workaround for SQL code to properly hide TVs with FC rules 
+- [#MODX-1738] Fixed bug with radiogroups and set TV default FC rule
+- Fixed some header issues, _FILES content type handling
+- [#MODX-1733] Fixed bug that was stripping tags from connector processing
+- Ensured that Static Resource filename change fires dirty status
+- Made sure Set to Default fires dirty status for Resource panel
+- Fixed possible width stretching bug in TV panel in Resource edit view
+- [#MODX-1543] Added "Rename Category" to category nodes in element subnodes in Element Tree
+- [#MODX-933] Can now drag/drop Elements into Categories in the Element Tree to assign them to Categories
+- [#MODX-1729] Fixed incorrect filter name to be more appropriate to function
+- [#MODX-1727] Added missing Empty Cache checkbox to derivative resource panels
+- [#MODX-1724] Fixed bug with output renders in TV panel not triggering panel dirty status
+- [#MODX-1730] Fixed bug with $scriptProperties and login processor
+- Some cleanups to MODExt flow and ID referencing
+- Changed all GPC references in processors to $scriptProperties, which is loaded at entrance points to processors with GPC vars, pushing input handling to the connector
+- [#MODX-1711] Fixed bug with strip output filter
+- Added ellipsis output filter
+- Fixed various event callings across JS implementation to properly modularize modext components
+- Added events to user's groups grid to ensure dirty firing
+- Added MODx.FormPanel::markDirty
+- Added in CSS tweaks to accommodate Opera 10.5
+- Fixed bug with users grid if access permissions tab is removed
+- Fixed deprecated method definitions in modConnector classes 
+- Fixed text in language settings to more accurately reflect function
+- Added area filter to Settings grid
+- [#MODX-1721] Disabled unnecessary paging on System Events table
+- [#MODX-1726] Added sanity check to ensure TV input type is properly set
+- Fixed bug with action buttons and continue stay method
+- Added UI for managing website field in modUserProfile
+- Added website field to modUserProfile
+- Removed unnecessary and problematic editor dropdown in chunk editing screen
+- Sped up drag/drop of reordering in tree by now only framing moved nodes instead of refreshing
+- Added modRequest::getParameters() method for retrieving various GPC variables or arrays of variables; automatically strips MODx GET parameters as necessary
+- modRequest::__construct() now creates references to all GPC variables in modRequest::$parameters
+- Modified modX::makeUrl()/modContext::makeUrl() to accept query string parameters as an array or string
+- Added modX::toQueryString() static method to turn associative array into a valid query string
+- [#MODX-1709] Fixed issue with encoding of action button parameter
+- [#MODX-1554] Prevented uploading of files to files themselves in directory tree
+- [#MODX-1700] Fixed issue with text referencing setting in lexicon entry
+- Ensure tags in a Static Resource content are parsed before trying to load the source path
+- Fixed static/weblink update js
+- Removed unnecessary and redundant table prefix check later on in setup
+- Fixed css/js properties in TV tab to let RTEs auto-determine the height of their TD fields
+- Fixed missing permissions reference on resource controllers
+- Added OnHandleRequest to modManagerRequest::handleRequest
+- Properly hides UI elements for Resource buttons/pages if user doesnt have permissions 
+- Refactored modResource::cleanAlias() to allow various options, including built-in and custom transliteration capabilities
+- [#MODX-717] Foreign characters (UTF8 data) needlessly removed from alias
+- Hide top menu items if there are no submenus and if the topmenu is not clickable
+- [#MODX-1690] Fixed text for confirmation dialog when removing an Element to include name and type of Element
+- [#MODX-1707] Added mail_charset and mail_encoding system settings to control charset and encoding in emails
+- [#MODX-1706] Ensure that text and qtip fields in Resource/Element trees have any tags stripped
+- [#MODX-1699] Fixed bug in Quick Edit TV where it would erase the caption and replace it with the name
+- [#MODX-1704] Fixed erroneous if statement in clear button hiding in error log panel
+- [#MODX-1675] Added fix for windows paths on Edit File panel
+- [#MODX-1681] Added checks for issue with importing lexicon in Webkit-based browsers
+- Cleanups to TV input widths
+- Removing core RTE; too much work, may take back up in a later version
+- [#MODX-1697] Added ability to edit images and links in RTE
+- Added more robust MODx.rte.Selection API
+- Added missing changes to modActions needed to load lexicon entries for RTE
+- [#MODX-1662] Fixed mismatch in menus widget field label
+- [#MODX-1687] Fixed bugs in template package browser due to changes in modx.view.js
+- Made resource panel be a fileUpload-able panel for plugins
+- [#MODX-1357] Added richtext_default system setting 
+- [#MODX-1685] Added MODxEditor, a core Ext-based RTE to be the default RTE for Revolution
+- [#MODX-1674] Stabilized MODx.Browser to work with core RTE
+- - Added missing registry.db.modDbRegister* classes to setup
+- [#MODX-1642] Logging out doesn't unlock resources: added modUser::removeLocks() and modified modUser::endSession() to call this method
+- Added OnInitCulture event to core transport data.
+- [#MODX-1672] Refactor collation/connection processors in setup to be more stable
+- Updated xPDO to r414 for improvements in xPDOManager
+- modInstall::writeConfig() uses new_file_permissions if specified or umask() settings by default
+- Removed superfluous calls to xPDO/modX::setDebug() and xPDO/modX::setLogLevel() in modInstall
+- modInstall::getConnection() now uses utf8_general_ci for charset/collation by default
+- [#MODX-1691] Set Quick Create/Update windows to use anchor property rather than width to adjust for resizing
+- Added 'cultureKey' setting to enable easier language translation in contexts/fe/components
 - Fixes to styling for MODx.Browser window
 - Added 'relativeUrl' parameter to MODx.Browser file data
 - [#MODX-1674] Fixes and stabilization to MODx.Browser, specifically when used by RTEs

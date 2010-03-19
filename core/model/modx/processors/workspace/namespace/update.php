@@ -8,22 +8,21 @@
  * @package modx
  * @subpackage processors.workspace.namespace
  */
+if (!$modx->hasPermission('namespaces')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('workspace','lexicon');
 
-if (!$modx->hasPermission('namespaces')) return $modx->error->failure($modx->lexicon('permission_denied'));
-
 /* get namespace */
-if (empty($_POST['name'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
-$namespace = $modx->getObject('modNamespace',$_POST['name']);
+if (empty($scriptProperties['name'])) return $modx->error->failure($modx->lexicon('namespace_err_ns'));
+$namespace = $modx->getObject('modNamespace',$scriptProperties['name']);
 if ($namespace == null) return $modx->error->failure($modx->lexicon('namespace_err_nf'));
 
 /* set and save */
-$namespace->fromArray($_POST);
+$namespace->fromArray($scriptProperties);
 if ($namespace->save() === false) {
     return $modx->error->failure($modx->lexicon('namespace_err_save'));
 }
 
 /* log manager action */
-$modx->logManagerAction('namespace_update','modNamespace',$namespace->get('id'));
+$modx->logManagerAction('namespace_update','modNamespace',$namespace->get('name'));
 
-return $modx->error->success();
+return $modx->error->success('',$namespace);

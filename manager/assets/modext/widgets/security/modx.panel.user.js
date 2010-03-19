@@ -24,6 +24,7 @@ MODx.panel.User = function(config) {
             }
             ,items: this.getFields(config)
         }
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}
@@ -53,8 +54,10 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     
                     var d = Ext.decode(r.object.groups);
                     var g = Ext.getCmp('modx-grid-user-groups');
-                    var s = g.getStore();
-                    s.loadData(d);
+                    if (g) {
+                        var s = g.getStore();
+                        if (s) { s.loadData(d); }
+                    }
                     
                     this.fireEvent('ready',r.object);
                 },scope:this}
@@ -62,12 +65,14 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {
+        var d = {};
         var g = Ext.getCmp('modx-grid-user-settings');
+        if (g) { d.settings = g.encodeModified(); }
+        
         var h = Ext.getCmp('modx-grid-user-groups');
-        Ext.apply(o.form.baseParams,{
-            settings: g ? g.encodeModified() : {}
-            ,groups: h.encode()
-        });
+        if (h) { d.groups = h.encode(); }
+        
+        Ext.apply(o.form.baseParams,d);
     }
     
     ,success: function(o) {
@@ -274,6 +279,13 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                     ,xtype: 'modx-combo-country'
                     ,value: ''
                 },{
+                    id: 'modx-user-website'
+                    ,name: 'website'
+                    ,fieldLabel: _('user_website')
+                    ,xtype: 'textfield'
+                    ,width: 300
+                    ,maxLength: 255
+                },{
                     id: 'modx-user-dob'
                     ,name: 'dob'
                     ,fieldLabel: _('user_dob')
@@ -375,6 +387,11 @@ Ext.extend(MODx.panel.User,MODx.FormPanel,{
                 ,preventRender: true
                 ,user: config.user
                 ,width: '97%'
+                ,listeners: {
+                    'afterRemoveRow':{fn:this.markDirty,scope:this}
+                    ,'afterUpdateRole':{fn:this.markDirty,scope:this}
+                    ,'afterAddGroup':{fn:this.markDirty,scope:this}
+                }
             }]
         });
         return f;

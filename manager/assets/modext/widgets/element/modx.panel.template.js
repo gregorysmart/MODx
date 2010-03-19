@@ -108,9 +108,12 @@ MODx.panel.Template = function(config) {
            ,width: '100%'
            ,template: config.template
            ,listeners: {
-                'rowclick': {fn:this.fieldChangeEvent,scope:this}
+                'rowclick': {fn:this.markDirty,scope:this}
+                ,'afterEdit': {fn:this.markDirty,scope:this}
+                ,'afterRemoveRow': {fn:this.markDirty,scope:this}
            }
         }])]
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}

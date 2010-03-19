@@ -2,7 +2,7 @@
 /*
  * MODx Revolution
  *
- * Copyright 2006, 2007, 2008, 2009 by the MODx Team.
+ * Copyright 2006-2010 by the MODx Team.
  * All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify it under
@@ -172,19 +172,47 @@ class modElement extends modAccessibleSimpleObject {
                 }
             }
             $tag = '[[';
-            $tag.= $this->_token;
+            $tag.= $this->getToken();
             $tag.= $this->get('name');
             if (!empty($this->_propertyString)) {
                 $tag.= $this->_propertyString;
             }
             $tag.= ']]';
-            $this->_tag = $tag;
+            $this->setTag($tag);
         }
         if (empty($this->_tag)) {
             $this->xpdo->log(xPDO::LOG_LEVEL_ERROR, 'Instance of ' . get_class($this) . ' produced an empty tag!');
         }
         return $this->_tag;
     }
+
+    /**
+     * Accessor method for the token class var.
+     *
+     * @return string The token for this element tag.
+     */
+    public function getToken() {
+        return $this->_token;
+    }
+
+    /**
+     * Setter method for the token class var.
+     *
+     * @param string $token The token to use for this element tag.
+     */
+    public function setToken($token) {
+        $this->_token = $token;
+    }
+
+    /**
+     * Setter method for the tag class var.
+     *
+     * @param string $tag The tag to use for this element.
+     */
+    public function setTag($tag) {
+        $this->_tag = $tag;
+    }
+
 
     /**
      * Process the element source content to produce a result.

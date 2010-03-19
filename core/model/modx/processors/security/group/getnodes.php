@@ -10,15 +10,15 @@
 if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($modx->lexicon('permission_denied'));
 $modx->lexicon->load('user');
 
-$_REQUEST['id'] = !isset($_REQUEST['id']) ? 0 : str_replace('n_ug_','',$_REQUEST['id']);
+$scriptProperties['id'] = !isset($scriptProperties['id']) ? 0 : str_replace('n_ug_','',$scriptProperties['id']);
 
-$showAnonymous = $modx->getOption('showAnonymous',$_REQUEST,true);
+$showAnonymous = $modx->getOption('showAnonymous',$scriptProperties,true);
 
-$usergroup = $modx->getObject('modUserGroup',$_REQUEST['id']);
-$groups = $modx->getCollection('modUserGroup',array('parent' => $_REQUEST['id']));
+$usergroup = $modx->getObject('modUserGroup',$scriptProperties['id']);
+$groups = $modx->getCollection('modUserGroup',array('parent' => $scriptProperties['id']));
 
 $list = array();
-if ($showAnonymous && empty($_REQUEST['id'])) {
+if ($showAnonymous && empty($scriptProperties['id'])) {
     $menu = array();
     $menu[] = array(
         'text' => $modx->lexicon('user_group_update'),
@@ -80,7 +80,12 @@ foreach ($groups as $group) {
 	);
 }
 if ($usergroup) {
-	$users = $usergroup->getMany('Users');
+    $c = $modx->newQuery('modUser');
+    $c->innerJoin('modUserGroupMember','UserGroupMembers');
+    $c->where(array(
+        'UserGroupMembers.user_group' => $usergroup->get('id'),
+    ));
+	$users = $modx->getCollection('modUser',$c);
 	foreach ($users as $user) {
         $menu = array();
         $menu[] = array(

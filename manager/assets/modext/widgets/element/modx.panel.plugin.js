@@ -115,7 +115,8 @@ MODx.panel.Plugin = function(config) {
                 ,preventRender: true
                 ,plugin: config.plugin
                 ,listeners: {
-                    'rowclick': {fn:this.fieldChangeEvent,scope:this}
+                    'updateEvent': {fn:this.markDirty,scope:this}
+                    ,'rowclick': {fn:this.markDirty,scope:this}
                 }
             }]
         },{
@@ -124,6 +125,7 @@ MODx.panel.Plugin = function(config) {
             ,elementId: config.plugin
             ,elementType: 'modPlugin'
         }])]
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'success': {fn:this.success,scope:this}

@@ -20,14 +20,17 @@ $c = array(
     'icons_url' => $template_url.'images/ext/modext/',
     'manager_url' => $modx->getOption('manager_url'),
     'template_url' => $template_url,
+    'http_host' => MODX_HTTP_HOST,
+    'site_url' => MODX_SITE_URL,
+    'http_host_remote' => MODX_URL_SCHEME.$_SERVER['HTTP_HOST'],
     'user' => $modx->user->get('id'),
     'version' => $modx->version['full_version'],
 );
 
 /* if custom context, load into MODx.config */
-if (isset($_REQUEST['action']) && $_REQUEST['action'] != '' && isset($modx->actionMap[$_REQUEST['action']])) {
+if (isset($scriptProperties['action']) && $scriptProperties['action'] != '' && isset($modx->actionMap[$scriptProperties['action']])) {
 
-    $action = $modx->actionMap[$_REQUEST['action']];
+    $action = $modx->actionMap[$scriptProperties['action']];
     $c['namespace'] = $action['namespace'];
     $c['namespace_path'] = $action['namespace_path'];
     $c['help_url'] = $action['help_url'];

@@ -19,10 +19,10 @@ class modRestSockClient extends modRestClient {
         $method = strtoupper($method);
         $purl = parse_url($host);
         $host = $purl['host'];
-        $purl['path'] = !empty($purl['path']) ? $purl['path'] : '/';
-        $purl['port'] = !empty($purl['port']) ? $purl['port'] : '80';
+        $purl['path'] = !empty($purl['path']) ? $purl['path'] : $this->config[modRestClient::OPT_PATH];
+        $purl['port'] = !empty($purl['port']) ? $purl['port'] : $this->config[modRestClient::OPT_PORT];
 
-        $sock = @fsockopen($purl['host'], $purl['port'],$errno,$errstr,10);
+        $sock = @fsockopen($purl['host'], $purl['port'],$errno,$errstr,30);
 
         /* setup params */
         $q = http_build_query($params);

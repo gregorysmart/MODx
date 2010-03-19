@@ -16,15 +16,19 @@ MODx.panel.ContentType = function(config) {
         ,items: [{
             html: '<h2>'+_('content_types')+'</h2>'
             ,cls: 'modx-page-header'
+            ,itemId: 'header'
             ,border: false
         },{
             layout: 'form'
+            ,itemId: 'form'
             ,bodyStyle: 'padding: 1.5em;'
             ,items: [{
                 html: '<p>'+_('content_type_desc')+'</p>'
+                ,itemId: 'description'
                 ,border: false
             },{
                 xtype: 'modx-grid-content-type'
+                ,itemId: 'grid'
                 ,preventRender: true
             }]
         }]
@@ -38,39 +42,15 @@ MODx.panel.ContentType = function(config) {
 };
 Ext.extend(MODx.panel.ContentType,MODx.FormPanel,{
     initialized: false
-    ,setup: function() {
-        /* TODO: maybe eventually convert to local grid
-        MODx.Ajax.request({
-            url: this.config.url
-            ,params: {
-                action: 'get'
-            }
-            ,listeners: {
-                'success': {fn:function(r) {
-                    if (r.object.category == '0') { r.object.category = null; }
-                    r.object.plugincode = "<?php\n"+r.object.plugincode+"\n?>";
-                    this.getForm().setValues(r.object);
-                    Ext.getCmp('plugin-header').getEl().update('<h2>'+_('plugin')+': '+r.object.name+'</h2>');
-                    this.fireEvent('ready',r.object);
-                    
-                    var d = Ext.decode(r.object.data);
-                    var g = Ext.getCmp('grid-element-properties');
-                    g.defaultProperties = d;
-                    g.getStore().loadData(d);
-                    this.initialized = true;
-                },scope:this}
-            }
-        });
-        */
-    }
+    ,setup: function() {}
     ,beforeSubmit: function(o) {
-        var g = Ext.getCmp('modx-grid-content-type');
+        var g = this.getComponent('form').getComponent('grid');
         Ext.apply(o.form.baseParams,{
             data: g.encodeModified()
         });
     }
     ,success: function(o) {
-        Ext.getCmp('modx-grid-content-type').getStore().commitChanges();
+        this.getComponent('form').getComponent('grid').getStore().commitChanges();
     }
 });
 Ext.reg('modx-panel-content-type',MODx.panel.ContentType);
@@ -93,8 +73,7 @@ MODx.grid.ContentType = function(config) {
     });
 
     Ext.applyIf(config,{
-        id: 'modx-grid-content-type'
-        ,url: MODx.config.connectors_url+'system/contenttype.php'
+        url: MODx.config.connectors_url+'system/contenttype.php'
         ,fields: ['id','name','mime_type','file_extensions','headers','binary','description','menu']
         ,paging: true
         ,remoteSort: true

@@ -83,6 +83,7 @@ if (!empty($_POST['proceed'])) {
             case '@traditional':
                 $webUrl= substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], 'setup/'));
                 $settings = array();
+
                 if ($mode == modInstall::MODE_NEW) {
                     $settings['core_path'] = MODX_CORE_PATH;
                     $settings['web_path'] = MODX_INSTALL_PATH;
@@ -106,6 +107,7 @@ if (!empty($_POST['proceed'])) {
                     $settings['mgr_url'] = defined('MODX_MANAGER_URL') ? MODX_MANAGER_URL : $webUrl . 'manager/';
                     $settings['assets_path'] = defined('MODX_ASSETS_PATH') ? MODX_ASSETS_PATH : $settings['web_path'] . 'assets/';
                     $settings['assets_url'] = defined('MODX_ASSETS_URL') ? MODX_ASSETS_URL : $settings['web_url'] . 'assets/';
+                    $settings['processors_path'] = defined('MODX_PROCESSORS_PATH') ? MODX_PROCESSORS_PATH : MODX_CORE_PATH . 'model/modx/processors/';
                 }
                 $install->settings->store($settings);
                 $this->proceed('summary');

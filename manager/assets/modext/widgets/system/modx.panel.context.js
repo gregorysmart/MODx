@@ -69,6 +69,7 @@ MODx.panel.Context = function(config) {
                 ,context_key: config.context
             }]
         }])]
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
         }
@@ -98,16 +99,19 @@ Ext.extend(MODx.panel.Context,MODx.FormPanel,{
         });
     }
     ,beforeSubmit: function(o) {
+        var r = {};
+        
         var g = Ext.getCmp('modx-grid-context-settings');
-        Ext.apply(o.form.baseParams,{
-            settings: g.encodeModified()
-        });
+        if (g) { r.settings = g.encodeModified(); }
+        
+        Ext.apply(o.form.baseParams,r);
     }
     ,success: function(o) {
-        Ext.getCmp('modx-grid-context-settings').getStore().commitChanges();
+        var g = Ext.getCmp('modx-grid-context-settings');
+        if (g) { g.getStore().commitChanges(); }
         
         var t = parent.Ext.getCmp('modx-resource-tree');        
-        t.refreshNode(this.config.context+'_0',true);
+        if (t) { t.refreshNode(this.config.context+'_0',true); }
     }
 });
 Ext.reg('modx-panel-context',MODx.panel.Context);

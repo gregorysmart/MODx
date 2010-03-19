@@ -233,6 +233,15 @@ MODx.panel.SymLink = function(config) {
         ,checked: true        
     });
     va.push({
+        xtype: 'checkbox'
+        ,fieldLabel: _('resource_syncsite')
+        ,description: _('resource_syncsite_help')
+        ,name: 'syncsite'
+        ,id: 'modx-symlink-syncsite'
+        ,inputValue: 1
+        ,checked: true 
+    });
+    va.push({
         xtype: 'hidden'
         ,name: 'class_key'
         ,id: 'modx-symlink-class-key'
@@ -308,7 +317,7 @@ MODx.panel.SymLink = function(config) {
     Ext.applyIf(config,{
         url: MODx.config.connectors_url+'resource/index.php'
         ,baseParams: {}
-        ,id: 'modx-panel-symlink'
+        ,id: 'modx-panel-resource'
         ,class_key: 'modSymLink'
         ,resource: ''
         ,bodyStyle: ''
@@ -319,6 +328,7 @@ MODx.panel.SymLink = function(config) {
             ,cls: 'modx-page-header'
             ,border: false
         },MODx.getPageStructure(it,{id:'modx-resource-tabs' ,forceLayout: true ,deferredRender: false })]
+        ,useLoadingMask: true
         ,listeners: {
             'setup': {fn:this.setup,scope:this}
             ,'beforeSubmit': {fn:this.beforeSubmit,scope:this}
@@ -326,7 +336,7 @@ MODx.panel.SymLink = function(config) {
         }
     });
     MODx.panel.SymLink.superclass.constructor.call(this,config);
-    setTimeout("Ext.getCmp('modx-panel-symlink').onLoad();",1000);
+    setTimeout("Ext.getCmp('modx-panel-resource').onLoad();",1000);
 };
 Ext.extend(MODx.panel.SymLink,MODx.FormPanel,{
     onLoad: function() {

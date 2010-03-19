@@ -14,8 +14,8 @@ $modx->lexicon->load('resource');
 $deltime = time();
 
 /* get resource */
-$resource = $modx->getObject('modResource', $_REQUEST['id']);
-if (empty($resource)) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $_REQUEST['id'])));
+$resource = $modx->getObject('modResource', $scriptProperties['id']);
+if (empty($resource)) return $modx->error->failure($modx->lexicon('resource_err_nfs',array('id' => $scriptProperties['id'])));
 
 /* validate resource can be deleted */
 if (!$resource->checkPolicy(array('save' => true, 'delete' => true))) {
@@ -106,7 +106,7 @@ if ($resource->save() == false) {
 $modx->invokeEvent('OnDocFormDelete', array (
     'id' => $resource->get('id'),
     'children' => $childrenIds,
-
+    'resource' => &$resource,
 ));
 
 /* log manager action */

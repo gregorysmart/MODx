@@ -16,13 +16,14 @@ if (!$modx->hasPermission('settings')) return $modx->error->failure($modx->lexic
 $modx->lexicon->load('setting');
 
 /* setup default properties */
-$isLimit = !empty($_REQUEST['limit']);
-$start = $modx->getOption('start',$_REQUEST,0);
-$limit = $modx->getOption('limit',$_REQUEST,20);
-$sort = $modx->getOption('sort',$_REQUEST,'key');
-$dir = $modx->getOption('dir',$_REQUEST,'ASC');
-$key = $modx->getOption('key',$_REQUEST,'');
-$namespace = $modx->getOption('namespace',$_REQUEST,'');
+$isLimit = !empty($scriptProperties['limit']);
+$start = $modx->getOption('start',$scriptProperties,0);
+$limit = $modx->getOption('limit',$scriptProperties,20);
+$sort = $modx->getOption('sort',$scriptProperties,'key');
+$dir = $modx->getOption('dir',$scriptProperties,'ASC');
+$key = $modx->getOption('key',$scriptProperties,'');
+$namespace = $modx->getOption('namespace',$scriptProperties,'');
+$area = $modx->getOption('area',$scriptProperties,'');
 
 /* build query */
 $c = $modx->newQuery('modSystemSetting');
@@ -45,6 +46,9 @@ if (!empty($key)) {
 
 if (!empty($namespace)) {
     $c->where(array('namespace' => $namespace));
+}
+if (!empty($area)) {
+    $c->where(array('area' => $area));
 }
 $count = $modx->getCount('modSystemSetting',$c);
 

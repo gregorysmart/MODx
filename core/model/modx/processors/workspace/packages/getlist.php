@@ -18,11 +18,11 @@ $modx->lexicon->load('workspace');
 $modx->addPackage('modx.transport',$modx->getOption('core_path').'model/');
 
 /* setup default properties */
-$isLimit = !empty($_REQUEST['limit']);
-$start = $modx->getOption('start',$_REQUEST,0);
-$limit = $modx->getOption('limit',$_REQUEST,10);
-$workspace = $modx->getOption('workspace',$_REQUEST,1);
-$dateFormat = $modx->getOption('dateFormat',$_REQUEST,'%b %d, %Y %I:%M %p');
+$isLimit = !empty($scriptProperties['limit']);
+$start = $modx->getOption('start',$scriptProperties,0);
+$limit = $modx->getOption('limit',$scriptProperties,10);
+$workspace = $modx->getOption('workspace',$scriptProperties,1);
+$dateFormat = $modx->getOption('dateFormat',$scriptProperties,'%b %d, %Y %I:%M %p');
 
 /* get packages */
 $c = $modx->newQuery('transport.modTransportPackage');
@@ -31,13 +31,15 @@ $c->where(array(
     'workspace' => $workspace,
 ));
 $c->where(array(
-    '(SELECT `signature` FROM '.$modx->getTableName('modTransportPackage').' AS `latestPackage`
+    '(SELECT
+        `signature`
+      FROM '.$modx->getTableName('modTransportPackage').' AS `latestPackage`
       WHERE `latestPackage`.`package_name` = `modTransportPackage`.`package_name`
       ORDER BY
          `latestPackage`.`version_major` DESC,
          `latestPackage`.`version_minor` DESC,
          `latestPackage`.`version_patch` DESC,
-         `latestPackage`.`release` DESC,
+         IF(`release` = "" OR `release` = "ga" OR `release` = "pl","z",`release`) DESC,
          `latestPackage`.`release_index` DESC
       LIMIT 1) = `modTransportPackage`.`signature`',
 ));
@@ -49,6 +51,12 @@ $c->select('
 $c->sortby('`modTransportPackage`.`signature`', 'ASC');
 if ($isLimit) $c->limit($limit,$start);
 $packages = $modx->getCollection('transport.modTransportPackage',$c);
+
+
+
+$modx->getVersionData();
+$productVersion = $modx->version['code_name'].'-'.$modx->version['full_version'];
+$providerCache = array();
 
 /* now create output array */
 $list = array();
@@ -130,6 +138,35 @@ foreach ($packages as $key => $package) {
     }
     unset($packageArray['attributes']);
     unset($packageArray['metadata']);
+
+
+    /* check for updates */
+    $updates = array();
+    if ($package->get('provider') > 0 && $modx->getOption('auto_check_pkg_updates',null,false)) {
+        /* cache providers to speed up load time */
+        if (!empty($providerCache[$package->get('provider')])) {
+            $provider =& $providerCache[$package->get('provider')];
+        } else {
+            $provider = $package->getOne('Provider');
+            if ($provider) {
+                $providerCache[$provider->get('id')] = $provider;
+            }
+        }
+        if ($provider) {
+            $loaded = $provider->getClient();
+            if ($loaded) {
+                $response = $provider->request('package/update','GET',array(
+                    'signature' => $package->get('signature'),
+                    'supports' => $productVersion,
+                ));
+                if ($response && !$response->isError()) {
+                    $updates = $response->toXml();
+                }
+            }
+        }
+    }
+    $packageArray['updateable'] = count($updates) >= 1 ? true : false;
+
     $list[] = $packageArray;
 }
 

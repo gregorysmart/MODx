@@ -92,43 +92,17 @@ $modx->smarty->assign('resource',$resource);
 $publish_document = $modx->hasPermission('publish_document');
 $edit_doc_metatags = $modx->hasPermission('edit_doc_metatags');
 $access_permissions = $modx->hasPermission('access_permissions');
+$richtext = $modx->getOption('richtext_default',null,true);
 
 /* register JS scripts */
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/util/datetime.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/element/modx.panel.tv.renders.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.grid.resource.security.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.tv.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.js');
-$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/sections/resource/create.js');
-$modx->regClientStartupHTMLBlock('
-<script type="text/javascript">
-// <![CDATA[
-MODx.config.publish_document = "'.$publish_document.'";
-MODx.onDocFormRender = "'.$onDocFormRender.'";
-Ext.onReady(function() {
-    MODx.load({
-        xtype: "modx-page-resource-create"
-        ,template: "'.($parent != null ? $parent->get('template') : $modx->getOption('default_template')).'"
-        ,content_type: "1"
-        ,class_key: "'.(isset($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modDocument').'"
-        ,context_key: "'.(isset($_REQUEST['context_key']) ? $_REQUEST['context_key'] : 'web').'"
-        ,parent: "'.(isset($_REQUEST['parent']) ? $_REQUEST['parent'] : '0').'"
-        ,which_editor: "'.$which_editor.'"
-        ,edit_doc_metatags: "'.$edit_doc_metatags.'"
-        ,access_permissions: "'.$access_permissions.'"
-        ,publish_document: "'.$publish_document.'"
-    });
-});
-// ]]>
-</script>');
+$rte = isset($_REQUEST['which_editor']) ? $_REQUEST['which_editor'] : $modx->getOption('which_editor');
+$modx->smarty->assign('which_editor',$rte);
 
 /*
  *  Initialize RichText Editor
  */
-/* Set which RTE */
-$rte = isset($_REQUEST['which_editor']) ? $_REQUEST['which_editor'] : $modx->getOption('which_editor');
-$modx->smarty->assign('which_editor',$rte);
-if ($modx->getOption('use_editor')) {
+/* Set which RTE if not core */
+if ($modx->getOption('use_editor') && !empty($rte)) {
     /* invoke OnRichTextEditorRegister event */
     $text_editors = $modx->invokeEvent('OnRichTextEditorRegister');
     $modx->smarty->assign('text_editors',$text_editors);
@@ -148,5 +122,36 @@ if ($modx->getOption('use_editor')) {
         $modx->smarty->assign('onRichTextEditorInit',$onRichTextEditorInit);
     }
 }
+
+
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/util/datetime.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/element/modx.panel.tv.renders.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.grid.resource.security.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.tv.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/widgets/resource/modx.panel.resource.js');
+$modx->regClientStartupScript($modx->getOption('manager_url').'assets/modext/sections/resource/create.js');
+$modx->regClientStartupHTMLBlock('
+<script type="text/javascript">
+// <![CDATA[
+MODx.config.publish_document = "'.$publish_document.'";
+MODx.onDocFormRender = "'.$onDocFormRender.'";
+Ext.onReady(function() {
+    MODx.load({
+        xtype: "modx-page-resource-create"
+        ,template: "'.($parent != null ? $parent->get('template') : $modx->getOption('default_template')).'"
+        ,content_type: "1"
+        ,class_key: "'.(isset($_REQUEST['class_key']) ? $_REQUEST['class_key'] : 'modDocument').'"
+        ,context_key: "'.(isset($_REQUEST['context_key']) ? $_REQUEST['context_key'] : 'web').'"
+        ,parent: "'.(isset($_REQUEST['parent']) ? $_REQUEST['parent'] : '0').'"
+        ,richtext: "'.$richtext.'"
+        ,edit_doc_metatags: "'.$edit_doc_metatags.'"
+        ,access_permissions: "'.$access_permissions.'"
+        ,publish_document: "'.$publish_document.'"
+        ,canSave: "'.($modx->hasPermission('save_document') ? 1 : 0).'"
+    });
+});
+// ]]>
+</script>');
+
 
 return $modx->smarty->fetch('resource/create.tpl');

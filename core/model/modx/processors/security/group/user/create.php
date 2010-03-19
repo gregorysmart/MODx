@@ -13,19 +13,20 @@ if (!$modx->hasPermission('access_permissions')) return $modx->error->failure($m
 $modx->lexicon->load('user');
 
 /* get user */
-if (empty($_POST['user'])) return $modx->error->failure($modx->lexicon('user_err_ns'));
-$user = $modx->getObject('modUser',$_POST['user']);
+if (empty($scriptProperties['user'])) return $modx->error->failure($modx->lexicon('user_err_ns'));
+$user = $modx->getObject('modUser',$scriptProperties['user']);
 if (!$user) return $modx->error->failure($modx->lexicon('user_err_ns'));
 
 /* get usergroup */
-if (empty($_POST['usergroup'])) return $modx->error->failure($modx->lexicon('user_group_err_ns'));
-$usergroup = $modx->getObject('modUserGroup',$_POST['usergroup']);
+if (empty($scriptProperties['usergroup'])) return $modx->error->failure($modx->lexicon('user_group_err_ns'));
+$usergroup = $modx->getObject('modUserGroup',$scriptProperties['usergroup']);
 if (!$usergroup) return $modx->error->failure($modx->lexicon('user_group_err_nf'));
 
 /* check role */
-if (empty($_POST['role'])) return $modx->error->failure($modx->lexicon('role_err_ns'));
-$role = $modx->getObject('modUserGroupRole',$_POST['role']);
-if (!$role) return $modx->error->failure($modx->lexicon('role_err_nf'));
+if (!empty($scriptProperties['role'])) {
+    $role = $modx->getObject('modUserGroupRole',$scriptProperties['role']);
+    if (!$role) return $modx->error->failure($modx->lexicon('role_err_nf'));
+}
 
 /* check to see if member is already in group */
 $alreadyExists = $modx->getObject('modUserGroupMember',array(
@@ -38,7 +39,7 @@ if ($alreadyExists) return $modx->error->failure($modx->lexicon('user_group_memb
 $member = $modx->newObject('modUserGroupMember');
 $member->set('user_group',$usergroup->get('id'));
 $member->set('member',$user->get('id'));
-$member->set('role',$role->get('id'));
+$member->set('role',$scriptProperties['role']);
 
 /* save membership */
 if ($member->save() == false) {
