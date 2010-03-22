@@ -8,10 +8,11 @@ MODx.load({
     xtype: 'radiogroup'
     ,id: 'tv{$tv->id}'
     ,vertical: true
-    ,columns: 2
+    ,columns: 1
     ,renderTo: 'tv{$tv->id}-cb'
     ,name: 'tv-{$tv->id}'
     ,autoHeight: true
+    ,width: 450
     
     ,items: [{foreach from=$opts item=item key=k name=cbs}
     {literal}{{/literal}
